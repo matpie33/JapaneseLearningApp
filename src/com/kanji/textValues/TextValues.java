@@ -36,5 +36,7 @@ public class TextValues {
 	public static final String wordSearchExceptionWordNotFound = 
 			"Nie znaleziono podanego s³owa. Byæ mo¿e zazaczono z³¹ opcjê," +
 			"a mo¿e jest b³¹d we wpisanym s³owie.";
+	public static final String duplicatedWordException = "Pewne s³owo wystêpuje wielokrotnie "+
+			"na liœcie s³ów. Nale¿y poprawiæ.";
 
 }

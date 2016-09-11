@@ -1,5 +1,6 @@
 package com.kanji.fileReading;
 
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,12 +13,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.kanji.textValues.TextValues;
+
 public class FileReaders {
 	
 	
-	public Map <Integer,String> readFile(File file){
+	public Map <String, Integer> readFile(File file) throws Exception{
 		
-		Map <Integer,String> keywords = new HashMap <Integer,String>();
+		Map <String, Integer> keywords = new HashMap <String, Integer>();
 		try{
 			
 			BufferedReader in = new BufferedReader(new InputStreamReader(				   
@@ -47,7 +50,14 @@ public class FileReaders {
 		    	word=new StringBuilder(word).reverse().toString();
 		    	System.out.println(word);
 		    	int wordIdInt = Integer.parseInt(wordId);
-		    	keywords.put(wordIdInt, word);
+		    	if (keywords.containsKey(word))	{	    
+		    		Desktop.getDesktop().open(file);
+		    		throw new Exception (TextValues.duplicatedWordException +
+		    				"S³owo to: "+word+"; a numer to "		    	
+		    		+wordIdInt + " oraz "+keywords.get(word));
+		    	}
+		    	
+		    	keywords.put(word, wordIdInt);
 		    }
 		    in.close();
 		}

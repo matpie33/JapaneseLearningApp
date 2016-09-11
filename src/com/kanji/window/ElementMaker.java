@@ -31,7 +31,7 @@ public class ElementMaker {
 	private List <JButton> buttons;
 	
 	private ClassWithDialog parent;
-	private Map <Integer,String> words;
+	private Map <String, Integer> words;
 	
 	private MyList myList;
 	
@@ -59,7 +59,7 @@ public class ElementMaker {
 	
 	private void initMyList(){
 		myList = new MyList();
-		Map <Integer, String> init = new HashMap <Integer,String>();
+		Map <String, Integer> init = new HashMap <String, Integer>();
 		for (int i=0; i<10; i++){
 			String a = "aaaaaa";
 			if (i==3)
@@ -69,7 +69,7 @@ public class ElementMaker {
 						"i co mi zrobisz jak mnie nie zlapiesz, ano nie zlapeisz mnie" +
 						"ale byki strzelam uuu";
 			
-			init.put(i, a);
+			init.put(a,i);
 			
 		}
 		myList.setWords(init);
@@ -125,7 +125,12 @@ public class ElementMaker {
 			return;
 		File file = fileChooser.getSelectedFile();
 
-		words = fileReader.readFile(file);
+		try {
+			words = fileReader.readFile(file);
+		} catch (Exception e) {
+			parent.showMessageDialog(e.getMessage());
+			words = new HashMap <String, Integer> ();
+		}
 		myList.setWords(words);
 		
 	}

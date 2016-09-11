@@ -25,5 +25,12 @@ public abstract class ClassWithDialog extends JFrame{
 		}
 	}
 	
+	public void showMessageDialog(String message){
+		if (notOpenedYet()){
+			dialog = new MyDialog(this);
+			dialog.showMsgDialog(message);
+		}
+	}
+	
 
 }

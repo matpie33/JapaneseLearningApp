@@ -8,6 +8,8 @@ import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.Normalizer;
@@ -36,7 +38,7 @@ public class MyList extends JPanel{
 	private Color highlightedColor = Color.BLUE;
 	private JScrollPane scroll;
 	private Color bgColor = Color.pink;
-	private Map <Integer, String> words;
+	private Map <String, Integer> words;
 	
 	public MyList(){
 	
@@ -58,10 +60,17 @@ public class MyList extends JPanel{
 		JLabel number = new JLabel (""+(panels.size()+1));
 		number.setForeground(Color.white);
 		
-		JTextArea elem = new JTextArea(text);
+		final JTextArea elem = new JTextArea(text);
 		elem.setLineWrap(true);
 		elem.setWrapStyleWord(true);
 		elem.setOpaque(true);
+		
+		elem.addFocusListener(new FocusAdapter (){
+			@Override
+			public void focusGained (FocusEvent e){
+				System.out.println("numerek: "+words.get(elem.getText()));
+			}
+		});
 		
 		row.add(number);
 		row.add(elem);
@@ -86,6 +95,7 @@ public class MyList extends JPanel{
 		repaint();
 		
 	}
+	
 	
 	public void search(String searched, int direction, Set<Integer> options) throws Exception{
 		
@@ -219,17 +229,17 @@ public class MyList extends JPanel{
 	}
 	
 	public void addWord (String word, int number){
-		words.put(number, word);
+		words.put(word,number);
 		addElement(word);
 	}
 	
-	public void setWords(Map <Integer, String> words){
+	public void setWords(Map <String, Integer> words){
 		this.words=words;
 		updateWords();
 	}
 	
 	private void updateWords (){
-		for (String word: words.values())
+		for (String word: words.keySet())
 			addElement(word);
 			
 	}
