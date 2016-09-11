@@ -16,7 +16,7 @@ public class FileReaders {
 	
 	
 	public Map <Integer,String> readFile(File file){
-//		List <String> words = new ArrayList <String> ();
+		
 		Map <Integer,String> keywords = new HashMap <Integer,String>();
 		try{
 			
@@ -48,7 +48,6 @@ public class FileReaders {
 		    	System.out.println(word);
 		    	int wordIdInt = Integer.parseInt(wordId);
 		    	keywords.put(wordIdInt, word);
-//		    	words.add(word);
 		    }
 		    in.close();
 		}

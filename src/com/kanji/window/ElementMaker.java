@@ -31,7 +31,6 @@ public class ElementMaker {
 	
 	private ClassWithDialog parent;
 	private Map <Integer,String> words;
-	private boolean isDialogOpened;
 	
 	private MyList myList;
 	
@@ -142,14 +141,7 @@ public class ElementMaker {
 	}
 	
 	private void addWord(){
-		if (isDialogOpened) return;
-		//TODO use my own dialog
-		String s =JOptionPane.showInputDialog(parent, TextValues.wordSearchTextPrompt, 
-				TextValues.addWordDialogTitle);
-		isDialogOpened=false;
-		if (s==null) return;
-		addWordToList(s);	
-		
+		parent.showDialogToAddWord(myList);		
 	}
 	
 	private void searchWord(){

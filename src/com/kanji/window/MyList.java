@@ -79,8 +79,10 @@ public class MyList extends JPanel{
 		c.anchor=GridBagConstraints.WEST;
 		c.gridy=panels.size();
 		c.fill=GridBagConstraints.HORIZONTAL;
-		add(row,c);
+		add(row,c);		
 		
+		revalidate();
+		repaint();
 		
 	}
 	
@@ -206,13 +208,9 @@ public class MyList extends JPanel{
 		return word;
 	}
 	
-	private void scrollTo (JPanel panel){
-			
-		if (panel!=null){			
-			int r = panel.getY();
-			scroll.getViewport().setViewPosition(new Point(0,r));
-		}
-			
+	private void scrollTo (JPanel panel){						
+		int r = panel.getY();
+		scroll.getViewport().setViewPosition(new Point(0,r));
 	}
 	
 	public JScrollPane returnMe (){

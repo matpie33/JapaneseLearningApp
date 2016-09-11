@@ -50,7 +50,6 @@ public class MyDialog extends JDialog  {
 	
 	private JPanel p;
 	
-	// TODO delete commented code and use github instead since now (09.09.2016) !!
 	
 	private class MyDispatcher implements KeyEventDispatcher {
         @Override
@@ -105,14 +104,7 @@ public class MyDialog extends JDialog  {
 				
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);		
 		setTitle(TextValues.wordSearchDialogTitle);		
-				
-		WindowListener exitListener = new WindowAdapter() {
-		    @Override
-		    public void windowClosed(WindowEvent e) {
-//		        parent.setDialogOpened(false);
-		    }
-		};
-		addWindowListener(exitListener);
+			
 	}
 	
 	public void showMsgDialog(String message){
@@ -135,9 +127,9 @@ public class MyDialog extends JDialog  {
 	}
 	
 	
-	public void showInputDialog (){
+	public void showSearchWordDialog (){
 							
-		JLabel label1 = new JLabel (TextValues.wordSearchDialogPrompt);
+		JLabel label1 = new JLabel (TextValues.wordAddDialogPrompt);
 		p.add(label1,c);
 		
 		textField = new JTextField(20);
@@ -164,13 +156,12 @@ public class MyDialog extends JDialog  {
 		
 		caseSensitive = new JRadioButton (TextValues.wordSearchPerfectMatchOption);
 		options.put(caseSensitive, 2);
-//		caseSensitive.setBackground(Color.blue);
 		c.gridy++;
 		p.add(caseSensitive,c);
 		
 		
 		
-		final ButtonGroup group = new ButtonGroup();
+		ButtonGroup group = new ButtonGroup();
 		group.add(searchMany);
 		group.add(caseSensitive);
 		group.add(defaultb);
@@ -182,11 +173,9 @@ public class MyDialog extends JDialog  {
 		c.gridy++;
 		c.anchor=GridBagConstraints.EAST;
 		c.gridwidth=1;
-//		c.insets=new Insets(0,20,0,0);
 		p.add(previous,c);
 		
 		JButton next = new JButton (TextValues.buttonNextText);
-//		c.insets=new Insets(0,0,0,20);
 		c.anchor=GridBagConstraints.WEST;
 		c.gridx++;
 		p.add(next,c);
@@ -214,6 +203,50 @@ public class MyDialog extends JDialog  {
 		});
 		
 		showYourself();
+		
+	}
+	
+	public void showInsertDialog(){
+		JLabel prompt = new JLabel (TextValues.wordAddDialogPrompt);
+		c.gridx=0;
+		c.gridy=0;
+		p.add(prompt,c);
+		
+		final JTextField insertWord = new JTextField(20);
+		c.gridx++;
+		
+		p.add(insertWord,c);
+		
+		JButton cancel = new JButton (TextValues.buttonCancelText);
+		c.gridx=0;
+		c.gridy++;
+		
+		cancel.addActionListener(new ActionListener (){
+			@Override
+			public void actionPerformed (ActionEvent e){
+				dispose();
+			}
+		});
+		
+		p.add(cancel,c);
+		
+		JButton approve = new JButton (TextValues.buttonApproveText);
+		c.gridx++;
+		
+		approve.addActionListener(new ActionListener (){
+			@Override
+			public void actionPerformed (ActionEvent e){
+				addWordToList(insertWord.getText());
+			}
+		});
+		
+		p.add(approve,c);
+		showYourself();
+		
+	}
+	
+	private void addWordToList(String word){
+		list.addElement(word);
 		
 	}
 	

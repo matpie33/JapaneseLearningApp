@@ -9,13 +9,15 @@ public class TextValues {
 	public static final String [] buttonNames = 
 		{"Rozpocznij", "Dodaj s³ówko", "ZnajdŸ s³ówko", "Wczytaj listê"};				
 	public static final String buttonApproveText = "OK";
+	public static final String buttonCancelText = "Anuluj";
 	public static final String buttonPreviousText = "Poprzedni";
 	public static final String buttonNextText = "Nastêpny";
 	
+	
 	//word search dialog
-	public static final String wordSearchDialogPrompt = "Podaj s³ówko";	
+	public static final String wordAddDialogPrompt = "Podaj s³ówko";	
 	public static final String wordSearchDialogTitle="ZnajdŸ s³owo";	
-	public static final String wordSearchTextPrompt="Wpisz szukane s³owo";
+	public static final String wordSearchDialogPrompt="Wpisz szukane s³owo";
 	public static final String wordSearchDefaultOption = 
 			"Szukaj wszystkich pozycji zawieraj¹cych wpisane s³owa";
 	public static final String wordSearchOnlyFullWordsOption = 
