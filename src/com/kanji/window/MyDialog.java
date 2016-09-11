@@ -214,8 +214,20 @@ public class MyDialog extends JDialog  {
 		
 		final JTextField insertWord = new JTextField(20);
 		c.gridx++;
-		
 		p.add(insertWord,c);
+		
+		JLabel numberPrompt = new JLabel (TextValues.wordAddNumberPrompt);
+		c.gridy++;
+		c.gridx=0;
+		
+		p.add(numberPrompt,c);
+		
+		final JTextField insertNumber = new JTextField(20);
+		c.gridx++;
+		
+		p.add(insertNumber,c);
+		
+		
 		
 		JButton cancel = new JButton (TextValues.buttonCancelText);
 		c.gridx=0;
@@ -236,7 +248,14 @@ public class MyDialog extends JDialog  {
 		approve.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed (ActionEvent e){
-				addWordToList(insertWord.getText());
+				String numberInput = insertNumber.getText();
+				boolean validInput = check(insertWord.getText(), numberInput);
+				int number = Integer.parseInt(numberInput);
+				if (validInput)
+					addWordToList(insertWord.getText(), number);
+				else 
+					//TODO show error message;
+					System.out.println("TODO");
 			}
 		});
 		
@@ -245,8 +264,12 @@ public class MyDialog extends JDialog  {
 		
 	}
 	
-	private void addWordToList(String word){
-		list.addElement(word);
+	private boolean check (String wordValue, String numberValue){
+		return true; // TODO sprawdzic czy numer to numer oraz czy nie ma jeszcze takiego numeru
+	}
+	
+	private void addWordToList(String word, int number){
+		list.addWord(word,number);
 		
 	}
 	

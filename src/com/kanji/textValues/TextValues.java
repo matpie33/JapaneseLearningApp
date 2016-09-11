@@ -6,16 +6,24 @@ public class TextValues {
 	
 	public static final String addWordDialogTitle="Nowe s³owo";	
 	// Buttons
+	public static final String buttonStartText = "Rozpocznij";
+	public static final String buttonSearchText = "ZnajdŸ s³ówko";
+	public static final String buttonAddText = "Dodaj s³ówko";
+	public static final String buttonLoadText = "Wczytaj listê";
+	
 	public static final String [] buttonNames = 
-		{"Rozpocznij", "Dodaj s³ówko", "ZnajdŸ s³ówko", "Wczytaj listê"};				
+		{buttonStartText, buttonSearchText, buttonAddText, buttonLoadText};	
+			
 	public static final String buttonApproveText = "OK";
 	public static final String buttonCancelText = "Anuluj";
 	public static final String buttonPreviousText = "Poprzedni";
 	public static final String buttonNextText = "Nastêpny";
 	
+	public static final String wordAddDialogPrompt = "Podaj s³ówko";	
+	public static final String wordAddNumberPrompt = "Podaj numerek";
 	
 	//word search dialog
-	public static final String wordAddDialogPrompt = "Podaj s³ówko";	
+	
 	public static final String wordSearchDialogTitle="ZnajdŸ s³owo";	
 	public static final String wordSearchDialogPrompt="Wpisz szukane s³owo";
 	public static final String wordSearchDefaultOption = 

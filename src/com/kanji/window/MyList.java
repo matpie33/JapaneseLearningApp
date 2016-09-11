@@ -36,6 +36,7 @@ public class MyList extends JPanel{
 	private Color highlightedColor = Color.BLUE;
 	private JScrollPane scroll;
 	private Color bgColor = Color.pink;
+	private Map <Integer, String> words;
 	
 	public MyList(){
 	
@@ -50,7 +51,7 @@ public class MyList extends JPanel{
 		setLayout(new GridBagLayout());
 	}
 
-	public void addElement (final String text){
+	private void addElement (final String text){
 				
 		JPanel row = new JPanel ();	
 		GridBagConstraints c = new GridBagConstraints ();
@@ -215,6 +216,22 @@ public class MyList extends JPanel{
 	
 	public JScrollPane returnMe (){
 		return scroll;
+	}
+	
+	public void addWord (String word, int number){
+		words.put(number, word);
+		addElement(word);
+	}
+	
+	public void setWords(Map <Integer, String> words){
+		this.words=words;
+		updateWords();
+	}
+	
+	private void updateWords (){
+		for (String word: words.values())
+			addElement(word);
+			
 	}
 	
 	
