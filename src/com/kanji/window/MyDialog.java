@@ -48,6 +48,8 @@ public class MyDialog extends JDialog  {
 	private int invalidNumber=-1;
 	
 	MyDialog upper;
+	private JTextField insertWord;
+	private JTextField insertNumber;
 	
 	private JPanel p;
 	
@@ -216,7 +218,7 @@ public class MyDialog extends JDialog  {
 		c.gridy=0;
 		p.add(prompt,c);
 		
-		final JTextField insertWord = new JTextField(20);
+		insertWord = new JTextField(20);
 		c.gridx++;
 		p.add(insertWord,c);
 		
@@ -226,7 +228,7 @@ public class MyDialog extends JDialog  {
 		
 		p.add(numberPrompt,c);
 		
-		final JTextField insertNumber = new JTextField(20);
+		insertNumber = new JTextField(20);
 		c.gridx++;
 		
 		p.add(insertNumber,c);
@@ -252,42 +254,32 @@ public class MyDialog extends JDialog  {
 		approve.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed (ActionEvent e){
-				int numberInput = tryToConvertStringToInteger(insertNumber.getText());				
+				String numberInput = insertNumber.getText();
+				String wordInput = insertWord.getText();
 				if (isNumberValid(numberInput)){
-					String wordInput = insertWord.getText();
-					boolean validInput = checkIfItDoesntExist(wordInput, numberInput);
-					if (validInput)
-						addWordToList(insertWord.getText(), numberInput);
-				}
-				else return;				
-				
-				
+					int number = Integer.parseInt(numberInput);
+					if (checkIfInputIsValid(wordInput, number))			
+						addWordToList(wordInput, number);
+				}				
+								
 			}
 		});
 		
 		p.add(approve,c);
 		showYourself();
 		
-	}
-	
-	private boolean checkIfItDoesntExist (String word, int wordId){		
-		return isWordIdUndefinedYet(wordId) && isWordUndefinedYet(word);			
-	}
-	
-	private int tryToConvertStringToInteger(String number){
-		try {			
-			return Integer.parseInt(number);
-		}
-		catch (NumberFormatException ex){
+	}			
+			
+	private boolean isNumberValid(String number){
+		boolean valid = number.matches("\\d+");
+		if (!valid)
 			showErrorDialog(TextValues.numberFormatException);
-			return invalidNumber;
-		}
-	}
+		return valid;
+	}	
 	
-	private boolean isNumberValid(int number){
-		return number!=invalidNumber;
-	}
-	
+	private boolean checkIfInputIsValid(String word, int number){					
+		return (isWordIdUndefinedYet(number) && isWordUndefinedYet(word));								
+	}	
 	
 	private boolean isWordIdUndefinedYet(int number){
 		boolean undefined=list.isWordIdUndefinedYet(number);		
