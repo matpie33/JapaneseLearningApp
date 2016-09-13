@@ -1,4 +1,4 @@
-jeden 1
+﻿jeden 1
 dwa 2
 trzy 3
 cztery 4
@@ -2322,3 +2322,75 @@ zasypywać czymśkogoś 2317
 nabierać wody 2322
 basenik wodny 2323
 kumulacja 2324
+przepaść, otchłań 2325
+chaos 2326
+wszystko - (żerny np.) 2327
+sitko 2328
+zmoczyć 2329
+przestać się ruszać 2330
+czarnoziem 2331
+kocioł 2332
+toporek 2333
+dziadek 2334
+cwany przebiegły 2335
+nieprzyzwoity, obsceniczny 2336
+przebiegły 2337
+szop pracz 2338
+wilk 2339
+poddenerwowany 2340
+szczeniak 2341
+lis 2342
+alfa i omega 2343
+celować w 2344
+lew 2345
+pawian 2346
+tytoń 2347
+jasmine - jasnożółty 2348
+głóg 2349
+truskawka 2350
+krzew dekoracyjny lespedeza 2351
+stara technika 2352
+zredukować, zmniejszyć 2353
+słomiany płaszcz przeciwdeszczowy 2354
+zdrętwiały, otępiały 2355
+mech (roślina) 2356
+marnotrawny, rozrzutny 2357
+pokrywać coś czymś 2358
+łodyga w kształcie spirali 2359
+kwiat lotosu - dwie wersje - 2360 i 2361
+kwiaty lotosu - again 2362
+orchidea 2363
+trzcina pospolita 2364
+słodki ziemniak 2365
+irys (kwiat) 2366
+banan 2367
+knot świecy 2368
+kasza 2369
+lepiężnik (kwiat) 2370
+indigo (kolor niebiesko - fioletowy) 2371
+kolor bakłażanowy 2372
+znęcanie 2373
+zawdzięczać coś komuś 2374
+bylica(kwiat) 2375
+musztarda 2376
+wykiełkować 2377
+winogrono 2378
+winne grona 2379
+wskrzeszenie 2380
+zdziczeć 2381
+rzepień (kwiat) 2382
+wycieraczka pod drzwiami 2383
+zrobić się ciemno 2384
+trawa używana jako strzecha 2385
+banan zwyczajny 2386
+kosić trawę 2387
+pokrywka 2388
+cebula 2389
+krytykować 2390
+malwa 2391
+pokrywanie dachu kamieniem 2392
+pręcik kwiatka 2393
+grzyb 2394
+siać 2395
+pietruszka 2396
+strzecha 2397

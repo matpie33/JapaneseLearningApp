@@ -45,6 +45,7 @@ public class MyDialog extends JDialog  {
 	private boolean isOpened;
 	
 	private MyList list;
+	private int invalidNumber=-1;
 	
 	MyDialog upper;
 	
@@ -71,7 +72,10 @@ public class MyDialog extends JDialog  {
 		if (b instanceof BaseWindow){
 			setLocation(b.getLocation());
 		}
-		else setLocationRelativeTo(b);		
+		else {
+			setLocationRelativeTo(b);		
+			System.out.println(b);
+		}
 		initialize();
 		
 		addWindowListener(new WindowAdapter(){
@@ -248,14 +252,16 @@ public class MyDialog extends JDialog  {
 		approve.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed (ActionEvent e){
-				String numberInput = insertNumber.getText();
-				boolean validInput = check(insertWord.getText(), numberInput);
-				int number = Integer.parseInt(numberInput);
-				if (validInput)
-					addWordToList(insertWord.getText(), number);
-				else 
-					//TODO show error message;
-					System.out.println("TODO");
+				int numberInput = tryToConvertStringToInteger(insertNumber.getText());				
+				if (isNumberValid(numberInput)){
+					String wordInput = insertWord.getText();
+					boolean validInput = checkIfItDoesntExist(wordInput, numberInput);
+					if (validInput)
+						addWordToList(insertWord.getText(), numberInput);
+				}
+				else return;				
+				
+				
 			}
 		});
 		
@@ -264,8 +270,37 @@ public class MyDialog extends JDialog  {
 		
 	}
 	
-	private boolean check (String wordValue, String numberValue){
-		return true; // TODO sprawdzic czy numer to numer oraz czy nie ma jeszcze takiego numeru
+	private boolean checkIfItDoesntExist (String word, int wordId){		
+		return isWordIdUndefinedYet(wordId) && isWordUndefinedYet(word);			
+	}
+	
+	private int tryToConvertStringToInteger(String number){
+		try {			
+			return Integer.parseInt(number);
+		}
+		catch (NumberFormatException ex){
+			showErrorDialog(TextValues.numberFormatException);
+			return invalidNumber;
+		}
+	}
+	
+	private boolean isNumberValid(int number){
+		return number!=invalidNumber;
+	}
+	
+	
+	private boolean isWordIdUndefinedYet(int number){
+		boolean undefined=list.isWordIdUndefinedYet(number);		
+		if (!undefined)
+			showErrorDialog(TextValues.idAlreadyDefinedException);
+		return undefined;
+	}
+	
+	private boolean isWordUndefinedYet(String word){
+		boolean undefined = list.isWordUndefinedYet(word);
+		if (!undefined)
+			showErrorDialog(TextValues.wordAlreadyDefinedException);
+		return undefined;
 	}
 	
 	private void addWordToList(String word, int number){

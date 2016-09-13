@@ -46,6 +46,7 @@ public class MyList extends JPanel{
 		panels = new LinkedList <JPanel>();		
 		initLayout();
 		scroll = new JScrollPane(this);
+		scroll.getVerticalScrollBar().setUnitIncrement(20);
 		setBackground(bgColor);
 	}
 	
@@ -242,6 +243,19 @@ public class MyList extends JPanel{
 		for (String word: words.keySet())
 			addElement(word);
 			
+	}
+	
+	public boolean isWordIdUndefinedYet(int number){
+		return !words.containsValue(number);
+	}
+	
+	public boolean isWordUndefinedYet(String searched){
+		for (String word: words.keySet()){
+			if (removeDiacritics(word).equals(removeDiacritics(searched)))
+				return false;
+			
+		}
+		return true;
 	}
 	
 	
