@@ -45,9 +45,8 @@ public class MyDialog extends JDialog  {
 	private boolean isOpened;
 	
 	private MyList list;
-	private int invalidNumber=-1;
 	
-	MyDialog upper;
+	private MyDialog upper;
 	private JTextField insertWord;
 	private JTextField insertNumber;
 	
@@ -60,8 +59,7 @@ public class MyDialog extends JDialog  {
         	
 			if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
 				dispose();
-			}
-				
+			}				
 			  		
             return false;
         }

@@ -1,11 +1,15 @@
 package com.kanji.window;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -25,12 +29,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.Scrollable;
 import javax.swing.text.DefaultCaret;
 
 import com.kanji.textValues.TextValues;
 
 @SuppressWarnings("serial")
-public class MyList extends JPanel{
+public class MyList extends JPanel implements Scrollable{
 	
 	private List <JPanel> panels;
 	private int highlightedPanel;
@@ -40,12 +45,33 @@ public class MyList extends JPanel{
 	private Color bgColor = Color.pink;
 	private Map <String, Integer> words;
 	
+	public Dimension getPreferredScrollableViewportSize() {
+        return super.getPreferredSize(); //tell the JScrollPane that we want to be our 'preferredSize' - but later, we'll say that vertically, it should scroll.
+    }
+
+    public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
+        return 16;//set to 16 because that's what you had in your code.
+    }
+
+    public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
+        return 16;//set to 16 because that's what you had set in your code.
+    }
+
+    public boolean getScrollableTracksViewportWidth() {
+        return true;//track the width, and re-size as needed.
+    }
+
+    public boolean getScrollableTracksViewportHeight() {
+        return false; //we don't want to track the height, because we want to scroll vertically.
+    }
+	
 	public MyList(){
 	
 		highlightedPanel=0;
 		panels = new LinkedList <JPanel>();		
 		initLayout();
 		scroll = new JScrollPane(this);
+		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.getVerticalScrollBar().setUnitIncrement(20);
 		setBackground(bgColor);
 	}
@@ -57,9 +83,17 @@ public class MyList extends JPanel{
 	private void addElement (final String text){
 				
 		JPanel row = new JPanel ();	
+		row.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints ();
 		JLabel number = new JLabel (""+(panels.size()+1));
 		number.setForeground(Color.white);
+		
+		GridBagConstraints cd = new GridBagConstraints();
+		cd.gridx=0;
+		cd.gridy=0;
+		cd.weightx=0;
+		cd.anchor=GridBagConstraints.CENTER;
+		cd.insets=new Insets(5,5,5,5);
 		
 		final JTextArea elem = new JTextArea(text);
 		elem.setLineWrap(true);
@@ -73,8 +107,12 @@ public class MyList extends JPanel{
 			}
 		});
 		
-		row.add(number);
-		row.add(elem);
+		row.add(number,cd);
+		
+		cd.gridx=1;
+		cd.weightx=1;
+		cd.fill=GridBagConstraints.HORIZONTAL;
+		row.add(elem,cd);
 		
 		JButton remove = new JButton("-");
 		remove.addActionListener(new ActionListener (){
@@ -84,12 +122,15 @@ public class MyList extends JPanel{
 			}
 		});
 		
-		row.add(remove);
+		cd.gridx=2;
+		cd.weightx=0;
+		row.add(remove,cd);
 		panels.add(row);
 		row.setBackground(defaultColor);
-		c.anchor=GridBagConstraints.WEST;
+		c.anchor=GridBagConstraints.EAST;
 		c.gridy=panels.size();
 		c.fill=GridBagConstraints.HORIZONTAL;
+		c.weightx=1;
 		add(row,c);		
 		
 		revalidate();

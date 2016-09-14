@@ -1,5 +1,6 @@
 package com.kanji.window;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -44,7 +45,7 @@ public class BaseWindow extends ClassWithDialog {
 	private JPanel createUpperPanel(){
 		
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridBagLayout());
+		panel.setLayout(new BorderLayout());
 		
 		Dimension areaSize = new Dimension(300,300);
 		
@@ -63,7 +64,7 @@ public class BaseWindow extends ClassWithDialog {
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx=0;
 		c.insets=insets;		
-		panel.add(j,c);		
+		panel.add(j,BorderLayout.WEST);		
 		
 		listScroll = maker.getMyList();
 		
@@ -73,7 +74,7 @@ public class BaseWindow extends ClassWithDialog {
 		listScroll.setPreferredSize(areaSize);
 		
 		c.gridx=1;		
-		panel.add(listScroll,c);
+		panel.add(listScroll,BorderLayout.CENTER);
 		
 		return panel;
 		
@@ -85,28 +86,18 @@ public class BaseWindow extends ClassWithDialog {
 		p.setLayout(new GridBagLayout());
 		
 		GridBagConstraints c = new GridBagConstraints();
-		JButton start = list.get(0);
 		
 		c.insets=insets;
 		c.gridx=0;
 		c.anchor=GridBagConstraints.WEST;
 		c.weightx=1;
-		p.add(start,c);			
-		
-		if (list.size()>1){
 			
-			c.weightx=((double)1/(double)(list.size()));
-			
-			for (int i=1; i<list.size()-1;i++){
-				c.gridx++;		
-				p.add(list.get(i),c);
-			}
-		}
-		
-		c.gridx++;
-		c.weightx=1;
-		c.anchor=GridBagConstraints.EAST;
-		p.add(list.get(list.size()-1),c);
+		for (int i=0; i<list.size();i++){
+			if (i>(list.size()-1)/2)
+				c.anchor=GridBagConstraints.EAST;
+			p.add(list.get(i),c);
+			c.gridx++;
+		}				
 						
 		return p;
 	}
@@ -115,18 +106,18 @@ public class BaseWindow extends ClassWithDialog {
 		
 		JPanel main = new JPanel();
 		g = new GridBagLayout();
-		main.setLayout(g);
+		main.setLayout(new BorderLayout());
 		main.setBackground(Color.RED);
 				
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridy=0;		
-		main.add(up,c);
+		main.add(up, BorderLayout.CENTER);
 		up.setBackground(Color.BLUE);
 		
 		c.gridy=1;
 		c.anchor=GridBagConstraints.WEST;
 		c.fill=GridBagConstraints.HORIZONTAL;
-		main.add(down,c);
+		main.add(down, BorderLayout.SOUTH);
 		down.setBackground(Color.RED);
 		
 		setContentPane(main);
