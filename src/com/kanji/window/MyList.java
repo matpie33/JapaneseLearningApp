@@ -45,35 +45,41 @@ public class MyList extends JPanel implements Scrollable{
 	private Color bgColor = Color.pink;
 	private Map <String, Integer> words;
 	
+	@Override
 	public Dimension getPreferredScrollableViewportSize() {
-        return super.getPreferredSize(); //tell the JScrollPane that we want to be our 'preferredSize' - but later, we'll say that vertically, it should scroll.
+        return super.getPreferredSize(); 
     }
-
+	
+	@Override
     public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
-        return 16;//set to 16 because that's what you had in your code.
+        return 16;
     }
-
+	
+	@Override
     public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
-        return 16;//set to 16 because that's what you had set in your code.
+        return 16;
     }
 
+	@Override
     public boolean getScrollableTracksViewportWidth() {
-        return true;//track the width, and re-size as needed.
+        return true;
     }
 
+	@Override
     public boolean getScrollableTracksViewportHeight() {
-        return false; //we don't want to track the height, because we want to scroll vertically.
+        return false; 
     }
 	
-	public MyList(){
-	
+	public MyList(){	
+		createDefaultScrollPane();
 		highlightedPanel=0;
 		panels = new LinkedList <JPanel>();		
-		initLayout();
-		scroll = new JScrollPane(this);
-		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scroll.getVerticalScrollBar().setUnitIncrement(20);
+		initLayout();		
 		setBackground(bgColor);
+	}
+	
+	private void createDefaultScrollPane(){
+		scroll = new JScrollPane();
 	}
 	
 	private void initLayout(){
@@ -266,7 +272,12 @@ public class MyList extends JPanel implements Scrollable{
 		scroll.getViewport().setViewPosition(new Point(0,r));
 	}
 	
-	public JScrollPane returnMe (){
+	public void setScrollPane (JScrollPane scr){
+		scroll=scr;
+	}
+	
+	public JScrollPane returnMe (JScrollPane scrollPane){
+		scroll=scrollPane;
 		return scroll;
 	}
 	

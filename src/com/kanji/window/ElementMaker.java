@@ -148,8 +148,8 @@ public class ElementMaker {
 	}
 	
 	
-	public JScrollPane getMyList(){
-		return myList.returnMe();
+	public MyList getMyList(){
+		return myList;
 	}
 	
 }
