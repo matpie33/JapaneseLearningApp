@@ -42,7 +42,7 @@ public class MyList extends JPanel implements Scrollable{
 	private Color defaultColor = Color.RED;
 	private Color highlightedColor = Color.BLUE;
 	private JScrollPane scroll;
-	private Color bgColor = Color.pink;
+	private Color bgColor = Color.yellow;
 	private Map <String, Integer> words;
 	
 	@Override

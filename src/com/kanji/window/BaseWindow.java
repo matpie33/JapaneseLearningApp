@@ -84,7 +84,7 @@ public class BaseWindow extends ClassWithDialog {
 	private JScrollPane createScrollPane (Color bgColor, Border border, Component component){
 		
 		JScrollPane scroll = new JScrollPane(component);
-		scroll.setBackground(bgColor);
+		scroll.getViewport().setBackground(bgColor);
 		scroll.setBorder(border);
 		scroll.getVerticalScrollBar().setUnitIncrement(20);		
 		scroll.setPreferredSize(scrollPanesSize);		
