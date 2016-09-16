@@ -55,7 +55,7 @@ public class BaseWindow extends ClassWithDialog {
 	}	
 	
 	private void createAndAddKanjiArea(JPanel panel){
-		Border raisedBevel = BorderFactory.createLineBorder(Color.black,6);			
+		Border raisedBevel = BorderFactory.createLineBorder(Color.BLUE,6);			
 		JTextArea kanjiArea = createKanjiArea(raisedBevel);		
 		panel.add(kanjiArea,BorderLayout.WEST);		
 	}	
@@ -63,7 +63,7 @@ public class BaseWindow extends ClassWithDialog {
 	private JTextArea createKanjiArea (Border border){
 		
 		JTextArea kanjiArea = new JTextArea();
-		kanjiArea.setBackground(Color.green);
+		kanjiArea.setBackground(Color.GREEN);
 		kanjiArea.setPreferredSize(scrollPanesSize);
 		kanjiArea.setEditable(false);	
 		kanjiArea.setBorder(border);
@@ -73,9 +73,9 @@ public class BaseWindow extends ClassWithDialog {
 	
 	private void createAndAddWordsList(JPanel panel){
 		
-		Border raisedBevel = BorderFactory.createLineBorder(Color.black,6);		
+		Border raisedBevel = BorderFactory.createLineBorder(Color.BLUE,6);		
 		MyList wordsList = maker.getMyList();
-		listScroll = createScrollPane(Color.red,raisedBevel, wordsList);			
+		listScroll = createScrollPane(Color.GREEN,raisedBevel, wordsList);			
 		wordsList.setScrollPane(listScroll);
 		panel.add(listScroll,BorderLayout.CENTER);
 		

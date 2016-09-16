@@ -312,7 +312,7 @@ public class MyDialog extends JDialog  {
 		}
 	
 		try {
-			list.search(textField.getText(),direction, set);
+			list.findAndHighlightNextOccurence(textField.getText(),direction, set);
 		} 
 		catch (Exception e) {
 			showErrorDialog(e.getMessage());

@@ -38,12 +38,13 @@ import com.kanji.textValues.TextValues;
 public class MyList extends JPanel implements Scrollable{
 	
 	private List <JPanel> panels;
-	private int highlightedPanel;
-	private Color defaultColor = Color.RED;
-	private Color highlightedColor = Color.BLUE;
-	private JScrollPane scroll;
-	private Color bgColor = Color.yellow;
-	private Map <String, Integer> words;
+	private int highlightedRowNumber;
+	private Color defaultRowColor = Color.RED;
+	private Color highlightedRowColor = Color.BLUE;
+	private Color bgColor = Color.YELLOW;
+	private Color wordNumberColor = Color.WHITE;
+	private JScrollPane scrollPaneContainingThisList;	
+	private Map <String, Integer> wordsAndID;
 	
 	@Override
 	public Dimension getPreferredScrollableViewportSize() {
@@ -71,178 +72,129 @@ public class MyList extends JPanel implements Scrollable{
     }
 	
 	public MyList(){	
-		createDefaultScrollPane();
-		highlightedPanel=0;
-		panels = new LinkedList <JPanel>();		
-		initLayout();		
-		setBackground(bgColor);
+		createDefaultScrollPane();			
+		initiate();				
 	}
 	
 	private void createDefaultScrollPane(){
-		scroll = new JScrollPane();
+		scrollPaneContainingThisList = new JScrollPane();
 	}
 	
-	private void initLayout(){
+	private void initiate(){
+		highlightedRowNumber=0;
+		panels = new LinkedList <JPanel>();	
 		setLayout(new GridBagLayout());
+		setBackground(bgColor);
+	}
+	
+	public void addWord (String word, int number){
+		wordsAndID.put(word,number);
+		addElement(word);
 	}
 
-	private void addElement (final String text){
-				
+	private void addElement (final String text){				
+		JPanel row = createNewRowWithElements(text);
+		GridBagConstraints c = createConstraintsForNewRow();		
+		add(row,c);				
+		revalidate();
+		repaint();		
+	}
+	
+
+	private JPanel createNewRowWithElements(String text){
 		JPanel row = new JPanel ();	
-		row.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints ();
+		row.setLayout(new GridBagLayout());		
+	
 		JLabel number = new JLabel (""+(panels.size()+1));
-		number.setForeground(Color.white);
+		number.setForeground(wordNumberColor);
 		
+		GridBagConstraints cd = initiateGridBagConstraints();		
+		row.add(number,cd);
+		
+		JTextArea textArea = createTextArea(text);
+		cd.gridx++;
+		cd.weightx=1;
+		cd.fill=GridBagConstraints.HORIZONTAL;
+		row.add(textArea,cd);
+		
+		JButton remove = createButtonRemove(text);		
+		cd.gridx++;
+		cd.weightx=0;
+		row.add(remove,cd);
+		
+		panels.add(row);
+		row.setBackground(defaultRowColor);
+		
+		return row;
+	}
+	
+	private GridBagConstraints initiateGridBagConstraints(){
 		GridBagConstraints cd = new GridBagConstraints();
 		cd.gridx=0;
 		cd.gridy=0;
 		cd.weightx=0;
 		cd.anchor=GridBagConstraints.CENTER;
 		cd.insets=new Insets(5,5,5,5);
-		
-		final JTextArea elem = new JTextArea(text);
+		return cd;
+	}
+	
+	private JTextArea createTextArea(String text){
+		JTextArea elem = new JTextArea(text);
 		elem.setLineWrap(true);
 		elem.setWrapStyleWord(true);
 		elem.setOpaque(true);
-		
-		elem.addFocusListener(new FocusAdapter (){
-			@Override
-			public void focusGained (FocusEvent e){
-				System.out.println("numerek: "+words.get(elem.getText()));
-			}
-		});
-		
-		row.add(number,cd);
-		
-		cd.gridx=1;
-		cd.weightx=1;
-		cd.fill=GridBagConstraints.HORIZONTAL;
-		row.add(elem,cd);
-		
+		return elem;
+	}
+	
+	private JButton createButtonRemove(final String text){
 		JButton remove = new JButton("-");
 		remove.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed(ActionEvent e){
-				removeElement(text);
+				removeRowContainingTheWord(text);
 			}
 		});
+		return remove;
+	}
+	
+	private void removeRowContainingTheWord(String word){ 
 		
-		cd.gridx=2;
-		cd.weightx=0;
-		row.add(remove,cd);
-		panels.add(row);
-		row.setBackground(defaultColor);
-		c.anchor=GridBagConstraints.EAST;
-		c.gridy=panels.size();
-		c.fill=GridBagConstraints.HORIZONTAL;
-		c.weightx=1;
-		add(row,c);		
+		int rowNumber=removeRowContainingWordAndReturnRowNumber(word);
+		updateRowNumbersAfterThatRow(rowNumber);
+		
 		
 		revalidate();
 		repaint();
-		
 	}
 	
-	
-	public void search(String searched, int direction, Set<Integer> options) throws Exception{
-		
-		int stop;
-		searched=removeDiacritics(searched);
-		stop=highlightedPanel;
-		
-		
-		for (int i=highlightedPanel+direction; i!=stop; i+=direction){
-			if (i<0){
-				i=panels.size();
-				continue;
-			}
-				
-			else if (i>=panels.size()){
-				i=-1;
-				continue;
-				}
-			JPanel panel = panels.get(i);
-			JTextArea tarea = findTextArea(panel);
-			String word = tarea.getText();
-			word=Normalizer.normalize(word, Normalizer.Form.NFD)
-		            .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-			word=removeDiacritics(word);
-			boolean success=false;
-			
-			if (options.contains(new Integer(1))){
-				success=searchFullWord(word,searched);
-			}
-			else if (options.contains(new Integer(2))){
-				success=searchFullPhrase(word,searched);
-			}
-			else{
-				success=searchDefault(word,searched);
-			}
-			if (success){
-				highlight(i);
-				scrollTo(panel);
-				return;
-			}
-						
-		}
-		throw new Exception (TextValues.wordSearchExceptionWordNotFound);
-	}
-	
-	
-	private boolean searchFullWord(String bigWord, String searched){
-		return bigWord.matches(".*\\b"+searched+"\\b.*");
-	}
-	
-	private boolean searchFullPhrase(String bigWord, String searched){
-		return bigWord.equals(searched);
-	}
-	
-	private boolean searchDefault(String word, String searched){
-		return word.contains(searched);
-		
-	}
-	
-	private void removeElement(String elem){ 
-		int i=0;
-		while (i<panels.size()){
-			JPanel panel = panels.get(i);
-			JTextArea text = findTextArea(panel);
-				if (text.getText().equals(elem)){				
+	private int removeRowContainingWordAndReturnRowNumber(String word){
+		int rowNumber=0;
+		while (rowNumber<panels.size()){
+			JPanel panel = panels.get(rowNumber);
+			JTextArea text = findTextAreaInside(panel);
+				if (text.getText().equals(word)){				
 					remove(panel);
 					panels.remove(panel);				
 					break;
 				}
-			i++;				
+			rowNumber++;				
 		}
-		
-		while (i<panels.size()){
-			JPanel panel = panels.get(i);
+		return rowNumber;
+	}
+	
+	private void updateRowNumbersAfterThatRow(int rowNumber){
+		while (rowNumber<panels.size()){
+			JPanel panel = panels.get(rowNumber);
 			JLabel label = findLabel(panel);
 			Integer a = Integer.parseInt(label.getText());
 			a=a-1;
 			label.setText(a.toString());
-			i++;
+			rowNumber++;
 		}
-		revalidate();
-		repaint();
 	}
 	
-	private void highlight(int i){
-		if (highlightedPanel>=0)
-			panels.get(highlightedPanel).setBackground(defaultColor);
-		panels.get(i).setBackground(highlightedColor);
-		highlightedPanel=i;
-		repaint();
-			
-	}
-	
-	public void cleanAll(){
-		removeAll();
-		panels.clear();
-	}
-	
-	private JTextArea findTextArea(JPanel panel){
+
+	private JTextArea findTextAreaInside(JPanel panel){
 		for (Component com: panel.getComponents()){
 			if (com instanceof JTextArea){
 				return (JTextArea)com;
@@ -258,6 +210,41 @@ public class MyList extends JPanel implements Scrollable{
 			}
 		}
 		return new JLabel();
+	}	
+	
+	private GridBagConstraints createConstraintsForNewRow(){
+		GridBagConstraints c = new GridBagConstraints ();
+		c.anchor=GridBagConstraints.EAST;
+		c.gridy=panels.size();
+		c.fill=GridBagConstraints.HORIZONTAL;
+		c.weightx=1;
+		return c;
+	}
+	
+	public void findAndHighlightNextOccurence(String searched, int searchDirection, 
+			Set<Integer> options) throws Exception{
+				
+		searched=removeDiacritics(searched);
+		int lastRowToSearch=highlightedRowNumber;		
+		
+		for (int rowNumber=highlightedRowNumber+searchDirection; rowNumber!=lastRowToSearch; 
+				rowNumber+=searchDirection){
+			
+			if (isRowNumberOutOfRange(rowNumber)){
+				setRowNumberToTheOtherEndOfList(rowNumber);
+				continue; //to check if its not the last row to search
+			}				
+			
+			String word = findWordInRow(rowNumber);
+			word=removeDiacritics(word);						
+			
+			if (doesWordContainsSearchedWord(word,searched,options)){
+				highlightAndScrollToRow(rowNumber);				
+				return;
+			}
+						
+		}
+		throw new Exception (TextValues.wordSearchExceptionWordNotFound);
 	}
 	
 	private String removeDiacritics(String word){
@@ -267,42 +254,102 @@ public class MyList extends JPanel implements Scrollable{
 		return word;
 	}
 	
-	private void scrollTo (JPanel panel){						
-		int r = panel.getY();
-		scroll.getViewport().setViewPosition(new Point(0,r));
+	private boolean isRowNumberOutOfRange (int rowNumber){
+		return rowNumber<0 || rowNumber>panels.size()-1;
 	}
 	
+	private int setRowNumberToTheOtherEndOfList (int rowNumber){
+		
+		if (rowNumber == -1)
+			return panels.size();
+		else if (rowNumber==panels.size())
+			return -1;
+		else return rowNumber;
+	}
+	
+	private String findWordInRow (int rowNumber){
+		JPanel panel = panels.get(rowNumber);
+		JTextArea textArea = findTextAreaInside(panel);
+		return textArea.getText();
+	}
+	
+	private boolean doesWordContainsSearchedWord(String word, String searched, Set<Integer> options){
+		if (options.contains(new Integer(1))){
+			return searchFullWord(word,searched);
+		}
+		else if (options.contains(new Integer(2))){
+			return searchFullPhrase(word,searched);
+		}
+		else{
+			return searchDefault(word,searched);
+		}
+	}
+	
+	private boolean searchFullWord(String bigWord, String searched){
+		return bigWord.matches(".*\\b"+searched+"\\b.*");
+	}
+	
+	private boolean searchFullPhrase(String bigWord, String searched){
+		return bigWord.equals(searched);
+	}
+	
+	private boolean searchDefault(String word, String searched){
+		return word.contains(searched);		
+	}
+	
+	private void highlightAndScrollToRow(int rowNumber){			
+		removeHighlightedPanelIfThereIs();
+		highlightPanelAndScrollTo (rowNumber);	
+	}
+	
+	private void removeHighlightedPanelIfThereIs(){
+		if (highlightedRowNumber>=0)
+			panels.get(highlightedRowNumber).setBackground(defaultRowColor);
+	}
+	
+	private void highlightPanelAndScrollTo (int rowNumber){
+		JPanel panel = panels.get(rowNumber);
+		panel.setBackground(highlightedRowColor);
+		highlightedRowNumber=rowNumber;
+		scrollTo(panel);
+		repaint();
+	}	
+	
+	private void scrollTo (JPanel panel){						
+		int r = panel.getY();
+		scrollPaneContainingThisList.getViewport().setViewPosition(new Point(0,r));
+	}
+	
+	public void cleanAll(){
+		removeAll();
+		panels.clear();
+	}			
+		
 	public void setScrollPane (JScrollPane scr){
-		scroll=scr;
+		scrollPaneContainingThisList=scr;
 	}
 	
 	public JScrollPane returnMe (JScrollPane scrollPane){
-		scroll=scrollPane;
-		return scroll;
-	}
-	
-	public void addWord (String word, int number){
-		words.put(word,number);
-		addElement(word);
-	}
+		scrollPaneContainingThisList=scrollPane;
+		return scrollPaneContainingThisList;
+	}		
 	
 	public void setWords(Map <String, Integer> words){
-		this.words=words;
+		this.wordsAndID=words;
 		updateWords();
 	}
 	
 	private void updateWords (){
-		for (String word: words.keySet())
-			addElement(word);
-			
+		for (String word: wordsAndID.keySet())
+			addElement(word);			
 	}
 	
 	public boolean isWordIdUndefinedYet(int number){
-		return !words.containsValue(number);
+		return !wordsAndID.containsValue(number);
 	}
 	
 	public boolean isWordUndefinedYet(String searched){
-		for (String word: words.keySet()){
+		for (String word: wordsAndID.keySet()){
 			if (removeDiacritics(word).equals(removeDiacritics(searched)))
 				return false;
 			
