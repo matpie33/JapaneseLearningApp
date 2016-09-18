@@ -171,7 +171,7 @@ public class MyList extends JPanel implements Scrollable{
 		int rowNumber=0;
 		while (rowNumber<panels.size()){
 			JPanel panel = panels.get(rowNumber);
-			JTextArea text = findTextAreaInside(panel);
+			JTextArea text = findTextAreaInsideOrCreate(panel);
 				if (text.getText().equals(word)){				
 					remove(panel);
 					panels.remove(panel);				
@@ -185,16 +185,15 @@ public class MyList extends JPanel implements Scrollable{
 	private void updateRowNumbersAfterThatRow(int rowNumber){
 		while (rowNumber<panels.size()){
 			JPanel panel = panels.get(rowNumber);
-			JLabel label = findLabel(panel);
-			Integer a = Integer.parseInt(label.getText());
-			a=a-1;
-			label.setText(a.toString());
+			JLabel label = findLabelInsideOrCreate(panel);
+			Integer newValue = Integer.parseInt(label.getText())-1;
+			label.setText(newValue.toString());
 			rowNumber++;
 		}
 	}
 	
 
-	private JTextArea findTextAreaInside(JPanel panel){
+	private JTextArea findTextAreaInsideOrCreate(JPanel panel){
 		for (Component com: panel.getComponents()){
 			if (com instanceof JTextArea){
 				return (JTextArea)com;
@@ -203,7 +202,7 @@ public class MyList extends JPanel implements Scrollable{
 		return new JTextArea();
 	}
 	
-	private JLabel findLabel (JPanel panel){
+	private JLabel findLabelInsideOrCreate (JPanel panel){
 		for (Component com: panel.getComponents()){
 			if (com instanceof JLabel){
 				return (JLabel)com;
@@ -225,26 +224,36 @@ public class MyList extends JPanel implements Scrollable{
 			Set<Integer> options) throws Exception{
 				
 		searched=removeDiacritics(searched);
-		int lastRowToSearch=highlightedRowNumber;		
+		int lastRowToSearch=highlightedRowNumber;	
+		String highlightedWord = getHighlightedWord();
+		
 		
 		for (int rowNumber=highlightedRowNumber+searchDirection; rowNumber!=lastRowToSearch; 
 				rowNumber+=searchDirection){
-			
+		
 			if (isRowNumberOutOfRange(rowNumber)){
-				setRowNumberToTheOtherEndOfList(rowNumber);
+				rowNumber=setRowNumberToTheOtherEndOfList(rowNumber);
 				continue; //to check if its not the last row to search
 			}				
 			
 			String word = findWordInRow(rowNumber);
 			word=removeDiacritics(word);						
 			
-			if (doesWordContainsSearchedWord(word,searched,options)){
+			if (doesWordContainSearchedWord(word,searched,options)){
 				highlightAndScrollToRow(rowNumber);				
 				return;
 			}
 						
 		}
-		throw new Exception (TextValues.wordSearchExceptionWordNotFound);
+		
+		if (doesWordContainSearchedWord(highlightedWord,searched,options))
+			throw new Exception (TextValues.wordAlreadyHighlightedException);		
+		else throw new Exception (TextValues.wordSearchExceptionWordNotFound);
+	}
+	
+	private String getHighlightedWord(){
+		String word = findWordInRow(highlightedRowNumber);
+		return removeDiacritics(word);
 	}
 	
 	private String removeDiacritics(String word){
@@ -253,27 +262,27 @@ public class MyList extends JPanel implements Scrollable{
 		word=word.replace("³", "l").replace("£", "L");
 		return word;
 	}
-	
+		
 	private boolean isRowNumberOutOfRange (int rowNumber){
 		return rowNumber<0 || rowNumber>panels.size()-1;
 	}
 	
 	private int setRowNumberToTheOtherEndOfList (int rowNumber){
 		
-		if (rowNumber == -1)
+		if (rowNumber < 0)
 			return panels.size();
-		else if (rowNumber==panels.size())
+		else if (rowNumber>=panels.size())
 			return -1;
 		else return rowNumber;
 	}
 	
 	private String findWordInRow (int rowNumber){
 		JPanel panel = panels.get(rowNumber);
-		JTextArea textArea = findTextAreaInside(panel);
+		JTextArea textArea = findTextAreaInsideOrCreate(panel);
 		return textArea.getText();
 	}
 	
-	private boolean doesWordContainsSearchedWord(String word, String searched, Set<Integer> options){
+	private boolean doesWordContainSearchedWord(String word, String searched, Set<Integer> options){
 		if (options.contains(new Integer(1))){
 			return searchFullWord(word,searched);
 		}
