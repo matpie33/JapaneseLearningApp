@@ -1,4 +1,4 @@
-package com.kanji.textValues;
+package com.kanji.constants;
 
 public class TextValues {
 	
@@ -9,10 +9,10 @@ public class TextValues {
 	public static final String buttonStartText = "Rozpocznij";
 	public static final String buttonSearchText = "ZnajdŸ s³ówko";
 	public static final String buttonAddText = "Dodaj s³ówko";
-	public static final String buttonLoadText = "Wczytaj listê";
+	public static final String buttonOpenText = "Wczytaj listê";
 	
 	public static final String [] buttonNames = 
-		{buttonStartText, buttonSearchText, buttonAddText, buttonLoadText};	
+		{buttonStartText, buttonSearchText, buttonAddText, buttonOpenText};	
 			
 	public static final String buttonApproveText = "OK";
 	public static final String buttonCancelText = "Anuluj";

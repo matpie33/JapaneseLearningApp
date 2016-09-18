@@ -32,7 +32,7 @@ import javax.swing.JTextArea;
 import javax.swing.Scrollable;
 import javax.swing.text.DefaultCaret;
 
-import com.kanji.textValues.TextValues;
+import com.kanji.constants.TextValues;
 
 @SuppressWarnings("serial")
 public class MyList extends JPanel implements Scrollable{
@@ -225,8 +225,7 @@ public class MyList extends JPanel implements Scrollable{
 				
 		searched=removeDiacritics(searched);
 		int lastRowToSearch=highlightedRowNumber;	
-		String highlightedWord = getHighlightedWord();
-		
+		String highlightedWord = getHighlightedWord();		
 		
 		for (int rowNumber=highlightedRowNumber+searchDirection; rowNumber!=lastRowToSearch; 
 				rowNumber+=searchDirection){

@@ -29,55 +29,81 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import com.kanji.textValues.TextValues;
+import com.kanji.constants.NumberValues;
+import com.kanji.constants.TextValues;
 
 
 public class MyDialog extends JDialog  {
 
 	private static final long serialVersionUID = 7484743485658276014L; 
 	private Insets insets = new Insets(10,10,0,10);
-	private Map<JRadioButton, Integer> options;
-	
-	private JRadioButton searchMany;
-	private JRadioButton caseSensitive;
+	private Color backgroundColor = Color.GREEN;
+	private Map<JRadioButton, Integer> options;	
+	private JRadioButton fullWordsSearchOption;
+	private JRadioButton perfectMatchSearchOption;
 	private JTextField textField;
-	private GridBagConstraints c;
-	private boolean isOpened;
-	
-	private MyList list;
-	
+	private GridBagConstraints layoutConstraints;
+	private boolean isOpened;	
+	private MyList list;	
 	private MyDialog upper;
 	private JTextField insertWord;
-	private JTextField insertNumber;
-	
-	private JPanel p;
-	
+	private JTextField insertNumber;	
+	private JPanel mainPanel;	
 	
 	private class MyDispatcher implements KeyEventDispatcher {
         @Override
-        public boolean dispatchKeyEvent(KeyEvent e) {
-        	
-			if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
-				dispose();
-			}				
-			  		
+        public boolean dispatchKeyEvent(KeyEvent e) {        	
+			if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+				dispose();	
             return false;
         }
     }
 	
 	public MyDialog (Window b){
 		super(b);
+		setLocationBasedOnParent(b);
+		initialize();
+		initializeLayout();
+		addEscapeKeyToCloseTheWindow();
+		
+	}
+	
+	public MyDialog (Window b,MyList myList){		
+		this(b);
+		list=myList;		
+	}
+	
+	private void setLocationBasedOnParent (Window parent){
+		if (parent instanceof BaseWindow)
+			setLocation(parent.getLocation());
+		
+		else setLocationRelativeTo(parent);	
+		
+	}
+	
+	private void initialize(){
+		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        manager.addKeyEventDispatcher(new MyDispatcher());
 		options = new HashMap <JRadioButton, Integer> ();
 		isOpened=true;
-		if (b instanceof BaseWindow){
-			setLocation(b.getLocation());
-		}
-		else {
-			setLocationRelativeTo(b);		
-			System.out.println(b);
-		}
-		initialize();
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);		
+		setTitle(TextValues.wordSearchDialogTitle);		
+	}
 		
+	private void initializeLayout(){													
+		
+		mainPanel = new JPanel();
+		mainPanel.setBackground(backgroundColor);		
+		GridBagLayout g = new GridBagLayout();
+		mainPanel.setLayout(g);			
+						
+		setContentPane(mainPanel);
+		layoutConstraints = new GridBagConstraints();
+		layoutConstraints.insets=insets;
+			
+	}
+	
+	private void addEscapeKeyToCloseTheWindow (){
 		addWindowListener(new WindowAdapter(){
 			@Override
 			public void windowClosed(WindowEvent e){
@@ -86,39 +112,14 @@ public class MyDialog extends JDialog  {
 		});
 	}
 	
-	public MyDialog (Window b,MyList myList){		
-		this(b);
-		list=myList;		
-	}
-		
-	private void initialize(){		
-				
-		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-        manager.addKeyEventDispatcher(new MyDispatcher());
-						
-		
-		p = new JPanel();
-		p.setBackground(Color.green);		
-		GridBagLayout g = new GridBagLayout();
-		p.setLayout(g);			
-						
-		setContentPane(p);
-		c = new GridBagConstraints();
-		c.insets=insets;		
-				
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);		
-		setTitle(TextValues.wordSearchDialogTitle);		
-			
-	}
-	
 	public void showMsgDialog(String message){
 		
 		JLabel label1 = new JLabel (message);
-		p.add(label1,c);
-		c.gridy++;
+		mainPanel.add(label1,layoutConstraints);
+		layoutConstraints.gridy++;
 		
 		JButton button = new JButton (TextValues.buttonApproveText);
-		p.add(button,c);
+		mainPanel.add(button,layoutConstraints);
 		
 		button.addActionListener(new ActionListener (){
 			@Override
@@ -130,112 +131,127 @@ public class MyDialog extends JDialog  {
 		showYourself();
 	}
 	
-	
 	public void showSearchWordDialog (){
 							
-		JLabel label1 = new JLabel (TextValues.wordAddDialogPrompt);
-		p.add(label1,c);
+		addPromptAndTextField(TextValues.wordSearchDialogPrompt);
+		addRadioButtons();
+		addButtonPreviousAndNext();
+		showYourself();
+		
+	}
+	
+
+	private void showYourself(){
+		setVisible(true);
+		pack();
+	}
+	
+	private void addPromptAndTextField(String promptText){
+		JLabel label1 = new JLabel (promptText);
+		mainPanel.add(label1,layoutConstraints);
 		
 		textField = new JTextField(20);
-		c.gridx=1;
-		c.gridy=0;
-		p.add(textField,c);
-		
-		
-		JRadioButton defaultb = new JRadioButton (TextValues.wordSearchDefaultOption);
-		c.gridy++;
-		c.gridx=0;
-		c.gridwidth=2;
-		
-		c.anchor=GridBagConstraints.WEST;
-		p.add(defaultb,c);
-		
-		defaultb.setSelected(true);
-		
-		searchMany = new JRadioButton (TextValues.wordSearchOnlyFullWordsOption);	
-		options.put(searchMany, 1);		
-				
-		c.gridy++;
-		p.add(searchMany,c);
-		
-		caseSensitive = new JRadioButton (TextValues.wordSearchPerfectMatchOption);
-		options.put(caseSensitive, 2);
-		c.gridy++;
-		p.add(caseSensitive,c);
-		
-		
-		
-		ButtonGroup group = new ButtonGroup();
-		group.add(searchMany);
-		group.add(caseSensitive);
-		group.add(defaultb);
-		
-
-		
-		
-		JButton previous = new JButton (TextValues.buttonPreviousText);
-		c.gridy++;
-		c.anchor=GridBagConstraints.EAST;
-		c.gridwidth=1;
-		p.add(previous,c);
-		
-		JButton next = new JButton (TextValues.buttonNextText);
-		c.anchor=GridBagConstraints.WEST;
-		c.gridx++;
-		p.add(next,c);
+		layoutConstraints.gridx=1;
+		layoutConstraints.gridy=0;
+		mainPanel.add(textField,layoutConstraints);		
 		
 		textField.addKeyListener(new KeyAdapter(){
 			@Override
 			public void keyPressed (KeyEvent e){
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
-					search(1);
+					search(NumberValues.FORWARD_DIRECTION);
 			}
 		});
+	}
+	
+	private void addRadioButtons(){
+		JRadioButton defaultSearchOption = new JRadioButton (TextValues.wordSearchDefaultOption);
+		layoutConstraints.gridy++;
+		layoutConstraints.gridx=0;
+		layoutConstraints.gridwidth=2;
+		
+		layoutConstraints.anchor=GridBagConstraints.WEST;
+		mainPanel.add(defaultSearchOption,layoutConstraints);
+		
+		defaultSearchOption.setSelected(true);
+		
+		fullWordsSearchOption = new JRadioButton (TextValues.wordSearchOnlyFullWordsOption);	
+		options.put(fullWordsSearchOption, 1);	//TODO avoid pure numbers here
+				
+		layoutConstraints.gridy++;
+		mainPanel.add(fullWordsSearchOption,layoutConstraints);
+		
+		perfectMatchSearchOption = new JRadioButton (TextValues.wordSearchPerfectMatchOption);
+		options.put(perfectMatchSearchOption, 2);
+		layoutConstraints.gridy++;
+		mainPanel.add(perfectMatchSearchOption,layoutConstraints);	
+				
+		ButtonGroup group = new ButtonGroup();
+		group.add(fullWordsSearchOption);
+		group.add(perfectMatchSearchOption);
+		group.add(defaultSearchOption);	
+	}
+	
+	private void addButtonPreviousAndNext(){
+		JButton previous = new JButton (TextValues.buttonPreviousText);
+		layoutConstraints.gridy++;
+		layoutConstraints.anchor=GridBagConstraints.EAST;
+		layoutConstraints.gridwidth=1;
+		mainPanel.add(previous,layoutConstraints);
+		
+		JButton next = new JButton (TextValues.buttonNextText);
+		layoutConstraints.anchor=GridBagConstraints.WEST;
+		layoutConstraints.gridx++;
+		mainPanel.add(next,layoutConstraints);
 		
 		next.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed (ActionEvent e){
-				search(1);			
+				search(NumberValues.FORWARD_DIRECTION);			
 			}
 		});
 		
 		previous.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed (ActionEvent e){
-				search(-1);			
+				search(NumberValues.BACKWARD_DIRECTION);			
 			}
 		});
-		
-		showYourself();
-		
 	}
 	
 	public void showInsertDialog(){
+		addPromptsAndTextFields();
+		addButtonsCancelAndApprove();	
+		showYourself();
+		
+	}	
+	
+	private void addPromptsAndTextFields(){
 		JLabel prompt = new JLabel (TextValues.wordAddDialogPrompt);
-		c.gridx=0;
-		c.gridy=0;
-		p.add(prompt,c);
+		layoutConstraints.gridx=0;
+		layoutConstraints.gridy=0;
+		mainPanel.add(prompt,layoutConstraints);
 		
 		insertWord = new JTextField(20);
-		c.gridx++;
-		p.add(insertWord,c);
+		layoutConstraints.gridx++;
+		mainPanel.add(insertWord,layoutConstraints);
 		
 		JLabel numberPrompt = new JLabel (TextValues.wordAddNumberPrompt);
-		c.gridy++;
-		c.gridx=0;
+		layoutConstraints.gridy++;
+		layoutConstraints.gridx=0;
 		
-		p.add(numberPrompt,c);
+		mainPanel.add(numberPrompt,layoutConstraints);
 		
 		insertNumber = new JTextField(20);
-		c.gridx++;
+		layoutConstraints.gridx++;
 		
-		p.add(insertNumber,c);
-		
-		
-		
+		mainPanel.add(insertNumber,layoutConstraints);		
+	}
+	
+	private void addButtonsCancelAndApprove(){
 		JButton cancel = new JButton (TextValues.buttonCancelText);
-		c.gridx=0;
-		c.gridy++;
+		layoutConstraints.gridx=0;
+		layoutConstraints.gridy++;
 		
 		cancel.addActionListener(new ActionListener (){
 			@Override
@@ -244,10 +260,10 @@ public class MyDialog extends JDialog  {
 			}
 		});
 		
-		p.add(cancel,c);
+		mainPanel.add(cancel,layoutConstraints);
 		
 		JButton approve = new JButton (TextValues.buttonApproveText);
-		c.gridx++;
+		layoutConstraints.gridx++;
 		
 		approve.addActionListener(new ActionListener (){
 			@Override
@@ -263,10 +279,8 @@ public class MyDialog extends JDialog  {
 			}
 		});
 		
-		p.add(approve,c);
-		showYourself();
-		
-	}			
+		mainPanel.add(approve,layoutConstraints);
+	}
 			
 	private boolean isNumberValid(String number){
 		boolean valid = number.matches("\\d+");
@@ -294,30 +308,29 @@ public class MyDialog extends JDialog  {
 	}
 	
 	private void addWordToList(String word, int number){
-		list.addWord(word,number);
-		
+		list.addWord(word,number);		
 	}
-	
-	private void showYourself(){
-		setVisible(true);
-		pack();
-	}				
+					
 	
 	private void search (int direction){
-		Set <Integer> set = new HashSet <Integer> ();
+		Set <Integer> chosenOptions = new HashSet <Integer> ();
 	
 		for (JRadioButton checkbox: options.keySet()){
 			if (checkbox.isSelected())
-				set.add(options.get(checkbox));
+				chosenOptions.add(options.get(checkbox));
 		}
 	
+		tryToFindNextOccurence(direction,chosenOptions);
+			
+	}
+	
+	private void tryToFindNextOccurence(int direction, Set <Integer> chosenOptions){
 		try {
-			list.findAndHighlightNextOccurence(textField.getText(),direction, set);
+			list.findAndHighlightNextOccurence(textField.getText(), direction, chosenOptions);
 		} 
 		catch (Exception e) {
 			showErrorDialog(e.getMessage());
 		}
-			
 	}
 	
 	private void showErrorDialog(String message){ // TODO jak tego uniknac bo to kopia

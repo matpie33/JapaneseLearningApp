@@ -20,7 +20,7 @@ import javax.swing.JTextArea;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
-import com.kanji.textValues.TextValues;
+import com.kanji.constants.TextValues;
 
 @SuppressWarnings("serial")
 public class BaseWindow extends ClassWithDialog {

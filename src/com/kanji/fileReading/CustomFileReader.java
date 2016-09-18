@@ -13,9 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.kanji.textValues.TextValues;
+import com.kanji.constants.TextValues;
 
-public class FileReaders {
+public class CustomFileReader {
 	
 	
 	public Map <String, Integer> readFile(File file) throws Exception{
