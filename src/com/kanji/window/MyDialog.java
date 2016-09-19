@@ -93,9 +93,8 @@ public class MyDialog extends JDialog  {
 	private void initializeLayout(){													
 		
 		mainPanel = new JPanel();
-		mainPanel.setBackground(backgroundColor);		
-		GridBagLayout g = new GridBagLayout();
-		mainPanel.setLayout(g);			
+		mainPanel.setBackground(backgroundColor);	
+		mainPanel.setLayout(new GridBagLayout());			
 						
 		setContentPane(mainPanel);
 		layoutConstraints = new GridBagConstraints();
@@ -308,7 +307,7 @@ public class MyDialog extends JDialog  {
 	}
 	
 	private void addWordToList(String word, int number){
-		list.addWord(word,number);		
+		list.addWord(word,number);	
 	}
 					
 	

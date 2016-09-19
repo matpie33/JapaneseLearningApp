@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.Scrollable;
@@ -43,7 +44,7 @@ public class MyList extends JPanel implements Scrollable{
 	private Color highlightedRowColor = Color.BLUE;
 	private Color bgColor = Color.YELLOW;
 	private Color wordNumberColor = Color.WHITE;
-	private JScrollPane scrollPaneContainingThisList;	
+	private JScrollPane parentScrollPane;	
 	private Map <String, Integer> wordsAndID;
 	
 	@Override
@@ -77,7 +78,7 @@ public class MyList extends JPanel implements Scrollable{
 	}
 	
 	private void createDefaultScrollPane(){
-		scrollPaneContainingThisList = new JScrollPane();
+		parentScrollPane = new JScrollPane();
 	}
 	
 	private void initiate(){
@@ -90,14 +91,14 @@ public class MyList extends JPanel implements Scrollable{
 	public void addWord (String word, int number){
 		wordsAndID.put(word,number);
 		addElement(word);
+//		parentScrollPane.repaint();
+//		parentScrollPane.revalidate(); // TODO scroll to bottom			
 	}
 
-	private void addElement (final String text){				
+	private void addElement (String text){				
 		JPanel row = createNewRowWithElements(text);
 		GridBagConstraints c = createConstraintsForNewRow();		
-		add(row,c);				
-		revalidate();
-		repaint();		
+		add(row,c);	
 	}
 	
 
@@ -283,26 +284,26 @@ public class MyList extends JPanel implements Scrollable{
 	
 	private boolean doesWordContainSearchedWord(String word, String searched, Set<Integer> options){
 		if (options.contains(new Integer(1))){
-			return searchFullWord(word,searched);
+			return doesPhraseContainSearchedWords(word,searched);
 		}
 		else if (options.contains(new Integer(2))){
-			return searchFullPhrase(word,searched);
+			return doesPhraseEqualToSearchedWords(word,searched);
 		}
 		else{
-			return searchDefault(word,searched);
+			return doesPhraseContainSearchedCharacterChain(word,searched);
 		}
 	}
 	
-	private boolean searchFullWord(String bigWord, String searched){
-		return bigWord.matches(".*\\b"+searched+"\\b.*");
+	private boolean doesPhraseContainSearchedWords(String phrase, String searched){
+		return phrase.matches(".*\\b"+searched+"\\b.*");
 	}
 	
-	private boolean searchFullPhrase(String bigWord, String searched){
-		return bigWord.equals(searched);
+	private boolean doesPhraseEqualToSearchedWords(String phrase, String searched){
+		return phrase.equals(searched);
 	}
 	
-	private boolean searchDefault(String word, String searched){
-		return word.contains(searched);		
+	private boolean doesPhraseContainSearchedCharacterChain(String phrase, String characterChain){
+		return phrase.contains(characterChain);		
 	}
 	
 	private void highlightAndScrollToRow(int rowNumber){			
@@ -323,9 +324,10 @@ public class MyList extends JPanel implements Scrollable{
 		repaint();
 	}	
 	
-	private void scrollTo (JPanel panel){						
+	public void scrollTo (JPanel panel){						
 		int r = panel.getY();
-		scrollPaneContainingThisList.getViewport().setViewPosition(new Point(0,r));
+		System.out.println(r);
+		parentScrollPane.getViewport().setViewPosition(new Point(0,r));
 	}
 	
 	public void cleanAll(){
@@ -334,12 +336,12 @@ public class MyList extends JPanel implements Scrollable{
 	}			
 		
 	public void setScrollPane (JScrollPane scr){
-		scrollPaneContainingThisList=scr;
+		parentScrollPane=scr;
 	}
 	
 	public JScrollPane returnMe (JScrollPane scrollPane){
-		scrollPaneContainingThisList=scrollPane;
-		return scrollPaneContainingThisList;
+		parentScrollPane=scrollPane;
+		return parentScrollPane;
 	}		
 	
 	public void setWords(Map <String, Integer> words){
@@ -349,7 +351,9 @@ public class MyList extends JPanel implements Scrollable{
 	
 	private void updateWords (){
 		for (String word: wordsAndID.keySet())
-			addElement(word);			
+			addElement(word);	
+		revalidate();
+		repaint();	
 	}
 	
 	public boolean isWordIdUndefinedYet(int number){
@@ -364,6 +368,7 @@ public class MyList extends JPanel implements Scrollable{
 		}
 		return true;
 	}
+	
 	
 	
 }
