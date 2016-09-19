@@ -330,10 +330,7 @@ public class MyList extends JPanel implements Scrollable{
 		parentScrollPane.getViewport().setViewPosition(new Point(0,r));
 	}
 	
-	public void cleanAll(){
-		removeAll();
-		panels.clear();
-	}			
+				
 		
 	public void setScrollPane (JScrollPane scr){
 		parentScrollPane=scr;
@@ -350,10 +347,16 @@ public class MyList extends JPanel implements Scrollable{
 	}
 	
 	private void updateWords (){
+		cleanAll();
 		for (String word: wordsAndID.keySet())
 			addElement(word);	
 		revalidate();
 		repaint();	
+	}
+	
+	private void cleanAll(){
+		removeAll();
+		panels.clear();
 	}
 	
 	public boolean isWordIdUndefinedYet(int number){
