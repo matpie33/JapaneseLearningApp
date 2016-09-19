@@ -348,7 +348,6 @@ public class MyList extends JPanel implements Scrollable{
 	
 	private void updateWords (){
 		cleanAll();
-		System.out.println(wordsAndID.keySet());
 		for (String word: wordsAndID.keySet())
 			addElement(word);	
 		revalidate();
