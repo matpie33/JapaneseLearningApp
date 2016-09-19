@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public class CustomFileReader {
 	
 	public Map <String, Integer> readFile(File file) throws Exception{
 		
-		Map <String, Integer> keywords = new HashMap <String, Integer>();
+		Map <String, Integer> keywords = new LinkedHashMap <String, Integer>();
 		try{
 			
 			BufferedReader in = new BufferedReader(new InputStreamReader(				   
@@ -31,7 +32,6 @@ public class CustomFileReader {
 		    	String wordId=""; 
 		    	line = line.trim();
 		    	int i=line.length()-1;
-		    	System.out.println("trimmed: "+line);
 		    	while (!(line.charAt(i)+"").matches("\\d"))
 		    		i--;
 		    	while ((line.charAt(i)+"").matches("\\d")){
@@ -48,7 +48,6 @@ public class CustomFileReader {
 		    		i--;
 		    	}
 		    	word=new StringBuilder(word).reverse().toString();
-		    	System.out.println(word);
 		    	int wordIdInt = Integer.parseInt(wordId);
 		    	if (keywords.containsKey(word))	{	    
 		    		Desktop.getDesktop().open(file);
@@ -56,7 +55,6 @@ public class CustomFileReader {
 		    				"S³owo to: "+word+"; a numer to "		    	
 		    		+wordIdInt + " oraz "+keywords.get(word));
 		    	}
-		    	
 		    	keywords.put(word, wordIdInt);
 		    }
 		    in.close();
@@ -67,7 +65,6 @@ public class CustomFileReader {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 		
 		return keywords;
 		
