@@ -40,12 +40,13 @@ public class MyList extends JPanel implements Scrollable{
 	
 	private List <JPanel> panels;
 	private int highlightedRowNumber;
-	private Color defaultRowColor = Color.RED;
+	private Color defaultRowColor = Color.GREEN;
 	private Color highlightedRowColor = Color.BLUE;
 	private Color bgColor = Color.YELLOW;
-	private Color wordNumberColor = Color.WHITE;
+	private Color wordNumberColor = Color.RED;
 	private JScrollPane parentScrollPane;	
 	private Map <String, Integer> wordsAndID;
+	private ClassWithDialog parent;
 	
 	@Override
 	public Dimension getPreferredScrollableViewportSize() {
@@ -72,7 +73,8 @@ public class MyList extends JPanel implements Scrollable{
         return false; 
     }
 	
-	public MyList(){	
+	public MyList(ClassWithDialog parentDialog){			
+		parent=parentDialog;
 		createDefaultScrollPane();			
 		initiate();				
 	}
@@ -90,9 +92,7 @@ public class MyList extends JPanel implements Scrollable{
 	
 	public void addWord (String word, int number){
 		wordsAndID.put(word,number);
-		addElement(word);
-//		parentScrollPane.repaint();
-//		parentScrollPane.revalidate(); // TODO scroll to bottom			
+		addElement(word);	
 	}
 
 	private void addElement (String text){				
@@ -324,9 +324,9 @@ public class MyList extends JPanel implements Scrollable{
 		repaint();
 	}	
 	
-	public void scrollTo (JPanel panel){						
+	public void scrollTo (JPanel panel){	
+		
 		int r = panel.getY();
-		System.out.println(r);
 		parentScrollPane.getViewport().setViewPosition(new Point(0,r));
 	}
 	
@@ -349,7 +349,8 @@ public class MyList extends JPanel implements Scrollable{
 	private void updateWords (){
 		cleanAll();
 		for (String word: wordsAndID.keySet())
-			addElement(word);	
+			addElement(word);
+
 		revalidate();
 		repaint();	
 	}
@@ -372,6 +373,11 @@ public class MyList extends JPanel implements Scrollable{
 		return true;
 	}
 	
+	public void scrollToBottom(){
+		parent.revalidate();
+		JScrollBar scrollBar = parentScrollPane.getVerticalScrollBar();
+		scrollBar.setValue(scrollBar.getMaximum());
+	}
 	
 	
 }

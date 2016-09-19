@@ -308,6 +308,7 @@ public class MyDialog extends JDialog  {
 	
 	private void addWordToList(String word, int number){
 		list.addWord(word,number);	
+		list.scrollToBottom();
 	}
 					
 	

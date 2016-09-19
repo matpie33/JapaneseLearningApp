@@ -58,7 +58,7 @@ public class ElementMaker {
 	}
 	
 	private void initMyList(){
-		myList = new MyList();
+		myList = new MyList(parent);
 		Map <String, Integer> initList = new HashMap <String, Integer>();
 		for (int i=0; i<10; i++){
 			String a = "Word no. "+i;
