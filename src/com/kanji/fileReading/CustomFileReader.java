@@ -18,56 +18,84 @@ import com.kanji.constants.TextValues;
 
 public class CustomFileReader {
 	
+	private Map <String, Integer> keywords;
+	private File readedFile;
 	
 	public Map <String, Integer> readFile(File file) throws Exception{
 		
-		Map <String, Integer> keywords = new LinkedHashMap <String, Integer>();
+		readedFile=file;
 		try{
-			
-			BufferedReader in = new BufferedReader(new InputStreamReader(				   
-			                      new FileInputStream(file), "UTF8"));			
-		    String line;
-		    while ((line = in.readLine()) != null) {
-		    	
-		    	String wordId=""; 
-		    	line = line.trim();
-		    	int i=line.length()-1;
-		    	while (!(line.charAt(i)+"").matches("\\d"))
-		    		i--;
-		    	while ((line.charAt(i)+"").matches("\\d")){
-		    		wordId=wordId+line.charAt(i);			
-		    		i--;
-		    	}
-		    	wordId = new StringBuilder(wordId).reverse().toString();
-		    	
-		    	while (!(line.charAt(i)+"").matches("[a-zA-ZøüÊÒÛ≥ÍπúØè∆•å £”—]|\\d"))
-		    		i--;
-		    	String word="";
-		    	while (i>=0){
-		    		word=word+line.charAt(i);
-		    		i--;
-		    	}
-		    	word=new StringBuilder(word).reverse().toString();
-		    	int wordIdInt = Integer.parseInt(wordId);
-		    	if (keywords.containsKey(word))	{	    
-		    		Desktop.getDesktop().open(file);
-		    		throw new Exception (TextValues.duplicatedWordException +
-		    				"S≥owo to: "+word+"; a numer to "		    	
-		    		+wordIdInt + " oraz "+keywords.get(word));
-		    	}
-		    	keywords.put(word, wordIdInt);
-		    }
-		    in.close();
+			keywords = findWordsAndIDs(file);
+			return keywords;			
 		}
 		catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
-		}
-		
-		return keywords;
+		}		
+		return new HashMap <String,Integer>();
 		
 	}
+	
+	private Map <String, Integer> findWordsAndIDs(File file) throws Exception{
+		
+		keywords = new LinkedHashMap <String, Integer>();
+		BufferedReader in = new BufferedReader(new InputStreamReader(				   
+                new FileInputStream(file), "UTF8"));		
+
+		String line;
+		while ((line = in.readLine()) != null) {		    	
+		
+			line = line.trim();
+			int i=moveCursorToDigit(line);
+			String wordId = getWordId(i, line);
+			i=moveCursorToLetterOrDigit(i,line);		    	
+			String word=getWord(i,line);
+			int wordIdInt = Integer.parseInt(wordId);
+			
+			if (keywords.containsKey(word))	    
+				openDesktopAndShowMessage(word, wordIdInt);
+			else
+				keywords.put(word, wordIdInt);
+		}
+			
+		in.close();
+		return keywords;
+	}
+	
+	private int moveCursorToDigit(String line){
+		int i=line.length()-1;
+		while (!(line.charAt(i)+"").matches("\\d"))
+    		i--;
+		return i;
+	}
+	
+	private String getWordId(int i, String line){
+		int iterator=i;
+		while ((line.charAt(i)+"").matches("\\d")){    				
+    		i--;
+    	}
+		return line.substring(i+1, iterator+1);
+	}
+	
+	private int moveCursorToLetterOrDigit(int startIndex, String line){
+		
+		while (!(line.charAt(startIndex)+"").matches("[a-zA-ZøüÊÒÛ≥ÍπúØè∆•å £”—]|\\d"))			
+    		startIndex--;		
+		return startIndex;
+	}
+	
+	private String getWord (int i, String line){
+		return line.substring(0,i);
+	}
+	
+	private void openDesktopAndShowMessage(String duplicatedWord, int wordId) throws Exception{
+		Desktop.getDesktop().open(readedFile);		
+		throw new Exception (TextValues.duplicatedWordException +
+				"S≥owo to: "+duplicatedWord+"; a numer to "		    	
+		+wordId + " oraz "+keywords.get(duplicatedWord));
+	}
+	
 
 }
