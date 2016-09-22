@@ -115,8 +115,25 @@ public class ElementMaker {
 		if (chosenOption==JFileChooser.CANCEL_OPTION)
 			return;
 		File file = fileChooser.getSelectedFile();
-		words = tryToReadWordsFromFile(file);		
-		myList.setWords(words);		
+		words = tryToReadWordsFromFile(file);	
+		
+		loadWordsListInNewThread();
+		
+		
+	}
+	
+	private void loadWordsListInNewThread(){
+		Runnable r = new Runnable (){
+			@Override
+			public void run (){
+				MyDialog d = new MyDialog(parent);
+				d.showMsgDialog("Wait");
+				myList.setWords(words);
+				d.dispose();
+			}
+		};
+		Thread t = new Thread(r);
+		t.start();
 	}
 	
 	private Map <String, Integer> tryToReadWordsFromFile(File file){

@@ -1,1 +1,4 @@
 bin/
+*.xlsx
+.classpath
+.gitignore

@@ -48,8 +48,10 @@ public class CustomFileReader {
 		while ((line = in.readLine()) != null) {		    	
 		
 			line = line.trim();
+			line = removeBOMMarker(line);
 			int i=moveCursorToDigit(line);
 			String wordId = getWordId(i, line);
+			i=line.indexOf(wordId)-1;
 			i=moveCursorToLetterOrDigit(i,line);		    	
 			String word=getWord(i,line);
 			int wordIdInt = Integer.parseInt(wordId);
@@ -59,9 +61,13 @@ public class CustomFileReader {
 			else
 				keywords.put(word, wordIdInt);
 		}
-			
+		System.out.println(keywords);
 		in.close();
 		return keywords;
+	}
+	
+	private String removeBOMMarker(String line){
+		return line.replace("\uFEFF", "");
 	}
 	
 	private int moveCursorToDigit(String line){
@@ -87,7 +93,7 @@ public class CustomFileReader {
 	}
 	
 	private String getWord (int i, String line){
-		return line.substring(0,i);
+		return line.substring(0,i+1);
 	}
 	
 	private void openDesktopAndShowMessage(String duplicatedWord, int wordId) throws Exception{

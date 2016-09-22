@@ -42,7 +42,7 @@ public class MyList extends JPanel implements Scrollable{
 	private int highlightedRowNumber;
 	private Color defaultRowColor = Color.GREEN;
 	private Color highlightedRowColor = Color.BLUE;
-	private Color bgColor = Color.YELLOW;
+	private Color bgColor = Color.GREEN;
 	private Color wordNumberColor = Color.RED;
 	private JScrollPane parentScrollPane;	
 	private Map <String, Integer> wordsAndID;
@@ -344,6 +344,7 @@ public class MyList extends JPanel implements Scrollable{
 	public void setWords(Map <String, Integer> words){
 		this.wordsAndID=words;
 		updateWords();
+		scrollToBottom();
 	}
 	
 	private void updateWords (){
@@ -351,8 +352,8 @@ public class MyList extends JPanel implements Scrollable{
 		for (String word: wordsAndID.keySet())
 			addElement(word);
 
-		revalidate();
-		repaint();	
+//		revalidate();
+//		repaint();	
 	}
 	
 	private void cleanAll(){
