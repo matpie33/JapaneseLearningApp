@@ -32,5 +32,12 @@ public abstract class ClassWithDialog extends JFrame{
 		}
 	}
 	
+	public void showLearnStartDialog (){
+		if (notOpenedYet()){
+			dialog = new MyDialog(this);
+			dialog.showLearningStartDialog();
+		}
+	}
+	
 
 }

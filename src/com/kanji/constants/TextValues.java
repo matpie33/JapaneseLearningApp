@@ -18,6 +18,7 @@ public class TextValues {
 	public static final String buttonCancelText = "Anuluj";
 	public static final String buttonPreviousText = "Poprzedni";
 	public static final String buttonNextText = "Nastêpny";
+	public static final String buttonAddRowText = "Dodaj wiersz";
 	
 	public static final String wordAddDialogPrompt = "Podaj s³ówko";	
 	public static final String wordAddNumberPrompt = "Podaj numerek";
@@ -32,6 +33,8 @@ public class TextValues {
 			"Szukaj pozycji, które zawieraj¹ dane s³owo i byæ mo¿e coœ wiêcej.";
 	public static final String wordSearchPerfectMatchOption =
 			"Szukaj pozycji zawieraj¹cych dok³adnie to co wpisa³em.";
+	
+	public static final String learnStartPrompt = "Proszê wpisaæ numery s³ówek, które chcesz powtórzyæ.";
 	
 	public static final String wordSearchExceptionWordNotFound = 
 			"Nie znaleziono podanego s³owa. Byæ mo¿e zazaczono z³¹ opcjê," +

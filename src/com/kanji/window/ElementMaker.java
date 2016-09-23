@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,7 +60,7 @@ public class ElementMaker {
 	
 	private void initMyList(){
 		myList = new MyList(parent);
-		Map <String, Integer> initList = new HashMap <String, Integer>();
+		Map <String, Integer> initList = new LinkedHashMap <String, Integer>();
 		for (int i=0; i<10; i++){
 			String a = "Word no. "+i;
 			if (i==3)
@@ -103,7 +104,16 @@ public class ElementMaker {
 						public void actionPerformed(ActionEvent e){
 							searchWord();
 						}
-					});					
+					});	
+					break;
+				case TextValues.buttonStartText:
+					button.addActionListener(new ActionListener (){
+						@Override
+						public void actionPerformed(ActionEvent e){
+							start();
+						}
+					});
+					break;
 			}
 				
 		}
@@ -153,6 +163,10 @@ public class ElementMaker {
 	
 	private void searchWord(){
 		parent.showDialogToSearch(myList);
+	}
+	
+	private void start(){
+		parent.showLearnStartDialog();
 	}
 
 	public List <JButton> getButtons() {

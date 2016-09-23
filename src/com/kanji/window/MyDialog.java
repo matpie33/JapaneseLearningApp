@@ -27,6 +27,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import com.kanji.constants.NumberValues;
@@ -41,6 +42,7 @@ public class MyDialog extends JDialog  {
 	private Map<JRadioButton, Integer> options;	
 	private JRadioButton fullWordsSearchOption;
 	private JRadioButton perfectMatchSearchOption;
+	private JScrollPane scrollPane;
 	private JTextField textField;
 	private GridBagConstraints layoutConstraints;
 	private boolean isOpened;	
@@ -64,8 +66,7 @@ public class MyDialog extends JDialog  {
 		setLocationBasedOnParent(b);
 		initialize();
 		initializeLayout();
-		addEscapeKeyToCloseTheWindow();
-		
+		addEscapeKeyToCloseTheWindow();		
 	}
 	
 	public MyDialog (Window b,MyList myList){		
@@ -77,8 +78,7 @@ public class MyDialog extends JDialog  {
 		if (parent instanceof BaseWindow)
 			setLocation(parent.getLocation());
 		
-		else setLocationRelativeTo(parent);	
-		
+		else setLocationRelativeTo(parent);			
 	}
 	
 	private void initialize(){
@@ -97,9 +97,14 @@ public class MyDialog extends JDialog  {
 		mainPanel.setLayout(new GridBagLayout());			
 						
 		setContentPane(mainPanel);
+		initializeLayoutConstraints();
+			
+	}
+	
+	private void initializeLayoutConstraints(){
 		layoutConstraints = new GridBagConstraints();
 		layoutConstraints.insets=insets;
-			
+		layoutConstraints.anchor=GridBagConstraints.WEST;
 	}
 	
 	private void addEscapeKeyToCloseTheWindow (){
@@ -111,160 +116,203 @@ public class MyDialog extends JDialog  {
 		});
 	}
 	
-	public void showMsgDialog(String message){
+	public void showLearningStartDialog (){
 		
-		JLabel label1 = new JLabel (message);
-		mainPanel.add(label1,layoutConstraints);
-		layoutConstraints.gridy++;
 		
-		JButton button = new JButton (TextValues.buttonApproveText);
-		mainPanel.add(button,layoutConstraints);
+		int level = 0;
+		addPromptAtLevel(level, TextValues.learnStartPrompt);
+				
+		level++;
+		JPanel panel = addTextFieldsForRange(level);
+		scrollPane = new JScrollPane(panel);
+		mainPanel.add(scrollPane,layoutConstraints);
 		
+		level++;
+		JButton newRow = createButtonAddRow(TextValues.buttonAddRowText, panel);
+		addButtonsAtLevel(level, new JButton []{newRow});
+		
+		level++;
+		JButton cancel = createButtonDispose(TextValues.buttonCancelText);
+		JButton approve = new JButton (TextValues.buttonApproveText); // TODO change
+		
+		addButtonsAtLevel(level, new JButton []{cancel,approve});
+		
+		showYourself();
+		
+	}
+		
+	
+	private void addPromptAtLevel(int level, String message){
+		layoutConstraints.gridy=level;
+		JLabel label = new JLabel (message);
+		mainPanel.add(label,layoutConstraints);
+	}
+	
+	private JPanel addTextFieldsForRange(int level){
+		JPanel panel = new JPanel();
+		JLabel from = new JLabel ("od");
+		JTextField fieldFrom = new JTextField(10);
+		JLabel labelTo = new JLabel ("do");
+		JTextField fieldTo = new JTextField(10);
+		
+		panel.add(from);
+		panel.add(fieldFrom);
+		panel.add(labelTo);
+		panel.add(fieldTo);
+		
+		layoutConstraints.gridy=level;
+		layoutConstraints.anchor=GridBagConstraints.WEST;				
+//		mainPanel.add(panel,layoutConstraints);
+		return panel;
+		
+	}
+	
+	private JButton createButtonAddRow (String text, final JPanel panel){
+		JButton button = new JButton (text);
+		button.addActionListener(new ActionListener (){
+			@Override
+			public void actionPerformed (ActionEvent e){
+				panel.add(new JButton ("Button"));
+				panel.repaint();
+				panel.revalidate();
+				System.out.println(panel.getComponentCount());
+			}
+		});
+		return button;
+	}
+	
+	private JButton createButtonDispose(String text){
+		JButton button = new JButton (text);
 		button.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed (ActionEvent e){
 				dispose();
 			}
 		});
-		
-		showYourself();
+		return button;
 	}
 	
-	public void showSearchWordDialog (){
-							
-		addPromptAndTextField(TextValues.wordSearchDialogPrompt);
-		addRadioButtons();
-		addButtonPreviousAndNext();
-		showYourself();
+	private void addButtonsAtLevel(int level, JButton [] buttons){
+		JPanel panel = new JPanel ();
+		for (JButton button: buttons)
+			panel.add(button);
 		
+		layoutConstraints.gridy=level;
+		mainPanel.add(panel,layoutConstraints);
 	}
 	
-
 	private void showYourself(){
 		setVisible(true);
 		pack();
 	}
 	
-	private void addPromptAndTextField(String promptText){
-		JLabel label1 = new JLabel (promptText);
-		mainPanel.add(label1,layoutConstraints);
+	public void showMsgDialog(String message){
 		
-		textField = new JTextField(20);
-		layoutConstraints.gridx=1;
-		layoutConstraints.gridy=0;
-		mainPanel.add(textField,layoutConstraints);		
+		int level = 0;
+		addPromptAtLevel(level,message);
 		
-		textField.addKeyListener(new KeyAdapter(){
-			@Override
-			public void keyPressed (KeyEvent e){
-				if (e.getKeyCode() == KeyEvent.VK_ENTER)
-					search(NumberValues.FORWARD_DIRECTION);
-			}
-		});
-	}
-	
-	private void addRadioButtons(){
-		JRadioButton defaultSearchOption = new JRadioButton (TextValues.wordSearchDefaultOption);
-		layoutConstraints.gridy++;
-		layoutConstraints.gridx=0;
-		layoutConstraints.gridwidth=2;
+		JButton button = createButtonDispose(TextValues.buttonApproveText);
+		mainPanel.add(button,layoutConstraints);		
+				
+		showYourself();
+	}	
 		
-		layoutConstraints.anchor=GridBagConstraints.WEST;
-		mainPanel.add(defaultSearchOption,layoutConstraints);
+	public void showSearchWordDialog (){
+							
+		int level = 0;
+		textField = addPromptAndTextFieldAndReturnTextField(level,TextValues.wordSearchDialogPrompt);
+		
+		level++;
+		JRadioButton defaultSearchOption = createRadioButton (level,TextValues.wordSearchDefaultOption);		
+		level++;
+		fullWordsSearchOption = createRadioButton (level, TextValues.wordSearchOnlyFullWordsOption);	
+		level++;
+		perfectMatchSearchOption = createRadioButton (level, TextValues.wordSearchPerfectMatchOption);
+		
+		addRadioButtonsToGroup (new JRadioButton [] {defaultSearchOption, fullWordsSearchOption,
+					perfectMatchSearchOption});
 		
 		defaultSearchOption.setSelected(true);
-		
-		fullWordsSearchOption = new JRadioButton (TextValues.wordSearchOnlyFullWordsOption);	
 		options.put(fullWordsSearchOption, 1);	//TODO avoid pure numbers here
-				
-		layoutConstraints.gridy++;
-		mainPanel.add(fullWordsSearchOption,layoutConstraints);
-		
-		perfectMatchSearchOption = new JRadioButton (TextValues.wordSearchPerfectMatchOption);
 		options.put(perfectMatchSearchOption, 2);
-		layoutConstraints.gridy++;
-		mainPanel.add(perfectMatchSearchOption,layoutConstraints);	
-				
-		ButtonGroup group = new ButtonGroup();
-		group.add(fullWordsSearchOption);
-		group.add(perfectMatchSearchOption);
-		group.add(defaultSearchOption);	
+		
+		level++;
+		JButton previous = createButtonPrevious(TextValues.buttonPreviousText);
+		JButton next = createButtonNext(TextValues.buttonNextText);
+		addButtonsAtLevel(level,new JButton [] {previous,next});
+		showYourself();
+		
+	}	
+		
+	private JRadioButton createRadioButton (int level, String text){
+		JRadioButton radioButton = new JRadioButton (text);
+		layoutConstraints.gridy=level;
+		mainPanel.add(radioButton,layoutConstraints);
+		return radioButton;
 	}
 	
-	private void addButtonPreviousAndNext(){
-		JButton previous = new JButton (TextValues.buttonPreviousText);
-		layoutConstraints.gridy++;
-		layoutConstraints.anchor=GridBagConstraints.EAST;
-		layoutConstraints.gridwidth=1;
-		mainPanel.add(previous,layoutConstraints);
-		
-		JButton next = new JButton (TextValues.buttonNextText);
-		layoutConstraints.anchor=GridBagConstraints.WEST;
-		layoutConstraints.gridx++;
-		mainPanel.add(next,layoutConstraints);
-		
-		next.addActionListener(new ActionListener (){
-			@Override
-			public void actionPerformed (ActionEvent e){
-				search(NumberValues.FORWARD_DIRECTION);			
-			}
-		});
-		
-		previous.addActionListener(new ActionListener (){
+	private void addRadioButtonsToGroup (JRadioButton [] buttons){
+		ButtonGroup group = new ButtonGroup();
+		for (JRadioButton button: buttons)
+			group.add(button);
+	}		
+	
+
+	private JButton createButtonPrevious (String text){
+		JButton button = new JButton(text);
+		button.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed (ActionEvent e){
 				search(NumberValues.BACKWARD_DIRECTION);			
 			}
 		});
+		
+		return button;
 	}
 	
+	private JButton createButtonNext (String text){
+		JButton button = new JButton(text);
+		button.addActionListener(new ActionListener (){
+			@Override
+			public void actionPerformed (ActionEvent e){
+				search(NumberValues.FORWARD_DIRECTION);			
+			}
+		});
+		return button;		
+	}		
+	
 	public void showInsertDialog(){
-		addPromptsAndTextFields();
-		addButtonsCancelAndApprove();	
+		int level = 0;
+		insertWord = addPromptAndTextFieldAndReturnTextField(level,TextValues.wordAddDialogPrompt);
+		
+		level++;
+		insertNumber = addPromptAndTextFieldAndReturnTextField(level, TextValues.wordAddNumberPrompt);
+		
+		level++;
+		JButton cancel = createButtonDispose(TextValues.buttonCancelText);
+		JButton approve = createButtonValidate(TextValues.buttonApproveText);
+		addButtonsAtLevel(level, new JButton [] {cancel, approve});	
 		showYourself();
 		
 	}	
 	
-	private void addPromptsAndTextFields(){
-		JLabel prompt = new JLabel (TextValues.wordAddDialogPrompt);
-		layoutConstraints.gridx=0;
-		layoutConstraints.gridy=0;
-		mainPanel.add(prompt,layoutConstraints);
+	private JTextField addPromptAndTextFieldAndReturnTextField (int level, String promptMessage){
 		
-		insertWord = new JTextField(20);
-		layoutConstraints.gridx++;
-		mainPanel.add(insertWord,layoutConstraints);
+		JLabel prompt = new JLabel (promptMessage);		
+		JTextField insertWord = new JTextField(20);		
+				
+		JPanel panel = new JPanel ();
+		panel.add(prompt);
+		panel.add(insertWord);
+		layoutConstraints.gridy=level;
+		mainPanel.add(panel,layoutConstraints);
 		
-		JLabel numberPrompt = new JLabel (TextValues.wordAddNumberPrompt);
-		layoutConstraints.gridy++;
-		layoutConstraints.gridx=0;
-		
-		mainPanel.add(numberPrompt,layoutConstraints);
-		
-		insertNumber = new JTextField(20);
-		layoutConstraints.gridx++;
-		
-		mainPanel.add(insertNumber,layoutConstraints);		
+		return insertWord;
 	}
 	
-	private void addButtonsCancelAndApprove(){
-		JButton cancel = new JButton (TextValues.buttonCancelText);
-		layoutConstraints.gridx=0;
-		layoutConstraints.gridy++;
-		
-		cancel.addActionListener(new ActionListener (){
-			@Override
-			public void actionPerformed (ActionEvent e){
-				dispose();
-			}
-		});
-		
-		mainPanel.add(cancel,layoutConstraints);
-		
-		JButton approve = new JButton (TextValues.buttonApproveText);
-		layoutConstraints.gridx++;
-		
-		approve.addActionListener(new ActionListener (){
+	private JButton createButtonValidate(String text){
+		JButton button = new JButton (text);
+		button.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed (ActionEvent e){
 				String numberInput = insertNumber.getText();
@@ -277,9 +325,9 @@ public class MyDialog extends JDialog  {
 								
 			}
 		});
-		
-		mainPanel.add(approve,layoutConstraints);
+		return button;
 	}
+			
 			
 	private boolean isNumberValid(String number){
 		boolean valid = number.matches("\\d+");
@@ -329,7 +377,8 @@ public class MyDialog extends JDialog  {
 			list.findAndHighlightNextOccurence(textField.getText(), direction, chosenOptions);
 		} 
 		catch (Exception e) {
-			showErrorDialog(e.getMessage());
+			e.printStackTrace();
+			showErrorDialog(e.getMessage()); //TODO to nie zawsze dobry pomys³
 		}
 	}
 	
