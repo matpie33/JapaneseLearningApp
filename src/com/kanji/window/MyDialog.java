@@ -1,6 +1,7 @@
 package com.kanji.window;
 
 import java.awt.Color;
+import javax.swing.text.AbstractDocument;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -173,9 +174,10 @@ public class MyDialog extends JDialog  {
 		final JPanel rowPanel = new JPanel();
 		
 		JLabel from = new JLabel ("od");
-		JTextField fieldFrom = new JTextField(10);
+		JTextField [] textFields = createTextFieldsForRangeInput(rowPanel);
+		JTextField fieldFrom = textFields[0];
 		JLabel labelTo = new JLabel ("do");
-		JTextField fieldTo = new JTextField(10);
+		JTextField fieldTo = textFields[1];
 		int a=5;
 		Insets insets = new Insets(a,a,a,a);
 		
@@ -202,6 +204,83 @@ public class MyDialog extends JDialog  {
 		panel.add(rowPanel,c);
 		rowsNumber++;
 	}
+	
+	private JTextField[] createTextFieldsForRangeInput (final JPanel container){
+		JTextField [] textFields = new JTextField [2];
+		final JTextField from = new JTextField (10);
+		final JTextField to = new JTextField (10);
+		((AbstractDocument)to.getDocument()).setDocumentFilter(
+				new LimitDocumentFilter(NumberValues.INTEGER_MAX_VALUE_DIGITS_AMOUNT));
+		((AbstractDocument)from.getDocument()).setDocumentFilter(
+				new LimitDocumentFilter(NumberValues.INTEGER_MAX_VALUE_DIGITS_AMOUNT));
+		
+		KeyAdapter keyAdapter = new KeyAdapter (){
+			
+			private boolean error=false;
+			
+			@Override 
+			public void keyTyped (KeyEvent e){
+				if (!(e.getKeyChar()+"").matches("\\d")){
+					showErrorIfNotExists(TextValues.valueIsNotNumber);
+					e.consume();
+					return;
+				}
+			}
+			@Override
+			public void keyReleased (KeyEvent e){				
+					
+				
+				if (to.getText().isEmpty() || from.getText().isEmpty()) return;
+				if (Integer.parseInt(to.getText()) <= Integer.parseInt(from.getText())){
+					showErrorIfNotExists(TextValues.rangeToValueLessThanRangeFromValue);
+				}
+				else 
+					removeErrorIfExists();			
+							
+			}
+			
+			private void checkIfValueIsInIntegerRange(JTextField textField){
+				if (textField.getText().isEmpty()) return;
+				if (Integer.parseInt(textField.getText())>Integer.MAX_VALUE/10000)
+					textField.setText(""+30000);
+			}
+			
+			private void showErrorIfNotExists(String message){
+				if (error)	return;
+				
+				container.add(new JLabel (message));
+				container.repaint();
+				container.revalidate();
+				error=true;
+			}
+			
+			private void removeErrorIfExists (){
+				if (!error) return;
+				error=false;
+				for (Component c: container.getComponents()){
+					if (c instanceof JLabel && ((JLabel)c).getText().matches(
+							TextValues.rangeToValueLessThanRangeFromValue +"|"+
+							TextValues.valueIsNotNumber)){
+						container.remove(c);
+						container.repaint();
+						container.revalidate();
+					}
+				}
+			}
+			
+		};
+		
+		
+		from.addKeyListener(keyAdapter);
+		
+		to.addKeyListener(keyAdapter);
+		
+		textFields[0]=from;
+		textFields[1]=to;
+		return textFields;
+	}
+	
+	
 	
 	private JButton createDeleteButton (final JPanel container, final JPanel panelToRemove){
 		JButton delete = new JButton (TextValues.buttonRemoveRowText);

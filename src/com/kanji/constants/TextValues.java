@@ -47,5 +47,7 @@ public class TextValues {
 	public static final String wordAlreadyDefinedException = "Takie slowo juz istnieje.";
 	public static final String wordAlreadyHighlightedException = "To slowo jest juz zaznaczone." +
 			"Nie znaleziono innych pozycji.";
+	public static final String rangeToValueLessThanRangeFromValue = "Za ma³a liczba";
+	public static final String valueIsNotNumber = "Proszê wpisaæ liczbê";
 
 }
