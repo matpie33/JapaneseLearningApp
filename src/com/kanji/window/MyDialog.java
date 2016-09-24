@@ -1,6 +1,8 @@
 package com.kanji.window;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -51,6 +53,7 @@ public class MyDialog extends JDialog  {
 	private JTextField insertWord;
 	private JTextField insertNumber;	
 	private JPanel mainPanel;	
+	private int rowsNumber;
 	
 	private class MyDispatcher implements KeyEventDispatcher {
         @Override
@@ -84,6 +87,7 @@ public class MyDialog extends JDialog  {
 	private void initialize(){
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.addKeyEventDispatcher(new MyDispatcher());
+        rowsNumber=0;
 		options = new HashMap <JRadioButton, Integer> ();
 		isOpened=true;
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);		
@@ -125,6 +129,8 @@ public class MyDialog extends JDialog  {
 		level++;
 		JPanel panel = addTextFieldsForRange(level);
 		scrollPane = new JScrollPane(panel);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(10);
+		scrollPane.setPreferredSize(new Dimension(500,100));
 		mainPanel.add(scrollPane,layoutConstraints);
 		
 		level++;
@@ -150,15 +156,10 @@ public class MyDialog extends JDialog  {
 	
 	private JPanel addTextFieldsForRange(int level){
 		JPanel panel = new JPanel();
-		JLabel from = new JLabel ("od");
-		JTextField fieldFrom = new JTextField(10);
-		JLabel labelTo = new JLabel ("do");
-		JTextField fieldTo = new JTextField(10);
+		panel.setLayout(new GridBagLayout());
 		
-		panel.add(from);
-		panel.add(fieldFrom);
-		panel.add(labelTo);
-		panel.add(fieldTo);
+		addRowToPanel(panel);
+		
 		
 		layoutConstraints.gridy=level;
 		layoutConstraints.anchor=GridBagConstraints.WEST;				
@@ -167,15 +168,100 @@ public class MyDialog extends JDialog  {
 		
 	}
 	
+	private void addRowToPanel (final JPanel panel){
+		
+		final JPanel rowPanel = new JPanel();
+		
+		JLabel from = new JLabel ("od");
+		JTextField fieldFrom = new JTextField(10);
+		JLabel labelTo = new JLabel ("do");
+		JTextField fieldTo = new JTextField(10);
+		int a=5;
+		Insets insets = new Insets(a,a,a,a);
+		
+		rowPanel.add(from);
+		rowPanel.add(fieldFrom);
+		rowPanel.add(labelTo);
+		rowPanel.add(fieldTo);	
+				
+		if (rowsNumber>0){			
+			JButton delete = new JButton (TextValues.buttonRemoveRowText);
+			delete.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent e){
+					deleteRow(rowPanel,panel);
+				}
+			});
+			rowPanel.add(delete);
+		}
+		if (rowsNumber==1){
+			final JPanel firstRow = (JPanel)panel.getComponent(0);
+			JButton delete = new JButton (TextValues.buttonRemoveRowText);
+			delete.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent e){
+					deleteRow(firstRow,panel);
+				}
+			});
+			firstRow.add(delete);
+		}
+		
+		GridBagConstraints c = new GridBagConstraints();
+		c.insets=insets;
+		c.gridx=0;
+		c.gridy=rowsNumber;
+		
+		panel.add(rowPanel,c);
+		rowsNumber++;
+	}
+	
+	private void deleteRow(JPanel rowToDelete, JPanel panel){
+		
+		removeRowAndUpdateOtherRows(rowToDelete, panel);
+		if (panel.getComponentCount()==1){
+			JPanel firstRow = (JPanel) panel.getComponent(0);
+			for (Component c: firstRow.getComponents()){
+				if (c instanceof JButton)
+					firstRow.remove(c);
+					
+			}
+			
+		}
+		panel.repaint();
+		panel.revalidate();
+		rowsNumber--;
+		
+	}
+	
+	private void removeRowAndUpdateOtherRows(JPanel rowToDelete, JPanel panel){
+		boolean found=false;
+		for (int i=0; i< panel.getComponentCount(); i++){ 
+			if (panel.getComponent(i)==rowToDelete){
+				panel.remove(i);
+				found=true;
+				i--;
+				continue;
+			}
+			if (!found) continue;
+			
+			JPanel row = (JPanel)panel.getComponent(i);
+			GridBagLayout g = (GridBagLayout)panel.getLayout();
+			GridBagConstraints c = g.getConstraints(row);
+			c.gridy--;
+			g.setConstraints(row, c);
+		}
+	}
+	
 	private JButton createButtonAddRow (String text, final JPanel panel){
 		JButton button = new JButton (text);
 		button.addActionListener(new ActionListener (){
 			@Override
-			public void actionPerformed (ActionEvent e){
-				panel.add(new JButton ("Button"));
-				panel.repaint();
-				panel.revalidate();
-				System.out.println(panel.getComponentCount());
+			public void actionPerformed (ActionEvent e){				
+				addRowToPanel(panel);
+				scrollPane.repaint();
+				scrollPane.revalidate();
+				revalidate();			
+				scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
 			}
 		});
 		return button;

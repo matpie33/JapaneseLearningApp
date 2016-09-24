@@ -19,6 +19,7 @@ public class TextValues {
 	public static final String buttonPreviousText = "Poprzedni";
 	public static final String buttonNextText = "Nastêpny";
 	public static final String buttonAddRowText = "Dodaj wiersz";
+	public static final String buttonRemoveRowText = "Usuñ wiersz";
 	
 	public static final String wordAddDialogPrompt = "Podaj s³ówko";	
 	public static final String wordAddNumberPrompt = "Podaj numerek";
