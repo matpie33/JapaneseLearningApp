@@ -185,24 +185,12 @@ public class MyDialog extends JDialog  {
 		rowPanel.add(fieldTo);	
 				
 		if (rowsNumber>0){			
-			JButton delete = new JButton (TextValues.buttonRemoveRowText);
-			delete.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent e){
-					deleteRow(rowPanel,panel);
-				}
-			});
+			JButton delete = createDeleteButton(panel,rowPanel);					
 			rowPanel.add(delete);
 		}
 		if (rowsNumber==1){
-			final JPanel firstRow = (JPanel)panel.getComponent(0);
-			JButton delete = new JButton (TextValues.buttonRemoveRowText);
-			delete.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent e){
-					deleteRow(firstRow,panel);
-				}
-			});
+			JPanel firstRow = (JPanel)panel.getComponent(0);
+			JButton delete = createDeleteButton(panel, firstRow);
 			firstRow.add(delete);
 		}
 		
@@ -215,11 +203,22 @@ public class MyDialog extends JDialog  {
 		rowsNumber++;
 	}
 	
-	private void deleteRow(JPanel rowToDelete, JPanel panel){
+	private JButton createDeleteButton (final JPanel container, final JPanel panelToRemove){
+		JButton delete = new JButton (TextValues.buttonRemoveRowText);
+		delete.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				deleteRow(container, panelToRemove);
+			}
+		});
+		return delete;
+	}
+	
+	private void deleteRow(JPanel container, JPanel panelToDelete){
 		
-		removeRowAndUpdateOtherRows(rowToDelete, panel);
-		if (panel.getComponentCount()==1){
-			JPanel firstRow = (JPanel) panel.getComponent(0);
+		removeRowAndUpdateOtherRows(panelToDelete, container);
+		if (container.getComponentCount()==1){
+			JPanel firstRow = (JPanel) container.getComponent(0);
 			for (Component c: firstRow.getComponents()){
 				if (c instanceof JButton)
 					firstRow.remove(c);
@@ -227,8 +226,8 @@ public class MyDialog extends JDialog  {
 			}
 			
 		}
-		panel.repaint();
-		panel.revalidate();
+		container.repaint();
+		container.revalidate();
 		rowsNumber--;
 		
 	}
