@@ -49,5 +49,6 @@ public class TextValues {
 			"Nie znaleziono innych pozycji.";
 	public static final String rangeToValueLessThanRangeFromValue = "Za ma³a liczba";
 	public static final String valueIsNotNumber = "Proszê wpisaæ liczbê";
+	public static final String sumRangePrompt = "£¹czna liczba kanji: ";
 
 }

@@ -25,16 +25,20 @@ import java.util.Set;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.kanji.constants.NumberValues;
 import com.kanji.constants.TextValues;
+import com.kanji.range.Range;
+import com.kanji.range.SetOfRanges;
 
 
 public class MyDialog extends JDialog  {
@@ -55,6 +59,7 @@ public class MyDialog extends JDialog  {
 	private JTextField insertNumber;	
 	private JPanel mainPanel;	
 	private int rowsNumber;
+	private JTextField sumRangeField;
 	
 	private class MyDispatcher implements KeyEventDispatcher {
         @Override
@@ -130,17 +135,21 @@ public class MyDialog extends JDialog  {
 		level++;
 		JPanel panel = addTextFieldsForRange(level);
 		scrollPane = new JScrollPane(panel);
+		layoutConstraints.weightx=1;
+		layoutConstraints.weighty=1;
+		layoutConstraints.fill=GridBagConstraints.BOTH;
 		scrollPane.getVerticalScrollBar().setUnitIncrement(10);
 		scrollPane.setPreferredSize(new Dimension(500,100));
 		mainPanel.add(scrollPane,layoutConstraints);
 		
 		level++;
 		JButton newRow = createButtonAddRow(TextValues.buttonAddRowText, panel);
-		addButtonsAtLevel(level, new JButton []{newRow});
+		sumRangeField = createSumRangeField(TextValues.sumRangePrompt);
+		addButtonsAtLevel(level, new JComponent []{newRow,sumRangeField});
 		
 		level++;
 		JButton cancel = createButtonDispose(TextValues.buttonCancelText);
-		JButton approve = new JButton (TextValues.buttonApproveText); // TODO change
+		JButton approve = createButtonStartLearning (TextValues.buttonApproveText, panel); 
 		
 		addButtonsAtLevel(level, new JButton []{cancel,approve});
 		
@@ -157,14 +166,11 @@ public class MyDialog extends JDialog  {
 	
 	private JPanel addTextFieldsForRange(int level){
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridBagLayout());
-		
-		addRowToPanel(panel);
-		
-		
+		panel.setLayout(new GridBagLayout());		
+		addRowToPanel(panel);				
 		layoutConstraints.gridy=level;
-		layoutConstraints.anchor=GridBagConstraints.WEST;				
-//		mainPanel.add(panel,layoutConstraints);
+		layoutConstraints.anchor=GridBagConstraints.WEST;	
+//		System.out.println(panel.getComponent(0));
 		return panel;
 		
 	}
@@ -178,8 +184,8 @@ public class MyDialog extends JDialog  {
 		JTextField fieldFrom = textFields[0];
 		JLabel labelTo = new JLabel ("do");
 		JTextField fieldTo = textFields[1];
-		int a=5;
-		Insets insets = new Insets(a,a,a,a);
+		int singleInset=5;
+		Insets insets = new Insets(singleInset,singleInset,singleInset,singleInset);
 		
 		rowPanel.add(from);
 		rowPanel.add(fieldFrom);
@@ -207,16 +213,17 @@ public class MyDialog extends JDialog  {
 	
 	private JTextField[] createTextFieldsForRangeInput (final JPanel container){
 		JTextField [] textFields = new JTextField [2];
-		final JTextField from = new JTextField (10);
-		final JTextField to = new JTextField (10);
-		((AbstractDocument)to.getDocument()).setDocumentFilter(
-				new LimitDocumentFilter(NumberValues.INTEGER_MAX_VALUE_DIGITS_AMOUNT));
-		((AbstractDocument)from.getDocument()).setDocumentFilter(
-				new LimitDocumentFilter(NumberValues.INTEGER_MAX_VALUE_DIGITS_AMOUNT));
+		for (int i=0; i<2; i++){
+			textFields[i]=new JTextField (10);
+			((AbstractDocument)textFields[i].getDocument()).setDocumentFilter(
+					new LimitDocumentFilter(NumberValues.INTEGER_MAX_VALUE_DIGITS_AMOUNT));
+		}
+		final JTextField from = textFields[0];
+		final JTextField to = textFields[1];
 		
 		KeyAdapter keyAdapter = new KeyAdapter (){
 			
-			private boolean error=false;
+			private String error="";
 			
 			@Override 
 			public void keyTyped (KeyEvent e){
@@ -234,29 +241,28 @@ public class MyDialog extends JDialog  {
 				if (Integer.parseInt(to.getText()) <= Integer.parseInt(from.getText())){
 					showErrorIfNotExists(TextValues.rangeToValueLessThanRangeFromValue);
 				}
-				else 
-					removeErrorIfExists();			
+				else {
+					removeErrorIfExists();	
+					SetOfRanges s = validateInputs((JPanel)container.getParent());
+					sumRangeField.setText(TextValues.sumRangePrompt+s.sumRange());
+				}
 							
-			}
-			
-			private void checkIfValueIsInIntegerRange(JTextField textField){
-				if (textField.getText().isEmpty()) return;
-				if (Integer.parseInt(textField.getText())>Integer.MAX_VALUE/10000)
-					textField.setText(""+30000);
-			}
+			}			
 			
 			private void showErrorIfNotExists(String message){
-				if (error)	return;
+				if (error.equals(message))	return;
+				else removeErrorIfExists();
 				
 				container.add(new JLabel (message));
 				container.repaint();
 				container.revalidate();
-				error=true;
+				error=message;
 			}
 			
 			private void removeErrorIfExists (){
-				if (!error) return;
-				error=false;
+				if (error.isEmpty()) return;
+				error="";
+				
 				for (Component c: container.getComponents()){
 					if (c instanceof JLabel && ((JLabel)c).getText().matches(
 							TextValues.rangeToValueLessThanRangeFromValue +"|"+
@@ -271,17 +277,14 @@ public class MyDialog extends JDialog  {
 		};
 		
 		
-		from.addKeyListener(keyAdapter);
-		
+		from.addKeyListener(keyAdapter);		
 		to.addKeyListener(keyAdapter);
 		
 		textFields[0]=from;
 		textFields[1]=to;
 		return textFields;
 	}
-	
-	
-	
+			
 	private JButton createDeleteButton (final JPanel container, final JPanel panelToRemove){
 		JButton delete = new JButton (TextValues.buttonRemoveRowText);
 		delete.addActionListener(new ActionListener(){
@@ -345,6 +348,13 @@ public class MyDialog extends JDialog  {
 		return button;
 	}
 	
+	private JTextField createSumRangeField(String text){
+		JTextField sumRange = new JTextField(text,30);
+		sumRange.setEditable(false);
+		return sumRange;
+		
+	}
+	
 	private JButton createButtonDispose(String text){
 		JButton button = new JButton (text);
 		button.addActionListener(new ActionListener (){
@@ -356,9 +366,74 @@ public class MyDialog extends JDialog  {
 		return button;
 	}
 	
-	private void addButtonsAtLevel(int level, JButton [] buttons){
+	private JButton createButtonStartLearning (String text, final JPanel panel){
+		JButton button = new JButton (text);
+		button.addActionListener(new ActionListener (){
+			@Override
+			public void actionPerformed (ActionEvent e){			
+				SetOfRanges setOfRanges = validateInputs(panel);	
+				showErrorDialog(setOfRanges.getRanges());
+			}
+		});
+		return button;
+	}
+	
+	private SetOfRanges validateInputs(JPanel panel) throws IllegalArgumentException{
+		
+		SetOfRanges setOfRanges = new SetOfRanges();
+		boolean wasSetModifiedTotally=false;
+		for (Component p : panel.getComponents()){
+			JPanel row;
+			if (p instanceof JPanel){
+				row = (JPanel)p;
+			}
+			else continue;
+			try{
+				boolean wasSetModifiedInInteration = getRangeFromRowAndAddToSet(row,setOfRanges);
+				wasSetModifiedTotally=wasSetModifiedTotally || wasSetModifiedInInteration;
+				
+			}
+			catch (IllegalArgumentException e){
+				showErrorDialog(e.getMessage());
+			}
+			
+		}
+			
+		return setOfRanges;
+		
+	}
+	
+	private boolean getRangeFromRowAndAddToSet(JPanel row, SetOfRanges set) throws IllegalArgumentException{
+		boolean alteredSet=false;
+		int textFieldsCounter=1;
+		int rangeStart=0;
+		int rangeEnd=0;
+		
+		for (Component c: row.getComponents()){	
+			if (c instanceof JTextField){						
+				if (textFieldsCounter==1)
+					rangeStart=getValueFromTextField((JTextField)c);
+				else rangeEnd=getValueFromTextField((JTextField)c);
+				textFieldsCounter++;
+			}
+			if (textFieldsCounter>2){
+				Range r = new Range(rangeStart,rangeEnd);
+				alteredSet=set.addRange(r);
+				textFieldsCounter=1;
+			}			
+		}
+		return alteredSet;
+		
+	}
+	
+	private int getValueFromTextField(JTextField textField){
+		return Integer.parseInt(textField.getText());
+	}
+	
+	
+	private void addButtonsAtLevel(int level, JComponent [] buttons){
 		JPanel panel = new JPanel ();
-		for (JButton button: buttons)
+		for (JComponent button: buttons)
 			panel.add(button);
 		
 		layoutConstraints.gridy=level;
@@ -368,6 +443,7 @@ public class MyDialog extends JDialog  {
 	private void showYourself(){
 		setVisible(true);
 		pack();
+		setMinimumSize(getSize());
 	}
 	
 	public void showMsgDialog(String message){

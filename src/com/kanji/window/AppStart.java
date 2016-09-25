@@ -9,20 +9,22 @@ import java.util.TreeMap;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import com.kanji.range.Range;
+import com.kanji.range.SetOfRanges;
+
 public class AppStart {
 	
 	public static void main (String [] args){
 		BaseWindow b = new BaseWindow();
 		b.setVisible(true);
-		StringBuffer sb = new StringBuffer ("a");
-		StringBuffer cs = sb;
-		System.out.println(cs.toString().equals("a"));
-		Map <String, Integer> a = new LinkedHashMap <String, Integer> ();
-		String g = "aaa";
-		a.put(g, 2);
-		String c = "aaa";
-		a.put(g, 4);
-		System.out.println(a);
+		
+		SetOfRanges set = new SetOfRanges();
+		set.addRange(new Range(50,100));
+//		set.getRanges();
+		set.addRange(new Range(55,60));
+//		set.getRanges();
+//		set.addRange(new Range(30,70));
+		System.out.println(set.getRanges());
 		
 	}
 
