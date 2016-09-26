@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
 import com.kanji.constants.TextValues;
+import com.kanji.dialogs.MyDialog;
 import com.kanji.fileReading.CustomFileReader;
 
 public class ElementMaker {

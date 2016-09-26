@@ -56,7 +56,7 @@ public class SetOfRanges {
 		for (Range range: ranges){
 			sum += range.rangeEnd-range.rangeStart;
 		}
-		return sum;
+		return sum+1;
 	}
 
 }

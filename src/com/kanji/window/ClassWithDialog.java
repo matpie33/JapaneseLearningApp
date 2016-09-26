@@ -2,14 +2,16 @@ package com.kanji.window;
 
 import javax.swing.JFrame;
 
+import com.kanji.dialogs.MyDialog;
+
 @SuppressWarnings("serial")
 public abstract class ClassWithDialog extends JFrame{
 	private MyDialog dialog;	
 		
 	public void showDialogToSearch(MyList list){ 	
 		if (notOpenedYet()){
-			dialog = new MyDialog(this,list);
-			dialog.showSearchWordDialog();
+			dialog = new MyDialog(this); //TODO moze skrocic?
+			dialog.showSearchWordDialog(list);
 		}		
 		
 	}
@@ -20,8 +22,8 @@ public abstract class ClassWithDialog extends JFrame{
 	
 	public void showDialogToAddWord(MyList list){
 		if (notOpenedYet()){
-			dialog = new MyDialog(this,list);
-			dialog.showInsertDialog();
+			dialog = new MyDialog(this);
+			dialog.showInsertDialog(list);
 		}
 	}
 	

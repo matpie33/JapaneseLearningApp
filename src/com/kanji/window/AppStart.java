@@ -1,14 +1,5 @@
 package com.kanji.window;
 
-import java.awt.Component;
-import java.text.Normalizer;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.TreeMap;
-
-import javax.swing.JButton;
-import javax.swing.JPanel;
-
 import com.kanji.range.Range;
 import com.kanji.range.SetOfRanges;
 
