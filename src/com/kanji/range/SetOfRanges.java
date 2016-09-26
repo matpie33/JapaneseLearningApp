@@ -51,12 +51,12 @@ public class SetOfRanges {
 	}
 	
 
-	public int sumRange (){
+	public int sumRangeInclusive (){
 		int sum = 0;
 		for (Range range: ranges){
-			sum += range.rangeEnd-range.rangeStart;
+			sum += range.rangeEnd-range.rangeStart+1;			
 		}
-		return sum+1;
+		return sum;
 	}
 
 }

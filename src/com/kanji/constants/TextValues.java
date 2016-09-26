@@ -4,7 +4,11 @@ public class TextValues {
 	
 	public static final String appTitle="Program do nauki kanji i s³ów.";
 	
-	public static final String addWordDialogTitle="Nowe s³owo";	
+	public static final String insertWordDialogTitle="Nowe s³owo";	
+	public static final String messageDialogTitle="Informacja";	
+	public static final String learnStartDialogTitle="Rozpoczecie nauki";	
+	public static final String wordSearchDialogTitle="ZnajdŸ s³owo";
+	
 	// Buttons
 	public static final String buttonStartText = "Rozpocznij";
 	public static final String buttonSearchText = "ZnajdŸ s³ówko";
@@ -24,9 +28,7 @@ public class TextValues {
 	public static final String wordAddDialogPrompt = "Podaj s³ówko";	
 	public static final String wordAddNumberPrompt = "Podaj numerek";
 	
-	//word search dialog
-	
-	public static final String wordSearchDialogTitle="ZnajdŸ s³owo";	
+	//word search dialog	
 	public static final String wordSearchDialogPrompt="Wpisz szukane s³owo";
 	public static final String wordSearchDefaultOption = 
 			"Szukaj wszystkich pozycji zawieraj¹cych wpisane s³owa";
@@ -35,7 +37,8 @@ public class TextValues {
 	public static final String wordSearchPerfectMatchOption =
 			"Szukaj pozycji zawieraj¹cych dok³adnie to co wpisa³em.";
 	
-	public static final String learnStartPrompt = "Proszê wpisaæ numery s³ówek, które chcesz powtórzyæ.";
+	public static final String learnStartPrompt = "Proszê wpisaæ numery s³ówek, które chcesz powtórzyæ. " +
+			"Zewnetrzne numery slowek rowniez beda uwzglednione.";
 	
 	public static final String wordSearchExceptionWordNotFound = 
 			"Nie znaleziono podanego s³owa. Byæ mo¿e zazaczono z³¹ opcjê," +

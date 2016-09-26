@@ -46,11 +46,7 @@ public class MyDialog extends JDialog  {
 		initializeLayout();
 		addEscapeKeyToCloseTheWindow();		
 	}
-	
-	public MyDialog (Window b,MyList myList){		
-		this(b);		
-	}
-	
+		
 	private void setLocationBasedOnParent (Window parent){
 		if (parent instanceof BaseWindow)
 			setLocation(parent.getLocation());
@@ -62,8 +58,7 @@ public class MyDialog extends JDialog  {
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.addKeyEventDispatcher(new MyDispatcher());
 		isOpened=true;
-        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);		
-			
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);	
 	}
 		
 	private void initializeLayout(){													
@@ -96,35 +91,35 @@ public class MyDialog extends JDialog  {
 		LearningStartDialog dialog = new LearningStartDialog(mainPanel,this);
 		dialog.setLayoutConstraints(layoutConstraints);
 		mainPanel = dialog.createDialog();
-		showYourself();		
+		showYourself(TextValues.learnStartDialogTitle);		
 	}		
 		
-	private void showYourself(){ //TODO title as parameter		
+	private void showYourself(String title){ //TODO title as parameter		
 		pack();
 		setMinimumSize(getSize());
 		setVisible(true);
-		setTitle(TextValues.wordSearchDialogTitle);	
+		setTitle(title);	
 	}
 	
 	public void showMsgDialog(String message){			
 		MessageDialog dialog = new MessageDialog(mainPanel,this);
 		dialog.setLayoutConstraints(layoutConstraints);
 		mainPanel = dialog.createDialog(message);
-		showYourself();	
+		showYourself(TextValues.messageDialogTitle);	
 	}	
 		
 	public void showSearchWordDialog (MyList list){							
 		SearchWordDialog dialog = new SearchWordDialog(mainPanel,this);
 		dialog.setLayoutConstraints(layoutConstraints);
 		mainPanel = dialog.createDialog(list);
-		showYourself();		
+		showYourself(TextValues.wordSearchDialogTitle);		
 	}				
 	
 	public void showInsertDialog(MyList list){
 		InsertWordDialog dialog = new InsertWordDialog(mainPanel,this);
 		dialog.setLayoutConstraints(layoutConstraints);
 		mainPanel = dialog.createDialog(list);
-		showYourself();		
+		showYourself(TextValues.insertWordDialogTitle);		
 	}	
 	
 	public void showErrorDialogInNewWindow(String message){ // TODO jak tego uniknac bo to kopia

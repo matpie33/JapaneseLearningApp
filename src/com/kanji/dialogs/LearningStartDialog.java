@@ -197,7 +197,7 @@ public class LearningStartDialog {
 	
 	private void recalculateSumOfKanji(JPanel container){
 		SetOfRanges s = validateInputs(container);
-		sumRangeField.setText(TextValues.sumRangePrompt+s.sumRange());
+		sumRangeField.setText(TextValues.sumRangePrompt+s.sumRangeInclusive());
 	}
 			
 	private JButton createDeleteButton (final JPanel container, final JPanel panelToRemove){
@@ -278,8 +278,11 @@ public class LearningStartDialog {
 		button.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed (ActionEvent e){			
-				SetOfRanges setOfRanges = validateInputs(panel);	
-				parentDialog.showErrorDialogInNewWindow(setOfRanges.getRanges());
+				SetOfRanges setOfRanges = validateInputs(panel);
+				if (setOfRanges.getRanges().isEmpty())
+					parentDialog.showErrorDialogInNewWindow("Prosze cos wpisac !");
+				else
+					parentDialog.showErrorDialogInNewWindow(setOfRanges.getRanges());
 			}
 		});
 		return button;
@@ -317,7 +320,9 @@ public class LearningStartDialog {
 		int rangeEnd=0;
 		
 		for (Component c: row.getComponents()){	
-			if (c instanceof JTextField){						
+			if (c instanceof JTextField){		
+				if (((JTextField)c).getText().isEmpty())
+					break;
 				if (textFieldsCounter==1)
 					rangeStart=getValueFromTextField((JTextField)c);
 				else rangeEnd=getValueFromTextField((JTextField)c);
