@@ -16,13 +16,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
 import com.kanji.constants.TextValues;
+import com.kanji.myList.MyList;
 
 @SuppressWarnings("serial")
 public class BaseWindow extends ClassWithDialog {
 	
 	private Insets insets = new Insets (20,20,20,20);
 	private ElementMaker maker;
-	private JScrollPane listScroll;
+	private JScrollPane listScrollWords;
+	private JScrollPane listScrollRepeated;
 	private final Dimension scrollPanesSize = new Dimension (300,300);
 	
 	public BaseWindow (){
@@ -43,8 +45,12 @@ public class BaseWindow extends ClassWithDialog {
 		panel.setLayout(new BorderLayout());
 		panel.setBackground(Color.BLUE);
 		
-		createAndAddKanjiArea(panel);
-		createAndAddWordsList(panel);		
+		MyList wordsList = maker.getWordsList();
+		MyList repeatsList = maker.getRepeatsList();		
+		listScrollWords = createScrollPaneForList(wordsList);
+		listScrollRepeated = createScrollPaneForList(repeatsList);	
+		panel.add(listScrollWords,BorderLayout.WEST);
+		panel.add(listScrollRepeated,BorderLayout.CENTER);
 				
 		return panel;		
 	}	
@@ -66,13 +72,14 @@ public class BaseWindow extends ClassWithDialog {
 		
 	}
 	
-	private void createAndAddWordsList(JPanel panel){
+	private JScrollPane createScrollPaneForList(MyList list){
 		
 		Border raisedBevel = BorderFactory.createLineBorder(Color.BLUE,6);		
-		MyList wordsList = maker.getMyList();
-		listScroll = createScrollPane(Color.GREEN,raisedBevel, wordsList);			
-		wordsList.setScrollPane(listScroll);
-		panel.add(listScroll,BorderLayout.CENTER);
+		
+		JScrollPane listScrollWords = createScrollPane(Color.GREEN,raisedBevel, list);			
+		list.setScrollPane(listScrollWords);
+		
+		return listScrollWords;
 		
 	}	
 	

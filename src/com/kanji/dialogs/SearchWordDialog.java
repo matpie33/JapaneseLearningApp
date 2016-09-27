@@ -18,7 +18,7 @@ import javax.swing.JTextField;
 
 import com.kanji.constants.NumberValues;
 import com.kanji.constants.TextValues;
-import com.kanji.window.MyList;
+import com.kanji.myList.MyList;
 
 public class SearchWordDialog {
 

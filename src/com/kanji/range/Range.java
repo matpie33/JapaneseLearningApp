@@ -18,7 +18,7 @@ public class Range {
 	}
 	
 	public boolean includesRange(Range range){
-		return range.rangeStart>rangeStart && range.rangeEnd < rangeEnd;
+		return range.rangeStart>=rangeStart && range.rangeEnd <= rangeEnd;
 	}
 
 }

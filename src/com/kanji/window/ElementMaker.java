@@ -18,6 +18,7 @@ import javax.swing.JFileChooser;
 import com.kanji.constants.TextValues;
 import com.kanji.dialogs.MyDialog;
 import com.kanji.fileReading.CustomFileReader;
+import com.kanji.myList.MyList;
 
 public class ElementMaker {
 	
@@ -26,7 +27,8 @@ public class ElementMaker {
 	private List <JButton> buttons;	
 	private ClassWithDialog parent;
 	private Map <String, Integer> words;	
-	private MyList myList;
+	private MyList listOfWords;
+	private MyList repeats;
 	
 	private class MyDispatcher implements KeyEventDispatcher {
         @Override
@@ -56,11 +58,12 @@ public class ElementMaker {
 		buttons = new ArrayList <JButton> ();		
 		for (String name: TextValues.buttonNames)
 			buttons.add(new JButton(name));
-		initMyList();
+		initListOfWords();
+		initRepeatsList();
 	}
 	
-	private void initMyList(){
-		myList = new MyList(parent);
+	private void initListOfWords(){
+		listOfWords = new MyList(parent);
 		Map <String, Integer> initList = new LinkedHashMap <String, Integer>();
 		for (int i=0; i<10; i++){
 			String a = "Word no. "+i;
@@ -74,9 +77,12 @@ public class ElementMaker {
 			initList.put(a,i);
 			
 		}
-		myList.setWords(initList);
-		
+		listOfWords.setWords(initList);		
 	}	
+	
+	private void initRepeatsList(){
+		repeats = new MyList (parent);
+	}
 	
 	
 	private void addListeners(List <JButton> buttons){
@@ -139,7 +145,7 @@ public class ElementMaker {
 			public void run (){
 				MyDialog d = new MyDialog(parent);
 				d.showMsgDialog("Wait");
-				myList.setWords(words);
+				listOfWords.setWords(words);
 				d.dispose();
 			}
 		};
@@ -159,23 +165,27 @@ public class ElementMaker {
 	}
 	
 	private void addWord(){
-		parent.showDialogToAddWord(myList);		
+		parent.showDialogToAddWord(listOfWords);		
 	}
 	
 	private void searchWord(){
-		parent.showDialogToSearch(myList);
+		parent.showDialogToSearch(listOfWords);
 	}
 	
 	private void start(){
-		parent.showLearnStartDialog();
+		parent.showLearnStartDialog(repeats);
 	}
 
 	public List <JButton> getButtons() {
 		return buttons;
 	}
 		
-	public MyList getMyList(){
-		return myList;
+	public MyList getWordsList(){
+		return listOfWords;
+	}
+	
+	public MyList getRepeatsList(){
+		return repeats;
 	}
 	
 }

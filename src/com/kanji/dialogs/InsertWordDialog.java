@@ -12,8 +12,8 @@ import javax.swing.text.AbstractDocument;
 
 import com.kanji.constants.NumberValues;
 import com.kanji.constants.TextValues;
+import com.kanji.myList.MyList;
 import com.kanji.window.LimitDocumentFilter;
-import com.kanji.window.MyList;
 
 public class InsertWordDialog {
 

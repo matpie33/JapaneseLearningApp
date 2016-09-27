@@ -16,8 +16,8 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import com.kanji.constants.TextValues;
+import com.kanji.myList.MyList;
 import com.kanji.window.BaseWindow;
-import com.kanji.window.MyList;
 
 
 public class MyDialog extends JDialog  {
@@ -87,10 +87,10 @@ public class MyDialog extends JDialog  {
 		});
 	}
 	
-	public void showLearningStartDialog (){		
+	public void showLearningStartDialog (MyList list){		
 		LearningStartDialog dialog = new LearningStartDialog(mainPanel,this);
 		dialog.setLayoutConstraints(layoutConstraints);
-		mainPanel = dialog.createDialog();
+		mainPanel = dialog.createDialog(list);
 		showYourself(TextValues.learnStartDialogTitle);		
 	}		
 		

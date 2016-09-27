@@ -1,4 +1,4 @@
-package com.kanji.window;
+package com.kanji.myList;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -11,6 +11,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.Normalizer;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.Scrollable;
 import com.kanji.constants.TextValues;
+import com.kanji.window.ClassWithDialog;
 
 @SuppressWarnings("serial")
 public class MyList extends JPanel implements Scrollable{
@@ -36,6 +38,7 @@ public class MyList extends JPanel implements Scrollable{
 	private JScrollPane parentScrollPane;	
 	private Map <String, Integer> wordsAndID;
 	private ClassWithDialog parent;
+	
 	
 	@Override
 	public Dimension getPreferredScrollableViewportSize() {
@@ -73,6 +76,7 @@ public class MyList extends JPanel implements Scrollable{
 	}
 	
 	private void initiate(){
+		wordsAndID = new HashMap <String, Integer> ();
 		highlightedRowNumber=0;
 		panels = new LinkedList <JPanel>();	
 		setLayout(new GridBagLayout());
@@ -313,8 +317,7 @@ public class MyList extends JPanel implements Scrollable{
 		repaint();
 	}	
 	
-	public void scrollTo (JPanel panel){	
-		
+	public void scrollTo (JPanel panel){		
 		int r = panel.getY();
 		parentScrollPane.getViewport().setViewPosition(new Point(0,r));
 	}
@@ -341,8 +344,6 @@ public class MyList extends JPanel implements Scrollable{
 		for (String word: wordsAndID.keySet())
 			addElement(word);
 
-//		revalidate();
-//		repaint();	
 	}
 	
 	private void cleanAll(){
@@ -367,6 +368,10 @@ public class MyList extends JPanel implements Scrollable{
 		parent.revalidate();
 		JScrollBar scrollBar = parentScrollPane.getVerticalScrollBar();
 		scrollBar.setValue(scrollBar.getMaximum());
+	}
+	
+	public int getWordsCount (){
+		return wordsAndID.size();
 	}
 	
 	

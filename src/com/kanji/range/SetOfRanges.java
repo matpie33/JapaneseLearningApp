@@ -24,6 +24,7 @@ public class SetOfRanges {
 				i--;
 				newRange = new Range(rangeFromSet.rangeStart, newRange.rangeEnd);
 				isModified=true;
+				continue;
 				
 			}
 			if (rangeFromSet.isValueInsideRange(newRange.rangeEnd)){
@@ -31,11 +32,13 @@ public class SetOfRanges {
 				i--;
 				newRange = new Range(newRange.rangeStart, rangeFromSet.rangeEnd);
 				isModified=true;
+				continue;
 			}
 			if (newRange.includesRange(rangeFromSet)){
 				ranges.remove(rangeFromSet);
 				i--;
 				isModified=true;
+				continue;
 			}
 		}
 		ranges.add(newRange);

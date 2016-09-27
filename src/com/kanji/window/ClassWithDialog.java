@@ -3,6 +3,7 @@ package com.kanji.window;
 import javax.swing.JFrame;
 
 import com.kanji.dialogs.MyDialog;
+import com.kanji.myList.MyList;
 
 @SuppressWarnings("serial")
 public abstract class ClassWithDialog extends JFrame{
@@ -34,10 +35,10 @@ public abstract class ClassWithDialog extends JFrame{
 		}
 	}
 	
-	public void showLearnStartDialog (){
+	public void showLearnStartDialog (MyList list){
 		if (notOpenedYet()){
 			dialog = new MyDialog(this);
-			dialog.showLearningStartDialog();
+			dialog.showLearningStartDialog(list);
 		}
 	}
 	

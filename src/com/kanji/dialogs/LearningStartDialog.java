@@ -20,6 +20,7 @@ import javax.swing.text.AbstractDocument;
 
 import com.kanji.constants.NumberValues;
 import com.kanji.constants.TextValues;
+import com.kanji.myList.MyList;
 import com.kanji.range.Range;
 import com.kanji.range.SetOfRanges;
 import com.kanji.window.LimitDocumentFilter;
@@ -32,6 +33,7 @@ public class LearningStartDialog {
 	private JTextField sumRangeField;
 	private int rowsNumber;
 	private MyDialog parentDialog;
+	private MyList repeatsList;	
 	
 	public LearningStartDialog (JPanel panel, MyDialog parent){
 		mainPanel = panel;
@@ -43,7 +45,8 @@ public class LearningStartDialog {
 		layoutConstraints=c;
 	}
 	
-	public JPanel createDialog (){
+	public JPanel createDialog (MyList list){
+		repeatsList = list;
 		int level = 0;
 		addPromptAtLevel(level, TextValues.learnStartPrompt);
 				
@@ -196,8 +199,14 @@ public class LearningStartDialog {
 	}
 	
 	private void recalculateSumOfKanji(JPanel container){
-		SetOfRanges s = validateInputs(container);
-		sumRangeField.setText(TextValues.sumRangePrompt+s.sumRangeInclusive());
+		try{
+			SetOfRanges s = validateInputs(container);
+			sumRangeField.setText(TextValues.sumRangePrompt+s.sumRangeInclusive());
+		}
+		catch (IllegalArgumentException ex){
+			// We keep the message for untill approve button is clicked
+		}
+		
 	}
 			
 	private JButton createDeleteButton (final JPanel container, final JPanel panelToRemove){
@@ -218,10 +227,8 @@ public class LearningStartDialog {
 			JPanel firstRow = (JPanel) container.getComponent(0);
 			for (Component c: firstRow.getComponents()){
 				if (c instanceof JButton)
-					firstRow.remove(c);
-					
-			}
-			
+					firstRow.remove(c);					
+			}			
 		}
 		recalculateSumOfKanji(container);
 		container.repaint();
@@ -254,11 +261,11 @@ public class LearningStartDialog {
 		button.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed (ActionEvent e){				
-				addRowToPanel(panel);
-				scrollPane.repaint();
-				scrollPane.revalidate();
-				mainPanel.revalidate();			
+				addRowToPanel(panel);		
+				parentDialog.repaint();
+				parentDialog.revalidate();
 				scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
+				
 			}
 		});
 		return button;
@@ -277,18 +284,32 @@ public class LearningStartDialog {
 		JButton button = new JButton (text);
 		button.addActionListener(new ActionListener (){
 			@Override
-			public void actionPerformed (ActionEvent e){			
-				SetOfRanges setOfRanges = validateInputs(panel);
-				if (setOfRanges.getRanges().isEmpty())
-					parentDialog.showErrorDialogInNewWindow("Prosze cos wpisac !");
-				else
-					parentDialog.showErrorDialogInNewWindow(setOfRanges.getRanges());
+			public void actionPerformed (ActionEvent e){
+				
+				try{
+					SetOfRanges setOfRanges = validateInputs(panel);
+					addToRepeatsListOrShowError(setOfRanges);
+				}
+				catch (IllegalArgumentException ex){
+					parentDialog.showErrorDialogInNewWindow(ex.getMessage());
+				}
+				
+				
 			}
 		});
 		return button;
 	}
 	
-	private SetOfRanges validateInputs(JPanel panel) throws IllegalArgumentException{
+	public void addToRepeatsListOrShowError(SetOfRanges setOfRanges){
+		if (setOfRanges.getRanges().isEmpty())
+			parentDialog.showErrorDialogInNewWindow(TextValues.noInputSupplied);
+		else{
+			repeatsList.addWord(setOfRanges.getRanges(),repeatsList.getWordsCount());
+			repeatsList.scrollToBottom();
+		}
+	}
+	
+	private SetOfRanges validateInputs(JPanel panel) {
 		
 		SetOfRanges setOfRanges = new SetOfRanges();
 		boolean wasSetModifiedTotally=false;
@@ -298,14 +319,9 @@ public class LearningStartDialog {
 				row = (JPanel)p;
 			}
 			else continue;
-			try{
-				boolean wasSetModifiedInInteration = getRangeFromRowAndAddToSet(row,setOfRanges);
-				wasSetModifiedTotally=wasSetModifiedTotally || wasSetModifiedInInteration;
-				
-			}
-			catch (IllegalArgumentException e){
-				parentDialog.showErrorDialogInNewWindow(e.getMessage());
-			}
+			
+			boolean wasSetModifiedInInteration = getRangeFromRowAndAddToSet(row,setOfRanges);
+			wasSetModifiedTotally=wasSetModifiedTotally || wasSetModifiedInInteration;							
 			
 		}
 			
