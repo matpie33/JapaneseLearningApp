@@ -38,6 +38,8 @@ public class MyList extends JPanel implements Scrollable{
 	private JScrollPane parentScrollPane;	
 	private Map <String, Integer> wordsAndID;
 	private ClassWithDialog parent;
+	private String title;
+	private RowsCreator rowsCreator;
 	
 	
 	@Override
@@ -65,7 +67,10 @@ public class MyList extends JPanel implements Scrollable{
         return false; 
     }
 	
-	public MyList(ClassWithDialog parentDialog){			
+	public MyList(ClassWithDialog parentDialog, String title, RowsCreator rowsCreator){	
+		this.rowsCreator=rowsCreator;
+		rowsCreator.setList(this);
+		this.title=title;
 		parent=parentDialog;
 		createDefaultScrollPane();			
 		initiate();				
@@ -81,138 +86,18 @@ public class MyList extends JPanel implements Scrollable{
 		panels = new LinkedList <JPanel>();	
 		setLayout(new GridBagLayout());
 		setBackground(bgColor);
+		createTitle();	
+	}
+	
+	private void createTitle(){
+		add(new JLabel (title));
 	}
 	
 	public void addWord (String word, int number){
 		wordsAndID.put(word,number);
-		addElement(word);	
+		rowsCreator.addWord(word);	
 	}
 
-	private void addElement (String text){				
-		JPanel row = createNewRowWithElements(text);
-		GridBagConstraints c = createConstraintsForNewRow();		
-		add(row,c);	
-	}
-	
-
-	private JPanel createNewRowWithElements(String text){
-		JPanel row = new JPanel ();	
-		row.setLayout(new GridBagLayout());		
-	
-		JLabel number = new JLabel (""+(panels.size()+1));
-		number.setForeground(wordNumberColor);
-		
-		GridBagConstraints cd = initiateGridBagConstraints();		
-		row.add(number,cd);
-		
-		JTextArea textArea = createTextArea(text);
-		cd.gridx++;
-		cd.weightx=1;
-		cd.fill=GridBagConstraints.HORIZONTAL;
-		row.add(textArea,cd);
-		
-		JButton remove = createButtonRemove(text);		
-		cd.gridx++;
-		cd.weightx=0;
-		row.add(remove,cd);
-		
-		panels.add(row);
-		row.setBackground(defaultRowColor);
-		
-		return row;
-	}
-	
-	private GridBagConstraints initiateGridBagConstraints(){
-		GridBagConstraints cd = new GridBagConstraints();
-		cd.gridx=0;
-		cd.gridy=0;
-		cd.weightx=0;
-		cd.anchor=GridBagConstraints.CENTER;
-		cd.insets=new Insets(5,5,5,5);
-		return cd;
-	}
-	
-	private JTextArea createTextArea(String text){
-		JTextArea elem = new JTextArea(text);
-		elem.setLineWrap(true);
-		elem.setWrapStyleWord(true);
-		elem.setOpaque(true);
-		return elem;
-	}
-	
-	private JButton createButtonRemove(final String text){
-		JButton remove = new JButton("-");
-		remove.addActionListener(new ActionListener (){
-			@Override
-			public void actionPerformed(ActionEvent e){
-				removeRowContainingTheWord(text);
-			}
-		});
-		return remove;
-	}
-	
-	private void removeRowContainingTheWord(String word){ 
-		
-		int rowNumber=removeRowContainingWordAndReturnRowNumber(word);
-		updateRowNumbersAfterThatRow(rowNumber);
-		
-		
-		revalidate();
-		repaint();
-	}
-	
-	private int removeRowContainingWordAndReturnRowNumber(String word){
-		int rowNumber=0;
-		while (rowNumber<panels.size()){
-			JPanel panel = panels.get(rowNumber);
-			JTextArea text = findTextAreaInsideOrCreate(panel);
-				if (text.getText().equals(word)){				
-					remove(panel);
-					panels.remove(panel);				
-					break;
-				}
-			rowNumber++;				
-		}
-		return rowNumber;
-	}
-	
-	private void updateRowNumbersAfterThatRow(int rowNumber){
-		while (rowNumber<panels.size()){
-			JPanel panel = panels.get(rowNumber);
-			JLabel label = findLabelInsideOrCreate(panel);
-			Integer newValue = Integer.parseInt(label.getText())-1;
-			label.setText(newValue.toString());
-			rowNumber++;
-		}
-	}
-	
-
-	private JTextArea findTextAreaInsideOrCreate(JPanel panel){
-		for (Component com: panel.getComponents()){
-			if (com instanceof JTextArea){
-				return (JTextArea)com;
-			}
-		}
-		return new JTextArea();
-	}
-	
-	private JLabel findLabelInsideOrCreate (JPanel panel){
-		for (Component com: panel.getComponents()){
-			if (com instanceof JLabel){
-				return (JLabel)com;
-			}
-		}
-		return new JLabel();
-	}	
-	
-	private GridBagConstraints createConstraintsForNewRow(){
-		GridBagConstraints c = new GridBagConstraints ();
-		c.anchor=GridBagConstraints.EAST;
-		c.gridy=panels.size();
-		c.fill=GridBagConstraints.HORIZONTAL;
-		c.weightx=1;
-		return c;
-	}
 	
 	public void findAndHighlightNextOccurence(String searched, int searchDirection, 
 			Set<Integer> options) throws Exception{
@@ -271,7 +156,12 @@ public class MyList extends JPanel implements Scrollable{
 	
 	private String findWordInRow (int rowNumber){
 		JPanel panel = panels.get(rowNumber);
-		JTextArea textArea = findTextAreaInsideOrCreate(panel);
+		JTextArea textArea = new JTextArea();
+		try {
+			textArea = (JTextArea) rowsCreator.findElementInsideOrCreate(panel, JTextArea.class);
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			sendErrorToParent(e);
+		}
 		return textArea.getText();
 	}
 	
@@ -341,8 +231,9 @@ public class MyList extends JPanel implements Scrollable{
 	
 	private void updateWords (){
 		cleanAll();
+		createTitle();
 		for (String word: wordsAndID.keySet())
-			addElement(word);
+			rowsCreator.addWord(word);
 
 	}
 	
@@ -372,6 +263,10 @@ public class MyList extends JPanel implements Scrollable{
 	
 	public int getWordsCount (){
 		return wordsAndID.size();
+	}
+	
+	public void sendErrorToParent (Exception e){
+		parent.showMessageDialog(e.getMessage());
 	}
 	
 	

@@ -3,6 +3,7 @@ package com.kanji.window;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -13,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
 import com.kanji.constants.TextValues;
@@ -31,8 +33,8 @@ public class BaseWindow extends ClassWithDialog {
 		
 		maker = new ElementMaker(this);
 		
-		JPanel upper = createUpperPanel();	//TODO nie upper i lower, tylko poziomy panel
-		JPanel lower = createButtonsPanel(maker.getButtons());		// i wstawiac go np. jako poziom
+		Container upper = createUpperPanel();	
+		Container lower = createButtonsPanel(maker.getButtons());		// i wstawiac go np. jako poziom
 												// 0, poziom 1, poziom 2 itd wtedy mamy elastyczny kod
 		
 		putPanelsTogetherAndSetContentPane(upper,lower);
@@ -40,19 +42,21 @@ public class BaseWindow extends ClassWithDialog {
 		
 	}
 	
-	private JPanel createUpperPanel(){		
-		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout());
-		panel.setBackground(Color.BLUE);
+	private JSplitPane createUpperPanel(){	
+		
+//		JPanel panel = new JPanel();
+//		panel.setLayout(new BorderLayout());
+//		panel.setBackground(Color.BLUE);
 		
 		MyList wordsList = maker.getWordsList();
 		MyList repeatsList = maker.getRepeatsList();		
 		listScrollWords = createScrollPaneForList(wordsList);
 		listScrollRepeated = createScrollPaneForList(repeatsList);	
-		panel.add(listScrollWords,BorderLayout.WEST);
-		panel.add(listScrollRepeated,BorderLayout.CENTER);
+//		panel.add(,BorderLayout.WEST);
+//		panel.add(listScrollRepeated,BorderLayout.CENTER);
+		JSplitPane j = new JSplitPane (JSplitPane.HORIZONTAL_SPLIT, listScrollWords,listScrollRepeated);
 				
-		return panel;		
+		return j;		
 	}	
 	
 	private void createAndAddKanjiArea(JPanel panel){
@@ -121,12 +125,13 @@ public class BaseWindow extends ClassWithDialog {
 		return i>(size-1)/2;
 	}
 	
-	private void putPanelsTogetherAndSetContentPane(JPanel up, JPanel down){
+	private void putPanelsTogetherAndSetContentPane(Container up, Container down){
 		
 		JPanel main = new JPanel();
 		main.setLayout(new BorderLayout());
 		main.setBackground(Color.RED);
 				
+		
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridy=0;		
 		main.add(up, BorderLayout.CENTER);		

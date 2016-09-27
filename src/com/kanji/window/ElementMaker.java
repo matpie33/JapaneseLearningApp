@@ -19,6 +19,7 @@ import com.kanji.constants.TextValues;
 import com.kanji.dialogs.MyDialog;
 import com.kanji.fileReading.CustomFileReader;
 import com.kanji.myList.MyList;
+import com.kanji.myList.RowWithDeleteButton;
 
 public class ElementMaker {
 	
@@ -63,7 +64,7 @@ public class ElementMaker {
 	}
 	
 	private void initListOfWords(){
-		listOfWords = new MyList(parent);
+		listOfWords = new MyList(parent,TextValues.wordsListTitle, new RowWithDeleteButton());
 		Map <String, Integer> initList = new LinkedHashMap <String, Integer>();
 		for (int i=0; i<10; i++){
 			String a = "Word no. "+i;
@@ -81,7 +82,7 @@ public class ElementMaker {
 	}	
 	
 	private void initRepeatsList(){
-		repeats = new MyList (parent);
+		repeats = new MyList (parent,TextValues.repeatedWordsListTitle, new RowWithDeleteButton());
 	}
 	
 	

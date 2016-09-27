@@ -9,6 +9,9 @@ public class TextValues {
 	public static final String learnStartDialogTitle="Rozpoczecie nauki";	
 	public static final String wordSearchDialogTitle="Znajdü s≥owo";
 	
+	public static final String wordsListTitle="Slowka";	
+	public static final String repeatedWordsListTitle="Powtorzone";
+	
 	// Buttons
 	public static final String buttonStartText = "Rozpocznij";
 	public static final String buttonSearchText = "Znajdü s≥Ûwko";
