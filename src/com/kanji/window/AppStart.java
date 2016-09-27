@@ -10,9 +10,9 @@ public class AppStart {
 		b.setVisible(true);
 		
 		SetOfRanges set = new SetOfRanges();
-		set.addRange(new Range(2323,123132));
+		set.addRange(new Range(1,5));
 //		set.getRanges();
-		set.addRange(new Range(213,123213));
+		set.addRange(new Range(6,10));
 //		set.getRanges();
 //		set.addRange(new Range(30,70));
 		System.out.println(set.getRanges());

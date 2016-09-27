@@ -24,21 +24,33 @@ public class SetOfRanges {
 				i--;
 				newRange = new Range(rangeFromSet.rangeStart, newRange.rangeEnd);
 				isModified=true;
-				continue;
+				
 				
 			}
-			if (rangeFromSet.isValueInsideRange(newRange.rangeEnd)){
+			else if (rangeFromSet.isValueInsideRange(newRange.rangeEnd)){
 				ranges.remove(rangeFromSet);
 				i--;
 				newRange = new Range(newRange.rangeStart, rangeFromSet.rangeEnd);
 				isModified=true;
-				continue;
+				
 			}
-			if (newRange.includesRange(rangeFromSet)){
+			else if (newRange.includesRange(rangeFromSet)){
+				ranges.remove(rangeFromSet);
+				i--;
+				isModified=true;				
+			}
+			else if (newRange.followsRange(rangeFromSet)){
 				ranges.remove(rangeFromSet);
 				i--;
 				isModified=true;
-				continue;
+				newRange = new Range(newRange.rangeStart, rangeFromSet.rangeEnd);
+			}
+			else if (rangeFromSet.followsRange(newRange)){
+				ranges.remove(rangeFromSet);
+				i--;
+				isModified=true;
+				newRange = new Range(rangeFromSet.rangeStart, newRange.rangeEnd);
+				
 			}
 		}
 		ranges.add(newRange);
@@ -48,7 +60,7 @@ public class SetOfRanges {
 	public String getRanges(){
 		String msg="";
 		for (Range r: ranges){
-			msg+="od: "+r.rangeStart+" do "+r.rangeEnd;
+			msg+="od: "+r.rangeStart+" do "+r.rangeEnd+"\n";
 		}
 		return msg;
 	}

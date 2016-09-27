@@ -28,6 +28,7 @@ public class BaseWindow extends ClassWithDialog {
 	private JScrollPane listScrollWords;
 	private JScrollPane listScrollRepeated;
 	private final Dimension scrollPanesSize = new Dimension (300,300);
+	private final Dimension minimumListSize = new Dimension (200,100);
 	
 	public BaseWindow (){
 		
@@ -43,17 +44,12 @@ public class BaseWindow extends ClassWithDialog {
 	}
 	
 	private JSplitPane createUpperPanel(){	
-		
-//		JPanel panel = new JPanel();
-//		panel.setLayout(new BorderLayout());
-//		panel.setBackground(Color.BLUE);
-		
+				
 		MyList wordsList = maker.getWordsList();
 		MyList repeatsList = maker.getRepeatsList();		
 		listScrollWords = createScrollPaneForList(wordsList);
 		listScrollRepeated = createScrollPaneForList(repeatsList);	
-//		panel.add(,BorderLayout.WEST);
-//		panel.add(listScrollRepeated,BorderLayout.CENTER);
+
 		JSplitPane j = new JSplitPane (JSplitPane.HORIZONTAL_SPLIT, listScrollWords,listScrollRepeated);
 				
 		return j;		
@@ -82,6 +78,7 @@ public class BaseWindow extends ClassWithDialog {
 		
 		JScrollPane listScrollWords = createScrollPane(Color.GREEN,raisedBevel, list);			
 		list.setScrollPane(listScrollWords);
+		listScrollWords.setMinimumSize(minimumListSize);
 		
 		return listScrollWords;
 		
@@ -129,8 +126,7 @@ public class BaseWindow extends ClassWithDialog {
 		
 		JPanel main = new JPanel();
 		main.setLayout(new BorderLayout());
-		main.setBackground(Color.RED);
-				
+		main.setBackground(Color.RED);				
 		
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridy=0;		

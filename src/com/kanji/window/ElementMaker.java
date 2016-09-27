@@ -19,6 +19,7 @@ import com.kanji.constants.TextValues;
 import com.kanji.dialogs.MyDialog;
 import com.kanji.fileReading.CustomFileReader;
 import com.kanji.myList.MyList;
+import com.kanji.myList.RowAsJLabel;
 import com.kanji.myList.RowWithDeleteButton;
 
 public class ElementMaker {
@@ -82,7 +83,7 @@ public class ElementMaker {
 	}	
 	
 	private void initRepeatsList(){
-		repeats = new MyList (parent,TextValues.repeatedWordsListTitle, new RowWithDeleteButton());
+		repeats = new MyList (parent,TextValues.repeatedWordsListTitle, new RowAsJLabel());
 	}
 	
 	
