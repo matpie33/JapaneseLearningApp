@@ -1,5 +1,6 @@
 package com.kanji.dialogs;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 
 import javax.swing.JButton;
@@ -43,7 +44,9 @@ public class MessageDialog {
 		layoutConstraints.anchor=GridBagConstraints.CENTER;
 		layoutConstraints.weightx=1;
 		layoutConstraints.fill=GridBagConstraints.HORIZONTAL;
-		JTextArea elem = new JTextArea (message);	
+		JTextArea elem = new JTextArea (4,30);	
+		
+		elem.setText(message);
 		elem.setLineWrap(true);
 		elem.setWrapStyleWord(true);
 		elem.setOpaque(false);
