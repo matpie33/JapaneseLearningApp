@@ -58,7 +58,6 @@ public class CustomFileReader {
 			else
 				keywords.put(word, wordIdInt);
 		}
-		System.out.println(keywords);
 		in.close();
 		return keywords;
 	}

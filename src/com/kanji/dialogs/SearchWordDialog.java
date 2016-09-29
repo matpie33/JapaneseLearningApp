@@ -133,7 +133,9 @@ public class SearchWordDialog {
 	
 	private void tryToFindNextOccurence(int direction, Set <Integer> chosenOptions){
 		try {
-			list.findAndHighlightNextOccurence(textField.getText(), direction, chosenOptions);
+			boolean found = list.findAndHighlightNextOccurence(textField.getText(), direction, chosenOptions);
+			if (!found)
+				parentDialog.showErrorDialogInNewWindow(TextValues.wordNotFoundMessage);
 		} 
 		catch (Exception e) {
 			e.printStackTrace();

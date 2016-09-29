@@ -110,14 +110,12 @@ public class MyList extends JPanel implements Scrollable{
 		c.fill=GridBagConstraints.HORIZONTAL;
 		c.weightx=1;
 		return c;
-	}
+	}	
 	
-
-	
-	public void findAndHighlightNextOccurence(String searched, int searchDirection, 
+	public boolean findAndHighlightNextOccurence(String searchedWord, int searchDirection, 
 			Set<Integer> options) throws Exception{
 				
-		searched=removeDiacritics(searched);
+		searchedWord=removeDiacritics(searchedWord);
 		int lastRowToSearch=highlightedRowNumber;	
 		String highlightedWord = getHighlightedWord();		
 		
@@ -132,16 +130,16 @@ public class MyList extends JPanel implements Scrollable{
 			String word = findWordInRow(rowNumber);
 			word=removeDiacritics(word);						
 			
-			if (doesWordContainSearchedWord(word,searched,options)){
+			if (doesWordContainSearchedWord(word,searchedWord,options)){
 				highlightAndScrollToRow(rowNumber);				
-				return;
+				return true;
 			}
 						
 		}
 		
-		if (doesWordContainSearchedWord(highlightedWord,searched,options))
+		if (doesWordContainSearchedWord(highlightedWord,searchedWord,options)) //TODO avoid throwing exception
 			throw new Exception (TextValues.wordAlreadyHighlightedException);		
-		else throw new Exception (TextValues.wordSearchExceptionWordNotFound);
+		else return false;
 	}
 	
 	private String getHighlightedWord(){

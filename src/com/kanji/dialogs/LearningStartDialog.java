@@ -1,5 +1,6 @@
 package com.kanji.dialogs;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -15,6 +16,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.text.AbstractDocument;
 
@@ -75,8 +77,15 @@ public class LearningStartDialog {
 	
 	private void addPromptAtLevel(int level, String message){
 		layoutConstraints.gridy=level;
-		JLabel label = new JLabel (message);
-		mainPanel.add(label,layoutConstraints);
+		layoutConstraints.anchor=GridBagConstraints.CENTER;
+		layoutConstraints.weightx=1;
+		layoutConstraints.fill=GridBagConstraints.HORIZONTAL;
+		JTextArea elem = new JTextArea (message);	
+		elem.setLineWrap(true);
+		elem.setWrapStyleWord(true);
+		elem.setOpaque(false);
+		elem.setEditable(false);
+		mainPanel.add(elem,layoutConstraints);
 	}
 	
 	private JPanel addTextFieldsForRange(int level){

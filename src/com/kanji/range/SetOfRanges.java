@@ -11,6 +11,11 @@ public class SetOfRanges {
 		ranges = new ArrayList <Range> ();
 	}	
 	
+	public SetOfRanges (Range range){
+		this();
+		ranges.add(range);
+	}
+	
 	public boolean addRange (Range newRange){
 		boolean isModified = false;
 		for (int i=0; i<ranges.size(); i++){
@@ -39,13 +44,13 @@ public class SetOfRanges {
 				i--;
 				isModified=true;				
 			}
-			else if (newRange.followsRange(rangeFromSet)){
+			else if (newRange.isFollowedBy(rangeFromSet)){
 				ranges.remove(rangeFromSet);
 				i--;
 				isModified=true;
 				newRange = new Range(newRange.rangeStart, rangeFromSet.rangeEnd);
 			}
-			else if (rangeFromSet.followsRange(newRange)){
+			else if (rangeFromSet.isFollowedBy(newRange)){
 				ranges.remove(rangeFromSet);
 				i--;
 				isModified=true;

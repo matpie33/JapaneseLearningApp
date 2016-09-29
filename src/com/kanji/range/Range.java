@@ -21,7 +21,7 @@ public class Range {
 		return range.rangeStart>=rangeStart && range.rangeEnd <= rangeEnd;
 	}
 	
-	public boolean followsRange(Range range){
+	public boolean isFollowedBy(Range range){
 		return range.rangeStart==rangeEnd+1;
 	}	
 	
