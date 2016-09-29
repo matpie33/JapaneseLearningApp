@@ -18,28 +18,21 @@ import javax.swing.JTextArea;
 
 public class RowAsJLabel implements RowsCreator {
 
-	private List <JTextArea> rows;
-	private MyList list;
 	private Color defaultColor = Color.RED; 
-	
-	public RowAsJLabel (){
-		rows = new LinkedList <JTextArea> ();
-	}
-	
+	private MyList list;
+		
 	@Override
-	public void addWord(String word) {
+	public JPanel addWord(String word, int rowsNumber) {
 		JPanel rowPanel = createPanel();
 		
-		JLabel number = createNumberLabel();
+		JLabel number = createNumberLabel(rowsNumber);
 		JTextArea repeatedWords = createTextArea(word);
 		JTextArea date = createDateArea();
 		
 		Component [] components = {number, repeatedWords, date};
 		addComponentsToPanel(rowPanel, components);		
 
-		GridBagConstraints c = createConstraints();
-		rows.add(repeatedWords);
-		list.add(rowPanel,c);
+		return rowPanel;
 		
 	}
 	
@@ -49,8 +42,8 @@ public class RowAsJLabel implements RowsCreator {
 		return panel;
 	}
 	
-	private JLabel createNumberLabel (){
-		return new JLabel(rows.size()+1 +" ");
+	private JLabel createNumberLabel (int rowsNumber){
+		return new JLabel(""+rowsNumber);
 	}
 	
 	private JTextArea createTextArea(String text){
@@ -100,31 +93,12 @@ public class RowAsJLabel implements RowsCreator {
 		else anchor = GridBagConstraints.CENTER;			
 		return anchor;
 	}
-	
-	private GridBagConstraints createConstraints(){
-		GridBagConstraints c = new GridBagConstraints ();
-		c.anchor=GridBagConstraints.EAST;
-		c.gridx=0;
-		c.gridy=rows.size()+1;
-		int a =5;
-		c.insets= new Insets(a,a,a,a);
-		c.fill=GridBagConstraints.HORIZONTAL;
-		c.weightx=1;
-		return c;
-	}
-
-	@Override @Deprecated
-	public Object findElementInsideOrCreate(JPanel panel, Class classs)
-			throws ClassNotFoundException, InstantiationException,
-			IllegalAccessException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public void setList(MyList list) {
-		this.list=list;
-		
+		this.list=list;		
 	}
+	
+
 
 }

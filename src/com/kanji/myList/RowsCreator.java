@@ -5,9 +5,8 @@ import javax.swing.JTextArea;
 
 public interface RowsCreator {
 	
-	public void addWord(String word);
-	public Object findElementInsideOrCreate(JPanel panel, Class classs) throws ClassNotFoundException,
-										InstantiationException, IllegalAccessException;
+	public JPanel addWord(String word, int rowsNumber);
 	public void setList (MyList list);
+
 
 }

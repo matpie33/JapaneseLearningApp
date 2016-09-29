@@ -34,7 +34,6 @@ public class MyList extends JPanel implements Scrollable{
 	private Color defaultRowColor = Color.GREEN;
 	private Color highlightedRowColor = Color.BLUE;
 	private Color bgColor = Color.GREEN;
-	private Color wordNumberColor = Color.RED;
 	private JScrollPane parentScrollPane;	
 	private Map <String, Integer> wordsAndID;
 	private ClassWithDialog parent;
@@ -95,8 +94,24 @@ public class MyList extends JPanel implements Scrollable{
 	
 	public void addWord (String word, int number){
 		wordsAndID.put(word,number);
-		rowsCreator.addWord(word);	
+		JPanel row = rowsCreator.addWord(word, panels.size()+1);
+		panels.add(row);
+		GridBagConstraints c = createConstraintsForNewRow();
+		add(row,c);
 	}
+	
+	private GridBagConstraints createConstraintsForNewRow(){
+		GridBagConstraints c = new GridBagConstraints ();
+		c.anchor=GridBagConstraints.EAST;
+		c.gridx=0;
+		c.gridy=panels.size()+1;
+		int a =5;
+		c.insets= new Insets(a,a,a,a);
+		c.fill=GridBagConstraints.HORIZONTAL;
+		c.weightx=1;
+		return c;
+	}
+	
 
 	
 	public void findAndHighlightNextOccurence(String searched, int searchDirection, 
@@ -158,8 +173,9 @@ public class MyList extends JPanel implements Scrollable{
 		JPanel panel = panels.get(rowNumber);
 		JTextArea textArea = new JTextArea();
 		try {
-			textArea = (JTextArea) rowsCreator.findElementInsideOrCreate(panel, JTextArea.class);
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			textArea = (JTextArea) findElementInsideOrCreate(panel, JTextArea.class);
+		} 
+		catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			sendErrorToParent(e);
 		}
 		return textArea.getText();
@@ -207,6 +223,63 @@ public class MyList extends JPanel implements Scrollable{
 		repaint();
 	}	
 	
+	public void removeRowContainingTheWord(String word) { 
+
+		int rowNumber;
+		try {
+			rowNumber = removeRowContainingWordAndReturnRowNumber(word);
+			updateRowNumbersAfterThatRow(rowNumber);
+		}
+		catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException e) {
+			sendErrorToParent(e);
+		}
+				
+		
+		revalidate();
+		repaint();
+	}
+
+	private int removeRowContainingWordAndReturnRowNumber(String word) throws ClassNotFoundException, 
+		InstantiationException, IllegalAccessException{
+		int rowNumber=0;
+		while (rowNumber<panels.size()){
+			JPanel panel = panels.get(rowNumber);
+			JTextArea text = (JTextArea)findElementInsideOrCreate(panel, JTextArea.class);
+			
+			if (text.getText().equals(word)){				
+				remove(panel);
+				panels.remove(panel);				
+				break;
+			}
+			rowNumber++;				
+		}
+		return rowNumber;
+	}
+
+	private Object findElementInsideOrCreate(JPanel panel, Class classTemp) throws ClassNotFoundException, 
+		InstantiationException, IllegalAccessException{		
+		for (Component com: panel.getComponents()){
+			if (classTemp.isInstance(com)){
+				return classTemp.cast(com);
+			}
+		}
+		return classTemp.newInstance();
+	}
+
+
+	private void updateRowNumbersAfterThatRow(int rowNumber) throws ClassNotFoundException, 
+											InstantiationException, IllegalAccessException{
+		while (rowNumber<panels.size()){
+			JPanel panel = panels.get(rowNumber);
+			JLabel label = (JLabel)findElementInsideOrCreate(panel, JLabel.class);
+			
+			Integer newValue = Integer.parseInt(label.getText())-1;
+			label.setText(newValue.toString());
+			rowNumber++;
+		}
+	}
+	
 	public void scrollTo (JPanel panel){		
 		int r = panel.getY();
 		parentScrollPane.getViewport().setViewPosition(new Point(0,r));
@@ -233,7 +306,7 @@ public class MyList extends JPanel implements Scrollable{
 		cleanAll();
 		createTitle();
 		for (String word: wordsAndID.keySet())
-			rowsCreator.addWord(word);
+			addWord(word, wordsAndID.get(word));
 
 	}
 	
@@ -268,6 +341,8 @@ public class MyList extends JPanel implements Scrollable{
 	public void sendErrorToParent (Exception e){
 		parent.showMessageDialog(e.getMessage());
 	}
+	
+	
 	
 	
 }
