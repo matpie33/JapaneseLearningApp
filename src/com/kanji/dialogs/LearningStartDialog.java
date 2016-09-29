@@ -75,7 +75,7 @@ public class LearningStartDialog {
 		return mainPanel;
 	}
 	
-	private void addPromptAtLevel(int level, String message){
+	private void addPromptAtLevel(int level, String message){ //TODO it is in different classes
 		layoutConstraints.gridy=level;
 		layoutConstraints.anchor=GridBagConstraints.CENTER;
 		layoutConstraints.weightx=1;

@@ -14,6 +14,7 @@ import com.kanji.constants.NumberValues;
 import com.kanji.fileReading.CustomFileReader;
 import com.kanji.myList.MyList;
 import com.kanji.myList.RowAsJLabel;
+import com.kanji.myList.SearchOptions;
 import com.kanji.window.BaseWindow;
 
 public class SearchWord {
@@ -36,7 +37,8 @@ public class SearchWord {
 	
 	@Test
 	public void shouldFindPartOfWord(){
-		Set<Integer> options = new HashSet<Integer>();
+		SearchOptions options = new SearchOptions ();
+		
 		try {
 			boolean isFound = list.findAndHighlightNextOccurence("Ala", NumberValues.FORWARD_DIRECTION, options);
 			assertEquals("Should find in dummy list: Ala as part", true, isFound);
@@ -48,8 +50,8 @@ public class SearchWord {
 	
 	@Test 
 	public void shouldFindWholeWord(){
-		Set <Integer> options = new HashSet <Integer>();
-		options.add(1);
+		SearchOptions options = new SearchOptions ();
+		options.enableMatchByWordOnly();
 		
 		try {
 			boolean isFound = list.findAndHighlightNextOccurence("Kot", NumberValues.FORWARD_DIRECTION, options);
@@ -62,8 +64,8 @@ public class SearchWord {
 	
 	@Test
 	public void shouldNotFindCharactersAsWord (){
-		Set <Integer> options = new HashSet <Integer>();
-		options.add(1);
+		SearchOptions options = new SearchOptions ();
+		options.enableMatchByWordOnly();
 		
 		try {
 			boolean isFound = list.findAndHighlightNextOccurence("Ko", NumberValues.FORWARD_DIRECTION, options);

@@ -1,6 +1,7 @@
 package com.kanji.dialogs;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -14,6 +15,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import com.kanji.constants.TextValues;
 import com.kanji.myList.MyList;
@@ -27,9 +29,9 @@ public class MyDialog extends JDialog  {
 	private Color backgroundColor = Color.GREEN;
 	private GridBagConstraints layoutConstraints;
 	private boolean isOpened;	
-	private MyDialog upper;
-		
+	private MyDialog upper;		
 	private JPanel mainPanel;	
+	
 	private class MyDispatcher implements KeyEventDispatcher {
         @Override
         public boolean dispatchKeyEvent(KeyEvent e) {        	
@@ -94,7 +96,7 @@ public class MyDialog extends JDialog  {
 		showYourself(TextValues.learnStartDialogTitle);		
 	}		
 		
-	private void showYourself(String title){ //TODO title as parameter		
+	private void showYourself(String title){ 	
 		pack();
 		setMinimumSize(getSize());
 		setVisible(true);
@@ -106,6 +108,7 @@ public class MyDialog extends JDialog  {
 		dialog.setLayoutConstraints(layoutConstraints);
 		mainPanel = dialog.createDialog(message);
 		showYourself(TextValues.messageDialogTitle);	
+		
 	}	
 		
 	public void showSearchWordDialog (MyList list){							
@@ -123,11 +126,15 @@ public class MyDialog extends JDialog  {
 	}	
 	
 	public void showErrorDialogInNewWindow(String message){ // TODO jak tego uniknac bo to kopia
-		if (upper==null || !upper.isOpened)
-			upper = new MyDialog(this);
+		if (upper==null || !upper.isOpened){
+			upper = new MyDialog(this);				
+		}
 		else return;
 		
-		upper.showMsgDialog(message);		
+		upper.showMsgDialog(message);	
+		upper.pack();
+		upper.setMinimumSize(upper.getSize()); //TODO try to fix the size of upper dialog 
+			
 	}	
 	
 	public boolean isOpened(){

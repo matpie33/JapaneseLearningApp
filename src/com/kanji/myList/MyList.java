@@ -113,7 +113,7 @@ public class MyList extends JPanel implements Scrollable{
 	}	
 	
 	public boolean findAndHighlightNextOccurence(String searchedWord, int searchDirection, 
-			Set<Integer> options) throws Exception{
+			SearchOptions options) throws Exception{
 				
 		searchedWord=removeDiacritics(searchedWord);
 		int lastRowToSearch=highlightedRowNumber;	
@@ -179,16 +179,15 @@ public class MyList extends JPanel implements Scrollable{
 		return textArea.getText();
 	}
 	
-	private boolean doesWordContainSearchedWord(String word, String searched, Set<Integer> options){
-		if (options.contains(new Integer(1))){
+	private boolean doesWordContainSearchedWord(String word, String searched, SearchOptions options){
+		if (options.isMatchByWordEnabled())
 			return doesPhraseContainSearchedWords(word,searched);
-		}
-		else if (options.contains(new Integer(2))){
+		
+		else if (options.isMatchByExpressionEnabled())
 			return doesPhraseEqualToSearchedWords(word,searched);
-		}
-		else{
-			return doesPhraseContainSearchedCharacterChain(word,searched);
-		}
+		
+		else return doesPhraseContainSearchedCharacterChain(word,searched);
+		
 	}
 	
 	private boolean doesPhraseContainSearchedWords(String phrase, String searched){

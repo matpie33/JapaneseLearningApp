@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import com.kanji.constants.NumberValues;
 import com.kanji.constants.TextValues;
 import com.kanji.myList.MyList;
+import com.kanji.myList.SearchOptions;
 
 public class SearchWordDialog {
 
@@ -28,14 +29,14 @@ public class SearchWordDialog {
 	private MyDialog parentDialog;
 	private JRadioButton fullWordsSearchOption;
 	private JRadioButton perfectMatchSearchOption;
-	private Map<JRadioButton, Integer> options;	
+	private SearchOptions options;
 	private MyList list;
 	
 	public SearchWordDialog (JPanel panel, MyDialog parent){
 		mainPanel = panel;
 		parentDialog=parent;
 		layoutConstraints = new GridBagConstraints();			
-		options = new HashMap <JRadioButton, Integer> ();
+		options = new SearchOptions();
 	}
 	
 	public void setLayoutConstraints (GridBagConstraints c){
@@ -48,18 +49,36 @@ public class SearchWordDialog {
 		textField = addPromptAndTextFieldAndReturnTextField(level,TextValues.wordSearchDialogPrompt);
 		
 		level++;
-		JRadioButton defaultSearchOption = createRadioButton (level,TextValues.wordSearchDefaultOption);		
+		JRadioButton defaultSearchOption = createRadioButton (level,TextValues.wordSearchDefaultOption);	
+		defaultSearchOption.addActionListener(new ActionListener (){
+			@Override
+			public void actionPerformed (ActionEvent e){
+				options.setDefaultOption();
+			}
+		});
+		
 		level++;
-		fullWordsSearchOption = createRadioButton (level, TextValues.wordSearchOnlyFullWordsOption);	
+		fullWordsSearchOption = createRadioButton (level, TextValues.wordSearchOnlyFullWordsOption);
+		fullWordsSearchOption.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed (ActionEvent e){
+				options.enableMatchByWordOnly();
+			}
+		});
+		
 		level++;
 		perfectMatchSearchOption = createRadioButton (level, TextValues.wordSearchPerfectMatchOption);
+		perfectMatchSearchOption.addActionListener(new ActionListener (){
+			@Override
+			public void actionPerformed (ActionEvent e){
+				options.enableMatchByExpressionOnly();
+			}
+		});
 		
 		addRadioButtonsToGroup (new JRadioButton [] {defaultSearchOption, fullWordsSearchOption,
 					perfectMatchSearchOption});
 		
 		defaultSearchOption.setSelected(true);
-		options.put(fullWordsSearchOption, 1);	//TODO avoid pure numbers here
-		options.put(perfectMatchSearchOption, 2);
 		
 		level++;
 		JButton previous = createButtonPrevious(TextValues.buttonPreviousText);
@@ -101,7 +120,7 @@ public class SearchWordDialog {
 		button.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed (ActionEvent e){
-				search(NumberValues.BACKWARD_DIRECTION);			
+				tryToFindNextOccurence(NumberValues.BACKWARD_DIRECTION);			
 			}
 		});
 		
@@ -113,27 +132,18 @@ public class SearchWordDialog {
 		button.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed (ActionEvent e){
-				search(NumberValues.FORWARD_DIRECTION);			
+				tryToFindNextOccurence(NumberValues.FORWARD_DIRECTION);			
 			}
 		});
 		return button;		
 	}	
 	
-	private void search (int direction){
-		Set <Integer> chosenOptions = new HashSet <Integer> ();
 	
-		for (JRadioButton checkbox: options.keySet()){
-			if (checkbox.isSelected())
-				chosenOptions.add(options.get(checkbox));
-		}
-	
-		tryToFindNextOccurence(direction,chosenOptions);
-			
-	}
-	
-	private void tryToFindNextOccurence(int direction, Set <Integer> chosenOptions){
+	private void tryToFindNextOccurence(int direction){
+		System.out.println(options.isMatchByExpressionEnabled());
+		System.out.println(options.isMatchByWordEnabled());
 		try {
-			boolean found = list.findAndHighlightNextOccurence(textField.getText(), direction, chosenOptions);
+			boolean found = list.findAndHighlightNextOccurence(textField.getText(), direction, options);
 			if (!found)
 				parentDialog.showErrorDialogInNewWindow(TextValues.wordNotFoundMessage);
 		} 
