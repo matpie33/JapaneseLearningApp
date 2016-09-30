@@ -43,18 +43,11 @@ public class MyDialog extends JDialog  {
 	
 	public MyDialog (Window b){
 		super(b);
-		setLocationBasedOnParent(b);
 		initialize();
 		initializeLayout();
 		addEscapeKeyToCloseTheWindow();		
 	}
-		
-	private void setLocationBasedOnParent (Window parent){
-		if (parent instanceof BaseWindow)
-			setLocation(parent.getLocation());
-		
-		else setLocationRelativeTo(parent);			
-	}
+	
 	
 	private void initialize(){
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -91,7 +84,6 @@ public class MyDialog extends JDialog  {
 	
 	public void showLearningStartDialog (MyList list){		
 		LearningStartDialog dialog = new LearningStartDialog(mainPanel,this);
-		dialog.setLayoutConstraints(layoutConstraints);
 		mainPanel = dialog.createDialog(list);
 		showYourself(TextValues.learnStartDialogTitle);		
 	}		
@@ -132,8 +124,9 @@ public class MyDialog extends JDialog  {
 		else return;
 		
 		upper.showMsgDialog(message);	
+		upper.setLocationAtCenterOfParent(this);
 		upper.pack();
-		upper.setMinimumSize(upper.getSize()); //TODO try to fix the size of upper dialog 
+		upper.setMinimumSize(upper.getSize());
 			
 	}	
 	
@@ -150,6 +143,14 @@ public class MyDialog extends JDialog  {
 			}
 		});
 		return button;
+	}
+	
+	public void setLocationAtCenterOfParent (Window parent){
+		setLocationRelativeTo(parent);
+	}
+	
+	public void setLocationAtLeftUpperCornerOfParent (Window parent){
+		setLocation(parent.getLocation());
 	}
 	
 }

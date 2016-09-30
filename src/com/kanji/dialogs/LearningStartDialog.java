@@ -30,7 +30,6 @@ import com.kanji.window.LimitDocumentFilter;
 public class LearningStartDialog {
 	
 	private JPanel mainPanel;
-	private GridBagConstraints layoutConstraints;
 	private JScrollPane scrollPane;
 	private JTextField sumRangeField;
 	private int rowsNumber;
@@ -40,12 +39,8 @@ public class LearningStartDialog {
 	public LearningStartDialog (JPanel panel, MyDialog parent){
 		mainPanel = panel;
 		parentDialog=parent;
-		layoutConstraints = new GridBagConstraints();	
 	}
 	
-	public void setLayoutConstraints (GridBagConstraints c){
-		layoutConstraints=c;
-	}
 	
 	public JPanel createDialog (MyList list){
 		repeatsList = list;
@@ -54,32 +49,35 @@ public class LearningStartDialog {
 				
 		level++;
 		JPanel panel = addTextFieldsForRange(level);
-		scrollPane = new JScrollPane(panel);
-		layoutConstraints.weightx=1;
-		layoutConstraints.weighty=1;
-		layoutConstraints.fill=GridBagConstraints.BOTH;
-		scrollPane.getVerticalScrollBar().setUnitIncrement(10);
-		scrollPane.setPreferredSize(new Dimension(500,100));
-		mainPanel.add(scrollPane,layoutConstraints);
+		scrollPane = createScrollPane(panel, level);
 		
 		level++;
 		JButton newRow = createButtonAddRow(TextValues.buttonAddRowText, panel);
 		sumRangeField = createSumRangeField(TextValues.sumRangePrompt);
-		addButtonsAtLevel(level, new JComponent []{newRow,sumRangeField});
+		addComponentsAtLevel(level, new JComponent []{newRow,sumRangeField});
 		
 		level++;
 		JButton cancel = parentDialog.createButtonDispose(TextValues.buttonCancelText);
 		JButton approve = createButtonStartLearning (TextValues.buttonApproveText, panel); 
 		
-		addButtonsAtLevel(level, new JButton []{cancel,approve});
+		addComponentsAtLevel(level, new JButton []{cancel,approve});
 		return mainPanel;
 	}
 	
+	private GridBagConstraints createDefaultConstraints(){
+		GridBagConstraints c = new GridBagConstraints();
+		c.weightx=1;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		return c;
+	}
+	
 	private void addPromptAtLevel(int level, String message){ //TODO it is in different classes
+		GridBagConstraints layoutConstraints = createDefaultConstraints();
 		layoutConstraints.gridy=level;
 		layoutConstraints.anchor=GridBagConstraints.CENTER;
 		layoutConstraints.weightx=1;
 		layoutConstraints.fill=GridBagConstraints.HORIZONTAL;
+		
 		JTextArea elem = new JTextArea (message);	
 		elem.setLineWrap(true);
 		elem.setWrapStyleWord(true);
@@ -91,11 +89,26 @@ public class LearningStartDialog {
 	private JPanel addTextFieldsForRange(int level){
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridBagLayout());		
-		addRowToPanel(panel);				
+		addRowToPanel(panel);		
+		GridBagConstraints layoutConstraints = createDefaultConstraints();
 		layoutConstraints.gridy=level;
 		layoutConstraints.anchor=GridBagConstraints.WEST;	
 		return panel;
 		
+	}
+	
+	private JScrollPane createScrollPane (JPanel panel, int level){
+		JScrollPane scrollPane = new JScrollPane(panel);	
+		
+		GridBagConstraints layoutConstraints = createDefaultConstraints();
+		layoutConstraints.gridy=level;
+		layoutConstraints.weighty=1;
+		layoutConstraints.fill=GridBagConstraints.BOTH;
+		
+		scrollPane.getVerticalScrollBar().setUnitIncrement(10);
+		scrollPane.setPreferredSize(new Dimension(500,100));
+		mainPanel.add(scrollPane,layoutConstraints);
+		return scrollPane;
 	}
 	
 	private void addRowToPanel (final JPanel panel){
@@ -368,12 +381,14 @@ public class LearningStartDialog {
 	}
 	
 	
-	private void addButtonsAtLevel(int level, JComponent [] buttons){ //TODO this method occurs in multiple classes
+	private void addComponentsAtLevel(int level, JComponent [] components){ //TODO this method occurs in multiple classes
 		JPanel panel = new JPanel ();
-		for (JComponent button: buttons)
+		for (JComponent button: components)
 			panel.add(button);
 		
-		layoutConstraints.gridy=level;
+		GridBagConstraints layoutConstraints = createDefaultConstraints();		
+		layoutConstraints.gridy=level;			
+		
 		mainPanel.add(panel,layoutConstraints);
 	}
 

@@ -13,6 +13,7 @@ public abstract class ClassWithDialog extends JFrame{
 		if (notOpenedYet()){
 			dialog = new MyDialog(this); //TODO moze skrocic?
 			dialog.showSearchWordDialog(list);
+			dialog.setLocationAtLeftUpperCornerOfParent(this);
 		}		
 		
 	}
@@ -25,6 +26,7 @@ public abstract class ClassWithDialog extends JFrame{
 		if (notOpenedYet()){
 			dialog = new MyDialog(this);
 			dialog.showInsertDialog(list);
+			dialog.setLocationAtLeftUpperCornerOfParent(this);
 		}
 	}
 	
@@ -32,6 +34,7 @@ public abstract class ClassWithDialog extends JFrame{
 		if (notOpenedYet()){
 			dialog = new MyDialog(this);
 			dialog.showMsgDialog(message);
+			dialog.setLocationAtCenterOfParent(this);
 		}
 	}
 	
@@ -39,6 +42,7 @@ public abstract class ClassWithDialog extends JFrame{
 		if (notOpenedYet()){
 			dialog = new MyDialog(this);
 			dialog.showLearningStartDialog(list);
+			dialog.setLocationAtLeftUpperCornerOfParent(this);
 		}
 	}
 	
