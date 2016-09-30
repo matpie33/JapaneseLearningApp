@@ -6,16 +6,19 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import com.kanji.constants.TextValues;
 import com.kanji.myList.MyList;
 import com.kanji.range.Range;
 import com.kanji.range.SetOfRanges;
@@ -25,13 +28,22 @@ public class RepeatingWordsPanel extends JPanel{
 	private List <String> wordsToRepeat; //TODO add to repeating list information about whether specified row
 										// contains words that were learned completely or aborted/paused
 	private BaseWindow parent;
+	private JLabel time;
+	private double timeElapsed;
+	private double interval = 0.1;
+	private String timeLabel = "Czas: ";
+	private Thread timerThread;
+	private boolean timerRunning;
+	private JButton pauseOrResume;
+	private final static String PAUSE_TEXT = "Pauza";
+	private final static String RESUME_TEXT = "Wznow";
 	
 	public RepeatingWordsPanel (BaseWindow parent){
 		wordsToRepeat = new LinkedList <String> ();
 		setLayout(new GridBagLayout());
 		this.parent=parent;		
-		createPanel();
-		
+		timerRunning = false;
+		createPanel();		
 	}
 	
 	private void createPanel(){
@@ -48,20 +60,23 @@ public class RepeatingWordsPanel extends JPanel{
 	private void addTitle(String title, int level){
 		GridBagConstraints c = createDefaultConstraints();
 		c.gridy=level;
-		c.anchor=GridBagConstraints.CENTER;
-		
+		c.anchor=GridBagConstraints.CENTER;		
 		add (new JLabel(title),c);
 		
+		c.gridx++;
+		c.anchor = GridBagConstraints.EAST;		
+		time = new JLabel (timeLabel);
+		add (time,c);						
 	}
+	
 	
 	private void addRepeatingPanel(int level){
 		
 		JPanel panel = new JPanel (new GridBagLayout());
-		JButton pause = new JButton ("pauza");
-		JButton easyWord = new JButton ("Znam");
-		JButton hardWord = new JButton ("Nie pamietam");
+		pauseOrResume = new JButton (PAUSE_TEXT);
+		JButton showWord = new JButton ("Poka¿ kanji.");		
 		
-		JButton [] buttons = new JButton [] {pause, easyWord, hardWord};
+		JButton [] buttons = new JButton [] {pauseOrResume,  showWord};
 		
 		GridBagConstraints c = createDefaultConstraints();		
 		c.gridx=0;
@@ -69,13 +84,16 @@ public class RepeatingWordsPanel extends JPanel{
 		c.gridwidth = buttons.length;
 		c.anchor=GridBagConstraints.CENTER;
 		
-		JTextArea j = new JTextArea(wordsToRepeat.get(0));
-		j.setLineWrap(true);
-		j.setWrapStyleWord(true);
-		j.setEditable(false);
-		j.setOpaque(false);		
+		JTextArea wordArea = new JTextArea(pickRandomWord());
+		wordArea.setLineWrap(true);
+		wordArea.setWrapStyleWord(true);
+		wordArea.setEditable(false);
+		wordArea.setOpaque(false);		
 		
-		panel.add(j,c);
+		createShowWordListener(showWord, wordArea);
+		createPauseOrResumeListener();						
+		
+		panel.add(wordArea,c);
 		
 		c.gridwidth = 1;
 		c.gridy++;
@@ -102,15 +120,61 @@ public class RepeatingWordsPanel extends JPanel{
 		return c;
 	}
 	
+	private void createShowWordListener (JButton showWord, final JTextArea wordArea){
+		showWord.addActionListener(new ActionListener (){
+			@Override
+			public void actionPerformed (ActionEvent e){				
+				String word = wordArea.getText();
+				wordsToRepeat.remove(word);
+				
+				if (!wordsToRepeat.isEmpty())
+					wordArea.setText(pickRandomWord());				
+				else {
+					parent.showMessageDialog(TextValues.learningFinished);
+					wordArea.setText(TextValues.learningFinished);
+				}
+				
+			}
+		});
+	}
+	
+	private void createPauseOrResumeListener(){
+		pauseOrResume.addActionListener(new ActionListener (){
+			@Override
+			public void actionPerformed (ActionEvent e){
+				pauseOrResume();
+			}
+		});
+	}
+	
+	private String pickRandomWord (){
+		Random randomizer = new Random();
+		int index = randomizer.nextInt(wordsToRepeat.size());
+		System.out.println(wordsToRepeat.get(index));
+		return wordsToRepeat.get(index);
+	}
+	
+	private void pauseOrResume(){
+		if (pauseOrResume.getText().equals(PAUSE_TEXT)){
+			stopTimer();
+			pauseOrResume.setText(RESUME_TEXT);
+		}
+		else{
+			startTimer();
+			pauseOrResume.setText(PAUSE_TEXT);
+		}
+			
+	}
+	
 	private void addButtons(int level){
 		JButton returnButton = new JButton ("Powrot");
 		returnButton.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed (ActionEvent e){
 				parent.showCardPanel(BaseWindow.LIST_PANEL);
+				stopTimer();
 			}
-		});
-		
+		});		
 		
 		GridBagConstraints c = createDefaultConstraints();
 		c.gridy=level;
@@ -134,7 +198,40 @@ public class RepeatingWordsPanel extends JPanel{
 		}
 		removeAll();
 		createPanel();
+		resetTimer();
+		startTimer();
 		System.out.println(wordsToRepeat);
+	}
+	private void resetTimer(){
+		timeElapsed = 0;
+	}
+	
+	private void startTimer(){
+		
+		timerRunning = true;
+		Runnable runnable = new Runnable (){
+			@Override
+			public void run (){
+				while (timerRunning){
+					timeElapsed+=interval;
+					time.setText(timeLabel+String.format("%.2f",timeElapsed));
+					
+					try {
+						Thread.sleep((long)(interval*1000));
+					} 
+					catch (InterruptedException e) {
+						parent.showMessageDialog(e.getMessage());						
+					}
+				}
+				
+			}
+		};
+		timerThread = new Thread (runnable);
+		timerThread.start();
+	}
+	
+	private void stopTimer (){
+		timerRunning = false;
 	}
 	
 

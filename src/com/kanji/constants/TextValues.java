@@ -58,5 +58,6 @@ public class TextValues {
 	public static final String valueIsNotNumber = "Proszê wpisaæ liczbê";
 	public static final String noInputSupplied = "Prosze cokolwiek wpisac!";
 	public static final String sumRangePrompt = "£¹czna liczba kanji: ";
+	public static final String learningFinished = "Koniec s³ów do powtórzenia.";
 
 }
