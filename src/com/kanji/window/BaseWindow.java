@@ -1,6 +1,7 @@
 package com.kanji.window;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -9,9 +10,12 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.List;
+import java.util.Map;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -19,6 +23,7 @@ import javax.swing.JTextArea;
 import javax.swing.border.Border;
 import com.kanji.constants.TextValues;
 import com.kanji.myList.MyList;
+import com.kanji.range.SetOfRanges;
 
 @SuppressWarnings("serial")
 public class BaseWindow extends ClassWithDialog {
@@ -29,17 +34,29 @@ public class BaseWindow extends ClassWithDialog {
 	private JScrollPane listScrollRepeated;
 	private final Dimension scrollPanesSize = new Dimension (300,300);
 	private final Dimension minimumListSize = new Dimension (200,100);
+	private JPanel mainPanel;
+	private RepeatingWordsPanel repeatingWordsPanel;
+	
+	public static final String LIST_PANEL = "Panel with lists and buttons";
+	public static final String LEARNING_PANEL = "Panel for repeating words";
 	
 	public BaseWindow (){
 		
 		maker = new ElementMaker(this);
+		mainPanel = new JPanel (new CardLayout());	
+		setContentPane(mainPanel);
 		
 		Container upper = createUpperPanel();	
-		Container lower = createButtonsPanel(maker.getButtons());		// i wstawiac go np. jako poziom
-												// 0, poziom 1, poziom 2 itd wtedy mamy elastyczny kod
+		Container lower = createButtonsPanel(maker.getButtons());	
 		
-		putPanelsTogetherAndSetContentPane(upper,lower);
-		setWindowProperties();		
+		JPanel listsPanel = putPanelsTogetherAndSetContentPane(upper,lower);		
+		mainPanel.add(listsPanel, LIST_PANEL);
+		
+		repeatingWordsPanel = new RepeatingWordsPanel(this);
+		mainPanel.add(repeatingWordsPanel, LEARNING_PANEL);
+		
+		setWindowProperties();	
+		
 		
 	}
 	
@@ -122,7 +139,7 @@ public class BaseWindow extends ClassWithDialog {
 		return i>(size-1)/2;
 	}
 	
-	private void putPanelsTogetherAndSetContentPane(Container up, Container down){
+	private JPanel putPanelsTogetherAndSetContentPane(Container up, Container down){
 		
 		JPanel main = new JPanel();
 		main.setLayout(new BorderLayout());
@@ -135,7 +152,7 @@ public class BaseWindow extends ClassWithDialog {
 		c.gridy=1;
 		main.add(down, BorderLayout.SOUTH);		
 		
-		setContentPane(main);
+		return main;
 		
 	}
 	
@@ -147,5 +164,13 @@ public class BaseWindow extends ClassWithDialog {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	
+	public void showCardPanel (String cardName){
+		((CardLayout)mainPanel.getLayout()).show(mainPanel, cardName);		
+	}
+	
+	public void setWordsRangeToRepeat(SetOfRanges ranges){
+		repeatingWordsPanel.setRepeatingWords(maker.getWordsList());
+		repeatingWordsPanel.setRangesToRepeat(ranges);
+	}
 	
 }

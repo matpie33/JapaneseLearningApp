@@ -25,5 +25,13 @@ public class Range {
 		return range.rangeStart==rangeEnd+1;
 	}	
 	
+	public int getRangeStart(){
+		return rangeStart;
+	}
+	
+	public int getRangeEnd(){
+		return rangeEnd;
+	}
+	
 
 }

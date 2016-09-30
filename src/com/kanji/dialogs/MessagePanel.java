@@ -11,13 +11,13 @@ import javax.swing.text.StyledDocument;
 
 import com.kanji.constants.TextValues;
 
-public class MessageDialog {
+public class MessagePanel {
 
 	private JPanel mainPanel;
 	private GridBagConstraints layoutConstraints;
 	private MyDialog parentDialog;
 	
-	public MessageDialog (JPanel panel, MyDialog parent){
+	public MessagePanel (JPanel panel, MyDialog parent){
 		mainPanel = panel;
 		parentDialog=parent;
 		layoutConstraints = new GridBagConstraints();	
@@ -27,7 +27,7 @@ public class MessageDialog {
 		layoutConstraints=c;
 	}
 	
-	public JPanel createDialog (String message){
+	public JPanel createPanel (String message){
 		
 		int level = 0;
 		addPromptAtLevel(level,message);

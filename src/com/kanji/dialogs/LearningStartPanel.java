@@ -6,10 +6,13 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -25,9 +28,11 @@ import com.kanji.constants.TextValues;
 import com.kanji.myList.MyList;
 import com.kanji.range.Range;
 import com.kanji.range.SetOfRanges;
+import com.kanji.window.BaseWindow;
+import com.kanji.window.ClassWithDialog;
 import com.kanji.window.LimitDocumentFilter;
 
-public class LearningStartDialog {
+public class LearningStartPanel {
 	
 	private JPanel mainPanel;
 	private JScrollPane scrollPane;
@@ -35,14 +40,16 @@ public class LearningStartDialog {
 	private int rowsNumber;
 	private MyDialog parentDialog;
 	private MyList repeatsList;	
+	private Window parentFrame;
 	
-	public LearningStartDialog (JPanel panel, MyDialog parent){
+	public LearningStartPanel (JPanel panel, MyDialog parent, Window parentOfParent){
 		mainPanel = panel;
 		parentDialog=parent;
+		this.parentFrame = parentOfParent;
 	}
 	
 	
-	public JPanel createDialog (MyList list){
+	public JPanel createPanel (MyList list){ //TODO add focus to textfield from
 		repeatsList = list;
 		int level = 0;
 		addPromptAtLevel(level, TextValues.learnStartPrompt);
@@ -212,7 +219,7 @@ public class LearningStartDialog {
 		};
 		
 		
-		from.addKeyListener(keyAdapter);		
+		from.addKeyListener(keyAdapter);
 		to.addKeyListener(keyAdapter);
 		
 		textFields[0]=from;
@@ -300,8 +307,6 @@ public class LearningStartDialog {
 		
 	}
 	
-	
-	
 	private JButton createButtonStartLearning (String text, final JPanel panel){
 		JButton button = new JButton (text);
 		button.addActionListener(new ActionListener (){
@@ -311,6 +316,8 @@ public class LearningStartDialog {
 				try{
 					SetOfRanges setOfRanges = validateInputs(panel);
 					addToRepeatsListOrShowError(setOfRanges);
+					switchPanels(setOfRanges);
+					parentDialog.dispose();
 				}
 				catch (IllegalArgumentException ex){
 					parentDialog.showErrorDialogInNewWindow(ex.getMessage());
@@ -322,12 +329,20 @@ public class LearningStartDialog {
 		return button;
 	}
 	
-	public void addToRepeatsListOrShowError(SetOfRanges setOfRanges){
-		if (setOfRanges.getRanges().isEmpty())
+	private void addToRepeatsListOrShowError(SetOfRanges setOfRanges){
+		if (setOfRanges.getRangesAsString().isEmpty())
 			parentDialog.showErrorDialogInNewWindow(TextValues.noInputSupplied);
 		else{
-			repeatsList.addWord(setOfRanges.getRanges(),repeatsList.getWordsCount());
+			repeatsList.addWord(setOfRanges.getRangesAsString(),repeatsList.getWordsCount());
 			repeatsList.scrollToBottom();
+		}
+	}
+	
+	private void switchPanels(SetOfRanges wordsToLearn){
+		if (parentFrame instanceof BaseWindow){
+			BaseWindow parent = (BaseWindow) parentFrame;
+			parent.showCardPanel(BaseWindow.LEARNING_PANEL);
+			parent.setWordsRangeToRepeat(wordsToLearn);
 		}
 	}
 	

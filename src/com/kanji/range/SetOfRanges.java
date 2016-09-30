@@ -62,12 +62,16 @@ public class SetOfRanges {
 		return isModified;
 	}
 	
-	public String getRanges(){
+	public String getRangesAsString(){
 		String msg="";
 		for (Range r: ranges){
 			msg+="od: "+r.rangeStart+" do "+r.rangeEnd+"\n";
 		}
 		return msg;
+	}
+	
+	public List <Range> getRangesAsList(){
+		return ranges;
 	}
 	
 

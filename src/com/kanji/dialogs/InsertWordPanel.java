@@ -15,7 +15,7 @@ import com.kanji.constants.TextValues;
 import com.kanji.myList.MyList;
 import com.kanji.window.LimitDocumentFilter;
 
-public class InsertWordDialog {
+public class InsertWordPanel {
 
 	private JPanel mainPanel;
 	private GridBagConstraints layoutConstraints;
@@ -24,7 +24,7 @@ public class InsertWordDialog {
 	private JTextField insertWord;
 	private JTextField insertNumber;
 	
-	public InsertWordDialog (JPanel panel, MyDialog parent){
+	public InsertWordPanel (JPanel panel, MyDialog parent){
 		mainPanel = panel;
 		parentDialog=parent;
 		layoutConstraints = new GridBagConstraints();	
@@ -34,7 +34,7 @@ public class InsertWordDialog {
 		layoutConstraints=c;
 	}
 	
-	public JPanel createDialog (MyList list){
+	public JPanel createPanel (MyList list){
 		this.list=list;
 		int level = 0;
 		insertWord = addPromptAndTextField(level,TextValues.wordAddDialogPrompt);

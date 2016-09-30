@@ -21,7 +21,7 @@ import com.kanji.constants.TextValues;
 import com.kanji.myList.MyList;
 import com.kanji.myList.SearchOptions;
 
-public class SearchWordDialog {
+public class SearchWordPanel {
 
 	private JPanel mainPanel;
 	private GridBagConstraints layoutConstraints;
@@ -32,7 +32,7 @@ public class SearchWordDialog {
 	private SearchOptions options;
 	private MyList list;
 	
-	public SearchWordDialog (JPanel panel, MyDialog parent){
+	public SearchWordPanel (JPanel panel, MyDialog parent){
 		mainPanel = panel;
 		parentDialog=parent;
 		layoutConstraints = new GridBagConstraints();			
@@ -43,7 +43,7 @@ public class SearchWordDialog {
 		layoutConstraints=c;
 	}
 	
-	public JPanel createDialog(MyList list){
+	public JPanel createPanel(MyList list){
 		this.list=list;
 		int level = 0;
 		textField = addPromptAndTextFieldAndReturnTextField(level,TextValues.wordSearchDialogPrompt);

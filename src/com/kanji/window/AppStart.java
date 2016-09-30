@@ -15,7 +15,7 @@ public class AppStart {
 		set.addRange(new Range(6,10));
 //		set.getRanges();
 //		set.addRange(new Range(30,70));
-		System.out.println(set.getRanges());
+		System.out.println(set.getRangesAsString());
 		
 	}
 

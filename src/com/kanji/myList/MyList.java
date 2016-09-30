@@ -167,7 +167,7 @@ public class MyList extends JPanel implements Scrollable{
 		else return rowNumber;
 	}
 	
-	private String findWordInRow (int rowNumber){
+	public String findWordInRow (int rowNumber){
 		JPanel panel = panels.get(rowNumber);
 		JTextArea textArea = new JTextArea();
 		try {
@@ -339,6 +339,9 @@ public class MyList extends JPanel implements Scrollable{
 		parent.showMessageDialog(e.getMessage());
 	}
 	
+	public Map <String, Integer> getWordsWithIds(){
+		return wordsAndID;
+	}
 	
 	
 	

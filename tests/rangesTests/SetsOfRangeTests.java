@@ -19,7 +19,7 @@ public class SetsOfRangeTests {
 		set.addRange(includedRange);
 		
 		assertEquals("(20,30) should not be added to set, if it has already (10,50)",
-				new SetOfRanges(includingRange).getRanges(), set.getRanges());	
+				new SetOfRanges(includingRange).getRangesAsString(), set.getRangesAsString());	
 	}
 	
 	@Test
@@ -32,7 +32,7 @@ public class SetsOfRangeTests {
 		set.addRange(nextRange);
 		
 		SetOfRanges desiredSet = new SetOfRanges(new Range(10,30));
-		assertEquals("(10,20) and (21,30) should be merged to (10,30)", desiredSet.getRanges(), set.getRanges());
+		assertEquals("(10,20) and (21,30) should be merged to (10,30)", desiredSet.getRangesAsString(), set.getRangesAsString());
 	}
 
 }

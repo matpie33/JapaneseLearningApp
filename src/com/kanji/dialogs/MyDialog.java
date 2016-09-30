@@ -31,6 +31,7 @@ public class MyDialog extends JDialog  {
 	private boolean isOpened;	
 	private MyDialog upper;		
 	private JPanel mainPanel;	
+	private Window parentWindow;
 	
 	private class MyDispatcher implements KeyEventDispatcher {
         @Override
@@ -43,6 +44,7 @@ public class MyDialog extends JDialog  {
 	
 	public MyDialog (Window b){
 		super(b);
+		parentWindow=b;
 		initialize();
 		initializeLayout();
 		addEscapeKeyToCloseTheWindow();		
@@ -83,8 +85,8 @@ public class MyDialog extends JDialog  {
 	}
 	
 	public void showLearningStartDialog (MyList list){		
-		LearningStartDialog dialog = new LearningStartDialog(mainPanel,this);
-		mainPanel = dialog.createDialog(list);
+		LearningStartPanel dialog = new LearningStartPanel(mainPanel,this, parentWindow);
+		mainPanel = dialog.createPanel(list);
 		showYourself(TextValues.learnStartDialogTitle);		
 	}		
 		
@@ -96,24 +98,24 @@ public class MyDialog extends JDialog  {
 	}
 	
 	public void showMsgDialog(String message){			
-		MessageDialog dialog = new MessageDialog(mainPanel,this);
+		MessagePanel dialog = new MessagePanel(mainPanel,this);
 		dialog.setLayoutConstraints(layoutConstraints);
-		mainPanel = dialog.createDialog(message);
+		mainPanel = dialog.createPanel(message);
 		showYourself(TextValues.messageDialogTitle);	
 		
 	}	
 		
 	public void showSearchWordDialog (MyList list){							
-		SearchWordDialog dialog = new SearchWordDialog(mainPanel,this);
+		SearchWordPanel dialog = new SearchWordPanel(mainPanel,this);
 		dialog.setLayoutConstraints(layoutConstraints);
-		mainPanel = dialog.createDialog(list);
+		mainPanel = dialog.createPanel(list);
 		showYourself(TextValues.wordSearchDialogTitle);		
 	}				
 	
 	public void showInsertDialog(MyList list){
-		InsertWordDialog dialog = new InsertWordDialog(mainPanel,this);
+		InsertWordPanel dialog = new InsertWordPanel(mainPanel,this);
 		dialog.setLayoutConstraints(layoutConstraints);
-		mainPanel = dialog.createDialog(list);
+		mainPanel = dialog.createPanel(list);
 		showYourself(TextValues.insertWordDialogTitle);		
 	}	
 	
