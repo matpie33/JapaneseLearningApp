@@ -84,8 +84,8 @@ public class MyDialog extends JDialog  {
 		});
 	}
 	
-	public void showLearningStartDialog (MyList list){		
-		LearningStartPanel dialog = new LearningStartPanel(mainPanel,this, parentWindow);
+	public void showLearningStartDialog (MyList list, int maximumNumber){		
+		LearningStartPanel dialog = new LearningStartPanel(mainPanel,this, parentWindow, maximumNumber);
 		mainPanel = dialog.createPanel(list);
 		showYourself(TextValues.learnStartDialogTitle);		
 	}		

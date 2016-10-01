@@ -41,8 +41,11 @@ public class LearningStartPanel {
 	private MyDialog parentDialog;
 	private MyList repeatsList;	
 	private Window parentFrame;
+	private SetOfRanges rangesToRepeat;
+	private int numberOfWords;
 	
-	public LearningStartPanel (JPanel panel, MyDialog parent, Window parentOfParent){
+	public LearningStartPanel (JPanel panel, MyDialog parent, Window parentOfParent, int numberOfWords){
+		this.numberOfWords = numberOfWords;
 		mainPanel = panel;
 		parentDialog=parent;
 		this.parentFrame = parentOfParent;
@@ -50,6 +53,8 @@ public class LearningStartPanel {
 	
 	
 	public JPanel createPanel (MyList list){ //TODO add focus to textfield from
+		if (!excelReaderIsLoaded())
+			loadExcel();
 		repeatsList = list;
 		int level = 0;
 		addPromptAtLevel(level, TextValues.learnStartPrompt);
@@ -69,6 +74,13 @@ public class LearningStartPanel {
 		
 		addComponentsAtLevel(level, new JButton []{cancel,approve});
 		return mainPanel;
+	}
+	
+	private void loadExcel(){
+		if (parentFrame instanceof BaseWindow){
+			BaseWindow p = (BaseWindow) parentFrame;
+			p.loadExcelReader();
+		}
 	}
 	
 	private GridBagConstraints createDefaultConstraints(){
@@ -179,17 +191,29 @@ public class LearningStartPanel {
 			@Override
 			public void keyReleased (KeyEvent e){				
 					
-				
+				int valueFrom = 0;
+				int valueTo = 0;
 				if (to.getText().isEmpty() || from.getText().isEmpty()) return;
-				if (Integer.parseInt(to.getText()) <= Integer.parseInt(from.getText())){
+				else {
+					valueFrom = Integer.parseInt(from.getText());
+					valueTo = Integer.parseInt(to.getText());
+				}
+				
+				if (valueTo <= valueFrom){
 					showErrorIfNotExists(TextValues.rangeToValueLessThanRangeFromValue);
 				}
+				else if (isNumberHigherThanMaximum(valueFrom) || isNumberHigherThanMaximum(valueTo))
+					showErrorIfNotExists(TextValues.rangeValueTooHigh);
 				else {
 					removeErrorIfExists();	
 					recalculateSumOfKanji((JPanel)container.getParent());
 				}
 							
-			}			
+			}	
+			
+			private boolean isNumberHigherThanMaximum(int number){
+				return number > numberOfWords;
+			}
 			
 			private void showErrorIfNotExists(String message){
 				if (error.equals(message))	return;
@@ -208,7 +232,7 @@ public class LearningStartPanel {
 				for (Component c: container.getComponents()){
 					if (c instanceof JLabel && ((JLabel)c).getText().matches(
 							TextValues.rangeToValueLessThanRangeFromValue +"|"+
-							TextValues.valueIsNotNumber)){
+							TextValues.valueIsNotNumber+"|"+TextValues.rangeValueTooHigh)){
 						container.remove(c);
 						container.repaint();
 						container.revalidate();
@@ -314,16 +338,20 @@ public class LearningStartPanel {
 			public void actionPerformed (ActionEvent e){
 				
 				try{
-					SetOfRanges setOfRanges = validateInputs(panel);
-					addToRepeatsListOrShowError(setOfRanges);
-					switchPanels(setOfRanges);
-					parentDialog.dispose();
+					rangesToRepeat = validateInputs(panel);
+					addToRepeatsListOrShowError(rangesToRepeat);
+					
+					if (!excelReaderIsLoaded()){
+						parentDialog.showErrorDialogInNewWindow(TextValues.excelNotLoaded);
+						waitUntillExcelLoads();						
+					}
+					else switchToRepeatingPanel();
+					
 				}
 				catch (IllegalArgumentException ex){
 					parentDialog.showErrorDialogInNewWindow(ex.getMessage());
 				}
-				
-				
+								
 			}
 		});
 		return button;
@@ -344,6 +372,36 @@ public class LearningStartPanel {
 			parent.showCardPanel(BaseWindow.LEARNING_PANEL);
 			parent.setWordsRangeToRepeat(wordsToLearn);
 		}
+	}
+	
+	public boolean excelReaderIsLoaded (){
+		if (parentFrame instanceof BaseWindow){
+			BaseWindow parent = (BaseWindow) parentFrame;
+			return parent.isExcelLoaded();
+		}
+		else return false; //TODO or throw exception
+	}
+	
+	private void waitUntillExcelLoads(){
+		Runnable r = new Runnable (){
+			@Override
+			public void run (){
+				if (parentFrame instanceof BaseWindow){
+					BaseWindow parent = (BaseWindow) parentFrame;					
+					synchronized (parent.excel){
+						switchToRepeatingPanel();						
+					}					
+				}
+			}
+		};
+		Thread t = new Thread (r);
+		t.start();
+	}
+	
+	private void switchToRepeatingPanel(){
+		System.out.println("switching");
+		parentDialog.dispose();
+		switchPanels(rangesToRepeat);
 	}
 	
 	private SetOfRanges validateInputs(JPanel panel) {

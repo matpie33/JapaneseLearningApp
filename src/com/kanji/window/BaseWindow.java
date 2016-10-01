@@ -22,6 +22,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
 import com.kanji.constants.TextValues;
+import com.kanji.fileReading.ExcelReader;
 import com.kanji.myList.MyList;
 import com.kanji.range.SetOfRanges;
 
@@ -36,12 +37,16 @@ public class BaseWindow extends ClassWithDialog {
 	private final Dimension minimumListSize = new Dimension (200,100);
 	private JPanel mainPanel;
 	private RepeatingWordsPanel repeatingWordsPanel;
+	private boolean isExcelReaderLoaded;
+	
+	public ExcelReader excel;
 	
 	public static final String LIST_PANEL = "Panel with lists and buttons";
 	public static final String LEARNING_PANEL = "Panel for repeating words";
 	
 	public BaseWindow (){
 		
+		isExcelReaderLoaded = false;
 		maker = new ElementMaker(this);
 		mainPanel = new JPanel (new CardLayout());	
 		setContentPane(mainPanel);
@@ -171,6 +176,27 @@ public class BaseWindow extends ClassWithDialog {
 	public void setWordsRangeToRepeat(SetOfRanges ranges){
 		repeatingWordsPanel.setRepeatingWords(maker.getWordsList());
 		repeatingWordsPanel.setRangesToRepeat(ranges);
+		repeatingWordsPanel.startRepeating();
+	}
+	
+	public void loadExcelReader(){
+		Runnable r = new Runnable (){
+			@Override
+			public void run (){
+				excel = new ExcelReader();
+				synchronized (excel){	
+					excel.load();
+					isExcelReaderLoaded = true;
+					repeatingWordsPanel.setExcelReader(excel);
+				}
+			}
+		};
+		Thread t = new Thread (r);
+		t.start();
+	}
+	
+	public boolean isExcelLoaded(){
+		return isExcelReaderLoaded;
 	}
 	
 }

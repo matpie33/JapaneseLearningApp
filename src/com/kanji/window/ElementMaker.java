@@ -146,7 +146,7 @@ public class ElementMaker {
 			@Override
 			public void run (){
 				MyDialog d = new MyDialog(parent);
-				d.showMsgDialog("Wait");
+				d.showErrorDialogInNewWindow("Wait");
 				listOfWords.setWords(words);
 				d.dispose();
 			}
@@ -175,7 +175,8 @@ public class ElementMaker {
 	}
 	
 	private void start(){
-		parent.showLearnStartDialog(repeats);
+		parent.showLearnStartDialog(repeats, listOfWords.getWordsCount());
+		System.out.println(listOfWords.getWordsCount());
 	}
 
 	public List <JButton> getButtons() {

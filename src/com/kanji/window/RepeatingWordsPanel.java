@@ -1,6 +1,9 @@
 package com.kanji.window;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -19,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import com.kanji.constants.TextValues;
+import com.kanji.fileReading.ExcelReader;
 import com.kanji.myList.MyList;
 import com.kanji.range.Range;
 import com.kanji.range.SetOfRanges;
@@ -27,90 +31,75 @@ public class RepeatingWordsPanel extends JPanel{
 	private MyList words;
 	private List <String> wordsToRepeat; //TODO add to repeating list information about whether specified row
 										// contains words that were learned completely or aborted/paused
+	private ExcelReader excel;
 	private BaseWindow parent;
+	
 	private JLabel time;
 	private double timeElapsed;
 	private double interval = 0.1;
 	private String timeLabel = "Czas: ";
 	private Thread timerThread;
 	private boolean timerRunning;
+	
+	private JTextArea kanjiTextArea;
+	private JTextArea wordTextArea;
 	private JButton pauseOrResume;
+	private JButton showWord;
+	private JButton recognizedWord;
+	private JButton notRecognizedWord;
+	private JPanel repeatingPanel;
+	
 	private final static String PAUSE_TEXT = "Pauza";
-	private final static String RESUME_TEXT = "Wznow";
+	private final static String RESUME_TEXT = "Wznow";	
+	private final static String RECOGNIZED_WORD_TEXT = "Znam";
+	private final static String NOT_RECOGNIZED_WORD_TEXT = "Nie pamietam";
+	
+	private final Color repeatingBackgroundColor = Color.white;
+	private final Color windowBackgroundColor = Color.GREEN;
+	private final int kanjiFontSize = 100;
 	
 	public RepeatingWordsPanel (BaseWindow parent){
-		wordsToRepeat = new LinkedList <String> ();
-		setLayout(new GridBagLayout());
+		wordsToRepeat = new LinkedList <String> ();		
 		this.parent=parent;		
 		timerRunning = false;
+		initialize();
 		createPanel();		
 	}
 	
+	private void initialize(){
+		setLayout(new GridBagLayout());
+		setBackground(windowBackgroundColor);
+		repeatingPanel = new JPanel (new GridBagLayout());
+		repeatingPanel.setBackground(repeatingBackgroundColor);
+	}
+	
 	private void createPanel(){
+		
 		int level=0;
-		addTitle("Repeating words",level);
+		addTitleAndTime("Repeating words",level);
 		if (!wordsToRepeat.isEmpty()){
 			level++;
-			addRepeatingPanel(level);
+			initiateRepeatingPanel(level);
 		}
 		level++;
 		addButtons(level);
+		
 	}
 	
-	private void addTitle(String title, int level){
-		GridBagConstraints c = createDefaultConstraints();
-		c.gridy=level;
+	private void addTitleAndTime(String title, int level){
+				
+		GridBagConstraints c = createDefaultConstraints();		
+		c.gridx=0;
+		c.gridy = level;		
 		c.anchor=GridBagConstraints.CENTER;		
 		add (new JLabel(title),c);
 		
-		c.gridx++;
+		c.weightx = 0;
 		c.anchor = GridBagConstraints.EAST;		
 		time = new JLabel (timeLabel);
-		add (time,c);						
-	}
+		add (time,c);	
 	
-	
-	private void addRepeatingPanel(int level){
-		
-		JPanel panel = new JPanel (new GridBagLayout());
-		pauseOrResume = new JButton (PAUSE_TEXT);
-		JButton showWord = new JButton ("Poka¿ kanji.");		
-		
-		JButton [] buttons = new JButton [] {pauseOrResume,  showWord};
-		
-		GridBagConstraints c = createDefaultConstraints();		
-		c.gridx=0;
-		c.gridy=0;
-		c.gridwidth = buttons.length;
-		c.anchor=GridBagConstraints.CENTER;
-		
-		JTextArea wordArea = new JTextArea(pickRandomWord());
-		wordArea.setLineWrap(true);
-		wordArea.setWrapStyleWord(true);
-		wordArea.setEditable(false);
-		wordArea.setOpaque(false);		
-		
-		createShowWordListener(showWord, wordArea);
-		createPauseOrResumeListener();						
-		
-		panel.add(wordArea,c);
-		
-		c.gridwidth = 1;
-		c.gridy++;
-		
-		for (JButton button: buttons){
-			panel.add(button,c);
-			c.gridx++;
-		}		
-				
-		GridBagConstraints d = new GridBagConstraints();
-		d.gridy=level;
-		d.anchor=GridBagConstraints.CENTER;
-		d.weighty=1;
-		
-		add(panel,d);
-		
-	}
+	}	
 	
 	private GridBagConstraints createDefaultConstraints(){
 		GridBagConstraints c = new GridBagConstraints();
@@ -118,33 +107,57 @@ public class RepeatingWordsPanel extends JPanel{
 		int a = 5;
 		c.insets = new Insets(a,a,a,a);
 		return c;
+	}	
+		
+	private void initiateRepeatingPanel (int level){
+		
+		createElementsForRepeatingPanel();		
+		setButtonsToLearningAndAddThem();
+		
+		GridBagConstraints d = createDefaultConstraints();
+		d.gridy=level;
+		d.anchor=GridBagConstraints.CENTER;		
+		d.weighty=1;
+		d.weightx=0;
+		
+		add(repeatingPanel,d);
+		
 	}
 	
-	private void createShowWordListener (JButton showWord, final JTextArea wordArea){
-		showWord.addActionListener(new ActionListener (){
-			@Override
-			public void actionPerformed (ActionEvent e){				
-				String word = wordArea.getText();
-				wordsToRepeat.remove(word);
-				
-				if (!wordsToRepeat.isEmpty())
-					wordArea.setText(pickRandomWord());				
-				else {
-					parent.showMessageDialog(TextValues.learningFinished);
-					wordArea.setText(TextValues.learningFinished);
-				}
-				
-			}
-		});
+	private void setButtonsToLearningAndAddThem(){
+		addElementsToRepeatingPanel(showWordButtons());
 	}
 	
-	private void createPauseOrResumeListener(){
-		pauseOrResume.addActionListener(new ActionListener (){
-			@Override
-			public void actionPerformed (ActionEvent e){
-				pauseOrResume();
-			}
-		});
+	private JButton [] showWordButtons(){
+		return new JButton [] {pauseOrResume, showWord};
+	}	
+			
+	private void createElementsForRepeatingPanel (){
+		createWordLabel();
+		createWordArea();
+		createShowWordButton();
+		createPauseOrResumeButton();	
+		createRecognizedWordButton();
+		createNotRecognizedWordButton();
+	}
+	
+	private void createWordLabel(){
+		wordTextArea = new JTextArea(10,10);
+		wordTextArea.setEditable(false);
+		wordTextArea.setLineWrap(true);
+		wordTextArea.setWrapStyleWord(true);
+		wordTextArea.setText(pickRandomWord());
+		
+	}
+	
+	private void createWordArea(){
+		Font f = new Font(excel.getFontName(), Font.BOLD, kanjiFontSize);
+		
+		kanjiTextArea = new JTextArea(10,10);
+		kanjiTextArea.setFont(f);
+		kanjiTextArea.setEditable(false);
+		kanjiTextArea.setLineWrap(true);
+		kanjiTextArea.setWrapStyleWord(true);		
 	}
 	
 	private String pickRandomWord (){
@@ -152,6 +165,39 @@ public class RepeatingWordsPanel extends JPanel{
 		int index = randomizer.nextInt(wordsToRepeat.size());
 		System.out.println(wordsToRepeat.get(index));
 		return wordsToRepeat.get(index);
+	}
+	
+	private void createShowWordButton (){
+		showWord = new JButton ("Poka¿ kanji.");	
+		showWord.addActionListener(new ActionListener (){
+			@Override
+			public void actionPerformed (ActionEvent e){				
+				setButtonsToRecognizeWord();
+				showKanji();
+			}
+		});
+	}
+	
+	private void setButtonsToRecognizeWord(){
+		addElementsToRepeatingPanel(recognizeWordButtons());
+	}
+	
+	private JButton [] recognizeWordButtons(){
+		return new JButton [] {pauseOrResume, recognizedWord, notRecognizedWord};
+	}
+	
+	private void showKanji(){
+		kanjiTextArea.setText(excel.getKanjiById(words.getWordsWithIds().get(wordTextArea.getText())));		
+	}
+	
+	private void createPauseOrResumeButton(){
+		pauseOrResume = new JButton (PAUSE_TEXT);
+		pauseOrResume.addActionListener(new ActionListener (){
+			@Override
+			public void actionPerformed (ActionEvent e){
+				pauseOrResume();
+			}
+		});
 	}
 	
 	private void pauseOrResume(){
@@ -165,6 +211,73 @@ public class RepeatingWordsPanel extends JPanel{
 		}
 			
 	}
+	
+	private void createRecognizedWordButton(){
+		recognizedWord = new JButton (RECOGNIZED_WORD_TEXT);
+		recognizedWord.addActionListener(new ActionListener (){
+			@Override
+			public void actionPerformed (ActionEvent e){
+				getNextWord();
+			}
+		});
+	}
+	
+	private void createNotRecognizedWordButton(){
+		notRecognizedWord = new JButton (NOT_RECOGNIZED_WORD_TEXT);
+		notRecognizedWord.addActionListener(new ActionListener (){
+			@Override
+			public void actionPerformed (ActionEvent e){
+				getNextWord();
+			}
+		});
+	}
+	
+	private void getNextWord(){
+		
+		String word = this.wordTextArea.getText().toString();
+		wordsToRepeat.remove(word);
+		System.out.println("removed: "+word);
+		
+		if (!wordsToRepeat.isEmpty()){
+			setButtonsToLearningAndAddThem();
+			this.wordTextArea.setText(pickRandomWord());	
+			this.kanjiTextArea.setText("");
+		}
+		else {
+			parent.showMessageDialog(TextValues.learningFinished);			
+			stopTimer();
+			parent.showCardPanel(BaseWindow.LIST_PANEL);
+		}
+		
+	}
+	
+	private void addElementsToRepeatingPanel(JButton [] buttons){				
+		
+		repeatingPanel.removeAll();
+		
+		GridBagConstraints c = createDefaultConstraints();		
+		c.gridx=0;
+		c.gridy=0;
+		c.gridwidth = buttons.length;
+		c.anchor=GridBagConstraints.CENTER;	
+		c.fill = GridBagConstraints.HORIZONTAL;
+		repeatingPanel.add (wordTextArea,c);
+		
+		c.gridy++;
+		c.fill = GridBagConstraints.NONE;
+		repeatingPanel.add(kanjiTextArea, c);
+		
+		c.gridwidth = 1;
+		c.gridy++;
+		
+		for (JButton button: buttons){
+			repeatingPanel.add(button,c);
+			c.gridx++;
+		}	
+		repaint();
+		
+	}
+	
 	
 	private void addButtons(int level){
 		JButton returnButton = new JButton ("Powrot");
@@ -196,12 +309,19 @@ public class RepeatingWordsPanel extends JPanel{
 				wordsToRepeat.add(words.findWordInRow(i-1));
 			}
 		}
+		
+		
+	}
+	
+	public void startRepeating(){
 		removeAll();
 		createPanel();
+		revalidate();
+		repaint();
 		resetTimer();
 		startTimer();
-		System.out.println(wordsToRepeat);
 	}
+	
 	private void resetTimer(){
 		timeElapsed = 0;
 	}
@@ -232,6 +352,10 @@ public class RepeatingWordsPanel extends JPanel{
 	
 	private void stopTimer (){
 		timerRunning = false;
+	}
+	
+	public void setExcelReader (ExcelReader excel){
+		this.excel = excel;
 	}
 	
 

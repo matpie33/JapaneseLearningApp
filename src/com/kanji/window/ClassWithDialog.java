@@ -3,11 +3,13 @@ package com.kanji.window;
 import javax.swing.JFrame;
 
 import com.kanji.dialogs.MyDialog;
+import com.kanji.fileReading.ExcelReader;
 import com.kanji.myList.MyList;
 
 @SuppressWarnings("serial")
 public abstract class ClassWithDialog extends JFrame{
-	private MyDialog dialog;	
+	private MyDialog dialog;
+	private boolean isExcelReaderLoaded;
 		
 	public void showDialogToSearch(MyList list){ 	
 		if (notOpenedYet()){
@@ -38,13 +40,15 @@ public abstract class ClassWithDialog extends JFrame{
 		}
 	}
 	
-	public void showLearnStartDialog (MyList list){
-		if (notOpenedYet()){
+	public void showLearnStartDialog (MyList list, int maximumNumber){
+		if (notOpenedYet()){			
 			dialog = new MyDialog(this);
-			dialog.showLearningStartDialog(list);
-			dialog.setLocationAtLeftUpperCornerOfParent(this);
+			dialog.showLearningStartDialog(list, maximumNumber);
+			dialog.setLocationAtLeftUpperCornerOfParent(this);				
 		}
 	}
+	
+	
 	
 
 }

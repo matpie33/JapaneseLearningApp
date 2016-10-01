@@ -55,9 +55,13 @@ public class TextValues {
 	public static final String wordAlreadyHighlightedException = "To slowo jest juz zaznaczone." +
 			"Nie znaleziono innych pozycji.";
 	public static final String rangeToValueLessThanRangeFromValue = "Za ma³a liczba";
+	public static final String rangeValueTooHigh = "Wpisana liczba jest za du¿a";
 	public static final String valueIsNotNumber = "Proszê wpisaæ liczbê";
 	public static final String noInputSupplied = "Prosze cokolwiek wpisac!";
 	public static final String sumRangePrompt = "£¹czna liczba kanji: ";
 	public static final String learningFinished = "Koniec s³ów do powtórzenia.";
+	public static final String excelNotLoaded = "Musisz zaczekac. Klasa wczytujaca kanji" +
+			" z excela nie zaladowala sie jeszcze.";
+
 
 }
