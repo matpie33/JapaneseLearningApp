@@ -63,5 +63,7 @@ public class TextValues {
 	public static final String excelNotLoaded = "Musisz zaczekac. Klasa wczytujaca kanji" +
 			" z excela nie zaladowala sie jeszcze.";
 
+	public static final String problematicKanjiPrompt = "Problematycznych";
+
 
 }

@@ -31,7 +31,7 @@ public class MyList extends JPanel implements Scrollable{
 	
 	private List <JPanel> panels;
 	private int highlightedRowNumber;
-	private Color defaultRowColor = Color.GREEN;
+	private Color defaultRowColor = Color.RED;
 	private Color highlightedRowColor = Color.BLUE;
 	private Color bgColor = Color.GREEN;
 	private JScrollPane parentScrollPane;	
@@ -325,8 +325,11 @@ public class MyList extends JPanel implements Scrollable{
 		return true;
 	}
 	
-	public void scrollToBottom(){
+	public void scrollToBottom(){		
 		parent.revalidate();
+		revalidate();
+		parentScrollPane.revalidate();
+		System.out.println(panels.size()+"panels size");		
 		JScrollBar scrollBar = parentScrollPane.getVerticalScrollBar();
 		scrollBar.setValue(scrollBar.getMaximum());
 	}

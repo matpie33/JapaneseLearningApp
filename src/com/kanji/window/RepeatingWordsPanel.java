@@ -10,6 +10,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,6 +34,7 @@ public class RepeatingWordsPanel extends JPanel{
 										// contains words that were learned completely or aborted/paused
 	private ExcelReader excel;
 	private BaseWindow parent;
+	private List <Integer> problematicKanjis;
 	
 	private JLabel time;
 	private double timeElapsed;
@@ -56,9 +58,10 @@ public class RepeatingWordsPanel extends JPanel{
 	
 	private final Color repeatingBackgroundColor = Color.white;
 	private final Color windowBackgroundColor = Color.GREEN;
-	private final int kanjiFontSize = 100;
+	private final int kanjiFontSize = 80;
 	
 	public RepeatingWordsPanel (BaseWindow parent){
+		
 		wordsToRepeat = new LinkedList <String> ();		
 		this.parent=parent;		
 		timerRunning = false;
@@ -71,6 +74,7 @@ public class RepeatingWordsPanel extends JPanel{
 		setBackground(windowBackgroundColor);
 		repeatingPanel = new JPanel (new GridBagLayout());
 		repeatingPanel.setBackground(repeatingBackgroundColor);
+		
 	}
 	
 	private void createPanel(){
@@ -227,9 +231,17 @@ public class RepeatingWordsPanel extends JPanel{
 		notRecognizedWord.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed (ActionEvent e){
+				addToProblematic();
 				getNextWord();
 			}
 		});
+	}
+	
+	private void addToProblematic(){
+		String word = wordTextArea.getText();
+		int num = words.getWordsWithIds().get(word);
+		System.out.println(num);
+		problematicKanjis.add(num);
 	}
 	
 	private void getNextWord(){
@@ -247,6 +259,7 @@ public class RepeatingWordsPanel extends JPanel{
 			parent.showMessageDialog(TextValues.learningFinished);			
 			stopTimer();
 			parent.showCardPanel(BaseWindow.LIST_PANEL);
+			parent.addToRepeatList(problematicKanjis);
 		}
 		
 	}
@@ -318,12 +331,13 @@ public class RepeatingWordsPanel extends JPanel{
 		createPanel();
 		revalidate();
 		repaint();
-		resetTimer();
+		reset();
 		startTimer();
 	}
 	
-	private void resetTimer(){
+	private void reset(){
 		timeElapsed = 0;
+		problematicKanjis = new ArrayList <Integer> ();
 	}
 	
 	private void startTimer(){

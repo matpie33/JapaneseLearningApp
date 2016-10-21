@@ -85,8 +85,7 @@ public class ElementMaker {
 	private void initRepeatsList(){
 		repeats = new MyList (parent,TextValues.repeatedWordsListTitle, new RowAsJLabel());
 	}
-	
-	
+		
 	private void addListeners(List <JButton> buttons){
 				
 		for (JButton button: buttons){

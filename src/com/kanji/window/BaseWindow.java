@@ -9,8 +9,11 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -38,6 +41,7 @@ public class BaseWindow extends ClassWithDialog {
 	private JPanel mainPanel;
 	private RepeatingWordsPanel repeatingWordsPanel;
 	private boolean isExcelReaderLoaded;
+	private Set <Integer> toRepeat;
 	
 	public ExcelReader excel;
 	
@@ -46,6 +50,7 @@ public class BaseWindow extends ClassWithDialog {
 	
 	public BaseWindow (){
 		
+		toRepeat = new HashSet <Integer> ();
 		isExcelReaderLoaded = false;
 		maker = new ElementMaker(this);
 		mainPanel = new JPanel (new CardLayout());	
@@ -197,6 +202,16 @@ public class BaseWindow extends ClassWithDialog {
 	
 	public boolean isExcelLoaded(){
 		return isExcelReaderLoaded;
+	}
+	
+	public void addToRepeatList(List <Integer> toRepeat){
+		this.toRepeat.addAll(toRepeat);
+		
+		System.out.println(this.toRepeat);
+	}
+	
+	public Set <Integer> problematicKanjis (){
+		return toRepeat;
 	}
 	
 }

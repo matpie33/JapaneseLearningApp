@@ -16,6 +16,7 @@ public class AppStart {
 //		set.getRanges();
 //		set.addRange(new Range(30,70));
 		System.out.println(set.getRangesAsString());
+		System.out.println((int)62.7 % 60);
 		
 	}
 

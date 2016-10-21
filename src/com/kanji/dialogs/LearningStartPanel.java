@@ -15,6 +15,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -37,6 +38,7 @@ public class LearningStartPanel {
 	private JPanel mainPanel;
 	private JScrollPane scrollPane;
 	private JTextField sumRangeField;
+	private JCheckBox problematicCheckbox;
 	private int rowsNumber;
 	private MyDialog parentDialog;
 	private MyList repeatsList;	
@@ -61,13 +63,23 @@ public class LearningStartPanel {
 				
 		level++;
 		JPanel panel = addTextFieldsForRange(level);
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridy=1;
+		
+		problematicCheckbox = new JCheckBox ("hi");
+		panel.add(problematicCheckbox,c);
+//		panel.add(problematicCheckbox);
 		scrollPane = createScrollPane(panel, level);
+		
+		level++;
+		JTextField problematicKanjis = createProblematicRangeField(TextValues.problematicKanjiPrompt);
+		addComponentsAtLevel(level, new JComponent [] {problematicKanjis});
 		
 		level++;
 		JButton newRow = createButtonAddRow(TextValues.buttonAddRowText, panel);
 		sumRangeField = createSumRangeField(TextValues.sumRangePrompt);
 		addComponentsAtLevel(level, new JComponent []{newRow,sumRangeField});
-		
+			
 		level++;
 		JButton cancel = parentDialog.createButtonDispose(TextValues.buttonCancelText);
 		JButton approve = createButtonStartLearning (TextValues.buttonApproveText, panel); 
@@ -329,6 +341,17 @@ public class LearningStartPanel {
 		sumRange.setEditable(false);
 		return sumRange;
 		
+	}
+	
+	private JTextField createProblematicRangeField (String text){
+		JTextField sumRange = new JTextField(text,30);
+		sumRange.setEditable(false);
+		if (parentFrame instanceof BaseWindow){
+			BaseWindow b = (BaseWindow) parentFrame;
+			sumRange.setText(sumRange.getText()+": "+b.problematicKanjis().size());
+		}
+		
+		return sumRange;
 	}
 	
 	private JButton createButtonStartLearning (String text, final JPanel panel){
