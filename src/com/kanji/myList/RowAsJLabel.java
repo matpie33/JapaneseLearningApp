@@ -6,6 +6,12 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -16,7 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-public class RowAsJLabel implements RowsCreator {
+public class RowAsJLabel extends RowsCreator{
 
 	private Color defaultColor = Color.RED; 
 	private MyList list;
@@ -49,6 +55,21 @@ public class RowAsJLabel implements RowsCreator {
 	private JTextArea createTextArea(String text){
 	
 		JTextArea elem = new JTextArea(text);
+		elem.addKeyListener(new KeyAdapter(){
+			@Override
+			public void keyReleased (KeyEvent e){
+				try {
+					FileOutputStream fout = new FileOutputStream ("hi.txt");
+					ObjectOutputStream oos = new ObjectOutputStream(fout);
+					oos.writeObject(list.getWordsWithIds());
+					fout.close();
+					System.out.println("save");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		elem.setLineWrap(true);
 		elem.setWrapStyleWord(true);
 		elem.setOpaque(true);

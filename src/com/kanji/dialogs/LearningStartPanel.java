@@ -45,6 +45,7 @@ public class LearningStartPanel {
 	private Window parentFrame;
 	private SetOfRanges rangesToRepeat;
 	private int numberOfWords;
+	private int sumOfWords;
 	
 	public LearningStartPanel (JPanel panel, MyDialog parent, Window parentOfParent, int numberOfWords){
 		this.numberOfWords = numberOfWords;
@@ -59,16 +60,16 @@ public class LearningStartPanel {
 			loadExcel();
 		repeatsList = list;
 		int level = 0;
-		addPromptAtLevel(level, TextValues.learnStartPrompt);
+		addPromptAtLevel(level, createPrompt(TextValues.learnStartPrompt));
 				
+		level++;
+		problematicCheckbox = createProblematicKanjiCheckbox();
+		addPromptAtLevel(level,problematicCheckbox);
+		
 		level++;
 		JPanel panel = addTextFieldsForRange(level);
 		GridBagConstraints c = new GridBagConstraints();
-		c.gridy=1;
-		
-		problematicCheckbox = new JCheckBox ("hi");
-		panel.add(problematicCheckbox,c);
-//		panel.add(problematicCheckbox);
+		c.gridy=1;				
 		scrollPane = createScrollPane(panel, level);
 		
 		level++;
@@ -88,6 +89,24 @@ public class LearningStartPanel {
 		return mainPanel;
 	}
 	
+	private JCheckBox createProblematicKanjiCheckbox(){
+		final JCheckBox problematicCheckbox = new JCheckBox (TextValues.problematicKanji);
+		problematicCheckbox.addActionListener(new ActionListener (){
+			@Override
+			public void actionPerformed (ActionEvent e){
+				int problematicKanjis = getProblematicKanjiNumber();
+				if (problematicCheckbox.isSelected())
+					sumOfWords += problematicKanjis;
+				else
+					sumOfWords -= problematicKanjis;
+				updateSumOfWords();
+			}
+		});
+		
+		return problematicCheckbox;
+		
+	}
+	
 	private void loadExcel(){
 		if (parentFrame instanceof BaseWindow){
 			BaseWindow p = (BaseWindow) parentFrame;
@@ -102,19 +121,23 @@ public class LearningStartPanel {
 		return c;
 	}
 	
-	private void addPromptAtLevel(int level, String message){ //TODO it is in different classes
+	private void addPromptAtLevel(int level, Component component){ //TODO it is in different classes
 		GridBagConstraints layoutConstraints = createDefaultConstraints();
 		layoutConstraints.gridy=level;
 		layoutConstraints.anchor=GridBagConstraints.CENTER;
 		layoutConstraints.weightx=1;
-		layoutConstraints.fill=GridBagConstraints.HORIZONTAL;
+		layoutConstraints.fill=GridBagConstraints.HORIZONTAL;	
 		
+		mainPanel.add(component,layoutConstraints);
+	}
+	
+	private JTextArea createPrompt (String message){
 		JTextArea elem = new JTextArea (message);	
 		elem.setLineWrap(true);
 		elem.setWrapStyleWord(true);
 		elem.setOpaque(false);
 		elem.setEditable(false);
-		mainPanel.add(elem,layoutConstraints);
+		return elem;
 	}
 	
 	private JPanel addTextFieldsForRange(int level){
@@ -266,12 +289,30 @@ public class LearningStartPanel {
 	private void recalculateSumOfKanji(JPanel container){
 		try{
 			SetOfRanges s = validateInputs(container);
-			sumRangeField.setText(TextValues.sumRangePrompt+s.sumRangeInclusive());
+			sumOfWords = 0;		
+			if (problematicCheckbox.isSelected()){					
+				sumOfWords += getProblematicKanjiNumber();	//TODO duplicated code		
+			}
+			this.sumOfWords += s.sumRangeInclusive();
+			updateSumOfWords();
+			
 		}
 		catch (IllegalArgumentException ex){
 			// We keep the message for untill approve button is clicked
 		}
 		
+	}
+	
+	private void updateSumOfWords(){
+		sumRangeField.setText(TextValues.sumRangePrompt+sumOfWords);
+	}
+	
+	private int getProblematicKanjiNumber(){
+		if (parentFrame instanceof BaseWindow){
+			BaseWindow p = (BaseWindow) parentFrame;
+			return p.getProblematicKanjis().size();
+		}
+		else return 0;
 	}
 			
 	private JButton createDeleteButton (final JPanel container, final JPanel panelToRemove){
@@ -348,7 +389,7 @@ public class LearningStartPanel {
 		sumRange.setEditable(false);
 		if (parentFrame instanceof BaseWindow){
 			BaseWindow b = (BaseWindow) parentFrame;
-			sumRange.setText(sumRange.getText()+": "+b.problematicKanjis().size());
+			sumRange.setText(sumRange.getText()+": "+b.getProblematicKanjis().size());
 		}
 		
 		return sumRange;
@@ -393,7 +434,7 @@ public class LearningStartPanel {
 		if (parentFrame instanceof BaseWindow){
 			BaseWindow parent = (BaseWindow) parentFrame;
 			parent.showCardPanel(BaseWindow.LEARNING_PANEL);
-			parent.setWordsRangeToRepeat(wordsToLearn);
+			parent.setWordsRangeToRepeat(wordsToLearn, problematicCheckbox.isSelected());
 		}
 	}
 	
@@ -422,7 +463,6 @@ public class LearningStartPanel {
 	}
 	
 	private void switchToRepeatingPanel(){
-		System.out.println("switching");
 		parentDialog.dispose();
 		switchPanels(rangesToRepeat);
 	}

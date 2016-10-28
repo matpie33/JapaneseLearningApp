@@ -1,5 +1,7 @@
 package com.kanji.window;
 
+import java.io.Serializable;
+
 import javax.swing.JFrame;
 
 import com.kanji.dialogs.MyDialog;
@@ -7,7 +9,7 @@ import com.kanji.fileReading.ExcelReader;
 import com.kanji.myList.MyList;
 
 @SuppressWarnings("serial")
-public abstract class ClassWithDialog extends JFrame{
+public abstract class ClassWithDialog extends JFrame implements Serializable{
 	private MyDialog dialog;
 	private boolean isExcelReaderLoaded;
 		

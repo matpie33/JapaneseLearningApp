@@ -1,11 +1,19 @@
 package com.kanji.window;
 
+import java.awt.Color;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -14,6 +22,9 @@ import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 import com.kanji.constants.TextValues;
 import com.kanji.dialogs.MyDialog;
@@ -24,13 +35,14 @@ import com.kanji.myList.RowWithDeleteButton;
 
 public class ElementMaker {
 	
-	private JFileChooser fileChooser;
 	private CustomFileReader fileReader;
 	private List <JButton> buttons;	
 	private ClassWithDialog parent;
 	private Map <String, Integer> words;	
 	private MyList listOfWords;
 	private MyList repeats;
+	private JMenuBar menuBar;
+	
 	
 	private class MyDispatcher implements KeyEventDispatcher {
         @Override
@@ -55,26 +67,53 @@ public class ElementMaker {
 	}
 	
 	private void initElements(){
-		fileReader = new CustomFileReader();
-		fileChooser = new JFileChooser();				
+		fileReader = new CustomFileReader();			
 		buttons = new ArrayList <JButton> ();		
 		for (String name: TextValues.buttonNames)
 			buttons.add(new JButton(name));
 		initListOfWords();
 		initRepeatsList();
+		createMenu();
+	}
+	
+	private void createMenu(){
+		menuBar = new JMenuBar();
+		menuBar.setBackground(Color.orange);
+		JMenu menu = new JMenu("Plik");
+		menuBar.add(menu);
+		JMenuItem item = new JMenuItem("Otwórz");
+		
+		item.addActionListener (new ActionListener (){
+			@Override
+			public void actionPerformed (ActionEvent e){
+				File f = openFile();
+				
+				try {
+					FileInputStream fout = new FileInputStream (f);
+					ObjectInputStream oos = new ObjectInputStream(fout);
+					listOfWords= (MyList)oos.readObject();
+					System.out.println(listOfWords.getRowCreator());
+					BaseWindow b = (BaseWindow)parent;
+					b.updateLeft();
+					fout.close();
+					System.out.println(listOfWords);
+				} catch (IOException | ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
+		
+		menu.add(item);
 	}
 	
 	private void initListOfWords(){
-		listOfWords = new MyList(parent,TextValues.wordsListTitle, new RowWithDeleteButton());
+		listOfWords = new MyList(parent,TextValues.wordsListTitle, new RowWithDeleteButton());		
+		
 		Map <String, Integer> initList = new LinkedHashMap <String, Integer>();
-		for (int i=0; i<10; i++){
+		for (int i=1; i<=10; i++){
 			String a = "Word no. "+i;
-			if (i==3)
-				a="to jest testowy text, prosze na niego " +
-						"nie zwracac uwagi ma tylko sluzyc sprawdzeniu " +
-						"jak to dziala i w ogole nie ma tu zadnego sensu hehe " +
-						"i co mi zrobisz jak mnie nie zlapiesz, ano nie zlapeisz mnie " +
-						"ale byki strzelam uuu";
 			
 			initList.put(a,i);
 			
@@ -94,7 +133,7 @@ public class ElementMaker {
 					button.addActionListener(new ActionListener (){
 						@Override
 						public void actionPerformed (ActionEvent e){
-							openFile();
+							loadWordsListFromFile();
 						}
 					});
 					break;
@@ -128,16 +167,21 @@ public class ElementMaker {
 	}
 	
 	
-	private void openFile(){
+	private void loadWordsListFromFile(){		
+		File file = openFile();
+		if (file == null)
+			return;		
+		words = tryToReadWordsFromFile(file);			
+		loadWordsListInNewThread();		
+	}
+	
+	private File openFile(){
+		JFileChooser fileChooser = new JFileChooser();
 		int chosenOption=fileChooser.showOpenDialog(parent);
 		if (chosenOption==JFileChooser.CANCEL_OPTION)
-			return;
+			return new File("");
 		File file = fileChooser.getSelectedFile();
-		words = tryToReadWordsFromFile(file);	
-		
-		loadWordsListInNewThread();
-		
-		
+		return file;
 	}
 	
 	private void loadWordsListInNewThread(){
@@ -188,6 +232,10 @@ public class ElementMaker {
 	
 	public MyList getRepeatsList(){
 		return repeats;
+	}
+	
+	public JMenuBar getMenu(){
+		return menuBar;
 	}
 	
 }

@@ -9,6 +9,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +21,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -41,7 +46,9 @@ public class BaseWindow extends ClassWithDialog {
 	private JPanel mainPanel;
 	private RepeatingWordsPanel repeatingWordsPanel;
 	private boolean isExcelReaderLoaded;
-	private Set <Integer> toRepeat;
+	private Set <Integer> problematicKanjis;
+	private JSplitPane upperPanel;
+	private GridBagLayout g;
 	
 	public ExcelReader excel;
 	
@@ -50,36 +57,42 @@ public class BaseWindow extends ClassWithDialog {
 	
 	public BaseWindow (){
 		
-		toRepeat = new HashSet <Integer> ();
+		
+		
+		problematicKanjis = new HashSet <Integer> ();
 		isExcelReaderLoaded = false;
 		maker = new ElementMaker(this);
 		mainPanel = new JPanel (new CardLayout());	
 		setContentPane(mainPanel);
 		
-		Container upper = createUpperPanel();	
+		createUpperPanel();	
 		Container lower = createButtonsPanel(maker.getButtons());	
 		
-		JPanel listsPanel = putPanelsTogetherAndSetContentPane(upper,lower);		
+		JPanel listsPanel = putPanelsTogetherAndSetContentPane(lower);		
 		mainPanel.add(listsPanel, LIST_PANEL);
 		
 		repeatingWordsPanel = new RepeatingWordsPanel(this);
 		mainPanel.add(repeatingWordsPanel, LEARNING_PANEL);
+		setJMenuBar (maker.getMenu());
 		
 		setWindowProperties();	
 		
 		
 	}
 	
-	private JSplitPane createUpperPanel(){	
+	
+	public void createUpperPanel(){	
 				
 		MyList wordsList = maker.getWordsList();
 		MyList repeatsList = maker.getRepeatsList();		
 		listScrollWords = createScrollPaneForList(wordsList);
 		listScrollRepeated = createScrollPaneForList(repeatsList);	
 
-		JSplitPane j = new JSplitPane (JSplitPane.HORIZONTAL_SPLIT, listScrollWords,listScrollRepeated);
-				
-		return j;		
+		upperPanel = new JSplitPane (JSplitPane.HORIZONTAL_SPLIT, listScrollWords,listScrollRepeated);
+		
+		
+		
+		repaint();	
 	}	
 	
 	private void createAndAddKanjiArea(JPanel panel){
@@ -149,7 +162,7 @@ public class BaseWindow extends ClassWithDialog {
 		return i>(size-1)/2;
 	}
 	
-	private JPanel putPanelsTogetherAndSetContentPane(Container up, Container down){
+	private JPanel putPanelsTogetherAndSetContentPane(Container down){
 		
 		JPanel main = new JPanel();
 		main.setLayout(new BorderLayout());
@@ -157,7 +170,7 @@ public class BaseWindow extends ClassWithDialog {
 		
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridy=0;		
-		main.add(up, BorderLayout.CENTER);		
+		main.add(upperPanel, BorderLayout.CENTER);		
 		
 		c.gridy=1;
 		main.add(down, BorderLayout.SOUTH);		
@@ -178,9 +191,15 @@ public class BaseWindow extends ClassWithDialog {
 		((CardLayout)mainPanel.getLayout()).show(mainPanel, cardName);		
 	}
 	
-	public void setWordsRangeToRepeat(SetOfRanges ranges){
+	public void setWordsRangeToRepeat(SetOfRanges ranges, boolean withProblematic){
+		
 		repeatingWordsPanel.setRepeatingWords(maker.getWordsList());
 		repeatingWordsPanel.setRangesToRepeat(ranges);
+		repeatingWordsPanel.reset();
+		System.out.println("setting: "+problematicKanjis);
+		if (withProblematic)
+			repeatingWordsPanel.setProblematicKanjis(problematicKanjis);
+		
 		repeatingWordsPanel.startRepeating();
 	}
 	
@@ -204,14 +223,25 @@ public class BaseWindow extends ClassWithDialog {
 		return isExcelReaderLoaded;
 	}
 	
-	public void addToRepeatList(List <Integer> toRepeat){
-		this.toRepeat.addAll(toRepeat);
+	public void addProblematicKanjis(Set <Integer> problematicKanjiList){
+		this.problematicKanjis.addAll(problematicKanjiList);
 		
-		System.out.println(this.toRepeat);
+		System.out.println(this.problematicKanjis);
 	}
 	
-	public Set <Integer> problematicKanjis (){
-		return toRepeat;
+	public Set <Integer> getProblematicKanjis (){
+		return problematicKanjis;
 	}
+	
+	public void setProblematicKanjis(Set <Integer> problematicKanjis){
+		this.problematicKanjis = problematicKanjis;
+	}
+	
+	public void updateLeft(){
+		upperPanel.setLeftComponent(createScrollPaneForList(maker.getWordsList()));
+		repaint();
+	}
+	
+	
 	
 }

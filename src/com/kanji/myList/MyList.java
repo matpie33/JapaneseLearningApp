@@ -10,6 +10,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 import java.text.Normalizer;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -26,9 +27,9 @@ import javax.swing.Scrollable;
 import com.kanji.constants.TextValues;
 import com.kanji.window.ClassWithDialog;
 
-@SuppressWarnings("serial")
-public class MyList extends JPanel implements Scrollable{
+public class MyList extends JPanel implements Scrollable, Serializable{
 	
+	private static final long serialVersionUID = -5024951383001795390L;
 	private List <JPanel> panels;
 	private int highlightedRowNumber;
 	private Color defaultRowColor = Color.RED;
@@ -36,7 +37,7 @@ public class MyList extends JPanel implements Scrollable{
 	private Color bgColor = Color.GREEN;
 	private JScrollPane parentScrollPane;	
 	private Map <String, Integer> wordsAndID;
-	private ClassWithDialog parent;
+	private transient ClassWithDialog parent;
 	private String title;
 	private RowsCreator rowsCreator;
 	
@@ -338,12 +339,25 @@ public class MyList extends JPanel implements Scrollable{
 		return wordsAndID.size();
 	}
 	
-	public void sendErrorToParent (Exception e){
+	private void sendErrorToParent (Exception e){
 		parent.showMessageDialog(e.getMessage());
 	}
 	
 	public Map <String, Integer> getWordsWithIds(){
 		return wordsAndID;
+	}
+	
+	public String getWordForId (int id){
+		for (String word: wordsAndID.keySet()){
+			if (wordsAndID.get(word).equals(id)){
+				return word;
+			}
+		}
+		return "";
+	}
+	
+	public RowsCreator getRowCreator(){
+		return rowsCreator;
 	}
 	
 	

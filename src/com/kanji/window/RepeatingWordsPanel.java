@@ -12,10 +12,12 @@ import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -34,7 +36,7 @@ public class RepeatingWordsPanel extends JPanel{
 										// contains words that were learned completely or aborted/paused
 	private ExcelReader excel;
 	private BaseWindow parent;
-	private List <Integer> problematicKanjis;
+	private Set <Integer> problematicKanjis;
 	
 	private JLabel time;
 	private double timeElapsed;
@@ -221,9 +223,21 @@ public class RepeatingWordsPanel extends JPanel{
 		recognizedWord.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed (ActionEvent e){
+				removeWordIfItsProblematic();
 				getNextWord();
+				System.out.println("problematics: "+problematicKanjis);
 			}
 		});
+	}
+	
+	private void removeWordIfItsProblematic(){
+		int id = getCurrentWordId();
+		problematicKanjis.remove((Integer)id);
+	}
+	
+	private int getCurrentWordId(){
+		String word = wordTextArea.getText();
+		return words.getWordsWithIds().get(word);
 	}
 	
 	private void createNotRecognizedWordButton(){
@@ -238,15 +252,16 @@ public class RepeatingWordsPanel extends JPanel{
 	}
 	
 	private void addToProblematic(){
-		String word = wordTextArea.getText();
-		int num = words.getWordsWithIds().get(word);
+		int num = getCurrentWordId();
 		System.out.println(num);
 		problematicKanjis.add(num);
 	}
 	
+	
+	
 	private void getNextWord(){
 		
-		String word = this.wordTextArea.getText().toString();
+		String word = this.wordTextArea.getText();
 		wordsToRepeat.remove(word);
 		System.out.println("removed: "+word);
 		
@@ -258,8 +273,9 @@ public class RepeatingWordsPanel extends JPanel{
 		else {
 			parent.showMessageDialog(TextValues.learningFinished);			
 			stopTimer();
+			parent.setProblematicKanjis(problematicKanjis);
 			parent.showCardPanel(BaseWindow.LIST_PANEL);
-			parent.addToRepeatList(problematicKanjis);
+//			parent.addProblematicKanjis(problematicKanjis);
 		}
 		
 	}
@@ -321,8 +337,16 @@ public class RepeatingWordsPanel extends JPanel{
 			for (int i=range.getRangeStart(); i<=range.getRangeEnd(); i++){
 				wordsToRepeat.add(words.findWordInRow(i-1));
 			}
-		}
-		
+		}		
+	}
+	
+	public void setProblematicKanjis (Set <Integer> problematicKanjis){
+		this.problematicKanjis = problematicKanjis;
+		for (int i: problematicKanjis){
+			String word = words.getWordForId(i);
+			if (!wordsToRepeat.contains(word))
+				wordsToRepeat.add(word);
+		}	
 		
 	}
 	
@@ -331,13 +355,13 @@ public class RepeatingWordsPanel extends JPanel{
 		createPanel();
 		revalidate();
 		repaint();
-		reset();
 		startTimer();
+		System.out.println("P: "+problematicKanjis);
 	}
 	
-	private void reset(){
+	public void reset(){
 		timeElapsed = 0;
-		problematicKanjis = new ArrayList <Integer> ();
+		problematicKanjis = new HashSet <Integer> ();
 	}
 	
 	private void startTimer(){
@@ -371,6 +395,8 @@ public class RepeatingWordsPanel extends JPanel{
 	public void setExcelReader (ExcelReader excel){
 		this.excel = excel;
 	}
+	
+	
 	
 
 }

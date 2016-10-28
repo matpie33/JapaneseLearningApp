@@ -30,6 +30,7 @@ public class TextValues {
 	
 	public static final String wordAddDialogPrompt = "Podaj s³ówko";	
 	public static final String wordAddNumberPrompt = "Podaj numerek";
+	public static final String problematicKanji = "Problematyczne";
 	
 	//word search dialog	
 	public static final String wordSearchDialogPrompt="Wpisz szukane s³owo";

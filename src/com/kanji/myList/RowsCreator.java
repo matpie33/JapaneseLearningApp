@@ -1,12 +1,15 @@
 package com.kanji.myList;
 
+import java.io.Serializable;
+
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-public interface RowsCreator {
+public abstract class RowsCreator implements Serializable  {
 	
-	public JPanel addWord(String word, int rowsNumber);
-	public void setList (MyList list);
+	public abstract JPanel addWord(String word, int rowsNumber);
+	public abstract void setList (MyList list);
 
+	
 
 }

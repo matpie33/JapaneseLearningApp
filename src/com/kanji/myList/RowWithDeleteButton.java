@@ -7,6 +7,13 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,10 +22,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-public class RowWithDeleteButton implements RowsCreator {
+public class RowWithDeleteButton extends RowsCreator implements Serializable {
 	private Color wordNumberColor = Color.WHITE;
 	private Color defaultRowColor = Color.RED;
-	private MyList list;	
+	private MyList list;
+	private List <KeyAdapter> adapters;
+	
+	public RowWithDeleteButton (){
+		adapters = new ArrayList <KeyAdapter>();
+	}
 	
 	@Override
 	public JPanel addWord (String text, int rowsNumber){				
@@ -27,7 +39,7 @@ public class RowWithDeleteButton implements RowsCreator {
 	}	
 	
 	
-	public JPanel createNewRow(String text, int rowsNumber) {
+	private JPanel createNewRow(String text, int rowsNumber) {
 		JPanel row = new JPanel ();	
 		row.setLayout(new GridBagLayout());		
 	
@@ -66,6 +78,24 @@ public class RowWithDeleteButton implements RowsCreator {
 	
 	private JTextArea createTextArea(String text){
 		JTextArea elem = new JTextArea(text);
+		KeyAdapter keyAdapter = new KeyAdapter(){
+			@Override
+			public void keyReleased (KeyEvent e){
+				try {
+					FileOutputStream fout = new FileOutputStream ("hi.txt");
+					ObjectOutputStream oos = new ObjectOutputStream(fout);
+					oos.writeObject(list);
+					
+					System.out.println("saved");
+					fout.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		};
+		elem.addKeyListener(keyAdapter);
+		adapters.add(keyAdapter);
 		elem.setLineWrap(true);
 		elem.setWrapStyleWord(true);
 		elem.setOpaque(true);
