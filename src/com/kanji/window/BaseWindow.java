@@ -234,13 +234,18 @@ public class BaseWindow extends ClassWithDialog {
 	}
 	
 	public void setProblematicKanjis(Set <Integer> problematicKanjis){
-		this.problematicKanjis = problematicKanjis;
+		this.problematicKanjis.addAll(problematicKanjis);
 	}
 	
 	public void updateLeft(){
 		upperPanel.setLeftComponent(createScrollPaneForList(maker.getWordsList()));
 		repaint();
 	}
+	
+	public void save()
+  {
+    this.maker.save();
+  }
 	
 	
 	

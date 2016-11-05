@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.FileOutputStream;
@@ -27,6 +29,7 @@ public class RowWithDeleteButton extends RowsCreator implements Serializable {
 	private Color defaultRowColor = Color.RED;
 	private MyList list;
 	private List <KeyAdapter> adapters;
+	private String wordBeingModified;
 	
 	public RowWithDeleteButton (){
 		adapters = new ArrayList <KeyAdapter>();
@@ -77,25 +80,29 @@ public class RowWithDeleteButton extends RowsCreator implements Serializable {
 	}
 	
 	private JTextArea createTextArea(String text){
-		JTextArea elem = new JTextArea(text);
-		KeyAdapter keyAdapter = new KeyAdapter(){
-			@Override
-			public void keyReleased (KeyEvent e){
-				try {
-					FileOutputStream fout = new FileOutputStream ("hi.txt");
-					ObjectOutputStream oos = new ObjectOutputStream(fout);
-					oos.writeObject(list);
-					
-					System.out.println("saved");
-					fout.close();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		};
-		elem.addKeyListener(keyAdapter);
-		adapters.add(keyAdapter);
+		final JTextArea elem = new JTextArea(text);
+		FocusListener focusListener = new FocusListener()
+	    {
+	      public void focusGained(FocusEvent e)
+	      {
+	        RowWithDeleteButton.this.wordBeingModified = elem.getText();
+	      }
+	      
+	      public void focusLost(FocusEvent e)
+	      {
+	        if (RowWithDeleteButton.this.wordBeingModified.equals(elem.getText())) {
+	          return;
+	        }
+	        RowWithDeleteButton.this.list.changeWord(RowWithDeleteButton.this.wordBeingModified, elem.getText());
+	        
+	        System.out.println(elem.getText());
+	        System.out.println(RowWithDeleteButton.this.list.getWordsWithIds());
+	        RowWithDeleteButton.this.wordBeingModified = "";
+	        RowWithDeleteButton.this.list.save();
+	      }
+	    };
+	    elem.addFocusListener(focusListener);
+		
 		elem.setLineWrap(true);
 		elem.setWrapStyleWord(true);
 		elem.setOpaque(true);

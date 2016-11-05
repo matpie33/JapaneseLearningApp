@@ -2,65 +2,68 @@ package com.kanji.constants;
 
 public class TextValues {
 	
-	public static final String appTitle="Program do nauki kanji i s≥Ûw.";
+	public static final String appTitle="Program do nauki kanji i s≈Ç√≥w.";
 	
-	public static final String insertWordDialogTitle="Nowe s≥owo";	
+	public static final String insertWordDialogTitle="Nowe s≈Çowo";	
 	public static final String messageDialogTitle="Informacja";	
 	public static final String learnStartDialogTitle="Rozpoczecie nauki";	
-	public static final String wordSearchDialogTitle="Znajdü s≥owo";
+	public static final String wordSearchDialogTitle="Znajd≈∫ s≈Çowo";
 	
 	public static final String wordsListTitle="Slowka";	
 	public static final String repeatedWordsListTitle="Powtorzone";
 	
 	// Buttons
 	public static final String buttonStartText = "Rozpocznij";
-	public static final String buttonSearchText = "Znajdü s≥Ûwko";
-	public static final String buttonAddText = "Dodaj s≥Ûwko";
-	public static final String buttonOpenText = "Wczytaj listÍ";
+	public static final String buttonSearchText = "Znajd≈∫ s≈Ç√≥wko";
+	public static final String buttonAddText = "Dodaj s≈Ç√≥wko";
+	public static final String buttonOpenText = "Wczytaj listƒô";
+  public static final String buttonSaveText = "Zapisz";
+  public static final String buttonSaveListText = "Zapisz listƒô";
 	
 	public static final String [] buttonNames = 
-		{buttonStartText, buttonSearchText, buttonAddText, buttonOpenText};	
+		{buttonStartText, buttonSearchText, buttonAddText, buttonOpenText, buttonSaveText,
+				buttonSaveListText};	
 			
 	public static final String buttonApproveText = "OK";
 	public static final String buttonCancelText = "Anuluj";
 	public static final String buttonPreviousText = "Poprzedni";
-	public static final String buttonNextText = "NastÍpny";
+	public static final String buttonNextText = "Nastƒôpny";
 	public static final String buttonAddRowText = "Dodaj wiersz";
-	public static final String buttonRemoveRowText = "UsuÒ wiersz";
+	public static final String buttonRemoveRowText = "Usu≈Ñ wiersz";
 	
-	public static final String wordAddDialogPrompt = "Podaj s≥Ûwko";	
+	public static final String wordAddDialogPrompt = "Podaj s≈Ç√≥wko";	
 	public static final String wordAddNumberPrompt = "Podaj numerek";
 	public static final String problematicKanji = "Problematyczne";
 	
 	//word search dialog	
-	public static final String wordSearchDialogPrompt="Wpisz szukane s≥owo";
+	public static final String wordSearchDialogPrompt="Wpisz szukane s≈Çowo";
 	public static final String wordSearchDefaultOption = 
-			"Szukaj wszystkich pozycji zawierajπcych wpisane s≥owa";
+			"Szukaj wszystkich pozycji zawierajƒÖcych wpisane s≈Çowa";
 	public static final String wordSearchOnlyFullWordsOption = 
-			"Szukaj pozycji, ktÛre zawierajπ dane s≥owo i byÊ moøe coú wiÍcej.";
+			"Szukaj pozycji, kt√≥re zawierajƒÖ dane s≈Çowo i byƒá mo≈ºe co≈õ wiƒôcej.";
 	public static final String wordSearchPerfectMatchOption =
-			"Szukaj pozycji zawierajπcych dok≥adnie to co wpisa≥em.";
+			"Szukaj pozycji zawierajƒÖcych dok≈Çadnie to co wpisa≈Çem.";
 	
-	public static final String learnStartPrompt = "ProszÍ wpisaÊ numery s≥Ûwek, ktÛre chcesz powtÛrzyÊ. " +
+	public static final String learnStartPrompt = "Proszƒô wpisaƒá numery s≈Ç√≥wek, kt√≥re chcesz powt√≥rzyƒá. " +
 			"Zewnetrzne numery slowek rowniez beda uwzglednione.";
 	
 	public static final String wordNotFoundMessage = 
-			"Nie znaleziono podanego s≥owa. ByÊ moøe zazaczono z≥π opcjÍ," +
-			"a moøe jest b≥πd we wpisanym s≥owie.";
+			"Nie znaleziono podanego s≈Çowa. Byƒá mo≈ºe zazaczono z≈ÇƒÖ opcjƒô," +
+			"a mo≈ºe jest b≈ÇƒÖd we wpisanym s≈Çowie.";
 			
-	public static final String duplicatedWordException = "Pewne s≥owo wystÍpuje wielokrotnie "+
-			"na liúcie s≥Ûw. Naleøy poprawiÊ.";
+	public static final String duplicatedWordException = "Pewne s≈Çowo wystƒôpuje wielokrotnie "+
+			"na li≈õcie s≈Ç√≥w. Nale≈ºy poprawiƒá.";
 	public static final String numberFormatException = "Niepoprawnie wpisana liczba.";
 	public static final String idAlreadyDefinedException = "Takie id juz istnieje.";
 	public static final String wordAlreadyDefinedException = "Takie slowo juz istnieje.";
 	public static final String wordAlreadyHighlightedException = "To slowo jest juz zaznaczone." +
 			"Nie znaleziono innych pozycji.";
-	public static final String rangeToValueLessThanRangeFromValue = "Za ma≥a liczba";
-	public static final String rangeValueTooHigh = "Wpisana liczba jest za duøa";
-	public static final String valueIsNotNumber = "ProszÍ wpisaÊ liczbÍ";
+	public static final String rangeToValueLessThanRangeFromValue = "Za ma≈Ça liczba";
+	public static final String rangeValueTooHigh = "Wpisana liczba jest za du≈ºa";
+	public static final String valueIsNotNumber = "Proszƒô wpisaƒá liczbƒô";
 	public static final String noInputSupplied = "Prosze cokolwiek wpisac!";
-	public static final String sumRangePrompt = "£πczna liczba kanji: ";
-	public static final String learningFinished = "Koniec s≥Ûw do powtÛrzenia.";
+	public static final String sumRangePrompt = "≈ÅƒÖczna liczba kanji: ";
+	public static final String learningFinished = "Koniec s≈Ç√≥w do powt√≥rzenia.";
 	public static final String excelNotLoaded = "Musisz zaczekac. Klasa wczytujaca kanji" +
 			" z excela nie zaladowala sie jeszcze.";
 

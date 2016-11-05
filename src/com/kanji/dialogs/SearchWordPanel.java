@@ -29,7 +29,7 @@ public class SearchWordPanel {
 	private MyDialog parentDialog;
 	private JRadioButton fullWordsSearchOption;
 	private JRadioButton perfectMatchSearchOption;
-	private SearchOptions options;
+	private SearchOptions options;	
 	private MyList list;
 	
 	public SearchWordPanel (JPanel panel, MyDialog parent){
@@ -149,7 +149,7 @@ public class SearchWordPanel {
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
-			parentDialog.showErrorDialogInNewWindow(e.getMessage()); //TODO to nie zawsze dobry pomys³
+			parentDialog.showErrorDialogInNewWindow(e.getMessage()); //TODO to nie zawsze dobry pomysï¿½
 		}
 	}
 	

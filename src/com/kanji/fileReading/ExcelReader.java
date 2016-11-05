@@ -28,7 +28,7 @@ public class ExcelReader {
 		POIFSFileSystem fs;
 		try {
 			
-			wb = new XSSFWorkbook(new File("./src/rtk.xlsx"));
+			wb = new XSSFWorkbook(new File("rtk.xlsx"));
 		    sheet = wb.getSheetAt(0);
 		    font = sheet.getRow(1).getCell(0).getCellStyle().getFont();
 		} 
