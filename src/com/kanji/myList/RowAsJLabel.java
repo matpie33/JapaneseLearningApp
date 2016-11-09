@@ -14,6 +14,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class RowAsJLabel extends RowsCreator{
 		
 		JLabel number = createNumberLabel(rowsNumber);
 		JTextArea repeatedWords = createTextArea(word);
-		JTextArea date = createDateArea();
+		JTextArea date = createDateArea(date1);
 		
 		Component [] components = {number, repeatedWords, date};
 		addComponentsToPanel(rowPanel, components);		
@@ -76,11 +77,13 @@ public class RowAsJLabel extends RowsCreator{
 		return elem;
 	}
 	
-	private JTextArea createDateArea(){
+	private JTextArea createDateArea(int date){
 		JTextArea textArea = createTextArea("");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd HH:mm:ss");
 		Calendar calendar = Calendar.getInstance();		
-		textArea.setText(sdf.format(calendar.getTime()));
+		
+		textArea.setText(sdf.format(new Date ((long)date*1000L)));
+//		textArea.setText(date+"");
 		textArea.setEditable(false);
 		
 		return textArea;

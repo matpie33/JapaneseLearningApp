@@ -13,6 +13,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -428,7 +430,11 @@ public class LearningStartPanel {
 		if (setOfRanges.getRangesAsString().isEmpty())
 			parentDialog.showErrorDialogInNewWindow(ExceptionsMessages.noInputSupplied);
 		else{
-			repeatsList.addWord(setOfRanges.getRangesAsString(),repeatsList.getWordsCount());
+			Calendar calendar = Calendar.getInstance();		
+			
+			int timestamp = (int)(calendar.getTimeInMillis()/1000);
+			repeatsList.addWord(setOfRanges.getRangesAsString(),timestamp);
+			System.out.println(new Date(timestamp));
 			repeatsList.scrollToBottom();
 		}
 	}
