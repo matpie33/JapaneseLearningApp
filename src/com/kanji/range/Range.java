@@ -1,6 +1,6 @@
 package com.kanji.range;
 
-import com.kanji.constants.TextValues;
+import com.kanji.constants.ExceptionsMessages;
 
 public class Range {
 	int rangeStart;
@@ -8,7 +8,7 @@ public class Range {
 	
 	public Range (int rangeStart, int rangeEnd) throws IllegalArgumentException{
 		if (rangeStart>=rangeEnd)
-			throw new IllegalArgumentException(TextValues.rangeToValueLessThanRangeFromValue);
+			throw new IllegalArgumentException(ExceptionsMessages.rangeToValueLessThanRangeFromValue);
 		this.rangeStart=rangeStart;
 		this.rangeEnd=rangeEnd;
 	}

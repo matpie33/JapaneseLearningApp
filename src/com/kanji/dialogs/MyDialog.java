@@ -17,7 +17,8 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import com.kanji.constants.TextValues;
+
+import com.kanji.constants.Titles;
 import com.kanji.myList.MyList;
 import com.kanji.window.BaseWindow;
 
@@ -87,7 +88,7 @@ public class MyDialog extends JDialog  {
 	public void showLearningStartDialog (MyList list, int maximumNumber){		
 		LearningStartPanel dialog = new LearningStartPanel(mainPanel,this, parentWindow, maximumNumber);
 		mainPanel = dialog.createPanel(list);
-		showYourself(TextValues.learnStartDialogTitle);		
+		showYourself(Titles.learnStartDialogTitle);		
 	}		
 		
 	private void showYourself(String title){ 	
@@ -101,7 +102,7 @@ public class MyDialog extends JDialog  {
 		MessagePanel dialog = new MessagePanel(mainPanel,this);
 		dialog.setLayoutConstraints(layoutConstraints);
 		mainPanel = dialog.createPanel(message);
-		showYourself(TextValues.messageDialogTitle);	
+		showYourself(Titles.messageDialogTitle);	
 		
 	}	
 		
@@ -109,14 +110,14 @@ public class MyDialog extends JDialog  {
 		SearchWordPanel dialog = new SearchWordPanel(mainPanel,this);
 		dialog.setLayoutConstraints(layoutConstraints);
 		mainPanel = dialog.createPanel(list);
-		showYourself(TextValues.wordSearchDialogTitle);		
+		showYourself(Titles.wordSearchDialogTitle);		
 	}				
 	
 	public void showInsertDialog(MyList list){
 		InsertWordPanel dialog = new InsertWordPanel(mainPanel,this);
 		dialog.setLayoutConstraints(layoutConstraints);
 		mainPanel = dialog.createPanel(list);
-		showYourself(TextValues.insertWordDialogTitle);		
+		showYourself(Titles.insertWordDialogTitle);		
 	}	
 	
 	public void showErrorDialogInNewWindow(String message){ // TODO jak tego uniknac bo to kopia
@@ -153,6 +154,13 @@ public class MyDialog extends JDialog  {
 	
 	public void setLocationAtLeftUpperCornerOfParent (Window parent){
 		setLocation(parent.getLocation());
+	}
+	
+	public void save(){
+		if (parentWindow instanceof BaseWindow){
+			BaseWindow parent = (BaseWindow) parentWindow;
+			parent.save();
+		}
 	}
 	
 }

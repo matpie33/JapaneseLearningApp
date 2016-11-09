@@ -16,8 +16,11 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import com.kanji.constants.ButtonsNames;
+import com.kanji.constants.ExceptionsMessages;
 import com.kanji.constants.NumberValues;
-import com.kanji.constants.TextValues;
+import com.kanji.constants.Options;
+import com.kanji.constants.Prompts;
 import com.kanji.myList.MyList;
 import com.kanji.myList.SearchOptions;
 
@@ -46,10 +49,10 @@ public class SearchWordPanel {
 	public JPanel createPanel(MyList list){
 		this.list=list;
 		int level = 0;
-		textField = addPromptAndTextFieldAndReturnTextField(level,TextValues.wordSearchDialogPrompt);
+		textField = addPromptAndTextFieldAndReturnTextField(level,Prompts.wordSearchDialogPrompt);
 		
 		level++;
-		JRadioButton defaultSearchOption = createRadioButton (level,TextValues.wordSearchDefaultOption);	
+		JRadioButton defaultSearchOption = createRadioButton (level,Options.wordSearchDefaultOption);	
 		defaultSearchOption.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed (ActionEvent e){
@@ -58,7 +61,7 @@ public class SearchWordPanel {
 		});
 		
 		level++;
-		fullWordsSearchOption = createRadioButton (level, TextValues.wordSearchOnlyFullWordsOption);
+		fullWordsSearchOption = createRadioButton (level, Options.wordSearchOnlyFullWordsOption);
 		fullWordsSearchOption.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed (ActionEvent e){
@@ -67,7 +70,7 @@ public class SearchWordPanel {
 		});
 		
 		level++;
-		perfectMatchSearchOption = createRadioButton (level, TextValues.wordSearchPerfectMatchOption);
+		perfectMatchSearchOption = createRadioButton (level, Options.wordSearchPerfectMatchOption);
 		perfectMatchSearchOption.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed (ActionEvent e){
@@ -81,8 +84,8 @@ public class SearchWordPanel {
 		defaultSearchOption.setSelected(true);
 		
 		level++;
-		JButton previous = createButtonPrevious(TextValues.buttonPreviousText);
-		JButton next = createButtonNext(TextValues.buttonNextText);
+		JButton previous = createButtonPrevious(ButtonsNames.buttonPreviousText);
+		JButton next = createButtonNext(ButtonsNames.buttonNextText);
 		addButtonsAtLevel(level,new JButton [] {previous,next});
 		return mainPanel;
 	}
@@ -145,11 +148,11 @@ public class SearchWordPanel {
 		try {
 			boolean found = list.findAndHighlightNextOccurence(textField.getText(), direction, options);
 			if (!found)
-				parentDialog.showErrorDialogInNewWindow(TextValues.wordNotFoundMessage);
+				parentDialog.showErrorDialogInNewWindow(ExceptionsMessages.wordNotFoundMessage);
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
-			parentDialog.showErrorDialogInNewWindow(e.getMessage()); //TODO to nie zawsze dobry pomys�
+			parentDialog.showErrorDialogInNewWindow(e.getMessage()); //TODO to nie zawsze dobry pomysł
 		}
 	}
 	

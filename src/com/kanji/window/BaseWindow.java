@@ -29,7 +29,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
-import com.kanji.constants.TextValues;
+
+import com.kanji.constants.Prompts;
+import com.kanji.constants.Titles;
 import com.kanji.fileReading.ExcelReader;
 import com.kanji.myList.MyList;
 import com.kanji.range.SetOfRanges;
@@ -47,8 +49,12 @@ public class BaseWindow extends ClassWithDialog {
 	private RepeatingWordsPanel repeatingWordsPanel;
 	private boolean isExcelReaderLoaded;
 	private Set <Integer> problematicKanjis;
-	private JSplitPane upperPanel;
+	private JSplitPane listsSplitPane;
 	private GridBagLayout g;
+	private JPanel infoPanel;
+	private JPanel buttonsPanel;
+	
+	private JLabel saveInfo;
 	
 	public ExcelReader excel;
 	
@@ -56,9 +62,7 @@ public class BaseWindow extends ClassWithDialog {
 	public static final String LEARNING_PANEL = "Panel for repeating words";
 	
 	public BaseWindow (){
-		
-		
-		
+						
 		problematicKanjis = new HashSet <Integer> ();
 		isExcelReaderLoaded = false;
 		maker = new ElementMaker(this);
@@ -66,9 +70,10 @@ public class BaseWindow extends ClassWithDialog {
 		setContentPane(mainPanel);
 		
 		createUpperPanel();	
-		Container lower = createButtonsPanel(maker.getButtons());	
+		createInformationsPanel();
+		createButtonsPanel(maker.getButtons());	
 		
-		JPanel listsPanel = putPanelsTogetherAndSetContentPane(lower);		
+		JPanel listsPanel = putPanelsTogetherAndSetContentPane();		
 		mainPanel.add(listsPanel, LIST_PANEL);
 		
 		repeatingWordsPanel = new RepeatingWordsPanel(this);
@@ -77,40 +82,26 @@ public class BaseWindow extends ClassWithDialog {
 		
 		setWindowProperties();	
 		
-		
 	}
 	
 	
-	public void createUpperPanel(){	
-				
+	private void createUpperPanel(){					
 		MyList wordsList = maker.getWordsList();
 		MyList repeatsList = maker.getRepeatsList();		
 		listScrollWords = createScrollPaneForList(wordsList);
 		listScrollRepeated = createScrollPaneForList(repeatsList);	
-
-		upperPanel = new JSplitPane (JSplitPane.HORIZONTAL_SPLIT, listScrollWords,listScrollRepeated);
-		
-		
-		
+		listsSplitPane = new JSplitPane (JSplitPane.HORIZONTAL_SPLIT, listScrollWords,
+				listScrollRepeated);				
 		repaint();	
 	}	
 	
-	private void createAndAddKanjiArea(JPanel panel){
-		Border raisedBevel = BorderFactory.createLineBorder(Color.BLUE,6);			
-		JTextArea kanjiArea = createKanjiArea(raisedBevel);		
-		panel.add(kanjiArea,BorderLayout.WEST);		
-	}	
-	
-	private JTextArea createKanjiArea (Border border){
-		
-		JTextArea kanjiArea = new JTextArea();
-		kanjiArea.setBackground(Color.GREEN);
-		kanjiArea.setPreferredSize(scrollPanesSize);
-		kanjiArea.setEditable(false);	
-		kanjiArea.setBorder(border);
-		return kanjiArea;
-		
-	}
+	private void createInformationsPanel(){
+		infoPanel = new JPanel();
+		infoPanel.setBackground(Color.YELLOW);
+		saveInfo = new JLabel();
+		changeSaveStatus(SavingStatus.BrakZmian);
+		infoPanel.add(saveInfo);
+	}		
 	
 	private JScrollPane createScrollPaneForList(MyList list){
 		
@@ -135,11 +126,11 @@ public class BaseWindow extends ClassWithDialog {
 		
 	}
 	
-	private JPanel createButtonsPanel(List <JButton> list){
+	private void createButtonsPanel(List <JButton> list){
 		
-		JPanel panel  = new JPanel();
-		panel.setLayout(new GridBagLayout());
-		panel.setBackground(Color.RED);
+		buttonsPanel  = new JPanel();
+		buttonsPanel.setLayout(new GridBagLayout());
+		buttonsPanel.setBackground(Color.RED);
 		
 		GridBagConstraints c = new GridBagConstraints();
 		
@@ -151,29 +142,24 @@ public class BaseWindow extends ClassWithDialog {
 		for (int i=0; i<list.size();i++){
 			if (indexIsHigherThanHalfOfSize(i,list.size()))
 				c.anchor=GridBagConstraints.EAST;
-			panel.add(list.get(i),c);
+			buttonsPanel.add(list.get(i),c);
 			c.gridx++;
 		}				
 						
-		return panel;
 	}
 	
 	private boolean indexIsHigherThanHalfOfSize(int i, int size){
 		return i>(size-1)/2;
 	}
 	
-	private JPanel putPanelsTogetherAndSetContentPane(Container down){
+	private JPanel putPanelsTogetherAndSetContentPane(){
 		
 		JPanel main = new JPanel();
 		main.setLayout(new BorderLayout());
-		main.setBackground(Color.RED);				
-		
-		GridBagConstraints c = new GridBagConstraints();
-		c.gridy=0;		
-		main.add(upperPanel, BorderLayout.CENTER);		
-		
-		c.gridy=1;
-		main.add(down, BorderLayout.SOUTH);		
+		main.setBackground(Color.RED);			
+		main.add(listsSplitPane, BorderLayout.NORTH);			
+		main.add(buttonsPanel, BorderLayout.CENTER);			
+		main.add(infoPanel, BorderLayout.SOUTH);
 		
 		return main;
 		
@@ -182,7 +168,7 @@ public class BaseWindow extends ClassWithDialog {
 	private void setWindowProperties(){
 		pack();
 		setMinimumSize(getSize());
-		setTitle(TextValues.appTitle);
+		setTitle(Titles.appTitle);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
@@ -238,14 +224,22 @@ public class BaseWindow extends ClassWithDialog {
 	}
 	
 	public void updateLeft(){
-		upperPanel.setLeftComponent(createScrollPaneForList(maker.getWordsList()));
+		listsSplitPane.setLeftComponent(createScrollPaneForList(maker.getWordsList()));
 		repaint();
 	}
 	
-	public void save()
-  {
-    this.maker.save();
-  }
+	public void save(){
+		this.maker.save();
+    }
+	
+	public void changeSaveStatus (SavingStatus savingStatus){
+		saveInfo.setText (Prompts.savingStatusPrompt + savingStatus);
+		repaint();
+	}
+	
+	public void updateTitle(String update){
+		setTitle(Titles.appTitle+"   "+update);
+	}
 	
 	
 	

@@ -24,8 +24,11 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.text.AbstractDocument;
 
+import com.kanji.constants.ButtonsNames;
+import com.kanji.constants.ExceptionsMessages;
 import com.kanji.constants.NumberValues;
-import com.kanji.constants.TextValues;
+import com.kanji.constants.Options;
+import com.kanji.constants.Prompts;
 import com.kanji.myList.MyList;
 import com.kanji.range.Range;
 import com.kanji.range.SetOfRanges;
@@ -60,7 +63,7 @@ public class LearningStartPanel {
 			loadExcel();
 		repeatsList = list;
 		int level = 0;
-		addPromptAtLevel(level, createPrompt(TextValues.learnStartPrompt));
+		addPromptAtLevel(level, createPrompt(Prompts.learnStartPrompt));
 				
 		level++;
 		problematicCheckbox = createProblematicKanjiCheckbox();
@@ -73,24 +76,24 @@ public class LearningStartPanel {
 		scrollPane = createScrollPane(panel, level);
 		
 		level++;
-		JTextField problematicKanjis = createProblematicRangeField(TextValues.problematicKanjiPrompt);
+		JTextField problematicKanjis = createProblematicRangeField(Prompts.problematicKanjiPrompt);
 		addComponentsAtLevel(level, new JComponent [] {problematicKanjis});
 		
 		level++;
-		JButton newRow = createButtonAddRow(TextValues.buttonAddRowText, panel);
-		sumRangeField = createSumRangeField(TextValues.sumRangePrompt);
+		JButton newRow = createButtonAddRow(ButtonsNames.buttonAddRowText, panel);
+		sumRangeField = createSumRangeField(Prompts.sumRangePrompt);
 		addComponentsAtLevel(level, new JComponent []{newRow,sumRangeField});
 			
 		level++;
-		JButton cancel = parentDialog.createButtonDispose(TextValues.buttonCancelText);
-		JButton approve = createButtonStartLearning (TextValues.buttonApproveText, panel); 
+		JButton cancel = parentDialog.createButtonDispose(ButtonsNames.buttonCancelText);
+		JButton approve = createButtonStartLearning (ButtonsNames.buttonApproveText, panel); 
 		
 		addComponentsAtLevel(level, new JButton []{cancel,approve});
 		return mainPanel;
 	}
 	
 	private JCheckBox createProblematicKanjiCheckbox(){
-		final JCheckBox problematicCheckbox = new JCheckBox (TextValues.problematicKanji);
+		final JCheckBox problematicCheckbox = new JCheckBox (Options.problematicKanjiOption);
 		problematicCheckbox.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed (ActionEvent e){
@@ -218,7 +221,7 @@ public class LearningStartPanel {
 			@Override 
 			public void keyTyped (KeyEvent e){
 				if (!(e.getKeyChar()+"").matches("\\d")){
-					showErrorIfNotExists(TextValues.valueIsNotNumber);
+					showErrorIfNotExists(ExceptionsMessages.valueIsNotNumber);
 					e.consume();
 					return;
 				}
@@ -235,10 +238,10 @@ public class LearningStartPanel {
 				}
 				
 				if (valueTo <= valueFrom){
-					showErrorIfNotExists(TextValues.rangeToValueLessThanRangeFromValue);
+					showErrorIfNotExists(ExceptionsMessages.rangeToValueLessThanRangeFromValue);
 				}
 				else if (isNumberHigherThanMaximum(valueFrom) || isNumberHigherThanMaximum(valueTo))
-					showErrorIfNotExists(TextValues.rangeValueTooHigh);
+					showErrorIfNotExists(ExceptionsMessages.rangeValueTooHigh);
 				else {
 					removeErrorIfExists();	
 					recalculateSumOfKanji((JPanel)container.getParent());
@@ -266,8 +269,8 @@ public class LearningStartPanel {
 				
 				for (Component c: container.getComponents()){
 					if (c instanceof JLabel && ((JLabel)c).getText().matches(
-							TextValues.rangeToValueLessThanRangeFromValue +"|"+
-							TextValues.valueIsNotNumber+"|"+TextValues.rangeValueTooHigh)){
+							ExceptionsMessages.rangeToValueLessThanRangeFromValue +"|"+
+							ExceptionsMessages.valueIsNotNumber+"|"+ExceptionsMessages.rangeValueTooHigh)){
 						container.remove(c);
 						container.repaint();
 						container.revalidate();
@@ -304,7 +307,7 @@ public class LearningStartPanel {
 	}
 	
 	private void updateSumOfWords(){
-		sumRangeField.setText(TextValues.sumRangePrompt+sumOfWords);
+		sumRangeField.setText(Prompts.sumRangePrompt+sumOfWords);
 	}
 	
 	private int getProblematicKanjiNumber(){
@@ -316,7 +319,7 @@ public class LearningStartPanel {
 	}
 			
 	private JButton createDeleteButton (final JPanel container, final JPanel panelToRemove){
-		JButton delete = new JButton (TextValues.buttonRemoveRowText);
+		JButton delete = new JButton (ButtonsNames.buttonRemoveRowText);
 		delete.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
@@ -406,7 +409,7 @@ public class LearningStartPanel {
 					addToRepeatsListOrShowError(rangesToRepeat);
 					
 					if (!excelReaderIsLoaded()){
-						parentDialog.showErrorDialogInNewWindow(TextValues.excelNotLoaded);
+						parentDialog.showErrorDialogInNewWindow(ExceptionsMessages.excelNotLoaded);
 						waitUntillExcelLoads();						
 					}
 					else switchToRepeatingPanel();
@@ -423,7 +426,7 @@ public class LearningStartPanel {
 	
 	private void addToRepeatsListOrShowError(SetOfRanges setOfRanges){
 		if (setOfRanges.getRangesAsString().isEmpty())
-			parentDialog.showErrorDialogInNewWindow(TextValues.noInputSupplied);
+			parentDialog.showErrorDialogInNewWindow(ExceptionsMessages.noInputSupplied);
 		else{
 			repeatsList.addWord(setOfRanges.getRangesAsString(),repeatsList.getWordsCount());
 			repeatsList.scrollToBottom();

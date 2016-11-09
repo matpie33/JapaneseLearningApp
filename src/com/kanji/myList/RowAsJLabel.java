@@ -28,7 +28,7 @@ public class RowAsJLabel extends RowsCreator{
 	private MyList list;
 		
 	@Override
-	public JPanel addWord(String word, int rowsNumber) {
+	public JPanel addWord(String word, int date1, int rowsNumber) {
 		JPanel rowPanel = createPanel();
 		
 		JLabel number = createNumberLabel(rowsNumber);

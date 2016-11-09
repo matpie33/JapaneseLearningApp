@@ -7,7 +7,7 @@ import javax.swing.JTextArea;
 
 public abstract class RowsCreator implements Serializable  {
 	
-	public abstract JPanel addWord(String word, int rowsNumber);
+	public abstract JPanel addWord(String word, int kanjiID, int rowsNumber);
 	public abstract void setList (MyList list);
 
 	

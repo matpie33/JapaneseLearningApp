@@ -13,10 +13,14 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import com.kanji.constants.ExceptionsMessages;
+
 public class CustomFileReader
 {
   private Map<Integer, String> keywords;
   private File readedFile;
+  private final String WORD_TEXT = "Słowo to: ";
+  private final String NUMBER_TEXT = "Numer id to: ";
   
   public Map<Integer, String> readFile(File file)
     throws Exception
@@ -94,7 +98,7 @@ public class CustomFileReader
   
   private int moveCursorToLetterOrDigit(int startIndex, String line)
   {
-    while (!(""+line.charAt(startIndex)).matches("[a-zA-Z������������������]|\\d")) {
+    while (!(""+line.charAt(startIndex)).matches("[a-zA-ZąęśćżźńłóĄĘŚĆŻŹŃŁÓ]|\\d")) {
       startIndex--;
     }
     return startIndex;
@@ -109,16 +113,16 @@ public class CustomFileReader
     throws Exception
   {
     Desktop.getDesktop().open(this.readedFile);
-    throw new Exception("Na li�cie wyst�puje wielokrotnie pewne id.  Nale�y poprawi�.Numer id to: " + 
+    throw new Exception(ExceptionsMessages.duplicatedIdException+" "+NUMBER_TEXT + 
       wordId);
   }
   
   private void openDesktopAndShowMessage(String duplicatedWord, int wordId)
     throws Exception
   {
-    Desktop.getDesktop().open(this.readedFile);
-    throw new Exception("Pewne s�owo wyst�puje wielokrotnie na li�cie s��w. Nale�y poprawi�.S�owo to: " + 
-      duplicatedWord + "; a numer to " + 
+    Desktop.getDesktop().open(this.readedFile); //TODO how to check if the file is opened?
+    throw new Exception(ExceptionsMessages.duplicatedWordException+" " +WORD_TEXT + 
+      duplicatedWord + "; "+NUMBER_TEXT+ 
       wordId + " oraz " + getKeywordID(duplicatedWord));
   }
   

@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.text.StyledDocument;
 
-import com.kanji.constants.TextValues;
+import com.kanji.constants.ButtonsNames;
 
 public class MessagePanel {
 
@@ -32,7 +32,7 @@ public class MessagePanel {
 		int level = 0;
 		addPromptAtLevel(level,message);
 		
-		JButton button = parentDialog.createButtonDispose(TextValues.buttonApproveText);
+		JButton button = parentDialog.createButtonDispose(ButtonsNames.buttonApproveText);
 		layoutConstraints.gridy++;
 		layoutConstraints.fill=GridBagConstraints.NONE;
 		mainPanel.add(button,layoutConstraints);	

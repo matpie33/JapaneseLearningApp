@@ -1,5 +1,8 @@
 package com.kanji.window;
 
+import com.kanji.constants.ButtonsNames;
+import com.kanji.constants.Prompts;
+import com.kanji.constants.Titles;
 import com.kanji.fileReading.ExcelReader;
 import com.kanji.myList.MyList;
 import com.kanji.range.Range;
@@ -79,7 +82,7 @@ public class RepeatingWordsPanel
   private void createPanel()
   {
     int level = 0;
-    addTitleAndTime("Powt�rka s��wek", level);
+    addTitleAndTime(Titles.repeatingWordsTitle, level);
     if (!this.wordsToRepeat.isEmpty())
     {
       level++;
@@ -176,7 +179,7 @@ public class RepeatingWordsPanel
   
   private void createShowWordButton()
   {
-    this.showWord = new JButton("Poka� kanji.");
+    this.showWord = new JButton(ButtonsNames.buttonShowKanjiText);
     this.showWord.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -216,21 +219,21 @@ public class RepeatingWordsPanel
   
   private void pauseOrResume()
   {
-    if (this.pauseOrResume.getText().equals("Pauza"))
+    if (this.pauseOrResume.getText().equals(ButtonsNames.buttonPauseText))
     {
       stopTimer();
-      this.pauseOrResume.setText("Wznow");
+      this.pauseOrResume.setText(ButtonsNames.buttonResumeText);
     }
     else
     {
       startTimer();
-      this.pauseOrResume.setText("Pauza");
+      this.pauseOrResume.setText(ButtonsNames.buttonPauseText);
     }
   }
   
   private void createRecognizedWordButton()
   {
-    this.recognizedWord = new JButton("Znam");
+    this.recognizedWord = new JButton(ButtonsNames.buttonRecognizedWordText);
     AbstractAction a = new AbstractAction()
     {
       public void actionPerformed(ActionEvent e)
@@ -260,7 +263,7 @@ public class RepeatingWordsPanel
   
   private void createNotRecognizedWordButton()
   {
-    this.notRecognizedWord = new JButton("Nie pamietam");
+    this.notRecognizedWord = new JButton(ButtonsNames.buttonNotRecognizedText);
     
     AbstractAction a = new AbstractAction()
     {
@@ -300,10 +303,10 @@ public class RepeatingWordsPanel
     }
     else
     {
-      this.parent.showMessageDialog("Koniec s��w do powt�rzenia.");
+      this.parent.showMessageDialog(Prompts.repeatingIsDonePrompt);
       stopTimer();
       this.parent.setProblematicKanjis(this.problematicKanjis);
-      this.parent.showCardPanel("Panel with lists and buttons");
+      this.parent.showCardPanel(BaseWindow.LIST_PANEL);
       this.parent.save();
     }
     this.remainingLabel.setText(createRemainingPrompt());
@@ -341,12 +344,12 @@ public class RepeatingWordsPanel
   
   private void addButtons(int level)
   {
-    JButton returnButton = new JButton("Powrot");
+    JButton returnButton = new JButton(ButtonsNames.buttonGoBackText);
     returnButton.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
       {
-        RepeatingWordsPanel.this.parent.showCardPanel("Panel with lists and buttons");
+        RepeatingWordsPanel.this.parent.showCardPanel(BaseWindow.LIST_PANEL);
         RepeatingWordsPanel.this.stopTimer();
       }
     });
@@ -366,7 +369,7 @@ public class RepeatingWordsPanel
   
   private String createRemainingPrompt()
   {
-    return "Pozosta�o: " + this.wordsToRepeat.size();
+    return Prompts.remainingKanjiPrompt+" " + this.wordsToRepeat.size();
   }
   
   public void setRepeatingWords(MyList wordsList)

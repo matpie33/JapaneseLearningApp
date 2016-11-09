@@ -10,8 +10,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.text.AbstractDocument;
 
+import com.kanji.constants.ButtonsNames;
+import com.kanji.constants.ExceptionsMessages;
 import com.kanji.constants.NumberValues;
-import com.kanji.constants.TextValues;
+import com.kanji.constants.Prompts;
 import com.kanji.myList.MyList;
 import com.kanji.window.LimitDocumentFilter;
 
@@ -37,15 +39,15 @@ public class InsertWordPanel {
 	public JPanel createPanel (MyList list){
 		this.list=list;
 		int level = 0;
-		insertWord = addPromptAndTextField(level,TextValues.wordAddDialogPrompt);
+		insertWord = addPromptAndTextField(level,Prompts.wordAddDialogPrompt);
 		
 		level++;
-		insertNumber = addPromptAndTextField(level, TextValues.wordAddNumberPrompt);
+		insertNumber = addPromptAndTextField(level, Prompts.wordAddNumberPrompt);
 		limitCharactersAccordingToInteger(insertNumber);
 		
 		level++;
-		JButton cancel = parentDialog.createButtonDispose(TextValues.buttonCancelText);
-		JButton approve = createButtonValidate(TextValues.buttonApproveText);
+		JButton cancel = parentDialog.createButtonDispose(ButtonsNames.buttonCancelText);
+		JButton approve = createButtonValidate(ButtonsNames.buttonApproveText);
 		addButtonsAtLevel(level, new JButton [] {cancel, approve});	
 		return mainPanel;
 	}
@@ -78,8 +80,11 @@ public class InsertWordPanel {
 				String wordInput = insertWord.getText(); 
 				if (isNumberValid(numberInput)){
 					int number = Integer.parseInt(numberInput);
-					if (checkIfInputIsValid(wordInput, number))			
+					if (checkIfInputIsValid(wordInput, number))	{
 						addWordToList(wordInput, number);
+						parentDialog.save();
+					}
+						
 				}				
 								
 			}
@@ -92,7 +97,7 @@ public class InsertWordPanel {
 		boolean valid = number.matches("\\d+");
 	
 		if (!valid)
-			parentDialog.showErrorDialogInNewWindow(TextValues.numberFormatException);
+			parentDialog.showErrorDialogInNewWindow(ExceptionsMessages.numberFormatException);
 		return valid;
 	}	
 	
@@ -103,14 +108,14 @@ public class InsertWordPanel {
 	private boolean isWordIdUndefinedYet(int number){
 		boolean undefined=list.isWordIdUndefinedYet(number);		
 		if (!undefined)
-			parentDialog.showErrorDialogInNewWindow(TextValues.idAlreadyDefinedException);
+			parentDialog.showErrorDialogInNewWindow(ExceptionsMessages.idAlreadyDefinedException);
 		return undefined;
 	}
 	
 	private boolean isWordUndefinedYet(String word){
 		boolean undefined = list.isWordUndefinedYet(word);
 		if (!undefined)
-			parentDialog.showErrorDialogInNewWindow(TextValues.wordAlreadyDefinedException);
+			parentDialog.showErrorDialogInNewWindow(ExceptionsMessages.wordAlreadyDefinedException);
 		return undefined;
 	}
 	

@@ -30,8 +30,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.SwingUtilities;
 
-import com.kanji.constants.TextValues;
+import com.kanji.constants.ButtonsNames;
+import com.kanji.constants.Titles;
+import com.kanji.constants.MenuTexts;
 import com.kanji.dialogs.MyDialog;
 import com.kanji.fileReading.CustomFileReader;
 import com.kanji.myList.MyList;
@@ -48,6 +51,7 @@ public class ElementMaker {
 	private MyList repeats;
 	private JMenuBar menuBar;
 	private File fileToSave;
+	private SavingStatus savingStatus;
 	
 	
 	private class MyDispatcher implements KeyEventDispatcher {
@@ -62,6 +66,7 @@ public class ElementMaker {
 	
 	public ElementMaker (ClassWithDialog parent){
 		
+		savingStatus = SavingStatus.BrakZmian;
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.addKeyEventDispatcher(new MyDispatcher());
 		this.parent=parent;
@@ -75,7 +80,7 @@ public class ElementMaker {
 	private void initElements(){
 		fileReader = new CustomFileReader();			
 		buttons = new ArrayList <JButton> ();		
-		for (String name: TextValues.buttonNames)
+		for (String name: ButtonsNames.buttonNames)
 			buttons.add(new JButton(name));
 		initListOfWords();
 		initRepeatsList();
@@ -85,38 +90,57 @@ public class ElementMaker {
 	private void createMenu(){
 		menuBar = new JMenuBar();
 		menuBar.setBackground(Color.orange);
-		JMenu menu = new JMenu("Plik");
+		JMenu menu = new JMenu(MenuTexts.menuBarFile);
 		menuBar.add(menu);
-		JMenuItem item = new JMenuItem("Otw�rz");
+		JMenuItem item = new JMenuItem(MenuTexts.menuOpen);
 		
 		item.addActionListener (new ActionListener (){
 			@Override
 			public void actionPerformed (ActionEvent e){
 				fileToSave = openFile();
+				if (!fileToSave.exists())
+					return;
 				
 				try {
+					
 					FileInputStream fout = new FileInputStream(fileToSave);
-			          ObjectInputStream oos = new ObjectInputStream(fout);
-			          Map<Integer, String> wordss = (Map)
-			            oos.readObject();
-			         listOfWords.setWords(wordss);
-			          Map<Integer, String> mapOfRepeats = (Map)oos.readObject();
-			         repeats.setWords(mapOfRepeats);
-			          if (parent instanceof BaseWindow) {
-			            try
-			            {
-			              Set<Integer> problematics = (Set<Integer>)oos.readObject();
-			              BaseWindow p = (BaseWindow)parent;
-			              p.setProblematicKanjis(problematics);
-			            }
-			            catch (EOFException localEOFException) {}
-			          }
-			          System.out.println(wordss);
-			          BaseWindow b = (BaseWindow)ElementMaker.this.parent;
-			          b.updateLeft();
-			          fout.close();
-			          System.out.println(ElementMaker.this.listOfWords);
-				} catch (IOException | ClassNotFoundException e1) {
+			        ObjectInputStream oos = new ObjectInputStream(fout);
+			        final Map<Integer, String> wordss = (Map) oos.readObject();
+			        Runnable r = new Runnable (){
+			        	@Override
+			        	public void run (){
+			        		listOfWords.setWords(wordss);
+			        	}
+			        };
+			         Thread t = new Thread(r);
+			         t.start();
+			        final Map<Integer, String> mapOfRepeats = (Map)oos.readObject();
+			        
+			        Runnable r2 = new Runnable (){
+			        	@Override
+			        	public void run (){
+			        		repeats.setWords(mapOfRepeats);
+			        	}
+			        };
+			        Thread t2 = new Thread (r2);
+			        t2.start();
+			        
+			       		if (parent instanceof BaseWindow) {
+			       			try	{
+			       				Set<Integer> problematics = (Set<Integer>)oos.readObject();
+			       				BaseWindow p = (BaseWindow)parent;
+			       				p.setProblematicKanjis(problematics);
+			       			}
+			       			catch (EOFException localEOFException) {}
+			       		}
+			        BaseWindow b = (BaseWindow)parent;
+					b.showMessageDialog("loading");
+			        b.updateTitle(fileToSave.toString());
+			        b.updateLeft();
+			          
+			        fout.close();
+				}
+				catch (IOException | ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -128,7 +152,7 @@ public class ElementMaker {
 	}
 	
 	private void initListOfWords(){
-		listOfWords = new MyList(parent,TextValues.wordsListTitle, new RowWithDeleteButton(), this);		
+		listOfWords = new MyList(parent,Titles.wordsListTitle, new RowWithDeleteButton(), this);		
 		
 		Map <Integer, String> initList = new LinkedHashMap <Integer, String>();
 		for (int i=1; i<=10; i++){
@@ -141,14 +165,14 @@ public class ElementMaker {
 	}	
 	
 	private void initRepeatsList(){
-		repeats = new MyList (parent,TextValues.repeatedWordsListTitle, new RowAsJLabel(), this);
+		repeats = new MyList (parent,Titles.repeatedWordsListTitle, new RowAsJLabel(), this);
 	}
 		
 	private void addListeners(List <JButton> buttons){
 				
 		for (JButton button: buttons){
 			switch (button.getText()){
-				case TextValues.buttonOpenText: 
+				case ButtonsNames.buttonOpenText: 
 					button.addActionListener(new ActionListener (){
 						@Override
 						public void actionPerformed (ActionEvent e){
@@ -156,7 +180,7 @@ public class ElementMaker {
 						}
 					});
 					break;
-				case TextValues.buttonAddText:
+				case ButtonsNames.buttonAddText:
 					button.addActionListener(new ActionListener (){
 						@Override
 						public void actionPerformed(ActionEvent e){
@@ -164,7 +188,7 @@ public class ElementMaker {
 						}
 					});
 					break;
-				case TextValues.buttonSearchText:
+				case ButtonsNames.buttonSearchText:
 					button.addActionListener (new ActionListener(){
 						@Override
 						public void actionPerformed(ActionEvent e){
@@ -172,7 +196,7 @@ public class ElementMaker {
 						}
 					});	
 					break;
-				case TextValues.buttonStartText:
+				case ButtonsNames.buttonStartText:
 					button.addActionListener(new ActionListener (){
 						@Override
 						public void actionPerformed(ActionEvent e){
@@ -180,7 +204,7 @@ public class ElementMaker {
 						}
 					});
 					break;
-				case TextValues.buttonSaveText:
+				case ButtonsNames.buttonSaveText:
 					button.addActionListener (new ActionListener(){
 						@Override
 						public void actionPerformed(ActionEvent e){
@@ -188,7 +212,7 @@ public class ElementMaker {
 						}
 					});	
 					break;
-				case TextValues.buttonSaveListText:
+				case ButtonsNames.buttonSaveListText:
 					button.addActionListener(new ActionListener (){
 						@Override
 						public void actionPerformed(ActionEvent e){
@@ -204,7 +228,7 @@ public class ElementMaker {
 	
 	private void loadWordsListFromFile(){		
 		File file = openFile();
-		if (file == null)
+		if (!file.exists())
 			return;		
 		words = tryToReadWordsFromFile(file);			
 		loadWordsListInNewThread();		
@@ -275,6 +299,11 @@ public class ElementMaker {
 	
 	public void save()
 	  {
+		BaseWindow p = new BaseWindow();
+		if (parent instanceof BaseWindow){
+			p = (BaseWindow) parent;
+			p.changeSaveStatus(SavingStatus.Zapisywanie);
+		}
 	    try
 	    {
 	      if (this.fileToSave == null) {
@@ -296,6 +325,7 @@ public class ElementMaker {
 	    {
 	      e1.printStackTrace();
 	    }
+	    p.changeSaveStatus(SavingStatus.Zapisano);
 	  }
 	  
 	  private void exportList()

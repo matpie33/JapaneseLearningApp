@@ -30,19 +30,20 @@ public class RowWithDeleteButton extends RowsCreator implements Serializable {
 	private MyList list;
 	private List <KeyAdapter> adapters;
 	private String wordBeingModified;
+	private int idBeingModified;
 	
 	public RowWithDeleteButton (){
 		adapters = new ArrayList <KeyAdapter>();
 	}
 	
 	@Override
-	public JPanel addWord (String text, int rowsNumber){				
-		JPanel row = createNewRow(text, rowsNumber);	
+	public JPanel addWord (String text, int kanjiID, int rowsNumber){				
+		JPanel row = createNewRow(text, kanjiID, rowsNumber);	
 		return row;
 	}	
 	
 	
-	private JPanel createNewRow(String text, int rowsNumber) {
+	private JPanel createNewRow(String text, int ID, int rowsNumber) {
 		JPanel row = new JPanel ();	
 		row.setLayout(new GridBagLayout());		
 	
@@ -52,11 +53,17 @@ public class RowWithDeleteButton extends RowsCreator implements Serializable {
 		GridBagConstraints cd = initiateGridBagConstraints();		
 		row.add(number,cd);
 		
-		JTextArea textArea = createTextArea(text);
+		JTextArea wordTextArea = createTextArea(text, String.class);
 		cd.gridx++;
 		cd.weightx=1;
 		cd.fill=GridBagConstraints.HORIZONTAL;
-		row.add(textArea,cd);
+		row.add(wordTextArea,cd);
+		
+		JTextArea idTextArea = createTextArea(Integer.toString(ID), Integer.class);
+		cd.gridx++;
+		cd.weightx=0;
+		cd.fill=GridBagConstraints.NONE;
+		row.add(idTextArea,cd);
 		
 		JButton remove = createButtonRemove(text);		
 		cd.gridx++;
@@ -79,34 +86,71 @@ public class RowWithDeleteButton extends RowsCreator implements Serializable {
 		return cd;
 	}
 	
-	private JTextArea createTextArea(String text){
-		final JTextArea elem = new JTextArea(text);
-		FocusListener focusListener = new FocusListener()
-	    {
-	      public void focusGained(FocusEvent e)
-	      {
-	        RowWithDeleteButton.this.wordBeingModified = elem.getText();
-	      }
-	      
-	      public void focusLost(FocusEvent e)
-	      {
-	        if (RowWithDeleteButton.this.wordBeingModified.equals(elem.getText())) {
-	          return;
-	        }
-	        RowWithDeleteButton.this.list.changeWord(RowWithDeleteButton.this.wordBeingModified, elem.getText());
-	        
-	        System.out.println(elem.getText());
-	        System.out.println(RowWithDeleteButton.this.list.getWordsWithIds());
-	        RowWithDeleteButton.this.wordBeingModified = "";
-	        RowWithDeleteButton.this.list.save();
-	      }
-	    };
-	    elem.addFocusListener(focusListener);
-		
+	private JTextArea createTextArea(String text, Class type){
+		JTextArea elem = new JTextArea(text);
+		FocusListener f;
+		if (type == Integer.class)
+			f = createIdChangeListener(elem);
+		else
+			f = createWordChangeListener(elem);
+	    elem.addFocusListener(f);		
 		elem.setLineWrap(true);
 		elem.setWrapStyleWord(true);
 		elem.setOpaque(true);
 		return elem;
+	}
+	
+	private FocusListener createWordChangeListener (final JTextArea elem){
+		FocusListener focusListener = new FocusListener()
+	    {
+	      public void focusGained(FocusEvent e)
+	      {
+	        wordBeingModified = elem.getText();
+	      }
+	      
+	      public void focusLost(FocusEvent e)
+	      {
+	        if (wordBeingModified.equals(elem.getText())) {
+	          return;
+	        }
+	        list.changeWord(wordBeingModified, elem.getText());	        
+	        wordBeingModified = "";
+	        list.save();
+	      }
+	    };
+	    return focusListener;
+	}
+	
+	private FocusListener createIdChangeListener (final JTextArea elem){
+		FocusListener focusListener = new FocusListener()
+	    {
+	      public void focusGained(FocusEvent e)
+	      {
+	    	  if (elem.getText().matches("\\d+"))
+	        idBeingModified = Integer.parseInt(elem.getText());
+	    	  // TODO else exception
+	    		  
+	      }
+	      
+	      public void focusLost(FocusEvent e)
+	      {
+	    	  int newID;
+	    	  if (elem.getText().matches("\\d+")){
+	    		  newID = Integer.parseInt(elem.getText());
+	    	  }
+	    	  else return;	    		  
+	  	    	  // TODO else exception
+	    	  
+	        if (idBeingModified==Integer.parseInt(elem.getText())) {
+	          return;	          
+	        }
+	        list.changeId(idBeingModified, newID);
+            list.save();
+	        idBeingModified = -1;
+	        
+	      }
+	    };
+	    return focusListener;
 	}
 	
 	private JButton createButtonRemove(final String text){

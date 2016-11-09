@@ -20,17 +20,18 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelReader {
 	
-	private XSSFWorkbook wb;
+	
 	private XSSFSheet sheet;
 	private XSSFFont font;
 	
 	public void load(){
-		POIFSFileSystem fs;
 		try {
-			
+			XSSFWorkbook wb;
 			wb = new XSSFWorkbook(new File("rtk.xlsx"));
 		    sheet = wb.getSheetAt(0);
 		    font = sheet.getRow(1).getCell(0).getCellStyle().getFont();
+		    wb.close();
+		    
 		} 
 		catch (IOException | InvalidFormatException e) {
 			// TODO Auto-generated catch block

@@ -1,5 +1,6 @@
 package com.kanji.myList;
 
+import com.kanji.constants.ExceptionsMessages;
 import com.kanji.window.ClassWithDialog;
 import com.kanji.window.ElementMaker;
 import java.awt.Color;
@@ -103,10 +104,12 @@ public class MyList
   public void addWord(String word, int number)
   {
     this.wordsAndID.put(Integer.valueOf(number), word);
-    JPanel row = this.rowsCreator.addWord(word, this.panels.size() + 1);
+    JPanel row = this.rowsCreator.addWord(word, number, this.panels.size() + 1);
     this.panels.add(row);
     GridBagConstraints c = createConstraintsForNewRow();
     add(row, c);
+    repaint(row.getLocation().x, row.getLocation().y, row.getSize().width, row.getSize().height);
+    
   }
   
   private GridBagConstraints createConstraintsForNewRow()
@@ -145,7 +148,7 @@ public class MyList
       }
     }
     if (doesWordContainSearchedWord(highlightedWord, searchedWord, options)) {
-      throw new Exception("To slowo jest juz zaznaczone.Nie znaleziono innych pozycji.");
+      throw new Exception(ExceptionsMessages.wordAlreadyHighlightedException);
     }
     return false;
   }
@@ -160,7 +163,7 @@ public class MyList
   {
     word = 
       Normalizer.normalize(word, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-    word = word.replace("�", "l").replace("�", "L");
+    word = word.replace("ł", "l").replace("Ł", "L");
     return word;
   }
   
@@ -409,13 +412,20 @@ public class MyList
     this.wordsAndID.put(Integer.valueOf(i), newWord);
   }
   
+  public void changeId(int oldId, int newID)
+  {
+    String word = wordsAndID.get(oldId);
+    this.wordsAndID.put(newID, word);
+    wordsAndID.remove(oldId);
+  }
+  
   public RowsCreator getRowCreator()
   {
     return this.rowsCreator;
   }
   
   public void save()
-  {
+  {	
     this.elementsMaker.save();
   }
 }
