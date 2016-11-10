@@ -16,6 +16,7 @@ import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -88,7 +89,7 @@ public class MyList
   
   private void initiate()
   {
-    this.wordsAndID = new HashMap();
+    this.wordsAndID = new LinkedHashMap<Integer,String>();
     this.highlightedRowNumber = 0;
     this.panels = new LinkedList();
     setLayout(new GridBagLayout());

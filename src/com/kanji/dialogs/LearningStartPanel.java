@@ -411,7 +411,7 @@ public class LearningStartPanel {
 					addToRepeatsListOrShowError(rangesToRepeat);
 					
 					if (!excelReaderIsLoaded()){
-						parentDialog.showErrorDialogInNewWindow(ExceptionsMessages.excelNotLoaded);
+//						parentDialog.showErrorDialogInNewWindow(ExceptionsMessages.excelNotLoaded);
 						waitUntillExcelLoads();						
 					}
 					else switchToRepeatingPanel();
@@ -456,19 +456,8 @@ public class LearningStartPanel {
 	}
 	
 	private void waitUntillExcelLoads(){
-		Runnable r = new Runnable (){
-			@Override
-			public void run (){
-				if (parentFrame instanceof BaseWindow){
-					BaseWindow parent = (BaseWindow) parentFrame;					
-					synchronized (parent.excel){
-						switchToRepeatingPanel();						
-					}					
-				}
-			}
-		};
-		Thread t = new Thread (r);
-		t.start();
+		switchToRepeatingPanel();	
+		
 	}
 	
 	private void switchToRepeatingPanel(){

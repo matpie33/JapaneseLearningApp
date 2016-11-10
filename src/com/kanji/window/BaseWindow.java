@@ -190,19 +190,12 @@ public class BaseWindow extends ClassWithDialog {
 	}
 	
 	public void loadExcelReader(){
-		Runnable r = new Runnable (){
-			@Override
-			public void run (){
+	
 				excel = new ExcelReader();
-				synchronized (excel){	
 					excel.load();
 					isExcelReaderLoaded = true;
 					repeatingWordsPanel.setExcelReader(excel);
-				}
-			}
-		};
-		Thread t = new Thread (r);
-		t.start();
+		
 	}
 	
 	public boolean isExcelLoaded(){

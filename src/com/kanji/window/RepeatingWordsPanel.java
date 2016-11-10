@@ -389,14 +389,17 @@ public class RepeatingWordsPanel
   public void setProblematicKanjis(Set<Integer> problematicKanjis)
   {
     this.problematicKanjis = problematicKanjis;
+    System.out.println("start");
     for (Iterator localIterator = problematicKanjis.iterator(); localIterator.hasNext();)
     {
       int i = ((Integer)localIterator.next()).intValue();
       String word = this.words.getWordForId(i);
       if (!this.wordsToRepeat.contains(word)) {
         this.wordsToRepeat.add(word);
+        
       }
     }
+    System.out.println("done");
   }
   
   public void startRepeating()
@@ -422,7 +425,7 @@ public class RepeatingWordsPanel
     {
       public void run()
       {
-        while (RepeatingWordsPanel.this.timerRunning)
+        while (timerRunning)
         {
           RepeatingWordsPanel.this.timeElapsed += RepeatingWordsPanel.this.interval;
           RepeatingWordsPanel.this.time.setText(RepeatingWordsPanel.this.timeLabel + String.format("%.2f", new Object[] { Double.valueOf(RepeatingWordsPanel.this.timeElapsed) }));
@@ -443,7 +446,7 @@ public class RepeatingWordsPanel
   
   private void stopTimer()
   {
-    this.timerRunning = false;
+    timerRunning = false;
   }
   
   public void setExcelReader(ExcelReader excel)

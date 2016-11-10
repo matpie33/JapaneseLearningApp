@@ -299,14 +299,16 @@ public class ElementMaker {
 	
 	public void save()
 	  {
-		BaseWindow p = new BaseWindow();
+		BaseWindow p = null;
 		if (parent instanceof BaseWindow){
 			p = (BaseWindow) parent;
 			p.changeSaveStatus(SavingStatus.Zapisywanie);
 		}
+		else return;
 	    try
 	    {
 	      if (this.fileToSave == null) {
+	    	  System.out.println("no save");
 	        return;
 	      }
 	      FileOutputStream fout = new FileOutputStream(this.fileToSave);
