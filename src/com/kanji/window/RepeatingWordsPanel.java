@@ -1,5 +1,6 @@
 package com.kanji.window;
 
+import com.kanji.Row.KanjiWords;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.Titles;
@@ -54,14 +55,8 @@ public class RepeatingWordsPanel
   private JButton recognizedWord;
   private JButton notRecognizedWord;
   private JPanel repeatingPanel;
-  private static final String PAUSE_TEXT = "Pauza";
-  private static final String RESUME_TEXT = "Wznow";
-  private static final String RECOGNIZED_WORD_TEXT = "Znam";
-  private static final String NOT_RECOGNIZED_WORD_TEXT = "Nie pamietam";
   private final Color repeatingBackgroundColor = Color.white;
   private final Color windowBackgroundColor = Color.GREEN;
-  private final int kanjiFontSize = 80;
-  
   public RepeatingWordsPanel(BaseWindow parent)
   {
     this.wordsToRepeat = new LinkedList();
@@ -174,7 +169,8 @@ public class RepeatingWordsPanel
     Random randomizer = new Random();
     int index = randomizer.nextInt(this.wordsToRepeat.size());
     this.currentWord = ((String)this.wordsToRepeat.get(index));
-    return (String)this.wordsToRepeat.get(index) + " " + this.words.getIdOfTheWord(this.currentWord);
+    return (String)this.wordsToRepeat.get(index) + " " + 
+    		((KanjiWords)words.getWords()).getIdOfTheWord(this.currentWord);
   }
   
   private void createShowWordButton()
@@ -202,7 +198,8 @@ public class RepeatingWordsPanel
   
   private void showKanji()
   {
-    this.kanjiTextArea.setText(this.excel.getKanjiById(this.words.getIdOfTheWord(this.currentWord)));
+    this.kanjiTextArea.setText(this.excel.getKanjiById(((KanjiWords)words.getWords()).getIdOfTheWord
+    		(this.currentWord)));
   }
   
   private void createPauseOrResumeButton()
@@ -258,7 +255,7 @@ public class RepeatingWordsPanel
   
   private int getCurrentWordId()
   {
-    return this.words.getIdOfTheWord(this.currentWord);
+    return ((KanjiWords)words.getWords()).getIdOfTheWord(this.currentWord);
   }
   
   private void createNotRecognizedWordButton()
@@ -292,8 +289,8 @@ public class RepeatingWordsPanel
   {
     String word = this.wordTextArea.getText();
     this.wordsToRepeat.remove(this.currentWord);
-    if (parent.getProblematicKanjis().contains(words.getIdOfTheWord(currentWord)))
-    	parent.getProblematicKanjis().remove(words.getIdOfTheWord(currentWord));
+    if (parent.getProblematicKanjis().contains(((KanjiWords)words.getWords()).getIdOfTheWord(currentWord)))
+    	parent.getProblematicKanjis().remove(((KanjiWords)words.getWords()).getIdOfTheWord(currentWord));
     System.out.println("removed: " + word);
     if (!this.wordsToRepeat.isEmpty())
     {
@@ -393,7 +390,8 @@ public class RepeatingWordsPanel
     for (Iterator localIterator = problematicKanjis.iterator(); localIterator.hasNext();)
     {
       int i = ((Integer)localIterator.next()).intValue();
-      String word = this.words.getWordForId(i);
+      String word = ((KanjiWords)words.getWords()).getWordForId(i);
+     
       if (!this.wordsToRepeat.contains(word)) {
         this.wordsToRepeat.add(word);
         

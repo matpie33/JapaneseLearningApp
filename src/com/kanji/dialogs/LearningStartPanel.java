@@ -26,12 +26,16 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.text.AbstractDocument;
 
+import com.kanji.Row.RepeatingInformation;
+import com.kanji.Row.RepeatingList;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.ExceptionsMessages;
 import com.kanji.constants.NumberValues;
 import com.kanji.constants.Options;
 import com.kanji.constants.Prompts;
 import com.kanji.myList.MyList;
+import com.kanji.myList.RowAsJLabel;
+import com.kanji.myList.RowWithDeleteButton;
 import com.kanji.range.Range;
 import com.kanji.range.SetOfRanges;
 import com.kanji.window.BaseWindow;
@@ -46,7 +50,7 @@ public class LearningStartPanel {
 	private JCheckBox problematicCheckbox;
 	private int rowsNumber;
 	private MyDialog parentDialog;
-	private MyList repeatsList;	
+	private MyList<RepeatingList> repeatsList;	
 	private Window parentFrame;
 	private SetOfRanges rangesToRepeat;
 	private int numberOfWords;
@@ -432,9 +436,10 @@ public class LearningStartPanel {
 		else{
 			Calendar calendar = Calendar.getInstance();		
 			
-			int timestamp = (int)(calendar.getTimeInMillis()/1000);
-			repeatsList.addWord(setOfRanges.getRangesAsString(),timestamp);
-			System.out.println(new Date(timestamp));
+			RepeatingList l =(RepeatingList)repeatsList.getWords();
+			System.out.println("L: "+l);
+			repeatsList.getWords().add(setOfRanges.getRangesAsString(),calendar.getTime(), false);
+//			repeatsList.addWord(((RowAsJLabel)repeatsList.getRowCreator()).addWord(rep, rowsNumber));			
 			repeatsList.scrollToBottom();
 		}
 	}

@@ -30,8 +30,13 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import com.kanji.Row.KanjiInformation;
+import com.kanji.Row.KanjiWords;
+import com.kanji.Row.RepeatingInformation;
+import com.kanji.Row.RepeatingList;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.Titles;
 import com.kanji.constants.MenuTexts;
@@ -47,8 +52,8 @@ public class ElementMaker {
 	private List <JButton> buttons;	
 	private ClassWithDialog parent;
 	private Map <Integer, String> words;	
-	private MyList listOfWords;
-	private MyList repeats;
+	private MyList<KanjiWords> listOfWords;
+	private MyList <RepeatingList> repeats;
 	private JMenuBar menuBar;
 	private File fileToSave;
 	private SavingStatus savingStatus;
@@ -105,21 +110,30 @@ public class ElementMaker {
 					
 					FileInputStream fout = new FileInputStream(fileToSave);
 			        ObjectInputStream oos = new ObjectInputStream(fout);
-			        final Map<Integer, String> wordss = (Map) oos.readObject();
+			        final KanjiWords wordss = (KanjiWords) oos.readObject();
 			        Runnable r = new Runnable (){
 			        	@Override
 			        	public void run (){
+			        		
 			        		listOfWords.setWords(wordss);
+			        		wordss.setList(listOfWords);
+			        		wordss.initialize();
+			        		
+			        		listOfWords.getWords().addAll();
 			        	}
 			        };
 			         Thread t = new Thread(r);
 			         t.start();
-			        final Map<Integer, String> mapOfRepeats = (Map)oos.readObject();
+			        final RepeatingList mapOfRepeats = (RepeatingList)oos.readObject();
 			        
 			        Runnable r2 = new Runnable (){
 			        	@Override
 			        	public void run (){
+			        		
 			        		repeats.setWords(mapOfRepeats);
+			        		mapOfRepeats.setList(repeats);
+			        		mapOfRepeats.initialize();			        		
+			        		repeats.getWords().addAll();
 			        	}
 			        };
 			        Thread t2 = new Thread (r2);
@@ -152,20 +166,23 @@ public class ElementMaker {
 	}
 	
 	private void initListOfWords(){
-		listOfWords = new MyList(parent,Titles.wordsListTitle, new RowWithDeleteButton(), this);		
 		
-		Map <Integer, String> initList = new LinkedHashMap <Integer, String>();
+		listOfWords = new MyList <KanjiWords>(parent,Titles.wordsListTitle, 
+				new RowWithDeleteButton (listOfWords), this);		
+		
+		KanjiWords words = new KanjiWords (listOfWords);
+		listOfWords.setWords(words);
 		for (int i=1; i<=10; i++){
-			String a = "Word no. "+i;
+			listOfWords.getWords().addRow("Word no. "+i,i);
 			
-			initList.put(i,a);
 			
-		}
-		listOfWords.setWords(initList);		
+			
+		}		
 	}	
 	
 	private void initRepeatsList(){
-		repeats = new MyList (parent,Titles.repeatedWordsListTitle, new RowAsJLabel(), this);
+		repeats = new MyList<RepeatingList> (parent,Titles.repeatedWordsListTitle, new RowAsJLabel(), this);
+		repeats.setWords(new RepeatingList(repeats));
 	}
 		
 	private void addListeners(List <JButton> buttons){
@@ -249,7 +266,7 @@ public class ElementMaker {
 			public void run (){
 				MyDialog d = new MyDialog(parent);
 				d.showErrorDialogInNewWindow("Wait");
-				listOfWords.setWords(words);
+//				listOfWords.setWords(words);
 				d.dispose();
 			}
 		};
@@ -277,8 +294,9 @@ public class ElementMaker {
 	}
 	
 	private void start(){
-		parent.showLearnStartDialog(repeats, listOfWords.getWordsCount());
-		System.out.println(listOfWords.getWordsCount());
+		System.out.println(listOfWords);
+		parent.showLearnStartDialog(repeats, ((KanjiWords)listOfWords.getWords()).getKanjis());
+		System.out.println(((KanjiWords)listOfWords.getWords()).getKanjis());
 	}
 
 	public List <JButton> getButtons() {
@@ -313,8 +331,8 @@ public class ElementMaker {
 	      }
 	      FileOutputStream fout = new FileOutputStream(this.fileToSave);
 	      ObjectOutputStream oos = new ObjectOutputStream(fout);
-	      oos.writeObject(this.listOfWords.getWordsWithIds());
-	      oos.writeObject(this.repeats.getWordsWithIds());
+	      oos.writeObject(this.listOfWords.getWords());
+	      oos.writeObject(this.repeats.getWords());
 	      if ((this.parent instanceof BaseWindow))
 	      {
 	        BaseWindow b = (BaseWindow)this.parent;
@@ -335,7 +353,7 @@ public class ElementMaker {
 	    File f = new File("list.txt");
 	    try
 	    {
-	      Map<Integer, String> words = this.listOfWords.getWordsWithIds();
+//	      Map<Integer, String> words = this.listOfWords.getWords();
 	      BufferedWriter p = new BufferedWriter(new OutputStreamWriter(
 	        new FileOutputStream(f), "UTF8"));
 	      for (Iterator localIterator = words.keySet().iterator(); localIterator.hasNext();)

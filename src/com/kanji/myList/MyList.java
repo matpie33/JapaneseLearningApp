@@ -29,7 +29,7 @@ import javax.swing.JTextArea;
 import javax.swing.JViewport;
 import javax.swing.Scrollable;
 
-public class MyList
+public class MyList <Parameters>
   extends JPanel
   implements Scrollable
 {
@@ -40,10 +40,9 @@ public class MyList
   private Color highlightedRowColor = Color.BLUE;
   private Color bgColor = Color.GREEN;
   private JScrollPane parentScrollPane;
-  private Map<Integer, String> wordsAndID;
+  private Parameters words;
   private ClassWithDialog parent;
   private String title;
-  private RowsCreator rowsCreator;
   private ElementMaker elementsMaker;
   
   public Dimension getPreferredScrollableViewportSize()
@@ -73,8 +72,8 @@ public class MyList
   
   public MyList(ClassWithDialog parentDialog, String title, RowsCreator rowsCreator, ElementMaker element)
   {
+	 
     this.elementsMaker = element;
-    this.rowsCreator = rowsCreator;
     rowsCreator.setList(this);
     this.title = title;
     this.parent = parentDialog;
@@ -89,7 +88,7 @@ public class MyList
   
   private void initiate()
   {
-    this.wordsAndID = new LinkedHashMap<Integer,String>();
+//    this.wordsAndID = new LinkedHashMap<Integer,String>();
     this.highlightedRowNumber = 0;
     this.panels = new LinkedList();
     setLayout(new GridBagLayout());
@@ -102,14 +101,15 @@ public class MyList
     add(new JLabel(this.title));
   }
   
-  public void addWord(String word, int number)
+  public void addWord(JPanel row)
   {
-    this.wordsAndID.put(Integer.valueOf(number), word);
-    JPanel row = this.rowsCreator.addWord(word, number, this.panels.size() + 1);
+//	  words.add(parameters);
+//    this.wordsAndID.put(Integer.valueOf(number), word);
     this.panels.add(row);
     GridBagConstraints c = createConstraintsForNewRow();
     add(row, c);
     repaint(row.getLocation().x, row.getLocation().y, row.getSize().width, row.getSize().height);
+//    repaint();
     
   }
   
@@ -327,9 +327,9 @@ public class MyList
     return this.parentScrollPane;
   }
   
-  public void setWords(Map<Integer, String> words)
+  public void setWords(Parameters parameters)
   {
-    this.wordsAndID = words;
+    this.words = parameters;
     updateWords();
     scrollToBottom();
   }
@@ -338,9 +338,9 @@ public class MyList
   {
     cleanAll();
     createTitle();
-    for (String word : this.wordsAndID.values()) {
-      addWord(word, getIdOfTheWord(word));
-    }
+//    for (Parameters word : this.words) {
+//      addWord(word);
+//    }
   }
   
   private void cleanAll()
@@ -349,21 +349,6 @@ public class MyList
     this.panels.clear();
   }
   
-  public boolean isWordIdUndefinedYet(int number)
-  {
-    return !this.wordsAndID.containsKey(Integer.valueOf(number));
-  }
-  
-  public boolean isWordUndefinedYet(String searched)
-  {
-    this.wordsAndID.containsValue(searched);
-    for (String word : this.wordsAndID.values()) {
-      if (removeDiacritics(word).equals(removeDiacritics(searched))) {
-        return false;
-      }
-    }
-    return true;
-  }
   
   public void scrollToBottom()
   {
@@ -375,55 +360,18 @@ public class MyList
     scrollBar.setValue(scrollBar.getMaximum());
   }
   
-  public int getWordsCount()
-  {
-    return this.wordsAndID.size();
-  }
   
   private void sendErrorToParent(Exception e)
   {
     this.parent.showMessageDialog(e.getMessage());
   }
   
-  public Map<Integer, String> getWordsWithIds()
+  public Parameters getWords()
   {
-    return this.wordsAndID;
+    return this.words;
   }
   
-  public String getWordForId(int id)
-  {
-    return (String)this.wordsAndID.get(Integer.valueOf(id));
-  }
-  
-  public int getIdOfTheWord(String word)
-  {
-    for (Iterator localIterator = this.wordsAndID.keySet().iterator(); localIterator.hasNext();)
-    {
-      int id = ((Integer)localIterator.next()).intValue();
-      if (((String)this.wordsAndID.get(Integer.valueOf(id))).equals(word)) {
-        return id;
-      }
-    }
-    return -1;
-  }
-  
-  public void changeWord(String oldWord, String newWord)
-  {
-    int i = getIdOfTheWord(oldWord);
-    this.wordsAndID.put(Integer.valueOf(i), newWord);
-  }
-  
-  public void changeId(int oldId, int newID)
-  {
-    String word = wordsAndID.get(oldId);
-    this.wordsAndID.put(newID, word);
-    wordsAndID.remove(oldId);
-  }
-  
-  public RowsCreator getRowCreator()
-  {
-    return this.rowsCreator;
-  }
+ 
   
   public void save()
   {	

@@ -23,13 +23,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-public class RowAsJLabel extends RowsCreator{
+import com.kanji.Row.RepeatingInformation;
+
+public class RowAsJLabel extends RowsCreator <RepeatingInformation>{
 
 	private Color defaultColor = Color.RED; 
 	private MyList list;
 		
 	@Override
-	public JPanel addWord(String word, int date1, int rowsNumber) {
+	public JPanel addWord(RepeatingInformation rep, int rowsNumber) {
+		String word = rep.getRepeatingRange();
+		Date date1 = rep.getRepeatingDate();
 		JPanel rowPanel = createPanel();
 		
 		JLabel number = createNumberLabel(rowsNumber);
@@ -62,7 +66,7 @@ public class RowAsJLabel extends RowsCreator{
 				try {
 					FileOutputStream fout = new FileOutputStream ("hi.txt");
 					ObjectOutputStream oos = new ObjectOutputStream(fout);
-					oos.writeObject(list.getWordsWithIds());
+					oos.writeObject(list.getWords());
 					fout.close();
 					System.out.println("save");
 				} catch (IOException e1) {
@@ -77,12 +81,12 @@ public class RowAsJLabel extends RowsCreator{
 		return elem;
 	}
 	
-	private JTextArea createDateArea(int date){
+	private JTextArea createDateArea(Date date){
 		JTextArea textArea = createTextArea("");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd HH:mm:ss");
 		Calendar calendar = Calendar.getInstance();		
 		
-		textArea.setText(sdf.format(new Date ((long)date*1000L)));
+		textArea.setText(sdf.format(date));
 //		textArea.setText(date+"");
 		textArea.setEditable(false);
 		

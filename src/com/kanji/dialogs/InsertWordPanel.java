@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.text.AbstractDocument;
 
+import com.kanji.Row.KanjiWords;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.ExceptionsMessages;
 import com.kanji.constants.NumberValues;
@@ -106,21 +107,21 @@ public class InsertWordPanel {
 	}	
 	
 	private boolean isWordIdUndefinedYet(int number){
-		boolean undefined=list.isWordIdUndefinedYet(number);		
-		if (!undefined)
+		boolean defined=((KanjiWords)list.getWords()).isIdDefined(number);					
+		if (defined)
 			parentDialog.showErrorDialogInNewWindow(ExceptionsMessages.idAlreadyDefinedException);
-		return undefined;
+		return defined;
 	}
 	
 	private boolean isWordUndefinedYet(String word){
-		boolean undefined = list.isWordUndefinedYet(word);
+		boolean undefined = ((KanjiWords)list.getWords()).isWordDefined(word);
 		if (!undefined)
 			parentDialog.showErrorDialogInNewWindow(ExceptionsMessages.wordAlreadyDefinedException);
 		return undefined;
 	}
 	
 	private void addWordToList(String word, int number){
-		list.addWord(word,number);	
+		((KanjiWords)list.getWords()).addRow(word, number);	
 		list.scrollToBottom();
 	}
 	

@@ -24,26 +24,36 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-public class RowWithDeleteButton extends RowsCreator implements Serializable {
+import com.kanji.Row.KanjiInformation;
+import com.kanji.Row.KanjiWords;
+
+public class RowWithDeleteButton extends RowsCreator<KanjiInformation> implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Color wordNumberColor = Color.WHITE;
 	private Color defaultRowColor = Color.RED;
-	private MyList list;
+	private MyList<KanjiWords> list;
 	private List <KeyAdapter> adapters;
 	private String wordBeingModified;
 	private int idBeingModified;
 	
-	public RowWithDeleteButton (){
+	public RowWithDeleteButton (MyList <KanjiWords> list){
+		this.list=list;
 		adapters = new ArrayList <KeyAdapter>();
 	}
 	
 	@Override
-	public JPanel addWord (String text, int kanjiID, int rowsNumber){				
-		JPanel row = createNewRow(text, kanjiID, rowsNumber);	
+	public JPanel addWord (KanjiInformation kanji, int rowsNumber){				
+		JPanel row = createNewRow(kanji, rowsNumber);	
 		return row;
 	}	
 	
 	
-	private JPanel createNewRow(String text, int ID, int rowsNumber) {
+	private JPanel createNewRow(KanjiInformation kanji, int rowsNumber) {
+		String text = kanji.getKanjiKeyword();
+		int ID = kanji.getKanjiID();
 		JPanel row = new JPanel ();	
 		row.setLayout(new GridBagLayout());		
 	
@@ -113,7 +123,9 @@ public class RowWithDeleteButton extends RowsCreator implements Serializable {
 	        if (wordBeingModified.equals(elem.getText())) {
 	          return;
 	        }
-	        list.changeWord(wordBeingModified, elem.getText());	        
+//	        list.changeWord(wordBeingModified, elem.getText());
+	        System.out.println(list);
+	        list.getWords().changeWord(wordBeingModified, elem.getText());
 	        wordBeingModified = "";
 	        list.save();
 	      }
@@ -144,7 +156,7 @@ public class RowWithDeleteButton extends RowsCreator implements Serializable {
 	        if (idBeingModified==Integer.parseInt(elem.getText())) {
 	          return;	          
 	        }
-	        list.changeId(idBeingModified, newID);
+	        list.getWords().changeWord(idBeingModified, newID);
             list.save();
 	        idBeingModified = -1;
 	        
