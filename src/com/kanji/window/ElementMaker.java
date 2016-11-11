@@ -18,6 +18,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -43,8 +44,8 @@ import com.kanji.constants.MenuTexts;
 import com.kanji.dialogs.MyDialog;
 import com.kanji.fileReading.CustomFileReader;
 import com.kanji.myList.MyList;
-import com.kanji.myList.RowAsJLabel;
-import com.kanji.myList.RowWithDeleteButton;
+import com.kanji.myList.RowInRepeatingList;
+import com.kanji.myList.RowInKanjiInformations;
 
 public class ElementMaker {
 	
@@ -110,34 +111,59 @@ public class ElementMaker {
 					
 					FileInputStream fout = new FileInputStream(fileToSave);
 			        ObjectInputStream oos = new ObjectInputStream(fout);
-			        final KanjiWords wordss = (KanjiWords) oos.readObject();
-			        Runnable r = new Runnable (){
-			        	@Override
-			        	public void run (){
-			        		
-			        		listOfWords.setWords(wordss);
-			        		wordss.setList(listOfWords);
-			        		wordss.initialize();
-			        		
-			        		listOfWords.getWords().addAll();
-			        	}
-			        };
-			         Thread t = new Thread(r);
-			         t.start();
-			        final RepeatingList mapOfRepeats = (RepeatingList)oos.readObject();
+			        listOfWords.updateWords();
+			        final Object readed = oos.readObject();
 			        
+				        Runnable r = new Runnable (){
+				        	@Override
+				        	public void run (){
+				        		if (readed instanceof KanjiWords){
+						        	final KanjiWords wordss = (KanjiWords) readed;				        		
+					        		listOfWords.setWords(wordss);
+					        		wordss.setList(listOfWords);
+					        		wordss.initialize();					        		
+					        		listOfWords.getWords().addAll();
+				        		}
+				        		else{
+						        	Map <Integer, String> map = (Map<Integer, String>)readed;
+						        	listOfWords.setWords(new KanjiWords(listOfWords));
+						        	int i =1;
+						        	for (Map.Entry<Integer, String> entry: map.entrySet()){						        		
+						        		listOfWords.getWords().addRow(entry.getValue(), entry.getKey(),i);
+						        		i++;
+						        	}
+						        }
+				        		listOfWords.repaint();
+				        	}
+				        };
+				        Thread t = new Thread(r);
+				        t.start();			        
+			        
+			        final Object read = oos.readObject(); 
+			        			        
 			        Runnable r2 = new Runnable (){
 			        	@Override
 			        	public void run (){
-			        		
-			        		repeats.setWords(mapOfRepeats);
-			        		mapOfRepeats.setList(repeats);
-			        		mapOfRepeats.initialize();			        		
-			        		repeats.getWords().addAll();
+			        		if (read instanceof RepeatingList){
+						        RepeatingList mapOfRepeats = (RepeatingList)read;
+						        
+				        		repeats.setWords(mapOfRepeats);
+				        		mapOfRepeats.setList(repeats);
+				        		mapOfRepeats.initialize();			        		
+				        		repeats.getWords().addAll();
+			        		}
+					        else{
+					        	Map <Integer, String> map = (Map<Integer, String>)read;
+					        	repeats.setWords(new RepeatingList(repeats));
+					        	for (Map.Entry<Integer, String> entry: map.entrySet()){					        		
+					        		repeats.getWords().add(entry.getValue(), new Date(entry.getKey()*1000), false);
+					        	}
+					        }
+			        		repeats.repaint();
 			        	}
 			        };
 			        Thread t2 = new Thread (r2);
-			        t2.start();
+			        t2.start();			        			        
 			        
 			       		if (parent instanceof BaseWindow) {
 			       			try	{
@@ -168,12 +194,12 @@ public class ElementMaker {
 	private void initListOfWords(){
 		
 		listOfWords = new MyList <KanjiWords>(parent,Titles.wordsListTitle, 
-				new RowWithDeleteButton (listOfWords), this);		
+				new RowInKanjiInformations (listOfWords), this);		
 		
 		KanjiWords words = new KanjiWords (listOfWords);
 		listOfWords.setWords(words);
 		for (int i=1; i<=10; i++){
-			listOfWords.getWords().addRow("Word no. "+i,i);
+			listOfWords.getWords().addRow("Word no. "+i,i,i);
 			
 			
 			
@@ -181,7 +207,7 @@ public class ElementMaker {
 	}	
 	
 	private void initRepeatsList(){
-		repeats = new MyList<RepeatingList> (parent,Titles.repeatedWordsListTitle, new RowAsJLabel(), this);
+		repeats = new MyList<RepeatingList> (parent,Titles.repeatedWordsListTitle, new RowInRepeatingList(repeats), this);
 		repeats.setWords(new RepeatingList(repeats));
 	}
 		
@@ -266,7 +292,14 @@ public class ElementMaker {
 			public void run (){
 				MyDialog d = new MyDialog(parent);
 				d.showErrorDialogInNewWindow("Wait");
-//				listOfWords.setWords(words);
+				listOfWords.updateWords();
+				listOfWords.setWords(new KanjiWords(listOfWords));
+				int i =1;
+				for (Map.Entry<Integer, String> entry: words.entrySet()){		
+					
+	        		listOfWords.getWords().addRow(entry.getValue(), entry.getKey(),i);
+	        		i++;
+	        	}
 				d.dispose();
 			}
 		};
@@ -277,6 +310,7 @@ public class ElementMaker {
 	private Map <Integer, String> tryToReadWordsFromFile(File file){
 		try {
 			words = fileReader.readFile(file);
+        	
 		} 
 		catch (Exception e) {
 			parent.showMessageDialog(e.getMessage());
@@ -356,11 +390,10 @@ public class ElementMaker {
 //	      Map<Integer, String> words = this.listOfWords.getWords();
 	      BufferedWriter p = new BufferedWriter(new OutputStreamWriter(
 	        new FileOutputStream(f), "UTF8"));
-	      for (Iterator localIterator = words.keySet().iterator(); localIterator.hasNext();)
-	      {
-	        int i = ((Integer)localIterator.next()).intValue();
-	        p.write((String)words.get(Integer.valueOf(i)) + " " + i);
-	        p.newLine();
+	      List <KanjiInformation> list = listOfWords.getWords().getAllWords();
+	      for (KanjiInformation kanji: list){
+	    	  p.write(kanji.getKanjiKeyword()+" "+kanji.getKanjiID());
+	    	  p.newLine();
 	      }
 	      p.close();
 	    }

@@ -1,0 +1,2578 @@
+﻿jeden 1
+dwa 2
+trzy 3
+cztery 4
+piec 5
+szesc 6
+siedem 7
+osiem 8
+dziewiec 9
+dziesiec 10
+czlowiek 951
+dzien, slonce 12
+miesiac, ksiezyc 13
+duzy 107
+maly 105
+rzeczka, strumyk 127
+woda 130
+drzewo 195
+lasek,gaj 196
+las 197
+grunt, gleba 150
+usta 11
+gora, szczyt 768
+srodek 39
+gora (kierunek 49
+dol (kierunek 50
+odpoczynek, wakacje 965
+oko, wzrok, pozycja 15
+pole ryzowe 14
+wyjscie 767
+wejscie 779
+jen, okrag 1811
+ksiazka, prawda, rzeczywistosc 211
+dziesiec tysiecy, bardzo duzo 64
+miecz, katana 83
+minuta, czesc, dzielic, rozumiec 781
+ciac 85
+sila, moc 858
+mezczyzna 859
+tysiac 40
+prawy 78
+rzemioslo, konstrukcja 76
+lewy 77
+konczyc, pojac 97
+dziecko 95
+kobieta 98
+lubic 99
+serce 595
+myslec 605
+biel 36
+sto 38
+kamien 113
+isc, odbywac sie, rzad (np. liter 873
+mowic 335
+stop 370
+prawidlowy, wlasciwy, sluszny 379
+wieczor 109
+niebo 428
+reka 637
+ogien 161
+pies 238
+krol 255
+klejnot,kula 256
+zycie, narodziny 1555
+stac, stawac 431
+dzwiek 479
+imie,nazwa, reputacja 112
+patrzec, widziec, opinia 57
+malz, ostryga, muszla 54
+nic, wlokno 1333
+bambus 937
+samochod, woz, kolo 286
+znak, litera 185
+szybki, wczesny 26
+miara 45
+stary 16
+ucho 818
+miasteczko 208
+ulica, dzielnica, parzysty numer, grzeczmpsc 91
+miasto 92
+lyzka 444
+zmiana, wplyw 1008
+kwiat 1009
+calosc, wszystko 263
+zloto, pieniadz 269
+mama 101
+teraz 1587
+luk 1231
+szkola 1278
+krowa 245
+poludnie (czas, 12 w poludnie 568
+rok 1036
+starszy brat 103
+podstawa,piedestal, klasyfikator maszyn 744
+duzo,liczny 108
+klasyfikator ilosci; okrecac, krecic 586
+okragly, pelny 44
+poczatek 59
+publiczny 784
+w srodku, wewnatrz 1019
+przyjaciel 704
+grubas 120
+ciagnac 1232
+kierunek 490
+drzwi 1076
+polnoc 445
+rynek, miasto 412
+polowa 1202
+swiatynia buddyjska 158
+pasowac 253
+tata 1274
+skrzyzowanie, mieszac 1275
+szczescie 1505
+wschod 504
+zachod 1602
+brama 1616
+cialo 957
+drzewo kamforowe 1614
+sluchac 1626
+otwierac 1622
+zamykac 1623
+odstep, interwal 1620
+pytac 1617
+czas 159
+ja 17
+ryzyko 18
+towarzysz 19
+jasny 20
+spiew 21
+blysk,blyszczec 22
+artykuły, towary 23
+kregoslup 24
+prosperujacy, kwitnacy 25
+wschodzace slonce 27
+generacja 28
+brzuch, zoladek 29
+brzask 30
+wklesly 33
+wypukly 34
+woreczek zolciowy 31
+rozpietosc, szerokosc 32
+stare czasy 35
+sie, siebie 37
+jezyk (czesc ciala 41
+specjalnosc 46
+pudelko mierzace 42
+powstawac 43
+Dr 47
+przepowiadac przyszlosc 48
+wybitny, znakomity 51
+ranek 52
+tylko 53
+wyprostowany, pionowy 55
+strona 60
+pracownik 56
+noworodek 58
+fraza 65
+tekstura 66
+dziesiec dni 67
+chochla 68
+strzal w dziesiatke 69
+kark, szyja 70
+od razu, natychmiast 73
+rybie wnetrznosci 71
+zamieszki 72
+narzedzie 74
+prawdziwy 75
+posiadanie 79
+uparty 61
+akapit 82
+lapowka 80
+danina, haracz 81
+przecietny 62
+pokonac 63
+ostrze 84
+uwodzic 86
+blyszczacy 87
+zasada 88
+vice 89
+oddzielony, osobny 90
+potrafic 93
+czubek glowy 94
+ubytek, dziura 96
+podobienstwo(corki na matke 100
+przebijac, przekluwac 102
+przezwyciezac 104
+kilka, niewiele 106
+wieczorny plyw 110
+na zewnatrz 111
+podobienstwo(ojca na syna 114
+azotan 115
+stluc, zniszczyc 116
+piasek 117
+hebel(narzedzie stolarskie 118
+promyk 119
+przybory 121
+smierdziec 122
+przepiekny 123
+skupic sie 124
+gruby(o ksiazce, materiale 125
+dziwny 126
+sopel 131
+przestrzegać 129
+stan, prowincja 128
+wiecznosc 132
+zrodelko 133
+laka 134
+petycja 135
+plywac 136
+bagno 137
+otwarte morze 138
+waska zatoka 139
+zupa 140
+alez oczywiscie 145
+ugasic 144
+przyplyw 141
+zrodlo 142
+pelen zycia 143
+rzeka 146
+calonocny 147
+jezioro 148
+zglebic, pojac 149
+wypluc 151
+cisnienie 152
+przyladek 153
+zywoplot 154
+kwadratowy klejnot 155
+zapieczetowac 156
+zapalenie 162
+poziom 160
+horyzont 157
+lampa 165
+chudy 164
+zaniepokojenie 163
+popiol 168
+katastrofa 167
+farma 166
+ryba 171
+oswietlac 170
+plamka 169
+lowic ryby 172
+ri ( jednostka odleglosci 173
+czarny kolor 174
+czarny atrament 175
+ilosc 177
+karp 176
+1/1000 jena 178
+pochowac 179
+taki sam 180
+odlegly 183
+jaskinia, pieczara 181
+tulow 182
+szacunek 184
+strzec 186
+perfekcyjny 187
+oznajmiac 188
+bardzo wczesny godziny poranne 189
+relaks 190
+bankiet 191
+bogactwo 193
+zblizyc sie 192
+oszczednosci 194
+japonskie drzewko judas 198
+dab 199
+polka 202
+ramka 200
+szczyt drzewa 201
+morela 203
+roslina 205
+paulownia(japonskie drzewko 204
+inter 209
+zwiednac 206
+surowy 207
+kalendarz 213
+tabliczka 212
+stol 210
+spieczony 215
+jeszcze nie 216
+plan 214
+skrajnosc 217
+plusk 218
+smak 219
+czerwono-pomaranczowy 221
+papiery wartosciowe 222
+mlodsza siostra 220
+cierpiec 225
+trawa 224
+mlodosc 223
+lisc 228
+tolerancja 226
+rozcienczac 227
+grob 231
+niewyrazny 230
+imitacja 229
+blona 233
+utrzymanie 232
+wykielkowana roslina 234
+gapic sie 237
+drzewo brzoskwiniowe 236
+zwiastun 235
+rodzaj rzeczy 241
+cisza 240
+status quo 239
+polowac 243
+trzcina 242
+kot 244
+przed 248
+objawienie 247
+wyjatkowy 246
+swiat 251
+wpychac 250
+myc 249
+skarb 257
+herbata 252
+pagoda(wielopoziomowa koscielna wieza w ktorej przechowywane sa relikwie 254
+szaleniec 260
+terazniejszy 259
+perla 258
+korek 264
+cesarz 261
+ekran 262
+nalewac 267
+pan, wladca 266
+logika 265
+filar 268
+surowe zelazo 270
+miska 271
+igla 274
+miedz 272
+wedkarstwo 273
+uspokajac 276
+inskrypcja 275
+droga 277
+skrzyzowanie 279
+szybki, predki 280
+przewodnik 278
+uciekac 283
+namawiac 282
+stworzyc 281
+wziac ze soba 287
+patrol 285
+otoczenie 284
+z przodu 290
+transport 289
+koleina 288
+skrot 293
+kazdy 291
+status 292
+lato 296
+gosc 294
+czolo 295
+spadac 299
+galazka 298
+pozbywac sie 297
+blask 302
+armia 301
+zbedny 300
+nosic, przenosic 303
+sen 305
+korona 304
+otrzymywac 308
+wysoki 307
+dol, wglebienie 306
+pawilon 311
+lagodny - potulny, grzeczny 310
+szkola przygotowawcza 309
+stolica 312
+odswiezajacy 313
+krajobraz 314
+obwod kola 317
+chatka 316
+wieloryb 315
+powodzenia 320
+tydzien 318
+gentelmen 319
+sprzedawac 323
+willa 322
+czlowiek pelen energii 321
+uczyc sie 324
+zapamietywac 325
+kwitnac 326
+rozmnazac sie 329
+przystan 328
+pisac 327
+arkusz(papieru itp 332
+agresja 330
+porazka 331
+upomniec kogos 336
+szczesliwy traf 333
+bojazn, trwoga 334
+korygowac 339
+kreslic, spiskowac 337
+wiezienie 338
+cesarski dekret 342
+instrukcja 341
+ostro skarcic, upomniec 340
+recytacja 345
+opowiesc 344
+wypelniony 343
+slowo 347
+wiersz, poemat 346
+czytac 348
+dyskusja 350
+zgoda 351
+melodia, utwor 349
+test 354
+styl 353
+Zbesztac, skrzyczec 352
+wlamywacz 357
+zakres, odleglosc 356
+rzymskie 2 (II 355
+plantacja 358
+ładować 359
+zarosniety 360
+szczerosc 363
+zamek(budowla 362
+zmienic sie w 361
+ubywac, zmniejszac sie 366
+niszczyc 365
+zastraszac 364
+plycizna 369
+estrada, na ktorej scinano ludzi 367
+moneta 368
+wielokrotnie 373
+isc pieszo 371
+przejsc w brod 372
+podejmowac sie 375
+CV 376
+zgoda, umowa 374
+dowod 380
+wojownik 377
+opodatkowywac 378
+zamek(w drzwiach 383
+byc zdeterminowanym 382
+polityka 381
+kontynuowac 386
+przewyzszac 385
+biegnac 384
+temat 389
+perfekcyjnie zrobiony 388
+byc lepszy od kogos 387
+budowac 391
+prolongowac, przedluzyc 392
+row, wal 390
+pan mlody 395
+boze narodzenie 393
+kamienna podstawa 394
+odziez(caly stroj 398
+1 przedmiot z ubrania 396
+krawiec 397
+demolowac (zlamac 400
+zalosny 401
+tyl, z tylu (oszukiwac 399
+po raz pierwszy 404
+malpa 403
+daleko 402
+wiszacy zwoj 407
+zagiel 406
+bielizna 405
+daszek, oslonka 410
+czapka 408
+zaslona 409
+pluco 414
+starsza siostra 413
+brokat 411
+byc w stagnacji 416
+szarfa 415
+kolec 417
+made in ( china 419
+krazyc, wirowac 420
+system 418
+chmura 423
+deszcz 422
+technika 421
+mroz 426
+grzmot, piorun 425
+pochmurna pogoda 424
+most 429
+zima 427
+atrakcyjna 430
+rywalizowac 434
+plakietka, odznaka 433
+plakac 432
+monarcha 435
+zrenica 437
+mlodociany, nieletni 436
+slubna zona 440
+robic interes 439
+dzwon 438
+wrog 443
+kapac 442
+pasujacy, odpowiedni 441
+potomek 448
+porownywac 447
+postawa 446
+wszyscy 449
+mix 450
+spragniony 451
+publicznosc, widownia 452
+brazowy 453
+zachryply 454
+pyszne 455
+gruby 456
+cyfra I (rzadko uzywane 457
+sliwka 460
+spryt 459
+kazdy(kazdego dnia itp 458
+blagac, zebrac 462
+susza 463
+morze 461
+brakowac 466
+duplikowac 465
+brzuch 464
+spiewac 469
+gotowac 468
+dmuchac 467
+nastepny 471
+dzika roza 472
+miekko (i przyjemnie 470
+konsultowac 475
+majatek 473
+figura 474
+kompensata, odszkodowanie 476
+uprawiac, kultywowac 477
+dzielic 478
+wyrozniajacy sie 482
+rym 481
+ciemnosc 480
+lustro 483
+zmarly, nieboszczyk 485
+granice(miasta 484
+niewidomy 486
+zwodzic, oklamywac 487
+zniszczony (w wyniku kataklizmu itp 488
+chlopiec 492
+ambicja 489
+przeszkadzac, zaklocac 491
+perfuma 493
+otyly 494
+wizyta 495
+rozbierac sie 498
+zwolnic, uwolnic 496
+silny, wzburzony 497
+poprzednio 501
+plotka 499
+naostrzony 500
+zwiekszanie 502
+prezent 503
+belka podpierajaca dach domu, klasyfikator budynkow 505
+sąd 508
+zamrozony 506
+ciaza 507
+VIP 511
+palic 510
+farbowac 509
+kasztanowiec 514
+prefektura(jednostka administracyjna 513
+ziemia 515
+koniec roku 512
+insekt 517
+basen 516
+tecza 520
+robaczek swietojanski 518
+waz 519
+larwa jedwabnika(motyla 523
+motyl 521
+singiel 522
+obudzic, ozywic 526
+jazn, osobowosc 525
+wiatr 524
+pisarz, skryba 529
+krolowa 527
+reformacja, zmiany 528
+dzialo 532
+owijac 530
+lozysko (anatomia 531
+bańka mydlana 533
+elektrycznosc 535
+zolw 534
+wieprzowina 538
+smok chinski 536
+wodospad 537
+dom 541
+wykonczony w kazdym calu 540
+scigac, gonic 539
+jelito 544
+poslubic 542
+za duzo mocy( over powered 543
+owca 547
+goraca woda 546
+położenie, lokalizacja 545
+szczegolowy 550
+piekno 548
+ocean 549
+zazdrosny 553
+utalentowany, zdolny 552
+swiezy 551
+wylacznie 556
+wdziac, zakladac (ubranie 555
+roznica 554
+zbierac, gromadzic 559
+rafa koralowa 558
+w pospiechu, niecierpliwy 557
+awansowac 561
+jak gdyby, quasi 560
+rozne, roznorodnosc 562
+pobudzony, podekscytowany 565
+zenski, kobiecy 563
+semi-, pol 564
+zezwalac, pozwalac 569
+okrasc 566
+ubezpieczenie 567
+wyglad 572
+zachwyt, przyjemnosc 570
+wladza 571
+piora 573
+nastepowac po 575
+uczyc sie przez doswiadczenie 574
+powiedzenie ( jakies slawnej osoby 578
+dzien tygodnia 576
+pranie 577
+kraj, region 581
+utwardzac 580
+dylemat, problem 579
+malzenstwo 584
+przyczyna 583
+grupa 582
+sklep 588
+park 585
+podium 587
+biuro rzadu 591
+dziedziniec 590
+magazyn 589
+konopie 593
+ciezko pracowac 594
+lozko 592
+zapominac 596
+znosic, wytrzymywac 597
+przyznawac, przyjmowac do wiadomosci 598
+dokument 601
+zamiar,intencja 600
+zaloba 599
+kebab 603
+udreczony, zgnebiony 604
+lojalnosc 602
+pomysl 608
+stosowac sie do czegos 607
+łaska 606
+przerwa 611
+oddychac 610
+koncept 609
+przysluga 612
+strach 613
+mamic 614
+wdowa 617
+smutek, melancholia 616
+emocje 615
+stabilnosc 620
+zajety 618
+ekstaza, uniesienie 619
+lamentowac 621
+oswiecenie 622
+okropny, straszny 623
+nienawidzic 626
+okazywac skruche 625
+wprawiac w zaklopotanie 624
+leniwy 629
+przyzwyczajony 627
+przyjemnosc 628
+wspomnienie 632
+wyrzuty sumienia 631
+pokora 630
+niezmiennie, stale 635
+zalaczony 634
+bardzo czegos pragnac 633
+wyciekac 636
+czuwac nad kims 638
+pocierac, trzec 639
+ego 640
+obrady 642
+prawosc 641
+obejmowac kogoś, tulić 645
+wycierac 644
+poswiecenie 643
+na poklad 646
+stawic czola, skonfrontowac 648
+urywek, fragment 647
+krytyka 649
+skinac, kiwnac palcem 650
+sprzatanie swiata 651
+klaskac 652
+aresztowac 654
+uderzac 653
+rzucic w kat 655
+porywac 656
+zwedzic, podkrasc 657
+trzymac 660
+palec 659
+wyzwanie 658
+wymachiwac 662
+hipoteza, przypuszczenie 663
+przytwierdzac, przymocowac 661
+uszkodzic, narazic na szkody 666
+proponowac 665
+wciagac na górę, dźwignąć 664
+punkt zaczepienia 669
+brac na siebie 668
+odebrac kogos (np. ze szkoly 667
+manewrowac 671
+dotykac 672
+szkic 670
+powiesic 674
+wypolerować 675
+zamiescic uwagę 673
+nos 678
+przykazanie 676
+sprzet, urzadzenie 677
+geniusz 681
+forma, ksztalt 680
+ukarac 679
+drewno 683
+przypuszczac 684
+wlasnosc 682
+przenosny 687
+z (piesci 686
+istniec 685
+obchodzic sie z, traktowac 690
+ssac 689
+wyciągać ręce do kogoś 688
+funkcjonariusz urzednik 693
+historia 692
+dlugosc 691
+i znow 696
+sztywny 695
+starzec sie 694
+okret 699
+para (2 sztuki 697
+morwa (owoc podobny do jeżyny 698
+koleś 702
+chwycic, zlapac 701
+chronic kogos 700
+rzucic 706
+wyslizgiwac sie, wymykac sie 705
+byc zlym na kogos 703
+pobic 709
+kierownik, personel 708
+topic sie (umierać w wodzie 707
+rozgalezienie 711
+umiejetnosc 712
+luska, lupina 710
+konar 713
+konczyna 714
+sledzic 715
+wujek 718
+delikatnie, ostroznie*(aby nie zniszczyc 717
+podejrzany 716
+trener 719
+samotnosc 720
+pelen gracji 721
+deska 724
+stok 723
+anty 722
+pazury 727
+marketing 726
+wrocic, zwrocic cos spowrotem 725
+lagodnie, uprzejmie (aby nie wystraszyc 728
+mleko 729
+dryfowac 730
+zbierac(np owoce z drzewa 733
+nawolywac 732
+lider 731
+nadawac (np. smaku 736
+akceptowac 735
+warzywa 734
+szeroki 739
+placic 738
+milosc 737
+zawor 742
+mineral 741
+poszerzac 740
+panowanie 746
+zaniedbywac 745
+meskosc 743
+łono 748
+okno 749
+rozpoczynać się 747
+spotkanie 752
+metoda 751
+odszedl 750
+punkt kulminacyjny 753
+przyjazd, przybycie 755
+pokoj(pomieszczenie 754
+porzucac, zostawiac 758
+wzajemnie 757
+czynic 756
+wychowywac 759
+usunac 760
+przyznawac, przydzielac 761
+prad rzeki, nurt 764
+siarka 763
+pistolet bron palna 762
+partaczyc, zepsuc robote 769
+kusic 766
+licencja 765
+oddzielac sie od czegos 772
+wegiel drzewny 771
+glaz 770
+dyskrecja 775
+kruszyc 774
+szczyt gory 773
+miod 776
+burza 777
+cypel (lad wysuniety w morze 778
+podzial 783
+bieda 782
+zatłoczony 780
+pozywac, zaskarzac 787
+czcigodny starzec 786
+sosna 785
+zawierac cos w sobie 790
+kąpac sie 789
+dolina 788
+obfity 793
+tesknota 792
+topniec 791
+plynac wzdluz 795
+nagroda 796
+ołów 794
+partia(np. polityczna 797
+sala parlamentarna 798
+zwykly, typowy 799
+skora, futro 802
+manipulowac 801
+spodnica 800
+demaskowac 805
+starsza pani 804
+fale 803
+rozerwac, podrzec 806
+narazac sie na cos 807
+pozostalosc, resztki 808
+powiekszac, pomnazac 811
+szczegolnie 810
+meczenstwo 809
+żarliwy, gorliwy 814
+rozdzielać 813
+szereg 812
+smierc 815
+pochowek 816
+mrugac oczami 817
+najwyzszy, najwiekszy 821
+streszczenie, podsumowanie 820
+wziac 819
+stanowisko 824
+zdjecie 822
+wstyd 823
+swiete 825
+odwaga, smialosc 826
+sluchac muzyki 827
+nasmiewac sie z kogos 829
+kieszeń 828
+poluzowac, luzny 830
+kara 833
+włożenie 832
+kupowac 831
+pierscionek 836
+raczej 834
+udzwieczniac 835
+pomoc, wsparcie 839
+maz 838
+odeslac z powrotem 837
+wymiana 842
+standard 841
+gorski potok 840
+gubic, tracic 845
+zanurzyc się 844
+zatwierdzac 843
+żelazo 846
+alternatywny 847
+pracownik, sluzacy 848
+ksiezniczka 849
+miejsce skladowania 850
+wnetrznosci 851
+spojrzec na cos 854
+rygorystyczny, surowy 853
+inteligentny 852
+przejrzec 855
+gigantyczny 856
+odeprzec, odrzucic 857
+delikatnosć 889
+rekrutowac 861
+nizsosc, bycie gorszym 862
+dokonanie, osiagniecie 863
+przekonywac 864
+trudzic sie 865
+zachecac 866
+dodac 867
+gratulacje 868
+instalowac, montowac 869
+pacha 870
+grozic 871
+co- (kooperacja 872
+rytm 874
+odnowic, odbudowac 875
+junior,maluch 878
+towarzyszyc komus 877
+zysk, przyrost 876
+czekac 879
+podroz 880
+ujarzmiac, podbijac 881
+srednica 882
+on 883
+obowiazek 884
+dobrodziejstwo, zyczliwosc 885
+penetrowac 886
+wskazowki 887
+karalny 888
+bulwar 890
+rownowaga 891
+projekt 892
+przychody, zarobki 893
+rozmiar,stopien 894
+podatek 895
+niedojrzaly 896
+harmonia 897
+zmiana, przemieszczenie 898
+sekunda 899
+jesien 900
+nieszczescie niedola 901
+prywatnosc 902
+systematycznosc 903
+sekret 904
+nazwa identyfikujaca jakas rzecz 905
+profit 906
+grusza 907
+zbierac zniwa/plony 908
+kłos 909
+ryz siewny 910
+aromat, zapach 911
+pory roku 912
+komisja 913
+przodowac w czyms 914
+jawny, przejrzysty 915
+zwabic 916
+platki zbozowe 917
+zarazek,bakteria 918
+ryż 919
+maka 920
+lepki 921
+ziarno 922
+kosmetyka 923
+niewlasciwa droga 924
+szyk, elegancja 925
+przepisy, warunki 926
+jadro, rdzen 928
+liczba 929
+chryzantema 927
+straznica-czasopismo swiadkow jehowy 930
+rodzaj,typ 931
+lakier 932
+Szanowny Panie 933
+prośba 934
+pilka 935
+zbawienie 936
+smiac sie 938
+kapelusz bambusowy 939
+bambusowa trawa 940
+miesien 941
+pudelko 942
+pedzel do pisania 943
+walec 944
+itd 945
+kalkulowac 946
+rozwiazanie 947
+program, plan 948
+spis,wykaz, rejestr 949
+fabrykować, produkowac tworzyc w fabryce 950
+asystent 952
+jednakze 953
+mieszkac 954
+ranga 955
+posrednik 956
+zdalne (sterowanie 958
+sprawa, interes 959
+byc obecnym, sluzyc komus 960
+inni 961
+plaszczyc sie przed kms 962
+przesylac, przekazywac 963
+budda 964
+prowizoryczny, tymczasowy 966
+szef, wodz 967
+miejsce publiczne, popularne 968
+wiara 969
+swietny, doskonaly 970
+ufny 971
+przyklad 972
+jednostka, indywidualnosc 973
+zdrowy 974
+przy czyims boku 975
+kelner 976
+stoj 977
+cena 978
+nasladowac, udawac 979
+obalic 980
+szpieg 981
+mnich buddyjski 982
+100 milionów 983
+ceremonia, uroczystosc 984
+naprawa, reparacja 985
+pustelnik 986
+sponsor 987
+czlowieczenstwo 988
+gardzic, lekcewazyc 989
+uzywac 990
+czulosc 993
+podwojny 992
+wygoda 991
+powalic, sciac 994
+zajazd, karczma 995
+rana, skaleczenie 996
+bronic (kogos 997
+wychwalac, chwalic 998
+genialnosc, znakomitosc 999
+przylegac, przynalezec 1000
+symbol, zeton 1001
+okreg miejski 1002
+odpowiedzialnosc 1003
+oplata za przejazd 1004
+substytut 1005
+worek 1006
+pozyczac komus 1007
+przewozony ladunek 1010
+opieraj sie o cos 1011
+co 1012
+bagaz 1013
+madry, blyskotliwy 1014
+swiadek, widz 1015
+dlugi czas 1016
+bruzda, zmarszczka 1017
+pojmany, schwytany 1018
+trzecia klasa (w sensie podrozy, biedota 1020
+wzornictwo, stylistyka, design 1021
+mieso 1022
+gnic, psuc sie 1023
+siedziec 1024
+ukonczyc szkole, studia 1025
+parasol 1026
+monme, waga ok. 4g 1027
+za pomoca czegos 1028
+przypominac kogos 1029
+laczyc, polaczyc 1030
+plytka, kafelek 1031
+doniczka 1032
+kapliczka shinto 1033
+zawod zajecie 1034
+cnotliwy 1035
+noc 1037
+ciecz, plyn 1038
+pagorek 1039
+gotowka 1040
+naduzycie 1041
+drzec sie, wydzierac 1042
+zamieniac ze soba miejscami 1043
+rozplywac sie, rozpuszczac 1044
+jalmuzna 1045
+rotacja 1046
+bawic sie 1047
+wycieczka, podroz 1048
+rzecz 1050
+latwe 1051
+nie 1049
+darowizna, subwencja 1052
+mocz 1053
+zakonnica 1054
+bloto 1055
+obuwie 1057
+ogrodzenie, plot 1056
+dach 1058
+chwyt, uchwyt 1059
+poddawac sie, uginac sie przed czyms 1060
+kopac(np. dolek w ziemii 1061
+kanał 1062
+rezydowac na stale 1063
+biuro 1066
+warstwa 1065
+ustawic, postawic 1064
+powoli 1067
+przeciek, nieszczelnosc 1068
+drukowanie 1069
+shaku (ok. 20 cali 1070
+wyczerpany 1071
+mokradla 1072
+przetlumaczyc 1073
+wybrac 1074
+za dnia 1075
+bark,ramie 1077
+frędzel 1078
+wentylować, chłodzić 1079
+ognisko domowe 1080
+re 1081
+lzy 1082
+zatrudniac 1083
+patrzec wstecz 1084
+ujawniac, udostepniac 1085
+pokazywac 1086
+salutować 1087
+pomyślny, dobrze wróżący 1088
+obchodzic celebrowac 1089
+blogoslawienstwo 1090
+opieka, dobrobyt 1091
+firma, spolka 1092
+kontrola, przeglad 1093
+miasto Nara 1094
+oficer wojskowy 1095
+pocieszenie, pociecha 1096
+dobra wola 1097
+zakaz, zabranianie 1098
+kolnierz, obroza 1099
+religia 1100
+uwielbiac, adorowac 1101
+rytuał 1102
+domyślać się, zgadywać 1103
+ucierać na tarce 1104
+przyczyna, powód 1105
+rwać, szarpać 1106
+olej 1107
+rekaw 1108
+w powietrzu, powietrzny 1109
+doreczac, dostarczac 1110
+flet 1111
+os np.x 1112
+zbroja 1113
+naciskac, pchac 1114
+ziemia otoczona z 3 stron wodą 1115
+wstawic 1116
+mowic z szacunkiem 1117
+rozrastać się, rozszerzac 1118
+bogowie 1119
+szukac 1120
+owoc 1121
+cukierek 1122
+rozdział (np książki 1123
+goły 1124
+siekiera 1125
+siekać, kroić 1126
+miejsce 1127
+modlic sie 1128
+niedaleko 1129
+zgiąć składać np papier 1130
+filozofia 1131
+zejsc z tego świata 1132
+przyrzeczenie, ślub, obietnica 1133
+chwilowo, tymczasowo 1134
+równomiernie, stale, stopniowo 1135
+zerwać, odciąć (np. stosunki 1136
+substancja, istota, esencja 1137
+odrzucac 1138
+oskarzenie, zarzut 1139
+wczoraj 1140
+klamac 1141
+robic, tworzyc 1142
+śnieg 1143
+rekord, zapis w historii 1144
+wypytywac, dowiadywac sie 1145
+spieszyc sie 1146
+spokój, spokojny 1147
+czaic się, szykować się 1148
+zatopiony 1149
+położyć się (np. spać 1150
+pani, dama 1151
+zamiatać 1152
+uderzyc (np. hontou 1153
+walczyc, borykac sie z czyms 1154
+czyscic, sprzatac 1155
+zagadnienie, tresc 1156
+chinska dynastia Tang 1157
+cukier 1158
+rozsądny, trzezwo myślący 1159
+pojmać aresztować 1160
+Włochy 1161
+stary(chłopak 1162
+stado, trzoda 1163
+odporny na 1164
+popyt, żądanie 1165
+Konfucjusz 1166
+brzeg, krawedz 1167
+oba/oboje 1168
+pelny, najedzony 1169
+kreska zrobiona pędzlem 1170
+ząb 1171
+wyginać zginać 1172
+uczen szkoly wojskowej = kadet 1173
+napotkac na swojej drodze 1174
+wioslarstwo 1175
+kadź - duże naczynie, np. do fermentacji wina 1176
+wielka niedzwiedzica 1177
+opłata, napiwek 1178
+wydział 1179
+mapa 1180
+spożytkować, wykorzystać 1181
+bezpieczny, wygodny 1182
+uzbroić się, wyposażyć się w 1183
+dawno, dawno temu 1184
+zażenowany, zmieszany 1185
+pożyczać od, z 1186
+jaka szkoda 1187
+odlozyc na bok, nie uwzgledniac 1188
+rozproszyc sie, rozejsc sie 1189
+20 1190
+zwykly obywatel 1191
+podsluchiwac, przechwytywac rozmowę 1192
+siedzenie 1193
+stopnie (np. celsjusza 1194
+przewóz przez granicę 1195
+krzątanina, zamieszanie 1196
+erupcja, wybuch wulkanu 1197
+grobowiec 1198
+oburzony 1199
+piec, wypiekac 1200
+świt, świtanie 1201
+małżonek, małżonka panującego 1203
+nadbrzeże, brzeg 1204
+wyrok, osąd 1205
+bilet 1206
+zwój 1207
+kula, sfera 1208
+zwycięstwo 1209
+kwiat glicynii 1210
+fax 1211
+jednostronny 1212
+drzeworyt- technika graficzna druku wypuklego 1213
+angielskie "of 1214
+brak środków do życia 1215
+czyjś teren 1216
+negatywny 1217
+negować 1218
+szklanka (np. soku 1219
+lotka, strzałka 1220
+sprostować, naprawiać 1221
+plemię 1222
+wiedzieć 1223
+wiedza, mądrość 1224
+halabarda 1225
+drażliwy, wrażliwy 1226
+zadanie 1227
+mgla 1228
+squad, grupa 1229
+powrot do domu 1230
+kondolencje 1233
+duza, powazna odleglosc, rozlegly obszar 1234
+silny 1235
+słaby 1236
+wrzeć, kipieć 1237
+wydatek 1238
+numer n-ty 1239
+młodszy brat 1240
+sprytny, zręczny 1241
+ksywka, nick 1242
+gnijące ciało 1243
+chwalić się, przechwalać 1244
+brudny 1245
+obdarzać 1246
+kopia 1247
+ktoś 1248
+strzelać 1249
+przepraszać 1250
+stary człowiek 1251
+rozważyć 1252
+szacunek do przodków 1253
+uczyc (kogos 1254
+torturować 1255
+pewna osoba 1256
+gotować się 1257
+sławny, renomowany 1258
+sygnatura, podpis 1259
+upalnie, duszno 1260
+rozmaitości 1261
+dzik 1262
+pasmo 1263
+ryzyko, hazard 1264
+wąwóz 1265
+zacieśniać, ograniczać 1266
+wciśnięty pomiędzy (jak w kanapce 1267
+pościg policyjny 1268
+expert 1269
+komendant 1270
+biurokrata 1271
+trumna 1272
+rura 1273
+efekt, wydajność 1276
+noga 1279
+stymulować, pobudzać 1280
+długodystansowiec 1281
+ścieżka 1282
+rosa 1283
+podskakiwać 1284
+duży skok, sus 1285
+deptać, stąpać 1286
+krok, kroczyć 1287
+szkielet 1288
+sliski, drazliwy(np. temat 1289
+dynia 1290
+klęska, nieszczęście 1291
+wir wodny 1292
+przesadzać, przedobrzać 1293
+wysokości, wysokie miejsca 1294
+Afryka 1295
+okazja, sposobność 1296
+utrudniać 1297
+podązać za kimś/czymś 1298
+sędzia przysięgły 1299
+piekna pogoda, swiecące słońce 1300
+ustawiac się w kolejce 1301
+ripostować, oddawać komuś 1302
+dołączony, umocowany 1303
+Instytucja 1304
+obóz, biwak 1305
+pułk wojskowy 1306
+kolizja, wypadek 1307
+schodzić, opuszczać się 1308
+piętro 1309
+Wasza Wysokość 1310
+sąsiadować 1311
+izolować 1312
+taić, ukrywać 1313
+zatracać wartości moralne 1314
+runięcie, zawalenie 1315
+dziura 1316
+pusty 1317
+wybierać pieniądze 1318
+pchnąć nożem 1319
+badać, studiować 1320
+zatkać korkiem 1321
+niewidzialny, skradający się 1322
+depresja, obszar poniżej poziomu morza 1323
+uścisnąć, ściskać 1324
+suszyć, wypalać 1325
+być spłukanym (bez kasy 1326
+szukać po omacku 1327
+głeboki 1328
+wzgórze 1329
+wysoka góra 1330
+żołnierz 1331
+brzeg oceanu 1332
+tkać, pleść 1334
+cerować 1335
+kurczyć się 1336
+bujny, porośnięty roślinnością 1337
+pionowo 1338
+linia komunikacyjna 1339
+napinać, naprężać 1340
+włókno, światłowód 1341
+gaza (opatrunek 1342
+ćwiczyć (swoje umiejętności 1343
+stringi (majtki 1344
+kontynuacja 1345
+obrazek 1346
+ogólnie rzecz biorąc, ogólny, totalny 1347
+dusić, tłamsić 1348
+pensja, wynagrodzenie 1349
+przeplatać 1350
+związywać 1351
+koniec 1352
+klasa 1353
+kronika 1354
+purpurowy, szkarłatny 1355
+odszkodowanie 1356
+kręcić, obracać, prząść 1357
+odwracać uwagę, rozpraszać 1358
+przedstawiać komuś/kogoś 1359
+buddyjska księga religijna zawierająca nauki Buddy 1360
+waćpan, najjaśniejszy pan 1361
+obietnica 1362
+gustowny 1363
+akumulować, gromadzić 1364
+kabel, linka 1365
+powszechny, ogólny 1366
+bawełna 1367
+jedwab 1368
+kręty, zakręt 1369
+odziedziczyć 1370
+zielony 1371
+pokrewieństwo, powinowactwo 1372
+siatka 1373
+spięty, nerwowy 1374
+fioletowy 1375
+związać skrzydła drobiu przed pieczeniem na rożnie 1376
+słomiana lina 1377
+niemowlęctwo 1378
+z tyłu 1379
+słaby, ulotny 1380
+ile 1381
+mechanizm 1382
+tajemniczy 1383
+zwierzęta hodowlane 1384
+gromadzić w dużych ilościach 1385
+cięciwa 1386
+przytulać 1387
+odżywczy 1388
+litość, przebaczenie 1389
+magnes 1390
+pochodzenie rodowod 1391
+osoba odpowiedzialna za 1392
+wnuk 1393
+wstrzymywać, zawieszać 1394
+zamiast 1395
+piszczel 1396
+hurtowo 1397
+honorowy 1398
+ubranie 1399
+przeznaczenie 1400
+rozkaz 1401
+zero 1402
+wiek kogoś 1403
+chłodny 1404
+uprawnienie do osądzania 1405
+dzwoneczek 1406
+odwaga 1407
+ruch na drodze 1408
+skok 1409
+watpliwosc 1410
+mimika zwierząt 1411
+zastygnąć 1412
+wzór, schemat 1413
+zbrodnia, przestępstwo 1414
+pechowy 1415
+niebezpieczny 1416
+adres 1417
+ramię 1418
+ogród 1419
+chować urazę 1420
+wierzba 1421
+jajko 1422
+zatrzymać do aresztu 1423
+handel, wymiana 1424
+pieczątka 1425
+zabawiać 1426
+ptak (znak zodiaku 1427
+sake 1428
+barman 1429
+fermentacja 1430
+okrutny, srogi 1431
+zrewanżować się 1432
+produkty mleczne 1433
+ocet 1434
+pijany 1435
+rozpowszechniać, dokonywać dystrybucji 1436
+kwas 1437
+wahać się 1438
+lubiany, ceniony 1439
+fasola 1440
+głowa 1441
+krotki 1442
+obfity, występujący w dużych ilościach 1443
+bębny 1444
+radować się, cieszyć się 1445
+drzewa cenne ze względu na ich drewno 1446
+talerz 1447
+krew 1448
+umywalka 1449
+alians, sojusz 1450
+kraść 1451
+ciepła pogoda 1452
+doglądać, nadzorować 1453
+przelewac sie 1454
+wzór, okaz, próbka 1455
+dziki, niebezpieczny, gwałtowny 1456
+ekonomiczny boom 1457
+sól 1458
+srebro 1459
+rozgoryczenie, frustracja 1460
+korzeń 1461
+natychmiastowy 1462
+magnat, baron 1463
+węzeł 1464
+wycofywać się 1465
+limit 1466
+przypatrywać się czemuś, wytężać wzrok 1467
+dobry 1468
+kontrast 1277
+melodyjny 1469
+wędrujący 1470
+córka 1471
+jeść 1472
+posiłek 1473
+pić 1474
+głodny 1475
+być wygłodzonym 1476
+dekorować 1477
+bud 1478
+przybrany 1479
+zaspokojony, nasycony 1480
+poprzedni 1481
+zarys, szkic 1482
+ubolewać nad czymś 1483
+równy 1484
+zawołać 1485
+obszar pomiędzy 2 matami tatami 1486
+obliczać wartość, wyliczać 1487
+kosić 1488
+nadzieja 1489
+czarny charakter 1490
+biust 1491
+odłączyć się, oddzielić 1492
+zabić 1493
+autentyczny, oryginalny 1494
+nudny,męczący 1495
+aromatyczny, dobrze przyprawiony 1496
+rezygnować 1497
+katalpa-drzewo o gorzkim smaku 1498
+nadinspektor 1499
+ściana 1500
+uchylać się, unikać 1501
+nowy 1502
+drewno opałowe 1503
+rodzic 1504
+nieustępliwy, zatwardziały 1506
+meldunek raport 1507
+krzyczeć 1508
+odkręcać 1509
+dochód 1510
+skromny, bezpretensjonalny 1511
+pomnik nagrobny 1512
+ląd 1513
+intymny, bliski 1514
+siły zbrojne 1515
+upał 1516
+w kształcie diamentu 1517
+mauzoleum - grobowiec w formie samodzielnej budowli o bogatym wystroju 1518
+znak zodiaku - wieprz 1519
+jądro atomowe 1520
+wyryć, wygrawerować 1521
+wyżej wspomniany 1522
+potępienie, krytyka 1523
+wspominać o czymś 1524
+sztuka 1525
+zimno (o powietrzu 1526
+parzyć, warzyć 1527
+wręczać, przekazywać komuś 1528
+działka (część ziemii 1529
+laska, dziewczyna 1530
+trucizna 1531
+podstawowy 1532
+jęczmień 1533
+niebieski 1534
+wytworny, wyrafinowany 1535
+konkurować, zabiegać o coś 1536
+uczucia 1537
+rozjaśniać się 1538
+czysty 1539
+cichy 1540
+obwiniać kogoś 1541
+wyczyn 1542
+głośność, objętość 1543
+obligacje 1544
+kisić, marynować 1545
+wierzchnia część, powierzchnia 1546
+torba 1547
+niezbeszczeszczony 1548
+zastaw, gwarancja 1549
+konsumować 1550
+krzywda, szkoda, uszkodzenie 1551
+kontrolować 1552
+proporcja 1553
+konstytucja 1554
+gwiazda 1556
+nazwisko 1557
+płeć 1558
+ofiara ze zwierzęcia 1559
+produkty 1560
+garb (np. o pagórku lub wielbłądzie 1561
+szczyt( spotkanie przywódców państw 1562
+zszywać, szyć 1563
+oddawać cześć 1564
+odlewanie metalu 1566
+długowieczność 1565
+zapisać się na kurs 1567
+wiosna 1568
+kamelia 1569
+pokojowy 1570
+grać muzykę 1571
+rzeczywistość 1572
+poświęcać się czemuś 1573
+stypendium 1574
+pręt, rózga 1575
+dyskretnie 1576
+wytrwałość 1577
+chińskiego pochodzenia, Sino 1578
+westchnienie 1579
+trudny 1580
+przepych 1581
+opadać 1582
+śpiący, senny 1583
+wrzeciono (śpiąca królewna 1584
+jazda, przejażdżka 1585
+nadmiar 1586
+zawierać, obejmować 1588
+układać wiersz 1589
+życzenie 1590
+harfa 1591
+zacieniać 1592
+z góry, wcześniej (np. opłacony z góry 1593
+przedmowa 1594
+lokata, depozyt 1595
+równiny 1596
+równocześnie 1597
+niechęć, antypatia 1598
+sierp 1599
+unikać rozgłosu 1600
+okazja, intratna transakcja 1601
+wartość 1603
+potrzebować 1604
+biodro 1605
+głosowanie 1606
+drift 1607
+drogowskaz 1608
+kasztan 1609
+przejscie, transformacja 1610
+wywracać się do góry dnem 1611
+dym, dymić 1612
+oferta, propozycja 1615
+recenzja 1618
+mała grupa, która ma wspólny nieformalny cel 1619
+łatwość, prostota 1621
+wieża 1624
+czas wolny, odpoczynek 1625
+mokry 1627
+rubryka tekstu 1628
+bitwa 1629
+dom towarowy 1630
+geneza 1631
+un 1632
+17 sylabowy poemat 1633
+wyprzeć się kogoś lub związków z kimś 1634
+smutny, przygnębiony 1635
+wina, poczucie winy 1636
+kamrad, towarzysz 1637
+drzwi frontowe 1638
+markiz, arystokratyczny tytuł 1639
+klimat 1640
+decydować 1641
+radosny, pogodny 1642
+godny podziwu 1643
+różnić się 1644
+poziomo 1645
+obrona 1646
+Korea 1647
+suszyć 1648
+wątroba 1649
+publikować 1650
+pocić się 1651
+bloki mieszkalne 1652
+plaża 1653
+miejsce, z którego się coś wywodzi 1654
+ziemniak 1655
+okap (dolna część dachu służąca wyniesieniu wody poza budynek 1656
+zbyt wiele 1657
+wykluczyć 1658
+stopniowo 1659
+przekazywać, np. tytuł 1660
+trasa, szlak 1661
+przekątna 1662
+malować 1663
+wiązka, paczka 1664
+zaufać, wierzyć 1665
+miejsce w wodzie gdzie płynie ona bardzo szybko, bystrze 1666
+cesarski rozkaz 1667
+wyalienowany, odosobniony 1668
+szybko,prędko 1669
+organizować, porządkować 1670
+szabla 1671
+bardzo stromy, spadzisty 1672
+egzamin 1673
+oszczędny 1674
+ciężki 1675
+ruszać się 1676
+chwalebny czyn 1677
+pracować 1678
+gatunki 1679
+zderzenie 1680
+pachnący 1681
+chory 1682
+głupi 1683
+ospa 1684
+gwałtownie, szybko (jak z pistoletu 1686
+symptomy 1685
+biegunka 1687
+zmęczony 1688
+epidemia 1689
+ból 1690
+nawyk, zwyczaj 1691
+chować 1692
+rzemieślnik 1693
+doktor 1694
+klasyfikator małych zwierząt 1695
+dystrykt, jednostka administracyjna 1696
+zawias, zawieszone na nawiasach 1697
+atak, ofensywa 1698
+Europa 1699
+tłumić, poskramiać 1700
+patrzeć na kogoś z podziwem 1701
+powitanie 1702
+wspinać się 1703
+klarowna, jasna pogoda 1704
+wydalać ze służby 1705
+znosić, likwidować (np. przepis 1706
+kolega z pracy 1707
+bursa, akademik 1708
+leczyć 1709
+kroić 1710
+kształt 1711
+cień 1712
+drzewo cedrowe, uzywane m.in. do budowy statków 1713
+kolorowanie 1714
+oczywisty, ewidentny 1715
+młodzieniec 1716
+powinno się 1718
+nasilać się, wzrastać 1719
+składać wizytę 1720
+twarz 1717
+nędzny, nieszczęsny 1721
+dyscyplina 1722
+rzadki 1723
+badanie lekarskie 1724
+zdanie (na papierze 1725
+twarzą w twarz 1726
+herb rodzinny 1727
+komar 1728
+wyregulowany, dostosowany 1729
+dawka, porcja 1730
+finisz, meta 1731
+oczyszczenie(duchowe 1732
+uroczysty, poważny 1733
+baza w baseballu 1734
+muzyka 1735
+lekarstwo 1736
+stosunek, relacja 1737
+uszczypliwy, cierpki 1738
+dostarczać składników odżywczych organizmowi 1739
+centrum 1740
+Anglia 1741
+odbijać, odzwierciedlać 1742
+czerwony 1743
+ułaskawienie, wybaczenie 1744
+niezwykły 1745
+ślady, trop 1746
+barbarzyńca 1747
+zatoka 1749
+romans 1748
+żółty 1750
+pobocze, na boku 1751
+zauważać, dostrzegać 1752
+kolor 1753
+umorzyć 1754
+lśniący 1755
+nawóz 1756
+słodki 1757
+granatowy 1758
+taki a taki (ktoś tam 1759
+mediator 1761
+spiskować 1760
+podstęp, oszustwo 1762
+figura szachowa 1763
+flaga narodowa 1764
+okres czasu 1765
+japońska gra Go 1766
+istotność, fundament 1767
+olbrzymi, przeraźliwy 1768
+intuicja 1769
+stawiać opór 1770
+cenny, wartościowy 1771
+zapisać w testamencie 1772
+rozdzielać, przydzielać 1773
+taniec 1774
+skojarzenie, związek 1776
+nicość 1775
+szorstki, nieokrzesany 1777
+pokrzyżować plany 1780
+przodek 1779
+taryfa, stawka 1778
+prowadzić dochodzenie 1781
+pomagać 1782
+z poważaniem 1783
+mata tatami 1784
+rząd, wiersz 1785
+powszechny, uniwersalny 1786
+nuty (zapisana melodia 1787
+wilgotne (np. ubranie 1788
+pojawić się 1789
+smukły, cienki 1790
+istota duchowa 1791
+zawód, profesja 1792
+klaps 1793
+"ja" dla bliskich 1794
+razem z 1795
+przekazać, dostarczyć 1796
+niespotykany 1797
+skrzydło 1798
+potop, ulewa 1799
+port 1800
+wybuch 1801
+bomba 1802
+respekt 1803
+wybierać w głosowaniu 1804
+Pan (forma adresowania w listach 1805
+studnia 1806
+okrążony, otoczony 1807
+uprawiać ziemię 1808
+Azja 1809
+zły 1810
+kąt, róg 1812
+kontakt, styczność 1813
+rozwikłać (problem, zagadkę 1814
+ponownie 1815
+wykład 1816
+subskrypcja, prenumerata 1817
+postura 1818
+rynsztok, ściek 1819
+argument 1820
+etyka 1821
+koło 1822
+częściowy 1823
+jak często, ile razy 1824
+kompilacja, zbiór 1825
+tom (książki 1826
+przepisy prawne 1827
+nazwisko rodowe 1828
+papier 1829
+ślub 1830
+obniżyć 1831
+opór (występuje w taitei 1832
+dno, spód 1833
+ludność 1834
+spać 1835
+złapać kogoś 1836
+e-bay 1837
+szuwary-rośliny w pobliżu rzek, jezior 1838
+punkt sprzedaży 1839
+dodatek, uzupełnienie 1840
+rezydencja 1841
+osłona, obudowa 1842
+hrabstwo 1843
+obrzeża miasta 1844
+dział, sekcj 1845
+metropolia(duże miasto, które stanowi centrum gospodarcze lub kulutralne 1846
+poczta 1847
+ojczyzna 1848
+rodzinne miasto 1849
+echo 1850
+syn 1851
+korytarz 1852
+tarcza 1853
+sekwencyjny 1854
+frakcja, odlam 1855
+żyła 1856
+masa, mnóstwo czegoś 1857
+paczkomat 1858
+stopień, klasa, ranga 1859
+wykuwać, kuć 1860
+cesarzowa 1861
+urojenie, widmo 1862
+oddawać szacunek 1864
+części mowy 1865
+dyrektor 1863
+udomowić 1866
+spadkobierca, następca 1867
+łódź 1868
+statek pasażerski 1869
+nawigacja 1870
+generalnie 1871
+taca 1872
+taśmociąg 1873
+statek 1874
+okręt wojenny 1875
+łódź wiosłowa 1876
+melon 1877
+łuk ( zataczać łuk 1878
+sierota 1879
+kokon 1880
+korzyść, pożytek 1881
+(za dużo) czasu wolnego 1882
+szerzyć, propagować 1883
+przychodzić 1884
+umysł 1885
+opary (dymu 1886
+latać 1887
+zatopić kogoś 1888
+żona 1889
+spadek, upadek, zanik 1890
+najskrytszy 1891
+maska 1892
+skóra (zwierzęca 1893
+buty 1894
+hegemonia 1895
+głos 1896
+dać 1897
+rekreacja, wypoczynek 1898
+błąd, pomyłka 1899
+gotować na parze 1900
+(niechętnie) się na coś zgodzić 1901
+kosz, pojemnik 1902
+bieguny(ziemskie 1903
+kły 1904
+pąk, pączkowanie 1905
+nikczemny, niegodziwy 1906
+taktowny 1907
+wyjaśnienie 1908
+ruch(np. w grze planszowej 1909
+rozprawa sądowa 1910
+rzut kośćmi 1911
+klan 1912
+sierść 1913
+ubywać 1914
+ogon 1915
+dom (forma grzecznościowa 1916
+powierzyć komuś pieniądze/towar 1917
+robić 1918
+fałsz, kłamstwo 1919
+długo 1920
+rozciągać 1921
+notatnik 1922
+rozwodzić się nad czymś 1923
+włos na głowie 1924
+wyjść na jaw 1925
+brakować komuś kogoś 1926
+gniazdo 1927
+nieskomplikowany 1928
+wojna 1929
+Zen-nurt w buddyzmie, którego podstawą jest poznawanie samego siebie 1930
+pocisk 1931
+drzewo wiśniowe 1932
+zwierzę 1933
+mozg 1934
+kłopot 1935
+ostry, surowy 1936
+łańcuch 1937
+podnieść rękę 1938
+reputacja 1939
+polowanie w celach rozrywkowych 1940
+ptak 1941
+ćwierkać 1942
+żuraw 1943
+kruk 1944
+latorośl 1945
+gołąb 1946
+kurczak 1947
+wyspa 1948
+serdeczność 1949
+piękna kobieta 1950
+nakłaniać do przestępstwa 1951
+zwalniać (np. tempo 1952
+należeć 1953
+powierzyć 1954
+przypadkowy 1955
+wywiad 1956
+głupiutki 1957
+kozi róg 1958
+odwrócony, zamieniony miejscami 1959
+modelowanie np. z gliny 1960
+siodełko 1961
+stal 1962
+cuma 1963
+silny, twardy i wytrzymały 1964
+puszka 1965
+wyroby garncarskie 1966
+huśtawka 1967
+śpiew Noh 1968
+dotyczący 1969
+towarzyski 1970
+innowacyjny, oryginalny 1971
+wymówka 1972
+omijać 1973
+wieczór 1974
+wysiłek 1975
+słoń 1976
+posąg 1977
+koń 1978
+kucyk 1979
+weryfikacja 1980
+jeździec konny 1981
+parking 1982
+jeździć samochodem 1983
+stacja (np. kolejowa 1984
+szumny, hałaśliwy 1985
+uciążliwy 1986
+zdumienie 1987
+zagorzały 1988
+inflacja 1989
+tygrys 1990
+jeniec 1991
+skóra ludzka 1992
+próżnia, pustka 1993
+figiel, wybryk 1994
+niezadowolenie, niepokój 1995
+roztroponość 1996
+dramat 1997
+tyranizować 1998
+jeleń 1999
+polecać, rekomendować 2000
+tryumf, rozradowanie 2001
+śliczny 2002
+niedźwiedź 2003
+zdolność 2004
+stosunek, podejście do czegoś 2005
+znak zodiaku tygrysa 2006
+występ 2007
+znak zodiaku smok 2008
+zawstydzić, zażenować 2009
+trzęsienie ziemi 2010
+trzęść 2011
+z dzieckiem 2012
+wargi 2013
+rolnictwo 2014
+zagęszczony, skoncentrowany 2015
+odesłać 2016
+powiązanie, związek 2017
+zakwitać 2018
+duch 2019
+brzydki 2020
+dusza 2021
+wiedźma 2022
+fascynacja, oczarowanie 2023
+baryłka, grudka 2024
+atakować 2025
+karcić 2026
+"my" używane przez króla jako "ja 2027
+atmosfera (nastrój 2028
+przedmiot 2029
+hartowanie 2030
+respektować, przestrzegać 2031
+opuścić, zrezygnować (np. z pracy 2032
+baraki 2033
+co więcej, ponadto 2034
+wodorosty 2035
+niewolnik 2036
+uleczanie 2037
+cynobrowy kolor (rodzaj różowego 2038
+laguna 2039
+znak zodiaku krowa 2040
+zodiak zająca 2041
+zodiak węża 2042
+ten tutaj 2043
+chrust 2044
+fort 2045
+odrobina czegoś 2046
+zarost, broda 2047
+kryształ 2048
+drób, ptactwo 2049
+jabłko 2050
+sympatyzować z kimś 2051
+fosfor 2052
+żyrafa 2053
+łuskowany 2054
+otaczać, okalać 2055
+pustelnia 2056
+spowity 2057
+ja - aroganckie 2058
+składać przeprosiny 2059
+rumak 2060
+stromy 2061
+dokończyć pracę 2062
+zaprawa murarska 2063
+teść 2064
+mysz 2065
+wiercić dziurę 2066
+zrównać z ziemią 2067
+mini łódka 2068
+nosorożec 2069
+miesiąc księżycowy 2070
+kręgosłup szyjny 2071
+ścieżka prowadząca przez pole ryżowe 2072
+przeliterować 2073
+niech będzie 2074
+cesarska pieczęć 2075
+zbroja okrywająca całe ciało 2076
+tryumfować 2077
+oczarowany, zauroczony 2078
+nawadniać 2079
+żłopać, pić łapczywie 2080
+por (warzywo 2081
+loteria 2082
+pokutny 2083
+siano 2084
+kurczę, pisklątko 2085
+robić szybkie, małe kroczki 2086
+zrozumiały 2087
+trening 2088
+niezmiernie, ogromnie 2089
+schwycić i nie puszczać 2090
+angielskie "a" (rodzajnik nieokreślony 2091
+odciąć coś 2092
+królik 2093
+jest 2094
+dumny, wyniosły 2095
+przecinek 2096
+potomstwo 2097
+krytersy 2098
+fiołek 2099
+mandala 2100
+ręcznik 2101
+cytat 2102
+wróżba 2103
+wyższa szkoła w niebie 2104
+nie będziesz (miał/robił) w Dekalogu 2105
+Yamato 2106
+rycerstwo 2107
+mieć dość (czegoś/ kogoś 2108
+urodziwy, przystojny 2109
+opryskliwy, oschły 2110
+pracować w polu 2111
+śpiewak, bard 2112
+zwierzęce potomstwo 2113
+wróg 2114
+opiekować się kimś 2115
+drobiazg, błahostka 2116
+uprzedzony 2117
+osiągnąć zysk 2118
+rozkosz 2119
+emigrant 2120
+partner 2121
+artysta sceniczny 2122
+rzetelność 2123
+kolego 2124
+w stanie jak widać (bez gwarancji 2125
+adjutant (ranga wojskowa 2126
+rozwidlenie 2127
+wynająć (kogoś 2128
+ceremonia pogrzebowa 2129
+smażone mięso 2130
+synu 2131
+robić, robić, robić 2132
+strasznie(bardzo 2133
+jasny, przejrzysty 2134
+mizernieć 2135
+przetrwać 2136
+metalurgia 2137
+okazały, wspaniały 2138
+latawiec 2139
+okres spokoju, ukojenie 2140
+ranny ptaszek 2141
+feniks 2142
+rzeź 2143
+moment 2144
+odrywac się, odpadać 2145
+golić się 2146
+aromat 2147
+zgięty 2148
+przygnębiony 2149
+dzika gęś 2150
+podrobiony, fałszywy 2151
+kuchnia 2152
+insynuować, sugerować 2153
+skaut 2154
+drwina 2155
+czynić zarzuty 2156
+szeptać 2157
+paplać 2158
+tchawica 2159
+kłócić się 2160
+plotkarz 2161
+kaszleć 2162
+oburzenie 2163
+gardło 2164
+ślina 2165
+walić 2166
+łgać 2167
+dziobać 2168
+klątwa 2169
+szczekać 2170
+dyndać, zwisać 2171
+żuć 2172
+urzeczywistnić się 2173
+okolice ust 2174
+jąkać się 2175
+snuć opowieść 2176
+miso (papka sojowa 2177
+muzyka pop 2178
+nakrzyczeć 2179
+mury miasta 2180
+oniemiały 2181
+spożyć, połknąć 2182
+glina 2183
+przyziemny 2184
+wielki stos 2185
+ziemianka, schronienie wykopane w ziemi 2186
+szpecić 2187
+płaski 2188
+nabrzeże 2189
+zapchać dziurę 2190
+zbiornik, zapora 2191
+balkon 2192
+dziecko, ktore dopiero przyszlo na świat 2193
+naruszyć, pogwałcić 2194
+zazdrosna o inne dziewczyny 2195
+osobista służąca 2196
+zakończony pomyślnie 2197
+prostytutka, nierządnica 2198
+dama dworu 2199
+znośny, zadowalający 2200
+bratanica, siostrzenica 2201
+zawiść 2202
+pani domu 2203
+wiekowa kobieta 2204
+teściowa 2205
+młoda dama 2206
+przepełniony radością 2207
+spodziewać się dziecka 2208
+pilny, pracowity 2209
+ukoić, złagodzić 2210
+sugerować, implikować 2211
+dokładny, obszerny 2212
+więzienie 2213
+zatkany 2214
+dynastia Sung 2215
+dziczyzna 2216
+zarzynać 2217
+pierdzieć 2218
+śmieci 2219
+pośladki 2220
+często 2221
+ciało zmarłego 2222
+parawan 2223
+sięgający wysoko 2224
+nierówne góry 2225
+góra wszystkich gór 2226
+urwisko 2227
+czubek góry 2228
+uzależnić się od robienia czegoś 2229
+skalisty 2230
+25 kartek papieru 2231
+baner 2232
+proporzec (niewielka chorągiew służąca do celów reprezentacyjnych 2233
+tasak 2234
+kwatera 2235
+brać kogoś pod swoje skrzydła 2236
+jastrząb 2237
+hrabstwo hobbitów 2238
+sanktuarium w grobowcu 2239
+wzmacniać 2240
+coraz więce 2241
+puścić wolno 2242
+ryżowa owsianka 2243
+tokarka (urządzenie do obróbki 2244
+wpaść na kogoś (przypadkiem 2245
+przebranie, kamuflaż 2246
+grabić, plądrować 2247
+rzucać niedbale 2248
+chwytać, ściskać kurczowo 2249
+wyciskać odbicie 2250
+wykręcić (rękę, kostkę 2251
+zadrapać, porysować 2252
+asortyment 2253
+ścierać 2254
+wszyscy są obecni 2255
+radzić sobie z 2256
+mącić w głowie 2257
+trzeć palcem o kartkę 2258
+robić masaż 2259
+zwinąć, porwać coś 2260
+bliski, niedaleki w czasie 2261
+rozsiewać, szerzyć 2262
+kolekcjonować 2263
+naczynie 2264
+poświęcać uwagę 2265
+kręcić się, wirować 2266
+licznik narzędzi 2267
+zamieszanie 2268
+zrobić postępy (niewielkie 2269
+pieścić kogoś 2270
+prószyć, spryskiwać 2271
+ekstra,mega, świetny 2272
+zdobycze 2273
+wydłubać, wyryć 2274
+krzywić się (np. z bólu 2275
+rozważać, rozmyślać 2276
+Zaślepienie, szaleńcza miłość 2277
+bystry, rozgarnięty 2278
+miły 2279
+łaknąć czegoś 2280
+tak jakby 2281
+powiększyć 2282
+szacunek dla starszych 2283
+wypływać 2284
+kanał, przewód 2285
+połyskiwać 2286
+głęboko pod wodą 2287
+płukać gardło 2288
+kontynent 2289
+wirująca woda 2290
+przenikać, przedostawać się przez 2291
+opłukiwać 2292
+zgasić (światło, lampę 2293
+krople łez 2294
+tryskający 2295
+ziarna piasku 2296
+bluźnierstwo 2297
+sprośny, perwersyjny 2298
+belka dachowa 2299
+osad 2300
+szeroko rozpowszechnione 2301
+kyoto 2302
+ty 2303
+filtrować 2304
+na granicy 2305
+fosa 2306
+opryskiwać sprayem 2307
+tonąć 2308
+port morski 2309
+samotność 2310
+obfitujący 2311
+brzeg wody 2312
+matka gęś 2313
+zanurzenie w wodzie 2314
+wypełniać po brzegi 2315
+selekcja (naturalna 2316
+niepokalana 2318
+bezcześcić 2319
+nawilżać 2320
+rwąca rzeka 2321
+zasypywać czymśkogoś 2317
+nabierać wody 2322
+basenik wodny 2323
+kumulacja 2324
+przepaść, otchłań 2325
+chaos 2326
+wszystko - (żerny np 2327
+sitko 2328
+zmoczyć 2329
+przestać się ruszać 2330
+czarnoziem 2331
+kocioł 2332
+toporek 2333
+dziadek 2334
+cwany przebiegły 2335
+nieprzyzwoity, obsceniczny 2336
+przebiegły 2337
+szop pracz 2338
+wilk 2339
+poddenerwowany 2340
+szczeniak 2341
+lis 2342
+alfa i omega 2343
+celować w 2344
+lew 2345
+pawian 2346
+tytoń 2347
+jasmine - jasnożółty 2348
+głóg 2349
+truskawka 2350
+krzew dekoracyjny lespedeza 2351
+stara technika 2352
+zredukować, zmniejszyć 2353
+słomiany płaszcz przeciwdeszczowy 2354
+zdrętwiały, otępiały 2355
+mech (roślina 2356
+marnotrawny, rozrzutny 2357
+pokrywać coś czymś 2358
+łodyga w kształcie spirali 2359
+kwiat lotosu - dwie wersje - 2360 i 2361
+kwiaty lotosu - again 2362
+orchidea 2363
+trzcina pospolita 2364
+słodki ziemniak 2365
+irys (kwiat 2366
+banan 2367
+knot świecy 2368
+kasza 2369
+lepiężnik (kwiat 2370
+indigo (kolor niebiesko - fioletowy 2371
+kolor bakłażanowy 2372
+znęcanie 2373
+zawdzięczać coś komuś 2374
+bylica(kwiat 2375
+musztarda 2376
+wykiełkować 2377
+winogrono 2378
+winne grona 2379
+wskrzeszenie 2380
+zdziczeć 2381
+rzepień (kwiat 2382
+wycieraczka pod drzwiami 2383
+zrobić się ciemno 2384
+trawa używana jako strzecha 2385
+banan zwyczajny 2386
+kosić trawę 2387
+pokrywka 2388
+cebula 2389
+krytykować 2390
+malwa 2391
+pokrywanie dachu kamieniem 2392
+pręcik kwiatka 2393
+grzyb 2394
+siać 2395
+pietruszka 2396
+strzecha 2397
+kudzu (roślina pomocna w leczeniu nałogów 2398
+siny (bladoniebieski 2399
+słoma 2400
+rzepa 2401
+kartofelek 2402
+gąszcz, zarośla 2403
+czosnek 2404
+orlica (kwiat 2405
+obficie urosnąć 2406
+mocnoczerwony (kolor kwiatu pewnego 2407
+świecznik 2408
+poborca, zbieracz 2409
+ciborowate (kwiat 2410
+trzcina (ditch reed 2411
+Droga (mleczna 2412
+wyśledzić, odnaleźć 2413
+człapać, pełzać 2414
+objazd, obejście 2415
+unikać odpowiedzialności 2416
+schadzka 2417
+odległy 2418
+nieobecny, błądzący 2419
+pod presją, pilny 2420
+dopóki 2421
+skromny 2422
+w martwym punkcie 2423
+kulturalny 2424
+grzeczność, uprzejmość 2425
+szpara, szczelina 2426
+zaułek 2427
+opętanie 2428
+pociągać 2429
+bez wyjątku 2430
+momentalnie, natychmiastowo 2431
+pierwszy narodzony syn 2432
+w ostatniej chwili 2433
+przebaczać 2434
+zwisać łukiem 2435
+progres, postęp 2436
+niejasny, niepewny 2437
+płonący, jarzący 2438
+aureola 2439
+skrzyć się 2440
+sucha pogoda 2441
+czyste niebo 2442
+nazajutrz 2443
+rozjaśniać włosy 2444
+nieznany, zapomniany 2445
+przejrzysty 2446
+przewietrzyć się, wyjść na świeże powietrze 2447
+świt 2448
+dawać awans, podnosić 2449
+promieniujący 2450
+półmrok, szarówka 2451
+ostatni dzień miesiąca 2452
+nerka 2453
+udo 2454
+ropa (w zakażonej ranie 2455
+wnętrzosci 2456
+pęcherz 2457
+zarodek, płód 2458
+odbyt 2459
+tchórzostwo 2460
+kolano 2461
+delikatny, kruchy 2462
+żebro 2463
+łokieć 2464
+jama (np. brzuszna 2465
+gruczoł 2466
+guz 2467
+taca obiadowa 2468
+podłokietnik 2469
+niecywilizowany 2470
+klon(drzewo 2471
+poduszka 2472
+wierzba purpurowa 2473
+wiąz drobnolistny 2474
+leszczyna 2475
+czesac 2476
+drewniany młotek 2477
+drwal 2478
+drabina 2479
+krzesło 2480
+persymona(coś jak pomidor, tyle, że owoc 2481
+drzewo cytrusowe 2482
+belka nośna 2483
+kołek 2484
+ostrokrzew 2485
+cytron 2486
+drewniana miska 2487
+szczwół plamisty 2488
+trzmielina 2489
+święte drzewko 2490
+wiecznie zielony dąb 2491
+pinus nigra (sosna 2492
+japonski dąb 2493
+mandaryńska pomarańcza 2494
+japoński cyprys 2495
+grzęda 2496
+znaleźć schronienie 2497
+kolczasty 2498
+dzwonek (kwiat 2499
+święty las 2500
+widły farmera 2501
+wiosło 2502
+tłuczek 2503
+laska do chodzenia 2504
+dąb panów feudalnych 2505
+beczka 2506
+palisada (drewniane kołki wbite jeden przy drugim tworzące ogrodzenie 2507
+wieżyczka 2508
+twardy dąb 2509
+drewniana chochla 2510
+śliwka lubaszka 2511
+surowa bawełna 2512
+tarcza szlachecka 2513
+czeremcha 2514
+brzoza 2515
+kopia (miecz 2516
+dzika morwa 2517
+bela (prostopadłościan 2518
+nieśplik japoński 2519
+rynna 2520
+sanie 2521
+rozrywka 2522
+zakładka 2523
+kokosowiec 2524
+drzewo sandałowe 2525
+sumak (roślina 2526
+drzewo brzostownica 2527
+kryptomeria (drzewo 2528
+suty, rzęsisty 2529
+wiadro 2530
+elipsa 2531
+badian właściwy (drzewo 2532
+kulka sierści 2533
+mrugnięcie oka 2534
+ogień zapalany podczas warty 2535
+pochodnia 2536
+rozniecać, wzbudzać 2537
+moxa - chińskie ziołowe pałeczki używane w terapii 2538
+światło świecy 2539
+wachlować 2540
+sadza 2541
+odstrzał 2542
+olśniewający 2543
+promienny 2544
+znakować 2545
+płomienie 2546
+lawa 2547
+pieczeń 2548
+dusić (potrawę 2549
+szarpnąć, pociągnąć 2550
+zwierzę płci żeńskiej 2551
+zwierzę płci męskiej 2552
+kamień szlachetny 2553
+wybijać godzinę 2554
+kolor niebieski (marynarki morskiej 2555
+cętkowany 2556
+lapis lazuli (skała metamorficzna 2557
+bezskutecznie próbować naprawić 2558
+wygładzać 2559
+doskonalić umiejętności 2560
+koralowiec 2561
+rafa koralowa II 2562
+farciarz 2563
+krzem 2564
+jet Li 2565
+krzyształowy kamień 2566
+zabawka 2567
+brzęczeć, dzwonić 2568
+pełen obaw, zlękniony 2569
+na koniec, ostatecznie 2570
+grzbiet pola ryżowego 2571
+świerzb, swędzenie 2572
+flegma 2573
+odra 2574
+hemoroidy 2575
+rak jako choroba 2576
+tracić na wadze 2577
+blizna 2578
+paraliż 2579
+oczko w głowie 2580
+qwew 12222

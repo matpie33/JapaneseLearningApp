@@ -12,19 +12,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFFont;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 public class ExcelReader {
 	
 	
@@ -54,19 +41,6 @@ public class ExcelReader {
 		font = new Font("MS PMincho", Font.PLAIN, 60);
 	}
 	
-	private List <String> getColumn (XSSFWorkbook workbook){
-		List <String> s = new LinkedList <String> ();
-		int i =0;
-		XSSFCell c = workbook.getSheetAt(0).getRow(i).getCell(1);
-		while (c!=null){
-			s.add(c.toString());
-			i++;
-			c = workbook.getSheetAt(0).getRow(i).getCell(1);			
-		}
-			
-		return s;
-		
-	}
 	
 	public String getKanjiById (int id){
 		return words.get(id-1);

@@ -34,6 +34,10 @@ public class RepeatingInformation implements Serializable{
 	public void setWasRepeated(boolean wasRepeated) {
 		this.wasRepeated = wasRepeated;
 	}
+	@Override
+	public String toString(){
+		return "date:" +repeatingDate+"range"+repeatingRange;
+	}
 	
 
 }

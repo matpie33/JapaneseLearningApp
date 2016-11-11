@@ -27,7 +27,7 @@ import javax.swing.JTextArea;
 import com.kanji.Row.KanjiInformation;
 import com.kanji.Row.KanjiWords;
 
-public class RowWithDeleteButton extends RowsCreator<KanjiInformation> implements Serializable {
+public class RowInKanjiInformations extends RowsCreator<KanjiInformation> implements Serializable {
 	/**
 	 * 
 	 */
@@ -39,7 +39,7 @@ public class RowWithDeleteButton extends RowsCreator<KanjiInformation> implement
 	private String wordBeingModified;
 	private int idBeingModified;
 	
-	public RowWithDeleteButton (MyList <KanjiWords> list){
+	public RowInKanjiInformations (MyList <KanjiWords> list){
 		this.list=list;
 		adapters = new ArrayList <KeyAdapter>();
 	}
@@ -75,7 +75,7 @@ public class RowWithDeleteButton extends RowsCreator<KanjiInformation> implement
 		cd.fill=GridBagConstraints.NONE;
 		row.add(idTextArea,cd);
 		
-		JButton remove = createButtonRemove(text);		
+		JButton remove = createButtonRemove(row, kanji);		
 		cd.gridx++;
 		cd.weightx=0;
 		row.add(remove,cd);
@@ -165,12 +165,14 @@ public class RowWithDeleteButton extends RowsCreator<KanjiInformation> implement
 	    return focusListener;
 	}
 	
-	private JButton createButtonRemove(final String text){
+	private JButton createButtonRemove(final JPanel text, final KanjiInformation kanji){
 		JButton remove = new JButton("-");
 		remove.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed(ActionEvent e){				
-				list.removeRowContainingTheWord(text);				
+				list.removeRowContainingTheWord(text);	
+				list.getWords().remove(kanji);
+				list.save();
 			}
 		});
 		return remove;
