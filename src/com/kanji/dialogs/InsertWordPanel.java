@@ -78,10 +78,13 @@ public class InsertWordPanel {
 			@Override
 			public void actionPerformed (ActionEvent e){
 				String numberInput = insertNumber.getText();
+				
 				String wordInput = insertWord.getText(); 
 				if (isNumberValid(numberInput)){
+					
 					int number = Integer.parseInt(numberInput);
 					if (checkIfInputIsValid(wordInput, number))	{
+						System.out.println("adding: ");
 						addWordToList(wordInput, number);
 						parentDialog.save();
 					}
@@ -110,18 +113,19 @@ public class InsertWordPanel {
 		boolean defined=((KanjiWords)list.getWords()).isIdDefined(number);					
 		if (defined)
 			parentDialog.showErrorDialogInNewWindow(ExceptionsMessages.idAlreadyDefinedException);
-		return defined;
+		return !defined;
 	}
 	
 	private boolean isWordUndefinedYet(String word){
-		boolean undefined = ((KanjiWords)list.getWords()).isWordDefined(word);
-		if (!undefined)
+		boolean defined = ((KanjiWords)list.getWords()).isWordDefined(word);
+		if (defined)
 			parentDialog.showErrorDialogInNewWindow(ExceptionsMessages.wordAlreadyDefinedException);
-		return undefined;
+		return !defined;
 	}
 	
 	private void addWordToList(String word, int number){
-		((KanjiWords)list.getWords()).addRow(word, number);	
+		
+		((KanjiWords)list.getWords()).addNewRow(word, number);	
 		list.scrollToBottom();
 	}
 	

@@ -8,14 +8,14 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import com.kanji.myList.MyList;
-import com.kanji.myList.RowAsJLabel;
-import com.kanji.myList.RowWithDeleteButton;
+import com.kanji.myList.RowInRepeatingList;
+import com.kanji.myList.RowInKanjiInformations;
 
 public class RepeatingList implements Serializable {
 
 	private List <RepeatingInformation> repeatingList;
 	private transient MyList <RepeatingList> list;
-	private transient RowAsJLabel rowMaker;
+	private transient RowInRepeatingList rowMaker;
 	
 	
 	public RepeatingList (MyList <RepeatingList> list){
@@ -24,12 +24,13 @@ public class RepeatingList implements Serializable {
 		initialize();
 	}
 	public void initialize(){		
-		rowMaker = new RowAsJLabel();		
+		rowMaker = new RowInRepeatingList(list);		
 	}
 	
 	public void add (RepeatingInformation r){
 		if (!repeatingList.contains(r))
 			repeatingList.add(r);
+		System.out.println(r);
 		JPanel panel = rowMaker.addWord(r, repeatingList.size());
 		list.addWord(panel);
 	
@@ -48,6 +49,10 @@ public class RepeatingList implements Serializable {
 	}
 	public void setList (MyList<RepeatingList> list){
 		this.list=list;
+	}
+	
+	public void remove (RepeatingInformation r){
+		repeatingList.remove(r);
 	}
 	
 	

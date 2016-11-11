@@ -108,8 +108,8 @@ public class MyList <Parameters>
     this.panels.add(row);
     GridBagConstraints c = createConstraintsForNewRow();
     add(row, c);
-    repaint(row.getLocation().x, row.getLocation().y, row.getSize().width, row.getSize().height);
-//    repaint();
+//    repaint(row.getLocation().x, row.getLocation().y, row.getSize().width, row.getSize().height);
+    repaint();
     
   }
   
@@ -122,7 +122,7 @@ public class MyList <Parameters>
     int a = 5;
     c.insets = new Insets(a, a, a, a);
     c.fill = 2;
-    c.weightx = 1.0D;
+    c.weightx = 1;
     return c;
   }
   
@@ -247,7 +247,7 @@ public class MyList <Parameters>
     repaint();
   }
   
-  public void removeRowContainingTheWord(String word)
+  public void removeRowContainingTheWord(JPanel word)
   {
     try
     {
@@ -262,22 +262,25 @@ public class MyList <Parameters>
     repaint();
   }
   
-  private int removeRowContainingWordAndReturnRowNumber(String word)
+  private int removeRowContainingWordAndReturnRowNumber(JPanel word)
     throws ClassNotFoundException, InstantiationException, IllegalAccessException
   {
-    int rowNumber = 0;
-    while (rowNumber < this.panels.size())
-    {
-      JPanel panel = (JPanel)this.panels.get(rowNumber);
-      JTextArea text = (JTextArea)findElementInsideOrCreate(panel, JTextArea.class);
-      if (text.getText().equals(word))
-      {
-        remove(panel);
-        this.panels.remove(panel);
-        break;
-      }
-      rowNumber++;
-    }
+//    int rowNumber = 0;
+//    while (rowNumber < this.panels.size())
+//    {
+//      JPanel panel = (JPanel)this.panels.get(rowNumber);
+//      JTextArea text = (JTextArea)findElementInsideOrCreate(panel, JTextArea.class);
+//      if (text.getText().equals(word))
+//      {
+//        remove(panel);
+//        this.panels.remove(panel);
+//        break;
+//      }
+//      rowNumber++;
+//    }
+	 remove(word);
+	 int rowNumber = panels.indexOf(word);
+	 panels.remove(word);
     return rowNumber;
   }
   
@@ -334,10 +337,11 @@ public class MyList <Parameters>
     scrollToBottom();
   }
   
-  private void updateWords()
+  public void updateWords()
   {
     cleanAll();
     createTitle();
+    System.out.println("update");
 //    for (Parameters word : this.words) {
 //      addWord(word);
 //    }
@@ -347,6 +351,7 @@ public class MyList <Parameters>
   {
     removeAll();
     this.panels.clear();
+    System.out.println("clean");
   }
   
   

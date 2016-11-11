@@ -235,8 +235,9 @@ public class RepeatingWordsPanel
     {
       public void actionPerformed(ActionEvent e)
       {
-        RepeatingWordsPanel.this.removeWordIfItsProblematic();
-        RepeatingWordsPanel.this.getNextWord();
+        removeWordIfItsProblematic();
+        getNextWord();
+        
         System.out.println("problematics: " + RepeatingWordsPanel.this.problematicKanjis);
       }
     };
@@ -250,7 +251,7 @@ public class RepeatingWordsPanel
   private void removeWordIfItsProblematic()
   {
     int id = getCurrentWordId();
-    this.problematicKanjis.remove(Integer.valueOf(id));
+    problematicKanjis.remove(Integer.valueOf(id));
   }
   
   private int getCurrentWordId()
@@ -289,8 +290,7 @@ public class RepeatingWordsPanel
   {
     String word = this.wordTextArea.getText();
     this.wordsToRepeat.remove(this.currentWord);
-    if (parent.getProblematicKanjis().contains(((KanjiWords)words.getWords()).getIdOfTheWord(currentWord)))
-    	parent.getProblematicKanjis().remove(((KanjiWords)words.getWords()).getIdOfTheWord(currentWord));
+    
     System.out.println("removed: " + word);
     if (!this.wordsToRepeat.isEmpty())
     {

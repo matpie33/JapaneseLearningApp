@@ -6,6 +6,8 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.FileOutputStream;
@@ -19,16 +21,23 @@ import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import com.kanji.Row.KanjiInformation;
 import com.kanji.Row.RepeatingInformation;
+import com.kanji.Row.RepeatingList;
 
-public class RowAsJLabel extends RowsCreator <RepeatingInformation>{
+public class RowInRepeatingList extends RowsCreator <RepeatingInformation>{
 
 	private Color defaultColor = Color.RED; 
-	private MyList list;
+	private MyList<RepeatingList> list;
+	
+	public RowInRepeatingList (MyList<RepeatingList> list){
+		this.list=list;
+	}
 		
 	@Override
 	public JPanel addWord(RepeatingInformation rep, int rowsNumber) {
@@ -40,7 +49,9 @@ public class RowAsJLabel extends RowsCreator <RepeatingInformation>{
 		JTextArea repeatedWords = createTextArea(word);
 		JTextArea date = createDateArea(date1);
 		
-		Component [] components = {number, repeatedWords, date};
+		JButton delete = createButtonRemove(rowPanel, rep);
+		
+		Component [] components = {number, repeatedWords, date, delete};
 		addComponentsToPanel(rowPanel, components);		
 
 		return rowPanel;
@@ -120,6 +131,19 @@ public class RowAsJLabel extends RowsCreator <RepeatingInformation>{
 			anchor = GridBagConstraints.EAST;
 		else anchor = GridBagConstraints.CENTER;			
 		return anchor;
+	}
+	
+	private JButton createButtonRemove(final JPanel text, final RepeatingInformation kanji){
+		JButton remove = new JButton("-");
+		remove.addActionListener(new ActionListener (){
+			@Override
+			public void actionPerformed(ActionEvent e){				
+				list.removeRowContainingTheWord(text);	
+				list.getWords().remove(kanji);
+				list.save();
+			}
+		});
+		return remove;
 	}
 
 	@Override
