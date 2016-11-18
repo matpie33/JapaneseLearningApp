@@ -13,6 +13,10 @@ import com.kanji.myList.RowInKanjiInformations;
 
 public class RepeatingList implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3144332338336535803L;
 	private List <RepeatingInformation> repeatingList;
 	private transient MyList <RepeatingList> list;
 	private transient RowInRepeatingList rowMaker;
