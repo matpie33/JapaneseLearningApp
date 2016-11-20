@@ -82,7 +82,8 @@ public class LearningStartPanel {
 		addComponentsAtLevel(level, new JComponent[] { newRow, sumRangeField });
 
 		level++;
-		JButton cancel = parentDialog.createButtonDispose(ButtonsNames.buttonCancelText);
+		JButton cancel = parentDialog.createButtonDispose(ButtonsNames.buttonCancelText,
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
 		JButton approve = createButtonStartLearning(ButtonsNames.buttonApproveText, panel);
 
 		addComponentsAtLevel(level, new JButton[] { cancel, approve });

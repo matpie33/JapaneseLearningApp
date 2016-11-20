@@ -38,8 +38,8 @@ public class MyDialog extends JDialog {
 	private class MyDispatcher implements KeyEventDispatcher {
 		@Override
 		public boolean dispatchKeyEvent(KeyEvent e) {
-			if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
-				dispose();
+			// if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+			// dispose();
 			return false;
 		}
 	}
@@ -103,11 +103,11 @@ public class MyDialog extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				isOpened=false;
+				isOpened = false;
 			}
 		};
 		JRootPane root = getRootPane();
-		root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_G, 0), "close");
+		root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "close");
 		root.getActionMap().put("close", action);
 		setRootPane(root);
 		ModalityType modality;
@@ -157,7 +157,7 @@ public class MyDialog extends JDialog {
 		return isOpened;
 	}
 
-	public JButton createButtonDispose(String text) {
+	public JButton createButtonDispose(String text, KeyStroke disposeKey) {
 		JButton button = new JButton(text);
 		AbstractAction action = new AbstractAction() {
 			private static final long serialVersionUID = 5504620933205592893L;
@@ -168,8 +168,7 @@ public class MyDialog extends JDialog {
 			}
 		};
 		button.addActionListener(action);
-		button.getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW)
-				.put(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SPACE, 0), "space");
+		button.getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW).put(disposeKey, "space");
 
 		button.getActionMap().put("space", action);
 		return button;
