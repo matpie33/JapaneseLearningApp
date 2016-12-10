@@ -1,7 +1,6 @@
 package com.kanji.myList;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -10,13 +9,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -169,7 +163,10 @@ public class RowInKanjiInformations extends RowsCreator<KanjiInformation> implem
 		JButton remove = new JButton("-");
 		remove.addActionListener(new ActionListener (){
 			@Override
-			public void actionPerformed(ActionEvent e){				
+			public void actionPerformed(ActionEvent e){	
+			    	if (!list.showMessage("Sure?")){
+			    	    return;
+			    	}
 				list.removeRowContainingTheWord(text);	
 				list.getWords().remove(kanji);
 				list.save();

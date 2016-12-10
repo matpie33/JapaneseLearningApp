@@ -2,13 +2,15 @@ package com.kanji.dialogs;
 
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.text.AbstractDocument;
 
 import com.kanji.Row.KanjiWords;
@@ -76,7 +78,7 @@ public class InsertWordPanel {
 
 	private JButton createButtonValidate(String text) {
 		JButton button = new JButton(text);
-		button.addActionListener(new ActionListener() {
+		AbstractAction action = new AbstractAction(){		
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String numberInput = insertNumber.getText();
@@ -89,12 +91,18 @@ public class InsertWordPanel {
 						System.out.println("adding: ");
 						addWordToList(wordInput, number);
 						parentDialog.save();
+						insertWord.selectAll();
+						insertWord.requestFocusInWindow();
+						
 					}
 
 				}
 
 			}
-		});
+		};
+		button.addActionListener(action);
+		button.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0), "save");
+		button.getActionMap().put("save", action);
 		return button;
 	}
 

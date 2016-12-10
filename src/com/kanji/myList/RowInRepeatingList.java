@@ -1,6 +1,5 @@
 package com.kanji.myList;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -13,20 +12,15 @@ import java.awt.event.KeyEvent;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import com.kanji.Row.KanjiInformation;
 import com.kanji.Row.RepeatingInformation;
 import com.kanji.Row.RepeatingList;
 
@@ -137,7 +131,11 @@ public class RowInRepeatingList extends RowsCreator <RepeatingInformation>{
 		JButton remove = new JButton("-");
 		remove.addActionListener(new ActionListener (){
 			@Override
-			public void actionPerformed(ActionEvent e){				
+			public void actionPerformed(ActionEvent e){		
+			    	if (!list.showMessage("Sure?")){
+			    	    return;
+			    	}
+			    	
 				list.removeRowContainingTheWord(text);	
 				list.getWords().remove(kanji);
 				list.save();

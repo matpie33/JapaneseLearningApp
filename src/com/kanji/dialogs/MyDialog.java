@@ -34,6 +34,7 @@ public class MyDialog extends JDialog {
 	private MyDialog upper;
 	private JPanel mainPanel;
 	private Window parentWindow;
+	private boolean isAccepted;
 
 	private class MyDispatcher implements KeyEventDispatcher {
 		@Override
@@ -137,6 +138,21 @@ public class MyDialog extends JDialog {
 		mainPanel = dialog.createPanel(list);
 		showYourself(Titles.insertWordDialogTitle);
 	}
+	
+	public void showConfirmDialog (String message){
+	    	ConfirmPanel panel = new ConfirmPanel(mainPanel,this);
+	    	panel.setLayoutConstraints(layoutConstraints);
+	    	mainPanel = panel.createPanel(message);
+	    	setLocationRelativeTo(parentWindow);
+	    	pack();
+	    	setModal(true);
+	    	
+	    	
+	    	setVisible(true);
+	    	
+	    	
+	    	
+	}
 
 	public void showErrorDialogInNewWindow(String message) { // TODO jak tego
 																// uniknac bo to
@@ -175,7 +191,8 @@ public class MyDialog extends JDialog {
 	}
 
 	public void setLocationAtCenterOfParent(Window parent) {
-		setLocationRelativeTo(parent);
+		setLocationRelativeTo(parentWindow);
+	  
 	}
 
 	public void setLocationAtLeftUpperCornerOfParent(Window parent) {
@@ -187,6 +204,14 @@ public class MyDialog extends JDialog {
 			BaseWindow parent = (BaseWindow) parentWindow;
 			parent.save();
 		}
+	}
+	
+	public void setAccepted (boolean accepted){
+	    this.isAccepted = accepted;
+	}
+	
+	public boolean isAccepted(){
+	    return isAccepted;
 	}
 
 }

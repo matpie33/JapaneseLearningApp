@@ -29,6 +29,7 @@ import com.kanji.fileReading.ExcelReader;
 import com.kanji.myList.MyList;
 import com.kanji.range.Range;
 import com.kanji.range.SetOfRanges;
+import com.sun.glass.events.KeyEvent;
 
 public class RepeatingWordsPanel extends JPanel {
 	private static final long serialVersionUID = 5557984078176822840L;
@@ -187,16 +188,18 @@ public class RepeatingWordsPanel extends JPanel {
 	private void createPauseOrResumeButton() {
 		this.pauseOrResume = new JButton("Pauza");
 		pauseOrResume.setFocusable(false);
-		this.pauseOrResume.addActionListener(new ActionListener() {
+		AbstractAction a = new AbstractAction ()
+		 {
 			public void actionPerformed(ActionEvent e) {
 				pauseOrResume();
 			}
-		});
+		};
+		pauseOrResume.addActionListener(a);
+		pauseOrResume.getInputMap(2).put(KeyStroke.getKeyStroke(KeyEvent.VK_P, 0), "pressed");
+		pauseOrResume.getActionMap().put("pressed", a);
 	}
 
 	private void pauseOrResume() {
-		// if
-		// (this.pauseOrResume.getText().equals(ButtonsNames.buttonPauseText)) {
 		stopTimer();
 		parent.showMessageDialog("Pauza", true);
 		startTimer();

@@ -321,4 +321,9 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 	public void save() {
 		this.elementsMaker.save();
 	}
+	
+	public boolean showMessage (String message){
+	    return parent.showConfirmDialog(message);
+	}
+	
 }
