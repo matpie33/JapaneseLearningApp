@@ -1,12 +1,9 @@
-package com.kanji.dialogs;
+package com.kanji.panels;
 
-import java.awt.GridBagConstraints;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -15,136 +12,70 @@ import javax.swing.text.AbstractDocument;
 
 import com.kanji.Row.KanjiWords;
 import com.kanji.constants.ButtonsNames;
-import com.kanji.constants.ExceptionsMessages;
 import com.kanji.constants.NumberValues;
 import com.kanji.constants.Prompts;
+import com.kanji.graphicInterface.ActionMaker;
+import com.kanji.graphicInterface.GuiMaker;
+import com.kanji.graphicInterface.KeyBindingsMaker;
+import com.kanji.graphicInterface.MainPanel;
+import com.kanji.graphicInterface.MyColors;
 import com.kanji.myList.MyList;
+import com.kanji.window.BaseWindow;
 import com.kanji.window.LimitDocumentFilter;
 
 public class InsertWordPanel {
 
-	private JPanel mainPanel;
-	private GridBagConstraints layoutConstraints;
-	private MyDialog parentDialog;
+	private MainPanel panel;
+	private BaseWindow parentDialog;
 	private MyList list;
 	private JTextField insertWord;
 	private JTextField insertNumber;
 
-	public InsertWordPanel(JPanel panel, MyDialog parent) {
-		mainPanel = panel;
+	public InsertWordPanel(BaseWindow parent) {
+		panel = new MainPanel(MyColors.DARK_GREEN);
 		parentDialog = parent;
-		layoutConstraints = new GridBagConstraints();
-	}
-
-	public void setLayoutConstraints(GridBagConstraints c) {
-		layoutConstraints = c;
 	}
 
 	public JPanel createPanel(MyList list) {
 		this.list = list;
-		int level = 0;
-		insertWord = addPromptAndTextField(level, Prompts.wordAddDialogPrompt);
+		JLabel insertWordLabel = GuiMaker.createLabel(Prompts.wordAddDialogPrompt);
+		insertWord = GuiMaker.createTextField(20);
+		panel.createRow(insertWordLabel, insertWord);
+		JLabel insertNumberLabel = GuiMaker.createLabel(Prompts.wordAddNumberPrompt);
+		insertNumber = GuiMaker.createTextField(20);
+		panel.createRow(insertNumberLabel, insertNumber);
+		limitCharactersInTextField(insertNumber);
 
-		level++;
-		insertNumber = addPromptAndTextField(level, Prompts.wordAddNumberPrompt);
-		limitCharactersAccordingToInteger(insertNumber);
-
-		level++;
-		JButton cancel = parentDialog.createButtonDispose(ButtonsNames.buttonCancelText,
-				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
-		JButton approve = createButtonValidate(ButtonsNames.buttonApproveText);
-		addButtonsAtLevel(level, new JButton[] { cancel, approve });
+		JButton cancel = GuiMaker.createButton(ButtonsNames.buttonCancelText, 
+				ActionMaker.createDisposingAction(parentDialog.getWindow()));
+		AbstractAction approveAction = ActionMaker.createValidatingAction(insertWord, insertNumber, 
+				list, this);
+		JButton approve = GuiMaker.createButton(ButtonsNames.buttonApproveText,
+				approveAction);
+		KeyBindingsMaker.makeBindings(approve, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
+				approveAction);
+		panel.createRow(cancel, approve);
 		return panel.getPanel();
 	}
 
-	private JTextField addPromptAndTextField(int level, String promptMessage) {
 
-		JLabel prompt = new JLabel(promptMessage);
-		JTextField insertWord = new JTextField(20);
-
-		JPanel panel = new JPanel();
-		panel.add(prompt);
-		panel.add(insertWord);
-		layoutConstraints.gridy = level;
-		mainPanel.add(panel, layoutConstraints);
-
-		return insertWord;
-	}
-
-	private void limitCharactersAccordingToInteger(JTextField textField) {
+	private void limitCharactersInTextField(JTextField textField) {
 		((AbstractDocument) textField.getDocument())
 				.setDocumentFilter(new LimitDocumentFilter(NumberValues.INTEGER_MAX_VALUE_DIGITS_AMOUNT));
 	}
 
-	private JButton createButtonValidate(String text) {
-		JButton button = new JButton(text);
-		AbstractAction action = new AbstractAction(){		
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String numberInput = insertNumber.getText();
-
-				String wordInput = insertWord.getText();
-				if (isNumberValid(numberInput)) {
-
-					int number = Integer.parseInt(numberInput);
-					if (checkIfInputIsValid(wordInput, number)) {
-						System.out.println("adding: ");
-						addWordToList(wordInput, number);
-						parentDialog.save();
-						insertWord.selectAll();
-						insertWord.requestFocusInWindow();
-						
-					}
-
-				}
-
-			}
-		};
-		button.addActionListener(action);
-		button.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0), "save");
-		button.getActionMap().put("save", action);
-		return button;
+	
+	public void updateGUI(String word, int number){
+		System.out.println("adding: ");
+		addWordToList(word, number);
+		parentDialog.save();
+		insertWord.selectAll();
+		insertWord.requestFocusInWindow();
 	}
-
-	private boolean isNumberValid(String number) {
-		boolean valid = number.matches("\\d+");
-
-		if (!valid)
-			parentDialog.showErrorDialogInNewWindow(ExceptionsMessages.numberFormatException);
-		return valid;
-	}
-
-	private boolean checkIfInputIsValid(String word, int number) {
-		return (isWordIdUndefinedYet(number) && isWordUndefinedYet(word));
-	}
-
-	private boolean isWordIdUndefinedYet(int number) {
-		boolean defined = ((KanjiWords) list.getWords()).isIdDefined(number);
-		if (defined)
-			parentDialog.showErrorDialogInNewWindow(ExceptionsMessages.idAlreadyDefinedException);
-		return !defined;
-	}
-
-	private boolean isWordUndefinedYet(String word) {
-		boolean defined = ((KanjiWords) list.getWords()).isWordDefined(word);
-		if (defined)
-			parentDialog.showErrorDialogInNewWindow(ExceptionsMessages.wordAlreadyDefinedException);
-		return !defined;
-	}
-
+	
 	private void addWordToList(String word, int number) {
-
 		((KanjiWords) list.getWords()).addNewRow(word, number);
 		list.scrollToBottom();
-	}
-
-	private void addButtonsAtLevel(int level, JComponent[] buttons) {
-		JPanel panel = new JPanel();
-		for (JComponent button : buttons)
-			panel.add(button);
-
-		layoutConstraints.gridy = level;
-		mainPanel.add(panel, layoutConstraints);
-	}
+	}	
 
 }

@@ -20,7 +20,7 @@ import javax.swing.JTextArea;
 import javax.swing.Scrollable;
 
 import com.kanji.constants.ExceptionsMessages;
-import com.kanji.window.BaseWindow;
+import com.kanji.window.ClassWithDialog;
 import com.kanji.window.ElementMaker;
 
 public class MyList<Parameters> extends JPanel implements Scrollable {
@@ -32,7 +32,7 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 	private Color bgColor = Color.GREEN;
 	private JScrollPane parentScrollPane;
 	private Parameters words;
-	private BaseWindow parent;
+	private ClassWithDialog parent;
 	private String title;
 	private ElementMaker elementsMaker;
 
@@ -56,7 +56,7 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 		return false;
 	}
 
-	public MyList(BaseWindow parentDialog, String title, RowsCreator rowsCreator, ElementMaker element) {
+	public MyList(ClassWithDialog parentDialog, String title, RowsCreator rowsCreator, ElementMaker element) {
 
 		this.elementsMaker = element;
 		rowsCreator.setList(this);
@@ -84,6 +84,8 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 	}
 
 	public void addWord(JPanel row) {
+		// words.add(parameters);
+		// this.wordsAndID.put(Integer.valueOf(number), word);
 		this.panels.add(row);
 		GridBagConstraints c = createConstraintsForNewRow();
 		add(row, c);
@@ -300,7 +302,7 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 	}
 
 	public void scrollToBottom() {
-		this.parent.getWindow().revalidate();
+		this.parent.revalidate();
 		revalidate();
 		this.parentScrollPane.revalidate();
 		System.out.println(this.panels.size() + "panels size");

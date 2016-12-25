@@ -1,7 +1,6 @@
-package com.kanji.dialogs;
+package com.kanji.panels;
 
-import java.awt.GridBagConstraints;
-import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -9,89 +8,51 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 
-import com.sun.glass.events.KeyEvent;
+import com.kanji.graphicInterface.ActionMaker;
+import com.kanji.graphicInterface.GuiMaker;
+import com.kanji.graphicInterface.KeyBindingsMaker;
+import com.kanji.graphicInterface.MainPanel;
+import com.kanji.graphicInterface.MyColors;
+import com.kanji.graphicInterface.SimpleWindow;
 
 public class ConfirmPanel {
+	
+	private SimpleWindow parentDialog;
+	private MainPanel panel;
+	private boolean isAccepted;
 
+	public ConfirmPanel(SimpleWindow parent) {
+		panel = new MainPanel(MyColors.DARK_GREEN);
+		parentDialog = parent;
+	}
 
+	public JPanel createPanel(String message) {
+		JTextArea area = GuiMaker.createTextArea(false);
+		area.setText(message);
+		panel.createRow(area);
 
-    	private JPanel mainPanel;
-    	private GridBagConstraints layoutConstraints;
-    	private MyDialog parentDialog;
+		AbstractAction confirmingAction = ActionMaker.createConfirmingAction(this, true);
+		AbstractAction refuseAction = ActionMaker.createConfirmingAction(this, false);
+		JButton yesButton = GuiMaker.createButton("Tak", confirmingAction);
+						
+		KeyBindingsMaker.makeBindings(yesButton, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0), 
+				confirmingAction);
+		
+		JButton noButton = GuiMaker.createButton("Nie", refuseAction);		
+		noButton.addActionListener(refuseAction);
 
-    	public ConfirmPanel(JPanel panel, MyDialog parent) {
-    		mainPanel = panel;
-    		parentDialog = parent;
-    		layoutConstraints = new GridBagConstraints();
-    	}
-
-    	public void setLayoutConstraints(GridBagConstraints c) {
-    		layoutConstraints = c;
-    	}
-
-    	public JPanel createPanel(String message) {
-
-    		int level = 0;
-    		addPromptAtLevel(level, message);
-
-    		JButton yesButton = new JButton ("Tak");
-    		AbstractAction al = new AbstractAction (){
-    		    @Override
-    		    public void actionPerformed (ActionEvent e){
-    			parentDialog.dispose();
-    			parentDialog.setAccepted(true);
-    		    }
-    		};
-    		yesButton.addActionListener(al);
-    		yesButton.getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-			KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0), "enter");
-
-		yesButton.getActionMap().put("enter", al);
-    		
-    		
-    		
-    		JButton noButton = new JButton ("Nie");
-    		AbstractAction action = new AbstractAction() {
-			private static final long serialVersionUID = 5504620933205592893L;
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-			    parentDialog.dispose();
-	    			parentDialog.setAccepted(false);
-			}
-		};
-		noButton.addActionListener(action);
-		noButton.getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-			KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0), "space");
-
-		noButton.getActionMap().put("space", action);
-    		layoutConstraints.gridy++;
-    		layoutConstraints.gridx=0;
-    		
-    		layoutConstraints.fill = GridBagConstraints.NONE;
-    		mainPanel.add(yesButton, layoutConstraints);
-    		
-    		layoutConstraints.gridx++;
-    		mainPanel.add(noButton, layoutConstraints);    		
-
-    		return mainPanel;
-    	}
-
-    	private void addPromptAtLevel(int level, String message) {
-    		layoutConstraints.gridy = level;
-		layoutConstraints.anchor = GridBagConstraints.CENTER;
-    		layoutConstraints.weightx = 1;
-    		layoutConstraints.fill = GridBagConstraints.HORIZONTAL;
-    		JTextArea elem = new JTextArea(4, 30);
-
-    		elem.setText(message);
-    		elem.setLineWrap(true);
-    		elem.setWrapStyleWord(true);
-    		elem.setOpaque(false);
-    		elem.setEditable(false);
-
-    		mainPanel.add(elem, layoutConstraints);
-    	}
+		panel.createRow(yesButton,noButton);
+		return panel.getPanel();
+	}
+	
+	public boolean accepted(){
+		return isAccepted;
+	}
+	
+	public void setAccepted (boolean chosen){
+		isAccepted=chosen;
+		parentDialog.close();
+	}
 
 }
 

@@ -34,6 +34,7 @@ import com.kanji.Row.RepeatingList;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.MenuTexts;
 import com.kanji.constants.Titles;
+import com.kanji.dialogs.MyDialog;
 import com.kanji.fileReading.CustomFileReader;
 import com.kanji.myList.MyList;
 import com.kanji.myList.RowInKanjiInformations;
@@ -43,14 +44,13 @@ public class ElementMaker {
 
 	private CustomFileReader fileReader;
 	private List<JButton> buttons;
-	private BaseWindow parent;
+	private ClassWithDialog parent;
 	private Map<Integer, String> words;
 	private MyList<KanjiWords> listOfWords;
 	private MyList<RepeatingList> repeats;
 	private JMenuBar menuBar;
 	private File fileToSave;
 	private SavingStatus savingStatus;
-	
 
 	private class MyDispatcher implements KeyEventDispatcher {
 		@Override
@@ -62,7 +62,7 @@ public class ElementMaker {
 		}
 	}
 
-	public ElementMaker(BaseWindow parent) {
+	public ElementMaker(ClassWithDialog parent) {
 
 		savingStatus = SavingStatus.BrakZmian;
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -163,10 +163,10 @@ public class ElementMaker {
 						} catch (EOFException localEOFException) {
 						}
 					}
-					BaseWindow b =  parent;
+					BaseWindow b = (BaseWindow) parent;
 					b.showMessageDialog("loading", true);
 					b.updateTitle(fileToSave.toString());
-					b.getStartingPanel().updateLeft();
+					b.updateLeft();
 
 					fout.close();
 				} catch (IOException | ClassNotFoundException e1) {
@@ -266,7 +266,7 @@ public class ElementMaker {
 
 	private File openFile() {
 		JFileChooser fileChooser = new JFileChooser();
-		int chosenOption = fileChooser.showOpenDialog(parent.getWindow());
+		int chosenOption = fileChooser.showOpenDialog(parent);
 		if (chosenOption == JFileChooser.CANCEL_OPTION)
 			return new File("");
 		File file = fileChooser.getSelectedFile();
@@ -277,8 +277,8 @@ public class ElementMaker {
 		Runnable r = new Runnable() {
 			@Override
 			public void run() {
-				
-				parent.showMessageDialog("Proszę czekać",true);
+				MyDialog d = new MyDialog(parent);
+				d.showErrorDialogInNewWindow("Wait");
 				listOfWords.updateWords();
 				listOfWords.setWords(new KanjiWords(listOfWords));
 				int i = 1;
@@ -287,7 +287,7 @@ public class ElementMaker {
 					listOfWords.getWords().addRow(entry.getValue(), entry.getKey(), i);
 					i++;
 				}
-				parent.getWindow().dispose();
+				d.dispose();
 			}
 		};
 		Thread t = new Thread(r);
@@ -339,7 +339,7 @@ public class ElementMaker {
 		BaseWindow p = null;
 		if (parent instanceof BaseWindow) {
 			p = (BaseWindow) parent;
-			p.getStartingPanel().changeSaveStatus(SavingStatus.Zapisywanie);
+			p.changeSaveStatus(SavingStatus.Zapisywanie);
 		} else
 			return;
 		try {
@@ -360,7 +360,7 @@ public class ElementMaker {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		p.getStartingPanel().changeSaveStatus(SavingStatus.Zapisano);
+		p.changeSaveStatus(SavingStatus.Zapisano);
 	}
 
 	private void exportList() {
@@ -381,7 +381,7 @@ public class ElementMaker {
 
 	private void showSaveDialog() {
 		JFileChooser j = new JFileChooser();
-		int option = j.showSaveDialog(parent.getWindow());
+		int option = j.showSaveDialog(this.parent);
 		if (option == 0) {
 			this.fileToSave = j.getSelectedFile();
 		}

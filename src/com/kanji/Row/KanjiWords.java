@@ -31,24 +31,18 @@ public class KanjiWords implements Serializable {
 	
 	public boolean isWordDefined(String word){
 		for (int i=0; i<kanjiWords.size(); i++){
-			if (kanjiWords.get(i).getKanjiKeyword().equals(word)){
-				System.out.println("WORD DEFINED");
+			if (kanjiWords.get(i).getKanjiKeyword().equals(word))
 				return true;
-			}
 		}
-		System.out.println("WORD UNDEFINED");
 		return false;
 			
 	}
 	
 	public boolean isIdDefined(int id){
 		for (int i=0; i<kanjiWords.size(); i++){
-			if (kanjiWords.get(i).getKanjiID()==id){
-				System.out.println("ID DEFINED");
+			if (kanjiWords.get(i).getKanjiID()==id)
 				return true;
-			}
 		}
-		System.out.println("ID UNDEFINED");
 		return false;			
 	}
 	
@@ -119,10 +113,6 @@ public class KanjiWords implements Serializable {
 	
 	public void remove (KanjiInformation kanji){
 		kanjiWords.remove(kanji);
-	}
-	
-	public boolean isInputValid (String word, int kanjiId){
-		return !isIdDefined(kanjiId) && !isWordDefined(word);
 	}
 
 	

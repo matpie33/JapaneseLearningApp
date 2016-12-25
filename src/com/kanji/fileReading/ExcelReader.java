@@ -2,10 +2,14 @@ package com.kanji.fileReading;
 
 import java.awt.Font;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ExcelReader {
@@ -24,8 +28,9 @@ public class ExcelReader {
 			while ((line = br.readLine())!=null){
 				words.add(line);
 			}
-			String first = words.get(0).replace("\uFEFF", "");			
-			words.set(0,first);
+			String first = words.get(0).replace("\uFEFF", "");
+			words.remove(0);
+			words.add(0,first);
 			br.close();
 			
 		} catch (IOException e) {
