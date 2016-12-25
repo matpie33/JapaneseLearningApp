@@ -1,4 +1,4 @@
-package com.kanji.panels;
+package com.kanji.dialogs;
 
 import java.awt.GridBagConstraints;
 
@@ -7,21 +7,16 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import com.kanji.constants.ButtonsNames;
-import com.kanji.graphicInterface.ActionMaker;
-import com.kanji.graphicInterface.GuiMaker;
-import com.kanji.graphicInterface.MainPanel;
-import com.kanji.graphicInterface.MyColors;
-import com.kanji.graphicInterface.SimpleWindow;
 
 public class MessagePanel {
 
+	private JPanel mainPanel;
 	private GridBagConstraints layoutConstraints;
-	private SimpleWindow window;
-	private MainPanel panel;
+	private MyDialog parentDialog;
 
-	public MessagePanel(SimpleWindow window) {
-		panel = new MainPanel(MyColors.LIGHT_VIOLET);
-		this.window = window;
+	public MessagePanel(JPanel panel, MyDialog parent) {
+		mainPanel = panel;
+		parentDialog = parent;
 		layoutConstraints = new GridBagConstraints();
 	}
 
@@ -31,23 +26,32 @@ public class MessagePanel {
 
 	public JPanel createPanel(String message) {
 
-//		int level = 0;
-//		addPromptAtLevel(level, message);
+		int level = 0;
+		addPromptAtLevel(level, message);
 
-		JButton button = GuiMaker.createButton(ButtonsNames.buttonApproveText, 
-				ActionMaker.createDisposingAction(window.getWindow()));
-//				parentDialog.createButtonDispose(ButtonsNames.buttonApproveText,
-//				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SPACE, 0));
-//		layoutConstraints.gridy++;
-//		layoutConstraints.fill = GridBagConstraints.NONE;
-		JTextArea area = GuiMaker.createTextArea(false);
-		area.setText(message);
-		panel.createRow(area);
-		panel.createRow(button);
+		JButton button = parentDialog.createButtonDispose(ButtonsNames.buttonApproveText,
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SPACE, 0));
+		layoutConstraints.gridy++;
+		layoutConstraints.fill = GridBagConstraints.NONE;
+		mainPanel.add(button, layoutConstraints);
 
-		return panel.getPanel();
+		return mainPanel;
 	}
 
-	
+	private void addPromptAtLevel(int level, String message) {
+		layoutConstraints.gridy = level;
+		layoutConstraints.anchor = GridBagConstraints.CENTER;
+		layoutConstraints.weightx = 1;
+		layoutConstraints.fill = GridBagConstraints.HORIZONTAL;
+		JTextArea elem = new JTextArea(4, 30);
+
+		elem.setText(message);
+		elem.setLineWrap(true);
+		elem.setWrapStyleWord(true);
+		elem.setOpaque(false);
+		elem.setEditable(false);
+
+		mainPanel.add(elem, layoutConstraints);
+	}
 
 }
