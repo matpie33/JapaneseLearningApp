@@ -54,7 +54,7 @@ public class InsertWordPanel {
 				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
 		JButton approve = createButtonValidate(ButtonsNames.buttonApproveText);
 		addButtonsAtLevel(level, new JButton[] { cancel, approve });
-		return mainPanel;
+		return panel.getPanel();
 	}
 
 	private JTextField addPromptAndTextField(int level, String promptMessage) {
