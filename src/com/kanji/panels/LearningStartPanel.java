@@ -1,11 +1,10 @@
-package com.kanji.dialogs;
+package com.kanji.panels;
 
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -28,6 +27,8 @@ import com.kanji.constants.ExceptionsMessages;
 import com.kanji.constants.NumberValues;
 import com.kanji.constants.Options;
 import com.kanji.constants.Prompts;
+import com.kanji.graphicInterface.ActionMaker;
+import com.kanji.graphicInterface.GuiMaker;
 import com.kanji.myList.MyList;
 import com.kanji.range.Range;
 import com.kanji.range.SetOfRanges;
@@ -41,17 +42,17 @@ public class LearningStartPanel {
 	private JTextField sumRangeField;
 	private JCheckBox problematicCheckbox;
 	private int rowsNumber;
-	private MyDialog parentDialog;
+//	private MyDialog parentDialog;
 	private MyList<RepeatingList> repeatsList;
-	private Window parentFrame;
+	private BaseWindow parentFrame;
 	private SetOfRanges rangesToRepeat;
 	private int numberOfWords;
 	private int sumOfWords;
 
-	public LearningStartPanel(JPanel panel, MyDialog parent, Window parentOfParent, int numberOfWords) {
+	public LearningStartPanel(JPanel panel, BaseWindow parentOfParent, int numberOfWords) {
 		this.numberOfWords = numberOfWords;
 		mainPanel = panel;
-		parentDialog = parent;
+//		parentDialog = parent;
 		this.parentFrame = parentOfParent;
 	}
 
@@ -82,8 +83,10 @@ public class LearningStartPanel {
 		addComponentsAtLevel(level, new JComponent[] { newRow, sumRangeField });
 
 		level++;
-		JButton cancel = parentDialog.createButtonDispose(ButtonsNames.buttonCancelText,
-				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
+		JButton cancel = GuiMaker.createButton(ButtonsNames.buttonCancelText,
+				ActionMaker.createDisposingAction(parentFrame.getWindow()));
+//				parentDialog.createButtonDispose(ButtonsNames.buttonCancelText,
+//				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
 		JButton approve = createButtonStartLearning(ButtonsNames.buttonApproveText, panel);
 
 		addComponentsAtLevel(level, new JButton[] { cancel, approve });
@@ -377,8 +380,8 @@ public class LearningStartPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				addRowToPanel(panel);
-				parentDialog.repaint();
-				parentDialog.revalidate();
+				parentFrame.getWindow().repaint();
+				parentFrame.getWindow().revalidate();
 				scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
 
 			}
@@ -415,14 +418,14 @@ public class LearningStartPanel {
 					addToRepeatsListOrShowError(rangesToRepeat);
 
 					if (!excelReaderIsLoaded()) {
-						parentDialog.showErrorDialogInNewWindow(ExceptionsMessages.excelNotLoaded);
+						parentFrame.showMessageDialog(ExceptionsMessages.excelNotLoaded,true);
 						waitUntillExcelLoads();
 					} else
 						switchToRepeatingPanel();
 
 				} catch (Exception ex) {
 					ex.printStackTrace();
-					parentDialog.showErrorDialogInNewWindow(ex.getMessage());
+					parentFrame.showMessageDialog(ex.getMessage(),true);
 				}
 
 			}
@@ -467,7 +470,7 @@ public class LearningStartPanel {
 	}
 
 	private void switchToRepeatingPanel() {
-		parentDialog.dispose();
+		parentFrame.getWindow().dispose();
 		switchPanels(rangesToRepeat);
 	}
 
