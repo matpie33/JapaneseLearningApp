@@ -18,12 +18,14 @@ public class MainPanel {
 	
 	private List<JPanel> rows;
 	private JPanel panel;
+	private int last;
 
 	public MainPanel(Color color) {
 		panel = new JPanel();
 		panel.setBackground(color);
 		panel.setLayout(new GridBagLayout());
 		rows = new LinkedList<JPanel>();
+		last = 0;
 	}
 	
 	public void createRowOn2Sides(JComponent ... components){
@@ -32,21 +34,31 @@ public class MainPanel {
 		updateView();		
 	}
 	
-	public void createRow(JComponent ... components){
-		createRow(0, components);
+	public JPanel createRow(JComponent ... components){
+		return createRow(0, components);
 	}
 	
-	public void createRow (int weighty, JComponent ... components){
+	public JPanel createRow (int weighty, JComponent ... components){
 		JPanel p = addComponentsToSinglePanel(components);
 		createConstraintsAndAdd(p, weighty);
 		updateView();
+		return p;
 	}
 
-	public void createRow(int anchor, int weighty, JComponent... components ) {
+	public JPanel createRow(int anchor, int weighty, JComponent... components ) {
+		if (rows.size()>0){
+			GridBagLayout g = (GridBagLayout)panel.getLayout();
+			GridBagConstraints c = g.getConstraints(rows.get(rows.size()-1));
+			c.weighty=0;
+			panel.remove(rows.get(rows.size()-1));
+			panel.add(rows.get(rows.size()-1), c);
+		}
+		
 		JPanel p = addComponentsToSinglePanel(components);
+		last++;
 		createConstraintsAndAdd(p, anchor, weighty);
 		updateView();
-
+		return p;
 	}
 	
 	private JPanel addComponentsOn2Sides(JComponent[] components) {
@@ -111,6 +123,7 @@ public class MainPanel {
 		GridBagConstraints c = createConstraints(rows.size());		
 		c.anchor = anchor;
 		c.weightx = 1;
+		c.weighty=weighty;
 		panel.add(p, c);
 		rows.add(p);
 	}
@@ -163,9 +176,32 @@ public class MainPanel {
 	}
 	
 	public void removeRow (int number){
-	    	JPanel row = rows.get(number);
-	    	movePanels(Direction.BACKWARD, number);
-	    	panel.remove(row);
+    	JPanel row = rows.get(number);
+    	removeAndUpdateRows(row, number);   	
+	}
+	
+	public void addElementsToRow (JPanel row, JComponent ... elements){
+		System.out.println("layout: "+row.getLayout());
+		System.out.println("last element: "+row.getComponent(0));
+		
+		GridBagConstraints c = ((GridBagLayout)row.getLayout()).getConstraints(
+				row.getComponent(0));
+		for (JComponent element: elements){
+//			c.gridx++;
+			System.out.println("c. gridx: "+c.gridx+ " y "+c.gridy);
+		
+			row.add(element,c); //TODO why it works?
+		}
+		
+	}
+	
+	public void removeRow (JPanel row){
+		removeAndUpdateRows(row, rows.indexOf(row));
+	}
+	
+	private void removeAndUpdateRows(JPanel row, int lastRowToUpdate){
+		movePanels(Direction.BACKWARD, lastRowToUpdate);
+    	panel.remove(row);
 		rows.remove(row);
 		updateView();
 	}

@@ -25,7 +25,7 @@ import com.kanji.Row.KanjiWords;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.Titles;
-import com.kanji.fileReading.ExcelReader;
+import com.kanji.fileReading.KanjiLoader;
 import com.kanji.myList.MyList;
 import com.kanji.range.Range;
 import com.kanji.range.SetOfRanges;
@@ -35,7 +35,7 @@ public class RepeatingWordsPanel extends JPanel {
 	private static final long serialVersionUID = 5557984078176822840L;
 	private MyList words;
 	private List<String> wordsToRepeat;
-	private ExcelReader excel;
+	private KanjiLoader excel;
 	private BaseWindow parent;
 	private Set<Integer> problematicKanjis;
 	private String currentWord;
@@ -405,7 +405,7 @@ public class RepeatingWordsPanel extends JPanel {
 		timerRunning = false;
 	}
 
-	public void setExcelReader(ExcelReader excel) {
+	public void setExcelReader(KanjiLoader excel) {
 		this.excel = excel;
 	}
 }

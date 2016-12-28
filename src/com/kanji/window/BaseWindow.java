@@ -8,7 +8,7 @@ import java.util.Set;
 import javax.swing.JPanel;
 
 import com.kanji.constants.Titles;
-import com.kanji.fileReading.ExcelReader;
+import com.kanji.fileReading.KanjiLoader;
 import com.kanji.graphicInterface.SimpleWindow;
 import com.kanji.myList.MyList;
 import com.kanji.panels.InsertWordPanel;
@@ -25,18 +25,18 @@ public class BaseWindow extends SimpleWindow {
 
 	private JPanel mainPanel;
 	private RepeatingWordsPanel repeatingWordsPanel;
-	private boolean isExcelReaderLoaded;
+	private boolean areKanjiLoaded;
 	private Set<Integer> problematicKanjis;
 	private StartingPanel startingPanel;
 //	private MyDialog dialog;
-	public ExcelReader excel;
+	public KanjiLoader kanjiLoader;
 	public static final String LIST_PANEL = "Panel with lists and buttons";
 	public static final String LEARNING_PANEL = "Panel for repeating words";
 
 	public BaseWindow() {
 
 		problematicKanjis = new HashSet<Integer>();
-		isExcelReaderLoaded = false;
+		areKanjiLoaded = false;
 		maker = new ElementMaker(this);
 		mainPanel = new JPanel(new CardLayout());
 //		setContentPane(mainPanel);
@@ -85,17 +85,17 @@ public class BaseWindow extends SimpleWindow {
 		repeatingWordsPanel.startRepeating();
 	}
 
-	public void loadExcelReader() {
+	public void startLoadingKanji() {
 
-		excel = new ExcelReader();
-		excel.load();
-		isExcelReaderLoaded = true;
-		repeatingWordsPanel.setExcelReader(excel);
+		kanjiLoader = new KanjiLoader();
+		kanjiLoader.load();
+		areKanjiLoaded = true;
+		repeatingWordsPanel.setExcelReader(kanjiLoader);
 
 	}
 
 	public boolean isExcelLoaded() {
-		return isExcelReaderLoaded;
+		return areKanjiLoaded;
 	}
 
 	public void addProblematicKanjis(Set<Integer> problematicKanjiList) {
@@ -154,10 +154,14 @@ public class BaseWindow extends SimpleWindow {
 		if (notOpenedYet()) {
 			newDialog = new SimpleWindow();
 			LearningStartPanel dialog = new LearningStartPanel(mainPanel, 
-					this, maximumNumber);		
-			newDialog.setProperties(dialog.createPanel(list));
+					this, maximumNumber, list);		
+			newDialog.setProperties(dialog.createPanel());
 			
 		}
+	}
+	
+	public void disposeNewDialog(){
+		newDialog.getWindow().dispose();
 	}
 
 }

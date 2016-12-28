@@ -8,14 +8,13 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExcelReader {
-	
-	
+public class KanjiLoader {
+		
 	private Font font;
 	private List <String> words;
 	
 	public void load(){
-		;
+		
 		words = new ArrayList <String>();
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(

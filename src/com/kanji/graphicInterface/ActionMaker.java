@@ -7,6 +7,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.AbstractAction;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.kanji.Row.KanjiWords;
@@ -14,8 +15,49 @@ import com.kanji.myList.MyList;
 import com.kanji.myList.SearchOptions;
 import com.kanji.panels.ConfirmPanel;
 import com.kanji.panels.InsertWordPanel;
+import com.kanji.panels.LearningStartPanel;
+import com.kanji.panelsLogic.LearningStartLogic;
 
 public class ActionMaker {
+	
+	public static AbstractAction startLearning (final LearningStartLogic logic){
+		return new AbstractAction (){
+			@Override
+			public void actionPerformed(ActionEvent e){
+			
+					logic.validateInputs();
+					logic.addToRepeatsListOrShowError();
+
+//					if (!excelReaderIsLoaded()) {
+//						parentFrame.showMessageDialog(ExceptionsMessages.excelNotLoaded,true);
+//						waitUntillExcelLoads();
+//					} else
+//						switchToRepeatingPanel();
+
+				
+			}
+		};
+	}
+	
+	public static AbstractAction addNewRow(final LearningStartPanel panel){
+		return new AbstractAction (){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				panel.addRowToPanel();
+				
+			}
+		};
+	}
+	
+	public static AbstractAction createDeletingRowAction(final MainPanel panel, final JPanel rowToDelete, 
+			final LearningStartLogic logic){
+		return new AbstractAction (){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				logic.deleteRow(panel, rowToDelete);
+			}
+		};
+	}
 	
 	public static AbstractAction createConfirmingAction (final ConfirmPanel panel, final boolean chosen){
 		return new AbstractAction() {
@@ -67,6 +109,15 @@ public class ActionMaker {
     		@Override
     		public void actionPerformed(ActionEvent e){
     			options.setDefaultOption();
+    		}
+    	};
+    }
+    
+    public static AbstractAction createActionAddProblematicKanjis (final LearningStartLogic logic){
+    	return new AbstractAction (){
+    		@Override
+    		public void actionPerformed(ActionEvent e){
+    			logic.addProblematicKanjis();
     		}
     	};
     }
