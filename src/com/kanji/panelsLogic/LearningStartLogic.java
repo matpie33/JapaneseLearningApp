@@ -71,16 +71,15 @@ public class LearningStartLogic {
 			JPanel row;
 			if (p instanceof JPanel) {
 				row = (JPanel) p;
-			} else
-				continue;
-
+			} 
+			else continue;
+			
 			boolean wasSetModifiedInInteration = getRangeFromRowAndAddToSet(row, setOfRanges);
 			wasSetModifiedTotally = wasSetModifiedTotally || wasSetModifiedInInteration;
 
 		}
 
 		return setOfRanges;
-
 	}
 	
 	private boolean getRangeFromRowAndAddToSet(JPanel row, SetOfRanges set) throws IllegalArgumentException {
@@ -101,8 +100,7 @@ public class LearningStartLogic {
 			}
 			if (textFieldsCounter > 2) {
 				if (rangeEnd > numberOfWords) {
-					throw new IllegalArgumentException("Too much"); // TODO
-																	// clean it
+					panel.getParentFrame().showMessageDialog(ExceptionsMessages.rangeValueTooHigh, true);
 				}
 				Range r = new Range(rangeStart, rangeEnd);
 				alteredSet = set.addRange(r);
@@ -148,7 +146,7 @@ public class LearningStartLogic {
 		BaseWindow parent = panel.getParentFrame();
 		parent.showCardPanel(BaseWindow.LEARNING_PANEL);
 		parent.setWordsRangeToRepeat(setOfRanges, panel.getProblematicCheckBox().isSelected());
-		parent.disposeNewDialog();
+		parent.getNewDialog().dispose();
 
 	}
 	

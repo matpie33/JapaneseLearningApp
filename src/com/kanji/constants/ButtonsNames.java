@@ -17,7 +17,7 @@ public class ButtonsNames {
 	public static final String buttonSaveText = "Zapisz";
 	public static final String buttonSaveListText = "Zapisz listę";
 	public static final String buttonPreviousText = "Poprzedni";
-	public static final String buttonRemoveRowText = "Usuń wiersz";
+	public static final String buttonRemoveRowText = "X";
 	public static final String buttonShowKanjiText = "Pokaż kanji";
 	public static final String buttonPauseText = "Pauza";
 	public static final String buttonResumeText = "Wznów";

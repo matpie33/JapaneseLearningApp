@@ -100,7 +100,7 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 		c.gridy = (this.panels.size() + 1);
 		int a = 5;
 		c.insets = new Insets(a, a, a, a);
-		c.fill = 2;
+//		c.fill = 2;
 		c.weightx = 1;
 		return c;
 	}

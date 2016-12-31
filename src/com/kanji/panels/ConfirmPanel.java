@@ -1,5 +1,6 @@
 package com.kanji.panels;
 
+import java.awt.GridBagConstraints;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
@@ -29,7 +30,7 @@ public class ConfirmPanel {
 	public JPanel createPanel(String message) {
 		JTextArea area = GuiMaker.createTextArea(false);
 		area.setText(message);
-		panel.createRow(area);
+		panel.addRow(panel.createBothSidesFilledRow(area));
 
 		AbstractAction confirmingAction = ActionMaker.createConfirmingAction(this, true);
 		AbstractAction refuseAction = ActionMaker.createConfirmingAction(this, false);
@@ -41,7 +42,7 @@ public class ConfirmPanel {
 		JButton noButton = GuiMaker.createButton("Nie", refuseAction);		
 		noButton.addActionListener(refuseAction);
 
-		panel.createRow(yesButton,noButton);
+		panel.addRow(panel.createUnfilledRow(GridBagConstraints.EAST, yesButton,noButton));
 		return panel.getPanel();
 	}
 	

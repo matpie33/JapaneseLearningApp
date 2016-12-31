@@ -16,7 +16,7 @@ import com.kanji.panels.MessagePanel;
 public class SimpleWindow {
 	private JDialog window;
 	protected SimpleWindow newDialog;
-	private boolean isOpened;
+	protected boolean isOpened;
 	
 	public SimpleWindow(){
 		window = new JDialog();
@@ -70,7 +70,7 @@ public class SimpleWindow {
 	}
 	
 	private void setRootToDisposeOnKey(KeyStroke key){
-		KeyBindingsMaker.makeBindings(window.getRootPane(), key, ActionMaker.createDisposingAction(window));
+		KeyBindingsMaker.makeBindings(window.getRootPane(), key, ActionMaker.createDisposingAction(this));
 	}
 	
 	public void setEscapeOnClose(){
@@ -86,5 +86,13 @@ public class SimpleWindow {
 		window.dispose();
 	}
 	
+	public void dispose(){
+		System.out.println(window);
+		window.dispose();
+	}
+	
+	public SimpleWindow getNewDialog(){
+		return newDialog;
+	}
 		
 }

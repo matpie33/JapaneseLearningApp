@@ -4,48 +4,162 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
-import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
+
+import com.kanji.rowMaker.HorizontallyFilledRow;
+import com.kanji.rowMaker.SimpleRow;
 
 public class MainPanel {
 	
 	private List<JPanel> rows;
 	private JPanel panel;
-	private int last;
+	private int gapInRow = 5;
+	private int gapBetweenRow = 3;
+	private final boolean shouldPutRowsHighestAsPossible;
 
 	public MainPanel(Color color) {
+		this(color,false);		
+	}
+	
+	public MainPanel(Color color, boolean putRowsHighestAsPossible){
+		shouldPutRowsHighestAsPossible = putRowsHighestAsPossible;
 		panel = new JPanel();
 		panel.setBackground(color);
 		panel.setLayout(new GridBagLayout());
 		rows = new LinkedList<JPanel>();
-		last = 0;
 	}
 	
-	public void createRowOn2Sides(JComponent ... components){
-		JPanel p = addComponentsOn2Sides(components);
-		createConstraintsAndAdd(p, 0);
-		updateView();		
+	
+	public HorizontallyFilledRow createHorizontallyFilledRow(JComponent ... components){
+		return new HorizontallyFilledRow(false,components);
+	}
+
+	public SimpleRow createVerticallyFilledRow(JComponent ... components){
+		return new SimpleRow(true,components);
 	}
 	
-	public JPanel createRow(JComponent ... components){
-		return createRow(0, components);
+	public HorizontallyFilledRow createBothSidesFilledRow(JComponent ... components){
+		return new HorizontallyFilledRow(true, components);
 	}
 	
-	public JPanel createRow (int weighty, JComponent ... components){
-		JPanel p = addComponentsToSinglePanel(components);
-		createConstraintsAndAdd(p, weighty);
+	public SimpleRow createUnfilledRow(int anchor, JComponent ... components){
+		SimpleRow s = new SimpleRow(false, components);
+		s.setAnchor(anchor);
+		return s;
+	}
+	
+	public JPanel addRow(SimpleRow row){		
+		JPanel panel = addComponentsToSinglePanel (row.getComponents(), mapComponentToFilling(row));
+		int fill = row.getFillingType();
+		System.out.println(row);
+		createConstraintsAndAdd(panel, row.getAnchor(), fill );
 		updateView();
+		return panel;
+	}
+	
+	private Map <JComponent, Integer> mapComponentToFilling(SimpleRow row){
+		Map <JComponent, Integer> componentsFilling = new HashMap <JComponent, Integer> ();
+		JComponent [] horizontal = row.getHorizontallyFilledElements();
+		List <JComponent> vertical = new ArrayList <JComponent> 
+			(Arrays.asList(row.getVerticallyFilledElements()));
+		
+		if (row.getComponents().length==1){
+			componentsFilling.put(row.getComponents()[0], row.getFillingType());
+		}
+
+		for (JComponent hor: horizontal){
+			boolean bothSides=false;
+			for (JComponent ver: vertical){
+				if (hor==ver){
+					componentsFilling.put(hor, GridBagConstraints.BOTH);
+					System.out.println("both sides: "+hor.getClass());
+					vertical.remove(ver);
+					bothSides=true;
+					break;
+				}
+			}
+			if (!bothSides){
+				componentsFilling.put(hor, GridBagConstraints.HORIZONTAL);
+				System.out.println("horizontal: "+hor.getClass());
+			}
+			
+		}
+		for (JComponent v: vertical){
+			componentsFilling.put(v, GridBagConstraints.VERTICAL);
+			System.out.println("vertical: "+v.getClass());
+		}
+		return componentsFilling;
+	}
+	
+	private JPanel addComponentsToSinglePanel(JComponent [] components, 
+			Map<JComponent, Integer> componentsFilling) {
+		JPanel p = new JPanel();
+		p.setBackground(Color.CYAN);
+		p.setLayout(new GridBagLayout());
+
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.anchor = GridBagConstraints.WEST;
+
+		int a = gapBetweenRow;
+		gbc.insets = new Insets(a, a, a, a);
+		for (JComponent compo: components){
+			if (componentsFilling.containsKey(compo)){
+				gbc.fill = componentsFilling.get(compo);
+				if (gbc.fill == GridBagConstraints.VERTICAL){
+					gbc.weighty=1;
+				}
+				else if (gbc.fill == GridBagConstraints.HORIZONTAL){
+					gbc.weightx=1;
+				}
+				else if (gbc.fill == GridBagConstraints.BOTH){
+					gbc.weightx=1;
+					gbc.weighty=1;
+				}
+				
+			}
+			
+			p.add(compo,gbc);
+		}
+		
 		return p;
 	}
 
-	public JPanel createRow(int anchor, int weighty, JComponent... components ) {
+	private void createConstraintsAndAdd(JPanel p, int anchor, int fill) {
+		GridBagConstraints c = new GridBagConstraints();		
+		c.gridy=rows.size();
+		c.weightx = 1;
+			if (fill == GridBagConstraints.BOTH || fill == GridBagConstraints.VERTICAL){
+				c.weighty=1;
+			}
+			else{
+				c.weighty=0;
+			}
+		if (shouldPutRowsHighestAsPossible){
+			updateRowsAboveMe();
+			c.weighty=1;
+			c.anchor = GridBagConstraints.NORTHWEST;
+			if (c.fill == GridBagConstraints.BOTH){
+				c.fill = GridBagConstraints.HORIZONTAL;
+			}
+		}
+		
+		c.anchor= anchor;
+		c.fill=fill;
+		int a = gapInRow;
+		c.insets=new Insets(a,a,a,a);
+		panel.add(p, c);
+		rows.add(p);
+	}
+	
+	private void updateRowsAboveMe(){
 		if (rows.size()>0){
 			GridBagLayout g = (GridBagLayout)panel.getLayout();
 			GridBagConstraints c = g.getConstraints(rows.get(rows.size()-1));
@@ -53,109 +167,17 @@ public class MainPanel {
 			panel.remove(rows.get(rows.size()-1));
 			panel.add(rows.get(rows.size()-1), c);
 		}
-		
-		JPanel p = addComponentsToSinglePanel(components);
-		last++;
-		createConstraintsAndAdd(p, anchor, weighty);
-		updateView();
-		return p;
 	}
 	
-	private JPanel addComponentsOn2Sides(JComponent[] components) {
-		if (components.length!=2){
-			return addComponentsToSinglePanel(components);			
-		}
 		
-		JPanel p = new JPanel();
-		p.setOpaque(false);
-		p.setLayout(new GridBagLayout());
-		
-		GridBagConstraints gbc = new GridBagConstraints();
-		JComponent c1 = components[0];
-		JComponent c2 = components[1];
-		gbc.anchor=GridBagConstraints.WEST;
-		
-		gbc.gridx=0;
-		gbc.weightx=1;
-		p.add(c1, gbc);
-		 
-		gbc.gridx=1;
-		gbc.anchor=GridBagConstraints.EAST;
-		p.add(c2,gbc);
-		return p;
-		
-		
-	}
-
-	private JPanel addComponentsToSinglePanel(JComponent[] components) {
-		JPanel p = new JPanel();
-		p.setOpaque(false);
-		p.setLayout(new GridBagLayout());
-
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.BOTH;
-		gbc.anchor = GridBagConstraints.WEST;
-
-		int a = 3;
-		gbc.insets = new Insets(a, a, a, a);
-		int i=0;
-		int size = components.length;
-		for (JComponent c : components) {
-			if (c instanceof JScrollPane || c instanceof JSplitPane) {
-				gbc.fill = GridBagConstraints.BOTH;
-				gbc.weightx = 1;
-				gbc.weighty = 1;
-			}
-			else if (c instanceof JButton || c instanceof JLabel){
-				gbc.weightx = 0;
-				gbc.weighty = 0;
-			}
-			if (i==size-1)
-			    gbc.weightx=0.5;
-
-			p.add(c, gbc);
-			i++;
-		}
-		return p;
-	}
-
-	private void createConstraintsAndAdd(JPanel p, int anchor, int weighty) {
-		GridBagConstraints c = createConstraints(rows.size());		
-		c.anchor = anchor;
-		c.weightx = 1;
-		c.weighty=weighty;
-		panel.add(p, c);
-		rows.add(p);
-	}
 	
-	
-	private void createConstraintsAndAdd(JPanel p,int weighty) {
-		GridBagConstraints c = createConstraints(rows.size());		
-		c.weightx = 1;
-		c.weighty=weighty;
-		c.anchor= GridBagConstraints.SOUTH;
-		c.fill= GridBagConstraints.BOTH;
-		int a = 5;
-		c.insets=new Insets(a,a,a,a);
-		panel.add(p, c);
-		rows.add(p);
-	}
-	
-	private GridBagConstraints createConstraints (int rowNumber){
-	    	GridBagConstraints c = new GridBagConstraints();
-		c.gridy = rowNumber;		
-		int a = 5;
-		c.insets = new Insets(a, a, a, a);
-		return c;
-	}
-
 	public void setAsLastRow (JComponent ... components){
 		setAsRow(rows.size(),components);
 	}
 
 	public MainPanel setAsRow(int number, JComponent... components) {
     	if (rows.size()<number+1){
-		    createRow(GridBagConstraints.WEST, 1, components);
+//		    createRow(GridBagConstraints.WEST, 1, components);
 		    return this;
 		}
 	    
@@ -168,7 +190,8 @@ public class MainPanel {
 		panel.remove(row);
 		rows.remove(row);
 		
-		JPanel asRow = addComponentsToSinglePanel(components);
+		JPanel asRow = new JPanel();
+//				addComponentsToSinglePanel(GridBagConstraints.NONE, components);
 		panel.add(asRow, c);
 		rows.add(number, asRow);
 		updateView();
@@ -230,7 +253,8 @@ public class MainPanel {
 	public SubPanel divideRow (int number){
 		SubPanel p = new SubPanel ();
 		rows.add(p.getPanel());
-		GridBagConstraints c = createConstraints(number);
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridy=number;
 		c.weightx=1;
 		c.weighty=1;
 		panel.add(p.getPanel(), c);
@@ -240,8 +264,10 @@ public class MainPanel {
 	
 	public void insertRow (int number, JComponent ... components){
 	    movePanels(Direction.FORWARD,number);	    	
-		JPanel newRow = addComponentsToSinglePanel(components);
-		GridBagConstraints c = createConstraints(number);
+		JPanel newRow = new JPanel();
+//				addComponentsToSinglePanel(GridBagConstraints.NONE, components);
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridy=number;
 		c.weightx=1;
 		c.weighty=1;
 		panel.add(newRow, c);

@@ -1,6 +1,5 @@
 package com.kanji.graphicInterface;
 
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -77,10 +76,11 @@ public class ActionMaker {
 		};
 	}
 	
-    public static AbstractAction createDisposingAction(final Window dialog){
+    public static AbstractAction createDisposingAction(final SimpleWindow dialog){
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println(dialog);
 				dialog.dispose();
 			}
 		};

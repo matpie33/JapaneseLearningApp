@@ -1,7 +1,6 @@
 package com.kanji.panels;
 
 import java.awt.Color;
-import java.awt.GridBagConstraints;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -9,6 +8,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import com.kanji.constants.Prompts;
 import com.kanji.graphicInterface.GuiMaker;
@@ -29,14 +30,33 @@ public class StartingPanel {
 	private MainPanel panel;
 	
 	public StartingPanel (ElementMaker maker){
+		
 		panel = new MainPanel (MyColors.LIGHT_VIOLET);
 		this.maker = maker;
 		createUpperPanel();
 		createInformationsPanel();
 		createButtonsPanel(maker.getButtons());
-		panel.createRow(2,listsSplitPane);
-		panel.createRow(buttonsPanel);
-		panel.createRow(infoPanel);
+		panel.addRow(panel.createBothSidesFilledRow(listsSplitPane).fillHorizontallyEqually().fillAllVertically());
+//		panel.addRow(panel.createHorizontallyFilledRow(maker.getButtons().toArray(new JComponent[]{})).fillHorizontallyEqually().fillAllVertically());
+		panel.addRow(panel.createHorizontallyFilledRow(buttonsPanel).fillHorizontallyEqually());
+		panel.addRow(panel.createHorizontallyFilledRow(infoPanel).fillHorizontallyEqually());
+
+		
+		
+		JLabel l = new JLabel();
+		JButton b = new JButton();
+		JTextField t = new JTextField();
+		JTextArea a = new JTextArea();
+//		panel.addRow(panel.createBothSidesFilledRow(
+//				l,b,t,a).
+//				fillHorizontallySomeElements(l,b).fillVertically(b,t,a)
+//				);
+		
+		
+		MainPanel panel = new MainPanel (MyColors.DARK_BLUE);
+//		RowCreator r =panel.createHorizontallyFilledRow(new JButton("hi")).createVerticallyFilledRow();
+		 panel.addRow(panel.createBothSidesFilledRow(new JButton(), new JLabel()));
+//		System.out.println(r);
 	}
 	
 	private void createUpperPanel() {
@@ -45,8 +65,7 @@ public class StartingPanel {
 		listScrollWords = GuiMaker.createScrollPaneForList(wordsList);
 		listScrollRepeated = GuiMaker.createScrollPaneForList(repeatsList);
 		listsSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, listScrollWords, listScrollRepeated);
-		
-		
+		listsSplitPane.setResizeWeight(0.5);		
 		panel.getPanel().repaint();
 	}
 
@@ -62,7 +81,7 @@ public class StartingPanel {
 
 		MainPanel p = new MainPanel(MyColors.DARK_BLUE);
 		buttonsPanel = p.getPanel();
-		p.createRow(GridBagConstraints.CENTER, 1, list.toArray(new JButton [list.size()]));
+		p.addRow(p.createHorizontallyFilledRow(list.toArray(new JButton [] {})));
 
 	}
 	

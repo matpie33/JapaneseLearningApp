@@ -44,40 +44,42 @@ public class LearningStartPanel {
 		logic = new LearningStartLogic(this, numberOfWords, list);
 	}
 
-	public JPanel createPanel() { // TODO add focus to textfield from
+	private JPanel createPanel(JTextArea labelStartLearning, JTextField problematicKanjis, JButton buttonNewRow,
+			JButton cancel, JButton approve) {
+		// TODO add focus to textfield from
 		if (!excelReaderIsLoaded())
 			loadExcel();
-		JTextArea labelStartLearning = GuiMaker.createTextArea(false);
-		labelStartLearning.setOpaque(false);
-		labelStartLearning.setText(Prompts.learnStartPrompt);
-		panel.createRow(labelStartLearning);
-
+		panel.addRow(panel.createHorizontallyFilledRow(labelStartLearning));
+		panel.addRow(panel.createHorizontallyFilledRow(problematicCheckbox));
+		panel.addRow(panel.createBothSidesFilledRow(scrollPane));
+		panel.addRow(panel.createHorizontallyFilledRow(problematicKanjis));
+		panel.addRow(panel.createHorizontallyFilledRow(buttonNewRow,sumRangeField).
+				fillHorizontallySomeElements(sumRangeField));
+		panel.addRow(panel.createUnfilledRow(GridBagConstraints.EAST, cancel,approve));
+		return this.panel.getPanel();
+	}
+	
+	public JPanel createElements(){
 		problematicCheckbox = GuiMaker.createCheckBox(Options.problematicKanjiOption, 
 				ActionMaker.createActionAddProblematicKanjis(logic));
-		panel.createRow(problematicCheckbox);
-
-		rangesPanel = new MainPanel (MyColors.LIGHT_VIOLET);
+		JTextArea textStartLearning = GuiMaker.createTextArea(false);
+		textStartLearning.setOpaque(false);
+		textStartLearning.setText(Prompts.learnStartPrompt);
+		rangesPanel = new MainPanel (MyColors.LIGHT_VIOLET, true);
 		Border b= BorderFactory.createLineBorder(Color.red);
 		scrollPane = GuiMaker.createScrollPane(MyColors.DARK_BLUE,b, rangesPanel.getPanel(), 
 				new Dimension (300,200));
 		addRowToPanel();
-				
-		this.panel.createRow(2,scrollPane);
-
 		JTextField problematicKanjis = GuiMaker.createTextField(5, 
 				"Problematyczne: "+parentFrame.getProblematicKanjis().size());
-		this.panel.createRow(problematicKanjis);
-
-		JButton newRow = GuiMaker.createButton(ButtonsNames.buttonAddRowText, ActionMaker.addNewRow(this));
 		sumRangeField = GuiMaker.createTextField(5, Prompts.sumRangePrompt);
-		this.panel.createRow(newRow, sumRangeField);
-
+		JButton buttonNewRow = GuiMaker.createButton(ButtonsNames.buttonAddRowText,
+				ActionMaker.addNewRow(this));		
 		JButton cancel = GuiMaker.createButton(ButtonsNames.buttonCancelText,
-				ActionMaker.createDisposingAction(parentFrame.getWindow()));
+				ActionMaker.createDisposingAction(parentFrame.getNewDialog()));
 		JButton approve = GuiMaker.createButton(ButtonsNames.buttonApproveText, 
 				ActionMaker.startLearning(logic));
-		this.panel.createRow( cancel, approve );
-		return this.panel.getPanel();
+		return createPanel(textStartLearning, problematicKanjis, buttonNewRow, cancel, approve);
 	}
 
 
@@ -96,8 +98,10 @@ public class LearningStartPanel {
 		JTextField textFieldTo = GuiMaker.createTextField(5);				
 
 		JButton delete = new JButton ();
-		JPanel container = rangesPanel.createRow(GridBagConstraints.NORTHWEST,1,
-				labelFrom, textFieldFrom, labelTo, textFieldTo);
+		JPanel container = rangesPanel.addRow(rangesPanel.
+				createUnfilledRow(GridBagConstraints.NORTHWEST, labelFrom, textFieldFrom, labelTo, textFieldTo)
+				);
+				
 		if (rangesPanel.getNumberOfRows()>1){
 			delete = GuiMaker.createButton(ButtonsNames.buttonRemoveRowText, 
 					ActionMaker.createDeletingRowAction(rangesPanel, container, logic));

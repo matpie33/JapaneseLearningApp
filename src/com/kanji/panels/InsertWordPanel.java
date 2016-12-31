@@ -1,5 +1,6 @@
 package com.kanji.panels;
 
+import java.awt.GridBagConstraints;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
@@ -40,21 +41,26 @@ public class InsertWordPanel {
 		this.list = list;
 		JLabel insertWordLabel = GuiMaker.createLabel(Prompts.wordAddDialogPrompt);
 		insertWord = GuiMaker.createTextField(20);
-		panel.createRow(insertWordLabel, insertWord);
+		
 		JLabel insertNumberLabel = GuiMaker.createLabel(Prompts.wordAddNumberPrompt);
 		insertNumber = GuiMaker.createTextField(20);
-		panel.createRow(insertNumberLabel, insertNumber);
+	
 		limitCharactersInTextField(insertNumber);
 
+		System.out.println("PR: "+parentDialog);
 		JButton cancel = GuiMaker.createButton(ButtonsNames.buttonCancelText, 
-				ActionMaker.createDisposingAction(parentDialog.getWindow()));
+				ActionMaker.createDisposingAction(parentDialog.getNewDialog()));
 		AbstractAction approveAction = ActionMaker.createValidatingAction(insertWord, insertNumber, 
 				list, this);
 		JButton approve = GuiMaker.createButton(ButtonsNames.buttonApproveText,
 				approveAction);
 		KeyBindingsMaker.makeBindings(approve, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
 				approveAction);
-		panel.createRow(cancel, approve);
+		panel.addRow(panel.createHorizontallyFilledRow(insertWordLabel,insertWord).
+				fillHorizontallySomeElements(insertWord));
+		panel.addRow(panel.createHorizontallyFilledRow(insertNumberLabel,insertNumber).
+				fillHorizontallySomeElements(insertNumber));
+		panel.addRow(panel.createUnfilledRow(GridBagConstraints.EAST, cancel,approve));
 		return panel.getPanel();
 	}
 

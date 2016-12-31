@@ -1,5 +1,7 @@
 package com.kanji.panels;
 
+import java.awt.GridBagConstraints;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -23,11 +25,11 @@ public class MessagePanel {
 
 	public JPanel createPanel(String message) {
 		JButton button = GuiMaker.createButton(ButtonsNames.buttonApproveText, 
-				ActionMaker.createDisposingAction(window.getWindow()));
+				ActionMaker.createDisposingAction(window));
 		JTextArea area = GuiMaker.createTextArea(false);
 		area.setText(message);
-		panel.createRow(area);
-		panel.createRow(button);
+		panel.addRow(panel.createBothSidesFilledRow(area));
+		panel.addRow(panel.createUnfilledRow(GridBagConstraints.CENTER, button));
 		return panel.getPanel();
 	}
 

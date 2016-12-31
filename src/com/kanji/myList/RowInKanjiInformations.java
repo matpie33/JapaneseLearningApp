@@ -1,9 +1,6 @@
 package com.kanji.myList;
 
 import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -20,6 +17,8 @@ import javax.swing.JTextArea;
 
 import com.kanji.Row.KanjiInformation;
 import com.kanji.Row.KanjiWords;
+import com.kanji.graphicInterface.MainPanel;
+import com.kanji.graphicInterface.MyColors;
 
 public class RowInKanjiInformations extends RowsCreator<KanjiInformation> implements Serializable {
 	/**
@@ -32,8 +31,10 @@ public class RowInKanjiInformations extends RowsCreator<KanjiInformation> implem
 	private List <KeyAdapter> adapters;
 	private String wordBeingModified;
 	private int idBeingModified;
+	private MainPanel mainPanel;
 	
 	public RowInKanjiInformations (MyList <KanjiWords> list){
+		mainPanel = new MainPanel (MyColors.LIGHT_BLUE);
 		this.list=list;
 		adapters = new ArrayList <KeyAdapter>();
 	}
@@ -47,49 +48,21 @@ public class RowInKanjiInformations extends RowsCreator<KanjiInformation> implem
 	
 	private JPanel createNewRow(KanjiInformation kanji, int rowsNumber) {
 		String text = kanji.getKanjiKeyword();
-		int ID = kanji.getKanjiID();
-		JPanel row = new JPanel ();	
-		row.setLayout(new GridBagLayout());		
+		int ID = kanji.getKanjiID();	
 	
 		JLabel number = new JLabel (""+rowsNumber);
 		number.setForeground(wordNumberColor);
 		
-		GridBagConstraints cd = initiateGridBagConstraints();		
-		row.add(number,cd);
 		
-		JTextArea wordTextArea = createTextArea(text, String.class);
-		cd.gridx++;
-		cd.weightx=1;
-		cd.fill=GridBagConstraints.HORIZONTAL;
-		row.add(wordTextArea,cd);
-		
-		JTextArea idTextArea = createTextArea(Integer.toString(ID), Integer.class);
-		cd.gridx++;
-		cd.weightx=0;
-		cd.fill=GridBagConstraints.NONE;
-		row.add(idTextArea,cd);
-		
-		JButton remove = createButtonRemove(row, kanji);		
-		cd.gridx++;
-		cd.weightx=0;
-		row.add(remove,cd);
-		
-//		panels.add(row);
-		row.setBackground(defaultRowColor);
-		
-		return row;
+		JTextArea wordTextArea = createTextArea(text, String.class);		
+		JTextArea idTextArea = createTextArea(Integer.toString(ID), Integer.class);		
+		JButton remove = new JButton ("-");	
+		System.out.println("*** here");
+		return mainPanel.addRow(mainPanel.createHorizontallyFilledRow(number,wordTextArea,idTextArea, 
+				remove).fillHorizontallySomeElements(wordTextArea));
+	
 	}
 
-	private GridBagConstraints initiateGridBagConstraints(){
-		GridBagConstraints cd = new GridBagConstraints();
-		cd.gridx=0;
-		cd.gridy=0;
-		cd.weightx=0;
-		cd.anchor=GridBagConstraints.CENTER;
-		cd.insets=new Insets(5,5,5,5);
-		return cd;
-	}
-	
 	private JTextArea createTextArea(String text, Class type){
 		JTextArea elem = new JTextArea(text);
 		FocusListener f;

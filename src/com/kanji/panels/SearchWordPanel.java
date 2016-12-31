@@ -50,19 +50,18 @@ public class SearchWordPanel {
 		this.list=list;
 		JLabel prompt = GuiMaker.createLabel(Prompts.wordSearchDialogPrompt);		
 		textField = GuiMaker.createTextField(20);	
-		panel.createRow(prompt,textField);
+		
 		
 		JRadioButton defaultSearchOption = GuiMaker.createRadioButton(Options.wordSearchDefaultOption, 
 				ActionMaker.createDefaultSearchOption(options));
-		panel.createRow(defaultSearchOption);
+		
 		
 		fullWordsSearchOption = GuiMaker.createRadioButton(Options.wordSearchOnlyFullWordsOption,
 				ActionMaker.createFullWordsSearchOption(options));		
-		panel.createRow(fullWordsSearchOption);
 		
 		perfectMatchSearchOption = GuiMaker.createRadioButton(Options.wordSearchPerfectMatchOption,
 				ActionMaker.createPerfectMatchSearchOption(options));
-		panel.createRow(perfectMatchSearchOption);
+		
 		
 		addRadioButtonsToGroup (defaultSearchOption, fullWordsSearchOption,	perfectMatchSearchOption);
 		
@@ -71,8 +70,13 @@ public class SearchWordPanel {
 		
 		JButton previous = createButtonPrevious(ButtonsNames.buttonPreviousText);
 		JButton next = createButtonNext(ButtonsNames.buttonNextText);
-		panel.createRow(previous,next);
-		
+		panel.addRow(panel.createHorizontallyFilledRow(prompt,textField).
+				fillHorizontallySomeElements(textField));
+		panel.addRow(panel.createHorizontallyFilledRow(defaultSearchOption));
+		panel.addRow(panel.createHorizontallyFilledRow(fullWordsSearchOption));
+		panel.addRow(panel.createHorizontallyFilledRow(perfectMatchSearchOption));
+		panel.addRow(panel.createUnfilledRow(GridBagConstraints.EAST, previous,next));
+				
 		return panel.getPanel();
 	}
 	
