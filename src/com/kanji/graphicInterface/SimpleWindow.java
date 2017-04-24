@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 import com.kanji.constants.Titles;
+import com.kanji.listenersAndAdapters.ActionMaker;
 import com.kanji.panels.ConfirmPanel;
 import com.kanji.panels.MessagePanel;
 

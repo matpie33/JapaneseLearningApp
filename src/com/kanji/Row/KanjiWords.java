@@ -6,20 +6,19 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import com.kanji.myList.ListContentsManager;
 import com.kanji.myList.MyList;
 import com.kanji.myList.RowInKanjiInformations;
+import com.kanji.myList.RowsCreator;
 
-public class KanjiWords implements Serializable {
+public class KanjiWords implements ListContentsManager <KanjiInformation>,Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7410245829899794103L;
 	private List <KanjiInformation> kanjiWords;
-	private transient MyList <KanjiWords> list;
-	private transient RowInKanjiInformations rowMaker;
+	private transient MyList <KanjiInformation> list;
+	private transient RowsCreator<KanjiInformation> rowMaker;
 	
-	public KanjiWords(MyList <KanjiWords> list){
+	public KanjiWords(MyList <KanjiInformation> list){
 		this.list=list;
 		kanjiWords = new ArrayList <KanjiInformation> ();
 		initialize();
@@ -83,47 +82,63 @@ public class KanjiWords implements Serializable {
 	}
 	
 	public void addNewRow(String word, int id){
-		addRow(word,id, kanjiWords.size()+1);
+		addRow(word,id);
 	}
 	
-	public void addRow(KanjiInformation row, int rowNumber){
+	public void addRow(KanjiInformation row){
 		
 		if (!kanjiWords.contains(row))
 			kanjiWords.add(row);
-		JPanel panel = rowMaker.addWord(row, rowNumber);
-		list.addWord(panel);
+		JPanel panel = rowMaker.addWord(row);
+	
 	}
 	
-	public void addRow (String word, int id, int rowNumber){
-		addRow(new KanjiInformation(word, id), rowNumber);		
+	public void addRow (String word, int id){
+		addRow(new KanjiInformation(word, id));		
 	}
 	
 	public void addAll(){
 
 		for (int i=0; i<kanjiWords.size();i++){
-			addRow(kanjiWords.get(i), i+1);
+			addRow(kanjiWords.get(i));
 		}
 	}
 	
-	public int getKanjis(){
+	public int getNumberOfWords(){
 		return kanjiWords.size();
 	}
 	
-	public void setList (MyList <KanjiWords> list){
+	public void setList (MyList <KanjiInformation> list){
 		this.list=list;
 	}
 	
+	@Override
 	public List <KanjiInformation> getAllWords(){
 		return kanjiWords;
 	}
 	
-	public void remove (KanjiInformation kanji){
+	public int remove (KanjiInformation kanji) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
+		int i = kanjiWords.indexOf(kanji);
 		kanjiWords.remove(kanji);
+		rowMaker.removeRow(i);
+		return i;
+		
 	}
 	
 	public boolean isInputValid (String word, int kanjiId){
 		return !isIdDefined(kanjiId) && !isWordDefined(word);
 	}
+	
+	public JPanel getPanel(){
+		return rowMaker.getPanel();
+	}
+	
+	public RowsCreator getRowsCreator(){
+		return rowMaker;
+	}
+
+
+
 
 	
 }

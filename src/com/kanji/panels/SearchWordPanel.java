@@ -11,16 +11,17 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import com.guimaker.panels.MainPanel;
+import com.guimaker.row.RowMaker;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.ExceptionsMessages;
 import com.kanji.constants.NumberValues;
 import com.kanji.constants.Options;
 import com.kanji.constants.Prompts;
-import com.kanji.graphicInterface.ActionMaker;
 import com.kanji.graphicInterface.GuiMaker;
-import com.kanji.graphicInterface.MainPanel;
 import com.kanji.graphicInterface.MyColors;
 import com.kanji.graphicInterface.SimpleWindow;
+import com.kanji.listenersAndAdapters.ActionMaker;
 import com.kanji.myList.MyList;
 import com.kanji.myList.SearchOptions;
 
@@ -70,12 +71,12 @@ public class SearchWordPanel {
 		
 		JButton previous = createButtonPrevious(ButtonsNames.buttonPreviousText);
 		JButton next = createButtonNext(ButtonsNames.buttonNextText);
-		panel.addRow(panel.createHorizontallyFilledRow(prompt,textField).
+		panel.addRow(RowMaker.createHorizontallyFilledRow(prompt,textField).
 				fillHorizontallySomeElements(textField));
-		panel.addRow(panel.createHorizontallyFilledRow(defaultSearchOption));
-		panel.addRow(panel.createHorizontallyFilledRow(fullWordsSearchOption));
-		panel.addRow(panel.createHorizontallyFilledRow(perfectMatchSearchOption));
-		panel.addRow(panel.createUnfilledRow(GridBagConstraints.EAST, previous,next));
+		panel.addRow(RowMaker.createHorizontallyFilledRow(defaultSearchOption));
+		panel.addRow(RowMaker.createHorizontallyFilledRow(fullWordsSearchOption));
+		panel.addRow(RowMaker.createHorizontallyFilledRow(perfectMatchSearchOption));
+		panel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.EAST, previous,next));
 				
 		return panel.getPanel();
 	}

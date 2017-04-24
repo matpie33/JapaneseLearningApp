@@ -156,7 +156,7 @@ public class RepeatingWordsPanel extends JPanel {
 		int index = randomizer.nextInt(this.wordsToRepeat.size());
 		this.currentWord = ((String) this.wordsToRepeat.get(index));
 		return (String) this.wordsToRepeat.get(index) + " "
-				+ ((KanjiWords) words.getWords()).getIdOfTheWord(this.currentWord);
+				+ ((KanjiWords) words.getContentManager()).getIdOfTheWord(this.currentWord);
 	}
 
 	private void createShowWordButton() {
@@ -182,7 +182,8 @@ public class RepeatingWordsPanel extends JPanel {
 
 	private void showKanji() {
 		this.kanjiTextArea
-				.setText(this.excel.getKanjiById(((KanjiWords) words.getWords()).getIdOfTheWord(this.currentWord)));
+				.setText(this.excel.getKanjiById(((KanjiWords) words.getContentManager())
+						.getIdOfTheWord(this.currentWord)));
 	}
 
 	private void createPauseOrResumeButton() {
@@ -231,7 +232,7 @@ public class RepeatingWordsPanel extends JPanel {
 	}
 
 	private int getCurrentWordId() {
-		return ((KanjiWords) words.getWords()).getIdOfTheWord(this.currentWord);
+		return ((KanjiWords) words.getContentManager()).getIdOfTheWord(this.currentWord);
 	}
 
 	private void createNotRecognizedWordButton() {
@@ -355,7 +356,7 @@ public class RepeatingWordsPanel extends JPanel {
 		System.out.println("start");
 		for (Iterator localIterator = problematicKanjis.iterator(); localIterator.hasNext();) {
 			int i = ((Integer) localIterator.next()).intValue();
-			String word = ((KanjiWords) words.getWords()).getWordForId(i);
+			String word = ((KanjiWords) words.getContentManager()).getWordForId(i);
 
 			if (!this.wordsToRepeat.contains(word)) {
 				this.wordsToRepeat.add(word);

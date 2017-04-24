@@ -15,13 +15,14 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
+import com.guimaker.panels.MainPanel;
+import com.guimaker.row.RowMaker;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.Options;
 import com.kanji.constants.Prompts;
-import com.kanji.graphicInterface.ActionMaker;
 import com.kanji.graphicInterface.GuiMaker;
-import com.kanji.graphicInterface.MainPanel;
 import com.kanji.graphicInterface.MyColors;
+import com.kanji.listenersAndAdapters.ActionMaker;
 import com.kanji.listenersAndAdapters.AdaptersMaker;
 import com.kanji.myList.MyList;
 import com.kanji.panelsLogic.LearningStartLogic;
@@ -49,13 +50,13 @@ public class LearningStartPanel {
 		// TODO add focus to textfield from
 		if (!excelReaderIsLoaded())
 			loadExcel();
-		panel.addRow(panel.createHorizontallyFilledRow(labelStartLearning));
-		panel.addRow(panel.createHorizontallyFilledRow(problematicCheckbox));
-		panel.addRow(panel.createBothSidesFilledRow(scrollPane));
-		panel.addRow(panel.createHorizontallyFilledRow(problematicKanjis));
-		panel.addRow(panel.createHorizontallyFilledRow(buttonNewRow,sumRangeField).
+		panel.addRow(RowMaker.createHorizontallyFilledRow(labelStartLearning));
+		panel.addRow(RowMaker.createHorizontallyFilledRow(problematicCheckbox));
+		panel.addRow(RowMaker.createBothSidesFilledRow(scrollPane));
+		panel.addRow(RowMaker.createHorizontallyFilledRow(problematicKanjis));
+		panel.addRow(RowMaker.createHorizontallyFilledRow(buttonNewRow,sumRangeField).
 				fillHorizontallySomeElements(sumRangeField));
-		panel.addRow(panel.createUnfilledRow(GridBagConstraints.EAST, cancel,approve));
+		panel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.EAST, cancel,approve));
 		return this.panel.getPanel();
 	}
 	
@@ -98,7 +99,7 @@ public class LearningStartPanel {
 		JTextField textFieldTo = GuiMaker.createTextField(5);				
 
 		JButton delete = new JButton ();
-		JPanel container = rangesPanel.addRow(rangesPanel.
+		JPanel container = rangesPanel.addRow(RowMaker.
 				createUnfilledRow(GridBagConstraints.NORTHWEST, labelFrom, textFieldFrom, labelTo, textFieldTo)
 				);
 				

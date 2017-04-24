@@ -6,12 +6,13 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import com.guimaker.panels.MainPanel;
+import com.guimaker.row.RowMaker;
 import com.kanji.constants.ButtonsNames;
-import com.kanji.graphicInterface.ActionMaker;
 import com.kanji.graphicInterface.GuiMaker;
-import com.kanji.graphicInterface.MainPanel;
 import com.kanji.graphicInterface.MyColors;
 import com.kanji.graphicInterface.SimpleWindow;
+import com.kanji.listenersAndAdapters.ActionMaker;
 
 public class MessagePanel {
 
@@ -28,8 +29,8 @@ public class MessagePanel {
 				ActionMaker.createDisposingAction(window));
 		JTextArea area = GuiMaker.createTextArea(false);
 		area.setText(message);
-		panel.addRow(panel.createBothSidesFilledRow(area));
-		panel.addRow(panel.createUnfilledRow(GridBagConstraints.CENTER, button));
+		panel.addRow(RowMaker.createBothSidesFilledRow(area));
+		panel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, button));
 		return panel.getPanel();
 	}
 

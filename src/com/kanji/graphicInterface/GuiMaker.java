@@ -14,8 +14,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.JTextComponent;
 
 import com.kanji.myList.MyList;
+import com.kanji.window.LimitDocumentFilter;
 
 public class GuiMaker {
 
@@ -38,6 +41,12 @@ public class GuiMaker {
 			j.setBackground(MyColors.GREY);
 		return j;
 	}
+	
+	public static JTextArea createTextArea (boolean editable, int maxCharacters){
+		JTextArea j = createTextArea(editable);
+		limitCharactersInTextField(j, maxCharacters);
+		return j;
+	}
 
 	public static JButton createButton(String title, ActionListener listener) {
 		JButton b = new JButton(title);
@@ -47,8 +56,11 @@ public class GuiMaker {
 	
 	public static JScrollPane createScrollPaneForList(MyList list) {
 		Border raisedBevel = BorderFactory.createLineBorder(Color.BLUE, 6);
-
-		JScrollPane listScrollWords = createScrollPane(Color.GREEN, raisedBevel, list);
+//		System.out.println("MYLIST: "+list);
+		if (list == null){
+			return new JScrollPane();
+		}
+		JScrollPane listScrollWords = createScrollPane(MyColors.DARK_BLUE, raisedBevel, list);
 		list.setScrollPane(listScrollWords);
 		listScrollWords.setMinimumSize(minimumListSize);
 
@@ -56,7 +68,14 @@ public class GuiMaker {
 	}
 	
 	public static JScrollPane createScrollPane(Color bgColor, Border border, Component component,Dimension size) {
-		JScrollPane scroll = new JScrollPane(component);
+		JScrollPane scroll = null;
+		if (component instanceof MyList){
+			MyList list = (MyList) component;
+			scroll = new JScrollPane(list.getContentManager().getPanel());
+		}
+		else{
+			scroll = new JScrollPane(component);
+		}		
 		scroll.getViewport().setBackground(bgColor);
 		scroll.setBorder(border);
 		scroll.getVerticalScrollBar().setUnitIncrement(20);
@@ -64,17 +83,23 @@ public class GuiMaker {
 		return scroll;
 	}
 	
-	public static JScrollPane createScrollPane(Color bgColor, Border border, Component component
-			) {
+	public static JScrollPane createScrollPane(Color bgColor, Border border, Component component) {
 		return createScrollPane(bgColor,border,component,scrollPanesSize);
 	}
 	
 	public static JTextField createTextField (int textLength){
-		return new JTextField(textLength);			
+		JTextField textField = new JTextField(textLength);
+		limitCharactersInTextField(textField, textLength);
+		return textField;			
 	}
 	
 	public static JTextField createTextField (int textLength, String text){
 		return new JTextField (text,textLength);
+	}
+	
+	private static void limitCharactersInTextField(JTextComponent textField, int maxDigits) {
+		((AbstractDocument) textField.getDocument())
+				.setDocumentFilter(new LimitDocumentFilter(maxDigits));
 	}
 	
 	public static JRadioButton createRadioButton (String text, ActionListener listener){
@@ -88,6 +113,8 @@ public class GuiMaker {
 		checkbox.addActionListener(listener);
 		return checkbox;
 	}
+	
+	
 	
 
 }

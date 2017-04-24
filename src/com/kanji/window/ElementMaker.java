@@ -16,7 +16,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,14 +29,14 @@ import javax.swing.JMenuItem;
 
 import com.kanji.Row.KanjiInformation;
 import com.kanji.Row.KanjiWords;
+import com.kanji.Row.RepeatingInformation;
 import com.kanji.Row.RepeatingList;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.MenuTexts;
+import com.kanji.constants.SavingStatus;
 import com.kanji.constants.Titles;
 import com.kanji.fileReading.CustomFileReader;
 import com.kanji.myList.MyList;
-import com.kanji.myList.RowInKanjiInformations;
-import com.kanji.myList.RowInRepeatingList;
 
 public class ElementMaker {
 
@@ -45,8 +44,8 @@ public class ElementMaker {
 	private List<JButton> buttons;
 	private BaseWindow parent;
 	private Map<Integer, String> words;
-	private MyList<KanjiWords> listOfWords;
-	private MyList<RepeatingList> repeats;
+	private MyList<KanjiInformation> listOfWords;
+	private MyList<RepeatingInformation> repeats;
 	private JMenuBar menuBar;
 	private File fileToSave;
 	private SavingStatus savingStatus;
@@ -64,7 +63,7 @@ public class ElementMaker {
 
 	public ElementMaker(BaseWindow parent) {
 
-		savingStatus = SavingStatus.BrakZmian;
+		savingStatus = SavingStatus.NoChanges;
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 		manager.addKeyEventDispatcher(new MyDispatcher());
 		this.parent = parent;
@@ -113,13 +112,14 @@ public class ElementMaker {
 								listOfWords.setWords(wordss);
 								wordss.setList(listOfWords);
 								wordss.initialize();
-								listOfWords.getWords().addAll();
+								listOfWords.getContentManager().addAll();
 							} else {
 								Map<Integer, String> map = (Map<Integer, String>) readed;
 								listOfWords.setWords(new KanjiWords(listOfWords));
 								int i = 1;
 								for (Map.Entry<Integer, String> entry : map.entrySet()) {
-									listOfWords.getWords().addRow(entry.getValue(), entry.getKey(), i);
+									listOfWords.getContentManager().addRow(
+											new KanjiInformation(entry.getValue(), entry.getKey()));
 									i++;
 								}
 							}
@@ -134,22 +134,22 @@ public class ElementMaker {
 					Runnable r2 = new Runnable() {
 						@Override
 						public void run() {
-							if (read instanceof RepeatingList) {
-								RepeatingList mapOfRepeats = (RepeatingList) read;
-
-								repeats.setWords(mapOfRepeats);
-								mapOfRepeats.setList(repeats);
-								mapOfRepeats.initialize();
-								repeats.getWords().addAll();
-							} else {
-								Map<Integer, String> map = (Map<Integer, String>) read;
-								repeats.setWords(new RepeatingList(repeats));
-								for (Map.Entry<Integer, String> entry : map.entrySet()) {
-									repeats.getWords().add(entry.getValue(), new Date(((long) entry.getKey()) * 1000L),
-											false);
-								}
-							}
-							repeats.repaint();
+//							if (read instanceof RepeatingList) {
+//								RepeatingList mapOfRepeats = (RepeatingList) read;
+//
+//								repeats.setWords(mapOfRepeats);
+//								mapOfRepeats.setList(repeats);
+//								mapOfRepeats.initialize();
+//								repeats.getWords().addAll();
+//							} else {
+//								Map<Integer, String> map = (Map<Integer, String>) read;
+//								repeats.setWords(new RepeatingList(repeats));
+//								for (Map.Entry<Integer, String> entry : map.entrySet()) {
+//									repeats.getWords().add(entry.getValue(), new Date(((long) entry.getKey()) * 1000L),
+//											false);
+//								}
+//							}
+//							repeats.repaint();
 						}
 					};
 					Thread t2 = new Thread(r2);
@@ -182,20 +182,18 @@ public class ElementMaker {
 
 	private void initListOfWords() {
 
-		listOfWords = new MyList<KanjiWords>(parent, Titles.wordsListTitle, new RowInKanjiInformations(listOfWords),
-				this);
+		listOfWords = new MyList<KanjiInformation>(parent, Titles.wordsListTitle, this);
 
 		KanjiWords words = new KanjiWords(listOfWords);
 		listOfWords.setWords(words);
-		for (int i = 1; i <= 10; i++) {
-			listOfWords.getWords().addRow("Word no. " + i, i, i);
+		for (int i = 1; i <= 20; i++) {
+			listOfWords.getContentManager().addRow(new KanjiInformation("Word no. " + i, i));
 
 		}
 	}
 
 	private void initRepeatsList() {
-		repeats = new MyList<RepeatingList>(parent, Titles.repeatedWordsListTitle, new RowInRepeatingList(repeats),
-				this);
+		repeats = new MyList<RepeatingInformation>(parent, Titles.repeatedWordsListTitle, this);
 		repeats.setWords(new RepeatingList(repeats));
 	}
 
@@ -283,8 +281,8 @@ public class ElementMaker {
 				listOfWords.setWords(new KanjiWords(listOfWords));
 				int i = 1;
 				for (Map.Entry<Integer, String> entry : words.entrySet()) {
-
-					listOfWords.getWords().addRow(entry.getValue(), entry.getKey(), i);
+					listOfWords.getContentManager().addRow(new KanjiInformation(
+							entry.getValue(), entry.getKey()));
 					i++;
 				}
 				parent.getWindow().dispose();
@@ -314,9 +312,7 @@ public class ElementMaker {
 	}
 
 	private void start() {
-		System.out.println(listOfWords);
-		parent.showLearnStartDialog(repeats, ((KanjiWords) listOfWords.getWords()).getKanjis());
-		System.out.println(((KanjiWords) listOfWords.getWords()).getKanjis());
+		parent.showLearnStartDialog(repeats,  listOfWords.getContentManager().getNumberOfWords());
 	}
 
 	public List<JButton> getButtons() {
@@ -339,7 +335,7 @@ public class ElementMaker {
 		BaseWindow p = null;
 		if (parent instanceof BaseWindow) {
 			p = (BaseWindow) parent;
-			p.getStartingPanel().changeSaveStatus(SavingStatus.Zapisywanie);
+			p.getStartingPanel().changeSaveStatus(SavingStatus.Saving);
 		} else
 			return;
 		try {
@@ -349,8 +345,8 @@ public class ElementMaker {
 			}
 			FileOutputStream fout = new FileOutputStream(this.fileToSave);
 			ObjectOutputStream oos = new ObjectOutputStream(fout);
-			oos.writeObject(this.listOfWords.getWords());
-			oos.writeObject(this.repeats.getWords());
+			oos.writeObject(this.listOfWords.getContentManager());
+			oos.writeObject(this.repeats.getContentManager());
 			if ((this.parent instanceof BaseWindow)) {
 				BaseWindow b = (BaseWindow) this.parent;
 				oos.writeObject(b.getProblematicKanjis());
@@ -360,7 +356,7 @@ public class ElementMaker {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		p.getStartingPanel().changeSaveStatus(SavingStatus.Zapisano);
+		p.getStartingPanel().changeSaveStatus(SavingStatus.Saved);
 	}
 
 	private void exportList() {
@@ -368,7 +364,7 @@ public class ElementMaker {
 		try {
 			// Map<Integer, String> words = this.listOfWords.getWords();
 			BufferedWriter p = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f), "UTF8"));
-			List<KanjiInformation> list = listOfWords.getWords().getAllWords();
+			List<KanjiInformation> list = listOfWords.getContentManager().getAllWords();
 			for (KanjiInformation kanji : list) {
 				p.write(kanji.getKanjiKeyword() + " " + kanji.getKanjiID());
 				p.newLine();

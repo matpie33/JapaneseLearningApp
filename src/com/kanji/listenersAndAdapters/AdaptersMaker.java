@@ -3,12 +3,16 @@ package com.kanji.listenersAndAdapters;
 import java.awt.Component;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.kanji.constants.ExceptionsMessages;
+import com.kanji.myList.MyList;
 import com.kanji.panels.LearningStartPanel;
 import com.kanji.panelsLogic.LearningStartLogic;
 
@@ -87,5 +91,24 @@ public class AdaptersMaker {
 		};
 		return keyAdapter;
 	}
-
+	
+	public static KeyAdapter repeatingInformationChanged (final MyList list){
+		
+		return new KeyAdapter (){		
+			@Override
+			public void keyReleased (KeyEvent e){
+				try {
+					FileOutputStream fout = new FileOutputStream ("hi.txt");
+					ObjectOutputStream oos = new ObjectOutputStream(fout);
+					oos.writeObject(list.getContentManager());
+					fout.close();
+					System.out.println("save");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		};
+	}
+	
 }

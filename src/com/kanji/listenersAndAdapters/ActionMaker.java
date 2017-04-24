@@ -1,4 +1,4 @@
-package com.kanji.graphicInterface;
+package com.kanji.listenersAndAdapters;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
@@ -9,7 +9,9 @@ import javax.swing.AbstractAction;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.guimaker.panels.MainPanel;
 import com.kanji.Row.KanjiWords;
+import com.kanji.graphicInterface.SimpleWindow;
 import com.kanji.myList.MyList;
 import com.kanji.myList.SearchOptions;
 import com.kanji.panels.ConfirmPanel;
@@ -19,6 +21,22 @@ import com.kanji.panelsLogic.LearningStartLogic;
 
 public class ActionMaker {
 	
+	public static <T> AbstractAction removeRepeatingListRow(final MyList<T> list, final T text){
+				return new AbstractAction (){
+					@Override
+					public void actionPerformed(ActionEvent e){			
+					 	if (!list.showMessage("Sure?")){
+				    	    return;
+				    	}
+				    	
+					list.removeRowContainingWordAndReturnRowNumber(text);	
+					list.save();				
+					}
+				};
+	}
+	
+	
+	
 	public static AbstractAction startLearning (final LearningStartLogic logic){
 		return new AbstractAction (){
 			@Override
@@ -26,13 +44,6 @@ public class ActionMaker {
 			
 					logic.validateInputs();
 					logic.addToRepeatsListOrShowError();
-
-//					if (!excelReaderIsLoaded()) {
-//						parentFrame.showMessageDialog(ExceptionsMessages.excelNotLoaded,true);
-//						waitUntillExcelLoads();
-//					} else
-//						switchToRepeatingPanel();
-
 				
 			}
 		};
@@ -133,7 +144,7 @@ public class ActionMaker {
 				String numberInput = numberField.getText();
 				if (isNumberValid(numberInput)) {
 					int number = Integer.parseInt(numberInput);
-					if (((KanjiWords) list.getWords()).isInputValid(wordInput, number)) {
+					if (((KanjiWords) list.getContentManager()).isInputValid(wordInput, number)) {
 						panel.updateGUI(wordInput, number);						
 					}
 

@@ -1,12 +1,11 @@
 package com.kanji.myList;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,52 +13,56 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
+import com.guimaker.panels.MainPanel;
+import com.guimaker.row.RowMaker;
 import com.kanji.Row.KanjiInformation;
-import com.kanji.Row.KanjiWords;
-import com.kanji.graphicInterface.MainPanel;
-import com.kanji.graphicInterface.MyColors;
+import com.kanji.graphicInterface.GuiMaker;
+import com.kanji.listenersAndAdapters.ActionMaker;
 
-public class RowInKanjiInformations extends RowsCreator<KanjiInformation> implements Serializable {
-	/**
-	 * 
-	 */
+public class RowInKanjiInformations implements RowsCreator<KanjiInformation> {
+	
 	private static final long serialVersionUID = 1L;
 	private Color wordNumberColor = Color.WHITE;
 	private Color defaultRowColor = Color.RED;
-	private MyList<KanjiWords> list;
+	private MyList<KanjiInformation> list;
 	private List <KeyAdapter> adapters;
 	private String wordBeingModified;
 	private int idBeingModified;
 	private MainPanel mainPanel;
+	private int firstRow;
 	
-	public RowInKanjiInformations (MyList <KanjiWords> list){
-		mainPanel = new MainPanel (MyColors.LIGHT_BLUE);
+	public RowInKanjiInformations (MyList <KanjiInformation> list){
+		mainPanel = new MainPanel (null,true,false);
+		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, new JLabel("slowka")));		
 		this.list=list;
 		adapters = new ArrayList <KeyAdapter>();
+		firstRow =mainPanel.getNumberOfRows();
 	}
 	
 	@Override
-	public JPanel addWord (KanjiInformation kanji, int rowsNumber){				
-		JPanel row = createNewRow(kanji, rowsNumber);	
+	public JPanel addWord (KanjiInformation kanji){				
+		JPanel row = createNewRow(kanji);	
 		return row;
-	}	
+	}		
 	
-	
-	private JPanel createNewRow(KanjiInformation kanji, int rowsNumber) {
+	private JPanel createNewRow(KanjiInformation kanji) {
 		String text = kanji.getKanjiKeyword();
 		int ID = kanji.getKanjiID();	
 	
-		JLabel number = new JLabel (""+rowsNumber);
-		number.setForeground(wordNumberColor);
+		JLabel number = new JLabel (""+mainPanel.getNumberOfRows());
+		number.setForeground(wordNumberColor);	
 		
-		
-		JTextArea wordTextArea = createTextArea(text, String.class);		
-		JTextArea idTextArea = createTextArea(Integer.toString(ID), Integer.class);		
-		JButton remove = new JButton ("-");	
-		System.out.println("*** here");
-		return mainPanel.addRow(mainPanel.createHorizontallyFilledRow(number,wordTextArea,idTextArea, 
+		JTextArea wordTextArea = GuiMaker.createTextArea(true, 100);
+		wordTextArea.setText(text);
+		JTextField idTextArea = GuiMaker.createTextField(5);
+		idTextArea.setText(""+ID);
+		JButton remove = GuiMaker.createButton("-",ActionMaker.removeRepeatingListRow(list, kanji));
+		return mainPanel.addRow(RowMaker.createHorizontallyFilledRow(number,wordTextArea,idTextArea, 
 				remove).fillHorizontallySomeElements(wordTextArea));
+	
+	
 	
 	}
 
@@ -92,7 +95,7 @@ public class RowInKanjiInformations extends RowsCreator<KanjiInformation> implem
 	        }
 //	        list.changeWord(wordBeingModified, elem.getText());
 	        System.out.println(list);
-	        list.getWords().changeWord(wordBeingModified, elem.getText());
+//	        list.getContentManager().changeWord(wordBeingModified, elem.getText());
 	        wordBeingModified = "";
 	        list.save();
 	      }
@@ -123,7 +126,7 @@ public class RowInKanjiInformations extends RowsCreator<KanjiInformation> implem
 	        if (idBeingModified==Integer.parseInt(elem.getText())) {
 	          return;	          
 	        }
-	        list.getWords().changeWord(idBeingModified, newID);
+//	        list.getWords().changeWord(idBeingModified, newID);
             list.save();
 	        idBeingModified = -1;
 	        
@@ -132,29 +135,54 @@ public class RowInKanjiInformations extends RowsCreator<KanjiInformation> implem
 	    return focusListener;
 	}
 	
-	private JButton createButtonRemove(final JPanel text, final KanjiInformation kanji){
-		JButton remove = new JButton("-");
-		remove.addActionListener(new ActionListener (){
-			@Override
-			public void actionPerformed(ActionEvent e){	
-			    	if (!list.showMessage("Sure?")){
-			    	    return;
-			    	}
-				list.removeRowContainingTheWord(text);	
-				list.getWords().remove(kanji);
-				list.save();
-			}
-		});
-		return remove;
-	}
 
 
 	@Override
-	public void setList(MyList list) {
-		this.list=list;
-		
+	public void setList(MyList<KanjiInformation> list) {
+		this.list=list;		
 	}
 	
+	public JPanel getPanel(){
+		return mainPanel.getPanel();
+	}
+
+	@Override
+	public void removeRow (int rowNumber) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
+		mainPanel.removeRow(rowNumber+firstRow);
+		updateLabelText(rowNumber+firstRow);
+		System.out.println("row number: "+rowNumber +" deleted ");
+	}
+	
+	private void updateLabelText(int rowNumber) 
+			throws ClassNotFoundException, InstantiationException, IllegalAccessException{
+		while (rowNumber < mainPanel.getNumberOfRows()) {
+			JPanel panel = mainPanel.getRows().get(rowNumber);
+			JLabel label = (JLabel) findElementInsideOrCreate(panel, JLabel.class);
+			String oldValue = label.getText();
+			int oldInt = Integer.parseInt(oldValue);
+			label.setText(""+(oldInt-1));
+
+			rowNumber++;
+		}
+	}
+	
+	private Object findElementInsideOrCreate(JPanel panel, Class classTemp)
+			throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+		Component[] arrayOfComponent;
+		int j = (arrayOfComponent = panel.getComponents()).length;
+		for (int i = 0; i < j; i++) {
+			Component com = arrayOfComponent[i];
+			if (classTemp.isInstance(com)) {
+				return classTemp.cast(com);
+			}
+		}
+		return classTemp.newInstance();
+	}
+
+	@Override
+	public JPanel getRow(int number) {
+		return mainPanel.getRows().get(number);
+	}
 	
 		
 	

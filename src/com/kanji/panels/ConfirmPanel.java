@@ -9,12 +9,13 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 
-import com.kanji.graphicInterface.ActionMaker;
+import com.guimaker.panels.MainPanel;
+import com.guimaker.row.RowMaker;
 import com.kanji.graphicInterface.GuiMaker;
 import com.kanji.graphicInterface.KeyBindingsMaker;
-import com.kanji.graphicInterface.MainPanel;
 import com.kanji.graphicInterface.MyColors;
 import com.kanji.graphicInterface.SimpleWindow;
+import com.kanji.listenersAndAdapters.ActionMaker;
 
 public class ConfirmPanel {
 	
@@ -30,7 +31,7 @@ public class ConfirmPanel {
 	public JPanel createPanel(String message) {
 		JTextArea area = GuiMaker.createTextArea(false);
 		area.setText(message);
-		panel.addRow(panel.createBothSidesFilledRow(area));
+		panel.addRow(RowMaker.createBothSidesFilledRow(area));
 
 		AbstractAction confirmingAction = ActionMaker.createConfirmingAction(this, true);
 		AbstractAction refuseAction = ActionMaker.createConfirmingAction(this, false);
@@ -42,7 +43,7 @@ public class ConfirmPanel {
 		JButton noButton = GuiMaker.createButton("Nie", refuseAction);		
 		noButton.addActionListener(refuseAction);
 
-		panel.addRow(panel.createUnfilledRow(GridBagConstraints.EAST, yesButton,noButton));
+		panel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.EAST, yesButton,noButton));
 		return panel.getPanel();
 	}
 	

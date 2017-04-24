@@ -10,8 +10,8 @@ import javax.swing.JPanel;
 
 import com.kanji.constants.Titles;
 import com.kanji.fileReading.KanjiLoader;
-import com.kanji.graphicInterface.ActionMaker;
 import com.kanji.graphicInterface.SimpleWindow;
+import com.kanji.listenersAndAdapters.ActionMaker;
 import com.kanji.myList.MyList;
 import com.kanji.panels.InsertWordPanel;
 import com.kanji.panels.LearningStartPanel;

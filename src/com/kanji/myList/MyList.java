@@ -2,64 +2,36 @@ package com.kanji.myList;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.text.Normalizer;
-import java.util.LinkedList;
-import java.util.List;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.Scrollable;
 
 import com.kanji.constants.ExceptionsMessages;
 import com.kanji.window.BaseWindow;
 import com.kanji.window.ElementMaker;
 
-public class MyList<Parameters> extends JPanel implements Scrollable {
+public class MyList<Parameters> extends JPanel {
 	private static final long serialVersionUID = -5024951383001795390L;
-	private List<JPanel> panels;
+//	private List<JPanel> panels;
 	private int highlightedRowNumber;
 	private Color defaultRowColor = Color.RED;
 	private Color highlightedRowColor = Color.BLUE;
 	private Color bgColor = Color.GREEN;
 	private JScrollPane parentScrollPane;
-	private Parameters words;
 	private BaseWindow parent;
 	private String title;
 	private ElementMaker elementsMaker;
+	private ListContentsManager <Parameters> contentManager;	
 
-	public Dimension getPreferredScrollableViewportSize() {
-		return super.getPreferredSize();
-	}
-
-	public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
-		return 16;
-	}
-
-	public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
-		return 16;
-	}
-
-	public boolean getScrollableTracksViewportWidth() {
-		return true;
-	}
-
-	public boolean getScrollableTracksViewportHeight() {
-		return false;
-	}
-
-	public MyList(BaseWindow parentDialog, String title, RowsCreator rowsCreator, ElementMaker element) {
-
+	public MyList(BaseWindow parentDialog, String title, ElementMaker element) {
+		
 		this.elementsMaker = element;
-		rowsCreator.setList(this);
+		
+//		add(rowsCreator.getPanel(), BorderLayout.CENTER);
 		this.title = title;
 		this.parent = parentDialog;
 		createDefaultScrollPane();
@@ -73,37 +45,19 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 	private void initiate() {
 		// this.wordsAndID = new LinkedHashMap<Integer,String>();
 		this.highlightedRowNumber = 0;
-		this.panels = new LinkedList();
-		setLayout(new GridBagLayout());
-		setBackground(this.bgColor);
-		createTitle();
+//		this.panels = new LinkedList();
 	}
 
-	private void createTitle() {
-		add(new JLabel(this.title));
-	}
 
-	public void addWord(JPanel row) {
-		this.panels.add(row);
-		GridBagConstraints c = createConstraintsForNewRow();
-		add(row, c);
+	
+	public void addWord(JPanel row, Parameters info) {
+		
+		contentManager.addRow(info);
 		// repaint(row.getLocation().x, row.getLocation().y,
 		// row.getSize().width, row.getSize().height);
-		repaint();
 
 	}
 
-	private GridBagConstraints createConstraintsForNewRow() {
-		GridBagConstraints c = new GridBagConstraints();
-		c.anchor = 13;
-		c.gridx = 0;
-		c.gridy = (this.panels.size() + 1);
-		int a = 5;
-		c.insets = new Insets(a, a, a, a);
-//		c.fill = 2;
-		c.weightx = 1;
-		return c;
-	}
 
 	public boolean findAndHighlightNextOccurence(String searchedWord, int searchDirection, SearchOptions options)
 			throws Exception {
@@ -141,21 +95,21 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 	}
 
 	private boolean isRowNumberOutOfRange(int rowNumber) {
-		return (rowNumber < 0) || (rowNumber > this.panels.size() - 1);
+		return (rowNumber < 0) || (rowNumber > contentManager.getNumberOfWords() - 1);
 	}
 
 	private int setRowNumberToTheOtherEndOfList(int rowNumber) {
 		if (rowNumber < 0) {
-			return this.panels.size();
+			return contentManager.getNumberOfWords();
 		}
-		if (rowNumber >= this.panels.size()) {
+		if (rowNumber >= contentManager.getNumberOfWords()) {
 			return -1;
 		}
 		return rowNumber;
 	}
 
 	public String findWordInRow(int rowNumber) {
-		JPanel panel = (JPanel) this.panels.get(rowNumber);
+		JPanel panel = contentManager.getRowsCreator().getRow(rowNumber);
 		JTextArea textArea = new JTextArea();
 		try {
 			textArea = (JTextArea) findElementInsideOrCreate(panel, JTextArea.class);
@@ -194,49 +148,34 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 
 	private void removeHighlightedPanelIfThereIs() {
 		if (this.highlightedRowNumber >= 0) {
-			((JPanel) this.panels.get(this.highlightedRowNumber)).setBackground(this.defaultRowColor);
+			contentManager.getRowsCreator().getRow(this.highlightedRowNumber).
+			setBackground(this.defaultRowColor);
 		}
 	}
 
 	private void highlightPanelAndScrollTo(int rowNumber) {
-		JPanel panel = (JPanel) this.panels.get(rowNumber);
+		JPanel panel = contentManager.getRowsCreator().getRow(rowNumber);
 		panel.setBackground(this.highlightedRowColor);
 		this.highlightedRowNumber = rowNumber;
 		scrollTo(panel);
 		repaint();
 	}
 
-	public void removeRowContainingTheWord(JPanel word) {
-		try {
-			int rowNumber = removeRowContainingWordAndReturnRowNumber(word);
-			updateRowNumbersAfterThatRow(rowNumber);
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-			sendErrorToParent(e);
-		}
-		revalidate();
-		repaint();
-	}
 
-	private int removeRowContainingWordAndReturnRowNumber(JPanel word)
-			throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-		// int rowNumber = 0;
-		// while (rowNumber < this.panels.size())
-		// {
-		// JPanel panel = (JPanel)this.panels.get(rowNumber);
-		// JTextArea text = (JTextArea)findElementInsideOrCreate(panel,
-		// JTextArea.class);
-		// if (text.getText().equals(word))
-		// {
-		// remove(panel);
-		// this.panels.remove(panel);
-		// break;
-		// }
-		// rowNumber++;
-		// }
-		remove(word);
-		int rowNumber = panels.indexOf(word);
-		panels.remove(word);
-		return rowNumber;
+	public int removeRowContainingWordAndReturnRowNumber(Parameters contents){
+		
+		
+		try {
+			contentManager.remove(contents);
+		} 
+		catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		repaint();
+		revalidate();
+		return 1;
 	}
 
 	private Object findElementInsideOrCreate(JPanel panel, Class classTemp)
@@ -252,17 +191,6 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 		return classTemp.newInstance();
 	}
 
-	private void updateRowNumbersAfterThatRow(int rowNumber)
-			throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-		while (rowNumber < this.panels.size()) {
-			JPanel panel = (JPanel) this.panels.get(rowNumber);
-			JLabel label = (JLabel) findElementInsideOrCreate(panel, JLabel.class);
-
-			Integer newValue = Integer.valueOf(Integer.parseInt(label.getText()) - 1);
-			label.setText(newValue.toString());
-			rowNumber++;
-		}
-	}
 
 	public void scrollTo(JPanel panel) {
 		int r = panel.getY();
@@ -278,15 +206,14 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 		return this.parentScrollPane;
 	}
 
-	public void setWords(Parameters parameters) {
-		this.words = parameters;
+	public void setWords(ListContentsManager <Parameters> parameters) {
+		this.contentManager = parameters;
 		updateWords();
 		scrollToBottom();
 	}
 
 	public void updateWords() {
 		cleanAll();
-		createTitle();
 		System.out.println("update");
 		// for (Parameters word : this.words) {
 		// addWord(word);
@@ -295,7 +222,7 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 
 	private void cleanAll() {
 		removeAll();
-		this.panels.clear();
+//		contentManager.getRowsCreator().clear();
 		System.out.println("clean");
 	}
 
@@ -303,7 +230,7 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 		this.parent.getWindow().revalidate();
 		revalidate();
 		this.parentScrollPane.revalidate();
-		System.out.println(this.panels.size() + "panels size");
+//		System.out.println(this.panels.size() + "panels size");
 		JScrollBar scrollBar = this.parentScrollPane.getVerticalScrollBar();
 		scrollBar.setValue(scrollBar.getMaximum());
 	}
@@ -312,9 +239,6 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 		this.parent.showMessageDialog(e.getMessage(), true);
 	}
 
-	public Parameters getWords() {
-		return this.words;
-	}
 
 	public void save() {
 		this.elementsMaker.save();
@@ -322,6 +246,11 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 	
 	public boolean showMessage (String message){
 	    return parent.showConfirmDialog(message);
+	}
+	
+	
+	public ListContentsManager<Parameters> getContentManager(){
+		return contentManager;		
 	}
 	
 }

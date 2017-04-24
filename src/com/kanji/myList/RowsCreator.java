@@ -3,13 +3,14 @@ package com.kanji.myList;
 import java.io.Serializable;
 
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
-public abstract class RowsCreator<Row> implements Serializable  {
+public interface RowsCreator<Row> extends Serializable  {
 	
-	public abstract JPanel addWord(Row row, int rowsNumber);
-	public abstract void setList (MyList list);
-
+	public JPanel addWord(Row row);
+	public void setList (MyList<Row> list);
+	public JPanel getPanel();
+	public void removeRow (int rowNumber) throws ClassNotFoundException, InstantiationException, IllegalAccessException;
+	public JPanel getRow(int number);
 	
 
 }

@@ -1,12 +1,24 @@
 package com.kanji.window;
 
+import javax.swing.SwingUtilities;
+
 import com.kanji.range.Range;
 import com.kanji.range.SetOfRanges;
 
 public class KanjiStart {
 	
 	public static void main (String [] args){
-		BaseWindow b = new BaseWindow();
+		char c = '\n';
+		System.out.println("char c: "+c);
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				BaseWindow b = new BaseWindow();
+			}
+		});
+		
 //		b.setVisible(true);
 		
 		SetOfRanges set = new SetOfRanges();

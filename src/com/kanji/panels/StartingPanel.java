@@ -8,16 +8,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
+import com.guimaker.panels.MainPanel;
+import com.guimaker.row.RowMaker;
 import com.kanji.constants.Prompts;
+import com.kanji.constants.SavingStatus;
 import com.kanji.graphicInterface.GuiMaker;
-import com.kanji.graphicInterface.MainPanel;
 import com.kanji.graphicInterface.MyColors;
 import com.kanji.myList.MyList;
 import com.kanji.window.ElementMaker;
-import com.kanji.window.SavingStatus;
 
 public class StartingPanel {
 	private ElementMaker maker;
@@ -36,27 +35,12 @@ public class StartingPanel {
 		createUpperPanel();
 		createInformationsPanel();
 		createButtonsPanel(maker.getButtons());
-		panel.addRow(panel.createBothSidesFilledRow(listsSplitPane).fillHorizontallyEqually().fillAllVertically());
+		panel.addRow(RowMaker.createBothSidesFilledRow(listsSplitPane).fillHorizontallyEqually().fillAllVertically());
 //		panel.addRow(panel.createHorizontallyFilledRow(maker.getButtons().toArray(new JComponent[]{})).fillHorizontallyEqually().fillAllVertically());
-		panel.addRow(panel.createHorizontallyFilledRow(buttonsPanel).fillHorizontallyEqually());
-		panel.addRow(panel.createHorizontallyFilledRow(infoPanel).fillHorizontallyEqually());
-
+		panel.addRow(RowMaker.createHorizontallyFilledRow(buttonsPanel).fillHorizontallyEqually());
+		panel.addRow(RowMaker.createHorizontallyFilledRow(infoPanel).fillHorizontallyEqually());
 		
 		
-		JLabel l = new JLabel();
-		JButton b = new JButton();
-		JTextField t = new JTextField();
-		JTextArea a = new JTextArea();
-//		panel.addRow(panel.createBothSidesFilledRow(
-//				l,b,t,a).
-//				fillHorizontallySomeElements(l,b).fillVertically(b,t,a)
-//				);
-		
-		
-		MainPanel panel = new MainPanel (MyColors.DARK_BLUE);
-//		RowCreator r =panel.createHorizontallyFilledRow(new JButton("hi")).createVerticallyFilledRow();
-		 panel.addRow(panel.createBothSidesFilledRow(new JButton(), new JLabel()));
-//		System.out.println(r);
 	}
 	
 	private void createUpperPanel() {
@@ -73,7 +57,7 @@ public class StartingPanel {
 		infoPanel = new JPanel();
 		infoPanel.setBackground(Color.YELLOW);
 		saveInfo = GuiMaker.createLabel("");
-		changeSaveStatus(SavingStatus.BrakZmian);
+		changeSaveStatus(SavingStatus.NoChanges);
 		infoPanel.add(saveInfo);
 	}
 
@@ -81,12 +65,12 @@ public class StartingPanel {
 
 		MainPanel p = new MainPanel(MyColors.DARK_BLUE);
 		buttonsPanel = p.getPanel();
-		p.addRow(p.createHorizontallyFilledRow(list.toArray(new JButton [] {})));
+		p.addRow(RowMaker.createHorizontallyFilledRow(list.toArray(new JButton [] {})));
 
 	}
 	
 	public void changeSaveStatus(SavingStatus savingStatus) {
-		saveInfo.setText(Prompts.savingStatusPrompt + savingStatus);
+		saveInfo.setText(Prompts.savingStatusPrompt + savingStatus.getText());
 		infoPanel.repaint();
 	}
 	

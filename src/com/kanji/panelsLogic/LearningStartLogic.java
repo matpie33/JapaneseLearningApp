@@ -7,9 +7,9 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.kanji.Row.RepeatingList;
+import com.guimaker.panels.MainPanel;
+import com.kanji.Row.RepeatingInformation;
 import com.kanji.constants.ExceptionsMessages;
-import com.kanji.graphicInterface.MainPanel;
 import com.kanji.myList.MyList;
 import com.kanji.panels.LearningStartPanel;
 import com.kanji.range.Range;
@@ -21,10 +21,11 @@ public class LearningStartLogic {
 	private LearningStartPanel panel;
 	private int sumOfWords;
 	private int numberOfWords;
-	private MyList<RepeatingList> repeatsList;
+	private MyList<RepeatingInformation> repeatsList;
 	private SetOfRanges setOfRanges;
 	
-	public LearningStartLogic (LearningStartPanel parent, int numberOfWords, MyList repeatsList){
+	public LearningStartLogic (LearningStartPanel parent, int numberOfWords, 
+			MyList<RepeatingInformation> repeatsList){
 		this.repeatsList = repeatsList;
 		panel=parent;
 		sumOfWords=0;
@@ -139,9 +140,12 @@ public class LearningStartLogic {
 		}
 
 		Calendar calendar = Calendar.getInstance();
-		RepeatingList l = (RepeatingList) repeatsList.getWords();
-		System.out.println("L: " + l);
-		repeatsList.getWords().add(setOfRanges.getRangesAsString(), calendar.getTime(), false);
+//		RepeatingList l = (RepeatingList) repeatsList.getWords();
+//		System.out.println("L: " + l);
+		System.out.println("adding new row");
+		System.out.println(repeatsList.getContentManager());
+		repeatsList.getContentManager().addRow(new RepeatingInformation(
+				setOfRanges.getRangesAsString(), calendar.getTime(), false));
 		repeatsList.scrollToBottom();
 		BaseWindow parent = panel.getParentFrame();
 		parent.showCardPanel(BaseWindow.LEARNING_PANEL);
