@@ -17,47 +17,47 @@ public class RepeatingList implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -3144332338336535803L;
-	private List <RepeatingInformation> repeatingList;
-	private transient MyList <RepeatingList> list;
+	private List<RepeatingInformation> repeatingList;
+	private transient MyList<RepeatingList> list;
 	private transient RowInRepeatingList rowMaker;
-	
-	
-	public RepeatingList (MyList <RepeatingList> list){
-		this.list=list;
-		repeatingList = new ArrayList <RepeatingInformation>();
+
+	public RepeatingList(MyList<RepeatingList> list) {
+		this.list = list;
+		repeatingList = new ArrayList<RepeatingInformation>();
 		initialize();
 	}
-	public void initialize(){		
-		rowMaker = new RowInRepeatingList(list);		
+
+	public void initialize() {
+		rowMaker = new RowInRepeatingList(list);
 	}
-	
-	public void add (RepeatingInformation r){
+
+	public void add(RepeatingInformation r) {
 		if (!repeatingList.contains(r))
 			repeatingList.add(r);
 		System.out.println(r);
 		JPanel panel = rowMaker.addWord(r, repeatingList.size());
 		list.addWord(panel);
-	
+
 	}
-	
-	public void add (String range, Date date, boolean wasRepeated){
+
+	public void add(String range, Date date, boolean wasRepeated) {
 		RepeatingInformation rep = new RepeatingInformation(range, date, wasRepeated);
 		add(rep);
 	}
-	
-	public void addAll(){
-		for (int i=0; i<repeatingList.size();i++){
+
+	public void addAll() {
+		for (int i = 0; i < repeatingList.size(); i++) {
 			add(repeatingList.get(i));
 			System.out.println(repeatingList.get(i).getRepeatingRange());
 		}
 	}
-	public void setList (MyList<RepeatingList> list){
-		this.list=list;
+
+	public void setList(MyList<RepeatingList> list) {
+		this.list = list;
 	}
-	
-	public void remove (RepeatingInformation r){
+
+	public void remove(RepeatingInformation r) {
 		repeatingList.remove(r);
 	}
-	
-	
+
 }

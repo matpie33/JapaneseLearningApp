@@ -56,7 +56,8 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 		return false;
 	}
 
-	public MyList(ClassWithDialog parentDialog, String title, RowsCreator rowsCreator, ElementMaker element) {
+	public MyList(ClassWithDialog parentDialog, String title, RowsCreator rowsCreator,
+			ElementMaker element) {
 
 		this.elementsMaker = element;
 		rowsCreator.setList(this);
@@ -107,8 +108,8 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 		return c;
 	}
 
-	public boolean findAndHighlightNextOccurence(String searchedWord, int searchDirection, SearchOptions options)
-			throws Exception {
+	public boolean findAndHighlightNextOccurence(String searchedWord, int searchDirection,
+			SearchOptions options) throws Exception {
 		searchedWord = removeDiacritics(searchedWord);
 		int lastRowToSearch = this.highlightedRowNumber;
 		String highlightedWord = getHighlightedWord();
@@ -116,7 +117,8 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 				+ searchDirection; rowNumber != lastRowToSearch; rowNumber += searchDirection) {
 			if (isRowNumberOutOfRange(rowNumber)) {
 				rowNumber = setRowNumberToTheOtherEndOfList(rowNumber);
-			} else {
+			}
+			else {
 				String word = findWordInRow(rowNumber);
 				word = removeDiacritics(word);
 				if (doesWordContainSearchedWord(word, searchedWord, options)) {
@@ -137,7 +139,8 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 	}
 
 	private String removeDiacritics(String word) {
-		word = Normalizer.normalize(word, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+		word = Normalizer.normalize(word, Normalizer.Form.NFD)
+				.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
 		word = word.replace("ł", "l").replace("Ł", "L");
 		return word;
 	}
@@ -161,13 +164,15 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 		JTextArea textArea = new JTextArea();
 		try {
 			textArea = (JTextArea) findElementInsideOrCreate(panel, JTextArea.class);
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+		}
+		catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			sendErrorToParent(e);
 		}
 		return textArea.getText();
 	}
 
-	private boolean doesWordContainSearchedWord(String word, String searched, SearchOptions options) {
+	private boolean doesWordContainSearchedWord(String word, String searched,
+			SearchOptions options) {
 		if (options.isMatchByWordEnabled()) {
 			return doesPhraseContainSearchedWords(word, searched);
 		}
@@ -196,7 +201,8 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 
 	private void removeHighlightedPanelIfThereIs() {
 		if (this.highlightedRowNumber >= 0) {
-			((JPanel) this.panels.get(this.highlightedRowNumber)).setBackground(this.defaultRowColor);
+			((JPanel) this.panels.get(this.highlightedRowNumber))
+					.setBackground(this.defaultRowColor);
 		}
 	}
 
@@ -212,7 +218,8 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 		try {
 			int rowNumber = removeRowContainingWordAndReturnRowNumber(word);
 			updateRowNumbersAfterThatRow(rowNumber);
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+		}
+		catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			sendErrorToParent(e);
 		}
 		revalidate();
@@ -321,9 +328,9 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 	public void save() {
 		this.elementsMaker.save();
 	}
-	
-	public boolean showMessage (String message){
-	    return parent.showConfirmDialog(message);
+
+	public boolean showMessage(String message) {
+		return parent.showConfirmDialog(message);
 	}
-	
+
 }

@@ -52,18 +52,18 @@ public abstract class ClassWithDialog extends JFrame {
 			dialog.setLocationAtLeftUpperCornerOfParent(this);
 		}
 	}
-	
-	public boolean showConfirmDialog (String prompt){
-	    if (notOpenedYet()){
-		dialog = new MyDialog(this);
-		
-		dialog.showConfirmDialog(prompt);
-		
-//		dialog.setLocationAtCenterOfParent(this);	
-//		dialog.setLocationRelativeTo(null);
-		
-	    }
-	    return dialog.isAccepted();
+
+	public boolean showConfirmDialog(String prompt) {
+		if (notOpenedYet()) {
+			dialog = new MyDialog(this);
+
+			dialog.showConfirmDialog(prompt);
+
+			// dialog.setLocationAtCenterOfParent(this);
+			// dialog.setLocationRelativeTo(null);
+
+		}
+		return dialog.isAccepted();
 	}
 
 	public boolean isDialogOpened() {

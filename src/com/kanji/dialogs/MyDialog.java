@@ -87,7 +87,8 @@ public class MyDialog extends JDialog {
 	}
 
 	public void showLearningStartDialog(MyList list, int maximumNumber) {
-		LearningStartPanel dialog = new LearningStartPanel(mainPanel, this, parentWindow, maximumNumber);
+		LearningStartPanel dialog = new LearningStartPanel(mainPanel, this, parentWindow,
+				maximumNumber);
 		mainPanel = dialog.createPanel(list);
 		showYourself(Titles.learnStartDialogTitle);
 	}
@@ -108,7 +109,8 @@ public class MyDialog extends JDialog {
 			}
 		};
 		JRootPane root = getRootPane();
-		root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "close");
+		root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "close");
 		root.getActionMap().put("close", action);
 		setRootPane(root);
 		ModalityType modality;
@@ -138,20 +140,17 @@ public class MyDialog extends JDialog {
 		mainPanel = dialog.createPanel(list);
 		showYourself(Titles.insertWordDialogTitle);
 	}
-	
-	public void showConfirmDialog (String message){
-	    	ConfirmPanel panel = new ConfirmPanel(mainPanel,this);
-	    	panel.setLayoutConstraints(layoutConstraints);
-	    	mainPanel = panel.createPanel(message);
-	    	setLocationRelativeTo(parentWindow);
-	    	pack();
-	    	setModal(true);
-	    	
-	    	
-	    	setVisible(true);
-	    	
-	    	
-	    	
+
+	public void showConfirmDialog(String message) {
+		ConfirmPanel panel = new ConfirmPanel(mainPanel, this);
+		panel.setLayoutConstraints(layoutConstraints);
+		mainPanel = panel.createPanel(message);
+		setLocationRelativeTo(parentWindow);
+		pack();
+		setModal(true);
+
+		setVisible(true);
+
 	}
 
 	public void showErrorDialogInNewWindow(String message) { // TODO jak tego
@@ -159,7 +158,8 @@ public class MyDialog extends JDialog {
 																// kopia
 		if (upper == null || !upper.isOpened) {
 			upper = new MyDialog(this);
-		} else
+		}
+		else
 			return;
 
 		upper.showMsgDialog(message, true);
@@ -192,7 +192,7 @@ public class MyDialog extends JDialog {
 
 	public void setLocationAtCenterOfParent(Window parent) {
 		setLocationRelativeTo(parentWindow);
-	  
+
 	}
 
 	public void setLocationAtLeftUpperCornerOfParent(Window parent) {
@@ -205,13 +205,13 @@ public class MyDialog extends JDialog {
 			parent.save();
 		}
 	}
-	
-	public void setAccepted (boolean accepted){
-	    this.isAccepted = accepted;
+
+	public void setAccepted(boolean accepted) {
+		this.isAccepted = accepted;
 	}
-	
-	public boolean isAccepted(){
-	    return isAccepted;
+
+	public boolean isAccepted() {
+		return isAccepted;
 	}
 
 }

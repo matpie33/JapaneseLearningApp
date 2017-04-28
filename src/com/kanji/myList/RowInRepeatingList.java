@@ -24,57 +24,58 @@ import javax.swing.JTextArea;
 import com.kanji.Row.RepeatingInformation;
 import com.kanji.Row.RepeatingList;
 
-public class RowInRepeatingList extends RowsCreator <RepeatingInformation>{
+public class RowInRepeatingList extends RowsCreator<RepeatingInformation> {
 
-	private Color defaultColor = Color.RED; 
+	private Color defaultColor = Color.RED;
 	private MyList<RepeatingList> list;
-	
-	public RowInRepeatingList (MyList<RepeatingList> list){
-		this.list=list;
+
+	public RowInRepeatingList(MyList<RepeatingList> list) {
+		this.list = list;
 	}
-		
+
 	@Override
 	public JPanel addWord(RepeatingInformation rep, int rowsNumber) {
 		String word = rep.getRepeatingRange();
 		Date date1 = rep.getRepeatingDate();
 		JPanel rowPanel = createPanel();
-		
+
 		JLabel number = createNumberLabel(rowsNumber);
 		JTextArea repeatedWords = createTextArea(word);
 		JTextArea date = createDateArea(date1);
-		
+
 		JButton delete = createButtonRemove(rowPanel, rep);
-		
-		Component [] components = {number, repeatedWords, date, delete};
-		addComponentsToPanel(rowPanel, components);		
+
+		Component[] components = { number, repeatedWords, date, delete };
+		addComponentsToPanel(rowPanel, components);
 
 		return rowPanel;
-		
+
 	}
-	
-	private JPanel createPanel(){
-		JPanel panel = new JPanel(new GridBagLayout());		
+
+	private JPanel createPanel() {
+		JPanel panel = new JPanel(new GridBagLayout());
 		panel.setBackground(defaultColor);
 		return panel;
 	}
-	
-	private JLabel createNumberLabel (int rowsNumber){
-		return new JLabel(""+rowsNumber);
+
+	private JLabel createNumberLabel(int rowsNumber) {
+		return new JLabel("" + rowsNumber);
 	}
-	
-	private JTextArea createTextArea(String text){
-	
+
+	private JTextArea createTextArea(String text) {
+
 		JTextArea elem = new JTextArea(text);
-		elem.addKeyListener(new KeyAdapter(){
+		elem.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyReleased (KeyEvent e){
+			public void keyReleased(KeyEvent e) {
 				try {
-					FileOutputStream fout = new FileOutputStream ("hi.txt");
+					FileOutputStream fout = new FileOutputStream("hi.txt");
 					ObjectOutputStream oos = new ObjectOutputStream(fout);
 					oos.writeObject(list.getWords());
 					fout.close();
 					System.out.println("save");
-				} catch (IOException e1) {
+				}
+				catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -85,58 +86,59 @@ public class RowInRepeatingList extends RowsCreator <RepeatingInformation>{
 		elem.setOpaque(true);
 		return elem;
 	}
-	
-	private JTextArea createDateArea(Date date){
+
+	private JTextArea createDateArea(Date date) {
 		JTextArea textArea = createTextArea("");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd HH:mm:ss");
-		Calendar calendar = Calendar.getInstance();		
-		
+		Calendar calendar = Calendar.getInstance();
+
 		textArea.setText(sdf.format(date));
-//		textArea.setText(date+"");
+		// textArea.setText(date+"");
 		textArea.setEditable(false);
-		
+
 		return textArea;
 	}
-	
-	private void addComponentsToPanel (JPanel panel, Component [] components){		
+
+	private void addComponentsToPanel(JPanel panel, Component[] components) {
 		GridBagConstraints c = new GridBagConstraints();
-		c.gridx=0;
-		c.gridy=0;
+		c.gridx = 0;
+		c.gridy = 0;
 		int a = 5;
-		c.insets=new Insets(a,a,a,a);
-		c.weightx=1;
-		c.weighty=1;
-		c.fill= GridBagConstraints.HORIZONTAL;
-		
+		c.insets = new Insets(a, a, a, a);
+		c.weightx = 1;
+		c.weighty = 1;
+		c.fill = GridBagConstraints.HORIZONTAL;
+
 		int componentNumber = 1;
-		for (Component component: components){
+		for (Component component : components) {
 			c.anchor = setPosition(componentNumber, components.length);
-			panel.add(component,c);
+			panel.add(component, c);
 			c.gridx++;
-			componentNumber++;			
-		}		
+			componentNumber++;
+		}
 	}
-	
-	private int setPosition(int componentNumber, int numberOfComponents){
-		int anchor=0;
-		if (componentNumber==1)
-			anchor=GridBagConstraints.WEST;
+
+	private int setPosition(int componentNumber, int numberOfComponents) {
+		int anchor = 0;
+		if (componentNumber == 1)
+			anchor = GridBagConstraints.WEST;
 		else if (componentNumber == numberOfComponents)
 			anchor = GridBagConstraints.EAST;
-		else anchor = GridBagConstraints.CENTER;			
+		else
+			anchor = GridBagConstraints.CENTER;
 		return anchor;
 	}
-	
-	private JButton createButtonRemove(final JPanel text, final RepeatingInformation kanji){
+
+	private JButton createButtonRemove(final JPanel text, final RepeatingInformation kanji) {
 		JButton remove = new JButton("-");
-		remove.addActionListener(new ActionListener (){
+		remove.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e){		
-			    	if (!list.showMessage("Sure?")){
-			    	    return;
-			    	}
-			    	
-				list.removeRowContainingTheWord(text);	
+			public void actionPerformed(ActionEvent e) {
+				if (!list.showMessage("Sure?")) {
+					return;
+				}
+
+				list.removeRowContainingTheWord(text);
 				list.getWords().remove(kanji);
 				list.save();
 			}
@@ -146,9 +148,7 @@ public class RowInRepeatingList extends RowsCreator <RepeatingInformation>{
 
 	@Override
 	public void setList(MyList list) {
-		this.list=list;		
+		this.list = list;
 	}
-	
-
 
 }

@@ -181,15 +181,14 @@ public class RepeatingWordsPanel extends JPanel {
 	}
 
 	private void showKanji() {
-		this.kanjiTextArea
-				.setText(this.excel.getKanjiById(((KanjiWords) words.getWords()).getIdOfTheWord(this.currentWord)));
+		this.kanjiTextArea.setText(this.excel
+				.getKanjiById(((KanjiWords) words.getWords()).getIdOfTheWord(this.currentWord)));
 	}
 
 	private void createPauseOrResumeButton() {
 		this.pauseOrResume = new JButton("Pauza");
 		pauseOrResume.setFocusable(false);
-		AbstractAction a = new AbstractAction ()
-		 {
+		AbstractAction a = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				pauseOrResume();
 			}
@@ -273,7 +272,8 @@ public class RepeatingWordsPanel extends JPanel {
 			setButtonsToLearningAndAddThem();
 			this.wordTextArea.setText(pickRandomWord());
 			this.kanjiTextArea.setText("");
-		} else {
+		}
+		else {
 			this.parent.showMessageDialog(Prompts.repeatingIsDonePrompt, false);
 			stopTimer();
 			this.parent.setProblematicKanjis(this.problematicKanjis);
@@ -387,11 +387,13 @@ public class RepeatingWordsPanel extends JPanel {
 			public void run() {
 				while (timerRunning) {
 					RepeatingWordsPanel.this.timeElapsed += RepeatingWordsPanel.this.interval;
-					RepeatingWordsPanel.this.time.setText(RepeatingWordsPanel.this.timeLabel + String.format("%.2f",
-							new Object[] { Double.valueOf(RepeatingWordsPanel.this.timeElapsed) }));
+					RepeatingWordsPanel.this.time.setText(RepeatingWordsPanel.this.timeLabel
+							+ String.format("%.2f", new Object[] {
+									Double.valueOf(RepeatingWordsPanel.this.timeElapsed) }));
 					try {
 						Thread.sleep((int) (RepeatingWordsPanel.this.interval * 1000));
-					} catch (InterruptedException e) {
+					}
+					catch (InterruptedException e) {
 						parent.showMessageDialog(e.getMessage(), true);
 					}
 				}

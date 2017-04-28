@@ -72,13 +72,13 @@ public class InsertWordPanel {
 	}
 
 	private void limitCharactersAccordingToInteger(JTextField textField) {
-		((AbstractDocument) textField.getDocument())
-				.setDocumentFilter(new LimitDocumentFilter(NumberValues.INTEGER_MAX_VALUE_DIGITS_AMOUNT));
+		((AbstractDocument) textField.getDocument()).setDocumentFilter(
+				new LimitDocumentFilter(NumberValues.INTEGER_MAX_VALUE_DIGITS_AMOUNT));
 	}
 
 	private JButton createButtonValidate(String text) {
 		JButton button = new JButton(text);
-		AbstractAction action = new AbstractAction(){		
+		AbstractAction action = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String numberInput = insertNumber.getText();
@@ -93,7 +93,7 @@ public class InsertWordPanel {
 						parentDialog.save();
 						insertWord.selectAll();
 						insertWord.requestFocusInWindow();
-						
+
 					}
 
 				}
@@ -101,7 +101,8 @@ public class InsertWordPanel {
 			}
 		};
 		button.addActionListener(action);
-		button.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0), "save");
+		button.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "save");
 		button.getActionMap().put("save", action);
 		return button;
 	}

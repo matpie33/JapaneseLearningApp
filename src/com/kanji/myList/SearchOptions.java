@@ -1,11 +1,11 @@
 package com.kanji.myList;
 
 public class SearchOptions {
-	
+
 	private boolean matchByWord;
 	private boolean matchByExpression;
-	
-	public SearchOptions (){
+
+	public SearchOptions() {
 		matchByWord = false;
 		matchByExpression = false;
 	}
@@ -27,8 +27,8 @@ public class SearchOptions {
 		matchByExpression = true;
 		matchByWord = false;
 	}
-	
-	public void setDefaultOption(){
+
+	public void setDefaultOption() {
 		matchByExpression = false;
 		matchByWord = false;
 	}

@@ -4,81 +4,79 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SetOfRanges {
-	
-	private List <Range> ranges;
-	
-	public SetOfRanges (){
-		ranges = new ArrayList <Range> ();
-	}	
-	
-	public SetOfRanges (Range range){
+
+	private List<Range> ranges;
+
+	public SetOfRanges() {
+		ranges = new ArrayList<Range>();
+	}
+
+	public SetOfRanges(Range range) {
 		this();
 		ranges.add(range);
 	}
-	
-	public boolean addRange (Range newRange){
+
+	public boolean addRange(Range newRange) {
 		boolean isModified = false;
-		for (int i=0; i<ranges.size(); i++){
+		for (int i = 0; i < ranges.size(); i++) {
 			Range rangeFromSet = ranges.get(i);
-			if (rangeFromSet.includesRange(newRange)){
+			if (rangeFromSet.includesRange(newRange)) {
 				return false;
 			}
-				
-			if (rangeFromSet.isValueInsideRange(newRange.rangeStart)){
+
+			if (rangeFromSet.isValueInsideRange(newRange.rangeStart)) {
 				ranges.remove(rangeFromSet);
 				i--;
 				newRange = new Range(rangeFromSet.rangeStart, newRange.rangeEnd);
-				isModified=true;
-				
-				
+				isModified = true;
+
 			}
-			else if (rangeFromSet.isValueInsideRange(newRange.rangeEnd)){
+			else if (rangeFromSet.isValueInsideRange(newRange.rangeEnd)) {
 				ranges.remove(rangeFromSet);
 				i--;
 				newRange = new Range(newRange.rangeStart, rangeFromSet.rangeEnd);
-				isModified=true;
-				
+				isModified = true;
+
 			}
-			else if (newRange.includesRange(rangeFromSet)){
+			else if (newRange.includesRange(rangeFromSet)) {
 				ranges.remove(rangeFromSet);
 				i--;
-				isModified=true;				
+				isModified = true;
 			}
-			else if (newRange.isFollowedBy(rangeFromSet)){
+			else if (newRange.isFollowedBy(rangeFromSet)) {
 				ranges.remove(rangeFromSet);
 				i--;
-				isModified=true;
+				isModified = true;
 				newRange = new Range(newRange.rangeStart, rangeFromSet.rangeEnd);
 			}
-			else if (rangeFromSet.isFollowedBy(newRange)){
+			else if (rangeFromSet.isFollowedBy(newRange)) {
 				ranges.remove(rangeFromSet);
 				i--;
-				isModified=true;
+				isModified = true;
 				newRange = new Range(rangeFromSet.rangeStart, newRange.rangeEnd);
-				
+
 			}
 		}
 		ranges.add(newRange);
 		return isModified;
 	}
-	
-	public String getRangesAsString(){
-		String msg="";
-		for (Range r: ranges){
-			msg+="od: "+r.rangeStart+" do "+r.rangeEnd+"\n";
+
+	public String getRangesAsString() {
+		String msg = "";
+		for (Range r : ranges) {
+			msg += "od: " + r.rangeStart + " do " + r.rangeEnd + "\n";
 		}
 		return msg;
 	}
-	
-	public List <Range> getRangesAsList(){
+
+	public List<Range> getRangesAsList() {
 		return ranges;
 	}
-	
 
-	public int sumRangeInclusive (){
+	public int sumRangeInclusive() {
 		int sum = 0;
-		for (Range range: ranges){
-			sum += range.rangeEnd-range.rangeStart+1;			
+		for (Range range : ranges) {
+			sum += range.rangeEnd - range.rangeStart + 1;
 		}
 		return sum;
 	}
