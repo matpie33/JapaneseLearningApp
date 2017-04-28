@@ -48,7 +48,8 @@ public class LearningStartPanel {
 	private int numberOfWords;
 	private int sumOfWords;
 
-	public LearningStartPanel(JPanel panel, MyDialog parent, Window parentOfParent, int numberOfWords) {
+	public LearningStartPanel(JPanel panel, MyDialog parent, Window parentOfParent,
+			int numberOfWords) {
 		this.numberOfWords = numberOfWords;
 		mainPanel = panel;
 		parentDialog = parent;
@@ -103,6 +104,9 @@ public class LearningStartPanel {
 				updateSumOfWords();
 			}
 		});
+		if (getProblematicKanjiNumber() == 0) {
+			problematicCheckbox.setEnabled(false);
+		}
 
 		return problematicCheckbox;
 
@@ -209,8 +213,8 @@ public class LearningStartPanel {
 		JTextField[] textFields = new JTextField[2];
 		for (int i = 0; i < 2; i++) {
 			textFields[i] = new JTextField(10);
-			((AbstractDocument) textFields[i].getDocument())
-					.setDocumentFilter(new LimitDocumentFilter(NumberValues.INTEGER_MAX_VALUE_DIGITS_AMOUNT));
+			((AbstractDocument) textFields[i].getDocument()).setDocumentFilter(
+					new LimitDocumentFilter(NumberValues.INTEGER_MAX_VALUE_DIGITS_AMOUNT));
 		}
 		final JTextField from = textFields[0];
 		final JTextField to = textFields[1];
@@ -242,7 +246,8 @@ public class LearningStartPanel {
 
 				if (valueTo <= valueFrom) {
 					showErrorIfNotExists(ExceptionsMessages.rangeToValueLessThanRangeFromValue);
-				} else if (isNumberHigherThanMaximum(valueFrom) || isNumberHigherThanMaximum(valueTo))
+				}
+				else if (isNumberHigherThanMaximum(valueFrom) || isNumberHigherThanMaximum(valueTo))
 					showErrorIfNotExists(ExceptionsMessages.rangeValueTooHigh);
 				else {
 					removeErrorIfExists();
@@ -305,7 +310,8 @@ public class LearningStartPanel {
 			this.sumOfWords += s.sumRangeInclusive();
 			updateSumOfWords();
 
-		} catch (IllegalArgumentException ex) {
+		}
+		catch (IllegalArgumentException ex) {
 			// We keep the message for untill approve button is clicked
 		}
 
@@ -319,7 +325,8 @@ public class LearningStartPanel {
 		if (parentFrame instanceof BaseWindow) {
 			BaseWindow p = (BaseWindow) parentFrame;
 			return p.getProblematicKanjis().size();
-		} else
+		}
+		else
 			return 0;
 	}
 
@@ -379,7 +386,8 @@ public class LearningStartPanel {
 				addRowToPanel(panel);
 				parentDialog.repaint();
 				parentDialog.revalidate();
-				scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
+				scrollPane.getVerticalScrollBar()
+						.setValue(scrollPane.getVerticalScrollBar().getMaximum());
 
 			}
 		});
@@ -398,7 +406,7 @@ public class LearningStartPanel {
 		sumRange.setEditable(false);
 		if (parentFrame instanceof BaseWindow) {
 			BaseWindow b = (BaseWindow) parentFrame;
-			sumRange.setText(sumRange.getText() + ": " + b.getProblematicKanjis().size());
+			sumRange.setText(sumRange.getText() + b.getProblematicKanjis().size());
 		}
 
 		return sumRange;
@@ -417,10 +425,12 @@ public class LearningStartPanel {
 					if (!excelReaderIsLoaded()) {
 						parentDialog.showErrorDialogInNewWindow(ExceptionsMessages.excelNotLoaded);
 						waitUntillExcelLoads();
-					} else
+					}
+					else
 						switchToRepeatingPanel();
 
-				} catch (Exception ex) {
+				}
+				catch (Exception ex) {
 					ex.printStackTrace();
 					parentDialog.showErrorDialogInNewWindow(ex.getMessage());
 				}
@@ -431,7 +441,7 @@ public class LearningStartPanel {
 	}
 
 	private void addToRepeatsListOrShowError(SetOfRanges setOfRanges) throws Exception {
-		if (setOfRanges.getRangesAsString().isEmpty())
+		if (setOfRanges.getRangesAsString().isEmpty() && !problematicCheckbox.isSelected())
 			throw new Exception(ExceptionsMessages.noInputSupplied);
 
 		Calendar calendar = Calendar.getInstance();
@@ -457,7 +467,8 @@ public class LearningStartPanel {
 		if (parentFrame instanceof BaseWindow) {
 			BaseWindow parent = (BaseWindow) parentFrame;
 			return parent.isExcelLoaded();
-		} else
+		}
+		else
 			return false; // TODO or throw exception
 	}
 
@@ -479,7 +490,8 @@ public class LearningStartPanel {
 			JPanel row;
 			if (p instanceof JPanel) {
 				row = (JPanel) p;
-			} else
+			}
+			else
 				continue;
 
 			boolean wasSetModifiedInInteration = getRangeFromRowAndAddToSet(row, setOfRanges);
@@ -491,7 +503,8 @@ public class LearningStartPanel {
 
 	}
 
-	private boolean getRangeFromRowAndAddToSet(JPanel row, SetOfRanges set) throws IllegalArgumentException {
+	private boolean getRangeFromRowAndAddToSet(JPanel row, SetOfRanges set)
+			throws IllegalArgumentException {
 		boolean alteredSet = false;
 		int textFieldsCounter = 1;
 		int rangeStart = 0;

@@ -79,7 +79,8 @@ public class BaseWindow extends ClassWithDialog {
 		MyList repeatsList = maker.getRepeatsList();
 		listScrollWords = createScrollPaneForList(wordsList);
 		listScrollRepeated = createScrollPaneForList(repeatsList);
-		listsSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, listScrollWords, listScrollRepeated);
+		listsSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, listScrollWords,
+				listScrollRepeated);
 		repaint();
 	}
 
@@ -87,7 +88,7 @@ public class BaseWindow extends ClassWithDialog {
 		infoPanel = new JPanel();
 		infoPanel.setBackground(Color.YELLOW);
 		saveInfo = new JLabel();
-		changeSaveStatus(SavingStatus.BrakZmian);
+		changeSaveStatus(SavingStatus.NO_CHANGES);
 		infoPanel.add(saveInfo);
 	}
 
@@ -226,7 +227,8 @@ public class BaseWindow extends ClassWithDialog {
 	}
 
 	public void changeSaveStatus(SavingStatus savingStatus) {
-		saveInfo.setText(Prompts.savingStatusPrompt + savingStatus);
+		saveInfo.setText(Prompts.savingStatusPrompt + savingStatus.getStatus() + "; "
+				+ Prompts.problematicKanjiPrompt + problematicKanjis.size());
 		repaint();
 	}
 

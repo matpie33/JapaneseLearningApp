@@ -1,5 +1,15 @@
 package com.kanji.window;
 
 public enum SavingStatus {
-	Zapisywanie , Zapisano, BrakZmian
+	SAVING("Zapisywanie"), SAVED("Zapisano"), NO_CHANGES("Brak zmian");
+
+	private String status;
+
+	private SavingStatus(String status) {
+		this.status = status;
+	}
+
+	public String getStatus() {
+		return status;
+	}
 }
