@@ -1,4 +1,4 @@
-package com.kanji.window;
+package com.kanji.dialogs;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -29,6 +29,7 @@ import com.kanji.fileReading.ExcelReader;
 import com.kanji.myList.MyList;
 import com.kanji.range.Range;
 import com.kanji.range.SetOfRanges;
+import com.kanji.window.BaseWindow;
 import com.sun.glass.events.KeyEvent;
 
 public class RepeatingWordsPanel extends JPanel {
@@ -274,14 +275,21 @@ public class RepeatingWordsPanel extends JPanel {
 			this.kanjiTextArea.setText("");
 		}
 		else {
-			this.parent.showMessageDialog(Prompts.repeatingIsDonePrompt, false);
-			stopTimer();
-			this.parent.setProblematicKanjis(this.problematicKanjis);
-			this.parent.showCardPanel(BaseWindow.LIST_PANEL);
-			this.parent.save();
+			displayFinishMessageAndStopTimer();
 		}
 		this.remainingLabel.setText(createRemainingPrompt());
 		this.showWord.requestFocusInWindow();
+	}
+
+	private void displayFinishMessageAndStopTimer() {
+		String message = Prompts.repeatingIsDonePrompt;
+		message += Prompts.repeatingTimePrompt;
+		message += getTimeElapsed();
+		this.parent.showMessageDialog(message, false);
+		stopTimer();
+		this.parent.setProblematicKanjis(this.problematicKanjis);
+		this.parent.showCardPanel(BaseWindow.LIST_PANEL);
+		this.parent.save();
 	}
 
 	private void addElementsToRepeatingPanel(JButton[] buttons) {
@@ -387,9 +395,8 @@ public class RepeatingWordsPanel extends JPanel {
 			public void run() {
 				while (timerRunning) {
 					RepeatingWordsPanel.this.timeElapsed += RepeatingWordsPanel.this.interval;
-					RepeatingWordsPanel.this.time.setText(RepeatingWordsPanel.this.timeLabel
-							+ String.format("%.2f", new Object[] {
-									Double.valueOf(RepeatingWordsPanel.this.timeElapsed) }));
+					RepeatingWordsPanel.this.time
+							.setText(RepeatingWordsPanel.this.timeLabel + getTimeElapsed());
 					try {
 						Thread.sleep((int) (RepeatingWordsPanel.this.interval * 1000));
 					}
@@ -401,6 +408,10 @@ public class RepeatingWordsPanel extends JPanel {
 		};
 		this.timerThread = new Thread(runnable);
 		this.timerThread.start();
+	}
+
+	public String getTimeElapsed() {
+		return String.format("%.2f", Double.valueOf(RepeatingWordsPanel.this.timeElapsed));
 	}
 
 	private void stopTimer() {

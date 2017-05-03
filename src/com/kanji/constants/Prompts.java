@@ -12,5 +12,6 @@ public class Prompts {
 	public static final String repeatingIsDonePrompt = "Koniec słów do powtórzenia.";
 	public static final String remainingKanjiPrompt = "Pozostało:";
 	public static final String savingStatusPrompt = "Status zapisywania: ";
+	public static final String repeatingTimePrompt = "Czas powtórek wyniósł: ";
 
 }

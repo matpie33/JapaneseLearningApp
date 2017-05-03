@@ -22,6 +22,7 @@ import javax.swing.border.Border;
 
 import com.kanji.constants.Prompts;
 import com.kanji.constants.Titles;
+import com.kanji.dialogs.RepeatingWordsPanel;
 import com.kanji.fileReading.ExcelReader;
 import com.kanji.myList.MyList;
 import com.kanji.range.SetOfRanges;

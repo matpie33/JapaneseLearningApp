@@ -4,3 +4,4 @@ bin/
 .gitignore
 dist/
 .settings/
+target

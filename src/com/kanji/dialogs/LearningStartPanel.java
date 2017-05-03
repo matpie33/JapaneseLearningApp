@@ -448,7 +448,19 @@ public class LearningStartPanel {
 
 		RepeatingList l = (RepeatingList) repeatsList.getWords();
 		System.out.println("L: " + l);
-		repeatsList.getWords().add(setOfRanges.getRangesAsString(), calendar.getTime(), false);
+		String repeatingInfo = "";
+		if (problematicCheckbox.isSelected()) {
+			repeatingInfo = Options.problematicKanjiOption;
+			if (setOfRanges.getRangesAsList().size() > 0) {
+				repeatingInfo += ", ";
+			}
+			else {
+				repeatingInfo += ".";
+			}
+		}
+
+		repeatingInfo += setOfRanges.getRangesAsString();
+		repeatsList.getWords().add(repeatingInfo, calendar.getTime(), false);
 		// repeatsList.addWord(((RowAsJLabel)repeatsList.getRowCreator()).addWord(rep,
 		// rowsNumber));
 		repeatsList.scrollToBottom();
