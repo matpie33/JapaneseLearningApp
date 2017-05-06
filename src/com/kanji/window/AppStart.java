@@ -6,6 +6,12 @@ import com.kanji.range.SetOfRanges;
 public class AppStart {
 
 	public static void main(String[] args) {
+
+		int v1 = 1280;
+		int v2 = 768;
+		int v3 = v1 * v2;
+		System.out.println("v3: " + v3);
+
 		BaseWindow b = new BaseWindow();
 		b.setVisible(true);
 

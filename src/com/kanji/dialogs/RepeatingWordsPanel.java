@@ -56,6 +56,9 @@ public class RepeatingWordsPanel extends JPanel {
 	private JPanel repeatingPanel;
 	private final Color repeatingBackgroundColor = Color.white;
 	private final Color windowBackgroundColor = Color.GREEN;
+	private int secondsLeft = 0;
+	private int minutesLeft = 0;
+	private int hoursLeft = 0;
 
 	public RepeatingWordsPanel(BaseWindow parent) {
 		this.wordsToRepeat = new LinkedList();
@@ -284,7 +287,7 @@ public class RepeatingWordsPanel extends JPanel {
 	private void displayFinishMessageAndStopTimer() {
 		String message = Prompts.repeatingIsDonePrompt;
 		message += Prompts.repeatingTimePrompt;
-		message += getTimeElapsed();
+		message += getTimePassed();
 		this.parent.showMessageDialog(message, false);
 		stopTimer();
 		this.parent.setProblematicKanjis(this.problematicKanjis);
@@ -342,7 +345,8 @@ public class RepeatingWordsPanel extends JPanel {
 	}
 
 	private String createRemainingPrompt() {
-		return Prompts.remainingKanjiPrompt + " " + this.wordsToRepeat.size();
+		return Prompts.remainingKanjiPrompt + " " + this.wordsToRepeat.size() + " "
+				+ Prompts.kanjiPrompt;
 	}
 
 	public void setRepeatingWords(MyList wordsList) {
@@ -386,6 +390,9 @@ public class RepeatingWordsPanel extends JPanel {
 
 	public void reset() {
 		this.timeElapsed = 0.0D;
+		secondsLeft = 0;
+		minutesLeft = 0;
+		hoursLeft = 0;
 		this.problematicKanjis = new HashSet();
 	}
 
@@ -395,8 +402,20 @@ public class RepeatingWordsPanel extends JPanel {
 			public void run() {
 				while (timerRunning) {
 					RepeatingWordsPanel.this.timeElapsed += RepeatingWordsPanel.this.interval;
+					if (timeElapsed >= 1) {
+						timeElapsed = 0;
+						secondsLeft++;
+					}
+					if (secondsLeft >= 60) {
+						secondsLeft = 0;
+						minutesLeft++;
+					}
+					if (minutesLeft >= 60) {
+						minutesLeft = 0;
+						hoursLeft++;
+					}
 					RepeatingWordsPanel.this.time
-							.setText(RepeatingWordsPanel.this.timeLabel + getTimeElapsed());
+							.setText(RepeatingWordsPanel.this.timeLabel + getTimePassed());
 					try {
 						Thread.sleep((int) (RepeatingWordsPanel.this.interval * 1000));
 					}
@@ -410,8 +429,8 @@ public class RepeatingWordsPanel extends JPanel {
 		this.timerThread.start();
 	}
 
-	public String getTimeElapsed() {
-		return String.format("%.2f", Double.valueOf(RepeatingWordsPanel.this.timeElapsed));
+	public String getTimePassed() {
+		return hoursLeft + " godzin, " + minutesLeft + " minut, " + secondsLeft + " sekund.";
 	}
 
 	private void stopTimer() {
