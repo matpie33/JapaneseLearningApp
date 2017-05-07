@@ -430,7 +430,38 @@ public class RepeatingWordsPanel extends JPanel {
 	}
 
 	public String getTimePassed() {
-		return hoursLeft + " godzin, " + minutesLeft + " minut, " + secondsLeft + " sekund.";
+		String hoursSuffix = adjustSuffixForHours();
+		String minutesSuffix = adjustSuffixForMinutes();
+		String secondsSuffix = adjustSuffixForSeconds();
+		return hoursSuffix + ", " + minutesSuffix + " , " + secondsSuffix + ".";
+	}
+
+	private String adjustSuffixForHours() {
+		return hoursLeft + " godzin" + adjustSuffix(hoursLeft);
+	}
+
+	private String adjustSuffixForMinutes() {
+		return minutesLeft + " minut" + adjustSuffix(minutesLeft);
+	}
+
+	private String adjustSuffixForSeconds() {
+		return secondsLeft + " sekund" + adjustSuffix(secondsLeft);
+	}
+
+	private String adjustSuffix(int timeValue) {
+		int moduloRemainder = timeValue % 10;
+		if (moduloRemainder > 1 && moduloRemainder < 5 && (timeValue < 10 || timeValue > 20)) {
+			return "y";
+		}
+		else if (timeValue == 1) {
+			return "a";
+		}
+		else if ((moduloRemainder >= 5 && moduloRemainder <= 9) || moduloRemainder == 0
+				|| (timeValue >= 11 && timeValue <= 14)
+				|| (moduloRemainder == 1 && timeValue >= 20)) {
+			return "";
+		}
+		return "Nie wylapany if.";
 	}
 
 	private void stopTimer() {
