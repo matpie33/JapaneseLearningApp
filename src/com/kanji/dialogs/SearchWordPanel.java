@@ -3,10 +3,8 @@ package com.kanji.dialogs;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -87,7 +85,9 @@ public class SearchWordPanel {
 		level++;
 		JButton previous = createButtonPrevious(ButtonsNames.buttonPreviousText);
 		JButton next = createButtonNext(ButtonsNames.buttonNextText);
-		addButtonsAtLevel(level, new JButton[] { previous, next });
+		JButton cancel = parentDialog.createButtonDispose(ButtonsNames.buttonCancelText,
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
+		addButtonsAtLevel(level, new JButton[] { previous, next, cancel });
 		return mainPanel;
 	}
 
@@ -95,6 +95,14 @@ public class SearchWordPanel {
 
 		JLabel prompt = new JLabel(promptMessage);
 		JTextField insertWord = new JTextField(20);
+		insertWord.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					tryToFindNextOccurence(NumberValues.FORWARD_DIRECTION);
+				}
+			}
+		});
 
 		JPanel panel = new JPanel();
 		panel.add(prompt);

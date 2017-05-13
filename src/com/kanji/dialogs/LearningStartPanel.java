@@ -12,6 +12,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Calendar;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
@@ -20,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.text.AbstractDocument;
 
 import com.kanji.Row.RepeatingInformation;
@@ -109,6 +111,20 @@ public class LearningStartPanel {
 			problematicCheckbox.setEnabled(false);
 		}
 
+		AbstractAction action = new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (problematicCheckbox.isEnabled()) {
+					problematicCheckbox.setSelected(!problematicCheckbox.isSelected());
+				}
+
+			}
+		};
+
+		mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, 0), "close");
+		mainPanel.getActionMap().put("close", action);
+
 		return problematicCheckbox;
 
 	}
@@ -179,7 +195,7 @@ public class LearningStartPanel {
 		final JPanel rowPanel = new JPanel();
 
 		JLabel from = new JLabel("od");
-		JTextField[] textFields = createTextFieldsForRangeInput(rowPanel);
+		JTextField[] textFields = createTextFieldsForRangeInput(rowPanel, panel);
 		JTextField fieldFrom = textFields[0];
 		JLabel labelTo = new JLabel("do");
 		JTextField fieldTo = textFields[1];
@@ -210,7 +226,8 @@ public class LearningStartPanel {
 		rowsNumber++;
 	}
 
-	private JTextField[] createTextFieldsForRangeInput(final JPanel container) {
+	private JTextField[] createTextFieldsForRangeInput(final JPanel container,
+			final JPanel otherPanel) {
 		JTextField[] textFields = new JTextField[2];
 		for (int i = 0; i < 2; i++) {
 			textFields[i] = new JTextField(10);
@@ -226,11 +243,15 @@ public class LearningStartPanel {
 
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (!(e.getKeyChar() + "").matches("\\d")) {
+				if ((e.getKeyChar() == KeyEvent.VK_ENTER)) {
+					validateAndStart(otherPanel);
+				}
+				else if (!(e.getKeyChar() + "").matches("\\d")) {
 					showErrorIfNotExists(ExceptionsMessages.valueIsNotNumber);
 					e.consume();
 					return;
 				}
+
 			}
 
 			@Override
@@ -418,27 +439,29 @@ public class LearningStartPanel {
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				try {
-					rangesToRepeat = validateInputs(panel);
-					addToRepeatsListOrShowError(rangesToRepeat);
-
-					if (!excelReaderIsLoaded()) {
-						parentDialog.showErrorDialogInNewWindow(ExceptionsMessages.excelNotLoaded);
-						waitUntillExcelLoads();
-					}
-					else
-						switchToRepeatingPanel();
-
-				}
-				catch (Exception ex) {
-					ex.printStackTrace();
-					parentDialog.showErrorDialogInNewWindow(ex.getMessage());
-				}
-
+				validateAndStart(panel);
 			}
 		});
 		return button;
+	}
+
+	private void validateAndStart(JPanel panel) {
+		try {
+			rangesToRepeat = validateInputs(panel);
+			addToRepeatsListOrShowError(rangesToRepeat);
+
+			if (!excelReaderIsLoaded()) {
+				parentDialog.showErrorDialogInNewWindow(ExceptionsMessages.excelNotLoaded);
+				waitUntillExcelLoads();
+			}
+			else
+				switchToRepeatingPanel();
+
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+			parentDialog.showErrorDialogInNewWindow(ex.getMessage());
+		}
 	}
 
 	private void addToRepeatsListOrShowError(SetOfRanges setOfRanges) throws Exception {

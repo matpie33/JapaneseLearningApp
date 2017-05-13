@@ -3,6 +3,8 @@ package com.kanji.Row;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.kanji.constants.Prompts;
+
 public class RepeatingInformation implements Serializable {
 
 	private static final long serialVersionUID = 6124164088342544292L;
@@ -15,6 +17,7 @@ public class RepeatingInformation implements Serializable {
 		repeatingRange = s;
 		repeatingDate = d;
 		wasRepeated = b;
+		timeSpentOnRepeating = Prompts.repeatingTimeNotAvailablePrompt;
 	}
 
 	public String getTimeSpentOnRepeating() {

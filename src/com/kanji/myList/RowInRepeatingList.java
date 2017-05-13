@@ -23,6 +23,7 @@ import javax.swing.JTextArea;
 
 import com.kanji.Row.RepeatingInformation;
 import com.kanji.Row.RepeatingList;
+import com.kanji.constants.Prompts;
 
 public class RowInRepeatingList extends RowsCreator<RepeatingInformation> {
 
@@ -42,14 +43,16 @@ public class RowInRepeatingList extends RowsCreator<RepeatingInformation> {
 		Date date1 = rep.getRepeatingDate();
 		JPanel rowPanel = createPanel();
 
-		JLabel number = createNumberLabel(rowsCounter++);
-		JTextArea repeatedWords = createTextArea(word);
-		JTextArea date = createDateArea(date1);
-		JTextArea timeSpent = createTextArea(time);
+		String rowNumber = "" + rowsCounter++ + ".";
+		JLabel repeatedWords = createLabel(
+				rowNumber + " " + Prompts.repeatingWordsRangePrompt + word + ",");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
+		JLabel date = createLabel(Prompts.repeatingDatePrompt + sdf.format(date1) + ",");
+		JLabel timeSpent = createLabel(Prompts.repeatingTimePrompt + time);
 
 		JButton delete = createButtonRemove(rowPanel, rep);
 
-		Component[] components = { number, repeatedWords, date, timeSpent, delete };
+		Component[] components = { repeatedWords, date, timeSpent, delete };
 		addComponentsToPanel(rowPanel, components);
 
 		return rowPanel;
@@ -62,8 +65,8 @@ public class RowInRepeatingList extends RowsCreator<RepeatingInformation> {
 		return panel;
 	}
 
-	private JLabel createNumberLabel(int rowsNumber) {
-		JLabel l1 = new JLabel("" + rowsNumber);
+	private JLabel createLabel(String word) {
+		JLabel l1 = new JLabel(word);
 		l1.setForeground(Color.WHITE);
 		return l1;
 	}
@@ -113,25 +116,25 @@ public class RowInRepeatingList extends RowsCreator<RepeatingInformation> {
 		c.insets = new Insets(a, a, a, a);
 		c.weightx = 1;
 		c.weighty = 1;
-		c.fill = GridBagConstraints.HORIZONTAL;
+		c.fill = GridBagConstraints.NONE;
 
 		int componentNumber = 1;
 		for (Component component : components) {
 			c.anchor = setPosition(componentNumber, components.length);
 			panel.add(component, c);
-			c.gridx++;
+			c.gridy++;
 			componentNumber++;
 		}
 	}
 
 	private int setPosition(int componentNumber, int numberOfComponents) {
 		int anchor = 0;
-		if (componentNumber == 1)
-			anchor = GridBagConstraints.WEST;
-		else if (componentNumber == numberOfComponents)
-			anchor = GridBagConstraints.EAST;
-		else
-			anchor = GridBagConstraints.CENTER;
+		// if (componentNumber == 1)
+		anchor = GridBagConstraints.WEST;
+		// else if (componentNumber == numberOfComponents)
+		// anchor = GridBagConstraints.EAST;
+		// else
+		// anchor = GridBagConstraints.CENTER;
 		return anchor;
 	}
 
