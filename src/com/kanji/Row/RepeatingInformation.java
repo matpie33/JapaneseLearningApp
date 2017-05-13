@@ -9,11 +9,20 @@ public class RepeatingInformation implements Serializable {
 	private String repeatingRange;
 	private Date repeatingDate;
 	private boolean wasRepeated;
+	private String timeSpentOnRepeating;
 
 	public RepeatingInformation(String s, Date d, boolean b) {
 		repeatingRange = s;
 		repeatingDate = d;
 		wasRepeated = b;
+	}
+
+	public String getTimeSpentOnRepeating() {
+		return timeSpentOnRepeating;
+	}
+
+	public void setTimeSpentOnRepeating(String timeSpentOnRepeating) {
+		this.timeSpentOnRepeating = timeSpentOnRepeating;
 	}
 
 	public String getRepeatingRange() {

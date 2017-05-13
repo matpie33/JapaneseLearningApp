@@ -20,6 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.border.Border;
 
+import com.kanji.Row.RepeatingInformation;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.Titles;
 import com.kanji.dialogs.RepeatingWordsPanel;
@@ -191,6 +192,10 @@ public class BaseWindow extends ClassWithDialog {
 		repeatingWordsPanel.startRepeating();
 	}
 
+	public void setRepeatingInformation(RepeatingInformation info) {
+		repeatingWordsPanel.setRepeatingInformation(info);
+	}
+
 	public void loadExcelReader() {
 
 		excel = new ExcelReader();
@@ -235,6 +240,10 @@ public class BaseWindow extends ClassWithDialog {
 
 	public void updateTitle(String update) {
 		setTitle(Titles.appTitle + "   " + update);
+	}
+
+	public void addToRepeatsList(RepeatingInformation info) {
+		maker.getRepeatsList().getWords().add(info);
 	}
 
 }

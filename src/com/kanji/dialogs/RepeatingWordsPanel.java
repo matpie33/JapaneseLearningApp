@@ -22,6 +22,7 @@ import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 
 import com.kanji.Row.KanjiWords;
+import com.kanji.Row.RepeatingInformation;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.Titles;
@@ -59,6 +60,8 @@ public class RepeatingWordsPanel extends JPanel {
 	private int secondsLeft = 0;
 	private int minutesLeft = 0;
 	private int hoursLeft = 0;
+
+	private RepeatingInformation repeatInfo;
 
 	public RepeatingWordsPanel(BaseWindow parent) {
 		this.wordsToRepeat = new LinkedList();
@@ -293,6 +296,9 @@ public class RepeatingWordsPanel extends JPanel {
 		this.parent.setProblematicKanjis(this.problematicKanjis);
 		this.parent.showCardPanel(BaseWindow.LIST_PANEL);
 		this.parent.save();
+		repeatInfo.setWasRepeated(true);
+		repeatInfo.setTimeSpentOnRepeating(getTimePassed());
+		parent.addToRepeatsList(repeatInfo);
 	}
 
 	private void addElementsToRepeatingPanel(JButton[] buttons) {
@@ -470,5 +476,9 @@ public class RepeatingWordsPanel extends JPanel {
 
 	public void setExcelReader(ExcelReader excel) {
 		this.excel = excel;
+	}
+
+	public void setRepeatingInformation(RepeatingInformation info) {
+		repeatInfo = info;
 	}
 }

@@ -28,24 +28,28 @@ public class RowInRepeatingList extends RowsCreator<RepeatingInformation> {
 
 	private Color defaultColor = Color.RED;
 	private MyList<RepeatingList> list;
+	private int rowsCounter;
 
 	public RowInRepeatingList(MyList<RepeatingList> list) {
 		this.list = list;
+		rowsCounter = 1;
 	}
 
 	@Override
 	public JPanel addWord(RepeatingInformation rep, int rowsNumber) {
 		String word = rep.getRepeatingRange();
+		String time = rep.getTimeSpentOnRepeating();
 		Date date1 = rep.getRepeatingDate();
 		JPanel rowPanel = createPanel();
 
-		JLabel number = createNumberLabel(rowsNumber);
+		JLabel number = createNumberLabel(rowsCounter++);
 		JTextArea repeatedWords = createTextArea(word);
 		JTextArea date = createDateArea(date1);
+		JTextArea timeSpent = createTextArea(time);
 
 		JButton delete = createButtonRemove(rowPanel, rep);
 
-		Component[] components = { number, repeatedWords, date, delete };
+		Component[] components = { number, repeatedWords, date, timeSpent, delete };
 		addComponentsToPanel(rowPanel, components);
 
 		return rowPanel;
@@ -59,7 +63,9 @@ public class RowInRepeatingList extends RowsCreator<RepeatingInformation> {
 	}
 
 	private JLabel createNumberLabel(int rowsNumber) {
-		return new JLabel("" + rowsNumber);
+		JLabel l1 = new JLabel("" + rowsNumber);
+		l1.setForeground(Color.WHITE);
+		return l1;
 	}
 
 	private JTextArea createTextArea(String text) {

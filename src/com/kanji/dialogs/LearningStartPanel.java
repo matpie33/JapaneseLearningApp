@@ -22,6 +22,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.text.AbstractDocument;
 
+import com.kanji.Row.RepeatingInformation;
 import com.kanji.Row.RepeatingList;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.ExceptionsMessages;
@@ -460,7 +461,11 @@ public class LearningStartPanel {
 		}
 
 		repeatingInfo += setOfRanges.getRangesAsString();
-		repeatsList.getWords().add(repeatingInfo, calendar.getTime(), false);
+		if (parentFrame instanceof BaseWindow) {
+			BaseWindow parent = (BaseWindow) parentFrame;
+			parent.setRepeatingInformation(
+					new RepeatingInformation(repeatingInfo, calendar.getTime(), false));
+		}
 		// repeatsList.addWord(((RowAsJLabel)repeatsList.getRowCreator()).addWord(rep,
 		// rowsNumber));
 		repeatsList.scrollToBottom();

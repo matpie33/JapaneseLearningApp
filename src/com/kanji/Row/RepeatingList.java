@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 
 import com.kanji.myList.MyList;
 import com.kanji.myList.RowInRepeatingList;
-import com.kanji.myList.RowInKanjiInformations;
 
 public class RepeatingList implements Serializable {
 

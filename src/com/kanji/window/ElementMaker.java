@@ -146,11 +146,12 @@ public class ElementMaker {
 							}
 							else {
 								Map<Integer, String> map = (Map<Integer, String>) read;
-								repeats.setWords(new RepeatingList(repeats));
+
 								for (Map.Entry<Integer, String> entry : map.entrySet()) {
 									repeats.getWords().add(entry.getValue(),
 											new Date(((long) entry.getKey()) * 1000L), false);
 								}
+								repeats.setWords(new RepeatingList(repeats));
 							}
 							repeats.repaint();
 						}
@@ -334,7 +335,7 @@ public class ElementMaker {
 		return listOfWords;
 	}
 
-	public MyList getRepeatsList() {
+	public MyList<RepeatingList> getRepeatsList() {
 		return repeats;
 	}
 
