@@ -13,8 +13,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -48,11 +50,19 @@ public class RowInRepeatingList extends RowsCreator<RepeatingInformation> {
 				rowNumber + " " + Prompts.repeatingWordsRangePrompt + word + ",");
 		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
 		JLabel date = createLabel(Prompts.repeatingDatePrompt + sdf.format(date1) + ",");
-		JLabel timeSpent = createLabel(Prompts.repeatingTimePrompt + time);
+		JLabel timeSpent = null;
+
+		List<Component> components = new ArrayList<>();
+		components.add(repeatedWords);
+		components.add(date);
+
+		if (time != null) {
+			timeSpent = createLabel(Prompts.repeatingTimePrompt + time);
+			components.add(timeSpent);
+		}
 
 		JButton delete = createButtonRemove(rowPanel, rep);
-
-		Component[] components = { repeatedWords, date, timeSpent, delete };
+		components.add(delete);
 		addComponentsToPanel(rowPanel, components);
 
 		return rowPanel;
@@ -108,7 +118,7 @@ public class RowInRepeatingList extends RowsCreator<RepeatingInformation> {
 		return textArea;
 	}
 
-	private void addComponentsToPanel(JPanel panel, Component[] components) {
+	private void addComponentsToPanel(JPanel panel, List<Component> components) {
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
@@ -120,7 +130,7 @@ public class RowInRepeatingList extends RowsCreator<RepeatingInformation> {
 
 		int componentNumber = 1;
 		for (Component component : components) {
-			c.anchor = setPosition(componentNumber, components.length);
+			c.anchor = setPosition(componentNumber, components.size());
 			panel.add(component, c);
 			c.gridy++;
 			componentNumber++;
