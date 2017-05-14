@@ -20,6 +20,7 @@ import javax.swing.JTextArea;
 
 import com.kanji.Row.KanjiInformation;
 import com.kanji.Row.KanjiWords;
+import com.kanji.constants.Prompts;
 
 public class RowInKanjiInformations extends RowsCreator<KanjiInformation> implements Serializable {
 	/**
@@ -158,7 +159,8 @@ public class RowInKanjiInformations extends RowsCreator<KanjiInformation> implem
 		remove.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!list.showMessage("Sure?")) {
+				if (!list.showMessage(
+						String.format(Prompts.deleteElementPrompt, Prompts.kanjiElementPrompt))) {
 					return;
 				}
 				list.removeRowContainingTheWord(text);

@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Point;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -244,6 +245,10 @@ public class BaseWindow extends ClassWithDialog {
 
 	public void addToRepeatsList(RepeatingInformation info) {
 		maker.getRepeatsList().getWords().add(info);
+	}
+
+	public Point getRightComponentOfSplitPanePosition() {
+		return listsSplitPane.getRightComponent().getLocation();
 	}
 
 }

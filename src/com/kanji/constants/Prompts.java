@@ -17,5 +17,8 @@ public class Prompts {
 	public static final String repeatingTimeNotAvailablePrompt = "nieokreślony";
 	public static final String repeatingWordsRangePrompt = "Powtórzono: ";
 	public static final String repeatingDatePrompt = "Data powtórki: ";
+	public static final String deleteElementPrompt = "Czy jesteś pewien, że chcesz usunąć %s?";
+	public static final String kanjiElementPrompt = "wiersz kanji";
+	public static final String repeatingElementPrompt = "wiersz dotyczący powtórek";
 
 }

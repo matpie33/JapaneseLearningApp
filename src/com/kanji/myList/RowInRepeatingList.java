@@ -153,7 +153,8 @@ public class RowInRepeatingList extends RowsCreator<RepeatingInformation> {
 		remove.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!list.showMessage("Sure?")) {
+				if (!list.showMessage(String.format(Prompts.deleteElementPrompt,
+						Prompts.repeatingElementPrompt))) {
 					return;
 				}
 

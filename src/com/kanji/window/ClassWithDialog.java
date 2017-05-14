@@ -1,5 +1,7 @@
 package com.kanji.window;
 
+import java.awt.Point;
+
 import javax.swing.JFrame;
 
 import com.kanji.dialogs.MyDialog;
@@ -33,7 +35,8 @@ public abstract class ClassWithDialog extends JFrame {
 		if (notOpenedYet()) {
 			dialog = new MyDialog(this);
 			dialog.showInsertDialog(list);
-			dialog.setLocationAtLeftUpperCornerOfParent(this);
+			// dialog.setLocationAtLeftUpperCornerOfParent(this);
+			dialog.setLocation(getRightComponentOfSplitPanePosition());
 		}
 	}
 
@@ -49,7 +52,7 @@ public abstract class ClassWithDialog extends JFrame {
 		if (notOpenedYet()) {
 			dialog = new MyDialog(this);
 			dialog.showLearningStartDialog(list, maximumNumber);
-			dialog.setLocationAtLeftUpperCornerOfParent(this);
+			dialog.setLocationRelativeTo(this);
 		}
 	}
 
@@ -69,5 +72,7 @@ public abstract class ClassWithDialog extends JFrame {
 	public boolean isDialogOpened() {
 		return dialog.isOpened();
 	}
+
+	public abstract Point getRightComponentOfSplitPanePosition();
 
 }
