@@ -295,10 +295,10 @@ public class RepeatingWordsPanel extends JPanel {
 		stopTimer();
 		this.parent.setProblematicKanjis(this.problematicKanjis);
 		this.parent.showCardPanel(BaseWindow.LIST_PANEL);
-		this.parent.save();
 		repeatInfo.setWasRepeated(true);
 		repeatInfo.setTimeSpentOnRepeating(getTimePassed());
 		parent.addToRepeatsList(repeatInfo);
+		this.parent.save();
 	}
 
 	private void addElementsToRepeatingPanel(JButton[] buttons) {
