@@ -125,7 +125,9 @@ public class ElementMaker {
 									i++;
 								}
 							}
+							listOfWords.scrollToBottom();
 							listOfWords.repaint();
+
 						}
 					};
 					Thread t = new Thread(r);
@@ -154,6 +156,7 @@ public class ElementMaker {
 								repeats.setWords(new RepeatingList(repeats));
 							}
 							repeats.repaint();
+							repeats.scrollToBottom();
 						}
 					};
 					Thread t2 = new Thread(r2);

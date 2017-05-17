@@ -251,4 +251,8 @@ public class BaseWindow extends ClassWithDialog {
 		return listsSplitPane.getRightComponent().getLocation();
 	}
 
+	public void scrollToBottom() {
+		maker.getRepeatsList().scrollToBottom();
+	}
+
 }

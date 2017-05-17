@@ -299,6 +299,7 @@ public class RepeatingWordsPanel extends JPanel {
 		repeatInfo.setTimeSpentOnRepeating(getTimePassed());
 		parent.addToRepeatsList(repeatInfo);
 		this.parent.save();
+		parent.scrollToBottom();
 	}
 
 	private void addElementsToRepeatingPanel(JButton[] buttons) {

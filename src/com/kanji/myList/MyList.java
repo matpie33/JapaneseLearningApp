@@ -18,6 +18,7 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.Scrollable;
+import javax.swing.SwingUtilities;
 
 import com.kanji.constants.ExceptionsMessages;
 import com.kanji.window.ClassWithDialog;
@@ -84,15 +85,20 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 		add(new JLabel(this.title));
 	}
 
-	public void addWord(JPanel row) {
+	public void addWord(final JPanel row) {
 		// words.add(parameters);
 		// this.wordsAndID.put(Integer.valueOf(number), word);
-		this.panels.add(row);
-		GridBagConstraints c = createConstraintsForNewRow();
-		add(row, c);
-		// repaint(row.getLocation().x, row.getLocation().y,
-		// row.getSize().width, row.getSize().height);
-		repaint();
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				panels.add(row);
+				GridBagConstraints c = createConstraintsForNewRow();
+				add(row, c);
+				// repaint(row.getLocation().x, row.getLocation().y,
+				// row.getSize().width, row.getSize().height);
+				repaint();
+			}
+		});
 
 	}
 
@@ -309,12 +315,17 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 	}
 
 	public void scrollToBottom() {
-		this.parent.revalidate();
-		revalidate();
-		this.parentScrollPane.revalidate();
-		System.out.println(this.panels.size() + "panels size");
-		JScrollBar scrollBar = this.parentScrollPane.getVerticalScrollBar();
-		scrollBar.setValue(scrollBar.getMaximum());
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				parent.revalidate();
+				revalidate();
+				parentScrollPane.revalidate();
+				JScrollBar scrollBar = parentScrollPane.getVerticalScrollBar();
+				scrollBar.setValue(scrollBar.getMaximum());
+			}
+		});
+
 	}
 
 	private void sendErrorToParent(Exception e) {
