@@ -27,6 +27,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.SwingWorker;
 
 import com.kanji.Row.KanjiInformation;
 import com.kanji.Row.KanjiWords;
@@ -105,9 +106,11 @@ public class ElementMaker {
 					listOfWords.updateWords();
 					final Object readed = oos.readObject();
 
-					Runnable r = new Runnable() {
+					SwingWorker s = new SwingWorker<Void, Void>() {
 						@Override
-						public void run() {
+						public Void doInBackground() {
+
+							// b.updateLeft();
 							if (readed instanceof KanjiWords) {
 								final KanjiWords wordss = (KanjiWords) readed;
 								listOfWords.setWords(wordss);
@@ -125,13 +128,24 @@ public class ElementMaker {
 									i++;
 								}
 							}
-							listOfWords.scrollToBottom();
-							listOfWords.repaint();
 
+							return null;
+						}
+
+						@Override
+						public void done() {
+							BaseWindow b = (BaseWindow) parent;
+							listOfWords.repaint();
+							listOfWords.scrollToBottom();
+
+							b.closeDialog();
 						}
 					};
-					Thread t = new Thread(r);
-					t.start();
+					s.execute();
+					BaseWindow b = (BaseWindow) parent;
+					b.showMessageDialog("loading", true);
+					b.updateTitle(fileToSave.toString());
+					b.changeSaveStatus(SavingStatus.NO_CHANGES);
 
 					final Object read = oos.readObject();
 
@@ -171,11 +185,6 @@ public class ElementMaker {
 						catch (EOFException localEOFException) {
 						}
 					}
-					BaseWindow b = (BaseWindow) parent;
-					b.showMessageDialog("loading", true);
-					b.updateTitle(fileToSave.toString());
-					b.changeSaveStatus(SavingStatus.NO_CHANGES);
-					b.updateLeft();
 
 					fout.close();
 				}

@@ -73,6 +73,10 @@ public abstract class ClassWithDialog extends JFrame {
 		return dialog.isOpened();
 	}
 
+	public void closeDialog() {
+		dialog.dispose();
+	}
+
 	public abstract Point getRightComponentOfSplitPanePosition();
 
 }

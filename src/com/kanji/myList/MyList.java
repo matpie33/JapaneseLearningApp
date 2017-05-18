@@ -96,7 +96,7 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 				add(row, c);
 				// repaint(row.getLocation().x, row.getLocation().y,
 				// row.getSize().width, row.getSize().height);
-				repaint();
+				// repaint();
 			}
 		});
 
