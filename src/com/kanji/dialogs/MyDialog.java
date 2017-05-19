@@ -94,10 +94,14 @@ public class MyDialog extends JDialog {
 	}
 
 	private void showYourself(String title) {
+		setContentPane(mainPanel);
 		pack();
-		setMinimumSize(getSize());
-		setVisible(true);
+		setLocationRelativeTo(parentWindow);
+		setModal(true);
 		setTitle(title);
+		// setMinimumSize(getSize());
+		setVisible(true);
+
 	}
 
 	public void showMsgDialog(String message, boolean modal) {
@@ -118,11 +122,13 @@ public class MyDialog extends JDialog {
 			modality = ModalityType.APPLICATION_MODAL;
 		else
 			modality = ModalityType.MODELESS;
-		setModalityType(modality);
-		setLocationRelativeTo(parentWindow);
+
 		MessagePanel dialog = new MessagePanel(mainPanel, this);
 		dialog.setLayoutConstraints(layoutConstraints);
 		mainPanel = dialog.createPanel(message);
+		// setLocationRelativeTo(parentWindow);
+		// setModal(true);
+		System.out.println("yoyo aa");
 		showYourself(Titles.messageDialogTitle);
 
 	}
@@ -145,10 +151,9 @@ public class MyDialog extends JDialog {
 		ConfirmPanel panel = new ConfirmPanel(mainPanel, this);
 		panel.setLayoutConstraints(layoutConstraints);
 		mainPanel = panel.createPanel(message);
-		setLocationRelativeTo(parentWindow);
 		pack();
+		setLocationRelativeTo(parentWindow);
 		setModal(true);
-
 		setVisible(true);
 
 	}
@@ -163,9 +168,9 @@ public class MyDialog extends JDialog {
 			return;
 
 		upper.showMsgDialog(message, true);
-		upper.setLocationAtCenterOfParent(this);
-		upper.pack();
-		upper.setMinimumSize(upper.getSize());
+		// upper.setLocationAtCenterOfParent(this);
+		// upper.pack();
+		// upper.setMinimumSize(upper.getSize());
 
 	}
 

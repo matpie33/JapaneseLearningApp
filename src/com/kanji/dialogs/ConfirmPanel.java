@@ -61,14 +61,15 @@ public class ConfirmPanel {
 				.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "space");
 
 		noButton.getActionMap().put("space", action);
+		JPanel subPanel = new JPanel();
+		subPanel.add(noButton);
+		subPanel.add(yesButton);
+		subPanel.setOpaque(false);
 		layoutConstraints.gridy++;
 		layoutConstraints.gridx = 0;
 
-		layoutConstraints.fill = GridBagConstraints.NONE;
-		mainPanel.add(yesButton, layoutConstraints);
-
-		layoutConstraints.gridx++;
-		mainPanel.add(noButton, layoutConstraints);
+		layoutConstraints.fill = GridBagConstraints.HORIZONTAL;
+		mainPanel.add(subPanel, layoutConstraints);
 
 		return mainPanel;
 	}
@@ -77,7 +78,7 @@ public class ConfirmPanel {
 		layoutConstraints.gridy = level;
 		layoutConstraints.anchor = GridBagConstraints.CENTER;
 		layoutConstraints.weightx = 1;
-		layoutConstraints.fill = GridBagConstraints.HORIZONTAL;
+		layoutConstraints.fill = GridBagConstraints.NONE;
 		JTextArea elem = new JTextArea(4, 30);
 
 		elem.setText(message);
