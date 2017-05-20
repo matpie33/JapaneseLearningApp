@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 
+import com.kanji.constants.Prompts;
 import com.kanji.constants.Titles;
 import com.kanji.myList.MyList;
 import com.kanji.window.BaseWindow;
@@ -97,11 +98,25 @@ public class MyDialog extends JDialog {
 		setContentPane(mainPanel);
 		pack();
 		setLocationRelativeTo(parentWindow);
-		setModal(true);
+		// setModal(true);
 		setTitle(title);
 		// setMinimumSize(getSize());
 		setVisible(true);
 
+	}
+
+	public LoadingPanel showProgressDialog() {
+		// ModalityType modality;
+		// modality = ModalityType.APPLICATION_MODAL;
+
+		LoadingPanel dialog = new LoadingPanel(mainPanel, this);
+		dialog.setLayoutConstraints(layoutConstraints);
+		mainPanel = dialog.createPanel(Prompts.kanjiLoadingPrompt);
+		// setLocationRelativeTo(parentWindow);
+		// setModal(true);
+		System.out.println("yoyo aa");
+		showYourself(Titles.messageDialogTitle);
+		return dialog;
 	}
 
 	public void showMsgDialog(String message, boolean modal) {

@@ -4,6 +4,7 @@ import java.awt.Point;
 
 import javax.swing.JFrame;
 
+import com.kanji.dialogs.LoadingPanel;
 import com.kanji.dialogs.MyDialog;
 import com.kanji.myList.MyList;
 
@@ -38,6 +39,16 @@ public abstract class ClassWithDialog extends JFrame {
 			// dialog.setLocationAtLeftUpperCornerOfParent(this);
 			dialog.setLocation(getRightComponentOfSplitPanePosition());
 		}
+	}
+
+	public LoadingPanel showProgressDialog() {
+		if (notOpenedYet()) {
+			dialog = new MyDialog(this);
+			LoadingPanel p = dialog.showProgressDialog();
+			dialog.setLocationAtCenterOfParent(this);
+			return p;
+		}
+		return null;
 	}
 
 	public void showMessageDialog(String message, boolean modal) {

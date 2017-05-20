@@ -27,6 +27,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 
 import com.kanji.Row.KanjiInformation;
@@ -35,6 +36,7 @@ import com.kanji.Row.RepeatingList;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.MenuTexts;
 import com.kanji.constants.Titles;
+import com.kanji.dialogs.LoadingPanel;
 import com.kanji.dialogs.MyDialog;
 import com.kanji.fileReading.CustomFileReader;
 import com.kanji.myList.MyList;
@@ -105,18 +107,38 @@ public class ElementMaker {
 					ObjectInputStream oos = new ObjectInputStream(fout);
 					listOfWords.updateWords();
 					final Object readed = oos.readObject();
+					BaseWindow b = (BaseWindow) parent;
+					final LoadingPanel bar = b.showProgressDialog();
+					b.updateTitle(fileToSave.toString());
+					b.changeSaveStatus(SavingStatus.NO_CHANGES);
 
-					SwingWorker s = new SwingWorker<Void, Void>() {
+					SwingWorker s = new SwingWorker<Void, Integer>() {
+
+						private JProgressBar progress;
+
 						@Override
 						public Void doInBackground() {
 
 							// b.updateLeft();
+							progress = new JProgressBar();
+							progress.setIndeterminate(false);
 							if (readed instanceof KanjiWords) {
+								System.out.println("here is performed");
+								bar.setProgressBar(progress);
 								final KanjiWords wordss = (KanjiWords) readed;
+								progress.setMaximum(wordss.getNumberOfKanjis());
 								listOfWords.setWords(wordss);
 								wordss.setList(listOfWords);
 								wordss.initialize();
-								listOfWords.getWords().addAll();
+								List<KanjiInformation> wordsList = listOfWords.getWords()
+										.getAllWords();
+								KanjiWords kanjiWords = listOfWords.getWords();
+								List<Integer> ints = new ArrayList<>();
+								for (int i = 0; i < kanjiWords.getNumberOfKanjis(); i++) {
+									kanjiWords.addRow(wordsList.get(i), i + 1);
+									process(ints);
+									ints.add(1);
+								}
 							}
 							else {
 								Map<Integer, String> map = (Map<Integer, String>) readed;
@@ -133,6 +155,11 @@ public class ElementMaker {
 						}
 
 						@Override
+						public void process(List<Integer> something) {
+							progress.setValue(something.size());
+						}
+
+						@Override
 						public void done() {
 							BaseWindow b = (BaseWindow) parent;
 							listOfWords.repaint();
@@ -142,10 +169,6 @@ public class ElementMaker {
 						}
 					};
 					s.execute();
-					BaseWindow b = (BaseWindow) parent;
-					b.showMessageDialog("loading", true);
-					b.updateTitle(fileToSave.toString());
-					b.changeSaveStatus(SavingStatus.NO_CHANGES);
 
 					final Object read = oos.readObject();
 
@@ -335,8 +358,9 @@ public class ElementMaker {
 
 	private void start() {
 		System.out.println(listOfWords);
-		parent.showLearnStartDialog(repeats, ((KanjiWords) listOfWords.getWords()).getKanjis());
-		System.out.println(((KanjiWords) listOfWords.getWords()).getKanjis());
+		parent.showLearnStartDialog(repeats,
+				((KanjiWords) listOfWords.getWords()).getNumberOfKanjis());
+		System.out.println(((KanjiWords) listOfWords.getWords()).getNumberOfKanjis());
 	}
 
 	public List<JButton> getButtons() {

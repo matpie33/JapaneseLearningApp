@@ -99,7 +99,7 @@ public class KanjiWords implements Serializable {
 		}
 	}
 
-	public int getKanjis() {
+	public int getNumberOfKanjis() {
 		return kanjiWords.size();
 	}
 
