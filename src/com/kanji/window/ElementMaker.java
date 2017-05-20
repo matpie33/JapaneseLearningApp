@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
-import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -103,14 +102,32 @@ public class ElementMaker {
 
 				try {
 
-					FileInputStream fout = new FileInputStream(fileToSave);
-					ObjectInputStream oos = new ObjectInputStream(fout);
+					final FileInputStream fout = new FileInputStream(fileToSave);
+					final ObjectInputStream oos = new ObjectInputStream(fout);
 					listOfWords.updateWords();
 					final Object readed = oos.readObject();
-					BaseWindow b = (BaseWindow) parent;
+					final Object read = oos.readObject();
+
+					final BaseWindow b = (BaseWindow) parent;
+
+					Set<Integer> problematics;
+					try {
+						problematics = (Set<Integer>) oos.readObject();
+						b.setProblematicKanjis(problematics);
+					}
+					catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					catch (IOException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+
 					final LoadingPanel bar = b.showProgressDialog();
 					b.updateTitle(fileToSave.toString());
 					b.changeSaveStatus(SavingStatus.NO_CHANGES);
+					b.repaint();
 
 					SwingWorker s = new SwingWorker<Void, Integer>() {
 
@@ -161,16 +178,21 @@ public class ElementMaker {
 
 						@Override
 						public void done() {
-							BaseWindow b = (BaseWindow) parent;
-							listOfWords.repaint();
-							listOfWords.scrollToBottom();
 
 							b.closeDialog();
+							listOfWords.repaint();
+							listOfWords.scrollToBottom();
+							b.repaint();
+							try {
+								fout.close();
+							}
+							catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}
 					};
 					s.execute();
-
-					final Object read = oos.readObject();
 
 					Runnable r2 = new Runnable() {
 						@Override
@@ -199,17 +221,6 @@ public class ElementMaker {
 					Thread t2 = new Thread(r2);
 					t2.start();
 
-					if (parent instanceof BaseWindow) {
-						try {
-							Set<Integer> problematics = (Set<Integer>) oos.readObject();
-							BaseWindow p = (BaseWindow) parent;
-							p.setProblematicKanjis(problematics);
-						}
-						catch (EOFException localEOFException) {
-						}
-					}
-
-					fout.close();
 				}
 				catch (IOException | ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
