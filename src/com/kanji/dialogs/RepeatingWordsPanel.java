@@ -288,10 +288,7 @@ public class RepeatingWordsPanel extends JPanel {
 	}
 
 	private void displayFinishMessageAndStopTimer() {
-		String message = Prompts.repeatingIsDonePrompt;
-		message += Prompts.repeatingTimePrompt;
-		message += getTimePassed();
-		this.parent.showMessageDialog(message, false);
+
 		stopTimer();
 		this.parent.setProblematicKanjis(this.problematicKanjis);
 		this.parent.showCardPanel(BaseWindow.LIST_PANEL);
@@ -300,6 +297,11 @@ public class RepeatingWordsPanel extends JPanel {
 		parent.addToRepeatsList(repeatInfo);
 		this.parent.save();
 		parent.scrollToBottom();
+
+		String message = Prompts.repeatingIsDonePrompt;
+		message += Prompts.repeatingTimePrompt;
+		message += getTimePassed();
+		this.parent.showMessageDialog(message, false);
 	}
 
 	private void addElementsToRepeatingPanel(JButton[] buttons) {
