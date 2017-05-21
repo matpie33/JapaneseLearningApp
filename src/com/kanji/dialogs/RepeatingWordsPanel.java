@@ -410,6 +410,7 @@ public class RepeatingWordsPanel extends JPanel {
 		Runnable runnable = new Runnable() {
 			public void run() {
 				while (timerRunning) {
+					System.out.println("running");
 					RepeatingWordsPanel.this.timeElapsed += RepeatingWordsPanel.this.interval;
 					if (timeElapsed >= 1) {
 						timeElapsed = 0;
@@ -442,7 +443,7 @@ public class RepeatingWordsPanel extends JPanel {
 		String hoursSuffix = adjustSuffixForHours();
 		String minutesSuffix = adjustSuffixForMinutes();
 		String secondsSuffix = adjustSuffixForSeconds();
-		return hoursSuffix + ", " + minutesSuffix + " , " + secondsSuffix + ".";
+		return hoursSuffix + ", " + minutesSuffix + ", " + secondsSuffix + ".";
 	}
 
 	private String adjustSuffixForHours() {

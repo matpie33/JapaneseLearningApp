@@ -95,14 +95,18 @@ public class MyDialog extends JDialog {
 	}
 
 	private void showYourself(String title) {
+		showYourself(title, true);
+
+	}
+
+	private void showYourself(String title, boolean modal) {
 		setContentPane(mainPanel);
 		pack();
 		setLocationRelativeTo(parentWindow);
-		// setModal(true);
+		setModal(modal);
 		setTitle(title);
 		// setMinimumSize(getSize());
 		setVisible(true);
-
 	}
 
 	public LoadingPanel showProgressDialog() {
@@ -115,7 +119,7 @@ public class MyDialog extends JDialog {
 		// setLocationRelativeTo(parentWindow);
 		// setModal(true);
 		System.out.println("yoyo aa");
-		showYourself(Titles.messageDialogTitle);
+		showYourself(Titles.messageDialogTitle, false);
 		return dialog;
 	}
 
