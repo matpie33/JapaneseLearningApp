@@ -9,8 +9,7 @@ import java.awt.KeyboardFocusManager;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.util.Set;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -20,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 
+import com.kanji.Row.KanjiWords;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.Titles;
 import com.kanji.myList.MyList;
@@ -31,7 +31,6 @@ public class MyDialog extends JDialog {
 	private Insets insets = new Insets(10, 10, 0, 10);
 	private Color backgroundColor = Color.GREEN;
 	private GridBagConstraints layoutConstraints;
-	private boolean isOpened;
 	private MyDialog upper;
 	private JPanel mainPanel;
 	private Window parentWindow;
@@ -51,13 +50,11 @@ public class MyDialog extends JDialog {
 		parentWindow = b;
 		initialize();
 		initializeLayout();
-		addEscapeKeyToCloseTheWindow();
 	}
 
 	private void initialize() {
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 		manager.addKeyEventDispatcher(new MyDispatcher());
-		isOpened = true;
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	}
 
@@ -78,15 +75,6 @@ public class MyDialog extends JDialog {
 		layoutConstraints.anchor = GridBagConstraints.WEST;
 	}
 
-	private void addEscapeKeyToCloseTheWindow() {
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosed(WindowEvent e) {
-				isOpened = false;
-			}
-		});
-	}
-
 	public void showLearningStartDialog(MyList list, int maximumNumber) {
 		LearningStartPanel dialog = new LearningStartPanel(mainPanel, this, parentWindow,
 				maximumNumber);
@@ -95,7 +83,7 @@ public class MyDialog extends JDialog {
 	}
 
 	private void showYourself(String title) {
-		showYourself(title, true);
+		showYourself(title, false);
 
 	}
 
@@ -128,7 +116,6 @@ public class MyDialog extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				isOpened = false;
 			}
 		};
 		JRootPane root = getRootPane();
@@ -148,7 +135,7 @@ public class MyDialog extends JDialog {
 		// setLocationRelativeTo(parentWindow);
 		// setModal(true);
 		System.out.println("yoyo aa");
-		showYourself(Titles.messageDialogTitle);
+		showYourself(Titles.messageDialogTitle, true);
 
 	}
 
@@ -166,6 +153,13 @@ public class MyDialog extends JDialog {
 		showYourself(Titles.insertWordDialogTitle);
 	}
 
+	public void showProblematicKanjiDialog(KanjiWords kanjiWords, Set<Integer> problematicKanjis) {
+		ProblematicKanjiPanel dialog = new ProblematicKanjiPanel(mainPanel, this, kanjiWords);
+		dialog.setLayoutConstraints(layoutConstraints);
+		mainPanel = dialog.createPanel(problematicKanjis);
+		showYourself(Titles.insertWordDialogTitle);
+	}
+
 	public void showConfirmDialog(String message) {
 		ConfirmPanel panel = new ConfirmPanel(mainPanel, this);
 		panel.setLayoutConstraints(layoutConstraints);
@@ -180,7 +174,7 @@ public class MyDialog extends JDialog {
 	public void showErrorDialogInNewWindow(String message) { // TODO jak tego
 																// uniknac bo to
 																// kopia
-		if (upper == null || !upper.isOpened) {
+		if (upper == null || !upper.isDisplayable()) {
 			upper = new MyDialog(this);
 		}
 		else
@@ -191,10 +185,6 @@ public class MyDialog extends JDialog {
 		// upper.pack();
 		// upper.setMinimumSize(upper.getSize());
 
-	}
-
-	public boolean isOpened() {
-		return isOpened;
 	}
 
 	public JButton createButtonDispose(String text, KeyStroke disposeKey) {

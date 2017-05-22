@@ -40,6 +40,7 @@ public class RepeatingWordsPanel extends JPanel {
 	private ExcelReader excel;
 	private BaseWindow parent;
 	private Set<Integer> problematicKanjis;
+	private Set<Integer> currentProblematicKanjis;
 	private String currentWord;
 	private JLabel remainingLabel;
 	private JLabel time;
@@ -64,6 +65,7 @@ public class RepeatingWordsPanel extends JPanel {
 	private RepeatingInformation repeatInfo;
 
 	public RepeatingWordsPanel(BaseWindow parent) {
+		currentProblematicKanjis = new HashSet<>();
 		this.wordsToRepeat = new LinkedList();
 		this.parent = parent;
 		this.timerRunning = false;
@@ -255,8 +257,8 @@ public class RepeatingWordsPanel extends JPanel {
 					// not
 					return;
 				}
-				RepeatingWordsPanel.this.addToProblematic();
-				RepeatingWordsPanel.this.getNextWord();
+				addToProblematic();
+				getNextWord();
 			}
 		};
 		this.notRecognizedWord.addActionListener(a);
@@ -267,7 +269,7 @@ public class RepeatingWordsPanel extends JPanel {
 	private void addToProblematic() {
 		int num = getCurrentWordId();
 		System.out.println(num);
-		this.problematicKanjis.add(Integer.valueOf(num));
+		this.currentProblematicKanjis.add(Integer.valueOf(num));
 	}
 
 	private void getNextWord() {
@@ -290,6 +292,8 @@ public class RepeatingWordsPanel extends JPanel {
 	private void displayFinishMessageAndStopTimer() {
 
 		stopTimer();
+		problematicKanjis.addAll(currentProblematicKanjis);
+
 		this.parent.setProblematicKanjis(this.problematicKanjis);
 		this.parent.showCardPanel(BaseWindow.LIST_PANEL);
 		repeatInfo.setWasRepeated(true);
@@ -301,7 +305,11 @@ public class RepeatingWordsPanel extends JPanel {
 		String message = Prompts.repeatingIsDonePrompt;
 		message += Prompts.repeatingTimePrompt;
 		message += getTimePassed();
-		this.parent.showMessageDialog(message, false);
+		this.parent.showMessageDialog(message, true);
+		System.out.println("done");
+		if (currentProblematicKanjis.size() > 0)
+			parent.showProblematicKanjiDialog((KanjiWords) words.getWords(),
+					currentProblematicKanjis);
 	}
 
 	private void addElementsToRepeatingPanel(JButton[] buttons) {
@@ -403,6 +411,7 @@ public class RepeatingWordsPanel extends JPanel {
 		minutesLeft = 0;
 		hoursLeft = 0;
 		this.problematicKanjis = new HashSet();
+		currentProblematicKanjis.clear();
 	}
 
 	private void startTimer() {

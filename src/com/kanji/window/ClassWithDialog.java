@@ -1,9 +1,11 @@
 package com.kanji.window;
 
 import java.awt.Point;
+import java.util.Set;
 
 import javax.swing.JFrame;
 
+import com.kanji.Row.KanjiWords;
 import com.kanji.dialogs.LoadingPanel;
 import com.kanji.dialogs.MyDialog;
 import com.kanji.myList.MyList;
@@ -28,8 +30,11 @@ public abstract class ClassWithDialog extends JFrame {
 	}
 
 	private boolean notOpenedYet() {
-		return (dialog == null || !dialog.isOpened()); // TODO try to avoid
-														// nulls
+		return (dialog == null || !dialog.isDisplayable()); // TODO
+															// try
+															// to
+															// avoid
+		// nulls
 	}
 
 	public void showDialogToAddWord(MyList list) {
@@ -67,6 +72,14 @@ public abstract class ClassWithDialog extends JFrame {
 		}
 	}
 
+	public void showProblematicKanjiDialog(KanjiWords kanjiWords, Set<Integer> problematicKanjis) {
+		if (notOpenedYet()) {
+			dialog = new MyDialog(this);
+			dialog.showProblematicKanjiDialog(kanjiWords, problematicKanjis);
+			dialog.setLocationRelativeTo(this);
+		}
+	}
+
 	public boolean showConfirmDialog(String prompt) {
 		if (notOpenedYet()) {
 			dialog = new MyDialog(this);
@@ -81,7 +94,7 @@ public abstract class ClassWithDialog extends JFrame {
 	}
 
 	public boolean isDialogOpened() {
-		return dialog.isOpened();
+		return dialog.isDisplayable();
 	}
 
 	public void closeDialog() {
