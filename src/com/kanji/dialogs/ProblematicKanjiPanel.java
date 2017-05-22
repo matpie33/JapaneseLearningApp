@@ -17,7 +17,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
 import com.kanji.Row.KanjiWords;
 import com.kanji.constants.ButtonsNames;
@@ -27,6 +26,8 @@ public class ProblematicKanjiPanel {
 	private GridBagConstraints layoutConstraints;
 	private MyDialog parentDialog;
 	private KanjiWords kanjiInfos;
+	private int repeatedProblematics;
+	private Set<Integer> problematicKanjis;
 
 	public ProblematicKanjiPanel(JPanel panel, MyDialog parent, KanjiWords kanjis) {
 		mainPanel = panel;
@@ -39,9 +40,8 @@ public class ProblematicKanjiPanel {
 		layoutConstraints = c;
 	}
 
-	public JPanel createPanel(Set<Integer> problematicKanjis) {
-
-		int level = 0;
+	public JPanel createPanel(Set<Integer> problematicKanji) {
+		problematicKanjis = problematicKanji;
 		layoutConstraints.gridy = 0;
 		layoutConstraints.fill = GridBagConstraints.HORIZONTAL;
 
@@ -78,6 +78,7 @@ public class ProblematicKanjiPanel {
 					URI uriObject = constructUriFromText(uriText, parentDialog);
 					if (uriObject != null) {
 						openUrlInBrowser(uriObject, parentDialog);
+						repeatedProblematics++;
 					}
 
 				}
@@ -99,7 +100,7 @@ public class ProblematicKanjiPanel {
 		}
 		mainPanel.add(pane);
 
-		JButton button = parentDialog.createButtonDispose(ButtonsNames.buttonApproveText,
+		JButton button = parentDialog.createButtonHide(ButtonsNames.buttonApproveText,
 				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
 		layoutConstraints.fill = GridBagConstraints.NONE;
 		layoutConstraints.anchor = GridBagConstraints.CENTER;
@@ -137,19 +138,8 @@ public class ProblematicKanjiPanel {
 		return uriObject;
 	}
 
-	private void addPromptAtLevel(int level, String message) {
-		layoutConstraints.gridy = level;
-		layoutConstraints.anchor = GridBagConstraints.CENTER;
-		layoutConstraints.weightx = 1;
-		layoutConstraints.fill = GridBagConstraints.HORIZONTAL;
-		JTextArea elem = new JTextArea(4, 30);
-
-		elem.setText(message);
-		elem.setLineWrap(true);
-		elem.setWrapStyleWord(true);
-		elem.setOpaque(false);
-		elem.setEditable(false);
-
-		mainPanel.add(elem, layoutConstraints);
+	public boolean allProblematicKanjisRepeated() {
+		System.out.println("rep: " + repeatedProblematics + "  prob " + problematicKanjis.size());
+		return repeatedProblematics == problematicKanjis.size();
 	}
 }

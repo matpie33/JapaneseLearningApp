@@ -8,6 +8,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -46,6 +48,7 @@ public class BaseWindow extends ClassWithDialog {
 	private GridBagLayout g;
 	private JPanel infoPanel;
 	private JPanel buttonsPanel;
+	private JButton showProblematicKanjis;
 
 	private JLabel saveInfo;
 
@@ -253,6 +256,35 @@ public class BaseWindow extends ClassWithDialog {
 
 	public void scrollToBottom() {
 		maker.getRepeatsList().scrollToBottom();
+	}
+
+	public void addButtonIcon() {
+		if (showProblematicKanjis == null) {
+			showProblematicKanjis = new JButton("Pokaż problematyczne");
+		}
+		showProblematicKanjis.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showProblematicKanjiDialog(null, null);
+			}
+		});
+		for (Component c : infoPanel.getComponents()) {
+			if (c == showProblematicKanjis) {
+				return;
+			}
+		}
+
+		System.out.println("not found");
+		infoPanel.add(showProblematicKanjis);
+		infoPanel.revalidate();
+		infoPanel.repaint();
+	}
+
+	public void removeButtonProblematicsKanji() {
+		infoPanel.remove(showProblematicKanjis);
+		System.out.println("after: " + infoPanel.getComponentCount());
+		infoPanel.revalidate();
+		infoPanel.repaint();
 	}
 
 }

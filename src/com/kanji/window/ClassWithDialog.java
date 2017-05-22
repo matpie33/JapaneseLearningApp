@@ -13,6 +13,7 @@ import com.kanji.myList.MyList;
 @SuppressWarnings("serial")
 public abstract class ClassWithDialog extends JFrame {
 	private MyDialog dialog;
+	private MyDialog problematicKanjisDialog;
 	private boolean isExcelReaderLoaded;
 
 	// TODO remove this class, add dialog property to base window, add method
@@ -73,11 +74,18 @@ public abstract class ClassWithDialog extends JFrame {
 	}
 
 	public void showProblematicKanjiDialog(KanjiWords kanjiWords, Set<Integer> problematicKanjis) {
-		if (notOpenedYet()) {
-			dialog = new MyDialog(this);
-			dialog.showProblematicKanjiDialog(kanjiWords, problematicKanjis);
-			dialog.setLocationRelativeTo(this);
+		if (isProblematicKanjiDialogOpen()) {
+			problematicKanjisDialog = new MyDialog(this);
+			problematicKanjisDialog.showProblematicKanjiDialog(kanjiWords, problematicKanjis);
+			problematicKanjisDialog.setLocationRelativeTo(this);
 		}
+		else {
+			problematicKanjisDialog.setVisible(true);
+		}
+	}
+
+	private boolean isProblematicKanjiDialogOpen() {
+		return problematicKanjisDialog == null || !problematicKanjisDialog.isDisplayable();
 	}
 
 	public boolean showConfirmDialog(String prompt) {
