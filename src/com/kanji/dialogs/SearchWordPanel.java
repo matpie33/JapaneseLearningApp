@@ -8,12 +8,14 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import com.guimaker.colors.BasicColors;
+import com.guimaker.panels.MainPanel;
+import com.guimaker.row.RowMaker;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.ExceptionsMessages;
 import com.kanji.constants.NumberValues;
@@ -24,8 +26,7 @@ import com.kanji.myList.SearchOptions;
 
 public class SearchWordPanel {
 
-	private JPanel mainPanel;
-	private GridBagConstraints layoutConstraints;
+	private MainPanel main;
 	private JTextField textField;
 	private MyDialog parentDialog;
 	private JRadioButton fullWordsSearchOption;
@@ -34,22 +35,26 @@ public class SearchWordPanel {
 	private MyList list;
 
 	public SearchWordPanel(JPanel panel, MyDialog parent) {
-		mainPanel = panel;
+		main = new MainPanel(BasicColors.LIGHT_BLUE, true);
 		parentDialog = parent;
-		layoutConstraints = new GridBagConstraints();
 		options = new SearchOptions();
-	}
-
-	public void setLayoutConstraints(GridBagConstraints c) {
-		layoutConstraints = c;
 	}
 
 	public JPanel createPanel(MyList list) {
 		this.list = list;
 		int level = 0;
+		JLabel prompt = new JLabel(Prompts.wordSearchDialogPrompt);
 		textField = addPromptAndTextFieldAndReturnTextField(level, Prompts.wordSearchDialogPrompt);
+		textField = new JTextField(20);
+		textField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					tryToFindNextOccurence(NumberValues.FORWARD_DIRECTION);
+				}
+			}
+		});
 
-		level++;
 		JRadioButton defaultSearchOption = createRadioButton(level,
 				Options.wordSearchDefaultOption);
 		defaultSearchOption.addActionListener(new ActionListener() {
@@ -59,7 +64,6 @@ public class SearchWordPanel {
 			}
 		});
 
-		level++;
 		fullWordsSearchOption = createRadioButton(level, Options.wordSearchOnlyFullWordsOption);
 		fullWordsSearchOption.addActionListener(new ActionListener() {
 			@Override
@@ -68,7 +72,6 @@ public class SearchWordPanel {
 			}
 		});
 
-		level++;
 		perfectMatchSearchOption = createRadioButton(level, Options.wordSearchPerfectMatchOption);
 		perfectMatchSearchOption.addActionListener(new ActionListener() {
 			@Override
@@ -82,13 +85,22 @@ public class SearchWordPanel {
 
 		defaultSearchOption.setSelected(true);
 
-		level++;
 		JButton previous = createButtonPrevious(ButtonsNames.buttonPreviousText);
 		JButton next = createButtonNext(ButtonsNames.buttonNextText);
 		JButton cancel = parentDialog.createButtonDispose(ButtonsNames.buttonCancelText,
 				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
-		addButtonsAtLevel(level, new JButton[] { previous, next, cancel });
-		return mainPanel;
+
+		main.addRow(RowMaker.createHorizontallyFilledRow(prompt, textField)
+				.fillHorizontallySomeElements(textField));
+		main.addRow(RowMaker.createHorizontallyFilledRow(defaultSearchOption));
+		main.addRow(RowMaker.createHorizontallyFilledRow(fullWordsSearchOption));
+		main.addRow(RowMaker.createHorizontallyFilledRow(perfectMatchSearchOption));
+		main.addRow( // TODO fix in gui maker: if putting rows as highest as
+						// possible, then west
+						// should be as highest as possible, but now I need to
+						// use northwest
+				RowMaker.createUnfilledRow(GridBagConstraints.NORTHWEST, previous, next, cancel));
+		return main.getPanel();
 	}
 
 	private JTextField addPromptAndTextFieldAndReturnTextField(int level, String promptMessage) {
@@ -107,16 +119,12 @@ public class SearchWordPanel {
 		JPanel panel = new JPanel();
 		panel.add(prompt);
 		panel.add(insertWord);
-		layoutConstraints.gridy = level;
-		mainPanel.add(panel, layoutConstraints);
 
 		return insertWord;
 	}
 
 	private JRadioButton createRadioButton(int level, String text) {
 		JRadioButton radioButton = new JRadioButton(text);
-		layoutConstraints.gridy = level;
-		mainPanel.add(radioButton, layoutConstraints);
 		return radioButton;
 	}
 
@@ -150,8 +158,6 @@ public class SearchWordPanel {
 	}
 
 	private void tryToFindNextOccurence(int direction) {
-		System.out.println(options.isMatchByExpressionEnabled());
-		System.out.println(options.isMatchByWordEnabled());
 		try {
 			boolean found = list.findAndHighlightNextOccurence(textField.getText(), direction,
 					options);
@@ -166,15 +172,6 @@ public class SearchWordPanel {
 																		// dobry
 																		// pomysł
 		}
-	}
-
-	private void addButtonsAtLevel(int level, JComponent[] buttons) {
-		JPanel panel = new JPanel();
-		for (JComponent button : buttons)
-			panel.add(button);
-
-		layoutConstraints.gridy = level;
-		mainPanel.add(panel, layoutConstraints);
 	}
 
 }

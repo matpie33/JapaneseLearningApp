@@ -9,28 +9,25 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 
+import com.guimaker.colors.BasicColors;
+import com.guimaker.panels.MainPanel;
+import com.guimaker.row.RowMaker;
 import com.sun.glass.events.KeyEvent;
 
 public class ConfirmPanel {
 
-	private JPanel mainPanel;
-	private GridBagConstraints layoutConstraints;
+	private MainPanel main;
 	private MyDialog parentDialog;
 
 	public ConfirmPanel(JPanel panel, MyDialog parent) {
-		mainPanel = panel;
+		main = new MainPanel(BasicColors.LIGHT_BLUE);
 		parentDialog = parent;
-		layoutConstraints = new GridBagConstraints();
-	}
-
-	public void setLayoutConstraints(GridBagConstraints c) {
-		layoutConstraints = c;
 	}
 
 	public JPanel createPanel(String message) {
 
-		int level = 0;
-		addPromptAtLevel(level, message);
+		JTextArea prompt = addPromptAtLevel(message);
+		main.addRow(RowMaker.createBothSidesFilledRow(prompt));
 
 		JButton yesButton = new JButton("Tak");
 		AbstractAction al = new AbstractAction() {
@@ -59,26 +56,14 @@ public class ConfirmPanel {
 		noButton.addActionListener(action);
 		noButton.getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW)
 				.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "space");
-
 		noButton.getActionMap().put("space", action);
-		JPanel subPanel = new JPanel();
-		subPanel.add(noButton);
-		subPanel.add(yesButton);
-		subPanel.setOpaque(false);
-		layoutConstraints.gridy++;
-		layoutConstraints.gridx = 0;
 
-		layoutConstraints.fill = GridBagConstraints.HORIZONTAL;
-		mainPanel.add(subPanel, layoutConstraints);
+		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, noButton, yesButton));
 
-		return mainPanel;
+		return main.getPanel();
 	}
 
-	private void addPromptAtLevel(int level, String message) {
-		layoutConstraints.gridy = level;
-		layoutConstraints.anchor = GridBagConstraints.CENTER;
-		layoutConstraints.weightx = 1;
-		layoutConstraints.fill = GridBagConstraints.NONE;
+	private JTextArea addPromptAtLevel(String message) {
 		JTextArea elem = new JTextArea(4, 30);
 
 		elem.setText(message);
@@ -86,8 +71,8 @@ public class ConfirmPanel {
 		elem.setWrapStyleWord(true);
 		elem.setOpaque(false);
 		elem.setEditable(false);
+		return elem;
 
-		mainPanel.add(elem, layoutConstraints);
 	}
 
 }

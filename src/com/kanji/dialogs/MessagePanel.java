@@ -6,43 +6,34 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import com.guimaker.colors.BasicColors;
+import com.guimaker.panels.MainPanel;
+import com.guimaker.row.RowMaker;
 import com.kanji.constants.ButtonsNames;
 
 public class MessagePanel {
 
-	private JPanel mainPanel;
+	private MainPanel main;
 	private GridBagConstraints layoutConstraints;
 	private MyDialog parentDialog;
 
 	public MessagePanel(JPanel panel, MyDialog parent) {
-		mainPanel = panel;
 		parentDialog = parent;
-		layoutConstraints = new GridBagConstraints();
-	}
-
-	public void setLayoutConstraints(GridBagConstraints c) {
-		layoutConstraints = c;
+		main = new MainPanel(BasicColors.LIGHT_BLUE);
 	}
 
 	public JPanel createPanel(String message) {
-
 		int level = 0;
-		addPromptAtLevel(level, message);
-
+		JTextArea prompt = addPromptAtLevel(level, message);
 		JButton button = parentDialog.createButtonDispose(ButtonsNames.buttonApproveText,
 				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SPACE, 0));
-		layoutConstraints.gridy++;
-		layoutConstraints.fill = GridBagConstraints.NONE;
-		mainPanel.add(button, layoutConstraints);
 
-		return mainPanel;
+		main.addRow(RowMaker.createBothSidesFilledRow(prompt));
+		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, button));
+		return main.getPanel();
 	}
 
-	private void addPromptAtLevel(int level, String message) {
-		layoutConstraints.gridy = level;
-		layoutConstraints.anchor = GridBagConstraints.CENTER;
-		layoutConstraints.weightx = 1;
-		layoutConstraints.fill = GridBagConstraints.HORIZONTAL;
+	private JTextArea addPromptAtLevel(int level, String message) {
 		JTextArea elem = new JTextArea(4, 30);
 
 		elem.setText(message);
@@ -51,7 +42,7 @@ public class MessagePanel {
 		elem.setOpaque(false);
 		elem.setEditable(false);
 
-		mainPanel.add(elem, layoutConstraints);
+		return elem;
 	}
 
 }

@@ -1,10 +1,10 @@
 package com.kanji.dialogs;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.util.Calendar;
 
 import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
@@ -22,8 +23,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.border.Border;
 import javax.swing.text.AbstractDocument;
 
+import com.guimaker.colors.BasicColors;
+import com.guimaker.panels.GuiMaker;
+import com.guimaker.panels.MainPanel;
+import com.guimaker.row.RowMaker;
 import com.kanji.Row.RepeatingInformation;
 import com.kanji.Row.RepeatingList;
 import com.kanji.constants.ButtonsNames;
@@ -39,7 +45,7 @@ import com.kanji.window.LimitDocumentFilter;
 
 public class LearningStartPanel {
 
-	private JPanel mainPanel;
+	private MainPanel main;
 	private JScrollPane scrollPane;
 	private JTextField sumRangeField;
 	private JCheckBox problematicCheckbox;
@@ -50,13 +56,14 @@ public class LearningStartPanel {
 	private SetOfRanges rangesToRepeat;
 	private int numberOfWords;
 	private int sumOfWords;
+	private MainPanel rangesPanel;
 
 	public LearningStartPanel(JPanel panel, MyDialog parent, Window parentOfParent,
 			int numberOfWords) {
 		this.numberOfWords = numberOfWords;
-		mainPanel = panel;
 		parentDialog = parent;
 		this.parentFrame = parentOfParent;
+		main = new MainPanel(BasicColors.LIGHT_BLUE, false);
 	}
 
 	public JPanel createPanel(MyList list) { // TODO add focus to textfield from
@@ -64,34 +71,41 @@ public class LearningStartPanel {
 			loadExcel();
 		repeatsList = list;
 		int level = 0;
-		addPromptAtLevel(level, createPrompt(Prompts.learnStartPrompt));
+		JTextArea prompt = GuiMaker.createTextArea(false);
+		prompt.setOpaque(false);
+		prompt.setText(Prompts.learnStartPrompt);
 
-		level++;
 		problematicCheckbox = createProblematicKanjiCheckbox();
-		addPromptAtLevel(level, problematicCheckbox);
 
-		level++;
-		JPanel panel = addTextFieldsForRange(level);
-		GridBagConstraints c = new GridBagConstraints();
-		c.gridy = 1;
-		scrollPane = createScrollPane(panel, level);
+		rangesPanel = new MainPanel(BasicColors.LIGHT_BLUE, true);
+		Border b = BorderFactory.createLineBorder(Color.red);
+		// scrollPane = new JScrollPane(rangesPanel.getPanel());
+		scrollPane = GuiMaker.createScrollPane(BasicColors.DARK_BLUE, b, rangesPanel.getPanel(),
+				new Dimension(300, 200));
+		addRowToPanel();
 
-		level++;
 		JTextField problematicKanjis = createProblematicRangeField(Prompts.problematicKanjiPrompt);
-		addComponentsAtLevel(level, new JComponent[] { problematicKanjis });
 
-		level++;
-		JButton newRow = createButtonAddRow(ButtonsNames.buttonAddRowText, panel);
-		sumRangeField = createSumRangeField(Prompts.sumRangePrompt);
-		addComponentsAtLevel(level, new JComponent[] { newRow, sumRangeField });
+		JButton newRow = createButtonAddRow(ButtonsNames.buttonAddRowText, rangesPanel);
+		sumRangeField = GuiMaker.createTextField(1, Prompts.sumRangePrompt);
+		// addComponentsAtLevel(level, new JComponent[] { newRow, sumRangeField
+		// });
 
-		level++;
 		JButton cancel = parentDialog.createButtonDispose(ButtonsNames.buttonCancelText,
 				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
-		JButton approve = createButtonStartLearning(ButtonsNames.buttonApproveText, panel);
+		JButton approve = createButtonStartLearning(ButtonsNames.buttonApproveText,
+				rangesPanel.getPanel());
 
-		addComponentsAtLevel(level, new JButton[] { cancel, approve });
-		return mainPanel;
+		main.addRow(RowMaker.createHorizontallyFilledRow(prompt));
+		main.addRow(RowMaker.createHorizontallyFilledRow(problematicCheckbox));
+		main.addRow(RowMaker.createHorizontallyFilledRow(problematicKanjis));
+		main.addRow(RowMaker.createBothSidesFilledRow(scrollPane));
+		main.addRow(RowMaker.createHorizontallyFilledRow(newRow, sumRangeField)
+				.fillHorizontallySomeElements(sumRangeField));
+
+		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.EAST, cancel, approve));
+
+		return main.getPanel();
 	}
 
 	private JCheckBox createProblematicKanjiCheckbox() {
@@ -121,9 +135,9 @@ public class LearningStartPanel {
 			}
 		};
 
-		mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+		main.getPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
 				.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, 0), "close");
-		mainPanel.getActionMap().put("close", action);
+		main.getPanel().getActionMap().put("close", action);
 
 		return problematicCheckbox;
 
@@ -136,101 +150,38 @@ public class LearningStartPanel {
 		}
 	}
 
-	private GridBagConstraints createDefaultConstraints() {
-		GridBagConstraints c = new GridBagConstraints();
-		c.weightx = 1;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		return c;
-	}
-
-	private void addPromptAtLevel(int level, Component component) { // TODO it
-																	// is in
-																	// different
-																	// classes
-		GridBagConstraints layoutConstraints = createDefaultConstraints();
-		layoutConstraints.gridy = level;
-		layoutConstraints.anchor = GridBagConstraints.CENTER;
-		layoutConstraints.weightx = 1;
-		layoutConstraints.fill = GridBagConstraints.HORIZONTAL;
-
-		mainPanel.add(component, layoutConstraints);
-	}
-
-	private JTextArea createPrompt(String message) {
-		JTextArea elem = new JTextArea(message);
-		elem.setLineWrap(true);
-		elem.setWrapStyleWord(true);
-		elem.setOpaque(false);
-		elem.setEditable(false);
-		return elem;
-	}
-
-	private JPanel addTextFieldsForRange(int level) {
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridBagLayout());
-		addRowToPanel(panel);
-		GridBagConstraints layoutConstraints = createDefaultConstraints();
-		layoutConstraints.gridy = level;
-		layoutConstraints.anchor = GridBagConstraints.WEST;
-		return panel;
-
-	}
-
-	private JScrollPane createScrollPane(JPanel panel, int level) {
-		JScrollPane scrollPane = new JScrollPane(panel);
-
-		GridBagConstraints layoutConstraints = createDefaultConstraints();
-		layoutConstraints.gridy = level;
-		layoutConstraints.weighty = 1;
-		layoutConstraints.fill = GridBagConstraints.BOTH;
-
-		scrollPane.getVerticalScrollBar().setUnitIncrement(10);
-		scrollPane.setPreferredSize(new Dimension(500, 100));
-		mainPanel.add(scrollPane, layoutConstraints);
-		return scrollPane;
-	}
-
-	private void addRowToPanel(final JPanel panel) {
-
-		final JPanel rowPanel = new JPanel();
+	private void addRowToPanel() {
 
 		JLabel from = new JLabel("od");
-		JTextField[] textFields = createTextFieldsForRangeInput(rowPanel, panel);
+		JTextField[] textFields = createTextFieldsForRangeInput(rangesPanel.getPanel(),
+				rangesPanel.getPanel());
 		JTextField fieldFrom = textFields[0];
 		JLabel labelTo = new JLabel("do");
 		JTextField fieldTo = textFields[1];
-		int singleInset = 5;
-		Insets insets = new Insets(singleInset, singleInset, singleInset, singleInset);
 
-		rowPanel.add(from);
-		rowPanel.add(fieldFrom);
-		rowPanel.add(labelTo);
-		rowPanel.add(fieldTo);
+		JPanel container = rangesPanel
+				.addRow(RowMaker.createHorizontallyFilledRow(from, fieldFrom, labelTo, fieldTo));
 
-		if (rowsNumber > 0) {
-			JButton delete = createDeleteButton(panel, rowPanel);
-			rowPanel.add(delete);
+		if (rangesPanel.getNumberOfRows() > 1) {
+			System.out.println("hererer");
+			JButton delete = createDeleteButton(rangesPanel, container);
+			rangesPanel.addElementsToRow(container, delete);
 		}
-		if (rowsNumber == 1) {
-			JPanel firstRow = (JPanel) panel.getComponent(0);
-			JButton delete = createDeleteButton(panel, firstRow);
-			firstRow.add(delete);
+		if (rangesPanel.getNumberOfRows() == 2) {
+			System.out.println("here");
+			JPanel firstRow = (JPanel) rangesPanel.getRows().get(0);
+			JButton delete = createDeleteButton(rangesPanel, firstRow);
+			rangesPanel.addElementsToRow(firstRow, delete);
 		}
 
-		GridBagConstraints c = new GridBagConstraints();
-		c.insets = insets;
-		c.gridx = 0;
-		c.gridy = rowsNumber;
-
-		panel.add(rowPanel, c);
-		rowsNumber++;
+		scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
 	}
 
 	private JTextField[] createTextFieldsForRangeInput(final JPanel container,
 			final JPanel otherPanel) {
 		JTextField[] textFields = new JTextField[2];
 		for (int i = 0; i < 2; i++) {
-			textFields[i] = new JTextField(10);
+			textFields[i] = new JTextField(5);
 			((AbstractDocument) textFields[i].getDocument()).setDocumentFilter(
 					new LimitDocumentFilter(NumberValues.INTEGER_MAX_VALUE_DIGITS_AMOUNT));
 		}
@@ -273,7 +224,7 @@ public class LearningStartPanel {
 					showErrorIfNotExists(ExceptionsMessages.rangeValueTooHigh);
 				else {
 					removeErrorIfExists();
-					recalculateSumOfKanji((JPanel) container.getParent());
+					recalculateSumOfKanji((JPanel) container);
 				}
 
 			}
@@ -352,12 +303,16 @@ public class LearningStartPanel {
 			return 0;
 	}
 
-	private JButton createDeleteButton(final JPanel container, final JPanel panelToRemove) {
-		JButton delete = new JButton(ButtonsNames.buttonRemoveRowText);
+	private JButton createDeleteButton(final MainPanel container, final JPanel panelToRemove) {
+		final JButton delete = new JButton(ButtonsNames.buttonRemoveRowText);
 		delete.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				deleteRow(container, panelToRemove);
+				container.removeRow(panelToRemove);
+				if (container.getNumberOfRows() == 1) {
+					container.removeLastElementFromRow(0);
+				}
+				// deleteRow(container, panelToRemove);
 			}
 		});
 		return delete;
@@ -369,8 +324,8 @@ public class LearningStartPanel {
 		if (container.getComponentCount() == 1) {
 			JPanel firstRow = (JPanel) container.getComponent(0);
 			for (Component c : firstRow.getComponents()) {
-				if (c instanceof JButton)
-					firstRow.remove(c);
+				// if (c instanceof JButton)
+				// firstRow.remove(c);
 			}
 		}
 		recalculateSumOfKanji(container);
@@ -400,12 +355,12 @@ public class LearningStartPanel {
 		}
 	}
 
-	private JButton createButtonAddRow(String text, final JPanel panel) {
+	private JButton createButtonAddRow(String text, final MainPanel panel) {
 		JButton button = new JButton(text);
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				addRowToPanel(panel);
+				addRowToPanel();
 				parentDialog.repaint();
 				parentDialog.revalidate();
 				scrollPane.getVerticalScrollBar()
@@ -424,7 +379,7 @@ public class LearningStartPanel {
 	}
 
 	private JTextField createProblematicRangeField(String text) {
-		JTextField sumRange = new JTextField(text, 30);
+		JTextField sumRange = new JTextField(text);
 		sumRange.setEditable(false);
 		if (parentFrame instanceof BaseWindow) {
 			BaseWindow b = (BaseWindow) parentFrame;
@@ -576,23 +531,6 @@ public class LearningStartPanel {
 
 	private int getValueFromTextField(JTextField textField) {
 		return Integer.parseInt(textField.getText());
-	}
-
-	private void addComponentsAtLevel(int level, JComponent[] components) { // TODO
-																			// this
-																			// method
-																			// occurs
-																			// in
-																			// multiple
-																			// classes
-		JPanel panel = new JPanel();
-		for (JComponent button : components)
-			panel.add(button);
-
-		GridBagConstraints layoutConstraints = createDefaultConstraints();
-		layoutConstraints.gridy = level;
-
-		mainPanel.add(panel, layoutConstraints);
 	}
 
 }

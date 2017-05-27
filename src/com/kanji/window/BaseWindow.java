@@ -59,6 +59,7 @@ public class BaseWindow extends ClassWithDialog {
 
 	public BaseWindow() {
 
+		// TODO searching is case sensitive, should not be
 		problematicKanjis = new HashSet<Integer>();
 		isExcelReaderLoaded = false;
 		maker = new ElementMaker(this);

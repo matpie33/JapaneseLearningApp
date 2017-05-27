@@ -9,12 +9,15 @@ import java.awt.KeyboardFocusManager;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Set;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
@@ -103,7 +106,6 @@ public class MyDialog extends JDialog {
 		// modality = ModalityType.APPLICATION_MODAL;
 
 		LoadingPanel dialog = new LoadingPanel(mainPanel, this);
-		dialog.setLayoutConstraints(layoutConstraints);
 		mainPanel = dialog.createPanel(Prompts.kanjiLoadingPrompt);
 		// setLocationRelativeTo(parentWindow);
 		// setModal(true);
@@ -131,7 +133,6 @@ public class MyDialog extends JDialog {
 			modality = ModalityType.MODELESS;
 
 		MessagePanel dialog = new MessagePanel(mainPanel, this);
-		dialog.setLayoutConstraints(layoutConstraints);
 		mainPanel = dialog.createPanel(message);
 		// setLocationRelativeTo(parentWindow);
 		// setModal(true);
@@ -142,14 +143,12 @@ public class MyDialog extends JDialog {
 
 	public void showSearchWordDialog(MyList list) {
 		SearchWordPanel dialog = new SearchWordPanel(mainPanel, this);
-		dialog.setLayoutConstraints(layoutConstraints);
 		mainPanel = dialog.createPanel(list);
 		showYourself(Titles.wordSearchDialogTitle);
 	}
 
 	public void showInsertDialog(MyList list) {
 		InsertWordPanel dialog = new InsertWordPanel(mainPanel, this);
-		dialog.setLayoutConstraints(layoutConstraints);
 		mainPanel = dialog.createPanel(list);
 		showYourself(Titles.insertWordDialogTitle);
 	}
@@ -159,12 +158,20 @@ public class MyDialog extends JDialog {
 		problematicKanjiPanel.setLayoutConstraints(layoutConstraints);
 		mainPanel = problematicKanjiPanel.createPanel(problematicKanjis);
 		showYourself(Titles.insertWordDialogTitle);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				hideProblematics();
+			}
+		});
 	}
 
 	public void showConfirmDialog(String message) {
 		ConfirmPanel panel = new ConfirmPanel(mainPanel, this);
-		panel.setLayoutConstraints(layoutConstraints);
+		// panel.setLayoutConstraints(layoutConstraints);
 		mainPanel = panel.createPanel(message);
+		setContentPane(mainPanel);
 		pack();
 		setLocationRelativeTo(parentWindow);
 		setModal(true);
@@ -212,15 +219,8 @@ public class MyDialog extends JDialog {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
-				BaseWindow parentBaseWindow = ((BaseWindow) parentWindow);
-				parentBaseWindow.addButtonIcon();
-				if (problematicKanjiPanel != null
-						&& problematicKanjiPanel.allProblematicKanjisRepeated()) {
-					System.out.println("removing");
-					parentBaseWindow.removeButtonProblematicsKanji();
-					dispose();
-				}
+				hideProblematics();
+
 			}
 		};
 		button.addActionListener(action);
@@ -228,6 +228,18 @@ public class MyDialog extends JDialog {
 
 		button.getActionMap().put("space", action);
 		return button;
+	}
+
+	private void hideProblematics() {
+		setVisible(false);
+		System.out.println("just hide");
+		BaseWindow parentBaseWindow = ((BaseWindow) parentWindow);
+		parentBaseWindow.addButtonIcon();
+		if (problematicKanjiPanel != null && problematicKanjiPanel.allProblematicKanjisRepeated()) {
+			System.out.println("removing");
+			parentBaseWindow.removeButtonProblematicsKanji();
+			dispose();
+		}
 	}
 
 	public void setLocationAtCenterOfParent(Window parent) {
