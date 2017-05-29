@@ -1,11 +1,8 @@
 package com.kanji.dialogs;
 
-import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -18,38 +15,39 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import com.guimaker.colors.BasicColors;
+import com.guimaker.panels.MainPanel;
+import com.guimaker.row.RowMaker;
 import com.kanji.Row.KanjiWords;
 import com.kanji.constants.ButtonsNames;
 
 public class ProblematicKanjiPanel {
-	private JPanel mainPanel;
-	private GridBagConstraints layoutConstraints;
 	private MyDialog parentDialog;
 	private KanjiWords kanjiInfos;
 	private int repeatedProblematics;
 	private Set<Integer> problematicKanjis;
+	private MainPanel main;
 
-	public ProblematicKanjiPanel(JPanel panel, MyDialog parent, KanjiWords kanjis) {
-		mainPanel = panel;
+	public ProblematicKanjiPanel(JPanel panel, MyDialog parent, KanjiWords kanjis,
+			Set<Integer> problematicKanji) {
+		main = new MainPanel(BasicColors.LIGHT_BLUE);
 		parentDialog = parent;
-		layoutConstraints = new GridBagConstraints();
 		kanjiInfos = kanjis;
-	}
-
-	public void setLayoutConstraints(GridBagConstraints c) {
-		layoutConstraints = c;
-	}
-
-	public JPanel createPanel(Set<Integer> problematicKanji) {
 		problematicKanjis = problematicKanji;
-		layoutConstraints.gridy = 0;
-		layoutConstraints.fill = GridBagConstraints.HORIZONTAL;
+		System.out.println("in constructor: " + problematicKanjis);
+	}
 
-		JPanel panelInScrollPane = new JPanel();
-		panelInScrollPane.setMaximumSize(new Dimension(30, 30));
-		panelInScrollPane.setLayout(new GridBagLayout());
-		panelInScrollPane.setOpaque(false);
-		JScrollPane pane = new JScrollPane(panelInScrollPane);
+	public JPanel createPanel() {
+		if (main.getNumberOfRows() > 0) {
+			System.out.println("already exists");
+			return main.getPanel();
+		}
+		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER,
+				new JLabel("Do powtórzenia")));
+
+		MainPanel panelInScrollPane = new MainPanel(BasicColors.LIGHT_BLUE, true);
+		panelInScrollPane.setGapsBetweenRowsTo(5);
+		JScrollPane pane = new JScrollPane(panelInScrollPane.getPanel());
 		pane.setOpaque(false);
 		pane.getViewport().setOpaque(false);
 		pane.setPreferredSize(new Dimension(400, 200));
@@ -57,13 +55,7 @@ public class ProblematicKanjiPanel {
 		c.gridy = 0;
 
 		for (Integer i : problematicKanjis) {
-
-			final JPanel panel = new JPanel(new GridBagLayout());
-			GridBagConstraints c1 = new GridBagConstraints();
-			c1.gridx = 0;
-			c1.gridy = 0;
-			c.weightx = 1;
-			panel.setOpaque(false);
+			final MainPanel panel = new MainPanel(BasicColors.DARK_BLUE);
 			final JLabel id = new JLabel(i.toString());
 			JLabel kanji = new JLabel(kanjiInfos.getWordForId(i));
 
@@ -71,8 +63,7 @@ public class ProblematicKanjiPanel {
 			button.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					panel.setOpaque(true);
-					panel.setBackground(Color.red);
+					panel.setBackground(BasicColors.OCEAN_BLUE);
 					String uriText = "http://kanji.koohii.com/study/kanji/";
 					uriText += id.getText();
 					URI uriObject = constructUriFromText(uriText, parentDialog);
@@ -83,31 +74,21 @@ public class ProblematicKanjiPanel {
 
 				}
 			});
-			c1.anchor = GridBagConstraints.WEST;
-			int a = 10;
-			c1.insets = new Insets(a, a, a, a);
-			c1.fill = GridBagConstraints.HORIZONTAL;
-			panel.add(kanji, c1);
-			c1.fill = GridBagConstraints.NONE;
-			c1.gridx++;
-			panel.add(id, c1);
-			c1.gridx++;
-			panel.add(button, c1);
 
-			panelInScrollPane.add(panel, c);
+			panel.addRow(RowMaker.createHorizontallyFilledRow(kanji, id, button)
+					.fillHorizontallySomeElements(kanji));
+
+			panelInScrollPane.addRow(RowMaker.createHorizontallyFilledRow(panel.getPanel()));
 			c.gridy++;
 
 		}
-		mainPanel.add(pane);
+		main.addRow(RowMaker.createBothSidesFilledRow(pane));
 
 		JButton button = parentDialog.createButtonHide(ButtonsNames.buttonApproveText,
-				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
-		layoutConstraints.fill = GridBagConstraints.NONE;
-		layoutConstraints.anchor = GridBagConstraints.CENTER;
-		layoutConstraints.gridy++;
-		mainPanel.add(button, layoutConstraints);
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0), this);
+		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, button));
 
-		return mainPanel;
+		return main.getPanel();
 	}
 
 	private void openUrlInBrowser(URI uriObject, MyDialog frame) {
@@ -142,4 +123,9 @@ public class ProblematicKanjiPanel {
 		System.out.println("rep: " + repeatedProblematics + "  prob " + problematicKanjis.size());
 		return repeatedProblematics == problematicKanjis.size();
 	}
+
+	public void clear() {
+		main.clear();
+	}
+
 }

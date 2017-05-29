@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import com.kanji.Row.KanjiWords;
 import com.kanji.dialogs.LoadingPanel;
 import com.kanji.dialogs.MyDialog;
+import com.kanji.dialogs.ProblematicKanjiPanel;
 import com.kanji.myList.MyList;
 
 @SuppressWarnings("serial")
@@ -80,6 +81,20 @@ public abstract class ClassWithDialog extends JFrame {
 			problematicKanjisDialog.setLocationRelativeTo(this);
 		}
 		else {
+			System.out.println("it exists");
+			problematicKanjisDialog.setVisible(true);
+		}
+	}
+
+	public void showProblematicKanjiDialog(ProblematicKanjiPanel panel) {
+		if (isProblematicKanjiDialogOpen()) {
+			System.out.println("is opend");
+			problematicKanjisDialog = new MyDialog(this);
+			problematicKanjisDialog.showProblematicKanjiDialog(panel);
+			problematicKanjisDialog.setLocationRelativeTo(this);
+		}
+		else {
+			System.out.println("is not opened");
 			problematicKanjisDialog.setVisible(true);
 		}
 	}
@@ -107,6 +122,10 @@ public abstract class ClassWithDialog extends JFrame {
 
 	public void closeDialog() {
 		dialog.dispose();
+	}
+
+	public void closeProblematics() {
+		problematicKanjisDialog = null;
 	}
 
 	public abstract Point getRightComponentOfSplitPanePosition();

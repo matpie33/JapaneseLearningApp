@@ -3,8 +3,6 @@ package com.kanji.dialogs;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
@@ -21,6 +19,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 
+import com.guimaker.colors.BasicColors;
+import com.guimaker.panels.MainPanel;
+import com.guimaker.row.RowMaker;
 import com.kanji.Row.KanjiWords;
 import com.kanji.Row.RepeatingInformation;
 import com.kanji.constants.ButtonsNames;
@@ -55,74 +56,50 @@ public class RepeatingWordsPanel extends JPanel {
 	private JButton showWord;
 	private JButton recognizedWord;
 	private JButton notRecognizedWord;
-	private JPanel repeatingPanel;
+	private MainPanel repeatingPanel;
 	private final Color repeatingBackgroundColor = Color.white;
-	private final Color windowBackgroundColor = Color.GREEN;
+	private final Color windowBackgroundColor = BasicColors.OCEAN_BLUE;
 	private int secondsLeft = 0;
 	private int minutesLeft = 0;
 	private int hoursLeft = 0;
+	private MainPanel main;
 
 	private RepeatingInformation repeatInfo;
 
 	public RepeatingWordsPanel(BaseWindow parent) {
+		main = new MainPanel(BasicColors.LIGHT_BLUE);
+		excel = new ExcelReader();
+		excel.load();
 		currentProblematicKanjis = new HashSet<>();
 		this.wordsToRepeat = new LinkedList();
 		this.parent = parent;
 		this.timerRunning = false;
 		initialize();
 		createPanel();
+
 	}
 
 	private void initialize() {
-		setLayout(new GridBagLayout());
+		// setLayout(new GridBagLayout());
 		setBackground(this.windowBackgroundColor);
-		this.repeatingPanel = new JPanel(new GridBagLayout());
-		this.repeatingPanel.setBackground(this.repeatingBackgroundColor);
+		this.repeatingPanel = new MainPanel(this.repeatingBackgroundColor);
 	}
 
 	private void createPanel() {
-		int level = 0;
-		addTitleAndTime(Titles.repeatingWordsTitle, level);
-		if (!this.wordsToRepeat.isEmpty()) {
-			level++;
-			initiateRepeatingPanel(level);
-		}
-		level++;
-		addButtons(level);
-	}
-
-	private void addTitleAndTime(String title, int level) {
-		GridBagConstraints c = createDefaultConstraints();
-		c.gridx = 0;
-		c.gridy = level;
-		c.anchor = 10;
-		add(new JLabel(title), c);
-
-		c.weightx = 0.0D;
-		c.anchor = 13;
+		JLabel titleLabel = new JLabel(Titles.repeatingWordsTitle);
 		this.time = new JLabel(this.timeLabel);
-		add(this.time, c);
+		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.NORTH, titleLabel, time));
+		// if (!this.wordsToRepeat.isEmpty()) {
+		initiateRepeatingPanel();
+		// }
+		addButtons();
+		// add(main.getPanel());
 	}
 
-	private GridBagConstraints createDefaultConstraints() {
-		GridBagConstraints c = new GridBagConstraints();
-		c.weightx = 1.0D;
-		int a = 5;
-		c.insets = new Insets(a, a, a, a);
-		return c;
-	}
-
-	private void initiateRepeatingPanel(int level) {
+	private void initiateRepeatingPanel() {
 		createElementsForRepeatingPanel();
 		setButtonsToLearningAndAddThem();
-
-		GridBagConstraints d = createDefaultConstraints();
-		d.gridy = level;
-		d.anchor = 10;
-		d.weighty = 1.0D;
-		d.weightx = 0.0D;
-
-		add(this.repeatingPanel, d);
+		main.addRow(RowMaker.createBothSidesFilledRow(repeatingPanel.getPanel()));
 	}
 
 	private void setButtonsToLearningAndAddThem() {
@@ -147,13 +124,12 @@ public class RepeatingWordsPanel extends JPanel {
 		this.wordTextArea.setEditable(false);
 		this.wordTextArea.setLineWrap(true);
 		this.wordTextArea.setWrapStyleWord(true);
-		this.wordTextArea.setText(pickRandomWord());
 	}
 
 	private void createWordArea() {
 		Font f = new Font(this.excel.getFontName(), 1, 80);
 
-		this.kanjiTextArea = new JTextArea(10, 10);
+		this.kanjiTextArea = new JTextArea(1, 1);
 		this.kanjiTextArea.setFont(f);
 		this.kanjiTextArea.setEditable(false);
 		this.kanjiTextArea.setLineWrap(true);
@@ -164,6 +140,7 @@ public class RepeatingWordsPanel extends JPanel {
 		Random randomizer = new Random();
 		int index = randomizer.nextInt(this.wordsToRepeat.size());
 		this.currentWord = ((String) this.wordsToRepeat.get(index));
+		wordTextArea.setText(currentWord);
 		return (String) this.wordsToRepeat.get(index) + " "
 				+ ((KanjiWords) words.getWords()).getIdOfTheWord(this.currentWord);
 	}
@@ -190,6 +167,7 @@ public class RepeatingWordsPanel extends JPanel {
 	}
 
 	private void showKanji() {
+		System.out.println("current word: " + currentWord);
 		this.kanjiTextArea.setText(this.excel
 				.getKanjiById(((KanjiWords) words.getWords()).getIdOfTheWord(this.currentWord)));
 	}
@@ -313,33 +291,18 @@ public class RepeatingWordsPanel extends JPanel {
 	}
 
 	private void addElementsToRepeatingPanel(JButton[] buttons) {
-		this.repeatingPanel.removeAll();
+		repeatingPanel.clear();
+		repeatingPanel.addRow(RowMaker.createVerticallyFilledRow(wordTextArea));
+		repeatingPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, kanjiTextArea));
 
-		GridBagConstraints c = createDefaultConstraints();
-		c.gridx = 0;
-		c.gridy = 0;
-		c.gridwidth = buttons.length;
-		c.anchor = 10;
-		c.fill = 2;
-		this.repeatingPanel.add(this.wordTextArea, c);
+		repeatingPanel
+				.addRow(RowMaker.createHorizontallyFilledRow(buttons).fillHorizontallyEqually());
 
-		c.gridy += 1;
-		c.fill = 0;
-		this.repeatingPanel.add(this.kanjiTextArea, c);
-
-		c.gridwidth = 1;
-		c.gridy += 1;
-		JButton[] arrayOfJButton;
-		int j = (arrayOfJButton = buttons).length;
-		for (int i = 0; i < j; i++) {
-			JButton button = arrayOfJButton[i];
-			this.repeatingPanel.add(button, c);
-			c.gridx += 1;
-		}
 		repaint();
+
 	}
 
-	private void addButtons(int level) {
+	private void addButtons() {
 		JButton returnButton = new JButton(ButtonsNames.buttonGoBackText);
 		returnButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -347,18 +310,11 @@ public class RepeatingWordsPanel extends JPanel {
 				RepeatingWordsPanel.this.stopTimer();
 			}
 		});
-		GridBagConstraints c = createDefaultConstraints();
 
-		c.gridy = level;
-		c.gridx = 0;
-		c.anchor = 10;
-		c.fill = 0;
 		this.remainingLabel = new JLabel(createRemainingPrompt());
-		add(this.remainingLabel, c);
 
-		c.anchor = 13;
-		c.fill = 0;
-		add(returnButton, c);
+		main.addRow(
+				RowMaker.createUnfilledRow(GridBagConstraints.SOUTH, remainingLabel, returnButton));
 	}
 
 	private String createRemainingPrompt() {
@@ -395,11 +351,13 @@ public class RepeatingWordsPanel extends JPanel {
 	}
 
 	public void startRepeating() {
-		removeAll();
-		createPanel();
+		// removeAll();
+		// createPanel();
+		// pickRandomWord();
 		revalidate();
 		repaint();
 		startTimer();
+		getNextWord();
 
 		showWord.requestFocusInWindow();
 		System.out.println("P: " + this.problematicKanjis);
@@ -412,6 +370,7 @@ public class RepeatingWordsPanel extends JPanel {
 		hoursLeft = 0;
 		this.problematicKanjis = new HashSet();
 		currentProblematicKanjis.clear();
+		currentWord = "";
 	}
 
 	private void startTimer() {
@@ -494,4 +453,9 @@ public class RepeatingWordsPanel extends JPanel {
 	public void setRepeatingInformation(RepeatingInformation info) {
 		repeatInfo = info;
 	}
+
+	public JPanel getPanel() {
+		return main.getPanel();
+	}
+
 }

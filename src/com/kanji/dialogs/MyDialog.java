@@ -17,7 +17,6 @@ import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
@@ -27,6 +26,7 @@ import com.kanji.constants.Prompts;
 import com.kanji.constants.Titles;
 import com.kanji.myList.MyList;
 import com.kanji.window.BaseWindow;
+import com.kanji.window.ClassWithDialog;
 
 public class MyDialog extends JDialog {
 
@@ -154,15 +154,23 @@ public class MyDialog extends JDialog {
 	}
 
 	public void showProblematicKanjiDialog(KanjiWords kanjiWords, Set<Integer> problematicKanjis) {
-		problematicKanjiPanel = new ProblematicKanjiPanel(mainPanel, this, kanjiWords);
-		problematicKanjiPanel.setLayoutConstraints(layoutConstraints);
-		mainPanel = problematicKanjiPanel.createPanel(problematicKanjis);
+
+		problematicKanjiPanel = new ProblematicKanjiPanel(mainPanel, this, kanjiWords,
+				problematicKanjis);
+		showProblematicKanjiDialog(problematicKanjiPanel);
+
+		// setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+	}
+
+	public void showProblematicKanjiDialog(ProblematicKanjiPanel kanjiPanel) {
+		problematicKanjiPanel = kanjiPanel;
+		mainPanel = problematicKanjiPanel.createPanel();
 		showYourself(Titles.insertWordDialogTitle);
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		// setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
-				hideProblematics();
+				hideProblematics(problematicKanjiPanel);
 			}
 		});
 	}
@@ -212,14 +220,15 @@ public class MyDialog extends JDialog {
 		return button;
 	}
 
-	public JButton createButtonHide(String text, KeyStroke disposeKey) {
+	public JButton createButtonHide(String text, KeyStroke disposeKey,
+			final ProblematicKanjiPanel panel) {
 		JButton button = new JButton(text);
 		AbstractAction action = new AbstractAction() {
 			private static final long serialVersionUID = 5504620933205592893L;
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				hideProblematics();
+				hideProblematics(panel);
 
 			}
 		};
@@ -230,15 +239,19 @@ public class MyDialog extends JDialog {
 		return button;
 	}
 
-	private void hideProblematics() {
+	private void hideProblematics(ProblematicKanjiPanel problematicKanjiPanel2) {
+		show();
 		setVisible(false);
 		System.out.println("just hide");
 		BaseWindow parentBaseWindow = ((BaseWindow) parentWindow);
-		parentBaseWindow.addButtonIcon();
+		parentBaseWindow.addButtonIcon(problematicKanjiPanel2);
 		if (problematicKanjiPanel != null && problematicKanjiPanel.allProblematicKanjisRepeated()) {
 			System.out.println("removing");
 			parentBaseWindow.removeButtonProblematicsKanji();
-			dispose();
+			ClassWithDialog c = (ClassWithDialog) parentWindow;
+			// c.closeDialog();
+			c.closeProblematics();
+
 		}
 	}
 

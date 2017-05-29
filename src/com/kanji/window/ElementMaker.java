@@ -1,6 +1,5 @@
 package com.kanji.window;
 
-import java.awt.Color;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
@@ -29,6 +28,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 
+import com.guimaker.colors.BasicColors;
 import com.kanji.Row.KanjiInformation;
 import com.kanji.Row.KanjiWords;
 import com.kanji.Row.RepeatingList;
@@ -88,7 +88,7 @@ public class ElementMaker {
 
 	private void createMenu() {
 		menuBar = new JMenuBar();
-		menuBar.setBackground(Color.orange);
+		menuBar.setBackground(BasicColors.OCEAN_BLUE);
 		JMenu menu = new JMenu(MenuTexts.menuBarFile);
 		menuBar.add(menu);
 		JMenuItem item = new JMenuItem(MenuTexts.menuOpen);

@@ -23,9 +23,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.border.Border;
 
+import com.guimaker.colors.BasicColors;
+import com.guimaker.panels.MainPanel;
+import com.guimaker.row.RowMaker;
 import com.kanji.Row.RepeatingInformation;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.Titles;
+import com.kanji.dialogs.ProblematicKanjiPanel;
 import com.kanji.dialogs.RepeatingWordsPanel;
 import com.kanji.fileReading.ExcelReader;
 import com.kanji.myList.MyList;
@@ -42,13 +46,14 @@ public class BaseWindow extends ClassWithDialog {
 	private final Dimension minimumListSize = new Dimension(200, 100);
 	private JPanel mainPanel;
 	private RepeatingWordsPanel repeatingWordsPanel;
-	private boolean isExcelReaderLoaded;
 	private Set<Integer> problematicKanjis;
 	private JSplitPane listsSplitPane;
 	private GridBagLayout g;
-	private JPanel infoPanel;
-	private JPanel buttonsPanel;
+	private MainPanel infoPanel;
+	private MainPanel buttonsPanel;
 	private JButton showProblematicKanjis;
+	private MainPanel main;
+	private ProblematicKanjiPanel problematicKanjisPanel;
 
 	private JLabel saveInfo;
 
@@ -59,9 +64,9 @@ public class BaseWindow extends ClassWithDialog {
 
 	public BaseWindow() {
 
+		main = new MainPanel(BasicColors.LIGHT_BLUE);
 		// TODO searching is case sensitive, should not be
 		problematicKanjis = new HashSet<Integer>();
-		isExcelReaderLoaded = false;
 		maker = new ElementMaker(this);
 		mainPanel = new JPanel(new CardLayout());
 		setContentPane(mainPanel);
@@ -74,7 +79,7 @@ public class BaseWindow extends ClassWithDialog {
 		mainPanel.add(listsPanel, LIST_PANEL);
 
 		repeatingWordsPanel = new RepeatingWordsPanel(this);
-		mainPanel.add(repeatingWordsPanel, LEARNING_PANEL);
+		mainPanel.add(repeatingWordsPanel.getPanel(), LEARNING_PANEL);
 		setJMenuBar(maker.getMenu());
 
 		setWindowProperties();
@@ -92,18 +97,17 @@ public class BaseWindow extends ClassWithDialog {
 	}
 
 	private void createInformationsPanel() {
-		infoPanel = new JPanel();
-		infoPanel.setBackground(Color.YELLOW);
+		infoPanel = new MainPanel(BasicColors.OCEAN_BLUE);
 		saveInfo = new JLabel();
 		changeSaveStatus(SavingStatus.NO_CHANGES);
-		infoPanel.add(saveInfo);
+		infoPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.WEST, saveInfo));
 	}
 
 	private JScrollPane createScrollPaneForList(MyList list) {
 
 		Border raisedBevel = BorderFactory.createLineBorder(Color.BLUE, 6);
 
-		JScrollPane listScrollWords = createScrollPane(Color.GREEN, raisedBevel, list);
+		JScrollPane listScrollWords = createScrollPane(BasicColors.OCEAN_BLUE, raisedBevel, list);
 		list.setScrollPane(listScrollWords);
 		listScrollWords.setMinimumSize(minimumListSize);
 
@@ -124,23 +128,9 @@ public class BaseWindow extends ClassWithDialog {
 
 	private void createButtonsPanel(List<JButton> list) {
 
-		buttonsPanel = new JPanel();
-		buttonsPanel.setLayout(new GridBagLayout());
-		buttonsPanel.setBackground(Color.RED);
-
-		GridBagConstraints c = new GridBagConstraints();
-
-		c.insets = insets;
-		c.gridx = 0;
-		c.anchor = GridBagConstraints.WEST;
-		c.weightx = 1;
-
-		for (int i = 0; i < list.size(); i++) {
-			if (indexIsHigherThanHalfOfSize(i, list.size()))
-				c.anchor = GridBagConstraints.EAST;
-			buttonsPanel.add(list.get(i), c);
-			c.gridx++;
-		}
+		buttonsPanel = new MainPanel(BasicColors.OCEAN_BLUE);
+		buttonsPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.WEST,
+				list.toArray(new JButton[] {})));
 
 	}
 
@@ -150,26 +140,11 @@ public class BaseWindow extends ClassWithDialog {
 
 	private JPanel putPanelsTogetherAndSetContentPane() {
 
-		JPanel main = new JPanel();
-		main.setLayout(new GridBagLayout());
-		main.setBackground(Color.RED);
-		GridBagConstraints c = new GridBagConstraints();
-		c.gridx = 0;
-		c.gridy = 0;
-		c.weighty = 1;
-		c.weightx = 1;
-		c.fill = GridBagConstraints.BOTH;
-
-		main.add(listsSplitPane, c);
-
-		c.weighty = 0;
-		c.gridy++;
-		main.add(buttonsPanel, c);
-
-		c.gridy++;
-		main.add(infoPanel, c);
-
-		return main;
+		MainPanel main = new MainPanel(BasicColors.LIGHT_BLUE);
+		main.addRow(RowMaker.createBothSidesFilledRow(listsSplitPane));
+		main.addRow(RowMaker.createHorizontallyFilledRow(buttonsPanel.getPanel()));
+		main.addRow(RowMaker.createHorizontallyFilledRow(infoPanel.getPanel()));
+		return main.getPanel();
 
 	}
 
@@ -199,19 +174,6 @@ public class BaseWindow extends ClassWithDialog {
 
 	public void setRepeatingInformation(RepeatingInformation info) {
 		repeatingWordsPanel.setRepeatingInformation(info);
-	}
-
-	public void loadExcelReader() {
-
-		excel = new ExcelReader();
-		excel.load();
-		isExcelReaderLoaded = true;
-		repeatingWordsPanel.setExcelReader(excel);
-
-	}
-
-	public boolean isExcelLoaded() {
-		return isExcelReaderLoaded;
 	}
 
 	public void addProblematicKanjis(Set<Integer> problematicKanjiList) {
@@ -259,33 +221,33 @@ public class BaseWindow extends ClassWithDialog {
 		maker.getRepeatsList().scrollToBottom();
 	}
 
-	public void addButtonIcon() {
+	public void addButtonIcon(ProblematicKanjiPanel kanjis) {
 		if (showProblematicKanjis == null) {
 			showProblematicKanjis = new JButton("Pokaż problematyczne");
 		}
+		else {
+			return;
+		}
+		problematicKanjisPanel = kanjis;
 		showProblematicKanjis.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				showProblematicKanjiDialog(null, null);
+				showProblematicKanjiDialog(problematicKanjisPanel);
 			}
 		});
-		for (Component c : infoPanel.getComponents()) {
-			if (c == showProblematicKanjis) {
-				return;
-			}
-		}
+		// for (Component c : infoPanel.getRows().get(0).getComponents()) {
+		// if (c == showProblematicKanjis) {
+		// return;
+		// }
+		// }
 
 		System.out.println("not found");
-		infoPanel.add(showProblematicKanjis);
-		infoPanel.revalidate();
-		infoPanel.repaint();
+		infoPanel.addElementsToRow(0, showProblematicKanjis);
 	}
 
 	public void removeButtonProblematicsKanji() {
-		infoPanel.remove(showProblematicKanjis);
-		System.out.println("after: " + infoPanel.getComponentCount());
-		infoPanel.revalidate();
-		infoPanel.repaint();
+		infoPanel.removeLastElementFromRow(0);
+		showProblematicKanjis = null;
 	}
 
 }

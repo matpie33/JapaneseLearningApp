@@ -20,6 +20,7 @@ import javax.swing.JTextArea;
 import javax.swing.Scrollable;
 import javax.swing.SwingUtilities;
 
+import com.guimaker.colors.BasicColors;
 import com.kanji.constants.ExceptionsMessages;
 import com.kanji.window.ClassWithDialog;
 import com.kanji.window.ElementMaker;
@@ -30,7 +31,7 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 	private int highlightedRowNumber;
 	private Color defaultRowColor = Color.RED;
 	private Color highlightedRowColor = Color.BLUE;
-	private Color bgColor = Color.GREEN;
+	private Color bgColor = BasicColors.OCEAN_BLUE;
 	private JScrollPane parentScrollPane;
 	private Parameters words;
 	private ClassWithDialog parent;

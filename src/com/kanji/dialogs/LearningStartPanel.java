@@ -1,6 +1,5 @@
 package com.kanji.dialogs;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -67,8 +66,6 @@ public class LearningStartPanel {
 	}
 
 	public JPanel createPanel(MyList list) { // TODO add focus to textfield from
-		if (!excelReaderIsLoaded())
-			loadExcel();
 		repeatsList = list;
 		int level = 0;
 		JTextArea prompt = GuiMaker.createTextArea(false);
@@ -78,7 +75,7 @@ public class LearningStartPanel {
 		problematicCheckbox = createProblematicKanjiCheckbox();
 
 		rangesPanel = new MainPanel(BasicColors.LIGHT_BLUE, true);
-		Border b = BorderFactory.createLineBorder(Color.red);
+		Border b = BorderFactory.createLineBorder(BasicColors.VERY_BLUE);
 		// scrollPane = new JScrollPane(rangesPanel.getPanel());
 		scrollPane = GuiMaker.createScrollPane(BasicColors.DARK_BLUE, b, rangesPanel.getPanel(),
 				new Dimension(300, 200));
@@ -113,12 +110,8 @@ public class LearningStartPanel {
 		problematicCheckbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int problematicKanjis = getProblematicKanjiNumber();
-				if (problematicCheckbox.isSelected())
-					sumOfWords += problematicKanjis;
-				else
-					sumOfWords -= problematicKanjis;
-				updateSumOfWords();
+				updateProblematicKanjiNumber();
+
 			}
 		});
 		if (getProblematicKanjiNumber() == 0) {
@@ -130,6 +123,7 @@ public class LearningStartPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (problematicCheckbox.isEnabled()) {
 					problematicCheckbox.setSelected(!problematicCheckbox.isSelected());
+					updateProblematicKanjiNumber();
 				}
 
 			}
@@ -143,18 +137,21 @@ public class LearningStartPanel {
 
 	}
 
-	private void loadExcel() {
-		if (parentFrame instanceof BaseWindow) {
-			BaseWindow p = (BaseWindow) parentFrame;
-			p.loadExcelReader();
-		}
+	private void updateProblematicKanjiNumber() {
+		int problematicKanjis = getProblematicKanjiNumber();
+		if (problematicCheckbox.isSelected())
+			sumOfWords += problematicKanjis;
+		else
+			sumOfWords -= problematicKanjis;
+		System.out.println("should update");
+		updateSumOfWords();
 	}
 
 	private void addRowToPanel() {
 
 		JLabel from = new JLabel("od");
-		JTextField[] textFields = createTextFieldsForRangeInput(rangesPanel.getPanel(),
-				rangesPanel.getPanel());
+		JTextField[] textFields = createTextFieldsForRangeInput(rangesPanel, rangesPanel.getPanel(),
+				rangesPanel.getNumberOfRows());
 		JTextField fieldFrom = textFields[0];
 		JLabel labelTo = new JLabel("do");
 		JTextField fieldTo = textFields[1];
@@ -177,8 +174,8 @@ public class LearningStartPanel {
 		scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
 	}
 
-	private JTextField[] createTextFieldsForRangeInput(final JPanel container,
-			final JPanel otherPanel) {
+	private JTextField[] createTextFieldsForRangeInput(final MainPanel container,
+			final JPanel otherPanel, final int rowNumber) {
 		JTextField[] textFields = new JTextField[2];
 		for (int i = 0; i < 2; i++) {
 			textFields[i] = new JTextField(5);
@@ -224,7 +221,7 @@ public class LearningStartPanel {
 					showErrorIfNotExists(ExceptionsMessages.rangeValueTooHigh);
 				else {
 					removeErrorIfExists();
-					recalculateSumOfKanji((JPanel) container);
+					recalculateSumOfKanji(container.getPanel());
 				}
 
 			}
@@ -239,9 +236,7 @@ public class LearningStartPanel {
 				else
 					removeErrorIfExists();
 
-				container.add(new JLabel(message));
-				container.repaint();
-				container.revalidate();
+				container.addElementsToRow(rowNumber, new JLabel(message));
 				error = message;
 			}
 
@@ -249,15 +244,14 @@ public class LearningStartPanel {
 				if (error.isEmpty())
 					return;
 				error = "";
-
-				for (Component c : container.getComponents()) {
+				JPanel row = container.getRows().get(rowNumber);
+				for (Component c : row.getComponents()) {
 					if (c instanceof JLabel && ((JLabel) c).getText()
 							.matches(ExceptionsMessages.rangeToValueLessThanRangeFromValue + "|"
 									+ ExceptionsMessages.valueIsNotNumber + "|"
 									+ ExceptionsMessages.rangeValueTooHigh)) {
-						container.remove(c);
-						container.repaint();
-						container.revalidate();
+						System.out.println("remove ing");
+						container.removeLastElementFromRow(rowNumber);
 					}
 				}
 			}
@@ -404,13 +398,7 @@ public class LearningStartPanel {
 		try {
 			rangesToRepeat = validateInputs(panel);
 			addToRepeatsListOrShowError(rangesToRepeat);
-
-			if (!excelReaderIsLoaded()) {
-				parentDialog.showErrorDialogInNewWindow(ExceptionsMessages.excelNotLoaded);
-				waitUntillExcelLoads();
-			}
-			else
-				switchToRepeatingPanel();
+			switchToRepeatingPanel();
 
 		}
 		catch (Exception ex) {
@@ -456,15 +444,6 @@ public class LearningStartPanel {
 			parent.showCardPanel(BaseWindow.LEARNING_PANEL);
 			parent.setWordsRangeToRepeat(wordsToLearn, problematicCheckbox.isSelected());
 		}
-	}
-
-	public boolean excelReaderIsLoaded() {
-		if (parentFrame instanceof BaseWindow) {
-			BaseWindow parent = (BaseWindow) parentFrame;
-			return parent.isExcelLoaded();
-		}
-		else
-			return false; // TODO or throw exception
 	}
 
 	private void waitUntillExcelLoads() {
