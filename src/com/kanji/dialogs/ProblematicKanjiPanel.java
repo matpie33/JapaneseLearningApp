@@ -30,7 +30,7 @@ public class ProblematicKanjiPanel {
 
 	public ProblematicKanjiPanel(JPanel panel, MyDialog parent, KanjiWords kanjis,
 			Set<Integer> problematicKanji) {
-		main = new MainPanel(BasicColors.LIGHT_BLUE);
+		main = new MainPanel(BasicColors.OCEAN_BLUE);
 		parentDialog = parent;
 		kanjiInfos = kanjis;
 		problematicKanjis = problematicKanji;

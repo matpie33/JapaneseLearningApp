@@ -44,7 +44,7 @@ public abstract class ClassWithDialog extends JFrame {
 			dialog = new MyDialog(this);
 			dialog.showInsertDialog(list);
 			// dialog.setLocationAtLeftUpperCornerOfParent(this);
-			dialog.setLocation(getRightComponentOfSplitPanePosition());
+			dialog.setLocationAtLeftUpperCornerOfParent(this);
 		}
 	}
 

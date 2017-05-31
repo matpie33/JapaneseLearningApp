@@ -35,7 +35,7 @@ public class SearchWordPanel {
 	private MyList list;
 
 	public SearchWordPanel(JPanel panel, MyDialog parent) {
-		main = new MainPanel(BasicColors.LIGHT_BLUE, true);
+		main = new MainPanel(BasicColors.OCEAN_BLUE, true);
 		parentDialog = parent;
 		options = new SearchOptions();
 	}

@@ -97,7 +97,7 @@ public class BaseWindow extends ClassWithDialog {
 	}
 
 	private void createInformationsPanel() {
-		infoPanel = new MainPanel(BasicColors.OCEAN_BLUE);
+		infoPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
 		saveInfo = new JLabel();
 		changeSaveStatus(SavingStatus.NO_CHANGES);
 		infoPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.WEST, saveInfo));
@@ -128,7 +128,7 @@ public class BaseWindow extends ClassWithDialog {
 
 	private void createButtonsPanel(List<JButton> list) {
 
-		buttonsPanel = new MainPanel(BasicColors.OCEAN_BLUE);
+		buttonsPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
 		buttonsPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.WEST,
 				list.toArray(new JButton[] {})));
 

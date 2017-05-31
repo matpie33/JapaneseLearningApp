@@ -19,7 +19,7 @@ public class MessagePanel {
 
 	public MessagePanel(JPanel panel, MyDialog parent) {
 		parentDialog = parent;
-		main = new MainPanel(BasicColors.LIGHT_BLUE);
+		main = new MainPanel(BasicColors.OCEAN_BLUE);
 	}
 
 	public JPanel createPanel(String message) {

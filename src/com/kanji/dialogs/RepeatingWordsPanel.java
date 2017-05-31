@@ -65,13 +65,15 @@ public class RepeatingWordsPanel extends JPanel {
 	private int secondsLeft = 0;
 	private int minutesLeft = 0;
 	private int hoursLeft = 0;
-	private MainPanel main;
+	private MainPanel centerPanel;
+	private MainPanel mainPanel;
 	private int maxCharactersInRow = 15;
 
 	private RepeatingInformation repeatInfo;
 
 	public RepeatingWordsPanel(BaseWindow parent) {
-		main = new MainPanel(BasicColors.LIGHT_BLUE);
+		centerPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
+		mainPanel = new MainPanel(BasicColors.OCEAN_BLUE);
 		excel = new ExcelReader();
 		excel.load();
 		currentProblematicKanjis = new HashSet<>();
@@ -80,6 +82,8 @@ public class RepeatingWordsPanel extends JPanel {
 		this.timerRunning = false;
 		initialize();
 		createPanel();
+		mainPanel.addRow(
+				RowMaker.createUnfilledRow(GridBagConstraints.CENTER, centerPanel.getPanel()));
 
 	}
 
@@ -92,7 +96,7 @@ public class RepeatingWordsPanel extends JPanel {
 	private void createPanel() {
 		JLabel titleLabel = new JLabel(Titles.repeatingWordsTitle);
 		this.time = new JLabel(this.timeLabel);
-		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.NORTH, titleLabel, time));
+		centerPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.NORTH, titleLabel, time));
 		// if (!this.wordsToRepeat.isEmpty()) {
 		initiateRepeatingPanel();
 		// }
@@ -103,8 +107,7 @@ public class RepeatingWordsPanel extends JPanel {
 	private void initiateRepeatingPanel() {
 		createElementsForRepeatingPanel();
 		setButtonsToLearningAndAddThem();
-		main.addRow(
-				RowMaker.createUnfilledRow(GridBagConstraints.CENTER, repeatingPanel.getPanel()));
+		centerPanel.addRow(RowMaker.createBothSidesFilledRow(repeatingPanel.getPanel()));
 	}
 
 	private void setButtonsToLearningAndAddThem() {
@@ -334,7 +337,7 @@ public class RepeatingWordsPanel extends JPanel {
 
 		this.remainingLabel = new JLabel(createRemainingPrompt());
 
-		main.addRow(
+		centerPanel.addRow(
 				RowMaker.createUnfilledRow(GridBagConstraints.SOUTH, remainingLabel, returnButton));
 	}
 
@@ -476,7 +479,7 @@ public class RepeatingWordsPanel extends JPanel {
 	}
 
 	public JPanel getPanel() {
-		return main.getPanel();
+		return mainPanel.getPanel();
 	}
 
 }

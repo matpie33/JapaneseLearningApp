@@ -20,7 +20,7 @@ public class ConfirmPanel {
 	private MyDialog parentDialog;
 
 	public ConfirmPanel(JPanel panel, MyDialog parent) {
-		main = new MainPanel(BasicColors.LIGHT_BLUE);
+		main = new MainPanel(BasicColors.OCEAN_BLUE);
 		parentDialog = parent;
 	}
 

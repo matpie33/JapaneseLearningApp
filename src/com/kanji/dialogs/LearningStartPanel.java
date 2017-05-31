@@ -62,7 +62,7 @@ public class LearningStartPanel {
 		this.numberOfWords = numberOfWords;
 		parentDialog = parent;
 		this.parentFrame = parentOfParent;
-		main = new MainPanel(BasicColors.LIGHT_BLUE, false);
+		main = new MainPanel(BasicColors.OCEAN_BLUE, false);
 	}
 
 	public JPanel createPanel(MyList list) { // TODO add focus to textfield from
@@ -74,7 +74,7 @@ public class LearningStartPanel {
 
 		problematicCheckbox = createProblematicKanjiCheckbox();
 
-		rangesPanel = new MainPanel(BasicColors.LIGHT_BLUE, true);
+		rangesPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE, true);
 		Border b = BorderFactory.createLineBorder(BasicColors.VERY_BLUE);
 		// scrollPane = new JScrollPane(rangesPanel.getPanel());
 		scrollPane = GuiMaker.createScrollPane(BasicColors.DARK_BLUE, b, rangesPanel.getPanel(),
