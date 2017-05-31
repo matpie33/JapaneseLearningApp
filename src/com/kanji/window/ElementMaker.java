@@ -242,8 +242,12 @@ public class ElementMaker {
 		listOfWords.setWords(words);
 		for (int i = 1; i <= 10; i++) {
 			listOfWords.getWords().addRow("Word no. " + i, i, i);
-
 		}
+		listOfWords.getWords()
+				.addRow("Firstly a trivial correction: the integer ALIGN_JUSTIF"
+						+ " should read ALIGN_JUSTIFIED Secondly, I have tried several variations of getting "
+						+ "justified text in JTextPane including the solution given above and using a menuitem "
+						+ "with alignment action such as: menu.add(new , i, i);", 11, 11);
 	}
 
 	private void initRepeatsList() {

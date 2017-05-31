@@ -16,8 +16,11 @@ import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
@@ -50,8 +53,8 @@ public class RepeatingWordsPanel extends JPanel {
 	private String timeLabel = "Czas: ";
 	private Thread timerThread;
 	private boolean timerRunning;
-	private JTextArea kanjiTextArea;
-	private JTextArea wordTextArea;
+	private JTextPane kanjiTextArea;
+	private JTextPane wordTextArea;
 	private JButton pauseOrResume;
 	private JButton showWord;
 	private JButton recognizedWord;
@@ -63,6 +66,7 @@ public class RepeatingWordsPanel extends JPanel {
 	private int minutesLeft = 0;
 	private int hoursLeft = 0;
 	private MainPanel main;
+	private int maxCharactersInRow = 15;
 
 	private RepeatingInformation repeatInfo;
 
@@ -99,7 +103,8 @@ public class RepeatingWordsPanel extends JPanel {
 	private void initiateRepeatingPanel() {
 		createElementsForRepeatingPanel();
 		setButtonsToLearningAndAddThem();
-		main.addRow(RowMaker.createBothSidesFilledRow(repeatingPanel.getPanel()));
+		main.addRow(
+				RowMaker.createUnfilledRow(GridBagConstraints.CENTER, repeatingPanel.getPanel()));
 	}
 
 	private void setButtonsToLearningAndAddThem() {
@@ -120,20 +125,22 @@ public class RepeatingWordsPanel extends JPanel {
 	}
 
 	private void createWordLabel() {
-		this.wordTextArea = new JTextArea(10, 10);
-		this.wordTextArea.setEditable(false);
-		this.wordTextArea.setLineWrap(true);
-		this.wordTextArea.setWrapStyleWord(true);
+		this.wordTextArea = new JTextPane();
+		StyledDocument doc = wordTextArea.getStyledDocument();
+		SimpleAttributeSet center = new SimpleAttributeSet();
+		StyleConstants.setAlignment(center, StyleConstants.ALIGN_JUSTIFIED);
+		doc.setParagraphAttributes(0, doc.getLength(), center, false);
 	}
 
 	private void createWordArea() {
 		Font f = new Font(this.excel.getFontName(), 1, 80);
 
-		this.kanjiTextArea = new JTextArea(1, 1);
-		this.kanjiTextArea.setFont(f);
-		this.kanjiTextArea.setEditable(false);
-		this.kanjiTextArea.setLineWrap(true);
-		this.kanjiTextArea.setWrapStyleWord(true);
+		this.kanjiTextArea = new JTextPane();
+		kanjiTextArea.setFont(f);
+		StyledDocument doc = wordTextArea.getStyledDocument();
+		SimpleAttributeSet center = new SimpleAttributeSet();
+		StyleConstants.setAlignment(center, StyleConstants.ALIGN_JUSTIFIED);
+		doc.setParagraphAttributes(0, doc.getLength(), center, false);
 	}
 
 	private String pickRandomWord() {
@@ -141,6 +148,20 @@ public class RepeatingWordsPanel extends JPanel {
 		int index = randomizer.nextInt(this.wordsToRepeat.size());
 		this.currentWord = ((String) this.wordsToRepeat.get(index));
 		wordTextArea.setText(currentWord);
+		if (currentWord.length() > maxCharactersInRow) {
+			StyledDocument doc = wordTextArea.getStyledDocument();
+			SimpleAttributeSet center = new SimpleAttributeSet();
+			StyleConstants.setAlignment(center, StyleConstants.ALIGN_JUSTIFIED);
+			wordTextArea.setStyledDocument(doc);
+			doc.setParagraphAttributes(0, doc.getLength(), center, false);
+		}
+		else {
+			StyledDocument doc = wordTextArea.getStyledDocument();
+			SimpleAttributeSet center = new SimpleAttributeSet();
+			StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+			wordTextArea.setStyledDocument(doc);
+			doc.setParagraphAttributes(0, doc.getLength(), center, false);
+		}
 		return (String) this.wordsToRepeat.get(index) + " "
 				+ ((KanjiWords) words.getWords()).getIdOfTheWord(this.currentWord);
 	}
@@ -257,7 +278,7 @@ public class RepeatingWordsPanel extends JPanel {
 		System.out.println("removed: " + word);
 		if (!this.wordsToRepeat.isEmpty()) {
 			setButtonsToLearningAndAddThem();
-			this.wordTextArea.setText(pickRandomWord());
+			pickRandomWord();
 			this.kanjiTextArea.setText("");
 		}
 		else {
@@ -292,7 +313,7 @@ public class RepeatingWordsPanel extends JPanel {
 
 	private void addElementsToRepeatingPanel(JButton[] buttons) {
 		repeatingPanel.clear();
-		repeatingPanel.addRow(RowMaker.createVerticallyFilledRow(wordTextArea));
+		repeatingPanel.addRow(RowMaker.createBothSidesFilledRow(wordTextArea));
 		repeatingPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, kanjiTextArea));
 
 		repeatingPanel
