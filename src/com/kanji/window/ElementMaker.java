@@ -55,11 +55,22 @@ public class ElementMaker {
 	private SavingStatus savingStatus;
 
 	private class MyDispatcher implements KeyEventDispatcher {
+		private boolean openingFile;
+
 		@Override
 		public boolean dispatchKeyEvent(KeyEvent e) {
 
 			if (e.getKeyCode() == KeyEvent.VK_F && e.isControlDown())
 				searchWord();
+			if (e.getKeyCode() == KeyEvent.VK_N && e.isControlDown()) {
+				System.out.println("heeeeeeeeeeeeeeej");
+				if (!openingFile) {
+					openingFile = true;
+					openKanjiFile();
+					openingFile = false;
+				}
+
+			}
 			return false;
 		}
 	}
@@ -96,141 +107,142 @@ public class ElementMaker {
 		item.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				fileToSave = openFile();
-				if (!fileToSave.exists())
-					return;
-
-				try {
-
-					final FileInputStream fout = new FileInputStream(fileToSave);
-					final ObjectInputStream oos = new ObjectInputStream(fout);
-					listOfWords.updateWords();
-					final Object readed = oos.readObject();
-					final Object read = oos.readObject();
-
-					final BaseWindow b = (BaseWindow) parent;
-
-					Set<Integer> problematics;
-					try {
-						problematics = (Set<Integer>) oos.readObject();
-						b.setProblematicKanjis(problematics);
-					}
-					catch (ClassNotFoundException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					catch (IOException e2) {
-						// TODO Auto-generated catch block
-						e2.printStackTrace();
-					}
-
-					final LoadingPanel bar = b.showProgressDialog();
-					b.updateTitle(fileToSave.toString());
-					b.changeSaveStatus(SavingStatus.NO_CHANGES);
-					b.repaint();
-
-					SwingWorker s = new SwingWorker<Void, Integer>() {
-
-						private JProgressBar progress;
-
-						@Override
-						public Void doInBackground() {
-
-							// b.updateLeft();
-							progress = new JProgressBar();
-							progress.setIndeterminate(false);
-							if (readed instanceof KanjiWords) {
-								System.out.println("here is performed");
-								bar.setProgressBar(progress);
-								final KanjiWords wordss = (KanjiWords) readed;
-								progress.setMaximum(wordss.getNumberOfKanjis());
-								listOfWords.setWords(wordss);
-								wordss.setList(listOfWords);
-								wordss.initialize();
-								List<KanjiInformation> wordsList = listOfWords.getWords()
-										.getAllWords();
-								KanjiWords kanjiWords = listOfWords.getWords();
-								List<Integer> ints = new ArrayList<>();
-								for (int i = 0; i < kanjiWords.getNumberOfKanjis(); i++) {
-									kanjiWords.addRow(wordsList.get(i), i + 1);
-									process(ints);
-									ints.add(1);
-								}
-							}
-							else {
-								Map<Integer, String> map = (Map<Integer, String>) readed;
-								listOfWords.setWords(new KanjiWords(listOfWords));
-								int i = 1;
-								for (Map.Entry<Integer, String> entry : map.entrySet()) {
-									listOfWords.getWords().addRow(entry.getValue(), entry.getKey(),
-											i);
-									i++;
-								}
-							}
-
-							return null;
-						}
-
-						@Override
-						public void process(List<Integer> something) {
-							progress.setValue(something.size());
-						}
-
-						@Override
-						public void done() {
-
-							b.closeDialog();
-							listOfWords.repaint();
-							listOfWords.scrollToBottom();
-							b.repaint();
-							try {
-								fout.close();
-							}
-							catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
-					};
-					s.execute();
-
-					Runnable r2 = new Runnable() {
-						@Override
-						public void run() {
-							if (read instanceof RepeatingList) {
-								RepeatingList mapOfRepeats = (RepeatingList) read;
-
-								repeats.setWords(mapOfRepeats);
-								mapOfRepeats.setList(repeats);
-								mapOfRepeats.initialize();
-								repeats.getWords().addAll();
-							}
-							else {
-								Map<Integer, String> map = (Map<Integer, String>) read;
-
-								for (Map.Entry<Integer, String> entry : map.entrySet()) {
-									repeats.getWords().add(entry.getValue(),
-											new Date(((long) entry.getKey()) * 1000L), false);
-								}
-								repeats.setWords(new RepeatingList(repeats));
-							}
-							repeats.repaint();
-							repeats.scrollToBottom();
-						}
-					};
-					Thread t2 = new Thread(r2);
-					t2.start();
-
-				}
-				catch (IOException | ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
+				openKanjiFile();
 			}
 		});
 
 		menu.add(item);
+	}
+
+	private void openKanjiFile() {
+		fileToSave = openFile();
+		if (!fileToSave.exists())
+			return;
+
+		try {
+
+			final FileInputStream fout = new FileInputStream(fileToSave);
+			final ObjectInputStream oos = new ObjectInputStream(fout);
+			listOfWords.updateWords();
+			final Object readed = oos.readObject();
+			final Object read = oos.readObject();
+
+			final BaseWindow b = (BaseWindow) parent;
+
+			Set<Integer> problematics;
+			try {
+				problematics = (Set<Integer>) oos.readObject();
+				b.setProblematicKanjis(problematics);
+			}
+			catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+
+			final LoadingPanel bar = b.showProgressDialog();
+			b.updateTitle(fileToSave.toString());
+			b.changeSaveStatus(SavingStatus.NO_CHANGES);
+			b.repaint();
+
+			SwingWorker s = new SwingWorker<Void, Integer>() {
+
+				private JProgressBar progress;
+
+				@Override
+				public Void doInBackground() {
+
+					// b.updateLeft();
+					progress = new JProgressBar();
+					progress.setIndeterminate(false);
+					if (readed instanceof KanjiWords) {
+						System.out.println("here is performed");
+						bar.setProgressBar(progress);
+						final KanjiWords wordss = (KanjiWords) readed;
+						progress.setMaximum(wordss.getNumberOfKanjis());
+						listOfWords.setWords(wordss);
+						wordss.setList(listOfWords);
+						wordss.initialize();
+						List<KanjiInformation> wordsList = listOfWords.getWords().getAllWords();
+						KanjiWords kanjiWords = listOfWords.getWords();
+						List<Integer> ints = new ArrayList<>();
+						for (int i = 0; i < kanjiWords.getNumberOfKanjis(); i++) {
+							kanjiWords.addRow(wordsList.get(i), i + 1);
+							process(ints);
+							ints.add(1);
+						}
+					}
+					else {
+						Map<Integer, String> map = (Map<Integer, String>) readed;
+						listOfWords.setWords(new KanjiWords(listOfWords));
+						int i = 1;
+						for (Map.Entry<Integer, String> entry : map.entrySet()) {
+							listOfWords.getWords().addRow(entry.getValue(), entry.getKey(), i);
+							i++;
+						}
+					}
+
+					return null;
+				}
+
+				@Override
+				public void process(List<Integer> something) {
+					progress.setValue(something.size());
+				}
+
+				@Override
+				public void done() {
+
+					b.closeDialog();
+					listOfWords.repaint();
+					listOfWords.scrollToBottom();
+					b.repaint();
+					try {
+						fout.close();
+					}
+					catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			};
+			s.execute();
+
+			Runnable r2 = new Runnable() {
+				@Override
+				public void run() {
+					if (read instanceof RepeatingList) {
+						RepeatingList mapOfRepeats = (RepeatingList) read;
+
+						repeats.setWords(mapOfRepeats);
+						mapOfRepeats.setList(repeats);
+						mapOfRepeats.initialize();
+						repeats.getWords().addAll();
+					}
+					else {
+						Map<Integer, String> map = (Map<Integer, String>) read;
+
+						for (Map.Entry<Integer, String> entry : map.entrySet()) {
+							repeats.getWords().add(entry.getValue(),
+									new Date(((long) entry.getKey()) * 1000L), false);
+						}
+						repeats.setWords(new RepeatingList(repeats));
+					}
+					repeats.repaint();
+					repeats.scrollToBottom();
+				}
+			};
+			Thread t2 = new Thread(r2);
+			t2.start();
+
+		}
+		catch (IOException | ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 
 	private void initListOfWords() {
@@ -323,6 +335,17 @@ public class ElementMaker {
 
 	private File openFile() {
 		JFileChooser fileChooser = new JFileChooser();
+		String directory;
+		if (System.getProperty("user.dir").contains("dist")) {
+			directory = "Powtórki kanji";
+
+		}
+		else {
+			directory = "Testy do kanji";
+		}
+		fileChooser.setCurrentDirectory(
+				new File(fileChooser.getCurrentDirectory() + File.separator + directory));
+
 		int chosenOption = fileChooser.showOpenDialog(parent);
 		if (chosenOption == JFileChooser.CANCEL_OPTION)
 			return new File("");

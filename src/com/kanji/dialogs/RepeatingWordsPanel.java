@@ -129,6 +129,7 @@ public class RepeatingWordsPanel extends JPanel {
 
 	private void createWordLabel() {
 		this.wordTextArea = new JTextPane();
+		wordTextArea.setEditable(false);
 		StyledDocument doc = wordTextArea.getStyledDocument();
 		SimpleAttributeSet center = new SimpleAttributeSet();
 		StyleConstants.setAlignment(center, StyleConstants.ALIGN_JUSTIFIED);
@@ -139,6 +140,7 @@ public class RepeatingWordsPanel extends JPanel {
 		Font f = new Font(this.excel.getFontName(), 1, 80);
 
 		this.kanjiTextArea = new JTextPane();
+		kanjiTextArea.setEditable(false);
 		kanjiTextArea.setFont(f);
 		StyledDocument doc = wordTextArea.getStyledDocument();
 		SimpleAttributeSet center = new SimpleAttributeSet();
