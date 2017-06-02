@@ -22,6 +22,7 @@ public class ButtonsNames {
 	public static final String buttonPauseText = "Pauza";
 	public static final String buttonResumeText = "Wznów";
 	public static final String buttonRecognizedWordText = "Znam";
+	public static final String buttonShowPreviousWord = "Pokaż poprzednie";
 
 	public static final String[] buttonNames = { buttonStartText, buttonSearchText, buttonAddText,
 			buttonOpenText, buttonSaveText, buttonSaveListText };

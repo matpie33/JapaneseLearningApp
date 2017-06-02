@@ -68,6 +68,8 @@ public class RepeatingWordsPanel extends JPanel {
 	private MainPanel centerPanel;
 	private MainPanel mainPanel;
 	private int maxCharactersInRow = 15;
+	private JButton showPreviousWord;
+	private String previousWord = "";
 
 	private RepeatingInformation repeatInfo;
 
@@ -115,7 +117,13 @@ public class RepeatingWordsPanel extends JPanel {
 	}
 
 	private JButton[] showWordButtons() {
-		return new JButton[] { this.pauseOrResume, this.showWord };
+		if (!previousWord.isEmpty()) {
+			return new JButton[] { this.pauseOrResume, this.showWord, this.showPreviousWord };
+		}
+		else {
+			return new JButton[] { this.pauseOrResume, this.showWord };
+		}
+
 	}
 
 	private void createElementsForRepeatingPanel() {
@@ -125,6 +133,23 @@ public class RepeatingWordsPanel extends JPanel {
 		createPauseOrResumeButton();
 		createRecognizedWordButton();
 		createNotRecognizedWordButton();
+		createButtonGoToPreviousWord();
+	}
+
+	private void createButtonGoToPreviousWord() {
+		showPreviousWord = new JButton(ButtonsNames.buttonShowPreviousWord);
+		showPreviousWord.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				showWord(previousWord);
+				currentWord = previousWord;
+				removeWordFromCurrentProblematics();
+				showKanji();
+				setButtonsToRecognizeWord();
+				repeatingPanel.removeLastElementFromRow(2);
+			}
+		});
 	}
 
 	private void createWordLabel() {
@@ -148,10 +173,14 @@ public class RepeatingWordsPanel extends JPanel {
 		doc.setParagraphAttributes(0, doc.getLength(), center, false);
 	}
 
-	private String pickRandomWord() {
+	private void pickRandomWord() {
 		Random randomizer = new Random();
 		int index = randomizer.nextInt(this.wordsToRepeat.size());
 		this.currentWord = ((String) this.wordsToRepeat.get(index));
+		showWord(currentWord);
+	}
+
+	private void showWord(String currentWord) {
 		wordTextArea.setText(currentWord);
 		if (currentWord.length() > maxCharactersInRow) {
 			StyledDocument doc = wordTextArea.getStyledDocument();
@@ -167,8 +196,6 @@ public class RepeatingWordsPanel extends JPanel {
 			wordTextArea.setStyledDocument(doc);
 			doc.setParagraphAttributes(0, doc.getLength(), center, false);
 		}
-		return (String) this.wordsToRepeat.get(index) + " "
-				+ ((KanjiWords) words.getWords()).getIdOfTheWord(this.currentWord);
 	}
 
 	private void createShowWordButton() {
@@ -189,7 +216,15 @@ public class RepeatingWordsPanel extends JPanel {
 	}
 
 	private JButton[] recognizeWordButtons() {
-		return new JButton[] { this.pauseOrResume, this.recognizedWord, this.notRecognizedWord };
+		if (!previousWord.isEmpty()) {
+			return new JButton[] { this.pauseOrResume, this.recognizedWord, this.notRecognizedWord,
+					showPreviousWord };
+		}
+		else {
+			return new JButton[] { this.pauseOrResume, this.recognizedWord,
+					this.notRecognizedWord };
+		}
+
 	}
 
 	private void showKanji() {
@@ -237,6 +272,11 @@ public class RepeatingWordsPanel extends JPanel {
 		this.recognizedWord.getActionMap().put("pressed", a);
 	}
 
+	private void removeWordFromCurrentProblematics() {
+		int id = getCurrentWordId();
+		currentProblematicKanjis.remove(Integer.valueOf(id));
+	}
+
 	private void removeWordIfItsProblematic() {
 		int id = getCurrentWordId();
 		problematicKanjis.remove(Integer.valueOf(id));
@@ -278,7 +318,8 @@ public class RepeatingWordsPanel extends JPanel {
 
 	private void getNextWord() {
 		String word = this.wordTextArea.getText();
-		this.wordsToRepeat.remove(this.currentWord);
+		this.wordsToRepeat.remove(currentWord);
+		previousWord = currentWord;
 
 		System.out.println("removed: " + word);
 		if (!this.wordsToRepeat.isEmpty()) {
@@ -404,7 +445,6 @@ public class RepeatingWordsPanel extends JPanel {
 		Runnable runnable = new Runnable() {
 			public void run() {
 				while (timerRunning) {
-					System.out.println("running");
 					RepeatingWordsPanel.this.timeElapsed += RepeatingWordsPanel.this.interval;
 					if (timeElapsed >= 1) {
 						timeElapsed = 0;
