@@ -75,10 +75,9 @@ public abstract class ClassWithDialog extends JFrame {
 	}
 
 	public void showProblematicKanjiDialog(KanjiWords kanjiWords, Set<Integer> problematicKanjis) {
-		if (isProblematicKanjiDialogOpen()) {
+		if (isProblematicKanjiDialogClosed()) {
 			problematicKanjisDialog = new MyDialog(this);
 			problematicKanjisDialog.showProblematicKanjiDialog(kanjiWords, problematicKanjis);
-			problematicKanjisDialog.setLocationRelativeTo(this);
 		}
 		else {
 			System.out.println("it exists");
@@ -87,11 +86,10 @@ public abstract class ClassWithDialog extends JFrame {
 	}
 
 	public void showProblematicKanjiDialog(ProblematicKanjiPanel panel) {
-		if (isProblematicKanjiDialogOpen()) {
+		if (isProblematicKanjiDialogClosed()) {
 			System.out.println("is opend");
 			problematicKanjisDialog = new MyDialog(this);
 			problematicKanjisDialog.showProblematicKanjiDialog(panel);
-			problematicKanjisDialog.setLocationRelativeTo(this);
 		}
 		else {
 			System.out.println("is not opened");
@@ -99,7 +97,7 @@ public abstract class ClassWithDialog extends JFrame {
 		}
 	}
 
-	private boolean isProblematicKanjiDialogOpen() {
+	private boolean isProblematicKanjiDialogClosed() {
 		return problematicKanjisDialog == null || !problematicKanjisDialog.isDisplayable();
 	}
 

@@ -1,19 +1,21 @@
 package com.kanji.dialogs;
 
 import java.awt.Desktop;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
@@ -27,9 +29,12 @@ public class ProblematicKanjiPanel {
 	private int repeatedProblematics;
 	private Set<Integer> problematicKanjis;
 	private MainPanel main;
+	private List<MainPanel> kanjisToBrowse;
+	private JScrollPane scrollPane;
 
 	public ProblematicKanjiPanel(JPanel panel, MyDialog parent, KanjiWords kanjis,
 			Set<Integer> problematicKanji) {
+		kanjisToBrowse = new ArrayList<>();
 		main = new MainPanel(BasicColors.OCEAN_BLUE);
 		parentDialog = parent;
 		kanjiInfos = kanjis;
@@ -47,48 +52,70 @@ public class ProblematicKanjiPanel {
 
 		MainPanel panelInScrollPane = new MainPanel(BasicColors.LIGHT_BLUE, true);
 		panelInScrollPane.setGapsBetweenRowsTo(5);
-		JScrollPane pane = new JScrollPane(panelInScrollPane.getPanel());
-		pane.setOpaque(false);
-		pane.getViewport().setOpaque(false);
-		pane.setPreferredSize(new Dimension(400, 200));
+		scrollPane = new JScrollPane(panelInScrollPane.getPanel());
+		scrollPane.setOpaque(false);
+		scrollPane.getViewport().setOpaque(false);
+		// pane.setPreferredSize(new Dimension(400, 200));
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridy = 0;
 
 		for (Integer i : problematicKanjis) {
 			final MainPanel panel = new MainPanel(BasicColors.DARK_BLUE);
 			final JLabel id = new JLabel(i.toString());
-			JLabel kanji = new JLabel(kanjiInfos.getWordForId(i));
+			JTextArea kanji = new JTextArea(1, 30);
+			kanji.setLineWrap(true);
+			kanji.setOpaque(false);
+			kanji.setEditable(false);
+			kanji.setWrapStyleWord(true);
+			kanji.setText(kanjiInfos.getWordForId(i));
 
 			JButton button = new JButton("Przejdź do źródła");
 			button.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					panel.setBackground(BasicColors.OCEAN_BLUE);
-					String uriText = "http://kanji.koohii.com/study/kanji/";
-					uriText += id.getText();
-					URI uriObject = constructUriFromText(uriText, parentDialog);
-					if (uriObject != null) {
-						openUrlInBrowser(uriObject, parentDialog);
-						repeatedProblematics++;
-					}
-
+					browseKanji(panel);
 				}
 			});
+			button.setFocusable(false);
 
 			panel.addRow(RowMaker.createHorizontallyFilledRow(kanji, id, button)
 					.fillHorizontallySomeElements(kanji));
+			kanjisToBrowse.add(panel);
 
 			panelInScrollPane.addRow(RowMaker.createHorizontallyFilledRow(panel.getPanel()));
 			c.gridy++;
 
 		}
-		main.addRow(RowMaker.createBothSidesFilledRow(pane));
+
+		main.addRow(RowMaker.createBothSidesFilledRow(scrollPane));
 
 		JButton button = parentDialog.createButtonHide(ButtonsNames.buttonApproveText,
 				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0), this);
 		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, button));
 
 		return main.getPanel();
+	}
+
+	private void browseKanji(MainPanel panelWithKanji) {
+		kanjisToBrowse.remove(panelWithKanji);
+		scrollPane.getViewport()
+				.scrollRectToVisible(panelWithKanji.getPanel().getParent().getBounds());
+		scrollPane.revalidate();
+		scrollPane.repaint();
+		panelWithKanji.setBackground(BasicColors.OCEAN_BLUE);
+		String uriText = "http://kanji.koohii.com/study/kanji/";
+		JLabel id = (JLabel) panelWithKanji.getElementFromRow(0, 1);
+		uriText += id.getText();
+		URI uriObject = constructUriFromText(uriText, parentDialog);
+		if (uriObject != null) {
+			// openUrlInBrowser(uriObject, parentDialog);
+			repeatedProblematics++;
+		}
+	}
+
+	public void spaceBarPressed() {
+		if (!kanjisToBrowse.isEmpty())
+			browseKanji(kanjisToBrowse.get(0));
 	}
 
 	private void openUrlInBrowser(URI uriObject, MyDialog frame) {

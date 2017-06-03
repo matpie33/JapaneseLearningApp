@@ -1,6 +1,7 @@
 package com.kanji.dialogs;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -121,16 +122,7 @@ public class MyDialog extends JDialog {
 				dispose();
 			}
 		};
-		JRootPane root = getRootPane();
-		root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-				.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "close");
-		root.getActionMap().put("close", action);
-		setRootPane(root);
-		ModalityType modality;
-		if (modal)
-			modality = ModalityType.APPLICATION_MODAL;
-		else
-			modality = ModalityType.MODELESS;
+		addHotkey(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), action);
 
 		MessagePanel dialog = new MessagePanel(mainPanel, this);
 		mainPanel = dialog.createPanel(message);
@@ -139,6 +131,13 @@ public class MyDialog extends JDialog {
 		System.out.println("yoyo aa");
 		showYourself(Titles.messageDialogTitle, true);
 
+	}
+
+	private void addHotkey(KeyStroke k, AbstractAction a) {
+		JRootPane root = getRootPane();
+		root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(k, "close");
+		root.getActionMap().put("close", a);
+		setRootPane(root);
 	}
 
 	public void showSearchWordDialog(MyList list) {
@@ -165,7 +164,16 @@ public class MyDialog extends JDialog {
 	public void showProblematicKanjiDialog(ProblematicKanjiPanel kanjiPanel) {
 		problematicKanjiPanel = kanjiPanel;
 		mainPanel = problematicKanjiPanel.createPanel();
-		showYourself(Titles.insertWordDialogTitle);
+		AbstractAction a = new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				problematicKanjiPanel.spaceBarPressed();
+			}
+		};
+		setPreferredSize(new Dimension(600, 400));
+
+		addHotkey(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), a);
+		showYourself(Titles.insertWordDialogTitle, true);
 		// setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -240,7 +248,6 @@ public class MyDialog extends JDialog {
 	}
 
 	private void hideProblematics(ProblematicKanjiPanel problematicKanjiPanel2) {
-		show();
 		setVisible(false);
 		System.out.println("just hide");
 		BaseWindow parentBaseWindow = ((BaseWindow) parentWindow);
