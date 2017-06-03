@@ -108,7 +108,7 @@ public class ProblematicKanjiPanel {
 		uriText += id.getText();
 		URI uriObject = constructUriFromText(uriText, parentDialog);
 		if (uriObject != null) {
-			// openUrlInBrowser(uriObject, parentDialog);
+			openUrlInBrowser(uriObject, parentDialog);
 			repeatedProblematics++;
 		}
 	}
