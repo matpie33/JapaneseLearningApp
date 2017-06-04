@@ -98,10 +98,10 @@ public class ProblematicKanjiPanel {
 
 	private void browseKanji(MainPanel panelWithKanji) {
 		kanjisToBrowse.remove(panelWithKanji);
-		scrollPane.getViewport()
-				.scrollRectToVisible(panelWithKanji.getPanel().getParent().getBounds());
-		scrollPane.revalidate();
-		scrollPane.repaint();
+
+		scrollPane.getVerticalScrollBar().setValue(
+				(int) Math.floor(panelWithKanji.getPanel().getParent().getBounds().getY()));
+
 		panelWithKanji.setBackground(BasicColors.OCEAN_BLUE);
 		String uriText = "http://kanji.koohii.com/study/kanji/";
 		JLabel id = (JLabel) panelWithKanji.getElementFromRow(0, 1);
