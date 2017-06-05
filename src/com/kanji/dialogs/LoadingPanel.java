@@ -10,6 +10,7 @@ import javax.swing.JTextArea;
 import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.RowMaker;
+import com.kanji.actions.CommonActionsMaker;
 import com.kanji.constants.ButtonsNames;
 
 public class LoadingPanel {
@@ -30,8 +31,8 @@ public class LoadingPanel {
 		int level = 0;
 		JTextArea prompt = addPromptAtLevel(level, message);
 
-		okButton = parentDialog.createButtonDispose(ButtonsNames.buttonApproveText,
-				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SPACE, 0));
+		okButton = CommonActionsMaker.createButtonDispose(ButtonsNames.buttonApproveText,
+				java.awt.event.KeyEvent.VK_SPACE, parentDialog);
 
 		main.addRow(RowMaker.createBothSidesFilledRow(prompt));
 		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, okButton));

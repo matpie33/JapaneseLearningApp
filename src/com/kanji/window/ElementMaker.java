@@ -127,7 +127,7 @@ public class ElementMaker {
 			final Object readed = oos.readObject();
 			final Object read = oos.readObject();
 
-			final BaseWindow b = (BaseWindow) parent;
+			final ApplicationWindow b = (ApplicationWindow) parent;
 
 			Set<Integer> problematics;
 			try {
@@ -418,9 +418,9 @@ public class ElementMaker {
 	}
 
 	public void save() {
-		BaseWindow p = null;
-		if (parent instanceof BaseWindow) {
-			p = (BaseWindow) parent;
+		ApplicationWindow p = null;
+		if (parent instanceof ApplicationWindow) {
+			p = (ApplicationWindow) parent;
 			p.changeSaveStatus(SavingStatus.SAVING);
 		}
 		else
@@ -434,8 +434,8 @@ public class ElementMaker {
 			ObjectOutputStream oos = new ObjectOutputStream(fout);
 			oos.writeObject(this.listOfWords.getWords());
 			oos.writeObject(this.repeats.getWords());
-			if ((this.parent instanceof BaseWindow)) {
-				BaseWindow b = (BaseWindow) this.parent;
+			if ((this.parent instanceof ApplicationWindow)) {
+				ApplicationWindow b = (ApplicationWindow) this.parent;
 				oos.writeObject(b.getProblematicKanjis());
 			}
 			System.out.println("saved");

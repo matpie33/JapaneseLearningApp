@@ -26,7 +26,7 @@ import com.kanji.Row.KanjiWords;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.Titles;
 import com.kanji.myList.MyList;
-import com.kanji.window.BaseWindow;
+import com.kanji.window.ApplicationWindow;
 import com.kanji.window.ClassWithDialog;
 
 public class MyDialog extends JDialog {
@@ -211,23 +211,6 @@ public class MyDialog extends JDialog {
 
 	}
 
-	public JButton createButtonDispose(String text, KeyStroke disposeKey) {
-		JButton button = new JButton(text);
-		AbstractAction action = new AbstractAction() {
-			private static final long serialVersionUID = 5504620933205592893L;
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
-		};
-		button.addActionListener(action);
-		button.getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW).put(disposeKey, "space");
-
-		button.getActionMap().put("space", action);
-		return button;
-	}
-
 	public JButton createButtonHide(String text, KeyStroke disposeKey,
 			final ProblematicKanjiPanel panel) {
 		JButton button = new JButton(text);
@@ -250,7 +233,7 @@ public class MyDialog extends JDialog {
 	private void hideProblematics(ProblematicKanjiPanel problematicKanjiPanel2) {
 		setVisible(false);
 		System.out.println("just hide");
-		BaseWindow parentBaseWindow = ((BaseWindow) parentWindow);
+		ApplicationWindow parentBaseWindow = ((ApplicationWindow) parentWindow);
 		parentBaseWindow.addButtonIcon(problematicKanjiPanel2);
 		if (problematicKanjiPanel != null && problematicKanjiPanel.allProblematicKanjisRepeated()) {
 			System.out.println("removing");
@@ -272,8 +255,8 @@ public class MyDialog extends JDialog {
 	}
 
 	public void save() {
-		if (parentWindow instanceof BaseWindow) {
-			BaseWindow parent = (BaseWindow) parentWindow;
+		if (parentWindow instanceof ApplicationWindow) {
+			ApplicationWindow parent = (ApplicationWindow) parentWindow;
 			parent.save();
 		}
 	}

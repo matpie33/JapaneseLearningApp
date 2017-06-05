@@ -9,6 +9,7 @@ import javax.swing.JTextArea;
 import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.RowMaker;
+import com.kanji.actions.CommonActionsMaker;
 import com.kanji.constants.ButtonsNames;
 
 public class MessagePanel {
@@ -25,8 +26,8 @@ public class MessagePanel {
 	public JPanel createPanel(String message) {
 		int level = 0;
 		JTextArea prompt = addPromptAtLevel(level, message);
-		JButton button = parentDialog.createButtonDispose(ButtonsNames.buttonApproveText,
-				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SPACE, 0));
+		JButton button = CommonActionsMaker.createButtonDispose(ButtonsNames.buttonApproveText,
+				java.awt.event.KeyEvent.VK_SPACE, parentDialog);
 
 		main.addRow(RowMaker.createBothSidesFilledRow(prompt));
 		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, button));

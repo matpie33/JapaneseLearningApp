@@ -34,7 +34,7 @@ import com.kanji.fileReading.ExcelReader;
 import com.kanji.myList.MyList;
 import com.kanji.range.Range;
 import com.kanji.range.SetOfRanges;
-import com.kanji.window.BaseWindow;
+import com.kanji.window.ApplicationWindow;
 import com.sun.glass.events.KeyEvent;
 
 public class RepeatingWordsPanel extends JPanel {
@@ -42,7 +42,7 @@ public class RepeatingWordsPanel extends JPanel {
 	private MyList words;
 	private List<String> wordsToRepeat;
 	private ExcelReader excel;
-	private BaseWindow parent;
+	private ApplicationWindow parent;
 	private Set<Integer> problematicKanjis;
 	private Set<Integer> currentProblematicKanjis;
 	private String currentWord;
@@ -73,7 +73,7 @@ public class RepeatingWordsPanel extends JPanel {
 
 	private RepeatingInformation repeatInfo;
 
-	public RepeatingWordsPanel(BaseWindow parent) {
+	public RepeatingWordsPanel(ApplicationWindow parent) {
 		centerPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
 		mainPanel = new MainPanel(BasicColors.OCEAN_BLUE);
 		excel = new ExcelReader();
@@ -340,7 +340,7 @@ public class RepeatingWordsPanel extends JPanel {
 		problematicKanjis.addAll(currentProblematicKanjis);
 
 		this.parent.setProblematicKanjis(this.problematicKanjis);
-		this.parent.showCardPanel(BaseWindow.LIST_PANEL);
+		this.parent.showCardPanel(ApplicationWindow.LIST_PANEL);
 		repeatInfo.setWasRepeated(true);
 		repeatInfo.setTimeSpentOnRepeating(getTimePassed());
 		parent.addToRepeatsList(repeatInfo);
@@ -373,7 +373,7 @@ public class RepeatingWordsPanel extends JPanel {
 		JButton returnButton = new JButton(ButtonsNames.buttonGoBackText);
 		returnButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RepeatingWordsPanel.this.parent.showCardPanel(BaseWindow.LIST_PANEL);
+				RepeatingWordsPanel.this.parent.showCardPanel(ApplicationWindow.LIST_PANEL);
 				RepeatingWordsPanel.this.stopTimer();
 			}
 		});

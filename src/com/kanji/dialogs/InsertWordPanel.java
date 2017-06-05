@@ -16,6 +16,7 @@ import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.RowMaker;
 import com.kanji.Row.KanjiWords;
+import com.kanji.actions.CommonActionsMaker;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.ExceptionsMessages;
 import com.kanji.constants.NumberValues;
@@ -45,8 +46,8 @@ public class InsertWordPanel {
 		insertNumberTextField = new JTextField(20);
 		limitCharactersAccordingToInteger(insertNumberTextField);
 
-		JButton cancel = parentDialog.createButtonDispose(ButtonsNames.buttonCancelText,
-				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
+		JButton cancel = CommonActionsMaker.createButtonDispose(ButtonsNames.buttonCancelText,
+				java.awt.event.KeyEvent.VK_ESCAPE, parentDialog);
 		JButton approve = createButtonValidate(ButtonsNames.buttonApproveText);
 
 		main.addRow(RowMaker.createHorizontallyFilledRow(addWordPrompt, insertWordTextField)

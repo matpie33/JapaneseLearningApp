@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.RowMaker;
+import com.kanji.actions.CommonActionsMaker;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.ExceptionsMessages;
 import com.kanji.constants.NumberValues;
@@ -87,8 +88,8 @@ public class SearchWordPanel {
 
 		JButton previous = createButtonPrevious(ButtonsNames.buttonPreviousText);
 		JButton next = createButtonNext(ButtonsNames.buttonNextText);
-		JButton cancel = parentDialog.createButtonDispose(ButtonsNames.buttonCancelText,
-				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
+		JButton cancel = CommonActionsMaker.createButtonDispose(ButtonsNames.buttonCancelText,
+				java.awt.event.KeyEvent.VK_ESCAPE, parentDialog);
 
 		main.addRow(RowMaker.createHorizontallyFilledRow(prompt, textField)
 				.fillHorizontallySomeElements(textField));

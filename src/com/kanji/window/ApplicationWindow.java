@@ -36,7 +36,7 @@ import com.kanji.myList.MyList;
 import com.kanji.range.SetOfRanges;
 
 @SuppressWarnings("serial")
-public class BaseWindow extends ClassWithDialog {
+public class ApplicationWindow extends ClassWithDialog {
 
 	private Insets insets = new Insets(20, 20, 20, 20);
 	private ElementMaker maker;
@@ -62,7 +62,7 @@ public class BaseWindow extends ClassWithDialog {
 	public static final String LIST_PANEL = "Panel with lists and buttons";
 	public static final String LEARNING_PANEL = "Panel for repeating words";
 
-	public BaseWindow() {
+	public ApplicationWindow() {
 
 		main = new MainPanel(BasicColors.LIGHT_BLUE);
 		// TODO searching is case sensitive, should not be

@@ -31,6 +31,7 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.RowMaker;
 import com.kanji.Row.RepeatingInformation;
 import com.kanji.Row.RepeatingList;
+import com.kanji.actions.CommonActionsMaker;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.ExceptionsMessages;
 import com.kanji.constants.NumberValues;
@@ -39,7 +40,7 @@ import com.kanji.constants.Prompts;
 import com.kanji.myList.MyList;
 import com.kanji.range.Range;
 import com.kanji.range.SetOfRanges;
-import com.kanji.window.BaseWindow;
+import com.kanji.window.ApplicationWindow;
 import com.kanji.window.LimitDocumentFilter;
 
 public class LearningStartPanel {
@@ -88,8 +89,8 @@ public class LearningStartPanel {
 		// addComponentsAtLevel(level, new JComponent[] { newRow, sumRangeField
 		// });
 
-		JButton cancel = parentDialog.createButtonDispose(ButtonsNames.buttonCancelText,
-				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
+		JButton cancel = CommonActionsMaker.createButtonDispose(ButtonsNames.buttonCancelText,
+				java.awt.event.KeyEvent.VK_ESCAPE, parentDialog);
 		JButton approve = createButtonStartLearning(ButtonsNames.buttonApproveText,
 				rangesPanel.getPanel());
 
@@ -289,8 +290,8 @@ public class LearningStartPanel {
 	}
 
 	private int getProblematicKanjiNumber() {
-		if (parentFrame instanceof BaseWindow) {
-			BaseWindow p = (BaseWindow) parentFrame;
+		if (parentFrame instanceof ApplicationWindow) {
+			ApplicationWindow p = (ApplicationWindow) parentFrame;
 			return p.getProblematicKanjis().size();
 		}
 		else
@@ -375,8 +376,8 @@ public class LearningStartPanel {
 	private JTextField createProblematicRangeField(String text) {
 		JTextField sumRange = new JTextField(text);
 		sumRange.setEditable(false);
-		if (parentFrame instanceof BaseWindow) {
-			BaseWindow b = (BaseWindow) parentFrame;
+		if (parentFrame instanceof ApplicationWindow) {
+			ApplicationWindow b = (ApplicationWindow) parentFrame;
 			sumRange.setText(sumRange.getText() + b.getProblematicKanjis().size());
 		}
 
@@ -427,8 +428,8 @@ public class LearningStartPanel {
 		}
 
 		repeatingInfo += setOfRanges.getRangesAsString();
-		if (parentFrame instanceof BaseWindow) {
-			BaseWindow parent = (BaseWindow) parentFrame;
+		if (parentFrame instanceof ApplicationWindow) {
+			ApplicationWindow parent = (ApplicationWindow) parentFrame;
 			parent.setRepeatingInformation(
 					new RepeatingInformation(repeatingInfo, calendar.getTime(), false));
 		}
@@ -439,9 +440,9 @@ public class LearningStartPanel {
 	}
 
 	private void switchPanels(SetOfRanges wordsToLearn) {
-		if (parentFrame instanceof BaseWindow) {
-			BaseWindow parent = (BaseWindow) parentFrame;
-			parent.showCardPanel(BaseWindow.LEARNING_PANEL);
+		if (parentFrame instanceof ApplicationWindow) {
+			ApplicationWindow parent = (ApplicationWindow) parentFrame;
+			parent.showCardPanel(ApplicationWindow.LEARNING_PANEL);
 			parent.setWordsRangeToRepeat(wordsToLearn, problematicCheckbox.isSelected());
 		}
 	}

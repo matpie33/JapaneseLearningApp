@@ -12,7 +12,7 @@ public class AppStart {
 		int v3 = v1 * v2;
 		System.out.println("v3: " + v3);
 
-		BaseWindow b = new BaseWindow();
+		ApplicationWindow b = new ApplicationWindow();
 		b.setVisible(true);
 
 		SetOfRanges set = new SetOfRanges();
