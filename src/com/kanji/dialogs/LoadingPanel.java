@@ -17,11 +17,11 @@ public class LoadingPanel {
 
 	private MainPanel main;
 	private GridBagConstraints layoutConstraints;
-	private MyDialog parentDialog;
+	private DialogWindow parentDialog;
 	private JProgressBar bar;
 	private JButton okButton;
 
-	public LoadingPanel(JPanel panel, MyDialog parent) {
+	public LoadingPanel(JPanel panel, DialogWindow parent) {
 		main = new MainPanel(BasicColors.OCEAN_BLUE);
 		parentDialog = parent;
 	}

@@ -2,7 +2,7 @@ package com.kanji.window;
 
 import javax.swing.JDialog;
 
-public class DialogWindow extends JDialog {
+public class DialogWindowEmpty extends JDialog {
 
 	// private JPanel mainPanel;
 	//

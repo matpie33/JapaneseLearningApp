@@ -29,17 +29,26 @@ import com.kanji.myList.MyList;
 import com.kanji.window.ApplicationWindow;
 import com.kanji.window.ClassWithDialog;
 
-public class MyDialog extends JDialog {
+public class DialogWindow extends JDialog {
 
 	private static final long serialVersionUID = 7484743485658276014L;
 	private Insets insets = new Insets(10, 10, 0, 10);
 	private Color backgroundColor = Color.GREEN;
 	private GridBagConstraints layoutConstraints;
-	private MyDialog upper;
+	private DialogWindow upper;
 	private JPanel mainPanel;
 	private Window parentWindow;
 	private boolean isAccepted;
 	private ProblematicKanjiPanel problematicKanjiPanel;
+
+	// how TODO: ApplicationWindow inherits from this class and also has an
+	// instance variable of type
+	// dialogWindow, dialogWIndow has instance of dialogWindow too; move methods
+	// like show search
+	// dialog, learning start dialog etc. to application window, while show
+	// message dialog stay here
+	// remove parentWindow from here- jdialog has
+	// method getParent(), remove classWithDialog,
 
 	private class MyDispatcher implements KeyEventDispatcher {
 		@Override
@@ -50,7 +59,7 @@ public class MyDialog extends JDialog {
 		}
 	}
 
-	public MyDialog(Window b) {
+	public DialogWindow(Window b) {
 		super(b);
 		parentWindow = b;
 		initialize();
@@ -199,7 +208,7 @@ public class MyDialog extends JDialog {
 																// uniknac bo to
 																// kopia
 		if (upper == null || !upper.isDisplayable()) {
-			upper = new MyDialog(this);
+			upper = new DialogWindow(this);
 		}
 		else
 			return;

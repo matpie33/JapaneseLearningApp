@@ -29,13 +29,13 @@ public class SearchWordPanel {
 
 	private MainPanel main;
 	private JTextField textField;
-	private MyDialog parentDialog;
+	private DialogWindow parentDialog;
 	private JRadioButton fullWordsSearchOption;
 	private JRadioButton perfectMatchSearchOption;
 	private SearchOptions options;
 	private MyList list;
 
-	public SearchWordPanel(JPanel panel, MyDialog parent) {
+	public SearchWordPanel(JPanel panel, DialogWindow parent) {
 		main = new MainPanel(BasicColors.OCEAN_BLUE, true);
 		parentDialog = parent;
 		options = new SearchOptions();

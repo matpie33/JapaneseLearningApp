@@ -36,7 +36,7 @@ import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.MenuTexts;
 import com.kanji.constants.Titles;
 import com.kanji.dialogs.LoadingPanel;
-import com.kanji.dialogs.MyDialog;
+import com.kanji.dialogs.DialogWindow;
 import com.kanji.fileReading.CustomFileReader;
 import com.kanji.myList.MyList;
 import com.kanji.myList.RowInKanjiInformations;
@@ -357,7 +357,7 @@ public class ElementMaker {
 		Runnable r = new Runnable() {
 			@Override
 			public void run() {
-				MyDialog d = new MyDialog(parent);
+				DialogWindow d = new DialogWindow(parent);
 				d.showErrorDialogInNewWindow("Wait");
 				listOfWords.updateWords();
 				listOfWords.setWords(new KanjiWords(listOfWords));

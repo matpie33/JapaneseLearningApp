@@ -17,9 +17,9 @@ import com.sun.glass.events.KeyEvent;
 public class ConfirmPanel {
 
 	private MainPanel main;
-	private MyDialog parentDialog;
+	private DialogWindow parentDialog;
 
-	public ConfirmPanel(JPanel panel, MyDialog parent) {
+	public ConfirmPanel(JPanel panel, DialogWindow parent) {
 		main = new MainPanel(BasicColors.OCEAN_BLUE);
 		parentDialog = parent;
 	}

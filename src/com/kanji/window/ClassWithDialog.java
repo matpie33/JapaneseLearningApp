@@ -7,14 +7,14 @@ import javax.swing.JFrame;
 
 import com.kanji.Row.KanjiWords;
 import com.kanji.dialogs.LoadingPanel;
-import com.kanji.dialogs.MyDialog;
+import com.kanji.dialogs.DialogWindow;
 import com.kanji.dialogs.ProblematicKanjiPanel;
 import com.kanji.myList.MyList;
 
 @SuppressWarnings("serial")
 public abstract class ClassWithDialog extends JFrame {
-	private MyDialog dialog;
-	private MyDialog problematicKanjisDialog;
+	private DialogWindow dialog;
+	private DialogWindow problematicKanjisDialog;
 	private boolean isExcelReaderLoaded;
 
 	// TODO remove this class, add dialog property to base window, add method
@@ -24,7 +24,7 @@ public abstract class ClassWithDialog extends JFrame {
 
 	public void showDialogToSearch(MyList list) {
 		if (notOpenedYet()) {
-			dialog = new MyDialog(this); // TODO moze skrocic?
+			dialog = new DialogWindow(this); // TODO moze skrocic?
 			dialog.showSearchWordDialog(list);
 			dialog.setLocationAtLeftUpperCornerOfParent(this);
 		}
@@ -41,7 +41,7 @@ public abstract class ClassWithDialog extends JFrame {
 
 	public void showDialogToAddWord(MyList list) {
 		if (notOpenedYet()) {
-			dialog = new MyDialog(this);
+			dialog = new DialogWindow(this);
 			dialog.showInsertDialog(list);
 			// dialog.setLocationAtLeftUpperCornerOfParent(this);
 			dialog.setLocationAtLeftUpperCornerOfParent(this);
@@ -50,7 +50,7 @@ public abstract class ClassWithDialog extends JFrame {
 
 	public LoadingPanel showProgressDialog() {
 		if (notOpenedYet()) {
-			dialog = new MyDialog(this);
+			dialog = new DialogWindow(this);
 			LoadingPanel p = dialog.showProgressDialog();
 			dialog.setLocationAtCenterOfParent(this);
 			return p;
@@ -60,7 +60,7 @@ public abstract class ClassWithDialog extends JFrame {
 
 	public void showMessageDialog(String message, boolean modal) {
 		if (notOpenedYet()) {
-			dialog = new MyDialog(this);
+			dialog = new DialogWindow(this);
 			dialog.showMsgDialog(message, modal);
 			dialog.setLocationAtCenterOfParent(this);
 		}
@@ -68,7 +68,7 @@ public abstract class ClassWithDialog extends JFrame {
 
 	public void showLearnStartDialog(MyList list, int maximumNumber) {
 		if (notOpenedYet()) {
-			dialog = new MyDialog(this);
+			dialog = new DialogWindow(this);
 			dialog.showLearningStartDialog(list, maximumNumber);
 			dialog.setLocationRelativeTo(this);
 		}
@@ -76,7 +76,7 @@ public abstract class ClassWithDialog extends JFrame {
 
 	public void showProblematicKanjiDialog(KanjiWords kanjiWords, Set<Integer> problematicKanjis) {
 		if (isProblematicKanjiDialogClosed()) {
-			problematicKanjisDialog = new MyDialog(this);
+			problematicKanjisDialog = new DialogWindow(this);
 			problematicKanjisDialog.showProblematicKanjiDialog(kanjiWords, problematicKanjis);
 		}
 		else {
@@ -88,7 +88,7 @@ public abstract class ClassWithDialog extends JFrame {
 	public void showProblematicKanjiDialog(ProblematicKanjiPanel panel) {
 		if (isProblematicKanjiDialogClosed()) {
 			System.out.println("is opend");
-			problematicKanjisDialog = new MyDialog(this);
+			problematicKanjisDialog = new DialogWindow(this);
 			problematicKanjisDialog.showProblematicKanjiDialog(panel);
 		}
 		else {
@@ -103,7 +103,7 @@ public abstract class ClassWithDialog extends JFrame {
 
 	public boolean showConfirmDialog(String prompt) {
 		if (notOpenedYet()) {
-			dialog = new MyDialog(this);
+			dialog = new DialogWindow(this);
 
 			dialog.showConfirmDialog(prompt);
 

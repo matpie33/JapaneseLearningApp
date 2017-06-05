@@ -27,12 +27,12 @@ import com.kanji.window.LimitDocumentFilter;
 public class InsertWordPanel {
 
 	private MainPanel main;
-	private MyDialog parentDialog;
+	private DialogWindow parentDialog;
 	private MyList list;
 	private JTextField insertWordTextField;
 	private JTextField insertNumberTextField;
 
-	public InsertWordPanel(JPanel panel, MyDialog parent) {
+	public InsertWordPanel(JPanel panel, DialogWindow parent) {
 		main = new MainPanel(BasicColors.OCEAN_BLUE);
 		parentDialog = parent;
 	}

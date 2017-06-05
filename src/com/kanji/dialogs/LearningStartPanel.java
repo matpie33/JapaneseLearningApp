@@ -50,7 +50,7 @@ public class LearningStartPanel {
 	private JTextField sumRangeField;
 	private JCheckBox problematicCheckbox;
 	private int rowsNumber;
-	private MyDialog parentDialog;
+	private DialogWindow parentDialog;
 	private MyList<RepeatingList> repeatsList;
 	private Window parentFrame;
 	private SetOfRanges rangesToRepeat;
@@ -58,7 +58,7 @@ public class LearningStartPanel {
 	private int sumOfWords;
 	private MainPanel rangesPanel;
 
-	public LearningStartPanel(JPanel panel, MyDialog parent, Window parentOfParent,
+	public LearningStartPanel(JPanel panel, DialogWindow parent, Window parentOfParent,
 			int numberOfWords) {
 		this.numberOfWords = numberOfWords;
 		parentDialog = parent;

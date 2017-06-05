@@ -24,7 +24,7 @@ import com.kanji.Row.KanjiWords;
 import com.kanji.constants.ButtonsNames;
 
 public class ProblematicKanjiPanel {
-	private MyDialog parentDialog;
+	private DialogWindow parentDialog;
 	private KanjiWords kanjiInfos;
 	private int repeatedProblematics;
 	private Set<Integer> problematicKanjis;
@@ -32,7 +32,7 @@ public class ProblematicKanjiPanel {
 	private List<MainPanel> kanjisToBrowse;
 	private JScrollPane scrollPane;
 
-	public ProblematicKanjiPanel(JPanel panel, MyDialog parent, KanjiWords kanjis,
+	public ProblematicKanjiPanel(JPanel panel, DialogWindow parent, KanjiWords kanjis,
 			Set<Integer> problematicKanji) {
 		kanjisToBrowse = new ArrayList<>();
 		main = new MainPanel(BasicColors.OCEAN_BLUE);
@@ -118,7 +118,7 @@ public class ProblematicKanjiPanel {
 			browseKanji(kanjisToBrowse.get(0));
 	}
 
-	private void openUrlInBrowser(URI uriObject, MyDialog frame) {
+	private void openUrlInBrowser(URI uriObject, DialogWindow frame) {
 		if (Desktop.isDesktopSupported()) {
 			try {
 				Desktop.getDesktop().browse(uriObject);
@@ -133,7 +133,7 @@ public class ProblematicKanjiPanel {
 		}
 	}
 
-	private URI constructUriFromText(String text, MyDialog frame) {
+	private URI constructUriFromText(String text, DialogWindow frame) {
 		URI uriObject = null;
 		try {
 			uriObject = new URI(text);
