@@ -22,6 +22,7 @@ import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -35,8 +36,8 @@ import com.kanji.Row.RepeatingList;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.MenuTexts;
 import com.kanji.constants.Titles;
-import com.kanji.dialogs.LoadingPanel;
 import com.kanji.dialogs.DialogWindow;
+import com.kanji.dialogs.LoadingPanel;
 import com.kanji.fileReading.CustomFileReader;
 import com.kanji.myList.MyList;
 import com.kanji.myList.RowInKanjiInformations;
@@ -46,7 +47,7 @@ public class ElementMaker {
 
 	private CustomFileReader fileReader;
 	private List<JButton> buttons;
-	private ClassWithDialog parent;
+	private ApplicationWindow parent;
 	private Map<Integer, String> words;
 	private MyList<KanjiWords> listOfWords;
 	private MyList<RepeatingList> repeats;
@@ -75,7 +76,7 @@ public class ElementMaker {
 		}
 	}
 
-	public ElementMaker(ClassWithDialog parent) {
+	public ElementMaker(ApplicationWindow parent) {
 
 		savingStatus = SavingStatus.NO_CHANGES;
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -357,7 +358,7 @@ public class ElementMaker {
 		Runnable r = new Runnable() {
 			@Override
 			public void run() {
-				DialogWindow d = new DialogWindow(parent);
+				DialogWindow d = new DialogWindow(new JFrame());
 				d.showErrorDialogInNewWindow("Wait");
 				listOfWords.updateWords();
 				listOfWords.setWords(new KanjiWords(listOfWords));
@@ -380,23 +381,23 @@ public class ElementMaker {
 
 		}
 		catch (Exception e) {
-			parent.showMessageDialog(e.getMessage(), false);
+			parent.showMsgDialog(e.getMessage(), false);
 			words = new HashMap<Integer, String>();
 		}
 		return words;
 	}
 
 	private void addWord() {
-		parent.showDialogToAddWord(listOfWords);
+		parent.showInsertDialog(listOfWords);
 	}
 
 	private void searchWord() {
-		parent.showDialogToSearch(listOfWords);
+		parent.showSearchWordDialog(listOfWords);
 	}
 
 	private void start() {
 		System.out.println(listOfWords);
-		parent.showLearnStartDialog(repeats,
+		parent.showLearningStartDialog(repeats,
 				((KanjiWords) listOfWords.getWords()).getNumberOfKanjis());
 		System.out.println(((KanjiWords) listOfWords.getWords()).getNumberOfKanjis());
 	}

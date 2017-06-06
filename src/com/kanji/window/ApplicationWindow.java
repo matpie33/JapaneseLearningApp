@@ -29,14 +29,18 @@ import com.guimaker.row.RowMaker;
 import com.kanji.Row.RepeatingInformation;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.Titles;
+import com.kanji.dialogs.DialogWindow;
+import com.kanji.dialogs.InsertWordPanel;
+import com.kanji.dialogs.LearningStartPanel;
 import com.kanji.dialogs.ProblematicKanjiPanel;
 import com.kanji.dialogs.RepeatingWordsPanel;
+import com.kanji.dialogs.SearchWordPanel;
 import com.kanji.fileReading.ExcelReader;
 import com.kanji.myList.MyList;
 import com.kanji.range.SetOfRanges;
 
 @SuppressWarnings("serial")
-public class ApplicationWindow extends ClassWithDialog {
+public class ApplicationWindow extends DialogWindow {
 
 	private Insets insets = new Insets(20, 20, 20, 20);
 	private ElementMaker maker;
@@ -54,6 +58,7 @@ public class ApplicationWindow extends ClassWithDialog {
 	private JButton showProblematicKanjis;
 	private MainPanel main;
 	private ProblematicKanjiPanel problematicKanjisPanel;
+	private DialogWindow newDialog;
 
 	private JLabel saveInfo;
 
@@ -64,6 +69,8 @@ public class ApplicationWindow extends ClassWithDialog {
 
 	public ApplicationWindow() {
 
+		super(new JFrame());
+		newDialog = new DialogWindow(new JFrame());
 		main = new MainPanel(BasicColors.LIGHT_BLUE);
 		// TODO searching is case sensitive, should not be
 		problematicKanjis = new HashSet<Integer>();
@@ -248,6 +255,28 @@ public class ApplicationWindow extends ClassWithDialog {
 	public void removeButtonProblematicsKanji() {
 		infoPanel.removeLastElementFromRow(0);
 		showProblematicKanjis = null;
+	}
+
+	public void showLearningStartDialog(MyList list, int maximumNumber) {
+		LearningStartPanel dialog = new LearningStartPanel(mainPanel, newDialog, this,
+				maximumNumber);
+		newDialog.setPanel(dialog.createPanel(list));
+		newDialog.showYourself(Titles.learnStartDialogTitle);
+		newDialog.setLocationAtCenterOfParent();
+	}
+
+	public void showInsertDialog(MyList list) {
+		InsertWordPanel dialog = new InsertWordPanel(newDialog);
+		newDialog.setPanel(dialog.createPanel(list));
+		newDialog.showYourself(Titles.insertWordDialogTitle);
+		newDialog.setLocationAtLeftUpperCornerOfParent(this);
+	}
+
+	public void showSearchWordDialog(MyList list) {
+		SearchWordPanel dialog = new SearchWordPanel(mainPanel, this);
+		newDialog.setPanel(dialog.createPanel(list));
+		newDialog.showYourself(Titles.insertWordDialogTitle);
+		newDialog.setLocationAtLeftUpperCornerOfParent(this);
 	}
 
 }

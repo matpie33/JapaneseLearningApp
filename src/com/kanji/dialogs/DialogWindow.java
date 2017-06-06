@@ -25,7 +25,6 @@ import javax.swing.KeyStroke;
 import com.kanji.Row.KanjiWords;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.Titles;
-import com.kanji.myList.MyList;
 import com.kanji.window.ApplicationWindow;
 import com.kanji.window.ClassWithDialog;
 
@@ -40,6 +39,8 @@ public class DialogWindow extends JDialog {
 	private Window parentWindow;
 	private boolean isAccepted;
 	private ProblematicKanjiPanel problematicKanjiPanel;
+	private DialogWindow dialog;
+	private DialogWindow problematicKanjisDialog;
 
 	// how TODO: ApplicationWindow inherits from this class and also has an
 	// instance variable of type
@@ -60,7 +61,7 @@ public class DialogWindow extends JDialog {
 	}
 
 	public DialogWindow(Window b) {
-		super(b);
+		// super(b);
 		parentWindow = b;
 		initialize();
 		initializeLayout();
@@ -89,22 +90,19 @@ public class DialogWindow extends JDialog {
 		layoutConstraints.anchor = GridBagConstraints.WEST;
 	}
 
-	public void showLearningStartDialog(MyList list, int maximumNumber) {
-		LearningStartPanel dialog = new LearningStartPanel(mainPanel, this, parentWindow,
-				maximumNumber);
-		mainPanel = dialog.createPanel(list);
-		showYourself(Titles.learnStartDialogTitle);
+	public void setPanel(JPanel panel) {
+		mainPanel = panel;
 	}
 
-	private void showYourself(String title) {
+	public void showYourself(String title) {
 		showYourself(title, false);
 
 	}
 
-	private void showYourself(String title, boolean modal) {
+	public void showYourself(String title, boolean modal) {
 		setContentPane(mainPanel);
 		pack();
-		setLocationRelativeTo(parentWindow);
+		// setLocationRelativeTo(parentWindow);
 		setModal(modal);
 		setTitle(title);
 		// setMinimumSize(getSize());
@@ -149,18 +147,6 @@ public class DialogWindow extends JDialog {
 		setRootPane(root);
 	}
 
-	public void showSearchWordDialog(MyList list) {
-		SearchWordPanel dialog = new SearchWordPanel(mainPanel, this);
-		mainPanel = dialog.createPanel(list);
-		showYourself(Titles.wordSearchDialogTitle);
-	}
-
-	public void showInsertDialog(MyList list) {
-		InsertWordPanel dialog = new InsertWordPanel(mainPanel, this);
-		mainPanel = dialog.createPanel(list);
-		showYourself(Titles.insertWordDialogTitle);
-	}
-
 	public void showProblematicKanjiDialog(KanjiWords kanjiWords, Set<Integer> problematicKanjis) {
 
 		problematicKanjiPanel = new ProblematicKanjiPanel(mainPanel, this, kanjiWords,
@@ -192,15 +178,12 @@ public class DialogWindow extends JDialog {
 		});
 	}
 
-	public void showConfirmDialog(String message) {
+	public boolean showConfirmDialog(String message) {
 		ConfirmPanel panel = new ConfirmPanel(mainPanel, this);
 		// panel.setLayoutConstraints(layoutConstraints);
 		mainPanel = panel.createPanel(message);
-		setContentPane(mainPanel);
-		pack();
-		setLocationRelativeTo(parentWindow);
-		setModal(true);
-		setVisible(true);
+		showYourself("Potwierdź", true);
+		return isAccepted;
 
 	}
 
@@ -254,7 +237,7 @@ public class DialogWindow extends JDialog {
 		}
 	}
 
-	public void setLocationAtCenterOfParent(Window parent) {
+	public void setLocationAtCenterOfParent() {
 		setLocationRelativeTo(parentWindow);
 
 	}
@@ -276,6 +259,10 @@ public class DialogWindow extends JDialog {
 
 	public boolean isAccepted() {
 		return isAccepted;
+	}
+
+	public void closeDialog() {
+		dialog.dispose();
 	}
 
 }

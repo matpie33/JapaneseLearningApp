@@ -22,7 +22,7 @@ import javax.swing.SwingUtilities;
 
 import com.guimaker.colors.BasicColors;
 import com.kanji.constants.ExceptionsMessages;
-import com.kanji.window.ClassWithDialog;
+import com.kanji.dialogs.DialogWindow;
 import com.kanji.window.ElementMaker;
 
 public class MyList<Parameters> extends JPanel implements Scrollable {
@@ -34,7 +34,7 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 	private Color bgColor = BasicColors.OCEAN_BLUE;
 	private JScrollPane parentScrollPane;
 	private Parameters words;
-	private ClassWithDialog parent;
+	private DialogWindow parent;
 	private String title;
 	private ElementMaker elementsMaker;
 
@@ -58,7 +58,7 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 		return false;
 	}
 
-	public MyList(ClassWithDialog parentDialog, String title, RowsCreator rowsCreator,
+	public MyList(DialogWindow parentDialog, String title, RowsCreator rowsCreator,
 			ElementMaker element) {
 
 		this.elementsMaker = element;
@@ -330,7 +330,7 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 	}
 
 	private void sendErrorToParent(Exception e) {
-		this.parent.showMessageDialog(e.getMessage(), true);
+		this.parent.showMsgDialog(e.getMessage(), true);
 	}
 
 	public Parameters getWords() {

@@ -6,8 +6,8 @@ import java.util.Set;
 import javax.swing.JFrame;
 
 import com.kanji.Row.KanjiWords;
-import com.kanji.dialogs.LoadingPanel;
 import com.kanji.dialogs.DialogWindow;
+import com.kanji.dialogs.LoadingPanel;
 import com.kanji.dialogs.ProblematicKanjiPanel;
 import com.kanji.myList.MyList;
 
@@ -25,7 +25,6 @@ public abstract class ClassWithDialog extends JFrame {
 	public void showDialogToSearch(MyList list) {
 		if (notOpenedYet()) {
 			dialog = new DialogWindow(this); // TODO moze skrocic?
-			dialog.showSearchWordDialog(list);
 			dialog.setLocationAtLeftUpperCornerOfParent(this);
 		}
 
@@ -42,7 +41,7 @@ public abstract class ClassWithDialog extends JFrame {
 	public void showDialogToAddWord(MyList list) {
 		if (notOpenedYet()) {
 			dialog = new DialogWindow(this);
-			dialog.showInsertDialog(list);
+			// dialog.showInsertDialog(list);
 			// dialog.setLocationAtLeftUpperCornerOfParent(this);
 			dialog.setLocationAtLeftUpperCornerOfParent(this);
 		}
@@ -52,7 +51,7 @@ public abstract class ClassWithDialog extends JFrame {
 		if (notOpenedYet()) {
 			dialog = new DialogWindow(this);
 			LoadingPanel p = dialog.showProgressDialog();
-			dialog.setLocationAtCenterOfParent(this);
+			dialog.setLocationAtCenterOfParent();
 			return p;
 		}
 		return null;
@@ -62,14 +61,13 @@ public abstract class ClassWithDialog extends JFrame {
 		if (notOpenedYet()) {
 			dialog = new DialogWindow(this);
 			dialog.showMsgDialog(message, modal);
-			dialog.setLocationAtCenterOfParent(this);
+			dialog.setLocationAtCenterOfParent();
 		}
 	}
 
 	public void showLearnStartDialog(MyList list, int maximumNumber) {
 		if (notOpenedYet()) {
 			dialog = new DialogWindow(this);
-			dialog.showLearningStartDialog(list, maximumNumber);
 			dialog.setLocationRelativeTo(this);
 		}
 	}

@@ -248,7 +248,7 @@ public class RepeatingWordsPanel extends JPanel {
 
 	private void pauseOrResume() {
 		stopTimer();
-		parent.showMessageDialog("Pauza", true);
+		parent.showMsgDialog("Pauza", true);
 		startTimer();
 
 	}
@@ -350,7 +350,7 @@ public class RepeatingWordsPanel extends JPanel {
 		String message = Prompts.repeatingIsDonePrompt;
 		message += Prompts.repeatingTimePrompt;
 		message += getTimePassed();
-		this.parent.showMessageDialog(message, true);
+		this.parent.showMsgDialog(message, true);
 		System.out.println("done");
 		if (currentProblematicKanjis.size() > 0)
 			parent.showProblematicKanjiDialog((KanjiWords) words.getWords(),
@@ -464,7 +464,7 @@ public class RepeatingWordsPanel extends JPanel {
 						Thread.sleep((int) (RepeatingWordsPanel.this.interval * 1000));
 					}
 					catch (InterruptedException e) {
-						parent.showMessageDialog(e.getMessage(), true);
+						parent.showMsgDialog(e.getMessage(), true);
 					}
 				}
 			}

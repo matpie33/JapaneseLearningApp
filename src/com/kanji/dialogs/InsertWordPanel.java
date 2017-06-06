@@ -32,7 +32,7 @@ public class InsertWordPanel {
 	private JTextField insertWordTextField;
 	private JTextField insertNumberTextField;
 
-	public InsertWordPanel(JPanel panel, DialogWindow parent) {
+	public InsertWordPanel(DialogWindow parent) {
 		main = new MainPanel(BasicColors.OCEAN_BLUE);
 		parentDialog = parent;
 	}
