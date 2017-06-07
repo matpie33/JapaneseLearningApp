@@ -23,6 +23,7 @@ import javax.swing.SwingUtilities;
 import com.guimaker.colors.BasicColors;
 import com.kanji.constants.ExceptionsMessages;
 import com.kanji.dialogs.DialogWindow;
+import com.kanji.window.ApplicationWindow;
 import com.kanji.window.ElementMaker;
 
 public class MyList<Parameters> extends JPanel implements Scrollable {
@@ -34,7 +35,7 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 	private Color bgColor = BasicColors.OCEAN_BLUE;
 	private JScrollPane parentScrollPane;
 	private Parameters words;
-	private DialogWindow parent;
+	private ApplicationWindow parent;
 	private String title;
 	private ElementMaker elementsMaker;
 
@@ -58,7 +59,7 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 		return false;
 	}
 
-	public MyList(DialogWindow parentDialog, String title, RowsCreator rowsCreator,
+	public MyList(ApplicationWindow parentDialog, String title, RowsCreator rowsCreator,
 			ElementMaker element) {
 
 		this.elementsMaker = element;

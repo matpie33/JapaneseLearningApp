@@ -1,5 +1,7 @@
 package com.kanji.window;
 
+import javax.swing.JDialog;
+
 import com.kanji.range.Range;
 import com.kanji.range.SetOfRanges;
 

@@ -41,15 +41,11 @@ public class DialogWindow extends JDialog {
 	private ProblematicKanjiPanel problematicKanjiPanel;
 	private DialogWindow dialog;
 	private DialogWindow problematicKanjisDialog;
-
-	// how TODO: ApplicationWindow inherits from this class and also has an
-	// instance variable of type
-	// dialogWindow, dialogWIndow has instance of dialogWindow too; move methods
-	// like show search
-	// dialog, learning start dialog etc. to application window, while show
-	// message dialog stay here
-	// remove parentWindow from here- jdialog has
-	// method getParent(), remove classWithDialog,
+	private Position position;
+	
+	private enum Position {
+		CENTER, LEFT_CORNER
+	}
 
 	private class MyDispatcher implements KeyEventDispatcher {
 		@Override
@@ -61,7 +57,7 @@ public class DialogWindow extends JDialog {
 	}
 
 	public DialogWindow(Window b) {
-		// super(b);
+//		 super(b);
 		parentWindow = b;
 		initialize();
 		initializeLayout();
@@ -99,28 +95,28 @@ public class DialogWindow extends JDialog {
 
 	}
 
-	public void showYourself(String title, boolean modal) {
+	public void showYourself(String title, boolean modal){
 		setContentPane(mainPanel);
 		pack();
-		// setLocationRelativeTo(parentWindow);
+		setPosition();
 		setModal(modal);
 		setTitle(title);
-		// setMinimumSize(getSize());
 		setVisible(true);
 	}
-
-	public LoadingPanel showProgressDialog() {
-		// ModalityType modality;
-		// modality = ModalityType.APPLICATION_MODAL;
-
-		LoadingPanel dialog = new LoadingPanel(mainPanel, this);
-		mainPanel = dialog.createPanel(Prompts.kanjiLoadingPrompt);
-		// setLocationRelativeTo(parentWindow);
-		// setModal(true);
-		System.out.println("yoyo aa");
-		showYourself(Titles.messageDialogTitle, false);
-		return dialog;
+	
+	private void setPosition (){
+		switch (position){
+		case CENTER:
+			setLocationAtCenterOfParent();
+			break;		
+		case LEFT_CORNER:
+			setLocationAtLeftUpperCornerOfParent();
+			break;
+		}
+			
+			
 	}
+
 
 	public void showMsgDialog(String message, boolean modal) {
 		AbstractAction action = new AbstractAction() {
@@ -129,11 +125,13 @@ public class DialogWindow extends JDialog {
 				dispose();
 			}
 		};
+		position = Position.CENTER;
 		addHotkey(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), action);
 
 		MessagePanel dialog = new MessagePanel(mainPanel, this);
 		mainPanel = dialog.createPanel(message);
-		// setLocationRelativeTo(parentWindow);
+		
+		 setLocationAtCenterOfParent();
 		// setModal(true);
 		System.out.println("yoyo aa");
 		showYourself(Titles.messageDialogTitle, true);
@@ -147,44 +145,15 @@ public class DialogWindow extends JDialog {
 		setRootPane(root);
 	}
 
-	public void showProblematicKanjiDialog(KanjiWords kanjiWords, Set<Integer> problematicKanjis) {
-
-		problematicKanjiPanel = new ProblematicKanjiPanel(mainPanel, this, kanjiWords,
-				problematicKanjis);
-		showProblematicKanjiDialog(problematicKanjiPanel);
-
-		// setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-	}
-
-	public void showProblematicKanjiDialog(ProblematicKanjiPanel kanjiPanel) {
-		problematicKanjiPanel = kanjiPanel;
-		mainPanel = problematicKanjiPanel.createPanel();
-		AbstractAction a = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				problematicKanjiPanel.spaceBarPressed();
-			}
-		};
-		setPreferredSize(new Dimension(600, 400));
-
-		addHotkey(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), a);
-		showYourself(Titles.insertWordDialogTitle, true);
-		// setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosed(WindowEvent e) {
-				hideProblematics(problematicKanjiPanel);
-			}
-		});
-	}
+	
 
 	public boolean showConfirmDialog(String message) {
 		ConfirmPanel panel = new ConfirmPanel(mainPanel, this);
 		// panel.setLayoutConstraints(layoutConstraints);
+		position = Position.CENTER;
 		mainPanel = panel.createPanel(message);
 		showYourself("Potwierdź", true);
 		return isAccepted;
-
 	}
 
 	public void showErrorDialogInNewWindow(String message) { // TODO jak tego
@@ -238,12 +207,14 @@ public class DialogWindow extends JDialog {
 	}
 
 	public void setLocationAtCenterOfParent() {
-		setLocationRelativeTo(parentWindow);
+		position = Position.CENTER;
+		setLocationRelativeTo(getParent());
 
 	}
 
-	public void setLocationAtLeftUpperCornerOfParent(Window parent) {
-		setLocation(parent.getLocation());
+	public void setLocationAtLeftUpperCornerOfParent() {
+		position = Position.LEFT_CORNER;
+		setLocation(parentWindow.getLocation());
 	}
 
 	public void save() {

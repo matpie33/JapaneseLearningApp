@@ -5,3 +5,5 @@ bin/
 dist/
 .settings/
 target
+.project
+.settings*

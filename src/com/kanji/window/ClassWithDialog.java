@@ -25,7 +25,7 @@ public abstract class ClassWithDialog extends JFrame {
 	public void showDialogToSearch(MyList list) {
 		if (notOpenedYet()) {
 			dialog = new DialogWindow(this); // TODO moze skrocic?
-			dialog.setLocationAtLeftUpperCornerOfParent(this);
+			dialog.setLocationAtLeftUpperCornerOfParent();
 		}
 
 	}
@@ -43,16 +43,15 @@ public abstract class ClassWithDialog extends JFrame {
 			dialog = new DialogWindow(this);
 			// dialog.showInsertDialog(list);
 			// dialog.setLocationAtLeftUpperCornerOfParent(this);
-			dialog.setLocationAtLeftUpperCornerOfParent(this);
+			dialog.setLocationAtLeftUpperCornerOfParent();
 		}
 	}
 
 	public LoadingPanel showProgressDialog() {
 		if (notOpenedYet()) {
 			dialog = new DialogWindow(this);
-			LoadingPanel p = dialog.showProgressDialog();
 			dialog.setLocationAtCenterOfParent();
-			return p;
+			return null;
 		}
 		return null;
 	}
@@ -75,7 +74,7 @@ public abstract class ClassWithDialog extends JFrame {
 	public void showProblematicKanjiDialog(KanjiWords kanjiWords, Set<Integer> problematicKanjis) {
 		if (isProblematicKanjiDialogClosed()) {
 			problematicKanjisDialog = new DialogWindow(this);
-			problematicKanjisDialog.showProblematicKanjiDialog(kanjiWords, problematicKanjis);
+//			problematicKanjisDialog.showProblematicKanjiDialog(kanjiWords, problematicKanjis);
 		}
 		else {
 			System.out.println("it exists");
@@ -87,7 +86,7 @@ public abstract class ClassWithDialog extends JFrame {
 		if (isProblematicKanjiDialogClosed()) {
 			System.out.println("is opend");
 			problematicKanjisDialog = new DialogWindow(this);
-			problematicKanjisDialog.showProblematicKanjiDialog(panel);
+//			problematicKanjisDialog.showProblematicKanjiDialog(panel);
 		}
 		else {
 			System.out.println("is not opened");
