@@ -274,7 +274,7 @@ public class ApplicationWindow extends DialogWindow {
 		newDialog.setPanel(dialog.createPanel(list));
 		newDialog.setLocationAtCenterOfParent();
 		newDialog.showYourself(Titles.learnStartDialogTitle);
-		
+
 	}
 
 	public void showInsertDialog(MyList list) {
@@ -282,7 +282,7 @@ public class ApplicationWindow extends DialogWindow {
 		newDialog.setPanel(dialog.createPanel(list));
 		newDialog.setLocationAtLeftUpperCornerOfParent();
 		newDialog.showYourself(Titles.insertWordDialogTitle);
-		
+
 	}
 
 	public void showSearchWordDialog(MyList list) {
@@ -290,18 +290,18 @@ public class ApplicationWindow extends DialogWindow {
 		newDialog.setPanel(dialog.createPanel(list));
 		newDialog.setLocationAtLeftUpperCornerOfParent();
 		newDialog.showYourself(Titles.insertWordDialogTitle);
-		
+
 	}
-	
+
 	public void showMsgDialog(String message, boolean modal) {
 		newDialog.showMsgDialog(message, modal);
 
 	}
-	
-	public boolean showConfirmDialog (String message){
+
+	public boolean showConfirmDialog(String message) {
 		return newDialog.showConfirmDialog(message);
 	}
-	
+
 	public void showProblematicKanjiDialog(KanjiWords kanjiWords, Set<Integer> problematicKanjis) {
 		problematicKanjiPanel = new ProblematicKanjiPanel(mainPanel, this, kanjiWords,
 				problematicKanjis);
@@ -319,26 +319,27 @@ public class ApplicationWindow extends DialogWindow {
 		};
 		setPreferredSize(new Dimension(600, 400));
 
-		addHotkey(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), a); 
+		addHotkey(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), a);
 		newDialog.setLocationAtCenterOfParent();
 		newDialog.showYourself(Titles.insertWordDialogTitle, true);
-		
+
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
 				hideProblematics(problematicKanjiPanel);
 			}
 		});
-		
+
 	}
-	
-	private void addHotkey(KeyStroke k, AbstractAction a) { //TODO move to common class
+
+	private void addHotkey(KeyStroke k, AbstractAction a) { // TODO move to
+															// common class
 		JRootPane root = getRootPane();
 		root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(k, "close");
 		root.getActionMap().put("close", a);
 		setRootPane(root);
 	}
-	
+
 	private void hideProblematics(ProblematicKanjiPanel problematicKanjiPanel2) {
 		setVisible(false);
 		addButtonIcon(problematicKanjiPanel2);
@@ -349,18 +350,18 @@ public class ApplicationWindow extends DialogWindow {
 
 		}
 	}
-	
+
 	public LoadingPanel showProgressDialog() {
 		LoadingPanel dialog = new LoadingPanel(mainPanel, this);
 		newDialog.setPanel(dialog.createPanel(Prompts.kanjiLoadingPrompt));
 		newDialog.setLocationAtCenterOfParent();
 		newDialog.showYourself(Titles.messageDialogTitle, false);
-		
+
 		return dialog;
 	}
-	
-	public void closeDialog(){
+
+	public void closeDialog() {
 		newDialog.dispose();
 	}
-	
+
 }

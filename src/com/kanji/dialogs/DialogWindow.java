@@ -42,7 +42,7 @@ public class DialogWindow extends JDialog {
 	private DialogWindow dialog;
 	private DialogWindow problematicKanjisDialog;
 	private Position position;
-	
+
 	private enum Position {
 		CENTER, LEFT_CORNER
 	}
@@ -57,7 +57,7 @@ public class DialogWindow extends JDialog {
 	}
 
 	public DialogWindow(Window b) {
-//		 super(b);
+		// super(b);
 		parentWindow = b;
 		initialize();
 		initializeLayout();
@@ -95,7 +95,7 @@ public class DialogWindow extends JDialog {
 
 	}
 
-	public void showYourself(String title, boolean modal){
+	public void showYourself(String title, boolean modal) {
 		setContentPane(mainPanel);
 		pack();
 		setPosition();
@@ -103,20 +103,18 @@ public class DialogWindow extends JDialog {
 		setTitle(title);
 		setVisible(true);
 	}
-	
-	private void setPosition (){
-		switch (position){
+
+	private void setPosition() {
+		switch (position) {
 		case CENTER:
 			setLocationAtCenterOfParent();
-			break;		
+			break;
 		case LEFT_CORNER:
 			setLocationAtLeftUpperCornerOfParent();
 			break;
 		}
-			
-			
-	}
 
+	}
 
 	public void showMsgDialog(String message, boolean modal) {
 		AbstractAction action = new AbstractAction() {
@@ -130,8 +128,8 @@ public class DialogWindow extends JDialog {
 
 		MessagePanel dialog = new MessagePanel(mainPanel, this);
 		mainPanel = dialog.createPanel(message);
-		
-		 setLocationAtCenterOfParent();
+
+		setLocationAtCenterOfParent();
 		// setModal(true);
 		System.out.println("yoyo aa");
 		showYourself(Titles.messageDialogTitle, true);
@@ -144,8 +142,6 @@ public class DialogWindow extends JDialog {
 		root.getActionMap().put("close", a);
 		setRootPane(root);
 	}
-
-	
 
 	public boolean showConfirmDialog(String message) {
 		ConfirmPanel panel = new ConfirmPanel(mainPanel, this);
