@@ -22,7 +22,6 @@ import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -63,8 +62,7 @@ public class ElementMaker {
 
 			if (e.getKeyCode() == KeyEvent.VK_F && e.isControlDown())
 				searchWord();
-			if (e.getKeyCode() == KeyEvent.VK_N && e.isControlDown()) {
-				System.out.println("heeeeeeeeeeeeeeej");
+			if (e.getKeyCode() == KeyEvent.VK_Q && e.isControlDown()) {
 				if (!openingFile) {
 					openingFile = true;
 					openKanjiFile();
@@ -358,7 +356,7 @@ public class ElementMaker {
 		Runnable r = new Runnable() {
 			@Override
 			public void run() {
-				DialogWindow d = new DialogWindow(new JFrame());
+				DialogWindow d = new DialogWindow(parent);
 				d.showErrorDialogInNewWindow("Wait");
 				listOfWords.updateWords();
 				listOfWords.setWords(new KanjiWords(listOfWords));

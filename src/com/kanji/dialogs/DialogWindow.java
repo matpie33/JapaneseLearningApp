@@ -1,32 +1,23 @@
 package com.kanji.dialogs;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.Set;
 
 import javax.swing.AbstractAction;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 
-import com.kanji.Row.KanjiWords;
-import com.kanji.constants.Prompts;
 import com.kanji.constants.Titles;
 import com.kanji.window.ApplicationWindow;
-import com.kanji.window.ClassWithDialog;
 
 public class DialogWindow extends JDialog {
 
@@ -36,7 +27,7 @@ public class DialogWindow extends JDialog {
 	private GridBagConstraints layoutConstraints;
 	private DialogWindow upper;
 	private JPanel mainPanel;
-	private Window parentWindow;
+	private DialogWindow parentWindow;
 	private boolean isAccepted;
 	private ProblematicKanjiPanel problematicKanjiPanel;
 	private DialogWindow dialog;
@@ -56,7 +47,11 @@ public class DialogWindow extends JDialog {
 		}
 	}
 
-	public DialogWindow(Window b) {
+	public DialogWindow() {
+
+	}
+
+	public DialogWindow(DialogWindow b) {
 		// super(b);
 		parentWindow = b;
 		initialize();
@@ -136,7 +131,7 @@ public class DialogWindow extends JDialog {
 
 	}
 
-	private void addHotkey(KeyStroke k, AbstractAction a) {
+	public void addHotkey(KeyStroke k, AbstractAction a) {
 		JRootPane root = getRootPane();
 		root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(k, "close");
 		root.getActionMap().put("close", a);
@@ -168,40 +163,6 @@ public class DialogWindow extends JDialog {
 
 	}
 
-	public JButton createButtonHide(String text, KeyStroke disposeKey,
-			final ProblematicKanjiPanel panel) {
-		JButton button = new JButton(text);
-		AbstractAction action = new AbstractAction() {
-			private static final long serialVersionUID = 5504620933205592893L;
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				hideProblematics(panel);
-
-			}
-		};
-		button.addActionListener(action);
-		button.getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW).put(disposeKey, "space");
-
-		button.getActionMap().put("space", action);
-		return button;
-	}
-
-	private void hideProblematics(ProblematicKanjiPanel problematicKanjiPanel2) {
-		setVisible(false);
-		System.out.println("just hide");
-		ApplicationWindow parentBaseWindow = ((ApplicationWindow) parentWindow);
-		parentBaseWindow.addButtonIcon(problematicKanjiPanel2);
-		if (problematicKanjiPanel != null && problematicKanjiPanel.allProblematicKanjisRepeated()) {
-			System.out.println("removing");
-			parentBaseWindow.removeButtonProblematicsKanji();
-			ClassWithDialog c = (ClassWithDialog) parentWindow;
-			// c.closeDialog();
-			c.closeProblematics();
-
-		}
-	}
-
 	public void setLocationAtCenterOfParent() {
 		position = Position.CENTER;
 		setLocationRelativeTo(getParent());
@@ -210,6 +171,7 @@ public class DialogWindow extends JDialog {
 
 	public void setLocationAtLeftUpperCornerOfParent() {
 		position = Position.LEFT_CORNER;
+		System.out.println("parent position: " + parentWindow.getBounds().x);
 		setLocation(parentWindow.getLocation());
 	}
 

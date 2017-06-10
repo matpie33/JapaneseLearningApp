@@ -22,9 +22,10 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.RowMaker;
 import com.kanji.Row.KanjiWords;
 import com.kanji.constants.ButtonsNames;
+import com.kanji.window.ApplicationWindow;
 
 public class ProblematicKanjiPanel {
-	private DialogWindow parentDialog;
+	private ApplicationWindow parentDialog;
 	private KanjiWords kanjiInfos;
 	private int repeatedProblematics;
 	private Set<Integer> problematicKanjis;
@@ -32,7 +33,7 @@ public class ProblematicKanjiPanel {
 	private List<MainPanel> kanjisToBrowse;
 	private JScrollPane scrollPane;
 
-	public ProblematicKanjiPanel(JPanel panel, DialogWindow parent, KanjiWords kanjis,
+	public ProblematicKanjiPanel(JPanel panel, ApplicationWindow parent, KanjiWords kanjis,
 			Set<Integer> problematicKanji) {
 		kanjisToBrowse = new ArrayList<>();
 		main = new MainPanel(BasicColors.OCEAN_BLUE);

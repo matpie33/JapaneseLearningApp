@@ -20,11 +20,9 @@ import java.util.Set;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
@@ -41,7 +39,6 @@ import com.kanji.dialogs.DialogWindow;
 import com.kanji.dialogs.InsertWordPanel;
 import com.kanji.dialogs.LearningStartPanel;
 import com.kanji.dialogs.LoadingPanel;
-import com.kanji.dialogs.MessagePanel;
 import com.kanji.dialogs.ProblematicKanjiPanel;
 import com.kanji.dialogs.RepeatingWordsPanel;
 import com.kanji.dialogs.SearchWordPanel;
@@ -80,8 +77,8 @@ public class ApplicationWindow extends DialogWindow {
 
 	public ApplicationWindow() {
 
-		super(new JFrame());
-		newDialog = new DialogWindow(new JFrame());
+		// super(this);
+		newDialog = new DialogWindow(this);
 		main = new MainPanel(BasicColors.LIGHT_BLUE);
 		// TODO searching is case sensitive, should not be
 		problematicKanjis = new HashSet<Integer>();
@@ -286,7 +283,7 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void showSearchWordDialog(MyList list) {
-		SearchWordPanel dialog = new SearchWordPanel(mainPanel, this);
+		SearchWordPanel dialog = new SearchWordPanel(mainPanel, newDialog);
 		newDialog.setPanel(dialog.createPanel(list));
 		newDialog.setLocationAtLeftUpperCornerOfParent();
 		newDialog.showYourself(Titles.insertWordDialogTitle);
@@ -319,7 +316,7 @@ public class ApplicationWindow extends DialogWindow {
 		};
 		setPreferredSize(new Dimension(600, 400));
 
-		addHotkey(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), a);
+		newDialog.addHotkey(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), a);
 		newDialog.setLocationAtCenterOfParent();
 		newDialog.showYourself(Titles.insertWordDialogTitle, true);
 
@@ -332,16 +329,8 @@ public class ApplicationWindow extends DialogWindow {
 
 	}
 
-	private void addHotkey(KeyStroke k, AbstractAction a) { // TODO move to
-															// common class
-		JRootPane root = getRootPane();
-		root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(k, "close");
-		root.getActionMap().put("close", a);
-		setRootPane(root);
-	}
-
 	private void hideProblematics(ProblematicKanjiPanel problematicKanjiPanel2) {
-		setVisible(false);
+		newDialog.setVisible(false);
 		addButtonIcon(problematicKanjiPanel2);
 		if (problematicKanjiPanel != null && problematicKanjiPanel.allProblematicKanjisRepeated()) {
 			System.out.println("removing");
@@ -362,6 +351,25 @@ public class ApplicationWindow extends DialogWindow {
 
 	public void closeDialog() {
 		newDialog.dispose();
+	}
+
+	public JButton createButtonHide(String text, KeyStroke disposeKey,
+			final ProblematicKanjiPanel panel) {
+		JButton button = new JButton(text);
+		AbstractAction action = new AbstractAction() {
+			private static final long serialVersionUID = 5504620933205592893L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				hideProblematics(panel);
+
+			}
+		};
+		button.addActionListener(action);
+		button.getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW).put(disposeKey, "space");
+
+		button.getActionMap().put("space", action);
+		return button;
 	}
 
 }
