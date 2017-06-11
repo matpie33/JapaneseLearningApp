@@ -4,12 +4,14 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.KeyStroke;
+
+import com.kanji.dialogs.DialogWindow;
 
 public class CommonActionsMaker {
 
-	public static JButton createButtonDispose(String text, int keyEventName, final JDialog dialog) {
+	public static JButton createButtonDispose(String text, int keyEventName,
+			final DialogWindow dialog) {
 		JButton button = new JButton(text);
 		AbstractAction action = new AbstractAction() {
 			private static final long serialVersionUID = 5504620933205592893L;

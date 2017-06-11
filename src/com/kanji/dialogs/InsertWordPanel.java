@@ -99,7 +99,7 @@ public class InsertWordPanel {
 		boolean valid = number.matches("\\d+");
 
 		if (!valid)
-			parentDialog.showErrorDialogInNewWindow(ExceptionsMessages.numberFormatException);
+			parentDialog.showMsgDialog(ExceptionsMessages.numberFormatException);
 		return valid;
 	}
 
@@ -110,14 +110,14 @@ public class InsertWordPanel {
 	private boolean isWordIdUndefinedYet(int number) {
 		boolean defined = ((KanjiWords) list.getWords()).isIdDefined(number);
 		if (defined)
-			parentDialog.showErrorDialogInNewWindow(ExceptionsMessages.idAlreadyDefinedException);
+			parentDialog.showMsgDialog(ExceptionsMessages.idAlreadyDefinedException);
 		return !defined;
 	}
 
 	private boolean isWordUndefinedYet(String word) {
 		boolean defined = ((KanjiWords) list.getWords()).isWordDefined(word);
 		if (defined)
-			parentDialog.showErrorDialogInNewWindow(ExceptionsMessages.wordAlreadyDefinedException);
+			parentDialog.showMsgDialog(ExceptionsMessages.wordAlreadyDefinedException);
 		return !defined;
 	}
 

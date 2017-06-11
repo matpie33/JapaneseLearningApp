@@ -4,7 +4,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -52,13 +51,13 @@ public class LearningStartPanel {
 	private int rowsNumber;
 	private DialogWindow parentDialog;
 	private MyList<RepeatingList> repeatsList;
-	private Window parentFrame;
+	private ApplicationWindow parentFrame;
 	private SetOfRanges rangesToRepeat;
 	private int numberOfWords;
 	private int sumOfWords;
 	private MainPanel rangesPanel;
 
-	public LearningStartPanel(JPanel panel, DialogWindow parent, Window parentOfParent,
+	public LearningStartPanel(JPanel panel, DialogWindow parent, ApplicationWindow parentOfParent,
 			int numberOfWords) {
 		this.numberOfWords = numberOfWords;
 		parentDialog = parent;
@@ -356,8 +355,8 @@ public class LearningStartPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				addRowToPanel();
-				parentDialog.repaint();
-				parentDialog.revalidate();
+				// parentDialog.repaint();
+				// parentDialog.revalidate();
 				scrollPane.getVerticalScrollBar()
 						.setValue(scrollPane.getVerticalScrollBar().getMaximum());
 

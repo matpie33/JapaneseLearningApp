@@ -145,7 +145,7 @@ public class ElementMaker {
 			final LoadingPanel bar = b.showProgressDialog();
 			b.updateTitle(fileToSave.toString());
 			b.changeSaveStatus(SavingStatus.NO_CHANGES);
-			b.repaint();
+			// b.repaint();
 
 			SwingWorker s = new SwingWorker<Void, Integer>() {
 
@@ -198,7 +198,7 @@ public class ElementMaker {
 					b.closeDialog();
 					listOfWords.repaint();
 					listOfWords.scrollToBottom();
-					b.repaint();
+					// b.repaint();
 					try {
 						fout.close();
 					}
@@ -345,7 +345,7 @@ public class ElementMaker {
 		fileChooser.setCurrentDirectory(
 				new File(fileChooser.getCurrentDirectory() + File.separator + directory));
 
-		int chosenOption = fileChooser.showOpenDialog(parent);
+		int chosenOption = fileChooser.showOpenDialog(parent.getContainer());
 		if (chosenOption == JFileChooser.CANCEL_OPTION)
 			return new File("");
 		File file = fileChooser.getSelectedFile();
@@ -357,7 +357,7 @@ public class ElementMaker {
 			@Override
 			public void run() {
 				DialogWindow d = new DialogWindow(parent);
-				d.showErrorDialogInNewWindow("Wait");
+				d.showMsgDialog("Wait");
 				listOfWords.updateWords();
 				listOfWords.setWords(new KanjiWords(listOfWords));
 				int i = 1;
@@ -466,7 +466,7 @@ public class ElementMaker {
 
 	private void showSaveDialog() {
 		JFileChooser j = new JFileChooser();
-		int option = j.showSaveDialog(this.parent);
+		int option = j.showSaveDialog(this.parent.getContainer());
 		if (option == 0) {
 			this.fileToSave = j.getSelectedFile();
 		}

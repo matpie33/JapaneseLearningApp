@@ -67,6 +67,7 @@ public class ApplicationWindow extends DialogWindow {
 	private ProblematicKanjiPanel problematicKanjisPanel;
 	private DialogWindow newDialog;
 	private ProblematicKanjiPanel problematicKanjiPanel;
+	private JFrame container;
 
 	private JLabel saveInfo;
 
@@ -78,13 +79,14 @@ public class ApplicationWindow extends DialogWindow {
 	public ApplicationWindow() {
 
 		// super(this);
+		container = new JFrame();
 		newDialog = new DialogWindow(this);
 		main = new MainPanel(BasicColors.LIGHT_BLUE);
 		// TODO searching is case sensitive, should not be
 		problematicKanjis = new HashSet<Integer>();
 		maker = new ElementMaker(this);
 		mainPanel = new JPanel(new CardLayout());
-		setContentPane(mainPanel);
+		container.setContentPane(mainPanel);
 
 		createUpperPanel();
 		createInformationsPanel();
@@ -95,7 +97,7 @@ public class ApplicationWindow extends DialogWindow {
 
 		repeatingWordsPanel = new RepeatingWordsPanel(this);
 		mainPanel.add(repeatingWordsPanel.getPanel(), LEARNING_PANEL);
-		setJMenuBar(maker.getMenu());
+		container.setJMenuBar(maker.getMenu());
 
 		setWindowProperties();
 
@@ -108,7 +110,7 @@ public class ApplicationWindow extends DialogWindow {
 		listScrollRepeated = createScrollPaneForList(repeatsList);
 		listsSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, listScrollWords,
 				listScrollRepeated);
-		repaint();
+		container.repaint();
 	}
 
 	private void createInformationsPanel() {
@@ -164,11 +166,12 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	private void setWindowProperties() {
-		pack();
-		setMinimumSize(getSize());
-		setTitle(Titles.appTitle);
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		container.setContentPane(mainPanel);
+		container.pack();
+		container.setMinimumSize(container.getSize());
+		container.setTitle(Titles.appTitle);
+		container.setLocationRelativeTo(null);
+		container.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 
 	public void showCardPanel(String cardName) {
@@ -207,7 +210,7 @@ public class ApplicationWindow extends DialogWindow {
 
 	public void updateLeft() {
 		listsSplitPane.setLeftComponent(createScrollPaneForList(maker.getWordsList()));
-		repaint();
+		container.repaint();
 	}
 
 	public void save() {
@@ -217,11 +220,11 @@ public class ApplicationWindow extends DialogWindow {
 	public void changeSaveStatus(SavingStatus savingStatus) {
 		saveInfo.setText(Prompts.savingStatusPrompt + savingStatus.getStatus() + "; "
 				+ Prompts.problematicKanjiPrompt + problematicKanjis.size());
-		repaint();
+		container.repaint();
 	}
 
 	public void updateTitle(String update) {
-		setTitle(Titles.appTitle + "   " + update);
+		container.setTitle(Titles.appTitle + "   " + update);
 	}
 
 	public void addToRepeatsList(RepeatingInformation info) {
@@ -291,8 +294,7 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void showMsgDialog(String message, boolean modal) {
-		newDialog.showMsgDialog(message, modal);
-
+		newDialog.showMsgDialog(message);
 	}
 
 	public boolean showConfirmDialog(String message) {
@@ -314,13 +316,13 @@ public class ApplicationWindow extends DialogWindow {
 				problematicKanjiPanel.spaceBarPressed();
 			}
 		};
-		setPreferredSize(new Dimension(600, 400));
+		container.setPreferredSize(new Dimension(600, 400));
 
 		newDialog.addHotkey(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), a);
 		newDialog.setLocationAtCenterOfParent();
 		newDialog.showYourself(Titles.insertWordDialogTitle, true);
 
-		addWindowListener(new WindowAdapter() {
+		container.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
 				hideProblematics(problematicKanjiPanel);
@@ -370,6 +372,14 @@ public class ApplicationWindow extends DialogWindow {
 
 		button.getActionMap().put("space", action);
 		return button;
+	}
+
+	public JFrame getContainer() {
+		return container;
+	}
+
+	public void setVisible(boolean vis) {
+		container.setVisible(vis);
 	}
 
 }

@@ -22,7 +22,6 @@ import javax.swing.SwingUtilities;
 
 import com.guimaker.colors.BasicColors;
 import com.kanji.constants.ExceptionsMessages;
-import com.kanji.dialogs.DialogWindow;
 import com.kanji.window.ApplicationWindow;
 import com.kanji.window.ElementMaker;
 
@@ -320,7 +319,7 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				parent.revalidate();
+				// parent.revalidate();
 				revalidate();
 				parentScrollPane.revalidate();
 				JScrollBar scrollBar = parentScrollPane.getVerticalScrollBar();

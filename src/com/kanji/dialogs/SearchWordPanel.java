@@ -163,7 +163,7 @@ public class SearchWordPanel {
 			boolean found = list.findAndHighlightNextOccurence(textField.getText(), direction,
 					options);
 			if (!found)
-				parentDialog.showErrorDialogInNewWindow(ExceptionsMessages.wordNotFoundMessage);
+				parentDialog.showMsgDialog(ExceptionsMessages.wordNotFoundMessage);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

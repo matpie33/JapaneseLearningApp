@@ -126,11 +126,11 @@ public class ProblematicKanjiPanel {
 			}
 			catch (IOException ex) {
 				ex.printStackTrace();
-				frame.showMsgDialog("buuu", true);
+				frame.showMsgDialog("buuu");
 			}
 		}
 		else {
-			frame.showMsgDialog("buuu", true);
+			frame.showMsgDialog("buuu"); // TODO change the message properly
 		}
 	}
 
@@ -141,7 +141,7 @@ public class ProblematicKanjiPanel {
 		}
 		catch (URISyntaxException e1) {
 			e1.printStackTrace();
-			frame.showMsgDialog("error", true);
+			frame.showMsgDialog("error");
 			return null;
 		}
 		return uriObject;

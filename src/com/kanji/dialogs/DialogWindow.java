@@ -2,6 +2,7 @@ package com.kanji.dialogs;
 
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
@@ -14,15 +15,16 @@ import javax.swing.KeyStroke;
 import com.kanji.constants.Titles;
 import com.kanji.window.ApplicationWindow;
 
-public class DialogWindow extends JDialog {
+public class DialogWindow {
 
 	private static final long serialVersionUID = 7484743485658276014L;
-	private DialogWindow upper;
+	private DialogWindow newDialog;
 	private JPanel mainPanel;
 	private DialogWindow parentWindow;
 	private boolean isAccepted;
 	private DialogWindow dialog;
 	private Position position;
+	private JDialog container;
 
 	private enum Position {
 		CENTER, LEFT_CORNER
@@ -36,10 +38,11 @@ public class DialogWindow extends JDialog {
 	}
 
 	public DialogWindow() {
-
+		container = new JDialog();
 	}
 
 	public DialogWindow(DialogWindow b) {
+		this();
 		parentWindow = b;
 		initialize();
 	}
@@ -47,7 +50,7 @@ public class DialogWindow extends JDialog {
 	private void initialize() {
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 		manager.addKeyEventDispatcher(new MyDispatcher());
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		container.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	}
 
 	public void setPanel(JPanel panel) {
@@ -60,12 +63,12 @@ public class DialogWindow extends JDialog {
 	}
 
 	public void showYourself(String title, boolean modal) {
-		setContentPane(mainPanel);
-		pack();
+		container.setContentPane(mainPanel);
+		container.pack();
 		setPosition();
-		setModal(modal);
-		setTitle(title);
-		setVisible(true);
+		container.setModal(modal);
+		container.setTitle(title);
+		container.setVisible(true);
 	}
 
 	private void setPosition() {
@@ -79,7 +82,7 @@ public class DialogWindow extends JDialog {
 		}
 	}
 
-	public void showMsgDialog(String message, boolean modal) {
+	public void showMsgDialog(String message) {
 
 		MessagePanel dialog = new MessagePanel(mainPanel, this);
 		mainPanel = dialog.createPanel(message);
@@ -90,10 +93,10 @@ public class DialogWindow extends JDialog {
 	}
 
 	public void addHotkey(KeyStroke k, AbstractAction a) {
-		JRootPane root = getRootPane();
+		JRootPane root = container.getRootPane();
 		root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(k, "close");
 		root.getActionMap().put("close", a);
-		setRootPane(root);
+		// setRootPane(root);
 	}
 
 	public boolean showConfirmDialog(String message) {
@@ -104,28 +107,24 @@ public class DialogWindow extends JDialog {
 		return isAccepted;
 	}
 
-	public void showErrorDialogInNewWindow(String message) { // TODO jak tego
-																// uniknac bo to
-																// kopia
-		if (upper == null || !upper.isDisplayable()) {
-			upper = new DialogWindow(this);
-		}
-		else
-			return;
+	public void showErrorDialogInNewWindow(String message) {
 
-		upper.showMsgDialog(message, true);
+		if (newDialog == null) {
+			newDialog = new DialogWindow(this);
+		}
+		newDialog.showMsgDialog(message);
 
 	}
 
 	public void setLocationAtCenterOfParent() {
 		position = Position.CENTER;
-		setLocationRelativeTo(getParent());
+		container.setLocationRelativeTo(container.getParent());
 
 	}
 
 	public void setLocationAtLeftUpperCornerOfParent() {
 		position = Position.LEFT_CORNER;
-		setLocation(parentWindow.getLocation());
+		container.setLocation(parentWindow.getLocation());
 	}
 
 	public void save() {
@@ -145,6 +144,18 @@ public class DialogWindow extends JDialog {
 
 	public void closeDialog() {
 		dialog.dispose();
+	}
+
+	public void dispose() {
+		container.dispose();
+	}
+
+	public Point getLocation() {
+		return container.getLocation();
+	}
+
+	public void setVisible(boolean visible) {
+		container.setVisible(visible);
 	}
 
 }
