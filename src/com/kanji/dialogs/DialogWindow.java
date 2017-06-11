@@ -17,7 +17,6 @@ import com.kanji.window.ApplicationWindow;
 
 public class DialogWindow {
 
-	private static final long serialVersionUID = 7484743485658276014L;
 	private DialogWindow newDialog;
 	private JPanel mainPanel;
 	private DialogWindow parentWindow;
@@ -50,7 +49,6 @@ public class DialogWindow {
 	private void initialize() {
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 		manager.addKeyEventDispatcher(new MyDispatcher());
-		container.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	}
 
 	public void setPanel(JPanel panel) {
@@ -59,10 +57,10 @@ public class DialogWindow {
 
 	public void showYourself(String title) {
 		showYourself(title, false);
-
 	}
 
 	public void showYourself(String title, boolean modal) {
+		container.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		container.setContentPane(mainPanel);
 		container.pack();
 		setPosition();
@@ -74,29 +72,25 @@ public class DialogWindow {
 	private void setPosition() {
 		switch (position) {
 		case CENTER:
-			setLocationAtCenterOfParent();
+			container.setLocationRelativeTo(container.getParent());
 			break;
 		case LEFT_CORNER:
-			setLocationAtLeftUpperCornerOfParent();
+			container.setLocation(parentWindow.getLocation());
 			break;
 		}
 	}
 
 	public void showMsgDialog(String message) {
-
 		MessagePanel dialog = new MessagePanel(mainPanel, this);
 		mainPanel = dialog.createPanel(message);
-
 		setLocationAtCenterOfParent();
 		showYourself(Titles.messageDialogTitle, true);
-
 	}
 
 	public void addHotkey(KeyStroke k, AbstractAction a) {
 		JRootPane root = container.getRootPane();
 		root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(k, "close");
 		root.getActionMap().put("close", a);
-		// setRootPane(root);
 	}
 
 	public boolean showConfirmDialog(String message) {
@@ -118,13 +112,10 @@ public class DialogWindow {
 
 	public void setLocationAtCenterOfParent() {
 		position = Position.CENTER;
-		container.setLocationRelativeTo(container.getParent());
-
 	}
 
 	public void setLocationAtLeftUpperCornerOfParent() {
 		position = Position.LEFT_CORNER;
-		container.setLocation(parentWindow.getLocation());
 	}
 
 	public void save() {

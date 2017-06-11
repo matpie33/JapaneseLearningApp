@@ -27,7 +27,7 @@ public class MessagePanel {
 		int level = 0;
 		JTextArea prompt = addPromptAtLevel(level, message);
 		JButton button = CommonActionsMaker.createButtonDispose(ButtonsNames.buttonApproveText,
-				java.awt.event.KeyEvent.VK_SPACE, parentDialog);
+				java.awt.event.KeyEvent.VK_ESCAPE, parentDialog);
 
 		main.addRow(RowMaker.createBothSidesFilledRow(prompt));
 		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, button));
