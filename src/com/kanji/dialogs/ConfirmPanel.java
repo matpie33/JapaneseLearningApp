@@ -33,7 +33,7 @@ public class ConfirmPanel {
 		AbstractAction al = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				parentDialog.dispose();
+				parentDialog.getContainer().dispose();
 				parentDialog.setAccepted(true);
 			}
 		};
@@ -49,7 +49,7 @@ public class ConfirmPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				parentDialog.dispose();
+				parentDialog.getContainer().dispose();
 				parentDialog.setAccepted(false);
 			}
 		};

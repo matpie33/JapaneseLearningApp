@@ -366,7 +366,7 @@ public class ElementMaker {
 					listOfWords.getWords().addRow(entry.getValue(), entry.getKey(), i);
 					i++;
 				}
-				d.dispose();
+				d.getContainer().dispose();
 			}
 		};
 		Thread t = new Thread(r);

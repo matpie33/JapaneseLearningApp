@@ -18,7 +18,7 @@ public class CommonActionsMaker {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				dialog.dispose();
+				dialog.getContainer().dispose();
 			}
 		};
 		button.addActionListener(action);

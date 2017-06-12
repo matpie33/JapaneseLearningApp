@@ -452,7 +452,7 @@ public class LearningStartPanel {
 	}
 
 	private void switchToRepeatingPanel() {
-		parentDialog.dispose();
+		parentDialog.getContainer().dispose();
 		switchPanels(rangesToRepeat);
 	}
 

@@ -2,7 +2,7 @@ package com.kanji.dialogs;
 
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
-import java.awt.Point;
+import java.awt.Window;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
@@ -75,7 +75,7 @@ public class DialogWindow {
 			container.setLocationRelativeTo(container.getParent());
 			break;
 		case LEFT_CORNER:
-			container.setLocation(parentWindow.getLocation());
+			container.setLocation(parentWindow.getContainer().getLocation());
 			break;
 		}
 	}
@@ -133,20 +133,8 @@ public class DialogWindow {
 		return isAccepted;
 	}
 
-	public void closeDialog() {
-		dialog.dispose();
-	}
-
-	public void dispose() {
-		container.dispose();
-	}
-
-	public Point getLocation() {
-		return container.getLocation();
-	}
-
-	public void setVisible(boolean visible) {
-		container.setVisible(visible);
+	public Window getContainer() {
+		return container;
 	}
 
 }

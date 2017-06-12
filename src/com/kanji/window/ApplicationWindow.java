@@ -332,12 +332,12 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	private void hideProblematics(ProblematicKanjiPanel problematicKanjiPanel2) {
-		newDialog.setVisible(false);
+		newDialog.getContainer().setVisible(false);
 		addButtonIcon(problematicKanjiPanel2);
 		if (problematicKanjiPanel != null && problematicKanjiPanel.allProblematicKanjisRepeated()) {
 			System.out.println("removing");
 			removeButtonProblematicsKanji();
-			newDialog.dispose();
+			newDialog.getContainer().dispose();
 
 		}
 	}
@@ -352,7 +352,7 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void closeDialog() {
-		newDialog.dispose();
+		newDialog.getContainer().dispose();
 	}
 
 	public JButton createButtonHide(String text, KeyStroke disposeKey,
@@ -372,10 +372,6 @@ public class ApplicationWindow extends DialogWindow {
 
 		button.getActionMap().put("space", action);
 		return button;
-	}
-
-	public JFrame getContainer() {
-		return container;
 	}
 
 	public void setVisible(boolean vis) {
