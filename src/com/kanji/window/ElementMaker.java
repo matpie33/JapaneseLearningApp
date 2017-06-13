@@ -379,7 +379,7 @@ public class ElementMaker {
 
 		}
 		catch (Exception e) {
-			parent.showMsgDialog(e.getMessage(), false);
+			parent.showMsgDialog(e.getMessage());
 			words = new HashMap<Integer, String>();
 		}
 		return words;

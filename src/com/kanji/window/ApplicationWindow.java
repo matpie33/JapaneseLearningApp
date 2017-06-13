@@ -78,7 +78,7 @@ public class ApplicationWindow extends DialogWindow {
 
 	public ApplicationWindow() {
 
-		// super(this);
+		super(null);
 		container = new JFrame();
 		newDialog = new DialogWindow(this);
 		main = new MainPanel(BasicColors.LIGHT_BLUE);
@@ -293,14 +293,6 @@ public class ApplicationWindow extends DialogWindow {
 
 	}
 
-	public void showMsgDialog(String message, boolean modal) {
-		newDialog.showMsgDialog(message);
-	}
-
-	public boolean showConfirmDialog(String message) {
-		return newDialog.showConfirmDialog(message);
-	}
-
 	public void showProblematicKanjiDialog(KanjiWords kanjiWords, Set<Integer> problematicKanjis) {
 		problematicKanjiPanel = new ProblematicKanjiPanel(mainPanel, this, kanjiWords,
 				problematicKanjis);
@@ -344,10 +336,8 @@ public class ApplicationWindow extends DialogWindow {
 
 	public LoadingPanel showProgressDialog() {
 		LoadingPanel dialog = new LoadingPanel(mainPanel, this);
-		newDialog.setPanel(dialog.createPanel(Prompts.kanjiLoadingPrompt));
-		newDialog.setLocationAtCenterOfParent();
-		newDialog.showYourself(Titles.messageDialogTitle, false);
-
+		newDialog.showPanel(dialog.createPanel(Prompts.kanjiLoadingPrompt),
+				Titles.messageDialogTitle, false, Position.CENTER);
 		return dialog;
 	}
 
@@ -376,6 +366,10 @@ public class ApplicationWindow extends DialogWindow {
 
 	public void setVisible(boolean vis) {
 		container.setVisible(vis);
+	}
+
+	public JFrame getContainer() {
+		return container;
 	}
 
 }

@@ -330,7 +330,7 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 	}
 
 	private void sendErrorToParent(Exception e) {
-		this.parent.showMsgDialog(e.getMessage(), true);
+		this.parent.showMsgDialog(e.getMessage());
 	}
 
 	public Parameters getWords() {

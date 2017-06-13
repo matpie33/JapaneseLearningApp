@@ -17,15 +17,14 @@ import com.kanji.window.ApplicationWindow;
 
 public class DialogWindow {
 
-	private DialogWindow newDialog;
+	private DialogWindow childWindow; // TODO so how to initialize it?
 	private JPanel mainPanel;
 	private DialogWindow parentWindow;
 	private boolean isAccepted;
-	private DialogWindow dialog;
 	private Position position;
 	private JDialog container;
 
-	private enum Position {
+	public enum Position {
 		CENTER, LEFT_CORNER
 	}
 
@@ -36,12 +35,8 @@ public class DialogWindow {
 		}
 	}
 
-	public DialogWindow() {
-		container = new JDialog();
-	}
-
 	public DialogWindow(DialogWindow b) {
-		this();
+		container = new JDialog();
 		parentWindow = b;
 		initialize();
 	}
@@ -81,10 +76,20 @@ public class DialogWindow {
 	}
 
 	public void showMsgDialog(String message) {
-		MessagePanel dialog = new MessagePanel(mainPanel, this);
-		mainPanel = dialog.createPanel(message);
-		setLocationAtCenterOfParent();
-		showYourself(Titles.messageDialogTitle, true);
+		childWindow = new DialogWindow(this);
+		MessagePanel dialog = new MessagePanel(mainPanel, childWindow); // TODO
+																		// main
+																		// panel
+																		// not
+																		// needed
+																		// here
+		showPanel(dialog.createPanel(message), Titles.messageDialogTitle, true, Position.CENTER);
+	}
+
+	public void showPanel(JPanel panel, String title, boolean modal, Position position) {
+		childWindow.setPosition(position);
+		childWindow.setPanel(panel);
+		childWindow.showYourself(title, modal);
 	}
 
 	public void addHotkey(KeyStroke k, AbstractAction a) {
@@ -94,20 +99,14 @@ public class DialogWindow {
 	}
 
 	public boolean showConfirmDialog(String message) {
-		ConfirmPanel panel = new ConfirmPanel(mainPanel, this);
-		setLocationAtCenterOfParent();
-		mainPanel = panel.createPanel(message);
-		showYourself("Potwierdź", true);
-		return isAccepted;
+		childWindow = new DialogWindow(this);
+		ConfirmPanel panel = new ConfirmPanel(mainPanel, childWindow);
+		showPanel(panel.createPanel(message), Titles.confirmDialogTitle, true, Position.CENTER);
+		return isAccepted();
 	}
 
-	public void showErrorDialogInNewWindow(String message) {
-
-		if (newDialog == null) {
-			newDialog = new DialogWindow(this);
-		}
-		newDialog.showMsgDialog(message);
-
+	public void setPosition(Position position) {
+		this.position = position;
 	}
 
 	public void setLocationAtCenterOfParent() {
@@ -118,7 +117,8 @@ public class DialogWindow {
 		position = Position.LEFT_CORNER;
 	}
 
-	public void save() {
+	public void save() { // TODO this should go to application window to avoid
+							// cast
 		if (parentWindow instanceof ApplicationWindow) {
 			ApplicationWindow parent = (ApplicationWindow) parentWindow;
 			parent.save();
@@ -130,7 +130,7 @@ public class DialogWindow {
 	}
 
 	public boolean isAccepted() {
-		return isAccepted;
+		return childWindow.isAccepted;
 	}
 
 	public Window getContainer() {

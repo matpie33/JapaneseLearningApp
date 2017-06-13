@@ -167,11 +167,11 @@ public class SearchWordPanel {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			parentDialog.showErrorDialogInNewWindow(e.getMessage()); // TODO to
-																		// nie
-																		// zawsze
-																		// dobry
-																		// pomysł
+			parentDialog.showMsgDialog(e.getMessage()); // TODO to
+														// nie
+														// zawsze
+														// dobry
+														// pomysł
 		}
 	}
 

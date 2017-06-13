@@ -10,5 +10,6 @@ public class Titles {
 	public static final String repeatedWordsListTitle = "Powtorzone";
 	public static final String repeatingWordsTitle = "Powtórka słówek";
 	public static final String wordsListTitle = "Slowka";
+	public static final String confirmDialogTitle = "Potwierdzenie.";
 
 }

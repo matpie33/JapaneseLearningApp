@@ -403,7 +403,7 @@ public class LearningStartPanel {
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();
-			parentDialog.showErrorDialogInNewWindow(ex.getMessage());
+			parentDialog.showMsgDialog(ex.getMessage());
 		}
 	}
 
