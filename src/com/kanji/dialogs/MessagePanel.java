@@ -18,7 +18,7 @@ public class MessagePanel {
 	private GridBagConstraints layoutConstraints;
 	private DialogWindow parentDialog;
 
-	public MessagePanel(JPanel panel, DialogWindow parent) {
+	public MessagePanel(DialogWindow parent) {
 		parentDialog = parent;
 		main = new MainPanel(BasicColors.OCEAN_BLUE);
 	}

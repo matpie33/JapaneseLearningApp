@@ -16,12 +16,10 @@ import com.kanji.constants.ButtonsNames;
 public class LoadingPanel {
 
 	private MainPanel main;
-	private GridBagConstraints layoutConstraints;
 	private DialogWindow parentDialog;
-	private JProgressBar bar;
 	private JButton okButton;
 
-	public LoadingPanel(JPanel panel, DialogWindow parent) {
+	public LoadingPanel(DialogWindow parent) {
 		main = new MainPanel(BasicColors.OCEAN_BLUE);
 		parentDialog = parent;
 	}
@@ -51,7 +49,6 @@ public class LoadingPanel {
 	}
 
 	public void setProgressBar(JProgressBar bar) {
-		this.bar = bar;
 		main.removeRow(1);
 		main.addRow(RowMaker.createHorizontallyFilledRow(bar));
 		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, okButton));

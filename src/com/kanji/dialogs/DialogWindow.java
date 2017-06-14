@@ -17,7 +17,7 @@ import com.kanji.window.ApplicationWindow;
 
 public class DialogWindow {
 
-	private DialogWindow childWindow; // TODO so how to initialize it?
+	protected DialogWindow childWindow; // TODO so how to initialize it?
 	private JPanel mainPanel;
 	private DialogWindow parentWindow;
 	private boolean isAccepted;
@@ -58,13 +58,13 @@ public class DialogWindow {
 		container.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		container.setContentPane(mainPanel);
 		container.pack();
-		setPosition();
+		setCoordinatesBasedOnPosition();
 		container.setModal(modal);
 		container.setTitle(title);
 		container.setVisible(true);
 	}
 
-	private void setPosition() {
+	private void setCoordinatesBasedOnPosition() {
 		switch (position) {
 		case CENTER:
 			container.setLocationRelativeTo(container.getParent());
@@ -77,14 +77,15 @@ public class DialogWindow {
 
 	public void showMsgDialog(String message) {
 		childWindow = new DialogWindow(this);
-		MessagePanel dialog = new MessagePanel(mainPanel, childWindow); // TODO
-																		// main
-																		// panel
-																		// not
-																		// needed
-																		// here
+		MessagePanel dialog = new MessagePanel(childWindow);
 		showPanel(dialog.createPanel(message), Titles.messageDialogTitle, true, Position.CENTER);
 	}
+
+	// TODO first parameter should be interface that has method createDialog,
+	// then we can pass just new object here implementing the interface and here
+	// we just call interface.createDialog
+	// TODO 2: then we could instantiate child window in this method:
+	// createPanel would take additional parameter: dialogWindow
 
 	public void showPanel(JPanel panel, String title, boolean modal, Position position) {
 		childWindow.setPosition(position);
@@ -92,15 +93,9 @@ public class DialogWindow {
 		childWindow.showYourself(title, modal);
 	}
 
-	public void addHotkey(KeyStroke k, AbstractAction a) {
-		JRootPane root = container.getRootPane();
-		root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(k, "close");
-		root.getActionMap().put("close", a);
-	}
-
 	public boolean showConfirmDialog(String message) {
 		childWindow = new DialogWindow(this);
-		ConfirmPanel panel = new ConfirmPanel(mainPanel, childWindow);
+		ConfirmPanel panel = new ConfirmPanel(childWindow);
 		showPanel(panel.createPanel(message), Titles.confirmDialogTitle, true, Position.CENTER);
 		return isAccepted();
 	}
@@ -109,7 +104,7 @@ public class DialogWindow {
 		this.position = position;
 	}
 
-	public void setLocationAtCenterOfParent() {
+	public void setLocationAtCenterOfParent() { // TODO remove these 2 methods
 		position = Position.CENTER;
 	}
 
@@ -135,6 +130,12 @@ public class DialogWindow {
 
 	public Window getContainer() {
 		return container;
+	}
+
+	public void addHotkey(KeyStroke k, AbstractAction a) {
+		JRootPane root = container.getRootPane();
+		root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(k, "close");
+		root.getActionMap().put("close", a);
 	}
 
 }

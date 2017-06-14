@@ -65,7 +65,6 @@ public class ApplicationWindow extends DialogWindow {
 	private JButton showProblematicKanjis;
 	private MainPanel main;
 	private ProblematicKanjiPanel problematicKanjisPanel;
-	private DialogWindow newDialog;
 	private ProblematicKanjiPanel problematicKanjiPanel;
 	private JFrame container;
 
@@ -79,8 +78,8 @@ public class ApplicationWindow extends DialogWindow {
 	public ApplicationWindow() {
 
 		super(null);
+
 		container = new JFrame();
-		newDialog = new DialogWindow(this);
 		main = new MainPanel(BasicColors.LIGHT_BLUE);
 		// TODO searching is case sensitive, should not be
 		problematicKanjis = new HashSet<Integer>();
@@ -156,13 +155,11 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	private JPanel putPanelsTogetherAndSetContentPane() {
-
 		MainPanel main = new MainPanel(BasicColors.LIGHT_BLUE);
 		main.addRow(RowMaker.createBothSidesFilledRow(listsSplitPane));
 		main.addRow(RowMaker.createHorizontallyFilledRow(buttonsPanel.getPanel()));
 		main.addRow(RowMaker.createHorizontallyFilledRow(infoPanel.getPanel()));
 		return main.getPanel();
-
 	}
 
 	private void setWindowProperties() {
@@ -269,27 +266,29 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void showLearningStartDialog(MyList list, int maximumNumber) {
-		LearningStartPanel dialog = new LearningStartPanel(mainPanel, newDialog, this,
-				maximumNumber);
-		newDialog.setPanel(dialog.createPanel(list));
-		newDialog.setLocationAtCenterOfParent();
-		newDialog.showYourself(Titles.learnStartDialogTitle);
+		childWindow = new DialogWindow(this);
+		LearningStartPanel dialog = new LearningStartPanel(childWindow, this, maximumNumber);
+		showPanel(dialog.createPanel(list), Titles.learnStartDialogTitle, false, Position.CENTER);
 
 	}
 
-	public void showInsertDialog(MyList list) {
-		InsertWordPanel dialog = new InsertWordPanel(newDialog);
-		newDialog.setPanel(dialog.createPanel(list));
-		newDialog.setLocationAtLeftUpperCornerOfParent();
-		newDialog.showYourself(Titles.insertWordDialogTitle);
+	public void showInsertDialog(MyList list) {// TODO msg dialog is wrong
+												// positioned in search word
+												// dialog
+		childWindow = new DialogWindow(this);
+		InsertWordPanel dialog = new InsertWordPanel(childWindow);
+		showPanel(dialog.createPanel(list), Titles.insertWordDialogTitle, false,
+				Position.LEFT_CORNER);
 
 	}
 
-	public void showSearchWordDialog(MyList list) {
-		SearchWordPanel dialog = new SearchWordPanel(mainPanel, newDialog);
-		newDialog.setPanel(dialog.createPanel(list));
-		newDialog.setLocationAtLeftUpperCornerOfParent();
-		newDialog.showYourself(Titles.insertWordDialogTitle);
+	public void showSearchWordDialog(MyList list) { // TODO msg dialog is wrong
+													// positioned in search word
+													// dialog
+		childWindow = new DialogWindow(this);
+		SearchWordPanel dialog = new SearchWordPanel(childWindow);
+		showPanel(dialog.createPanel(list), Titles.insertWordDialogTitle, false,
+				Position.LEFT_CORNER);
 
 	}
 
@@ -301,20 +300,22 @@ public class ApplicationWindow extends DialogWindow {
 
 	public void showProblematicKanjiDialog(ProblematicKanjiPanel kanjiPanel) {
 		problematicKanjiPanel = kanjiPanel;
-		newDialog.setPanel(problematicKanjiPanel.createPanel());
+		childWindow = new DialogWindow(this);
 		AbstractAction a = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				problematicKanjiPanel.spaceBarPressed();
 			}
 		};
-		container.setPreferredSize(new Dimension(600, 400));
+		childWindow.getContainer().setPreferredSize(new Dimension(600, 400));
+		// TODO create a variable how many rows should be initially then just
+		// add so many rows and use that size as preferred,then remove the rows
 
-		newDialog.addHotkey(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), a);
-		newDialog.setLocationAtCenterOfParent();
-		newDialog.showYourself(Titles.insertWordDialogTitle, true);
+		childWindow.addHotkey(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), a);
+		showPanel(problematicKanjiPanel.createPanel(), Titles.insertWordDialogTitle, true,
+				Position.CENTER);
 
-		container.addWindowListener(new WindowAdapter() {
+		childWindow.getContainer().addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
 				hideProblematics(problematicKanjiPanel);
@@ -324,25 +325,26 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	private void hideProblematics(ProblematicKanjiPanel problematicKanjiPanel2) {
-		newDialog.getContainer().setVisible(false);
+		childWindow.getContainer().setVisible(false);
 		addButtonIcon(problematicKanjiPanel2);
 		if (problematicKanjiPanel != null && problematicKanjiPanel.allProblematicKanjisRepeated()) {
 			System.out.println("removing");
 			removeButtonProblematicsKanji();
-			newDialog.getContainer().dispose();
+			childWindow.getContainer().dispose();
 
 		}
 	}
 
 	public LoadingPanel showProgressDialog() {
-		LoadingPanel dialog = new LoadingPanel(mainPanel, this);
-		newDialog.showPanel(dialog.createPanel(Prompts.kanjiLoadingPrompt),
-				Titles.messageDialogTitle, false, Position.CENTER);
+		childWindow = new DialogWindow(this);
+		LoadingPanel dialog = new LoadingPanel(childWindow);
+		showPanel(dialog.createPanel(Prompts.kanjiLoadingPrompt), Titles.messageDialogTitle, false,
+				Position.CENTER);
 		return dialog;
 	}
 
 	public void closeDialog() {
-		newDialog.getContainer().dispose();
+		childWindow.getContainer().dispose();
 	}
 
 	public JButton createButtonHide(String text, KeyStroke disposeKey,

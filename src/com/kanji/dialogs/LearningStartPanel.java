@@ -57,7 +57,7 @@ public class LearningStartPanel {
 	private int sumOfWords;
 	private MainPanel rangesPanel;
 
-	public LearningStartPanel(JPanel panel, DialogWindow parent, ApplicationWindow parentOfParent,
+	public LearningStartPanel(DialogWindow parent, ApplicationWindow parentOfParent,
 			int numberOfWords) {
 		this.numberOfWords = numberOfWords;
 		parentDialog = parent;
