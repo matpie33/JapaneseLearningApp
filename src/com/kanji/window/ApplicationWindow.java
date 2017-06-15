@@ -76,6 +76,7 @@ public class ApplicationWindow extends DialogWindow {
 	public static final String LEARNING_PANEL = "Panel for repeating words";
 
 	public ApplicationWindow() {
+		// TODO separate panel from this class
 
 		super(null);
 
@@ -236,18 +237,18 @@ public class ApplicationWindow extends DialogWindow {
 		maker.getRepeatsList().scrollToBottom();
 	}
 
-	public void addButtonIcon(ProblematicKanjiPanel kanjis) {
+	public void addButtonIcon() {
 		if (showProblematicKanjis == null) {
 			showProblematicKanjis = new JButton("Pokaż problematyczne");
 		}
 		else {
 			return;
 		}
-		problematicKanjisPanel = kanjis;
+
 		showProblematicKanjis.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				showProblematicKanjiDialog(problematicKanjisPanel);
+				showProblematicKanjiDialog();
 			}
 		});
 		// for (Component c : infoPanel.getRows().get(0).getComponents()) {
@@ -288,14 +289,15 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void showProblematicKanjiDialog(KanjiWords kanjiWords, Set<Integer> problematicKanjis) {
-		problematicKanjiPanel = new ProblematicKanjiPanel(mainPanel, this, kanjiWords,
-				problematicKanjis);
-		showProblematicKanjiDialog(problematicKanjiPanel);
+		problematicKanjiPanel = new ProblematicKanjiPanel(this, kanjiWords, problematicKanjis);
+		showProblematicKanjiDialog();
 	}
 
-	public void showProblematicKanjiDialog(ProblematicKanjiPanel kanjiPanel) {
-		problematicKanjiPanel = kanjiPanel;
+	public void showProblematicKanjiDialog() {
 		childWindow = new DialogWindow(this);
+
+		// TODO do this in problematic kanji itself, now it would have reference
+		// to child window
 		AbstractAction a = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -312,16 +314,17 @@ public class ApplicationWindow extends DialogWindow {
 		childWindow.getContainer().addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
-				hideProblematics(problematicKanjiPanel);
+				hideProblematics();
 			}
 		});
 
 	}
 
-	private void hideProblematics(ProblematicKanjiPanel problematicKanjiPanel2) {
+	private void hideProblematics() {
 		childWindow.getContainer().setVisible(false);
-		addButtonIcon(problematicKanjiPanel2);
-		if (problematicKanjiPanel != null && problematicKanjiPanel.allProblematicKanjisRepeated()) {
+		addButtonIcon();
+		if (this.problematicKanjiPanel != null
+				&& this.problematicKanjiPanel.allProblematicKanjisRepeated()) {
 			System.out.println("removing");
 			removeButtonProblematicsKanji();
 			childWindow.getContainer().dispose();
@@ -340,15 +343,15 @@ public class ApplicationWindow extends DialogWindow {
 		childWindow.getContainer().dispose();
 	}
 
-	public JButton createButtonHide(String text, KeyStroke disposeKey,
-			final ProblematicKanjiPanel panel) {
+	// TODO it could be instead in dialog window
+	public JButton createButtonHide(String text, KeyStroke disposeKey) {
 		JButton button = new JButton(text);
 		AbstractAction action = new AbstractAction() {
 			private static final long serialVersionUID = 5504620933205592893L;
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				hideProblematics(panel);
+				hideProblematics();
 
 			}
 		};

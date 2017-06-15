@@ -33,7 +33,8 @@ public class ProblematicKanjiPanel implements PanelCreator {
 	private List<MainPanel> kanjisToBrowse;
 	private JScrollPane scrollPane;
 
-	public ProblematicKanjiPanel(JPanel panel, ApplicationWindow parent, KanjiWords kanjis,
+	// TODO we can use dialog window instead of application window
+	public ProblematicKanjiPanel(ApplicationWindow parent, KanjiWords kanjis,
 			Set<Integer> problematicKanji) {
 		kanjisToBrowse = new ArrayList<>();
 		main = new MainPanel(BasicColors.OCEAN_BLUE);
@@ -97,7 +98,7 @@ public class ProblematicKanjiPanel implements PanelCreator {
 		main.addRow(RowMaker.createBothSidesFilledRow(scrollPane));
 
 		JButton button = parentDialog.createButtonHide(ButtonsNames.buttonApproveText,
-				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0), this);
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
 		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, button));
 
 		return main.getPanel();
