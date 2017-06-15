@@ -24,7 +24,7 @@ import com.kanji.constants.Prompts;
 import com.kanji.myList.MyList;
 import com.kanji.window.LimitDocumentFilter;
 
-public class InsertWordPanel {
+public class InsertWordPanel implements PanelCreator {
 
 	private MainPanel main;
 	private DialogWindow parentDialog;
@@ -32,13 +32,19 @@ public class InsertWordPanel {
 	private JTextField insertWordTextField;
 	private JTextField insertNumberTextField;
 
-	public InsertWordPanel(DialogWindow parent) {
+	public InsertWordPanel(MyList list) {
 		main = new MainPanel(BasicColors.OCEAN_BLUE);
+		this.list = list;
+	}
+
+	@Override
+	public void setParentDialog(DialogWindow parent) {
 		parentDialog = parent;
 	}
 
-	public JPanel createPanel(MyList list) {
-		this.list = list;
+	@Override
+	public JPanel createPanel() {
+
 		JLabel addWordPrompt = new JLabel(Prompts.wordAddDialogPrompt);
 		insertWordTextField = new JTextField(20);
 

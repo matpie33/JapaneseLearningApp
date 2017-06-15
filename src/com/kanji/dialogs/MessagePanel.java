@@ -12,18 +12,25 @@ import com.guimaker.row.RowMaker;
 import com.kanji.actions.CommonActionsMaker;
 import com.kanji.constants.ButtonsNames;
 
-public class MessagePanel {
+public class MessagePanel implements PanelCreator {
 
 	private MainPanel main;
 	private GridBagConstraints layoutConstraints;
 	private DialogWindow parentDialog;
+	private String message;
 
-	public MessagePanel(DialogWindow parent) {
-		parentDialog = parent;
+	public MessagePanel(String message) {
+		this.message = message;
 		main = new MainPanel(BasicColors.OCEAN_BLUE);
 	}
 
-	public JPanel createPanel(String message) {
+	@Override
+	public void setParentDialog(DialogWindow parent) {
+		parentDialog = parent;
+	}
+
+	@Override
+	public JPanel createPanel() {
 		int level = 0;
 		JTextArea prompt = addPromptAtLevel(level, message);
 		JButton button = CommonActionsMaker.createButtonDispose(ButtonsNames.buttonApproveText,

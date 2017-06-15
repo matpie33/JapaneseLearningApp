@@ -76,27 +76,29 @@ public class DialogWindow {
 	}
 
 	public void showMsgDialog(String message) {
-		childWindow = new DialogWindow(this);
-		MessagePanel dialog = new MessagePanel(childWindow);
-		showPanel(dialog.createPanel(message), Titles.messageDialogTitle, true, Position.CENTER);
+		showPanel(new MessagePanel(message), Titles.messageDialogTitle, true, Position.CENTER);
 	}
 
-	// TODO first parameter should be interface that has method createDialog,
-	// then we can pass just new object here implementing the interface and here
-	// we just call interface.createDialog
-	// TODO 2: then we could instantiate child window in this method:
-	// createPanel would take additional parameter: dialogWindow
+	public void showPanel(PanelCreator panel, String title, boolean modal, Position position) {
+		System.out.println("closed? " + childWindowIsClosed());
+		if (panel instanceof ProblematicKanjiPanel == false && childWindowIsClosed()) {
+			childWindow = new DialogWindow(this);
 
-	public void showPanel(JPanel panel, String title, boolean modal, Position position) {
-		childWindow.setPosition(position);
-		childWindow.setPanel(panel);
-		childWindow.showYourself(title, modal);
+		} // TODO think more about it
+		if (childWindowIsClosed()) {
+			panel.setParentDialog(childWindow);
+			childWindow.setPosition(position);
+			childWindow.setPanel(panel.createPanel());
+			childWindow.showYourself(title, modal);
+		}
+	}
+
+	private boolean childWindowIsClosed() {
+		return childWindow == null || !childWindow.getContainer().isVisible();
 	}
 
 	public boolean showConfirmDialog(String message) {
-		childWindow = new DialogWindow(this);
-		ConfirmPanel panel = new ConfirmPanel(childWindow);
-		showPanel(panel.createPanel(message), Titles.confirmDialogTitle, true, Position.CENTER);
+		showPanel(new ConfirmPanel(message), Titles.confirmDialogTitle, true, Position.CENTER);
 		return isAccepted();
 	}
 

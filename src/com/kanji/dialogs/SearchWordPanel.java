@@ -25,7 +25,7 @@ import com.kanji.constants.Prompts;
 import com.kanji.myList.MyList;
 import com.kanji.myList.SearchOptions;
 
-public class SearchWordPanel {
+public class SearchWordPanel implements PanelCreator {
 
 	private MainPanel main;
 	private JTextField textField;
@@ -35,14 +35,20 @@ public class SearchWordPanel {
 	private SearchOptions options;
 	private MyList list;
 
-	public SearchWordPanel(DialogWindow parent) {
+	public SearchWordPanel(MyList list) {
 		main = new MainPanel(BasicColors.OCEAN_BLUE, true);
-		parentDialog = parent;
+		this.list = list;
+
 		options = new SearchOptions();
 	}
 
-	public JPanel createPanel(MyList list) {
-		this.list = list;
+	@Override
+	public void setParentDialog(DialogWindow parent) {
+		parentDialog = parent;
+	}
+
+	@Override
+	public JPanel createPanel() {
 		int level = 0;
 		JLabel prompt = new JLabel(Prompts.wordSearchDialogPrompt);
 		textField = addPromptAndTextFieldAndReturnTextField(level, Prompts.wordSearchDialogPrompt);

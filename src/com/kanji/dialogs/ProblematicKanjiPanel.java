@@ -24,7 +24,7 @@ import com.kanji.Row.KanjiWords;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.window.ApplicationWindow;
 
-public class ProblematicKanjiPanel {
+public class ProblematicKanjiPanel implements PanelCreator {
 	private ApplicationWindow parentDialog;
 	private KanjiWords kanjiInfos;
 	private int repeatedProblematics;
@@ -43,6 +43,12 @@ public class ProblematicKanjiPanel {
 		System.out.println("in constructor: " + problematicKanjis);
 	}
 
+	@Override
+	public void setParentDialog(DialogWindow parent) {
+
+	}
+
+	@Override
 	public JPanel createPanel() {
 		if (main.getNumberOfRows() > 0) {
 			System.out.println("already exists");

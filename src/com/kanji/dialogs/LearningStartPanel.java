@@ -42,7 +42,7 @@ import com.kanji.range.SetOfRanges;
 import com.kanji.window.ApplicationWindow;
 import com.kanji.window.LimitDocumentFilter;
 
-public class LearningStartPanel {
+public class LearningStartPanel implements PanelCreator {
 
 	private MainPanel main;
 	private JScrollPane scrollPane;
@@ -57,16 +57,21 @@ public class LearningStartPanel {
 	private int sumOfWords;
 	private MainPanel rangesPanel;
 
-	public LearningStartPanel(DialogWindow parent, ApplicationWindow parentOfParent,
-			int numberOfWords) {
+	public LearningStartPanel(ApplicationWindow parentOfParent, int numberOfWords, MyList list) {
+		repeatsList = list;
 		this.numberOfWords = numberOfWords;
-		parentDialog = parent;
 		this.parentFrame = parentOfParent;
 		main = new MainPanel(BasicColors.OCEAN_BLUE, false);
 	}
 
-	public JPanel createPanel(MyList list) { // TODO add focus to textfield from
-		repeatsList = list;
+	@Override
+	public void setParentDialog(DialogWindow parent) {
+		parentDialog = parent;
+	}
+
+	@Override
+	public JPanel createPanel() { // TODO add focus to textfield from
+
 		int level = 0;
 		JTextArea prompt = GuiMaker.createTextArea(false);
 		prompt.setOpaque(false);

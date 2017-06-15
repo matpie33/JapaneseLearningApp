@@ -266,18 +266,15 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void showLearningStartDialog(MyList list, int maximumNumber) {
-		childWindow = new DialogWindow(this);
-		LearningStartPanel dialog = new LearningStartPanel(childWindow, this, maximumNumber);
-		showPanel(dialog.createPanel(list), Titles.learnStartDialogTitle, false, Position.CENTER);
+		showPanel(new LearningStartPanel(this, maximumNumber, list), Titles.learnStartDialogTitle,
+				false, Position.CENTER);
 
 	}
 
 	public void showInsertDialog(MyList list) {// TODO msg dialog is wrong
 												// positioned in search word
 												// dialog
-		childWindow = new DialogWindow(this);
-		InsertWordPanel dialog = new InsertWordPanel(childWindow);
-		showPanel(dialog.createPanel(list), Titles.insertWordDialogTitle, false,
+		showPanel(new InsertWordPanel(list), Titles.insertWordDialogTitle, false,
 				Position.LEFT_CORNER);
 
 	}
@@ -285,9 +282,7 @@ public class ApplicationWindow extends DialogWindow {
 	public void showSearchWordDialog(MyList list) { // TODO msg dialog is wrong
 													// positioned in search word
 													// dialog
-		childWindow = new DialogWindow(this);
-		SearchWordPanel dialog = new SearchWordPanel(childWindow);
-		showPanel(dialog.createPanel(list), Titles.insertWordDialogTitle, false,
+		showPanel(new SearchWordPanel(list), Titles.insertWordDialogTitle, false,
 				Position.LEFT_CORNER);
 
 	}
@@ -312,8 +307,7 @@ public class ApplicationWindow extends DialogWindow {
 		// add so many rows and use that size as preferred,then remove the rows
 
 		childWindow.addHotkey(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), a);
-		showPanel(problematicKanjiPanel.createPanel(), Titles.insertWordDialogTitle, true,
-				Position.CENTER);
+		showPanel(problematicKanjiPanel, Titles.insertWordDialogTitle, true, Position.CENTER);
 
 		childWindow.getContainer().addWindowListener(new WindowAdapter() {
 			@Override
@@ -335,11 +329,10 @@ public class ApplicationWindow extends DialogWindow {
 		}
 	}
 
-	public LoadingPanel showProgressDialog() {
-		childWindow = new DialogWindow(this);
-		LoadingPanel dialog = new LoadingPanel(childWindow);
-		showPanel(dialog.createPanel(Prompts.kanjiLoadingPrompt), Titles.messageDialogTitle, false,
-				Position.CENTER);
+	public LoadingPanel showProgressDialog() { // TODO progress dialog doesn't
+												// scroll anymore
+		LoadingPanel dialog = new LoadingPanel(Prompts.kanjiLoadingPrompt);
+		showPanel(dialog, Titles.messageDialogTitle, false, Position.CENTER);
 		return dialog;
 	}
 

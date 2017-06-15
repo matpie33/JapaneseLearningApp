@@ -13,18 +13,25 @@ import com.guimaker.row.RowMaker;
 import com.kanji.actions.CommonActionsMaker;
 import com.kanji.constants.ButtonsNames;
 
-public class LoadingPanel {
+public class LoadingPanel implements PanelCreator {
 
 	private MainPanel main;
 	private DialogWindow parentDialog;
 	private JButton okButton;
+	private String message;
 
-	public LoadingPanel(DialogWindow parent) {
+	public LoadingPanel(String message) {
+		this.message = message;
 		main = new MainPanel(BasicColors.OCEAN_BLUE);
+	}
+
+	@Override
+	public void setParentDialog(DialogWindow parent) {
 		parentDialog = parent;
 	}
 
-	public JPanel createPanel(String message) {
+	@Override
+	public JPanel createPanel() {
 
 		int level = 0;
 		JTextArea prompt = addPromptAtLevel(level, message);

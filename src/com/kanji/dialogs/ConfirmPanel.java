@@ -14,17 +14,24 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.RowMaker;
 import com.sun.glass.events.KeyEvent;
 
-public class ConfirmPanel {
+public class ConfirmPanel implements PanelCreator {
 
 	private MainPanel main;
 	private DialogWindow parentDialog;
+	private String message;
 
-	public ConfirmPanel(DialogWindow parent) {
+	public ConfirmPanel(String message) {
 		main = new MainPanel(BasicColors.OCEAN_BLUE);
+		this.message = message;
+	}
+
+	@Override
+	public void setParentDialog(DialogWindow parent) {
 		parentDialog = parent;
 	}
 
-	public JPanel createPanel(String message) {
+	@Override
+	public JPanel createPanel() {
 
 		JTextArea prompt = addPromptAtLevel(message);
 		main.addRow(RowMaker.createBothSidesFilledRow(prompt));

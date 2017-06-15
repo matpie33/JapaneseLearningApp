@@ -37,7 +37,7 @@ import com.kanji.range.SetOfRanges;
 import com.kanji.window.ApplicationWindow;
 import com.sun.glass.events.KeyEvent;
 
-public class RepeatingWordsPanel extends JPanel {
+public class RepeatingWordsPanel extends JPanel { // TODO don't extend jpanel
 	private static final long serialVersionUID = 5557984078176822840L;
 	private MyList words;
 	private List<String> wordsToRepeat;
