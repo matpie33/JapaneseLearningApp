@@ -53,6 +53,7 @@ public class ElementMaker {
 	private JMenuBar menuBar;
 	private File fileToSave;
 	private SavingStatus savingStatus;
+	private JButton problematicKanjiButton;
 
 	private class MyDispatcher implements KeyEventDispatcher {
 		private boolean openingFile;
@@ -82,6 +83,7 @@ public class ElementMaker {
 		this.parent = parent;
 
 		initElements();
+		createShowProblematicKanjiButton();
 		addListeners(buttons);
 
 	}
@@ -94,6 +96,20 @@ public class ElementMaker {
 		initListOfWords();
 		initRepeatsList();
 		createMenu();
+	}
+
+	private void createShowProblematicKanjiButton() {
+		problematicKanjiButton = new JButton(ButtonsNames.buttonShowProblematicKanji);
+		problematicKanjiButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parent.showProblematicKanjiDialog();
+			}
+		});
+	}
+
+	public JButton getProblematicKanjiButton() {
+		return problematicKanjiButton;
 	}
 
 	private void createMenu() {
