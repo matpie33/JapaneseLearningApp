@@ -9,7 +9,6 @@ import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 
 import com.kanji.constants.Titles;
@@ -122,12 +121,14 @@ public class DialogWindow {
 		return container;
 	}
 
-	public void addHotkey(KeyStroke k, AbstractAction a) {
-		// TODO add parameter: component and use it in common action maker
-		// create button dispose and maybe also other places
-		JRootPane root = container.getRootPane();
-		root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(k, "close");
-		root.getActionMap().put("close", a);
+	public void addHotkey(int keyEvent, AbstractAction a, JComponent component) {
+		component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.put(KeyStroke.getKeyStroke(keyEvent, 0), "close");
+		component.getActionMap().put("close", a);
+	}
+
+	public void addHotkeyToWindow(int keyEvent, AbstractAction a) {
+		addHotkey(keyEvent, a, container.getRootPane());
 	}
 
 	public DialogWindow getParent() {

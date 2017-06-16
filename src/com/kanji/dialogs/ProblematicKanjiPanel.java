@@ -21,7 +21,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.KeyStroke;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
@@ -112,7 +111,7 @@ public class ProblematicKanjiPanel implements PanelCreator {
 				spaceBarPressed();
 			}
 		};
-		parentDialog.addHotkey(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), a);
+		parentDialog.addHotkeyToWindow(KeyEvent.VK_SPACE, a);
 		// TODO create a variable how many rows should be initially then just
 		// add so many rows and use that size as preferred,then remove the rows
 		parentDialog.getContainer().setPreferredSize(new Dimension(600, 400));
