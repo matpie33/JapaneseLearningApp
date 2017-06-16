@@ -270,14 +270,12 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void showProblematicKanjiDialog(KanjiWords kanjiWords, Set<Integer> problematicKanjis) {
-		childWindow = new DialogWindow(this);
-		problematicKanjiPanel = new ProblematicKanjiPanel(childWindow, kanjiWords,
-				problematicKanjis);
-		showProblematicKanjiDialog();
+		problematicKanjiPanel = new ProblematicKanjiPanel(kanjiWords, problematicKanjis);
+		showPanel(problematicKanjiPanel, Titles.insertWordDialogTitle, true, Position.CENTER);
 	}
 
 	public void showProblematicKanjiDialog() {
-		showPanel(problematicKanjiPanel, Titles.insertWordDialogTitle, true, Position.CENTER);
+		childWindow.getContainer().setVisible(true);
 	}
 
 	public LoadingPanel showProgressDialog() { // TODO progress dialog doesn't

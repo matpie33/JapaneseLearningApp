@@ -17,7 +17,7 @@ import com.kanji.window.ApplicationWindow;
 
 public class DialogWindow {
 
-	protected DialogWindow childWindow; // TODO so how to initialize it?
+	protected DialogWindow childWindow;
 	private JPanel mainPanel;
 	private DialogWindow parentWindow;
 	private boolean isAccepted;
@@ -80,12 +80,8 @@ public class DialogWindow {
 	}
 
 	public void showPanel(PanelCreator panel, String title, boolean modal, Position position) {
-		System.out.println("closed? " + childWindowIsClosed());
-		if (panel instanceof ProblematicKanjiPanel == false && childWindowIsClosed()) {
-			childWindow = new DialogWindow(this);
-
-		} // TODO think more about it
 		if (childWindowIsClosed()) {
+			childWindow = new DialogWindow(this);
 			panel.setParentDialog(childWindow);
 			childWindow.setPosition(position);
 			childWindow.setPanel(panel.createPanel());

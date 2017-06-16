@@ -40,19 +40,18 @@ public class ProblematicKanjiPanel implements PanelCreator {
 	private List<MainPanel> kanjisToBrowse;
 	private JScrollPane scrollPane;
 
-	// TODO we can use dialog window instead of application window
-	public ProblematicKanjiPanel(DialogWindow parent, KanjiWords kanjis,
-			Set<Integer> problematicKanji) {
+	public ProblematicKanjiPanel(KanjiWords kanjis, Set<Integer> problematicKanji) {
 		kanjisToBrowse = new ArrayList<>();
 		main = new MainPanel(BasicColors.OCEAN_BLUE);
-		parentDialog = parent;
 		kanjiInfos = kanjis;
 		problematicKanjis = problematicKanji;
-		System.out.println("in constructor: " + problematicKanjis);
 	}
 
 	@Override
 	public void setParentDialog(DialogWindow parent) {
+		if (parentDialog == null) {
+			parentDialog = parent;
+		}
 
 	}
 
