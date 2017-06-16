@@ -142,4 +142,8 @@ public class DialogWindow {
 		root.getActionMap().put("close", a);
 	}
 
+	public DialogWindow getParent() {
+		return parentWindow;
+	}
+
 }

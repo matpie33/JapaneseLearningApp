@@ -8,8 +8,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Point;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -279,28 +277,7 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void showProblematicKanjiDialog() {
-
 		showPanel(problematicKanjiPanel, Titles.insertWordDialogTitle, true, Position.CENTER);
-
-		childWindow.getContainer().addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosed(WindowEvent e) {
-				hideProblematics();
-			}
-		});
-
-	}
-
-	private void hideProblematics() {
-		childWindow.getContainer().setVisible(false);
-		addButtonIcon();
-		if (this.problematicKanjiPanel != null
-				&& this.problematicKanjiPanel.allProblematicKanjisRepeated()) {
-			System.out.println("removing");
-			removeButtonProblematicsKanji();
-			childWindow.getContainer().dispose();
-
-		}
 	}
 
 	public LoadingPanel showProgressDialog() { // TODO progress dialog doesn't

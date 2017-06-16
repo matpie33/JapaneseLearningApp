@@ -6,6 +6,8 @@ import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -27,6 +29,7 @@ import com.guimaker.row.RowMaker;
 import com.kanji.Row.KanjiWords;
 import com.kanji.actions.CommonActionsMaker;
 import com.kanji.constants.ButtonsNames;
+import com.kanji.window.ApplicationWindow;
 
 public class ProblematicKanjiPanel implements PanelCreator {
 	private DialogWindow parentDialog;
@@ -114,10 +117,27 @@ public class ProblematicKanjiPanel implements PanelCreator {
 		// TODO create a variable how many rows should be initially then just
 		// add so many rows and use that size as preferred,then remove the rows
 		parentDialog.getContainer().setPreferredSize(new Dimension(600, 400));
+		parentDialog.getContainer().addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				hideProblematics();
+			}
+		});
 
 		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, button));
 
 		return main.getPanel();
+	}
+
+	private void hideProblematics() {
+		assert (parentDialog.getParent() instanceof ApplicationWindow);
+		ApplicationWindow parent = (ApplicationWindow) parentDialog.getParent();
+		parent.addButtonIcon();
+		if (allProblematicKanjisRepeated()) {
+			parent.removeButtonProblematicsKanji();
+			parentDialog.getContainer().dispose();
+		}
+
 	}
 
 	private void browseKanji(MainPanel panelWithKanji) {
