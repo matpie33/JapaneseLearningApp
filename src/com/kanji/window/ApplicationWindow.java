@@ -253,20 +253,14 @@ public class ApplicationWindow extends DialogWindow {
 
 	}
 
-	public void showInsertDialog(MyList list) {// TODO msg dialog is wrong
-												// positioned in search word
-												// dialog
+	public void showInsertDialog(MyList list) {
 		showPanel(new InsertWordPanel(list), Titles.insertWordDialogTitle, false,
 				Position.LEFT_CORNER);
-
 	}
 
-	public void showSearchWordDialog(MyList list) { // TODO msg dialog is wrong
-													// positioned in search word
-													// dialog
+	public void showSearchWordDialog(MyList list) {
 		showPanel(new SearchWordPanel(list), Titles.insertWordDialogTitle, false,
 				Position.LEFT_CORNER);
-
 	}
 
 	public void showProblematicKanjiDialog(KanjiWords kanjiWords, Set<Integer> problematicKanjis) {

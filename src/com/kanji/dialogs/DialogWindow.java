@@ -67,7 +67,7 @@ public class DialogWindow {
 	private void setCoordinatesBasedOnPosition() {
 		switch (position) {
 		case CENTER:
-			container.setLocationRelativeTo(container.getParent());
+			container.setLocationRelativeTo(parentWindow.getContainer());
 			break;
 		case LEFT_CORNER:
 			container.setLocation(parentWindow.getContainer().getLocation());
@@ -100,14 +100,6 @@ public class DialogWindow {
 
 	public void setPosition(Position position) {
 		this.position = position;
-	}
-
-	public void setLocationAtCenterOfParent() { // TODO remove these 2 methods
-		position = Position.CENTER;
-	}
-
-	public void setLocationAtLeftUpperCornerOfParent() {
-		position = Position.LEFT_CORNER;
 	}
 
 	public void save() { // TODO this should go to application window to avoid
