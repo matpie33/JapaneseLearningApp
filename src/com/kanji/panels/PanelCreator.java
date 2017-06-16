@@ -1,6 +1,8 @@
-package com.kanji.dialogs;
+package com.kanji.panels;
 
 import javax.swing.JPanel;
+
+import com.kanji.windows.DialogWindow;
 
 public interface PanelCreator {
 

@@ -1,4 +1,4 @@
-package com.kanji.dialogs;
+package com.kanji.panels;
 
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
@@ -24,6 +24,7 @@ import com.kanji.constants.Options;
 import com.kanji.constants.Prompts;
 import com.kanji.myList.MyList;
 import com.kanji.myList.SearchOptions;
+import com.kanji.windows.DialogWindow;
 
 public class SearchWordPanel implements PanelCreator {
 

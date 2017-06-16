@@ -1,9 +1,10 @@
-package com.kanji.window;
+package com.kanji.main;
 
 import javax.swing.JDialog;
 
 import com.kanji.range.Range;
 import com.kanji.range.SetOfRanges;
+import com.kanji.windows.ApplicationWindow;
 
 public class AppStart {
 

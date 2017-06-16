@@ -1,4 +1,4 @@
-package com.kanji.window;
+package com.kanji.utilities;
 
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;

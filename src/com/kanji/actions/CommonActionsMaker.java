@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 
-import com.kanji.dialogs.DialogWindow;
+import com.kanji.windows.DialogWindow;
 
 public class CommonActionsMaker {
 

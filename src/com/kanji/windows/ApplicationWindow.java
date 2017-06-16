@@ -1,4 +1,4 @@
-package com.kanji.window;
+package com.kanji.windows;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -27,17 +27,18 @@ import com.guimaker.row.RowMaker;
 import com.kanji.Row.KanjiWords;
 import com.kanji.Row.RepeatingInformation;
 import com.kanji.constants.Prompts;
+import com.kanji.constants.SavingStatus;
 import com.kanji.constants.Titles;
-import com.kanji.dialogs.DialogWindow;
-import com.kanji.dialogs.InsertWordPanel;
-import com.kanji.dialogs.LearningStartPanel;
-import com.kanji.dialogs.LoadingPanel;
-import com.kanji.dialogs.ProblematicKanjiPanel;
-import com.kanji.dialogs.RepeatingWordsPanel;
-import com.kanji.dialogs.SearchWordPanel;
 import com.kanji.fileReading.ExcelReader;
 import com.kanji.myList.MyList;
+import com.kanji.panels.InsertWordPanel;
+import com.kanji.panels.LearningStartPanel;
+import com.kanji.panels.LoadingPanel;
+import com.kanji.panels.ProblematicKanjiPanel;
+import com.kanji.panels.RepeatingWordsPanel;
+import com.kanji.panels.SearchWordPanel;
 import com.kanji.range.SetOfRanges;
+import com.kanji.utilities.ElementMaker;
 
 @SuppressWarnings("serial")
 public class ApplicationWindow extends DialogWindow {

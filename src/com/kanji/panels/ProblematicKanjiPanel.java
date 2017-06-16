@@ -1,4 +1,4 @@
-package com.kanji.dialogs;
+package com.kanji.panels;
 
 import java.awt.Desktop;
 import java.awt.Dimension;
@@ -28,7 +28,8 @@ import com.guimaker.row.RowMaker;
 import com.kanji.Row.KanjiWords;
 import com.kanji.actions.CommonActionsMaker;
 import com.kanji.constants.ButtonsNames;
-import com.kanji.window.ApplicationWindow;
+import com.kanji.windows.ApplicationWindow;
+import com.kanji.windows.DialogWindow;
 
 public class ProblematicKanjiPanel implements PanelCreator {
 	private DialogWindow parentDialog;

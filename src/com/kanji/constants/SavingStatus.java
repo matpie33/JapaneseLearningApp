@@ -1,4 +1,4 @@
-package com.kanji.window;
+package com.kanji.constants;
 
 public enum SavingStatus {
 	SAVING("Zapisywanie"), SAVED("Zapisano"), NO_CHANGES("Brak zmian");

@@ -1,4 +1,4 @@
-package com.kanji.dialogs;
+package com.kanji.windows;
 
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
@@ -12,7 +12,9 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 import com.kanji.constants.Titles;
-import com.kanji.window.ApplicationWindow;
+import com.kanji.panels.ConfirmPanel;
+import com.kanji.panels.MessagePanel;
+import com.kanji.panels.PanelCreator;
 
 public class DialogWindow {
 

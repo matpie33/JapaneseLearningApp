@@ -22,8 +22,8 @@ import javax.swing.SwingUtilities;
 
 import com.guimaker.colors.BasicColors;
 import com.kanji.constants.ExceptionsMessages;
-import com.kanji.window.ApplicationWindow;
-import com.kanji.window.ElementMaker;
+import com.kanji.utilities.ElementMaker;
+import com.kanji.windows.ApplicationWindow;
 
 public class MyList<Parameters> extends JPanel implements Scrollable {
 	private static final long serialVersionUID = -5024951383001795390L;

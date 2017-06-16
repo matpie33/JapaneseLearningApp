@@ -1,4 +1,4 @@
-package com.kanji.dialogs;
+package com.kanji.panels;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -39,8 +39,9 @@ import com.kanji.constants.Prompts;
 import com.kanji.myList.MyList;
 import com.kanji.range.Range;
 import com.kanji.range.SetOfRanges;
-import com.kanji.window.ApplicationWindow;
-import com.kanji.window.LimitDocumentFilter;
+import com.kanji.utilities.LimitDocumentFilter;
+import com.kanji.windows.ApplicationWindow;
+import com.kanji.windows.DialogWindow;
 
 public class LearningStartPanel implements PanelCreator {
 

@@ -1,4 +1,4 @@
-package com.kanji.window;
+package com.kanji.utilities;
 
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
@@ -34,13 +34,15 @@ import com.kanji.Row.KanjiWords;
 import com.kanji.Row.RepeatingList;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.MenuTexts;
+import com.kanji.constants.SavingStatus;
 import com.kanji.constants.Titles;
-import com.kanji.dialogs.DialogWindow;
-import com.kanji.dialogs.LoadingPanel;
 import com.kanji.fileReading.CustomFileReader;
 import com.kanji.myList.MyList;
 import com.kanji.myList.RowInKanjiInformations;
 import com.kanji.myList.RowInRepeatingList;
+import com.kanji.panels.LoadingPanel;
+import com.kanji.windows.ApplicationWindow;
+import com.kanji.windows.DialogWindow;
 
 public class ElementMaker {
 

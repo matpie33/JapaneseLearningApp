@@ -1,4 +1,4 @@
-package com.kanji.dialogs;
+package com.kanji.panels;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -34,7 +34,7 @@ import com.kanji.fileReading.ExcelReader;
 import com.kanji.myList.MyList;
 import com.kanji.range.Range;
 import com.kanji.range.SetOfRanges;
-import com.kanji.window.ApplicationWindow;
+import com.kanji.windows.ApplicationWindow;
 import com.sun.glass.events.KeyEvent;
 
 public class RepeatingWordsPanel extends JPanel { // TODO don't extend jpanel

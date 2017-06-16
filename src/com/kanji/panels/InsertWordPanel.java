@@ -1,4 +1,4 @@
-package com.kanji.dialogs;
+package com.kanji.panels;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -22,7 +22,8 @@ import com.kanji.constants.ExceptionsMessages;
 import com.kanji.constants.NumberValues;
 import com.kanji.constants.Prompts;
 import com.kanji.myList.MyList;
-import com.kanji.window.LimitDocumentFilter;
+import com.kanji.utilities.LimitDocumentFilter;
+import com.kanji.windows.DialogWindow;
 
 public class InsertWordPanel implements PanelCreator {
 

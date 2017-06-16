@@ -1,4 +1,4 @@
-package com.kanji.dialogs;
+package com.kanji.panels;
 
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
@@ -12,6 +12,7 @@ import javax.swing.KeyStroke;
 import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.RowMaker;
+import com.kanji.windows.DialogWindow;
 import com.sun.glass.events.KeyEvent;
 
 public class ConfirmPanel implements PanelCreator {
