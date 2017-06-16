@@ -1,9 +1,11 @@
 package com.kanji.dialogs;
 
 import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -11,11 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
@@ -99,6 +103,18 @@ public class ProblematicKanjiPanel implements PanelCreator {
 
 		JButton button = CommonActionsMaker.createButtonDispose(ButtonsNames.buttonApproveText,
 				java.awt.event.KeyEvent.VK_ESCAPE, parentDialog);
+
+		AbstractAction a = new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				spaceBarPressed();
+			}
+		};
+		parentDialog.addHotkey(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), a);
+		// TODO create a variable how many rows should be initially then just
+		// add so many rows and use that size as preferred,then remove the rows
+		parentDialog.getContainer().setPreferredSize(new Dimension(600, 400));
+
 		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, button));
 
 		return main.getPanel();

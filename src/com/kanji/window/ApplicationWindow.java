@@ -8,15 +8,12 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,7 +21,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.KeyStroke;
 import javax.swing.border.Border;
 
 import com.guimaker.colors.BasicColors;
@@ -284,19 +280,6 @@ public class ApplicationWindow extends DialogWindow {
 
 	public void showProblematicKanjiDialog() {
 
-		// TODO do this in problematic kanji itself, now it would have reference
-		// to child window
-		AbstractAction a = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				problematicKanjiPanel.spaceBarPressed();
-			}
-		};
-		childWindow.getContainer().setPreferredSize(new Dimension(600, 400));
-		// TODO create a variable how many rows should be initially then just
-		// add so many rows and use that size as preferred,then remove the rows
-
-		childWindow.addHotkey(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), a);
 		showPanel(problematicKanjiPanel, Titles.insertWordDialogTitle, true, Position.CENTER);
 
 		childWindow.getContainer().addWindowListener(new WindowAdapter() {
