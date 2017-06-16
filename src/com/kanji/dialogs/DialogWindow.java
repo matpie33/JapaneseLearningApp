@@ -135,6 +135,8 @@ public class DialogWindow {
 	}
 
 	public void addHotkey(KeyStroke k, AbstractAction a) {
+		// TODO add parameter: component and use it in common action maker
+		// create button dispose and maybe also other places
 		JRootPane root = container.getRootPane();
 		root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(k, "close");
 		root.getActionMap().put("close", a);

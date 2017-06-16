@@ -276,12 +276,13 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void showProblematicKanjiDialog(KanjiWords kanjiWords, Set<Integer> problematicKanjis) {
-		problematicKanjiPanel = new ProblematicKanjiPanel(this, kanjiWords, problematicKanjis);
+		childWindow = new DialogWindow(this);
+		problematicKanjiPanel = new ProblematicKanjiPanel(childWindow, kanjiWords,
+				problematicKanjis);
 		showProblematicKanjiDialog();
 	}
 
 	public void showProblematicKanjiDialog() {
-		childWindow = new DialogWindow(this);
 
 		// TODO do this in problematic kanji itself, now it would have reference
 		// to child window
@@ -328,24 +329,6 @@ public class ApplicationWindow extends DialogWindow {
 
 	public void closeDialog() {
 		childWindow.getContainer().dispose();
-	}
-
-	// TODO it could be instead in dialog window
-	public JButton createButtonHide(String text, KeyStroke disposeKey) {
-		JButton button = new JButton(text);
-		AbstractAction action = new AbstractAction() {
-			private static final long serialVersionUID = 5504620933205592893L;
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				childWindow.getContainer().dispose();
-			}
-		};
-		button.addActionListener(action);
-		button.getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW).put(disposeKey, "space");
-
-		button.getActionMap().put("space", action);
-		return button;
 	}
 
 	public void setVisible(boolean vis) {

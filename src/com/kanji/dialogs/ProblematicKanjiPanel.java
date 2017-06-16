@@ -21,11 +21,11 @@ import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.RowMaker;
 import com.kanji.Row.KanjiWords;
+import com.kanji.actions.CommonActionsMaker;
 import com.kanji.constants.ButtonsNames;
-import com.kanji.window.ApplicationWindow;
 
 public class ProblematicKanjiPanel implements PanelCreator {
-	private ApplicationWindow parentDialog;
+	private DialogWindow parentDialog;
 	private KanjiWords kanjiInfos;
 	private int repeatedProblematics;
 	private Set<Integer> problematicKanjis;
@@ -34,7 +34,7 @@ public class ProblematicKanjiPanel implements PanelCreator {
 	private JScrollPane scrollPane;
 
 	// TODO we can use dialog window instead of application window
-	public ProblematicKanjiPanel(ApplicationWindow parent, KanjiWords kanjis,
+	public ProblematicKanjiPanel(DialogWindow parent, KanjiWords kanjis,
 			Set<Integer> problematicKanji) {
 		kanjisToBrowse = new ArrayList<>();
 		main = new MainPanel(BasicColors.OCEAN_BLUE);
@@ -97,8 +97,8 @@ public class ProblematicKanjiPanel implements PanelCreator {
 
 		main.addRow(RowMaker.createBothSidesFilledRow(scrollPane));
 
-		JButton button = parentDialog.createButtonHide(ButtonsNames.buttonApproveText,
-				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
+		JButton button = CommonActionsMaker.createButtonDispose(ButtonsNames.buttonApproveText,
+				java.awt.event.KeyEvent.VK_ESCAPE, parentDialog);
 		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, button));
 
 		return main.getPanel();
