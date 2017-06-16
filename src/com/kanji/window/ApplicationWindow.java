@@ -83,7 +83,6 @@ public class ApplicationWindow extends DialogWindow {
 		maker = new ElementMaker(this);
 		mainPanel = new JPanel(new CardLayout());
 		container.setContentPane(mainPanel);
-
 		createUpperPanel();
 		createInformationsPanel();
 		createButtonsPanel(maker.getButtons());
@@ -253,6 +252,8 @@ public class ApplicationWindow extends DialogWindow {
 
 	}
 
+	// TODO dialogs should either be jframe or modal in order for alt tab to
+	// switch focus to the right window
 	public void showInsertDialog(MyList list) {
 		showPanel(new InsertWordPanel(list), Titles.insertWordDialogTitle, false,
 				Position.LEFT_CORNER);
