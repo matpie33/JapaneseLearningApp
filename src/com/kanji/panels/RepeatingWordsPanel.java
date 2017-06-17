@@ -34,10 +34,15 @@ import com.kanji.fileReading.ExcelReader;
 import com.kanji.myList.MyList;
 import com.kanji.range.Range;
 import com.kanji.range.SetOfRanges;
+import com.kanji.timer.TimeSpentHandler;
+import com.kanji.timer.TimeSpentMonitor;
 import com.kanji.windows.ApplicationWindow;
 import com.sun.glass.events.KeyEvent;
 
-public class RepeatingWordsPanel extends JPanel { // TODO don't extend jpanel
+public class RepeatingWordsPanel extends JPanel implements TimeSpentMonitor { // TODO
+																				// don't
+																				// extend
+																				// jpanel
 	private static final long serialVersionUID = 5557984078176822840L;
 	private MyList words;
 	private List<String> wordsToRepeat;
@@ -48,11 +53,7 @@ public class RepeatingWordsPanel extends JPanel { // TODO don't extend jpanel
 	private String currentWord;
 	private JLabel remainingLabel;
 	private JLabel time;
-	private double timeElapsed;
-	private double interval = 0.1D;
 	private String timeLabel = "Czas: ";
-	private Thread timerThread;
-	private boolean timerRunning;
 	private JTextPane kanjiTextArea;
 	private JTextPane wordTextArea;
 	private JButton pauseOrResume;
@@ -62,14 +63,12 @@ public class RepeatingWordsPanel extends JPanel { // TODO don't extend jpanel
 	private MainPanel repeatingPanel;
 	private final Color repeatingBackgroundColor = Color.white;
 	private final Color windowBackgroundColor = BasicColors.OCEAN_BLUE;
-	private int secondsLeft = 0;
-	private int minutesLeft = 0;
-	private int hoursLeft = 0;
 	private MainPanel centerPanel;
 	private MainPanel mainPanel;
 	private int maxCharactersInRow = 15;
 	private JButton showPreviousWord;
 	private String previousWord = "";
+	private TimeSpentHandler timeSpentHandler;
 
 	private RepeatingInformation repeatInfo;
 
@@ -81,11 +80,11 @@ public class RepeatingWordsPanel extends JPanel { // TODO don't extend jpanel
 		currentProblematicKanjis = new HashSet<>();
 		this.wordsToRepeat = new LinkedList();
 		this.parent = parent;
-		this.timerRunning = false;
 		initialize();
 		createPanel();
 		mainPanel.addRow(
 				RowMaker.createUnfilledRow(GridBagConstraints.CENTER, centerPanel.getPanel()));
+		timeSpentHandler = new TimeSpentHandler(this);
 
 	}
 
@@ -247,9 +246,9 @@ public class RepeatingWordsPanel extends JPanel { // TODO don't extend jpanel
 	}
 
 	private void pauseOrResume() {
-		stopTimer();
+		timeSpentHandler.stopTimer();
 		parent.showMsgDialog("Pauza");
-		startTimer();
+		timeSpentHandler.startTimer();
 
 	}
 
@@ -336,20 +335,20 @@ public class RepeatingWordsPanel extends JPanel { // TODO don't extend jpanel
 
 	private void displayFinishMessageAndStopTimer() {
 
-		stopTimer();
+		timeSpentHandler.stopTimer();
 		problematicKanjis.addAll(currentProblematicKanjis);
 
 		this.parent.setProblematicKanjis(this.problematicKanjis);
 		this.parent.showCardPanel(ApplicationWindow.LIST_PANEL);
 		repeatInfo.setWasRepeated(true);
-		repeatInfo.setTimeSpentOnRepeating(getTimePassed());
+		repeatInfo.setTimeSpentOnRepeating(timeSpentHandler.getTimePassed());
 		parent.addToRepeatsList(repeatInfo);
 		this.parent.save();
 		parent.scrollToBottom();
 
 		String message = Prompts.repeatingIsDonePrompt;
 		message += Prompts.repeatingTimePrompt;
-		message += getTimePassed();
+		message += timeSpentHandler.getTimePassed();
 		this.parent.showMsgDialog(message);
 		System.out.println("done");
 		if (currentProblematicKanjis.size() > 0)
@@ -374,7 +373,7 @@ public class RepeatingWordsPanel extends JPanel { // TODO don't extend jpanel
 		returnButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				RepeatingWordsPanel.this.parent.showCardPanel(ApplicationWindow.LIST_PANEL);
-				RepeatingWordsPanel.this.stopTimer();
+				timeSpentHandler.stopTimer();
 			}
 		});
 
@@ -423,7 +422,7 @@ public class RepeatingWordsPanel extends JPanel { // TODO don't extend jpanel
 		// pickRandomWord();
 		revalidate();
 		repaint();
-		startTimer();
+		timeSpentHandler.startTimer();
 		getNextWord();
 
 		showWord.requestFocusInWindow();
@@ -431,85 +430,10 @@ public class RepeatingWordsPanel extends JPanel { // TODO don't extend jpanel
 	}
 
 	public void reset() {
-		this.timeElapsed = 0.0D;
-		secondsLeft = 0;
-		minutesLeft = 0;
-		hoursLeft = 0;
+		timeSpentHandler.reset();
 		this.problematicKanjis = new HashSet();
 		currentProblematicKanjis.clear();
 		currentWord = "";
-	}
-
-	private void startTimer() {
-		this.timerRunning = true;
-		Runnable runnable = new Runnable() {
-			public void run() {
-				while (timerRunning) {
-					RepeatingWordsPanel.this.timeElapsed += RepeatingWordsPanel.this.interval;
-					if (timeElapsed >= 1) {
-						timeElapsed = 0;
-						secondsLeft++;
-					}
-					if (secondsLeft >= 60) {
-						secondsLeft = 0;
-						minutesLeft++;
-					}
-					if (minutesLeft >= 60) {
-						minutesLeft = 0;
-						hoursLeft++;
-					}
-					RepeatingWordsPanel.this.time
-							.setText(RepeatingWordsPanel.this.timeLabel + getTimePassed());
-					try {
-						Thread.sleep((int) (RepeatingWordsPanel.this.interval * 1000));
-					}
-					catch (InterruptedException e) {
-						parent.showMsgDialog(e.getMessage());
-					}
-				}
-			}
-		};
-		this.timerThread = new Thread(runnable);
-		this.timerThread.start();
-	}
-
-	public String getTimePassed() {
-		String hoursSuffix = adjustSuffixForHours();
-		String minutesSuffix = adjustSuffixForMinutes();
-		String secondsSuffix = adjustSuffixForSeconds();
-		return hoursSuffix + ", " + minutesSuffix + ", " + secondsSuffix + ".";
-	}
-
-	private String adjustSuffixForHours() {
-		return hoursLeft + " godzin" + adjustSuffix(hoursLeft);
-	}
-
-	private String adjustSuffixForMinutes() {
-		return minutesLeft + " minut" + adjustSuffix(minutesLeft);
-	}
-
-	private String adjustSuffixForSeconds() {
-		return secondsLeft + " sekund" + adjustSuffix(secondsLeft);
-	}
-
-	private String adjustSuffix(int timeValue) {
-		int moduloRemainder = timeValue % 10;
-		if (moduloRemainder > 1 && moduloRemainder < 5 && (timeValue < 10 || timeValue > 20)) {
-			return "y";
-		}
-		else if (timeValue == 1) {
-			return "a";
-		}
-		else if ((moduloRemainder >= 5 && moduloRemainder <= 9) || moduloRemainder == 0
-				|| (timeValue >= 11 && timeValue <= 14)
-				|| (moduloRemainder == 1 && timeValue >= 20)) {
-			return "";
-		}
-		return "Nie wylapany if.";
-	}
-
-	private void stopTimer() {
-		timerRunning = false;
 	}
 
 	public void setExcelReader(ExcelReader excel) {
@@ -522,6 +446,10 @@ public class RepeatingWordsPanel extends JPanel { // TODO don't extend jpanel
 
 	public JPanel getPanel() {
 		return mainPanel.getPanel();
+	}
+
+	public void updateTime(String timePassed) {
+		time.setText(timeLabel + timePassed);
 	}
 
 }
