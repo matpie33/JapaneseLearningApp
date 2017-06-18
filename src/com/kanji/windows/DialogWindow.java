@@ -13,6 +13,7 @@ import javax.swing.KeyStroke;
 
 import com.kanji.constants.Titles;
 import com.kanji.panels.ConfirmPanel;
+import com.kanji.panels.KanjiPanel;
 import com.kanji.panels.MessagePanel;
 import com.kanji.panels.PanelCreator;
 
@@ -84,6 +85,10 @@ public class DialogWindow {
 			container.setLocation(parentWindow.getContainer().getLocation());
 			break;
 		}
+	}
+
+	public void showKanjiDialog(String message) {
+		showPanel(new KanjiPanel(message), "TODO", false, Position.CENTER);
 	}
 
 	public void showMsgDialog(String message) {

@@ -16,9 +16,11 @@ import java.util.List;
 import java.util.Set;
 
 import javax.swing.AbstractAction;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
@@ -28,6 +30,7 @@ import com.guimaker.row.RowMaker;
 import com.kanji.Row.KanjiWords;
 import com.kanji.actions.CommonActionsMaker;
 import com.kanji.constants.ButtonsNames;
+import com.kanji.fileReading.ExcelReader;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
 
@@ -37,14 +40,39 @@ public class ProblematicKanjiPanel implements PanelCreator {
 	private int repeatedProblematics;
 	private Set<Integer> problematicKanjis;
 	private MainPanel main;
-	private List<MainPanel> kanjisToBrowse;
+	private List<KanjiRow> kanjisToBrowse;
 	private JScrollPane scrollPane;
+	private boolean useInternet;
+	private ExcelReader excel;
+
+	private class KanjiRow {
+		private MainPanel panel;
+		private int id;
+
+		private KanjiRow(MainPanel p, int id) {
+			panel = p;
+			this.id = id;
+		}
+
+		private MainPanel getPanel() {
+			return panel;
+		}
+
+		private int getId() {
+			return id;
+		}
+	}
 
 	public ProblematicKanjiPanel(KanjiWords kanjis, Set<Integer> problematicKanji) {
 		kanjisToBrowse = new ArrayList<>();
 		main = new MainPanel(BasicColors.OCEAN_BLUE);
 		kanjiInfos = kanjis;
 		problematicKanjis = problematicKanji;
+		useInternet = true;
+		this.excel = new ExcelReader();
+		excel.load();
+		// TODO better use existing excel instead of
+		// creating new here
 	}
 
 	@Override
@@ -61,6 +89,29 @@ public class ProblematicKanjiPanel implements PanelCreator {
 			System.out.println("already exists");
 			return main.getPanel();
 		}
+
+		JRadioButton withInternet = new JRadioButton("Z internetem");
+		JRadioButton withoutInternet = new JRadioButton("Bez internetu");
+		ButtonGroup group = new ButtonGroup();
+		group.add(withInternet);
+		group.add(withoutInternet);
+		withInternet.setFocusable(false);
+		withoutInternet.setFocusable(false);
+		withInternet.setSelected(true);
+		withInternet.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				useInternet = true;
+			}
+		});
+		withoutInternet.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				useInternet = false;
+			}
+		});
+		main.addRow(
+				RowMaker.createUnfilledRow(GridBagConstraints.WEST, withInternet, withoutInternet));
 		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER,
 				new JLabel("Do powtórzenia")));
 
@@ -87,14 +138,16 @@ public class ProblematicKanjiPanel implements PanelCreator {
 			button.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					browseKanji(panel);
+					spaceBarPressed();
+
 				}
 			});
 			button.setFocusable(false);
 
 			panel.addRow(RowMaker.createHorizontallyFilledRow(kanji, id, button)
 					.fillHorizontallySomeElements(kanji));
-			kanjisToBrowse.add(panel);
+			KanjiRow k = new KanjiRow(panel, i);
+			kanjisToBrowse.add(k);
 
 			panelInScrollPane.addRow(RowMaker.createHorizontallyFilledRow(panel.getPanel()));
 			c.gridy++;
@@ -140,25 +193,40 @@ public class ProblematicKanjiPanel implements PanelCreator {
 	}
 
 	private void browseKanji(MainPanel panelWithKanji) {
-		kanjisToBrowse.remove(panelWithKanji);
+		// TODO dont extract id from panel use my private class kanji row
 
-		scrollPane.getVerticalScrollBar().setValue(
-				(int) Math.floor(panelWithKanji.getPanel().getParent().getBounds().getY()));
-
-		panelWithKanji.setBackground(BasicColors.OCEAN_BLUE);
 		String uriText = "http://kanji.koohii.com/study/kanji/";
 		JLabel id = (JLabel) panelWithKanji.getElementFromRow(0, 1);
 		uriText += id.getText();
 		URI uriObject = constructUriFromText(uriText, parentDialog);
 		if (uriObject != null) {
 			openUrlInBrowser(uriObject, parentDialog);
-			repeatedProblematics++;
+
 		}
 	}
 
+	private void highlightRow(KanjiRow row) {
+		MainPanel panelWithKanji = row.getPanel();
+		kanjisToBrowse.remove(row);
+		scrollPane.getVerticalScrollBar().setValue(
+				(int) Math.floor(panelWithKanji.getPanel().getParent().getBounds().getY()));
+		panelWithKanji.setBackground(BasicColors.OCEAN_BLUE);
+	}
+
 	public void spaceBarPressed() {
-		if (!kanjisToBrowse.isEmpty())
-			browseKanji(kanjisToBrowse.get(0));
+		if (!kanjisToBrowse.isEmpty()) {
+			KanjiRow k = kanjisToBrowse.get(0);
+			repeatedProblematics++;
+			highlightRow(k);
+			if (useInternet) {
+				browseKanji(k.getPanel());
+			}
+			else {
+				parentDialog.showKanjiDialog(excel.getKanjiById(k.getId()));
+			}
+
+		}
+
 	}
 
 	private void openUrlInBrowser(URI uriObject, DialogWindow frame) {
