@@ -133,12 +133,13 @@ public class ProblematicKanjiPanel implements PanelCreator {
 			kanji.setEditable(false);
 			kanji.setWrapStyleWord(true);
 			kanji.setText(kanjiInfos.getWordForId(i));
+			KanjiRow k = new KanjiRow(panel, i);
 
 			JButton button = new JButton("Przejdź do źródła");
 			button.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					spaceBarPressed();
+					spaceBarPressed(k);
 
 				}
 			});
@@ -146,7 +147,7 @@ public class ProblematicKanjiPanel implements PanelCreator {
 
 			panel.addRow(RowMaker.createHorizontallyFilledRow(kanji, id, button)
 					.fillHorizontallySomeElements(kanji));
-			KanjiRow k = new KanjiRow(panel, i);
+
 			kanjisToBrowse.add(k);
 
 			panelInScrollPane.addRow(RowMaker.createHorizontallyFilledRow(panel.getPanel()));
@@ -162,7 +163,12 @@ public class ProblematicKanjiPanel implements PanelCreator {
 		AbstractAction a = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				spaceBarPressed();
+				if (!kanjisToBrowse.isEmpty()) {
+					spaceBarPressed(kanjisToBrowse.get(0));
+				}
+				else {
+					parentDialog.showMsgDialog("Koniec");
+				}
 			}
 		};
 		parentDialog.addHotkeyToWindow(KeyEvent.VK_SPACE, a);
@@ -213,18 +219,15 @@ public class ProblematicKanjiPanel implements PanelCreator {
 		panelWithKanji.setBackground(BasicColors.OCEAN_BLUE);
 	}
 
-	public void spaceBarPressed() {
-		if (!kanjisToBrowse.isEmpty()) {
-			KanjiRow k = kanjisToBrowse.get(0);
-			repeatedProblematics++;
-			highlightRow(k);
-			if (useInternet) {
-				browseKanji(k.getPanel());
-			}
-			else {
-				parentDialog.showKanjiDialog(excel.getKanjiById(k.getId()));
-			}
+	public void spaceBarPressed(KanjiRow k) {
 
+		repeatedProblematics++;
+		highlightRow(k);
+		if (useInternet) {
+			browseKanji(k.getPanel());
+		}
+		else {
+			parentDialog.showKanjiDialog(excel.getKanjiById(k.getId()));
 		}
 
 	}
