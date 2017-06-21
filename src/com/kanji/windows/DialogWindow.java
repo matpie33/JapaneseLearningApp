@@ -1,9 +1,15 @@
 package com.kanji.windows;
 
+import java.awt.Dimension;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
+import java.awt.Point;
 import java.awt.Window;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
@@ -16,6 +22,7 @@ import com.kanji.panels.ConfirmPanel;
 import com.kanji.panels.KanjiPanel;
 import com.kanji.panels.MessagePanel;
 import com.kanji.panels.PanelCreator;
+import com.kanji.panels.ProblematicKanjiPanel;
 
 public class DialogWindow {
 
@@ -25,9 +32,10 @@ public class DialogWindow {
 	private boolean isAccepted;
 	private Position position;
 	private JDialog container;
+	private KanjiPanel kanjiPanel;
 
 	public enum Position {
-		CENTER, LEFT_CORNER
+		CENTER, LEFT_CORNER, NEXT_TO_PARENT
 	}
 
 	private class MyDispatcher implements KeyEventDispatcher {
@@ -84,11 +92,46 @@ public class DialogWindow {
 		case LEFT_CORNER:
 			container.setLocation(parentWindow.getContainer().getLocation());
 			break;
+
+		case NEXT_TO_PARENT:
+			setChildNextToParent(parentWindow.getContainer(), container);
+			// Point parentLocation =
+			// parentWindow.getContainer().getLocationOnScreen();
+			// Dimension parentSize = parentWindow.getContainer().getSize();
+			// container.setLocation(parentLocation.x + parentSize.width,
+			// parentLocation.y);
+			break;
 		}
 	}
 
-	public void showKanjiDialog(String message) {
-		showPanel(new KanjiPanel(message), "TODO", false, Position.CENTER);
+	private void setChildNextToParent(Window parentContainer, Window childContainer) {
+		Point parentLocation = parentContainer.getLocationOnScreen();
+		Dimension parentSize = parentContainer.getSize();
+		childContainer.setLocation(parentLocation.x + parentSize.width, parentLocation.y);
+	}
+
+	public void showKanjiDialog(String message, ProblematicKanjiPanel problematicKanjiPanel) {
+		if (kanjiPanel == null) {
+			kanjiPanel = new KanjiPanel(message, problematicKanjiPanel);
+			showPanel(kanjiPanel, "TODO", false, Position.NEXT_TO_PARENT);
+			childWindow.getContainer().addWindowListener(new WindowAdapter() {
+				// TODO init the listeners somewhere else
+				@Override
+				public void windowClosed(WindowEvent e) {
+					kanjiPanel = null;
+				}
+			});
+			container.addComponentListener(new ComponentAdapter() {
+				@Override
+				public void componentMoved(ComponentEvent e) {
+					setChildNextToParent(container, childWindow.getContainer());
+				}
+			});
+		}
+		else {
+			kanjiPanel.changeKanji(message);
+		}
+
 	}
 
 	public void showMsgDialog(String message) {
@@ -96,6 +139,7 @@ public class DialogWindow {
 	}
 
 	public void showPanel(PanelCreator panel, String title, boolean modal, Position position) {
+
 		if (childWindowIsClosed()) {
 			childWindow = new DialogWindow(this);
 			panel.setParentDialog(childWindow);
@@ -103,6 +147,9 @@ public class DialogWindow {
 			childWindow.setPanel(panel.createPanel());
 			childWindow.showYourself(title, modal);
 		}
+		// else if (panel instanceof KanjiPanel) {
+		// childWindow.setPanel(panel.createPanel());
+		// }
 	}
 
 	private boolean childWindowIsClosed() {
@@ -150,6 +197,10 @@ public class DialogWindow {
 
 	public DialogWindow getParent() {
 		return parentWindow;
+	}
+
+	public void closeChild() {
+		childWindow.getContainer().dispose();
 	}
 
 }

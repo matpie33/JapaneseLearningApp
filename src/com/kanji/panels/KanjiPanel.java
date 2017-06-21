@@ -20,10 +20,13 @@ public class KanjiPanel implements PanelCreator {
 	private MainPanel main;
 	private DialogWindow parentDialog;
 	private String message;
+	private ProblematicKanjiPanel problems;
+	private JTextArea kanjiArea;
 
-	public KanjiPanel(String message) {
+	public KanjiPanel(String message, ProblematicKanjiPanel problem) {
 		main = new MainPanel(BasicColors.OCEAN_BLUE);
 		this.message = message;
+		problems = problem;
 	}
 
 	@Override
@@ -31,18 +34,21 @@ public class KanjiPanel implements PanelCreator {
 		parentDialog = parent;
 	}
 
+	public void changeKanji(String kanji) {
+		kanjiArea.setText(kanji);
+	}
+
 	@Override
 	public JPanel createPanel() {
-
-		JTextArea prompt = addPromptAtLevel(message);
-		main.addRow(RowMaker.createBothSidesFilledRow(prompt));
+		parentDialog.getContainer().setFocusable(false);
+		kanjiArea = addPromptAtLevel(message);
+		main.addRow(RowMaker.createBothSidesFilledRow(kanjiArea));
 
 		JButton okButton = new JButton("Ok");
 		AbstractAction al = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				parentDialog.getContainer().dispose();
-				parentDialog.setAccepted(true);
+				problems.showNextKanji();
 			}
 		};
 		okButton.addActionListener(al);

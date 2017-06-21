@@ -164,7 +164,7 @@ public class ProblematicKanjiPanel implements PanelCreator {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!kanjisToBrowse.isEmpty()) {
-					spaceBarPressed(kanjisToBrowse.get(0));
+					showNextKanji();
 				}
 				else {
 					parentDialog.showMsgDialog("Koniec");
@@ -185,6 +185,15 @@ public class ProblematicKanjiPanel implements PanelCreator {
 		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, button));
 
 		return main.getPanel();
+	}
+
+	public void showNextKanji() {
+		if (!kanjisToBrowse.isEmpty())
+			spaceBarPressed(kanjisToBrowse.get(0));
+		else {
+			parentDialog.closeChild();
+			parentDialog.showMsgDialog("Koniec");
+		}
 	}
 
 	private void hideProblematics() {
@@ -227,7 +236,7 @@ public class ProblematicKanjiPanel implements PanelCreator {
 			browseKanji(k.getPanel());
 		}
 		else {
-			parentDialog.showKanjiDialog(excel.getKanjiById(k.getId()));
+			parentDialog.showKanjiDialog(excel.getKanjiById(k.getId()), this);
 		}
 
 	}
