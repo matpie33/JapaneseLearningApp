@@ -15,13 +15,13 @@ import javax.swing.text.AbstractDocument;
 import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.RowMaker;
-import com.kanji.Row.KanjiWords;
 import com.kanji.actions.CommonActionsMaker;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.ExceptionsMessages;
 import com.kanji.constants.NumberValues;
 import com.kanji.constants.Prompts;
 import com.kanji.myList.MyList;
+import com.kanji.row.KanjiWords;
 import com.kanji.utilities.LimitDocumentFilter;
 import com.kanji.windows.DialogWindow;
 

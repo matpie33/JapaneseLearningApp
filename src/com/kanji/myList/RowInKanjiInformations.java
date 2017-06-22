@@ -18,9 +18,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import com.kanji.Row.KanjiInformation;
-import com.kanji.Row.KanjiWords;
 import com.kanji.constants.Prompts;
+import com.kanji.row.KanjiInformation;
+import com.kanji.row.KanjiWords;
 
 public class RowInKanjiInformations extends RowsCreator<KanjiInformation> implements Serializable {
 	/**

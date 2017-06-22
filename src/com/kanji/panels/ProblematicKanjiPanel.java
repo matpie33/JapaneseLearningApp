@@ -27,10 +27,10 @@ import javax.swing.JTextArea;
 import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.RowMaker;
-import com.kanji.Row.KanjiWords;
 import com.kanji.actions.CommonActionsMaker;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.fileReading.ExcelReader;
+import com.kanji.row.KanjiWords;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
 

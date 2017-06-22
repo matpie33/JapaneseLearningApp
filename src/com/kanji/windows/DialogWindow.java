@@ -12,11 +12,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
 
+import com.kanji.actions.CommonActionsMaker;
 import com.kanji.constants.Titles;
 import com.kanji.panels.ConfirmPanel;
 import com.kanji.panels.KanjiPanel;
@@ -185,14 +184,8 @@ public class DialogWindow {
 		return container;
 	}
 
-	public void addHotkey(int keyEvent, AbstractAction a, JComponent component) {
-		component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-				.put(KeyStroke.getKeyStroke(keyEvent, 0), "close");
-		component.getActionMap().put("close", a);
-	}
-
 	public void addHotkeyToWindow(int keyEvent, AbstractAction a) {
-		addHotkey(keyEvent, a, container.getRootPane());
+		CommonActionsMaker.addHotkey(keyEvent, a, container.getRootPane());
 	}
 
 	public DialogWindow getParent() {

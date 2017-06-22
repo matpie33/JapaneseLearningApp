@@ -25,7 +25,10 @@ public class ButtonsNames {
 	public static final String buttonShowPreviousWord = "Pokaż poprzednie";
 	public static final String buttonShowProblematicKanji = "Problematyczne kanji";
 
-	public static final String[] buttonNames = { buttonStartText, buttonSearchText, buttonAddText,
-			buttonOpenText, buttonSaveText, buttonSaveListText };
+	public static final String buttonConfirmText = "Tak";
+	public static final String buttonRejectText = "Nie";
+
+	public static final String[] mainPageButtonNames = { buttonStartText, buttonSearchText,
+			buttonAddText, buttonOpenText, buttonSaveText, buttonSaveListText };
 
 }

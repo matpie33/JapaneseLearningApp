@@ -3,30 +3,31 @@ package com.kanji.panels;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.KeyStroke;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.RowMaker;
+import com.kanji.actions.GuiElementsMaker;
+import com.kanji.constants.ButtonsNames;
 import com.kanji.windows.DialogWindow;
-import com.sun.glass.events.KeyEvent;
 
 public class KanjiPanel implements PanelCreator {
 	private MainPanel main;
 	private DialogWindow parentDialog;
-	private String message;
-	private ProblematicKanjiPanel problems;
+	private String kanjiToDisplay;
+	private ProblematicKanjiPanel problematicKanjiPanel;
 	private JTextArea kanjiArea;
 
-	public KanjiPanel(String message, ProblematicKanjiPanel problem) {
+	public KanjiPanel(String kanji, ProblematicKanjiPanel problematicKanjiPanel) {
 		main = new MainPanel(BasicColors.OCEAN_BLUE);
-		this.message = message;
-		problems = problem;
+		this.kanjiToDisplay = kanji;
+		this.problematicKanjiPanel = problematicKanjiPanel;
 	}
 
 	@Override
@@ -40,25 +41,11 @@ public class KanjiPanel implements PanelCreator {
 
 	@Override
 	public JPanel createPanel() {
-		parentDialog.getContainer().setFocusable(false);
-		kanjiArea = addPromptAtLevel(message);
+		kanjiArea = addPromptAtLevel(kanjiToDisplay);
+		JButton buttonNext = createButtonShowNextKanji();
+
 		main.addRow(RowMaker.createBothSidesFilledRow(kanjiArea));
-
-		JButton okButton = new JButton("Ok");
-		AbstractAction al = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				problems.showNextKanji();
-			}
-		};
-		okButton.addActionListener(al);
-		okButton.getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW)
-				.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), "enter");
-
-		okButton.getActionMap().put("enter", al);
-
-		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, okButton));
-
+		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, buttonNext));
 		return main.getPanel();
 	}
 
@@ -71,7 +58,16 @@ public class KanjiPanel implements PanelCreator {
 		elem.setWrapStyleWord(true);
 		elem.setEditable(false);
 		return elem;
+	}
 
+	private JButton createButtonShowNextKanji() {
+		AbstractAction al = new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				problematicKanjiPanel.showNextKanji();
+			}
+		};
+		return GuiElementsMaker.createButton(ButtonsNames.buttonNextText, al, KeyEvent.VK_SPACE);
 	}
 
 }

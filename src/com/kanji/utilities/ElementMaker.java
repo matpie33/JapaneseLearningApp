@@ -29,9 +29,6 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 
 import com.guimaker.colors.BasicColors;
-import com.kanji.Row.KanjiInformation;
-import com.kanji.Row.KanjiWords;
-import com.kanji.Row.RepeatingList;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.MenuTexts;
 import com.kanji.constants.SavingStatus;
@@ -41,6 +38,9 @@ import com.kanji.myList.MyList;
 import com.kanji.myList.RowInKanjiInformations;
 import com.kanji.myList.RowInRepeatingList;
 import com.kanji.panels.LoadingPanel;
+import com.kanji.row.KanjiInformation;
+import com.kanji.row.KanjiWords;
+import com.kanji.row.RepeatingList;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
 
@@ -93,7 +93,7 @@ public class ElementMaker {
 	private void initElements() {
 		fileReader = new CustomFileReader();
 		buttons = new ArrayList<JButton>();
-		for (String name : ButtonsNames.buttonNames)
+		for (String name : ButtonsNames.mainPageButtonNames)
 			buttons.add(new JButton(name));
 		initListOfWords();
 		initRepeatsList();

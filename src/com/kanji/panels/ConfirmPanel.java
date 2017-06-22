@@ -7,11 +7,12 @@ import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.KeyStroke;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.RowMaker;
+import com.kanji.actions.GuiElementsMaker;
+import com.kanji.constants.ButtonsNames;
 import com.kanji.windows.DialogWindow;
 import com.sun.glass.events.KeyEvent;
 
@@ -33,41 +34,12 @@ public class ConfirmPanel implements PanelCreator {
 
 	@Override
 	public JPanel createPanel() {
-
 		JTextArea prompt = addPromptAtLevel(message);
+		JButton yesButton = createButtonConfirm();
+		JButton noButton = createButtonReject();
+
 		main.addRow(RowMaker.createBothSidesFilledRow(prompt));
-
-		JButton yesButton = new JButton("Tak");
-		AbstractAction al = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				parentDialog.getContainer().dispose();
-				parentDialog.setAccepted(true);
-			}
-		};
-		yesButton.addActionListener(al);
-		yesButton.getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW)
-				.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "enter");
-
-		yesButton.getActionMap().put("enter", al);
-
-		JButton noButton = new JButton("Nie");
-		AbstractAction action = new AbstractAction() {
-			private static final long serialVersionUID = 5504620933205592893L;
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				parentDialog.getContainer().dispose();
-				parentDialog.setAccepted(false);
-			}
-		};
-		noButton.addActionListener(action);
-		noButton.getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW)
-				.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "space");
-		noButton.getActionMap().put("space", action);
-
 		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, noButton, yesButton));
-
 		return main.getPanel();
 	}
 
@@ -80,7 +52,30 @@ public class ConfirmPanel implements PanelCreator {
 		elem.setOpaque(false);
 		elem.setEditable(false);
 		return elem;
+	}
 
+	private JButton createButtonConfirm() {
+		AbstractAction action = new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parentDialog.getContainer().dispose();
+				parentDialog.setAccepted(true);
+			}
+		};
+		return GuiElementsMaker.createButton(ButtonsNames.buttonConfirmText, action, KeyEvent.VK_ENTER);
+	}
+
+	private JButton createButtonReject() {
+		AbstractAction action = new AbstractAction() {
+			private static final long serialVersionUID = 5504620933205592893L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parentDialog.getContainer().dispose();
+				parentDialog.setAccepted(false);
+			}
+		};
+		return GuiElementsMaker.createButton(ButtonsNames.buttonRejectText, action, KeyEvent.VK_ESCAPE);
 	}
 
 }

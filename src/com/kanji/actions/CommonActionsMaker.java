@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
 
 import com.kanji.windows.DialogWindow;
 
@@ -25,7 +27,7 @@ public class CommonActionsMaker {
 	private static JButton createButtonWithAction(String text, int keyEventName,
 			final DialogWindow dialog, AbstractAction actionListener) {
 		JButton button = new JButton(text);
-		dialog.addHotkey(keyEventName, actionListener, button);
+		addHotkey(keyEventName, actionListener, button);
 		button.addActionListener(actionListener);
 		return button;
 	}
@@ -41,6 +43,12 @@ public class CommonActionsMaker {
 			}
 		};
 		return createButtonWithAction(text, keyEventName, dialog, action);
+	}
+
+	public static void addHotkey(int keyEvent, AbstractAction a, JComponent component) {
+		component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.put(KeyStroke.getKeyStroke(keyEvent, 0), "close");
+		component.getActionMap().put("close", a);
 	}
 
 }
