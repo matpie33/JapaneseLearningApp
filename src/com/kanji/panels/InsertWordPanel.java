@@ -5,23 +5,21 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 import javax.swing.text.AbstractDocument;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.RowMaker;
 import com.kanji.actions.CommonActionsMaker;
+import com.kanji.actions.GuiElementsMaker;
 import com.kanji.constants.ButtonsNames;
-import com.kanji.constants.ExceptionsMessages;
 import com.kanji.constants.NumberValues;
 import com.kanji.constants.Prompts;
+import com.kanji.controllers.InsertWordController;
 import com.kanji.myList.MyList;
-import com.kanji.row.KanjiWords;
 import com.kanji.utilities.LimitDocumentFilter;
 import com.kanji.windows.DialogWindow;
 
@@ -29,18 +27,19 @@ public class InsertWordPanel implements PanelCreator {
 
 	private MainPanel main;
 	private DialogWindow parentDialog;
-	private MyList list;
 	private JTextField insertWordTextField;
 	private JTextField insertNumberTextField;
+	private InsertWordController controller;
 
 	public InsertWordPanel(MyList list) {
 		main = new MainPanel(BasicColors.OCEAN_BLUE);
-		this.list = list;
+		controller = new InsertWordController(list);
 	}
 
 	@Override
 	public void setParentDialog(DialogWindow parent) {
 		parentDialog = parent;
+		controller.setParentDialog(parent);
 	}
 
 	@Override
@@ -72,66 +71,18 @@ public class InsertWordPanel implements PanelCreator {
 	}
 
 	private JButton createButtonValidate(String text) {
-		JButton button = new JButton(text);
 		AbstractAction action = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String numberInput = insertNumberTextField.getText();
-
-				String wordInput = insertWordTextField.getText();
-				if (isNumberValid(numberInput)) {
-
-					int number = Integer.parseInt(numberInput);
-					if (checkIfInputIsValid(wordInput, number)) {
-						System.out.println("adding: ");
-						addWordToList(wordInput, number);
-						parentDialog.save();
-						insertWordTextField.selectAll();
-						insertWordTextField.requestFocusInWindow();
-
-					}
-
+				boolean validInput = controller.validateAndAddWordIfValid(
+						insertNumberTextField.getText(), insertWordTextField.getText());
+				if (validInput) {
+					insertWordTextField.selectAll();
+					insertWordTextField.requestFocusInWindow();
 				}
-
 			}
 		};
-		button.addActionListener(action);
-		button.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-				.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "save");
-		button.getActionMap().put("save", action);
-		return button;
-	}
-
-	private boolean isNumberValid(String number) {
-		boolean valid = number.matches("\\d+");
-
-		if (!valid)
-			parentDialog.showMsgDialog(ExceptionsMessages.numberFormatException);
-		return valid;
-	}
-
-	private boolean checkIfInputIsValid(String word, int number) {
-		return (isWordIdUndefinedYet(number) && isWordUndefinedYet(word));
-	}
-
-	private boolean isWordIdUndefinedYet(int number) {
-		boolean defined = ((KanjiWords) list.getWords()).isIdDefined(number);
-		if (defined)
-			parentDialog.showMsgDialog(ExceptionsMessages.idAlreadyDefinedException);
-		return !defined;
-	}
-
-	private boolean isWordUndefinedYet(String word) {
-		boolean defined = ((KanjiWords) list.getWords()).isWordDefined(word);
-		if (defined)
-			parentDialog.showMsgDialog(ExceptionsMessages.wordAlreadyDefinedException);
-		return !defined;
-	}
-
-	private void addWordToList(String word, int number) {
-
-		((KanjiWords) list.getWords()).addNewRow(word, number);
-		list.scrollToBottom();
+		return GuiElementsMaker.createButton(text, action, KeyEvent.VK_ENTER);
 	}
 
 }
