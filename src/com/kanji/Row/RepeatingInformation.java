@@ -1,4 +1,4 @@
-package com.kanji.row;
+package com.kanji.Row;
 
 import java.io.Serializable;
 import java.util.Date;

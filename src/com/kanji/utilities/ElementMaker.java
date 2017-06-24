@@ -29,6 +29,9 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 
 import com.guimaker.colors.BasicColors;
+import com.kanji.Row.KanjiInformation;
+import com.kanji.Row.KanjiWords;
+import com.kanji.Row.RepeatingList;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.MenuTexts;
 import com.kanji.constants.SavingStatus;
@@ -38,9 +41,6 @@ import com.kanji.myList.MyList;
 import com.kanji.myList.RowInKanjiInformations;
 import com.kanji.myList.RowInRepeatingList;
 import com.kanji.panels.LoadingPanel;
-import com.kanji.row.KanjiInformation;
-import com.kanji.row.KanjiWords;
-import com.kanji.row.RepeatingList;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
 
@@ -140,6 +140,8 @@ public class ElementMaker {
 
 			final FileInputStream fout = new FileInputStream(fileToSave);
 			final ObjectInputStream oos = new ObjectInputStream(fout);
+			// TODO we cannot rename com.kanji.row package to lower case - it
+			// breaks loading from file - fix that
 			listOfWords.updateWords();
 			final Object readed = oos.readObject();
 			final Object read = oos.readObject();

@@ -24,6 +24,8 @@ import javax.swing.border.Border;
 import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.RowMaker;
+import com.kanji.Row.KanjiWords;
+import com.kanji.Row.RepeatingInformation;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.SavingStatus;
 import com.kanji.constants.Titles;
@@ -36,8 +38,6 @@ import com.kanji.panels.ProblematicKanjiPanel;
 import com.kanji.panels.RepeatingWordsPanel;
 import com.kanji.panels.SearchWordPanel;
 import com.kanji.range.SetOfRanges;
-import com.kanji.row.KanjiWords;
-import com.kanji.row.RepeatingInformation;
 import com.kanji.utilities.ElementMaker;
 
 @SuppressWarnings("serial")

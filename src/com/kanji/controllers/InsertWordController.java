@@ -1,8 +1,8 @@
 package com.kanji.controllers;
 
+import com.kanji.Row.KanjiWords;
 import com.kanji.constants.ExceptionsMessages;
 import com.kanji.myList.MyList;
-import com.kanji.row.KanjiWords;
 import com.kanji.windows.DialogWindow;
 
 public class InsertWordController {

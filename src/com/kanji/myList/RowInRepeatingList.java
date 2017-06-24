@@ -23,9 +23,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import com.kanji.Row.RepeatingInformation;
+import com.kanji.Row.RepeatingList;
 import com.kanji.constants.Prompts;
-import com.kanji.row.RepeatingInformation;
-import com.kanji.row.RepeatingList;
 
 public class RowInRepeatingList extends RowsCreator<RepeatingInformation> {
 
