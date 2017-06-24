@@ -28,6 +28,7 @@ import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.RowMaker;
 import com.kanji.actions.CommonActionsMaker;
+import com.kanji.actions.GuiElementsMaker;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.fileReading.ExcelReader;
 import com.kanji.row.KanjiWords;
@@ -77,14 +78,13 @@ public class ProblematicKanjiPanel implements PanelCreator {
 
 	@Override
 	public void setParentDialog(DialogWindow parent) {
-		if (parentDialog == null) {
-			parentDialog = parent;
-		}
+		parentDialog = parent;
 
 	}
 
 	@Override
 	public JPanel createPanel() {
+		configureParentDialog();
 		if (main.getNumberOfRows() > 0) {
 			System.out.println("already exists");
 			return main.getPanel();
@@ -157,9 +157,20 @@ public class ProblematicKanjiPanel implements PanelCreator {
 
 		main.addRow(RowMaker.createBothSidesFilledRow(scrollPane));
 
-		JButton button = CommonActionsMaker.createButtonDispose(ButtonsNames.buttonApproveText,
-				java.awt.event.KeyEvent.VK_ESCAPE, parentDialog);
+		JButton button = GuiElementsMaker.createButton(ButtonsNames.buttonApproveText,
+				CommonActionsMaker.createDisposeAction(parentDialog));
 
+		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, button));
+		return main.getPanel();
+	}
+
+	private void addEscapeOnClose() {
+		CommonActionsMaker.addHotkey(KeyEvent.VK_ESCAPE,
+				CommonActionsMaker.createDisposeAction(parentDialog),
+				main.getPanel().getRootPane());
+	}
+
+	private void configureParentDialog() {
 		AbstractAction a = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -171,6 +182,7 @@ public class ProblematicKanjiPanel implements PanelCreator {
 				}
 			}
 		};
+
 		parentDialog.addHotkeyToWindow(KeyEvent.VK_SPACE, a);
 		// TODO create a variable how many rows should be initially then just
 		// add so many rows and use that size as preferred,then remove the rows
@@ -181,10 +193,6 @@ public class ProblematicKanjiPanel implements PanelCreator {
 				hideProblematics();
 			}
 		});
-
-		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, button));
-
-		return main.getPanel();
 	}
 
 	public void showNextKanji() {
@@ -200,9 +208,9 @@ public class ProblematicKanjiPanel implements PanelCreator {
 		assert (parentDialog.getParent() instanceof ApplicationWindow);
 		ApplicationWindow parent = (ApplicationWindow) parentDialog.getParent();
 		parent.addButtonIcon();
+		parentDialog.getContainer().dispose();
 		if (allProblematicKanjisRepeated()) {
 			parent.removeButtonProblematicsKanji();
-			parentDialog.getContainer().dispose();
 		}
 
 	}

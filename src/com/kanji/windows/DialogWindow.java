@@ -76,6 +76,8 @@ public class DialogWindow {
 	public void showYourself(String title, boolean modal) {
 		container.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		container.setContentPane(mainPanel);
+		CommonActionsMaker.addHotkey(KeyEvent.VK_ESCAPE,
+				CommonActionsMaker.createDisposeAction(this), mainPanel.getRootPane());
 		container.pack();
 		setCoordinatesBasedOnPosition();
 		container.setModal(modal);
@@ -137,18 +139,27 @@ public class DialogWindow {
 		showPanel(new MessagePanel(message), Titles.messageDialogTitle, true, Position.CENTER);
 	}
 
-	public void showPanel(PanelCreator panel, String title, boolean modal, Position position) {
+	public void showPanel(PanelCreator panel, String title, boolean modal, Position position,
+			boolean closeOnEscape) {
+		// TODO use this now for each dialog that closes on escape, remove
+		// buttons mapping to escape key
 
 		if (childWindowIsClosed()) {
 			childWindow = new DialogWindow(this);
 			panel.setParentDialog(childWindow);
 			childWindow.setPosition(position);
-			childWindow.setPanel(panel.createPanel());
+			JPanel panell = panel.createPanel();
+			childWindow.setPanel(panell);
 			childWindow.showYourself(title, modal);
+			if (closeOnEscape) {
+				CommonActionsMaker.addHotkey(KeyEvent.VK_ESCAPE,
+						CommonActionsMaker.createDisposeAction(childWindow), panell.getRootPane());
+			}
 		}
-		// else if (panel instanceof KanjiPanel) {
-		// childWindow.setPanel(panel.createPanel());
-		// }
+	}
+
+	public void showPanel(PanelCreator panel, String title, boolean modal, Position position) {
+		showPanel(panel, title, modal, position, false);
 	}
 
 	private boolean childWindowIsClosed() {

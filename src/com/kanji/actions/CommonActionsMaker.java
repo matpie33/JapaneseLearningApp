@@ -1,6 +1,7 @@
 package com.kanji.actions;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -22,6 +23,17 @@ public class CommonActionsMaker {
 			}
 		};
 		return createButtonWithAction(text, keyEventName, dialog, action);
+	}
+
+	public static AbstractAction createDisposeAction(final DialogWindow dialog) {
+		return new AbstractAction() {
+			private static final long serialVersionUID = 5504620933205592893L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dialog.getContainer().dispose();
+			}
+		};
 	}
 
 	private static JButton createButtonWithAction(String text, int keyEventName,
@@ -47,8 +59,8 @@ public class CommonActionsMaker {
 
 	public static void addHotkey(int keyEvent, AbstractAction a, JComponent component) {
 		component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-				.put(KeyStroke.getKeyStroke(keyEvent, 0), "close");
-		component.getActionMap().put("close", a);
+				.put(KeyStroke.getKeyStroke(keyEvent, 0), KeyEvent.getKeyText(keyEvent));
+		component.getActionMap().put(KeyEvent.getKeyText(keyEvent), a);
 	}
 
 }
