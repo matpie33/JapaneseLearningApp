@@ -23,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import com.guimaker.colors.BasicColors;
 import com.kanji.Row.RepeatingInformation;
 import com.kanji.Row.RepeatingList;
 import com.kanji.constants.Prompts;
@@ -46,15 +47,17 @@ public class RowInRepeatingList extends RowsCreator<RepeatingInformation> {
 		JPanel rowPanel = createPanel();
 
 		String rowNumber = "" + rowsCounter++ + ".";
-		JLabel repeatedWords = createLabel(
-				rowNumber + " " + Prompts.repeatingWordsRangePrompt + word + ",");
+		JLabel repeatedWords = createLabel(Prompts.repeatingWordsRangePrompt + word);
+
 		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
-		JLabel date = createLabel(Prompts.repeatingDatePrompt + sdf.format(date1) + ",");
+		JLabel date = createLabel(
+				rowNumber + " " + Prompts.repeatingDatePrompt + sdf.format(date1) + ".");
+		date.setForeground(BasicColors.OCEAN_BLUE);
 		JLabel timeSpent = null;
 
 		List<Component> components = new ArrayList<>();
-		components.add(repeatedWords);
 		components.add(date);
+		components.add(repeatedWords);
 
 		if (time != null) {
 			timeSpent = createLabel(Prompts.repeatingTimePrompt + time);

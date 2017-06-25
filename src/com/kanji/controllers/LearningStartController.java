@@ -41,7 +41,7 @@ public class LearningStartController {
 			sumOfWords += problematicKanjis;
 		else
 			sumOfWords -= problematicKanjis;
-		System.out.println("should update");
+		learningStartPanel.updateSumOfWords(getSumOfWords());
 
 	}
 
@@ -50,7 +50,7 @@ public class LearningStartController {
 	}
 
 	public void handleKeyTyped(KeyEvent e, JPanel otherPanel, boolean problematicCheckboxSelected,
-			int rowNumber) throws Exception {
+			int rowNumber) {
 		// TODO don't give me jpanel, give me data
 		if ((e.getKeyChar() == KeyEvent.VK_ENTER)) {
 			validateAndStart(otherPanel, problematicCheckboxSelected);
@@ -61,23 +61,35 @@ public class LearningStartController {
 		}
 	}
 
-	public String handleKeyReleased(KeyEvent e, JTextField to, JTextField from,
-			MainPanel container) {
+	public void handleKeyReleased(KeyEvent e, JTextField to, JTextField from, MainPanel container,
+			boolean problematicCheckboxSelected, int rowNumber) {
+
 		int valueFrom = 0;
 		int valueTo = 0;
-		if (to.getText().isEmpty() || from.getText().isEmpty())
-			return "";
+		if (to.getText().isEmpty() || from.getText().isEmpty()) {
+			return;
+		}
 		else {
 			valueFrom = Integer.parseInt(from.getText());
 			valueTo = Integer.parseInt(to.getText());
 		}
 
+		String error = "";
 		if (valueTo <= valueFrom) {
-			return ExceptionsMessages.rangeToValueLessThanRangeFromValue;
+			error = ExceptionsMessages.rangeToValueLessThanRangeFromValue;
 		}
 		else if (isNumberHigherThanMaximum(valueFrom) || isNumberHigherThanMaximum(valueTo))
-			return ExceptionsMessages.rangeValueTooHigh;
-		return "";
+			error = ExceptionsMessages.rangeValueTooHigh;
+
+		if (error.isEmpty()) {
+			learningStartPanel.removeErrorIfExists(rowNumber);
+			recalculateSumOfKanji(container.getPanel(), problematicCheckboxSelected);
+			learningStartPanel.updateSumOfWords(getSumOfWords());
+		}
+		else {
+			learningStartPanel.showErrorIfNotExists(error, rowNumber);
+
+		}
 
 	}
 
@@ -90,12 +102,9 @@ public class LearningStartController {
 			SetOfRanges s = validateInputs(container);
 			sumOfWords = 0;
 			if (problematicCheckboxSelected) {
-				sumOfWords += getProblematicKanjiNumber(); // TODO duplicated
-															// code
+				sumOfWords += getProblematicKanjiNumber();
 			}
 			this.sumOfWords += s.sumRangeInclusive();
-			System.out.println(s);
-			System.out.println(sumOfWords);
 
 		}
 		catch (IllegalArgumentException ex) {
@@ -104,17 +113,18 @@ public class LearningStartController {
 
 	}
 
-	public void validateAndStart(JPanel panel, boolean problematicCheckboxSelected)
-			throws Exception {
+	public void validateAndStart(JPanel panel, boolean problematicCheckboxSelected) {
 		rangesToRepeat = validateInputs(panel);
-		addToRepeatsListOrShowError(rangesToRepeat, problematicCheckboxSelected);
+		if (rangesToRepeat.toString().isEmpty() && !problematicCheckboxSelected) {
+			learningStartPanel.showErrorDialog(ExceptionsMessages.noInputSupplied);
+			return;
+		}
+
+		addToRepeatsListOrShowError(problematicCheckboxSelected);
 		learningStartPanel.switchToRepeatingPanel();
 	}
 
-	private void addToRepeatsListOrShowError(SetOfRanges setOfRanges,
-			boolean problematicCheckboxSelected) throws Exception {
-		if (setOfRanges.toString().isEmpty() && !problematicCheckboxSelected)
-			throw new Exception(ExceptionsMessages.noInputSupplied);
+	private void addToRepeatsListOrShowError(boolean problematicCheckboxSelected) {
 
 		Calendar calendar = Calendar.getInstance();
 
@@ -123,14 +133,12 @@ public class LearningStartController {
 		String repeatingInfo = "";
 		if (problematicCheckboxSelected) {
 			repeatingInfo = Options.problematicKanjiOption;
-			if (setOfRanges.getRangesAsList().size() > 0) {
+			if (rangesToRepeat.getRangesAsList().size() > 0) {
 				repeatingInfo += ", ";
 			}
-			else {
-				repeatingInfo += ".";
-			}
 		}
-		repeatingInfo += setOfRanges;
+		repeatingInfo += rangesToRepeat;
+		repeatingInfo += ".";
 		parentFrame.setRepeatingInformation(
 				new RepeatingInformation(repeatingInfo, calendar.getTime(), false));
 		repeatsList.scrollToBottom();

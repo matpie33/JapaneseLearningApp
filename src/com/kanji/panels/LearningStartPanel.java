@@ -109,8 +109,6 @@ public class LearningStartPanel implements PanelCreator {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.updateProblematicKanjiNumber(problematicCheckbox.isSelected());
-				updateSumOfWords(controller.getSumOfWords());
-
 			}
 		});
 		if (controller.getProblematicKanjiNumber() == 0) {
@@ -174,29 +172,14 @@ public class LearningStartPanel implements PanelCreator {
 
 			@Override
 			public void keyTyped(KeyEvent e) {
-				try {
-					controller.handleKeyTyped(e, rangesPanel.getPanel(),
-							problematicCheckbox.isSelected(), rowNumber);
-				}
-				catch (Exception e1) {
-					parentDialog.showMsgDialog(e1.getMessage());
-					// TODO this is not informative
-				}
+				controller.handleKeyTyped(e, rangesPanel.getPanel(),
+						problematicCheckbox.isSelected(), rowNumber);
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				String error = controller.handleKeyReleased(e, to, from, rangesPanel);
-				if (error.isEmpty()) {
-					removeErrorIfExists(rowNumber);
-					controller.recalculateSumOfKanji(rangesPanel.getPanel(),
-							problematicCheckbox.isSelected());
-					updateSumOfWords(controller.getSumOfWords());
-					System.out.println("update with: " + controller.getProblematicKanjiNumber());
-				}
-				else {
-					showErrorIfNotExists(error, rowNumber);
-				}
+				controller.handleKeyReleased(e, to, from, rangesPanel,
+						problematicCheckbox.isSelected(), rowNumber);
 			}
 
 		};
@@ -235,7 +218,7 @@ public class LearningStartPanel implements PanelCreator {
 		}
 	}
 
-	private void updateSumOfWords(int sumOfWords) {
+	public void updateSumOfWords(int sumOfWords) {
 		sumRangeField.setText(Prompts.sumRangePrompt + sumOfWords);
 	}
 
@@ -293,8 +276,13 @@ public class LearningStartPanel implements PanelCreator {
 	}
 
 	public void switchToRepeatingPanel() {
+		System.out.println("swiiiiiiiiiiiiitch");
 		parentDialog.getContainer().dispose();
 		controller.switchPanels(problematicCheckbox.isSelected());
+	}
+
+	public void showErrorDialog(String message) {
+		parentDialog.showMsgDialog(message);
 	}
 
 }
