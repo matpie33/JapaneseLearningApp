@@ -249,7 +249,7 @@ public class ApplicationWindow extends DialogWindow {
 
 	public void showLearningStartDialog(MyList list, int maximumNumber) {
 		showPanel(new LearningStartPanel(this, maximumNumber, list), Titles.learnStartDialogTitle,
-				false, Position.CENTER);
+				false, Position.CENTER, true);
 
 	}
 
@@ -257,7 +257,7 @@ public class ApplicationWindow extends DialogWindow {
 	// switch focus to the right window
 	public void showInsertDialog(MyList list) {
 		showPanel(new InsertWordPanel(list), Titles.insertWordDialogTitle, false,
-				Position.LEFT_CORNER);
+				Position.LEFT_CORNER, true);
 	}
 
 	public void showSearchWordDialog(MyList list) {
@@ -267,7 +267,7 @@ public class ApplicationWindow extends DialogWindow {
 
 	public void showProblematicKanjiDialog(KanjiWords kanjiWords, Set<Integer> problematicKanjis) {
 		problematicKanjiPanel = new ProblematicKanjiPanel(kanjiWords, problematicKanjis);
-		showPanel(problematicKanjiPanel, Titles.insertWordDialogTitle, true, Position.CENTER);
+		showProblematicKanjiDialog();
 	}
 
 	public void showProblematicKanjiDialog() {

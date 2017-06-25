@@ -69,15 +69,14 @@ public class DialogWindow {
 		mainPanel = panel;
 	}
 
-	public void showYourself(String title) {
-		showYourself(title, false);
-	}
-
-	public void showYourself(String title, boolean modal) {
+	public void showYourself(String title, boolean modal, boolean closeOnEscape) {
 		container.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		container.setContentPane(mainPanel);
-		CommonActionsMaker.addHotkey(KeyEvent.VK_ESCAPE,
-				CommonActionsMaker.createDisposeAction(this), mainPanel.getRootPane());
+		if (closeOnEscape) {
+			CommonActionsMaker.addHotkey(KeyEvent.VK_ESCAPE,
+					CommonActionsMaker.createDisposeAction(this), mainPanel.getRootPane());
+		}
+
 		container.pack();
 		setCoordinatesBasedOnPosition();
 		container.setModal(modal);
@@ -141,20 +140,13 @@ public class DialogWindow {
 
 	public void showPanel(PanelCreator panel, String title, boolean modal, Position position,
 			boolean closeOnEscape) {
-		// TODO use this now for each dialog that closes on escape, remove
-		// buttons mapping to escape key
-
 		if (childWindowIsClosed()) {
 			childWindow = new DialogWindow(this);
 			panel.setParentDialog(childWindow);
 			childWindow.setPosition(position);
 			JPanel panell = panel.createPanel();
 			childWindow.setPanel(panell);
-			childWindow.showYourself(title, modal);
-			if (closeOnEscape) {
-				CommonActionsMaker.addHotkey(KeyEvent.VK_ESCAPE,
-						CommonActionsMaker.createDisposeAction(childWindow), panell.getRootPane());
-			}
+			childWindow.showYourself(title, modal, closeOnEscape);
 		}
 	}
 

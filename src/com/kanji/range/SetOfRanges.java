@@ -61,7 +61,8 @@ public class SetOfRanges {
 		return isModified;
 	}
 
-	public String getRangesAsString() {
+	@Override
+	public String toString() {
 		String msg = "";
 		for (Range r : ranges) {
 			msg += "od: " + r.rangeStart + " do " + r.rangeEnd + "\n";

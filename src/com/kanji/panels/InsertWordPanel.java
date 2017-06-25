@@ -52,8 +52,9 @@ public class InsertWordPanel implements PanelCreator {
 		insertNumberTextField = new JTextField(20);
 		limitCharactersAccordingToInteger(insertNumberTextField);
 
-		JButton cancel = CommonActionsMaker.createButtonDispose(ButtonsNames.buttonCancelText,
-				java.awt.event.KeyEvent.VK_ESCAPE, parentDialog);
+		JButton cancel = GuiElementsMaker.createButton(ButtonsNames.buttonCancelText,
+				CommonActionsMaker.createDisposeAction(parentDialog));
+
 		JButton approve = createButtonValidate(ButtonsNames.buttonApproveText);
 
 		main.addRow(RowMaker.createHorizontallyFilledRow(addWordPrompt, insertWordTextField)
