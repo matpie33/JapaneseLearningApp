@@ -134,6 +134,7 @@ public class LearningStartPanel implements PanelCreator {
 
 	private void addRowToRangesPanel() {
 
+		controller.addRangesRow();
 		JLabel from = new JLabel("od");
 		JTextField[] textFields = createTextFieldsForRangeInput(rangesPanel.getNumberOfRows());
 		JTextField fieldFrom = textFields[0];
@@ -145,13 +146,15 @@ public class LearningStartPanel implements PanelCreator {
 
 		if (rangesPanel.getNumberOfRows() > 1) {
 			System.out.println("hererer");
-			JButton delete = createDeleteButton(rangesPanel, container);
+			JButton delete = createDeleteButton(rangesPanel.getNumberOfRows() - 1);
 			rangesPanel.addElementsToRow(container, delete);
+			// TODO needs refactoring - duplicated code
 		}
+
 		if (rangesPanel.getNumberOfRows() == 2) {
 			System.out.println("here");
-			JPanel firstRow = (JPanel) rangesPanel.getRows().get(0);
-			JButton delete = createDeleteButton(rangesPanel, firstRow);
+			JPanel firstRow = rangesPanel.getRows().get(0);
+			JButton delete = createDeleteButton(0);
 			rangesPanel.addElementsToRow(firstRow, delete);
 		}
 
@@ -172,13 +175,12 @@ public class LearningStartPanel implements PanelCreator {
 
 			@Override
 			public void keyTyped(KeyEvent e) {
-				controller.handleKeyTyped(e, rangesPanel.getPanel(),
-						problematicCheckbox.isSelected(), rowNumber);
+				controller.handleKeyTyped(e, problematicCheckbox.isSelected(), rowNumber);
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				controller.handleKeyReleased(e, to, from, rangesPanel,
+				controller.handleKeyReleased(e, to, from,
 						problematicCheckbox.isSelected(), rowNumber);
 			}
 
@@ -222,19 +224,18 @@ public class LearningStartPanel implements PanelCreator {
 		sumRangeField.setText(Prompts.sumRangePrompt + sumOfWords);
 	}
 
-	private JButton createDeleteButton(final MainPanel container, final JPanel panelToRemove) {
+	private JButton createDeleteButton(final int rowNumber) {
 		final JButton delete = new JButton(ButtonsNames.buttonRemoveRowText);
 		delete.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				container.removeRow(panelToRemove);
-				if (container.getNumberOfRows() == 1) {
-					container.removeLastElementFromRow(0);
+				rangesPanel.removeRow(rowNumber);
+
+				// container.removeRow(panelToRemove);
+				if (rangesPanel.getNumberOfRows() == 1) {
+					rangesPanel.removeLastElementFromRow(0);
 				}
-				controller.recalculateSumOfKanji(rangesPanel.getPanel(),
-						problematicCheckbox.isSelected());
-				updateSumOfWords(controller.getSumOfWords());
-				// deleteRow(container, panelToRemove);
+				controller.removeRange(rowNumber, problematicCheckbox.isSelected());
 			}
 		});
 		return delete;
@@ -246,7 +247,6 @@ public class LearningStartPanel implements PanelCreator {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				addRowToRangesPanel();
-
 			}
 		});
 		return button;
@@ -265,7 +265,7 @@ public class LearningStartPanel implements PanelCreator {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					controller.validateAndStart(panel, problematicCheckbox.isSelected());
+					controller.validateAndStart(problematicCheckbox.isSelected());
 				}
 				catch (Exception e1) {
 					parentDialog.showMsgDialog(e1.getMessage());
