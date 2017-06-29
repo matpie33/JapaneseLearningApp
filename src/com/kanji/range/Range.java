@@ -7,7 +7,7 @@ public class Range {
 	int rangeEnd;
 
 	public Range(int rangeStart, int rangeEnd) throws IllegalArgumentException {
-		if (rangeStart >= rangeEnd)
+		if (rangeStart > rangeEnd)
 			throw new IllegalArgumentException(
 					ExceptionsMessages.rangeToValueLessThanRangeFromValue);
 		this.rangeStart = rangeStart;
@@ -32,6 +32,10 @@ public class Range {
 
 	public int getRangeEnd() {
 		return rangeEnd;
+	}
+
+	public boolean isEmpty() {
+		return rangeStart == 0 && rangeEnd == 0;
 	}
 
 }

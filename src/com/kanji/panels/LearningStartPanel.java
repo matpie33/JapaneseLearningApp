@@ -5,8 +5,12 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -17,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.text.AbstractDocument;
 
@@ -48,11 +53,13 @@ public class LearningStartPanel implements PanelCreator {
 	private String error = "";
 	private LearningStartController controller;
 	private MainPanel rangesPanel;
+	private List<Integer> rows;
 
 	public LearningStartPanel(ApplicationWindow parentOfParent, int numberOfWords,
 			MyList<RepeatingList> list) {
 		controller = new LearningStartController(list, numberOfWords, parentOfParent, this);
 		main = new MainPanel(BasicColors.OCEAN_BLUE, false);
+		rows = new ArrayList<>();
 	}
 
 	// TODO when typing range that contains problematic kanjis, adjust the total
@@ -64,7 +71,7 @@ public class LearningStartPanel implements PanelCreator {
 	}
 
 	@Override
-	public JPanel createPanel() { // TODO add focus to textfield from
+	public JPanel createPanel() {
 
 		JTextArea prompt = createPrompt();
 		problematicCheckbox = createProblematicKanjiCheckbox();
@@ -105,28 +112,27 @@ public class LearningStartPanel implements PanelCreator {
 
 	private JCheckBox createProblematicKanjiCheckbox() {
 		final JCheckBox problematicCheckbox = new JCheckBox(Options.problematicKanjiOption);
-		problematicCheckbox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.updateProblematicKanjiNumber(problematicCheckbox.isSelected());
-			}
-		});
 		if (controller.getProblematicKanjiNumber() == 0) {
 			problematicCheckbox.setEnabled(false);
 		}
+		ItemListener action = new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				controller.updateProblematicKanjiNumber(problematicCheckbox.isSelected());
+			}
+		};
 
-		AbstractAction action = new AbstractAction() {
+		AbstractAction action2 = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (problematicCheckbox.isEnabled()) {
 					problematicCheckbox.setSelected(!problematicCheckbox.isSelected());
-					controller.updateProblematicKanjiNumber(problematicCheckbox.isSelected());
 				}
-
 			}
 		};
 
-		CommonActionsMaker.addHotkey(KeyEvent.VK_P, action, main.getPanel());
+		problematicCheckbox.addItemListener(action);
+		CommonActionsMaker.addHotkey(KeyEvent.VK_P, action2, main.getPanel());
 
 		return problematicCheckbox;
 
@@ -138,6 +144,14 @@ public class LearningStartPanel implements PanelCreator {
 		JLabel from = new JLabel("od");
 		JTextField[] textFields = createTextFieldsForRangeInput(rangesPanel.getNumberOfRows());
 		JTextField fieldFrom = textFields[0];
+		SwingUtilities.invokeLater(new Runnable() { // TODO not nice to put
+													// swing utilities here
+			@Override
+			public void run() {
+				fieldFrom.requestFocusInWindow();
+			}
+		});
+
 		JLabel labelTo = new JLabel("do");
 		JTextField fieldTo = textFields[1];
 
@@ -161,7 +175,7 @@ public class LearningStartPanel implements PanelCreator {
 		scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
 	}
 
-	private JTextField[] createTextFieldsForRangeInput(final int rowNumber) {
+	private JTextField[] createTextFieldsForRangeInput(int rowNumber) {
 		JTextField[] textFields = new JTextField[2];
 		for (int i = 0; i < 2; i++) {
 			textFields[i] = new JTextField(5);
@@ -170,18 +184,19 @@ public class LearningStartPanel implements PanelCreator {
 		}
 		final JTextField from = textFields[0];
 		final JTextField to = textFields[1];
-
+		rows.add(rowNumber);
 		KeyAdapter keyAdapter = new KeyAdapter() {
 
 			@Override
 			public void keyTyped(KeyEvent e) {
-				controller.handleKeyTyped(e, problematicCheckbox.isSelected(), rowNumber);
+				controller.handleKeyTyped(e, problematicCheckbox.isSelected(),
+						rows.get(rows.size() - 1));
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				controller.handleKeyReleased(e, to, from,
-						problematicCheckbox.isSelected(), rowNumber);
+				controller.handleKeyReleased(e, to, from, problematicCheckbox.isSelected(),
+						rows.get(rows.size() - 1));
 			}
 
 		};
@@ -230,6 +245,8 @@ public class LearningStartPanel implements PanelCreator {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				rangesPanel.removeRow(rowNumber);
+				removeRowIndex(rowNumber);
+				updateRowsIndexes(rowNumber);
 
 				// container.removeRow(panelToRemove);
 				if (rangesPanel.getNumberOfRows() == 1) {
@@ -239,6 +256,16 @@ public class LearningStartPanel implements PanelCreator {
 			}
 		});
 		return delete;
+	}
+
+	private void removeRowIndex(int rowNumber) {
+		rows.remove(rowNumber);
+	}
+
+	private void updateRowsIndexes(int rowNumber) {
+		for (int i = rowNumber; i < rows.size(); i++) {
+			rows.set(i, rows.get(i) - 1);
+		}
 	}
 
 	private JButton createButtonAddRow(String text, final MainPanel panel) {

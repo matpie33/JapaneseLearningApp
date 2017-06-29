@@ -73,6 +73,9 @@ public class ElementMaker {
 				}
 
 			}
+			if (e.getKeyCode() == KeyEvent.VK_R) {
+				start();
+			}
 			return false;
 		}
 	}

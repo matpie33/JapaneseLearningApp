@@ -82,6 +82,9 @@ public class SetOfRanges {
 	public int sumRangeInclusive() {
 		int sum = 0;
 		for (Range range : ranges) {
+			if (range.rangeEnd == 0 && range.rangeStart == 0) {
+				continue;
+			}
 			sum += range.rangeEnd - range.rangeStart + 1;
 		}
 		return sum;
