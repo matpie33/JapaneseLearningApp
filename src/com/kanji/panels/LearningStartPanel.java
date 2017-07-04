@@ -1,6 +1,5 @@
 package com.kanji.panels;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
@@ -33,7 +32,6 @@ import com.kanji.Row.RepeatingList;
 import com.kanji.actions.CommonActionsMaker;
 import com.kanji.actions.GuiElementsMaker;
 import com.kanji.constants.ButtonsNames;
-import com.kanji.constants.ExceptionsMessages;
 import com.kanji.constants.NumberValues;
 import com.kanji.constants.Options;
 import com.kanji.constants.Prompts;
@@ -50,7 +48,7 @@ public class LearningStartPanel implements PanelCreator {
 	private JTextField sumRangeField;
 	private JCheckBox problematicCheckbox;
 	private DialogWindow parentDialog;
-	private String error = "";
+	private List<String> error;
 	private LearningStartController controller;
 	private MainPanel rangesPanel;
 	private List<Integer> rows;
@@ -60,6 +58,7 @@ public class LearningStartPanel implements PanelCreator {
 		controller = new LearningStartController(list, numberOfWords, parentOfParent, this);
 		main = new MainPanel(BasicColors.OCEAN_BLUE, false);
 		rows = new ArrayList<>();
+		error = new ArrayList<>();
 	}
 
 	// TODO when typing range that contains problematic kanjis, adjust the total
@@ -141,8 +140,9 @@ public class LearningStartPanel implements PanelCreator {
 	private void addRowToRangesPanel() {
 
 		controller.addRangesRow();
+		error.add("");
 		JLabel from = new JLabel("od");
-		JTextField[] textFields = createTextFieldsForRangeInput(rangesPanel.getNumberOfRows());
+		JTextField[] textFields = createTextFieldsForRangeInput(rows.size());
 		JTextField fieldFrom = textFields[0];
 		SwingUtilities.invokeLater(new Runnable() { // TODO not nice to put
 													// swing utilities here
@@ -210,29 +210,23 @@ public class LearningStartPanel implements PanelCreator {
 	}
 
 	public void showErrorIfNotExists(String message, int rowNumber) {
-		if (error.equals(message))
+		if (error.get(rowNumber).equals(message))
 			return;
-		else
-			removeErrorIfExists(rowNumber);
-
-		rangesPanel.addElementsToRow(rowNumber, new JLabel(message));
-		error = message;
+		// TODO when pressing start, show more detailed info: add row number to
+		// the error information
+		removeErrorIfExists(rowNumber);
+		rangesPanel.insertRow(rowNumber + 1, RowMaker.createUnfilledRow(GridBagConstraints.CENTER,
+				GuiElementsMaker.createErrorLabel(message)).fillAllVertically());
+		error.set(rowNumber, message);
 	}
 
 	public void removeErrorIfExists(int rowNumber) {
-		if (error.isEmpty())
+		if (error.get(rowNumber).isEmpty()) {
 			return;
-		error = "";
-		JPanel row = rangesPanel.getRows().get(rowNumber);
-		for (Component c : row.getComponents()) {
-			if (c instanceof JLabel && ((JLabel) c).getText()
-					.matches(ExceptionsMessages.rangeToValueLessThanRangeFromValue + "|"
-							+ ExceptionsMessages.valueIsNotNumber + "|"
-							+ ExceptionsMessages.rangeValueTooHigh)) {
-				System.out.println("remove ing");
-				rangesPanel.removeLastElementFromRow(rowNumber);
-			}
 		}
+
+		error.set(rowNumber, "");
+		rangesPanel.removeRow(rowNumber + 1);
 	}
 
 	public void updateSumOfWords(int sumOfWords) {
@@ -245,6 +239,7 @@ public class LearningStartPanel implements PanelCreator {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				rangesPanel.removeRow(rowNumber);
+				error.remove(rows.get(rowNumber));
 				removeRowIndex(rowNumber);
 				updateRowsIndexes(rowNumber);
 
@@ -288,22 +283,34 @@ public class LearningStartPanel implements PanelCreator {
 
 	private JButton createButtonStartLearning(String text, final JPanel panel) {
 		JButton button = new JButton(text);
-		button.addActionListener(new ActionListener() {
+		AbstractAction a = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
+				if (gotErrors()) {
+					parentDialog.showMsgDialog(
+							controller.concatenateErrors(error.toArray(new String[] {})));
+				}
+				else {
 					controller.validateAndStart(problematicCheckbox.isSelected());
 				}
-				catch (Exception e1) {
-					parentDialog.showMsgDialog(e1.getMessage());
-				}
+
 			}
-		});
+		};
+		button.addActionListener(a);
+		parentDialog.addHotkeyToWindow(KeyEvent.VK_ENTER, a);
 		return button;
 	}
 
+	private boolean gotErrors() {
+		for (int i = 0; i < error.size(); i++) {
+			if (!error.get(i).isEmpty()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void switchToRepeatingPanel() {
-		System.out.println("swiiiiiiiiiiiiitch");
 		parentDialog.getContainer().dispose();
 		controller.switchPanels(problematicCheckbox.isSelected());
 	}

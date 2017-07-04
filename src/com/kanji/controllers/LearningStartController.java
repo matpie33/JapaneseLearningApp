@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JTextField;
 
@@ -28,10 +29,6 @@ public class LearningStartController {
 	private LearningStartPanel learningStartPanel;
 	private List<Range> rangeOfKanjiInRow;
 
-	private enum AddOrDelete {
-		ADD, DELETE
-	}
-
 	public LearningStartController(MyList<RepeatingList> repeatList, int numberOfWords,
 			ApplicationWindow parentFrame, LearningStartPanel learningStartPanel) {
 		this.parentFrame = parentFrame;
@@ -42,13 +39,20 @@ public class LearningStartController {
 	}
 
 	public void updateProblematicKanjiNumber(boolean isProblematicKanjiCheckboxSelected) {
-		int problematicKanjis = getProblematicKanjiNumber();
+		rangesToRepeat = sumRanges();
+		Set<Integer> problematics = parentFrame.getProblematicKanjis();
+		int direction;
 		if (isProblematicKanjiCheckboxSelected)
-			sumOfWords += problematicKanjis;
+			direction = 1;
 		else
-			sumOfWords -= problematicKanjis;
+			direction = -1;
+		for (Integer i : problematics) {
+			if (!rangesToRepeat.isValueInsideThisSet(i)) {
+				sumOfWords += direction;
+				System.out.println("this value is not in set: " + i);
+			}
+		}
 		learningStartPanel.updateSumOfWords(getSumOfWords());
-
 	}
 
 	public int getProblematicKanjiNumber() {
@@ -56,12 +60,8 @@ public class LearningStartController {
 	}
 
 	public void handleKeyTyped(KeyEvent e, boolean problematicCheckboxSelected, int rowNumber) {
-
 		if (e.getKeyChar() == 'p') {
 			e.consume();
-		}
-		else if ((e.getKeyChar() == KeyEvent.VK_ENTER)) {
-			validateAndStart(problematicCheckboxSelected);
 		}
 		else if (!(e.getKeyChar() + "").matches("\\d")) {
 			e.consume();
@@ -72,37 +72,17 @@ public class LearningStartController {
 	public void handleKeyReleased(KeyEvent e, JTextField to, JTextField from,
 			boolean problematicCheckboxSelected, int rowNumber) {
 
-		if (e.getKeyChar() == KeyEvent.VK_P) {
+		if (ignoredKeyWasPressedOrOneOfInputsIsEmpty(e, to, from)) {
 			return;
 		}
 
-		int valueFrom = 0;
-		int valueTo = 0;
-		if (to.getText().isEmpty() || from.getText().isEmpty()) {
-			return;
-		}
-		else {
-			valueFrom = Integer.parseInt(from.getText());
-			valueTo = Integer.parseInt(to.getText());
-		}
+		int valueFrom = Integer.parseInt(from.getText());
+		int valueTo = Integer.parseInt(to.getText());
+		String error = validateInput(valueFrom, valueTo);
 
-		String error = "";
-		if (valueTo <= valueFrom) {
-			error = ExceptionsMessages.rangeToValueLessThanRangeFromValue;
-		}
-		else if (isNumberHigherThanMaximum(valueFrom) || isNumberHigherThanMaximum(valueTo))
-			error = ExceptionsMessages.rangeValueTooHigh;
-		else if (valueTo > numberOfWords) {
-			error = ExceptionsMessages.rangeValueHigherThanMaximumKanjiNumber;
-		}
-
-		// TODO separate it in 2 methods: validate and update
 		if (error.isEmpty()) {
-			recalculateSumOfKanji(AddOrDelete.DELETE);
-			rangeOfKanjiInRow.set(rowNumber, new Range(valueFrom, valueTo));
-			recalculateSumOfKanji(AddOrDelete.ADD);
+			updateKanjiNumber(rowNumber, valueFrom, valueTo, problematicCheckboxSelected);
 			learningStartPanel.removeErrorIfExists(rowNumber);
-			learningStartPanel.updateSumOfWords(getSumOfWords());
 		}
 		else {
 			learningStartPanel.showErrorIfNotExists(error, rowNumber);
@@ -110,47 +90,61 @@ public class LearningStartController {
 
 	}
 
+	private boolean ignoredKeyWasPressedOrOneOfInputsIsEmpty(KeyEvent e, JTextField to,
+			JTextField from) {
+		return e.getKeyChar() == KeyEvent.VK_P || to.getText().isEmpty()
+				|| from.getText().isEmpty();
+	}
+
+	private String validateInput(int rangeStart, int rangeEnd) {
+		String error = "";
+		if (rangeStart == 0) {
+			error = ExceptionsMessages.rangeStartHaveToBePositive;
+		}
+		else if (rangeEnd <= rangeStart) {
+			error = ExceptionsMessages.rangeToValueLessThanRangeFromValue;
+		}
+		else if (isNumberHigherThanMaximum(rangeStart) || isNumberHigherThanMaximum(rangeEnd))
+			error = ExceptionsMessages.rangeValueTooHigh;
+		else if (rangeEnd > numberOfWords) {
+			error = ExceptionsMessages.rangeValueHigherThanMaximumKanjiNumber;
+		}
+		return error;
+	}
+
 	private boolean isNumberHigherThanMaximum(int number) {
 		return number > numberOfWords;
 	}
 
-	public void removeRange(int rowNumber, boolean problematicCheckboxSelected) {
-		recalculateSumOfKanji(AddOrDelete.DELETE);
-		rangeOfKanjiInRow.remove(rowNumber);
-		recalculateSumOfKanji(AddOrDelete.ADD);
+	private void updateKanjiNumber(int rowNumber, int valueFrom, int valueTo,
+			boolean problematicCheckboxSelected) {
+		rangeOfKanjiInRow.set(rowNumber, new Range(valueFrom, valueTo));
+		recalculateSumOfKanji(problematicCheckboxSelected);
 		learningStartPanel.updateSumOfWords(getSumOfWords());
 	}
 
-	private void recalculateSumOfKanji(AddOrDelete direction) {
-		try {
-			SetOfRanges s = new SetOfRanges();
-			for (Range r : rangeOfKanjiInRow) {
-				if (!r.isEmpty()) {
-					s.addRange(r);
-				}
-			}
-			int multiplier;
-			switch (direction) {
-			case ADD:
-				multiplier = 1;
-				break;
-			case DELETE:
-				multiplier = -1;
-				break;
-			default:
-				multiplier = 0;
-			}
-			this.sumOfWords += s.sumRangeInclusive() * multiplier;
+	public void removeRange(int rowNumber, boolean problematicCheckboxSelected) {
+		rangeOfKanjiInRow.remove(rowNumber);
+		recalculateSumOfKanji(problematicCheckboxSelected);
+		learningStartPanel.updateSumOfWords(getSumOfWords());
+	}
 
+	private void recalculateSumOfKanji(boolean problematicKanjisSelected) {
+		SetOfRanges s = new SetOfRanges();
+		for (Range r : rangeOfKanjiInRow) {
+			if (!r.isEmpty()) {
+				s.addRange(r);
+			}
 		}
-		catch (IllegalArgumentException ex) {
-			// We keep the message for untill approve button is clicked //TODO
-			// refactor it
+		sumOfWords = 0;
+		this.sumOfWords += s.sumRangeInclusive();
+		if (problematicKanjisSelected) {
+			sumOfWords += getProblematicKanjiNumber();
 		}
-
 	}
 
 	public void validateAndStart(boolean problematicCheckboxSelected) {
+
 		rangesToRepeat = sumRanges();
 		if (rangesToRepeat.toString().isEmpty() && !problematicCheckboxSelected) {
 			learningStartPanel.showErrorDialog(ExceptionsMessages.noInputSupplied);
@@ -197,6 +191,15 @@ public class LearningStartController {
 
 	public void addRangesRow() {
 		rangeOfKanjiInRow.add(new Range(0, 0));
+	}
+
+	public String concatenateErrors(String... errors) {
+		String concatenated = "";
+		for (String error : errors) {
+			concatenated += error;
+			concatenated += "\n";
+		}
+		return concatenated;
 	}
 
 }

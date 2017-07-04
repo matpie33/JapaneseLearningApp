@@ -90,4 +90,13 @@ public class SetOfRanges {
 		return sum;
 	}
 
+	public boolean isValueInsideThisSet(int value) {
+		for (Range r : ranges) {
+			if (r.isValueInsideRange(value)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

@@ -1,7 +1,10 @@
 package com.kanji.actions;
 
+import java.awt.Color;
+
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 public class GuiElementsMaker {
 
@@ -15,6 +18,12 @@ public class GuiElementsMaker {
 		JButton button = new JButton(message);
 		button.addActionListener(actionOnClick);
 		return button;
+	}
+
+	public static JLabel createErrorLabel(String message) {
+		JLabel l = new JLabel(message);
+		l.setForeground(Color.red);
+		return l;
 	}
 
 	// TODO remember that we have element maker, gotta refactor it to here.

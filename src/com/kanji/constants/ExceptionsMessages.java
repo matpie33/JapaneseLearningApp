@@ -20,5 +20,6 @@ public class ExceptionsMessages {
 	public static final String noInputSupplied = "Prosze cokolwiek wpisac!";
 	public static final String excelNotLoaded = "Musisz zaczekac. Klasa wczytujaca kanji"
 			+ " z excela nie zaladowala sie jeszcze.";
+	public static final String rangeStartHaveToBePositive = "Początek zakresu musi być liczbą dodatnią.";
 
 }
