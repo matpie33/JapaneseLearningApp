@@ -27,6 +27,7 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.RowMaker;
 import com.kanji.Row.KanjiWords;
 import com.kanji.Row.RepeatingInformation;
+import com.kanji.actions.CommonActionsMaker;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.Titles;
@@ -137,7 +138,7 @@ public class RepeatingWordsPanel extends JPanel implements TimeSpentMonitor { //
 
 	private void createButtonGoToPreviousWord() {
 		showPreviousWord = new JButton(ButtonsNames.buttonShowPreviousWord);
-		showPreviousWord.addActionListener(new ActionListener() {
+		AbstractAction action = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
@@ -148,7 +149,10 @@ public class RepeatingWordsPanel extends JPanel implements TimeSpentMonitor { //
 				setButtonsToRecognizeWord();
 				repeatingPanel.removeLastElementFromRow(2);
 			}
-		});
+		};
+		showPreviousWord.addActionListener(action);
+		CommonActionsMaker.addHotkey(KeyEvent.VK_G, action, showPreviousWord);
+
 	}
 
 	private void createWordLabel() {
@@ -306,7 +310,11 @@ public class RepeatingWordsPanel extends JPanel implements TimeSpentMonitor { //
 		};
 		this.notRecognizedWord.addActionListener(a);
 		this.notRecognizedWord.getInputMap(2).put(KeyStroke.getKeyStroke(65, 0), "pressed");
-		this.notRecognizedWord.getActionMap().put("pressed", a);
+		this.notRecognizedWord.getActionMap().put("pressed", a); // TODO use my
+																	// method
+																	// for
+																	// adding
+																	// hotkey
 	}
 
 	private void addToProblematic() {
@@ -377,6 +385,7 @@ public class RepeatingWordsPanel extends JPanel implements TimeSpentMonitor { //
 			}
 		});
 
+		returnButton.setFocusable(false);
 		this.remainingLabel = new JLabel(createRemainingPrompt());
 
 		centerPanel.addRow(
@@ -395,8 +404,10 @@ public class RepeatingWordsPanel extends JPanel implements TimeSpentMonitor { //
 
 	public void setRangesToRepeat(SetOfRanges ranges) {
 		for (Range range : ranges.getRangesAsList()) {
-			for (int i = range.getRangeStart(); i <= range.getRangeEnd(); i++) {
-				wordsToRepeat.add(words.findWordInRow(i - 1));
+			if (!range.isEmpty()) {
+				for (int i = range.getRangeStart(); i <= range.getRangeEnd(); i++) {
+					wordsToRepeat.add(words.findWordInRow(i - 1));
+				}
 			}
 		}
 	}

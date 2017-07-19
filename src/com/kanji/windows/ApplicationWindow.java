@@ -176,6 +176,9 @@ public class ApplicationWindow extends DialogWindow {
 	public void setWordsRangeToRepeat(SetOfRanges ranges, boolean withProblematic) {
 
 		repeatingWordsPanel.setRepeatingWords(maker.getWordsList());
+		// TODO if set of ranges is empty, we should not call set ranges to
+		// repeat all, so probably
+		// split this method
 		repeatingWordsPanel.setRangesToRepeat(ranges);
 		repeatingWordsPanel.reset();
 		System.out.println("setting: " + problematicKanjis);

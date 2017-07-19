@@ -65,7 +65,7 @@ public class ElementMaker {
 
 			if (e.getKeyCode() == KeyEvent.VK_F && e.isControlDown())
 				searchWord();
-			if (e.getKeyCode() == KeyEvent.VK_Q && e.isControlDown()) {
+			if (e.getKeyCode() == KeyEvent.VK_Q) {
 				if (!openingFile) {
 					openingFile = true;
 					openKanjiFile();

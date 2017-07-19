@@ -99,4 +99,13 @@ public class SetOfRanges {
 		return false;
 	}
 
+	public boolean isEmpty() {
+		for (Range r : ranges) {
+			if (!r.isEmpty()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 }

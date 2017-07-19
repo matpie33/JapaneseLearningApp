@@ -1,5 +1,6 @@
 package com.kanji.panels;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
@@ -9,7 +10,6 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -28,6 +28,7 @@ import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.RowMaker;
+import com.guimaker.row.SimpleRow;
 import com.kanji.Row.RepeatingList;
 import com.kanji.actions.CommonActionsMaker;
 import com.kanji.actions.GuiElementsMaker;
@@ -43,26 +44,20 @@ import com.kanji.windows.DialogWindow;
 
 public class LearningStartPanel implements PanelCreator {
 
-	private MainPanel main;
+	private MainPanel mainPanel;
 	private JScrollPane scrollPane;
 	private JTextField sumRangeField;
 	private JCheckBox problematicCheckbox;
 	private DialogWindow parentDialog;
-	private List<String> error;
 	private LearningStartController controller;
 	private MainPanel rangesPanel;
-	private List<Integer> rows;
 
 	public LearningStartPanel(ApplicationWindow parentOfParent, int numberOfWords,
 			MyList<RepeatingList> list) {
 		controller = new LearningStartController(list, numberOfWords, parentOfParent, this);
-		main = new MainPanel(BasicColors.OCEAN_BLUE, false);
-		rows = new ArrayList<>();
-		error = new ArrayList<>();
+		mainPanel = new MainPanel(BasicColors.OCEAN_BLUE, false);
+		new ArrayList<>();
 	}
-
-	// TODO when typing range that contains problematic kanjis, adjust the total
-	// kanji to repeat properly i.e. do not show more than it actually is
 
 	@Override
 	public void setParentDialog(DialogWindow parent) {
@@ -86,20 +81,20 @@ public class LearningStartPanel implements PanelCreator {
 		JButton approve = createButtonStartLearning(ButtonsNames.buttonApproveText,
 				rangesPanel.getPanel());
 
-		main.addRow(RowMaker.createHorizontallyFilledRow(prompt));
-		main.addRow(RowMaker.createHorizontallyFilledRow(problematicCheckbox));
-		main.addRow(RowMaker.createHorizontallyFilledRow(problematicKanjis));
-		main.addRow(RowMaker.createBothSidesFilledRow(scrollPane));
-		main.addRow(RowMaker.createHorizontallyFilledRow(newRow, sumRangeField)
+		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(prompt));
+		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(problematicCheckbox));
+		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(problematicKanjis));
+		mainPanel.addRow(RowMaker.createBothSidesFilledRow(scrollPane));
+		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(newRow, sumRangeField)
 				.fillHorizontallySomeElements(sumRangeField));
-		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.EAST, cancel, approve));
-		return main.getPanel();
+		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.EAST, cancel, approve));
+		return mainPanel.getPanel();
 	}
 
 	private JScrollPane createRangesPanelScrollPane() {
 		Border b = BorderFactory.createLineBorder(BasicColors.VERY_BLUE);
 		return GuiMaker.createScrollPane(BasicColors.DARK_BLUE, b, rangesPanel.getPanel(),
-				new Dimension(300, 200));
+				new Dimension(350, 200));
 	}
 
 	private JTextArea createPrompt() {
@@ -117,10 +112,13 @@ public class LearningStartPanel implements PanelCreator {
 		ItemListener action = new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				controller.updateProblematicKanjiNumber(problematicCheckbox.isSelected());
+				boolean problematicCheckboxSelected = problematicCheckbox.isSelected();
+				controller.updateProblematicKanjiNumber(problematicCheckboxSelected);
+
 			}
 		};
 
+		@SuppressWarnings("serial")
 		AbstractAction action2 = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -131,18 +129,39 @@ public class LearningStartPanel implements PanelCreator {
 		};
 
 		problematicCheckbox.addItemListener(action);
-		CommonActionsMaker.addHotkey(KeyEvent.VK_P, action2, main.getPanel());
+		CommonActionsMaker.addHotkey(KeyEvent.VK_P, action2, mainPanel.getPanel());
 
 		return problematicCheckbox;
 
 	}
 
+	public int showLabelWithProblematicKanjis() {
+		Component c = parentDialog.getContainer().getFocusOwner();
+		JLabel label = new JLabel("+ problematyczne");
+		label.setForeground(BasicColors.NAVY_BLUE);
+		int rowNumber = rangesPanel.getNumberOfRows();
+		rangesPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, label)); // TODO
+																							// move
+																							// to
+																							// strings
+		c.requestFocusInWindow();
+		return rowNumber;
+
+	}
+
+	public void hideLabelWithProblematicKanjis(int rowNumber) {
+		rangesPanel.removeRow(rowNumber);
+	}
+
 	private void addRowToRangesPanel() {
 
-		controller.addRangesRow();
-		error.add("");
-		JLabel from = new JLabel("od");
-		JTextField[] textFields = createTextFieldsForRangeInput(rows.size());
+		JLabel from = new JLabel("od"); // TODO separate it into constants;
+		boolean problematicCheckboxSelected = problematicCheckbox.isSelected();
+		int nextRowNumber = rangesPanel.getNumberOfRows();
+		if (problematicCheckboxSelected) {
+			nextRowNumber -= 1;
+		}
+		JTextField[] textFields = createTextFieldsForRangeInput(nextRowNumber);
 		JTextField fieldFrom = textFields[0];
 		SwingUtilities.invokeLater(new Runnable() { // TODO not nice to put
 													// swing utilities here
@@ -154,25 +173,26 @@ public class LearningStartPanel implements PanelCreator {
 
 		JLabel labelTo = new JLabel("do");
 		JTextField fieldTo = textFields[1];
-
-		JPanel container = rangesPanel
-				.addRow(RowMaker.createHorizontallyFilledRow(from, fieldFrom, labelTo, fieldTo));
-
-		if (rangesPanel.getNumberOfRows() > 1) {
-			System.out.println("hererer");
-			JButton delete = createDeleteButton(rangesPanel.getNumberOfRows() - 1);
-			rangesPanel.addElementsToRow(container, delete);
-			// TODO needs refactoring - duplicated code
+		JButton delete = createDeleteButton(fieldFrom, fieldTo);
+		if (controller.getNumberOfRangesRows() == 1) {
+			delete.setVisible(false);
+		}
+		SimpleRow newRow = RowMaker.createHorizontallyFilledRow(from, fieldFrom, labelTo, fieldTo,
+				delete);
+		if (problematicCheckboxSelected) {
+			controller.increaseProblematicLabelRowNumber();
+			rangesPanel.insertRow(nextRowNumber, newRow);
+		}
+		else {
+			rangesPanel.addRow(newRow);
 		}
 
-		if (rangesPanel.getNumberOfRows() == 2) {
-			System.out.println("here");
-			JPanel firstRow = rangesPanel.getRows().get(0);
-			JButton delete = createDeleteButton(0);
-			rangesPanel.addElementsToRow(firstRow, delete);
+		if (controller.getNumberOfRangesRows() == 2) {
+			changeVisibilityOfDeleteButtonInFirstRow(true);
 		}
 
-		scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
+		scrollToBottom();
+
 	}
 
 	private JTextField[] createTextFieldsForRangeInput(int rowNumber) {
@@ -184,19 +204,17 @@ public class LearningStartPanel implements PanelCreator {
 		}
 		final JTextField from = textFields[0];
 		final JTextField to = textFields[1];
-		rows.add(rowNumber);
+		controller.addRow(rowNumber, from, to);
 		KeyAdapter keyAdapter = new KeyAdapter() {
 
 			@Override
 			public void keyTyped(KeyEvent e) {
-				controller.handleKeyTyped(e, problematicCheckbox.isSelected(),
-						rows.get(rows.size() - 1));
+				controller.handleKeyTyped(e, to, from, problematicCheckbox.isSelected());
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				controller.handleKeyReleased(e, to, from, problematicCheckbox.isSelected(),
-						rows.get(rows.size() - 1));
+				controller.handleKeyReleased(e, to, from, problematicCheckbox.isSelected());
 			}
 
 		};
@@ -209,58 +227,58 @@ public class LearningStartPanel implements PanelCreator {
 		return textFields;
 	}
 
-	public void showErrorIfNotExists(String message, int rowNumber) {
-		if (error.get(rowNumber).equals(message))
-			return;
+	public boolean showErrorOnThePanel(String message, int rowNumber) {
 		// TODO when pressing start, show more detailed info: add row number to
 		// the error information
-		removeErrorIfExists(rowNumber);
-		rangesPanel.insertRow(rowNumber + 1, RowMaker.createUnfilledRow(GridBagConstraints.CENTER,
+		rangesPanel.insertRow(rowNumber, RowMaker.createUnfilledRow(GridBagConstraints.CENTER,
 				GuiElementsMaker.createErrorLabel(message)).fillAllVertically());
-		error.set(rowNumber, message);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				rangesPanel.getPanel()
+						.scrollRectToVisible(rangesPanel.getRows().get(rowNumber).getBounds());
+			}
+		});
+		return true;
 	}
 
-	public void removeErrorIfExists(int rowNumber) {
-		if (error.get(rowNumber).isEmpty()) {
-			return;
-		}
+	private void scrollToBottom() {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				scrollPane.getVerticalScrollBar()
+						.setValue(scrollPane.getVerticalScrollBar().getMaximum());
+			}
+		});
 
-		error.set(rowNumber, "");
-		rangesPanel.removeRow(rowNumber + 1);
+	}
+
+	public boolean removeRowFromPanel(int rowNumber) {
+		rangesPanel.removeRow(rowNumber);
+		return true;
 	}
 
 	public void updateSumOfWords(int sumOfWords) {
 		sumRangeField.setText(Prompts.sumRangePrompt + sumOfWords);
 	}
 
-	private JButton createDeleteButton(final int rowNumber) {
-		final JButton delete = new JButton(ButtonsNames.buttonRemoveRowText);
+	private JButton createDeleteButton(JTextField from, JTextField to) {
+		JButton delete = new JButton(ButtonsNames.buttonRemoveRowText);
 		delete.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				rangesPanel.removeRow(rowNumber);
-				error.remove(rows.get(rowNumber));
-				removeRowIndex(rowNumber);
-				updateRowsIndexes(rowNumber);
-
-				// container.removeRow(panelToRemove);
-				if (rangesPanel.getNumberOfRows() == 1) {
-					rangesPanel.removeLastElementFromRow(0);
-				}
-				controller.removeRange(rowNumber, problematicCheckbox.isSelected());
+				controller.removeRangeRow(from, to, problematicCheckbox.isSelected());
 			}
 		});
 		return delete;
 	}
 
-	private void removeRowIndex(int rowNumber) {
-		rows.remove(rowNumber);
+	public void removeRow(int rowNumber) {
+		rangesPanel.removeRow(rowNumber);
 	}
 
-	private void updateRowsIndexes(int rowNumber) {
-		for (int i = rowNumber; i < rows.size(); i++) {
-			rows.set(i, rows.get(i) - 1);
-		}
+	public void removeDeleteButtonFromFirstRow() {
+		rangesPanel.removeLastElementFromRow(0);
 	}
 
 	private JButton createButtonAddRow(String text, final MainPanel panel) {
@@ -283,31 +301,17 @@ public class LearningStartPanel implements PanelCreator {
 
 	private JButton createButtonStartLearning(String text, final JPanel panel) {
 		JButton button = new JButton(text);
+		@SuppressWarnings("serial")
 		AbstractAction a = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (gotErrors()) {
-					parentDialog.showMsgDialog(
-							controller.concatenateErrors(error.toArray(new String[] {})));
-				}
-				else {
-					controller.validateAndStart(problematicCheckbox.isSelected());
-				}
+				controller.showErrorsOrStart(problematicCheckbox.isSelected());
 
 			}
 		};
 		button.addActionListener(a);
 		parentDialog.addHotkeyToWindow(KeyEvent.VK_ENTER, a);
 		return button;
-	}
-
-	private boolean gotErrors() {
-		for (int i = 0; i < error.size(); i++) {
-			if (!error.get(i).isEmpty()) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public void switchToRepeatingPanel() {
@@ -317,6 +321,10 @@ public class LearningStartPanel implements PanelCreator {
 
 	public void showErrorDialog(String message) {
 		parentDialog.showMsgDialog(message);
+	}
+
+	public void changeVisibilityOfDeleteButtonInFirstRow(boolean visibility) {
+		rangesPanel.changeVisibilityOfLastElementInRow(0, visibility);
 	}
 
 }
