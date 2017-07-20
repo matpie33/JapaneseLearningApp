@@ -6,12 +6,9 @@ import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.text.AbstractDocument;
 
-import com.guimaker.colors.BasicColors;
-import com.guimaker.panels.MainPanel;
 import com.guimaker.row.RowMaker;
 import com.kanji.actions.CommonActionsMaker;
 import com.kanji.actions.GuiElementsMaker;
@@ -23,16 +20,15 @@ import com.kanji.myList.MyList;
 import com.kanji.utilities.LimitDocumentFilter;
 import com.kanji.windows.DialogWindow;
 
-public class InsertWordPanel implements PanelCreator {
+public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 
-	private MainPanel main;
 	private DialogWindow parentDialog;
 	private JTextField insertWordTextField;
 	private JTextField insertNumberTextField;
 	private InsertWordController controller;
 
 	public InsertWordPanel(MyList list) {
-		main = new MainPanel(BasicColors.OCEAN_BLUE);
+		super(true);
 		controller = new InsertWordController(list);
 	}
 
@@ -43,7 +39,7 @@ public class InsertWordPanel implements PanelCreator {
 	}
 
 	@Override
-	public JPanel createPanel() {
+	void createElements() {
 
 		JLabel addWordPrompt = new JLabel(Prompts.wordAddDialogPrompt);
 		insertWordTextField = new JTextField(20);
@@ -57,13 +53,13 @@ public class InsertWordPanel implements PanelCreator {
 
 		JButton approve = createButtonValidate(ButtonsNames.buttonApproveText);
 
-		main.addRow(RowMaker.createHorizontallyFilledRow(addWordPrompt, insertWordTextField)
+		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(addWordPrompt, insertWordTextField)
 				.fillHorizontallySomeElements(insertWordTextField));
-		main.addRow(RowMaker.createHorizontallyFilledRow(addNumberPrompt, insertNumberTextField)
-				.fillHorizontallySomeElements(insertNumberTextField));
-		main.addRow(RowMaker.createHorizontallyFilledRow(cancel, approve));
+		mainPanel
+				.addRow(RowMaker.createHorizontallyFilledRow(addNumberPrompt, insertNumberTextField)
+						.fillHorizontallySomeElements(insertNumberTextField));
+		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(cancel, approve));
 
-		return main.getPanel();
 	}
 
 	private void limitCharactersAccordingToInteger(JTextField textField) {

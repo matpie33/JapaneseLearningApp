@@ -13,10 +13,9 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import com.guimaker.colors.BasicColors;
-import com.guimaker.panels.MainPanel;
 import com.guimaker.row.RowMaker;
 import com.kanji.actions.CommonActionsMaker;
+import com.kanji.actions.GuiElementsMaker;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.ExceptionsMessages;
 import com.kanji.constants.NumberValues;
@@ -24,32 +23,23 @@ import com.kanji.constants.Options;
 import com.kanji.constants.Prompts;
 import com.kanji.myList.MyList;
 import com.kanji.myList.SearchOptions;
-import com.kanji.windows.DialogWindow;
 
-public class SearchWordPanel implements PanelCreator {
+public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 
-	private MainPanel main;
 	private JTextField textField;
-	private DialogWindow parentDialog;
 	private JRadioButton fullWordsSearchOption;
 	private JRadioButton perfectMatchSearchOption;
 	private SearchOptions options;
 	private MyList list;
 
 	public SearchWordPanel(MyList list) {
-		main = new MainPanel(BasicColors.OCEAN_BLUE, true);
+		super(true);
 		this.list = list;
-
 		options = new SearchOptions();
 	}
 
 	@Override
-	public void setParentDialog(DialogWindow parent) {
-		parentDialog = parent;
-	}
-
-	@Override
-	public JPanel createPanel() {
+	void createElements() {
 		int level = 0;
 		JLabel prompt = new JLabel(Prompts.wordSearchDialogPrompt);
 		textField = addPromptAndTextFieldAndReturnTextField(level, Prompts.wordSearchDialogPrompt);
@@ -95,20 +85,21 @@ public class SearchWordPanel implements PanelCreator {
 
 		JButton previous = createButtonPrevious(ButtonsNames.buttonPreviousText);
 		JButton next = createButtonNext(ButtonsNames.buttonNextText);
-		JButton cancel = CommonActionsMaker.createButtonDispose(ButtonsNames.buttonCancelText,
-				java.awt.event.KeyEvent.VK_ESCAPE, parentDialog);
+		JButton cancel = GuiElementsMaker.createButton(ButtonsNames.buttonCancelText,
+				CommonActionsMaker.createDisposeAction(parentDialog));
 
-		main.addRow(RowMaker.createHorizontallyFilledRow(prompt, textField)
+		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(prompt, textField)
 				.fillHorizontallySomeElements(textField));
-		main.addRow(RowMaker.createHorizontallyFilledRow(defaultSearchOption));
-		main.addRow(RowMaker.createHorizontallyFilledRow(fullWordsSearchOption));
-		main.addRow(RowMaker.createHorizontallyFilledRow(perfectMatchSearchOption));
-		main.addRow( // TODO fix in gui maker: if putting rows as highest as
-						// possible, then west
-						// should be as highest as possible, but now I need to
-						// use northwest
+		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(defaultSearchOption));
+		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(fullWordsSearchOption));
+		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(perfectMatchSearchOption));
+		mainPanel.addRow( // TODO fix in gui maker: if putting rows as highest
+							// as
+							// possible, then west
+							// should be as highest as possible, but now I need
+							// to
+							// use northwest
 				RowMaker.createUnfilledRow(GridBagConstraints.NORTHWEST, previous, next, cancel));
-		return main.getPanel();
 	}
 
 	private JTextField addPromptAndTextFieldAndReturnTextField(int level, String promptMessage) {

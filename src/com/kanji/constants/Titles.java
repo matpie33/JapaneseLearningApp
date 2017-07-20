@@ -2,14 +2,16 @@ package com.kanji.constants;
 
 public class Titles {
 
-	public static final String appTitle = "Program do nauki kanji i słów.";
-	public static final String insertWordDialogTitle = "Nowe słowo";
-	public static final String messageDialogTitle = "Informacja";
-	public static final String learnStartDialogTitle = "Rozpoczecie nauki";
-	public static final String wordSearchDialogTitle = "Znajdź słowo";
-	public static final String repeatedWordsListTitle = "Powtorzone";
-	public static final String repeatingWordsTitle = "Powtórka słówek";
-	public static final String wordsListTitle = "Slowka";
-	public static final String confirmDialogTitle = "Potwierdzenie.";
+	public static final String app = "Program do nauki kanji i słów.";
+	public static final String insertWordDialog = "Nowe słowo";
+	public static final String messageDialog = "Informacja";
+	public static final String learnStartDialog = "Rozpoczęcie nauki";
+	public static final String wordSearchDialog = "Znajdź słowo";
+	public static final String repeatedWordsList = "Powtórzone";
+	public static final String repeatingWords = "Powtórka słówek";
+	public static final String wordsList = "Słówka";
+	public static final String confirmDialog = "Potwierdzenie.";
+	public static final String kanjiRanges = "Przedziały kanji.";
+	public static final String hotkeysTitle = "Skróty klawiszowe";
 
 }

@@ -19,7 +19,6 @@ import javax.swing.AbstractAction;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -35,12 +34,10 @@ import com.kanji.fileReading.ExcelReader;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
 
-public class ProblematicKanjiPanel implements PanelCreator {
-	private DialogWindow parentDialog;
+public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	private KanjiWords kanjiInfos;
 	private int repeatedProblematics;
 	private Set<Integer> problematicKanjis;
-	private MainPanel main;
 	private List<KanjiRow> kanjisToBrowse;
 	private JScrollPane scrollPane;
 	private boolean useInternet;
@@ -65,8 +62,8 @@ public class ProblematicKanjiPanel implements PanelCreator {
 	}
 
 	public ProblematicKanjiPanel(KanjiWords kanjis, Set<Integer> problematicKanji) {
+		super(true);
 		kanjisToBrowse = new ArrayList<>();
-		main = new MainPanel(BasicColors.OCEAN_BLUE);
 		kanjiInfos = kanjis;
 		problematicKanjis = problematicKanji;
 		useInternet = true;
@@ -77,17 +74,10 @@ public class ProblematicKanjiPanel implements PanelCreator {
 	}
 
 	@Override
-	public void setParentDialog(DialogWindow parent) {
-		parentDialog = parent;
-
-	}
-
-	@Override
-	public JPanel createPanel() {
+	void createElements() {
 		configureParentDialog();
-		if (main.getNumberOfRows() > 0) {
-			System.out.println("already exists");
-			return main.getPanel();
+		if (mainPanel.getNumberOfRows() > 0) {
+			return;
 		}
 
 		JRadioButton withInternet = new JRadioButton("Z internetem");
@@ -110,9 +100,9 @@ public class ProblematicKanjiPanel implements PanelCreator {
 				useInternet = false;
 			}
 		});
-		main.addRow(
+		mainPanel.addRow(
 				RowMaker.createUnfilledRow(GridBagConstraints.WEST, withInternet, withoutInternet));
-		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER,
+		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER,
 				new JLabel("Do powtórzenia")));
 
 		MainPanel panelInScrollPane = new MainPanel(BasicColors.LIGHT_BLUE, true);
@@ -155,19 +145,12 @@ public class ProblematicKanjiPanel implements PanelCreator {
 
 		}
 
-		main.addRow(RowMaker.createBothSidesFilledRow(scrollPane));
+		mainPanel.addRow(RowMaker.createBothSidesFilledRow(scrollPane));
 
 		JButton button = GuiElementsMaker.createButton(ButtonsNames.buttonApproveText,
 				CommonActionsMaker.createDisposeAction(parentDialog));
 
-		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, button));
-		return main.getPanel();
-	}
-
-	private void addEscapeOnClose() {
-		CommonActionsMaker.addHotkey(KeyEvent.VK_ESCAPE,
-				CommonActionsMaker.createDisposeAction(parentDialog),
-				main.getPanel().getRootPane());
+		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, button));
 	}
 
 	private void configureParentDialog() {
@@ -283,7 +266,7 @@ public class ProblematicKanjiPanel implements PanelCreator {
 	}
 
 	public void clear() {
-		main.clear();
+		mainPanel.clear();
 	}
 
 }

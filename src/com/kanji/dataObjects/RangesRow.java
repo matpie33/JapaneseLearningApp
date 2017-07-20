@@ -45,7 +45,6 @@ public class RangesRow {
 		range = new Range(valueFrom, valueTo);
 	}
 
-	// TODO equals and hashcode might not be needed anymore
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof RangesRow) {

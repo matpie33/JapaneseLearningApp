@@ -5,42 +5,30 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import com.guimaker.colors.BasicColors;
-import com.guimaker.panels.MainPanel;
 import com.guimaker.row.RowMaker;
-import com.kanji.actions.GuiElementsMaker;
 import com.kanji.constants.ButtonsNames;
-import com.kanji.windows.DialogWindow;
+import com.kanji.constants.HotkeysDescriptions;
 import com.sun.glass.events.KeyEvent;
 
-public class ConfirmPanel implements PanelCreator {
+public class ConfirmPanel extends AbstractPanelWithHotkeysInfo {
 
-	private MainPanel main;
-	private DialogWindow parentDialog;
 	private String message;
 
 	public ConfirmPanel(String message) {
-		main = new MainPanel(BasicColors.OCEAN_BLUE);
 		this.message = message;
 	}
 
 	@Override
-	public void setParentDialog(DialogWindow parent) {
-		parentDialog = parent;
-	}
-
-	@Override
-	public JPanel createPanel() {
+	void createElements() {
 		JTextArea prompt = addPromptAtLevel(message);
 		JButton yesButton = createButtonConfirm();
 		JButton noButton = createButtonReject();
 
-		main.addRow(RowMaker.createBothSidesFilledRow(prompt));
-		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, noButton, yesButton));
-		return main.getPanel();
+		mainPanel.addRow(RowMaker.createBothSidesFilledRow(prompt));
+		mainPanel
+				.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, noButton, yesButton));
 	}
 
 	private JTextArea addPromptAtLevel(String message) {
@@ -62,7 +50,8 @@ public class ConfirmPanel implements PanelCreator {
 				parentDialog.setAccepted(true);
 			}
 		};
-		return GuiElementsMaker.createButton(ButtonsNames.buttonConfirmText, action, KeyEvent.VK_ENTER);
+		return createButtonWithHotkey(KeyEvent.VK_ENTER, action, ButtonsNames.buttonConfirmText,
+				HotkeysDescriptions.CONFIRM_ACTION);
 	}
 
 	private JButton createButtonReject() {
@@ -75,7 +64,8 @@ public class ConfirmPanel implements PanelCreator {
 				parentDialog.setAccepted(false);
 			}
 		};
-		return GuiElementsMaker.createButton(ButtonsNames.buttonRejectText, action, KeyEvent.VK_ESCAPE);
+		return createButtonWithHotkey(KeyEvent.VK_ESCAPE, action, ButtonsNames.buttonRejectText,
+				HotkeysDescriptions.REJECT_ACTION);
 	}
 
 }

@@ -9,7 +9,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -33,43 +32,40 @@ import com.kanji.Row.RepeatingList;
 import com.kanji.actions.CommonActionsMaker;
 import com.kanji.actions.GuiElementsMaker;
 import com.kanji.constants.ButtonsNames;
+import com.kanji.constants.HotkeysDescriptions;
+import com.kanji.constants.Labels;
 import com.kanji.constants.NumberValues;
 import com.kanji.constants.Options;
 import com.kanji.constants.Prompts;
+import com.kanji.constants.Titles;
 import com.kanji.controllers.LearningStartController;
 import com.kanji.myList.MyList;
 import com.kanji.utilities.LimitDocumentFilter;
 import com.kanji.windows.ApplicationWindow;
-import com.kanji.windows.DialogWindow;
 
-public class LearningStartPanel implements PanelCreator {
+public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
-	private MainPanel mainPanel;
 	private JScrollPane scrollPane;
 	private JTextField sumRangeField;
 	private JCheckBox problematicCheckbox;
-	private DialogWindow parentDialog;
 	private LearningStartController controller;
 	private MainPanel rangesPanel;
 
 	public LearningStartPanel(ApplicationWindow parentOfParent, int numberOfWords,
 			MyList<RepeatingList> list) {
+		super(true);
 		controller = new LearningStartController(list, numberOfWords, parentOfParent, this);
 		mainPanel = new MainPanel(BasicColors.OCEAN_BLUE, false);
-		new ArrayList<>();
 	}
 
 	@Override
-	public void setParentDialog(DialogWindow parent) {
-		parentDialog = parent;
-	}
-
-	@Override
-	public JPanel createPanel() {
+	void createElements() {
 
 		JTextArea prompt = createPrompt();
 		problematicCheckbox = createProblematicKanjiCheckbox();
 		rangesPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE, true);
+		rangesPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER,
+				new JLabel(Titles.kanjiRanges)));
 		scrollPane = createRangesPanelScrollPane();
 		addRowToRangesPanel();
 
@@ -88,7 +84,6 @@ public class LearningStartPanel implements PanelCreator {
 		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(newRow, sumRangeField)
 				.fillHorizontallySomeElements(sumRangeField));
 		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.EAST, cancel, approve));
-		return mainPanel.getPanel();
 	}
 
 	private JScrollPane createRangesPanelScrollPane() {
@@ -114,7 +109,6 @@ public class LearningStartPanel implements PanelCreator {
 			public void itemStateChanged(ItemEvent e) {
 				boolean problematicCheckboxSelected = problematicCheckbox.isSelected();
 				controller.updateProblematicKanjiNumber(problematicCheckboxSelected);
-
 			}
 		};
 
@@ -129,7 +123,8 @@ public class LearningStartPanel implements PanelCreator {
 		};
 
 		problematicCheckbox.addItemListener(action);
-		CommonActionsMaker.addHotkey(KeyEvent.VK_P, action2, mainPanel.getPanel());
+		addHotkey(KeyEvent.VK_P, action2, mainPanel.getPanel(),
+				HotkeysDescriptions.ADD_PROBLEMATIC_KANJIS);
 
 		return problematicCheckbox;
 
@@ -137,13 +132,10 @@ public class LearningStartPanel implements PanelCreator {
 
 	public int showLabelWithProblematicKanjis() {
 		Component c = parentDialog.getContainer().getFocusOwner();
-		JLabel label = new JLabel("+ problematyczne");
+		JLabel label = new JLabel(Prompts.problematicKanjisAddedPrompt);
 		label.setForeground(BasicColors.NAVY_BLUE);
 		int rowNumber = rangesPanel.getNumberOfRows();
-		rangesPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, label)); // TODO
-																							// move
-																							// to
-																							// strings
+		rangesPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, label));
 		c.requestFocusInWindow();
 		return rowNumber;
 
@@ -155,7 +147,6 @@ public class LearningStartPanel implements PanelCreator {
 
 	private void addRowToRangesPanel() {
 
-		JLabel from = new JLabel("od"); // TODO separate it into constants;
 		boolean problematicCheckboxSelected = problematicCheckbox.isSelected();
 		int nextRowNumber = rangesPanel.getNumberOfRows();
 		if (problematicCheckboxSelected) {
@@ -171,14 +162,17 @@ public class LearningStartPanel implements PanelCreator {
 			}
 		});
 
-		JLabel labelTo = new JLabel("do");
+		JLabel from = new JLabel(Labels.rangeFromLabel);
+		JLabel labelTo = new JLabel(Labels.rangeToLabel);
 		JTextField fieldTo = textFields[1];
 		JButton delete = createDeleteButton(fieldFrom, fieldTo);
 		if (controller.getNumberOfRangesRows() == 1) {
 			delete.setVisible(false);
 		}
+
 		SimpleRow newRow = RowMaker.createHorizontallyFilledRow(from, fieldFrom, labelTo, fieldTo,
 				delete);
+
 		if (problematicCheckboxSelected) {
 			controller.increaseProblematicLabelRowNumber();
 			rangesPanel.insertRow(nextRowNumber, newRow);
@@ -324,7 +318,7 @@ public class LearningStartPanel implements PanelCreator {
 	}
 
 	public void changeVisibilityOfDeleteButtonInFirstRow(boolean visibility) {
-		rangesPanel.changeVisibilityOfLastElementInRow(0, visibility);
+		rangesPanel.changeVisibilityOfLastElementInRow(1, visibility);
 	}
 
 }

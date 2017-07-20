@@ -153,7 +153,6 @@ public class LearningStartController {
 				row.setRowNumber(row.getTextFieldsRowNumber() + direction);
 			}
 		}
-		System.out.println(rangesRows);
 	}
 
 	private boolean handleEmptyTextFields(KeyEvent e, JTextField to, JTextField from,

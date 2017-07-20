@@ -14,15 +14,7 @@ public class CommonActionsMaker {
 
 	public static JButton createButtonDispose(String text, int keyEventName,
 			final DialogWindow dialog) {
-		AbstractAction action = new AbstractAction() {
-			private static final long serialVersionUID = 5504620933205592893L;
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				dialog.getContainer().dispose();
-			}
-		};
-		return createButtonWithAction(text, keyEventName, dialog, action);
+		return createButtonWithAction(text, keyEventName, dialog, createDisposeAction(dialog));
 	}
 
 	public static AbstractAction createDisposeAction(final DialogWindow dialog) {
@@ -58,6 +50,7 @@ public class CommonActionsMaker {
 	}
 
 	public static void addHotkey(int keyEvent, AbstractAction a, JComponent component) {
+
 		component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
 				.put(KeyStroke.getKeyStroke(keyEvent, 0), KeyEvent.getKeyText(keyEvent));
 		component.getActionMap().put(KeyEvent.getKeyText(keyEvent), a);

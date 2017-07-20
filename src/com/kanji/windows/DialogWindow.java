@@ -17,10 +17,10 @@ import javax.swing.JPanel;
 
 import com.kanji.actions.CommonActionsMaker;
 import com.kanji.constants.Titles;
+import com.kanji.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.panels.ConfirmPanel;
 import com.kanji.panels.KanjiPanel;
 import com.kanji.panels.MessagePanel;
-import com.kanji.panels.PanelCreator;
 import com.kanji.panels.ProblematicKanjiPanel;
 
 public class DialogWindow {
@@ -69,10 +69,11 @@ public class DialogWindow {
 		mainPanel = panel;
 	}
 
-	public void showYourself(String title, boolean modal, boolean closeOnEscape) {
+	public void showYourself(AbstractPanelWithHotkeysInfo panelCreator, String title,
+			boolean modal) {
 		container.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		container.setContentPane(mainPanel);
-		if (closeOnEscape) {
+		if (panelCreator.isEscapeOnClose()) {
 			CommonActionsMaker.addHotkey(KeyEvent.VK_ESCAPE,
 					CommonActionsMaker.createDisposeAction(this), mainPanel.getRootPane());
 		}
@@ -135,23 +136,19 @@ public class DialogWindow {
 	}
 
 	public void showMsgDialog(String message) {
-		showPanel(new MessagePanel(message), Titles.messageDialogTitle, true, Position.CENTER);
+		showPanel(new MessagePanel(message), Titles.messageDialog, true, Position.CENTER);
 	}
 
-	public void showPanel(PanelCreator panel, String title, boolean modal, Position position,
-			boolean closeOnEscape) {
+	public void showPanel(AbstractPanelWithHotkeysInfo panelCreator, String title, boolean modal,
+			Position position) {
 		if (childWindowIsClosed()) {
 			childWindow = new DialogWindow(this);
-			panel.setParentDialog(childWindow);
+			panelCreator.setParentDialog(childWindow);
 			childWindow.setPosition(position);
-			JPanel panell = panel.createPanel();
-			childWindow.setPanel(panell);
-			childWindow.showYourself(title, modal, closeOnEscape);
+			JPanel panel = panelCreator.createPanel();
+			childWindow.setPanel(panel);
+			childWindow.showYourself(panelCreator, title, modal);
 		}
-	}
-
-	public void showPanel(PanelCreator panel, String title, boolean modal, Position position) {
-		showPanel(panel, title, modal, position, false);
 	}
 
 	private boolean childWindowIsClosed() {
@@ -159,7 +156,7 @@ public class DialogWindow {
 	}
 
 	public boolean showConfirmDialog(String message) {
-		showPanel(new ConfirmPanel(message), Titles.confirmDialogTitle, true, Position.CENTER);
+		showPanel(new ConfirmPanel(message), Titles.confirmDialog, true, Position.CENTER);
 		return isAccepted();
 	}
 

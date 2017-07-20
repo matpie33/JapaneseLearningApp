@@ -65,7 +65,7 @@ public class ElementMaker {
 
 			if (e.getKeyCode() == KeyEvent.VK_F && e.isControlDown())
 				searchWord();
-			if (e.getKeyCode() == KeyEvent.VK_Q) {
+			if (e.getKeyCode() == KeyEvent.VK_Q && e.isControlDown()) {
 				if (!openingFile) {
 					openingFile = true;
 					openKanjiFile();
@@ -269,7 +269,7 @@ public class ElementMaker {
 
 	private void initListOfWords() {
 
-		listOfWords = new MyList<KanjiWords>(parent, Titles.wordsListTitle,
+		listOfWords = new MyList<KanjiWords>(parent, Titles.wordsList,
 				new RowInKanjiInformations(listOfWords), this);
 
 		KanjiWords words = new KanjiWords(listOfWords);
@@ -285,7 +285,7 @@ public class ElementMaker {
 	}
 
 	private void initRepeatsList() {
-		repeats = new MyList<RepeatingList>(parent, Titles.repeatedWordsListTitle,
+		repeats = new MyList<RepeatingList>(parent, Titles.repeatedWordsList,
 				new RowInRepeatingList(repeats), this);
 		repeats.setWords(new RepeatingList(repeats));
 	}

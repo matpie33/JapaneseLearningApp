@@ -7,32 +7,23 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.RowMaker;
-import com.kanji.actions.GuiElementsMaker;
 import com.kanji.constants.ButtonsNames;
-import com.kanji.windows.DialogWindow;
+import com.kanji.constants.HotkeysDescriptions;
 
-public class KanjiPanel implements PanelCreator {
-	private MainPanel main;
-	private DialogWindow parentDialog;
+public class KanjiPanel extends AbstractPanelWithHotkeysInfo {
 	private String kanjiToDisplay;
 	private ProblematicKanjiPanel problematicKanjiPanel;
 	private JTextArea kanjiArea;
 
 	public KanjiPanel(String kanji, ProblematicKanjiPanel problematicKanjiPanel) {
-		main = new MainPanel(BasicColors.OCEAN_BLUE);
+		mainPanel = new MainPanel(BasicColors.OCEAN_BLUE);
 		this.kanjiToDisplay = kanji;
 		this.problematicKanjiPanel = problematicKanjiPanel;
-	}
-
-	@Override
-	public void setParentDialog(DialogWindow parent) {
-		parentDialog = parent;
 	}
 
 	public void changeKanji(String kanji) {
@@ -40,13 +31,11 @@ public class KanjiPanel implements PanelCreator {
 	}
 
 	@Override
-	public JPanel createPanel() {
+	void createElements() {
 		kanjiArea = addPromptAtLevel(kanjiToDisplay);
 		JButton buttonNext = createButtonShowNextKanji();
-
-		main.addRow(RowMaker.createBothSidesFilledRow(kanjiArea));
-		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, buttonNext));
-		return main.getPanel();
+		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, kanjiArea));
+		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, buttonNext));
 	}
 
 	private JTextArea addPromptAtLevel(String message) {
@@ -67,7 +56,8 @@ public class KanjiPanel implements PanelCreator {
 				problematicKanjiPanel.showNextKanji();
 			}
 		};
-		return GuiElementsMaker.createButton(ButtonsNames.buttonNextText, al, KeyEvent.VK_SPACE);
+		return createButtonWithHotkey(KeyEvent.VK_SPACE, al, ButtonsNames.buttonNextText,
+				HotkeysDescriptions.SHOW_NEXT_KANJI);
 	}
 
 }

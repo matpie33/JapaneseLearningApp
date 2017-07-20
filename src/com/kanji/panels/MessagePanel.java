@@ -3,43 +3,30 @@ package com.kanji.panels;
 import java.awt.GridBagConstraints;
 
 import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import com.guimaker.colors.BasicColors;
-import com.guimaker.panels.MainPanel;
 import com.guimaker.row.RowMaker;
 import com.kanji.actions.CommonActionsMaker;
 import com.kanji.constants.ButtonsNames;
-import com.kanji.windows.DialogWindow;
 
-public class MessagePanel implements PanelCreator {
+public class MessagePanel extends AbstractPanelWithHotkeysInfo {
 
-	private MainPanel main;
-	private GridBagConstraints layoutConstraints;
-	private DialogWindow parentDialog;
 	private String message;
 
 	public MessagePanel(String message) {
+		super(true);
 		this.message = message;
-		main = new MainPanel(BasicColors.OCEAN_BLUE);
 	}
 
 	@Override
-	public void setParentDialog(DialogWindow parent) {
-		parentDialog = parent;
-	}
-
-	@Override
-	public JPanel createPanel() {
+	void createElements() {
 		int level = 0;
 		JTextArea prompt = addPromptAtLevel(level, message);
 		JButton button = CommonActionsMaker.createButtonDispose(ButtonsNames.buttonApproveText,
 				java.awt.event.KeyEvent.VK_ESCAPE, parentDialog);
 
-		main.addRow(RowMaker.createBothSidesFilledRow(prompt));
-		main.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, button));
-		return main.getPanel();
+		mainPanel.addRow(RowMaker.createBothSidesFilledRow(prompt));
+		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, button));
 	}
 
 	private JTextArea addPromptAtLevel(int level, String message) {

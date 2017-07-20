@@ -164,7 +164,7 @@ public class ApplicationWindow extends DialogWindow {
 		container.setContentPane(mainPanel);
 		container.pack();
 		container.setMinimumSize(container.getSize());
-		container.setTitle(Titles.appTitle);
+		container.setTitle(Titles.app);
 		container.setLocationRelativeTo(null);
 		container.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
@@ -222,7 +222,7 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void updateTitle(String update) {
-		container.setTitle(Titles.appTitle + "   " + update);
+		container.setTitle(Titles.app + "   " + update);
 	}
 
 	public void addToRepeatsList(RepeatingInformation info) {
@@ -251,21 +251,19 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void showLearningStartDialog(MyList list, int maximumNumber) {
-		showPanel(new LearningStartPanel(this, maximumNumber, list), Titles.learnStartDialogTitle,
-				false, Position.CENTER, true);
+		showPanel(new LearningStartPanel(this, maximumNumber, list), Titles.learnStartDialog, false,
+				Position.CENTER);
 
 	}
 
 	// TODO dialogs should either be jframe or modal in order for alt tab to
 	// switch focus to the right window
 	public void showInsertDialog(MyList list) {
-		showPanel(new InsertWordPanel(list), Titles.insertWordDialogTitle, false,
-				Position.LEFT_CORNER, true);
+		showPanel(new InsertWordPanel(list), Titles.insertWordDialog, false, Position.LEFT_CORNER);
 	}
 
 	public void showSearchWordDialog(MyList list) {
-		showPanel(new SearchWordPanel(list), Titles.insertWordDialogTitle, false,
-				Position.LEFT_CORNER);
+		showPanel(new SearchWordPanel(list), Titles.insertWordDialog, false, Position.LEFT_CORNER);
 	}
 
 	public void showProblematicKanjiDialog(KanjiWords kanjiWords, Set<Integer> problematicKanjis) {
@@ -274,13 +272,13 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void showProblematicKanjiDialog() {
-		showPanel(problematicKanjiPanel, Titles.insertWordDialogTitle, true, Position.CENTER, true);
+		showPanel(problematicKanjiPanel, Titles.insertWordDialog, true, Position.CENTER);
 	}
 
 	public LoadingPanel showProgressDialog() { // TODO progress dialog doesn't
 												// scroll anymore
 		LoadingPanel dialog = new LoadingPanel(Prompts.kanjiLoadingPrompt);
-		showPanel(dialog, Titles.messageDialogTitle, false, Position.CENTER);
+		showPanel(dialog, Titles.messageDialog, false, Position.CENTER);
 		return dialog;
 	}
 

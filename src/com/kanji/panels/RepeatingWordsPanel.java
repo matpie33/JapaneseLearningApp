@@ -96,7 +96,7 @@ public class RepeatingWordsPanel extends JPanel implements TimeSpentMonitor { //
 	}
 
 	private void createPanel() {
-		JLabel titleLabel = new JLabel(Titles.repeatingWordsTitle);
+		JLabel titleLabel = new JLabel(Titles.repeatingWords);
 		this.time = new JLabel(this.timeLabel);
 		centerPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.NORTH, titleLabel, time));
 		// if (!this.wordsToRepeat.isEmpty()) {
