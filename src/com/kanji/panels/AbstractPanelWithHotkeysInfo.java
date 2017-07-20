@@ -27,7 +27,6 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	public AbstractPanelWithHotkeysInfo(boolean isEscapeClosingWindow) {
 		this();
 		this.escapeKeyShouldClose = isEscapeClosingWindow;
-
 	}
 
 	public AbstractPanelWithHotkeysInfo() {
@@ -42,9 +41,6 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	}
 
 	private void addHotkeysPanel() {
-		if (hotkeysPanel.getNumberOfRows() > 1) {
-			return;
-		}
 		if (escapeKeyShouldClose) {
 			addHotkeyInformation(HotkeysDescriptions.CLOSE_WINDOW, KeyEvent.VK_ESCAPE);
 		}
@@ -87,6 +83,10 @@ public abstract class AbstractPanelWithHotkeysInfo {
 
 	public boolean isEscapeOnClose() {
 		return escapeKeyShouldClose;
+	}
+
+	public DialogWindow getDialog() {
+		return parentDialog;
 	}
 
 }

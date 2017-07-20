@@ -21,6 +21,7 @@ public class KanjiPanel extends AbstractPanelWithHotkeysInfo {
 	private JTextArea kanjiArea;
 
 	public KanjiPanel(String kanji, ProblematicKanjiPanel problematicKanjiPanel) {
+		super(true);
 		mainPanel = new MainPanel(BasicColors.OCEAN_BLUE);
 		this.kanjiToDisplay = kanji;
 		this.problematicKanjiPanel = problematicKanjiPanel;

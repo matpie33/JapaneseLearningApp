@@ -151,6 +151,11 @@ public class DialogWindow {
 		}
 	}
 
+	public void showReadyPanel(DialogWindow childWindow) {
+		this.childWindow = childWindow;
+		childWindow.getContainer().setVisible(true);
+	}
+
 	private boolean childWindowIsClosed() {
 		return childWindow == null || !childWindow.getContainer().isVisible();
 	}

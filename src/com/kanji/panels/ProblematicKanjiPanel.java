@@ -18,6 +18,7 @@ import java.util.Set;
 import javax.swing.AbstractAction;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -30,6 +31,7 @@ import com.kanji.Row.KanjiWords;
 import com.kanji.actions.CommonActionsMaker;
 import com.kanji.actions.GuiElementsMaker;
 import com.kanji.constants.ButtonsNames;
+import com.kanji.constants.HotkeysDescriptions;
 import com.kanji.fileReading.ExcelReader;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
@@ -76,10 +78,6 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	@Override
 	void createElements() {
 		configureParentDialog();
-		if (mainPanel.getNumberOfRows() > 0) {
-			return;
-		}
-
 		JRadioButton withInternet = new JRadioButton("Z internetem");
 		JRadioButton withoutInternet = new JRadioButton("Bez internetu");
 		ButtonGroup group = new ButtonGroup();
@@ -166,7 +164,8 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 			}
 		};
 
-		parentDialog.addHotkeyToWindow(KeyEvent.VK_SPACE, a);
+		addHotkey(KeyEvent.VK_SPACE, a, ((JDialog) parentDialog.getContainer()).getRootPane(),
+				HotkeysDescriptions.SHOW_NEXT_KANJI);
 		// TODO create a variable how many rows should be initially then just
 		// add so many rows and use that size as preferred,then remove the rows
 		parentDialog.getContainer().setPreferredSize(new Dimension(600, 400));
