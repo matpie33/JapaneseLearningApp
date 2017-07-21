@@ -1,29 +1,13 @@
 package com.kanji.windows;
 
 import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.Point;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.border.Border;
 
-import com.guimaker.colors.BasicColors;
-import com.guimaker.panels.MainPanel;
-import com.guimaker.row.RowMaker;
 import com.kanji.Row.KanjiWords;
 import com.kanji.Row.RepeatingInformation;
 import com.kanji.constants.Prompts;
@@ -37,35 +21,25 @@ import com.kanji.panels.LoadingPanel;
 import com.kanji.panels.ProblematicKanjiPanel;
 import com.kanji.panels.RepeatingWordsPanel;
 import com.kanji.panels.SearchWordPanel;
+import com.kanji.panels.StartingPanel;
 import com.kanji.range.SetOfRanges;
 import com.kanji.utilities.ElementMaker;
 
 @SuppressWarnings("serial")
 public class ApplicationWindow extends DialogWindow {
 
-	private Insets insets = new Insets(20, 20, 20, 20);
 	private ElementMaker maker;
-	private JScrollPane listScrollWords;
-	private JScrollPane listScrollRepeated;
-	private final Dimension scrollPanesSize = new Dimension(300, 300);
-	private final Dimension minimumListSize = new Dimension(200, 100);
-	private JPanel mainPanel;
+	private JPanel mainApplicationPanel;
 	private RepeatingWordsPanel repeatingWordsPanel;
 	private Set<Integer> problematicKanjis;
 	private JSplitPane listsSplitPane;
-	private GridBagLayout g;
-	private MainPanel infoPanel;
-	private MainPanel buttonsPanel;
-	private JButton showProblematicKanjis;
-	private MainPanel main;
 	private ProblematicKanjiPanel problematicKanjiPanel;
+	private StartingPanel startingPanel;
 	private JFrame container;
-	private int infoPanelComponentsRow = 0;
+
 	// TODO handle the situation in gui maker when the panel has just 1 row so
 	// we
 	// don't have to use row (0) but somehow easier
-
-	private JLabel saveInfo;
 
 	public ExcelReader excel;
 
@@ -73,104 +47,37 @@ public class ApplicationWindow extends DialogWindow {
 	public static final String LEARNING_PANEL = "Panel for repeating words";
 
 	public ApplicationWindow() {
-		// TODO separate panel from this class
-
 		super(null);
-
 		container = new JFrame();
-		main = new MainPanel(BasicColors.LIGHT_BLUE);
 		// TODO searching is case sensitive, should not be
 		problematicKanjis = new HashSet<Integer>();
 		maker = new ElementMaker(this);
-		mainPanel = new JPanel(new CardLayout());
-		container.setContentPane(mainPanel);
-		createUpperPanel();
-		createInformationsPanel();
-		createButtonsPanel(maker.getButtons());
+		mainApplicationPanel = new JPanel(new CardLayout());
 
-		JPanel listsPanel = putPanelsTogetherAndSetContentPane();
-		mainPanel.add(listsPanel, LIST_PANEL);
+		startingPanel = new StartingPanel(this, maker);
+		mainApplicationPanel.add(startingPanel.createPanel(), LIST_PANEL);
 
 		repeatingWordsPanel = new RepeatingWordsPanel(this);
-		mainPanel.add(repeatingWordsPanel.getPanel(), LEARNING_PANEL);
-		container.setJMenuBar(maker.getMenu());
+		mainApplicationPanel.add(repeatingWordsPanel.createPanel(), LEARNING_PANEL);
 
 		setWindowProperties();
-
-	}
-
-	private void createUpperPanel() {
-		MyList wordsList = maker.getWordsList();
-		MyList repeatsList = maker.getRepeatsList();
-		listScrollWords = createScrollPaneForList(wordsList);
-		listScrollRepeated = createScrollPaneForList(repeatsList);
-		listsSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, listScrollWords,
-				listScrollRepeated);
-		container.repaint();
-	}
-
-	private void createInformationsPanel() {
-		infoPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
-		saveInfo = new JLabel();
-		showProblematicKanjis = maker.getProblematicKanjiButton();
-		changeSaveStatus(SavingStatus.NO_CHANGES);
-		infoPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.WEST, saveInfo));
-	}
-
-	private JScrollPane createScrollPaneForList(MyList list) {
-
-		Border raisedBevel = BorderFactory.createLineBorder(Color.BLUE, 6);
-
-		JScrollPane listScrollWords = createScrollPane(BasicColors.OCEAN_BLUE, raisedBevel, list);
-		list.setScrollPane(listScrollWords);
-		listScrollWords.setMinimumSize(minimumListSize);
-
-		return listScrollWords;
-
-	}
-
-	private JScrollPane createScrollPane(Color bgColor, Border border, Component component) {
-
-		JScrollPane scroll = new JScrollPane(component);
-		scroll.getViewport().setBackground(bgColor);
-		scroll.setBorder(border);
-		scroll.getVerticalScrollBar().setUnitIncrement(20);
-		scroll.setPreferredSize(scrollPanesSize);
-		return scroll;
-
-	}
-
-	private void createButtonsPanel(List<JButton> list) {
-
-		buttonsPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
-		buttonsPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.WEST,
-				list.toArray(new JButton[] {})));
-
-	}
-
-	private boolean indexIsHigherThanHalfOfSize(int i, int size) {
-		return i > (size - 1) / 2;
-	}
-
-	private JPanel putPanelsTogetherAndSetContentPane() {
-		MainPanel main = new MainPanel(BasicColors.LIGHT_BLUE);
-		main.addRow(RowMaker.createBothSidesFilledRow(listsSplitPane));
-		main.addRow(RowMaker.createHorizontallyFilledRow(buttonsPanel.getPanel()));
-		main.addRow(RowMaker.createHorizontallyFilledRow(infoPanel.getPanel()));
-		return main.getPanel();
+		startingPanel.addHotkeys();
 	}
 
 	private void setWindowProperties() {
-		container.setContentPane(mainPanel);
+		container = new JFrame();
+		container.setJMenuBar(maker.getMenu());
+		container.setContentPane(mainApplicationPanel);
 		container.pack();
 		container.setMinimumSize(container.getSize());
 		container.setTitle(Titles.app);
 		container.setLocationRelativeTo(null);
 		container.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		container.setVisible(true);
 	}
 
 	public void showCardPanel(String cardName) {
-		((CardLayout) mainPanel.getLayout()).show(mainPanel, cardName);
+		((CardLayout) mainApplicationPanel.getLayout()).show(mainApplicationPanel, cardName);
 	}
 
 	public void setWordsRangeToRepeat(SetOfRanges ranges, boolean withProblematic) {
@@ -206,18 +113,12 @@ public class ApplicationWindow extends DialogWindow {
 		this.problematicKanjis.addAll(problematicKanjis);
 	}
 
-	public void updateLeft() {
-		listsSplitPane.setLeftComponent(createScrollPaneForList(maker.getWordsList()));
-		container.repaint();
-	}
-
 	public void save() {
 		this.maker.save();
 	}
 
 	public void changeSaveStatus(SavingStatus savingStatus) {
-		saveInfo.setText(Prompts.savingStatusPrompt + savingStatus.getStatus() + "; "
-				+ Prompts.problematicKanjiPrompt + problematicKanjis.size());
+		startingPanel.changeSaveStatus(savingStatus);
 		container.repaint();
 	}
 
@@ -229,10 +130,6 @@ public class ApplicationWindow extends DialogWindow {
 		maker.getRepeatsList().getWords().add(info);
 	}
 
-	public Point getRightComponentOfSplitPanePosition() {
-		return listsSplitPane.getRightComponent().getLocation();
-	}
-
 	public void scrollToBottom() {
 		maker.getRepeatsList().scrollToBottom();
 	}
@@ -241,13 +138,11 @@ public class ApplicationWindow extends DialogWindow {
 		if (problematicKanjiPanel.allProblematicKanjisRepeated()) {
 			return;
 		}
-		infoPanel.addElementsToRow(infoPanelComponentsRow, showProblematicKanjis);
+		startingPanel.addButtonIcon();
 	}
 
 	public void removeButtonProblematicsKanji() {
-		if (infoPanel.rowContainsComponent(infoPanelComponentsRow, showProblematicKanjis)) {
-			infoPanel.removeLastElementFromRow(infoPanelComponentsRow);
-		}
+		startingPanel.removeButtonProblematicsKanji();
 	}
 
 	public void showLearningStartDialog(MyList list, int maximumNumber) {
@@ -284,10 +179,6 @@ public class ApplicationWindow extends DialogWindow {
 
 	public void closeDialog() {
 		childWindow.getContainer().dispose();
-	}
-
-	public void setVisible(boolean vis) {
-		container.setVisible(vis);
 	}
 
 	public JFrame getContainer() {

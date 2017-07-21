@@ -14,7 +14,6 @@ public class AppStart {
 		System.out.println("v3: " + v3);
 
 		ApplicationWindow b = new ApplicationWindow();
-		b.setVisible(true);
 
 		SetOfRanges set = new SetOfRanges();
 		set.addRange(new Range(1, 5));

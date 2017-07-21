@@ -74,7 +74,7 @@ public class DialogWindow {
 		container.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		container.setContentPane(mainPanel);
 		if (panelCreator.isEscapeOnClose()) {
-			CommonActionsMaker.addHotkey(KeyEvent.VK_ESCAPE,
+			CommonActionsMaker.addHotkey(KeyEvent.VK_ESCAPE, 0,
 					CommonActionsMaker.createDisposeAction(this), mainPanel.getRootPane());
 		}
 
@@ -190,7 +190,7 @@ public class DialogWindow {
 	}
 
 	public void addHotkeyToWindow(int keyEvent, AbstractAction a) {
-		CommonActionsMaker.addHotkey(keyEvent, a, container.getRootPane());
+		CommonActionsMaker.addHotkey(keyEvent, 0, a, container.getRootPane());
 	}
 
 	public DialogWindow getParent() {

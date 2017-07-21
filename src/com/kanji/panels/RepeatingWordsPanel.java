@@ -27,8 +27,8 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.RowMaker;
 import com.kanji.Row.KanjiWords;
 import com.kanji.Row.RepeatingInformation;
-import com.kanji.actions.CommonActionsMaker;
 import com.kanji.constants.ButtonsNames;
+import com.kanji.constants.HotkeysDescriptions;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.Titles;
 import com.kanji.fileReading.ExcelReader;
@@ -40,10 +40,7 @@ import com.kanji.timer.TimeSpentMonitor;
 import com.kanji.windows.ApplicationWindow;
 import com.sun.glass.events.KeyEvent;
 
-public class RepeatingWordsPanel extends JPanel implements TimeSpentMonitor { // TODO
-																				// don't
-																				// extend
-																				// jpanel
+public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo implements TimeSpentMonitor {
 	private static final long serialVersionUID = 5557984078176822840L;
 	private MyList words;
 	private List<String> wordsToRepeat;
@@ -65,7 +62,6 @@ public class RepeatingWordsPanel extends JPanel implements TimeSpentMonitor { //
 	private final Color repeatingBackgroundColor = Color.white;
 	private final Color windowBackgroundColor = BasicColors.OCEAN_BLUE;
 	private MainPanel centerPanel;
-	private MainPanel mainPanel;
 	private int maxCharactersInRow = 15;
 	private JButton showPreviousWord;
 	private String previousWord = "";
@@ -75,27 +71,30 @@ public class RepeatingWordsPanel extends JPanel implements TimeSpentMonitor { //
 
 	public RepeatingWordsPanel(ApplicationWindow parent) {
 		centerPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
-		mainPanel = new MainPanel(BasicColors.OCEAN_BLUE);
 		excel = new ExcelReader();
 		excel.load();
 		currentProblematicKanjis = new HashSet<>();
 		this.wordsToRepeat = new LinkedList();
 		this.parent = parent;
 		initialize();
-		createPanel();
+		createPanels();
 		mainPanel.addRow(
 				RowMaker.createUnfilledRow(GridBagConstraints.CENTER, centerPanel.getPanel()));
 		timeSpentHandler = new TimeSpentHandler(this);
 
 	}
 
+	@Override
+	void createElements() {
+
+	}
+
 	private void initialize() {
 		// setLayout(new GridBagLayout());
-		setBackground(this.windowBackgroundColor);
 		this.repeatingPanel = new MainPanel(this.repeatingBackgroundColor);
 	}
 
-	private void createPanel() {
+	private void createPanels() {
 		JLabel titleLabel = new JLabel(Titles.repeatingWords);
 		this.time = new JLabel(this.timeLabel);
 		centerPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.NORTH, titleLabel, time));
@@ -150,8 +149,9 @@ public class RepeatingWordsPanel extends JPanel implements TimeSpentMonitor { //
 				repeatingPanel.removeLastElementFromRow(2);
 			}
 		};
-		showPreviousWord.addActionListener(action);
-		CommonActionsMaker.addHotkey(KeyEvent.VK_G, action, showPreviousWord);
+
+		showPreviousWord = createButtonWithHotkey(KeyEvent.VK_G, action,
+				ButtonsNames.buttonShowPreviousWord, HotkeysDescriptions.SHOW_PREVIOUS_KANJI);
 
 	}
 
@@ -237,16 +237,15 @@ public class RepeatingWordsPanel extends JPanel implements TimeSpentMonitor { //
 	}
 
 	private void createPauseOrResumeButton() {
-		this.pauseOrResume = new JButton("Pauza");
-		pauseOrResume.setFocusable(false);
+
 		AbstractAction a = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				pauseOrResume();
 			}
 		};
-		pauseOrResume.addActionListener(a);
-		pauseOrResume.getInputMap(2).put(KeyStroke.getKeyStroke(KeyEvent.VK_P, 0), "pressed");
-		pauseOrResume.getActionMap().put("pressed", a);
+		pauseOrResume = createButtonWithHotkey(KeyEvent.VK_P, a, ButtonsNames.buttonPause,
+				HotkeysDescriptions.PAUSE);
+		pauseOrResume.setFocusable(false);
 	}
 
 	private void pauseOrResume() {
@@ -257,7 +256,6 @@ public class RepeatingWordsPanel extends JPanel implements TimeSpentMonitor { //
 	}
 
 	private void createRecognizedWordButton() {
-		this.recognizedWord = new JButton(ButtonsNames.buttonRecognizedWordText);
 		AbstractAction a = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				if (pauseOrResume.getText().equals(ButtonsNames.buttonResumeText)) {
@@ -269,10 +267,9 @@ public class RepeatingWordsPanel extends JPanel implements TimeSpentMonitor { //
 				System.out.println("problematics: " + RepeatingWordsPanel.this.problematicKanjis);
 			}
 		};
-		this.recognizedWord.addActionListener(a);
-
-		this.recognizedWord.getInputMap(2).put(KeyStroke.getKeyStroke(32, 0), "pressed");
-		this.recognizedWord.getActionMap().put("pressed", a);
+		recognizedWord = createButtonWithHotkey(KeyEvent.VK_SPACE, a,
+				ButtonsNames.buttonRecognizedWordText,
+				HotkeysDescriptions.SHOW_KANJI_OR_SET_KANJI_AS_KNOWN_KANJI);
 	}
 
 	private void removeWordFromCurrentProblematics() {
@@ -315,6 +312,8 @@ public class RepeatingWordsPanel extends JPanel implements TimeSpentMonitor { //
 																	// for
 																	// adding
 																	// hotkey
+		notRecognizedWord = createButtonWithHotkey(KeyEvent.VK_A, a, ButtonsNames.buttonResumeText,
+				HotkeysDescriptions.SET_KANJI_AS_PROBLEMATIC);
 	}
 
 	private void addToProblematic() {
@@ -372,7 +371,7 @@ public class RepeatingWordsPanel extends JPanel implements TimeSpentMonitor { //
 		repeatingPanel
 				.addRow(RowMaker.createHorizontallyFilledRow(buttons).fillHorizontallyEqually());
 
-		repaint();
+		mainPanel.getPanel().repaint();
 
 	}
 
@@ -431,8 +430,8 @@ public class RepeatingWordsPanel extends JPanel implements TimeSpentMonitor { //
 		// removeAll();
 		// createPanel();
 		// pickRandomWord();
-		revalidate();
-		repaint();
+		mainPanel.getPanel().revalidate();
+		mainPanel.getPanel().repaint();
 		timeSpentHandler.startTimer();
 		getNextWord();
 

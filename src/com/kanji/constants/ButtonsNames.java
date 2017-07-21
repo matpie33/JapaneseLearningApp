@@ -24,6 +24,7 @@ public class ButtonsNames {
 	public static final String buttonRecognizedWordText = "Znam";
 	public static final String buttonShowPreviousWord = "Pokaż poprzednie";
 	public static final String buttonShowProblematicKanji = "Problematyczne kanji";
+	public static final String buttonPause = "Pauza";
 
 	public static final String buttonConfirmText = "Tak";
 	public static final String buttonRejectText = "Nie";

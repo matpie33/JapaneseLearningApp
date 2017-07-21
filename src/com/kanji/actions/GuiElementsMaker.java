@@ -10,7 +10,7 @@ public class GuiElementsMaker {
 
 	public static JButton createButton(String message, AbstractAction actionOnClick, int hotkey) {
 		JButton button = createButton(message, actionOnClick);
-		CommonActionsMaker.addHotkey(hotkey, actionOnClick, button);
+		CommonActionsMaker.addHotkey(hotkey, 0, actionOnClick, button);
 		return button;
 	}
 

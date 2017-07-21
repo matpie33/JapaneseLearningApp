@@ -31,7 +31,7 @@ public class CommonActionsMaker {
 	private static JButton createButtonWithAction(String text, int keyEventName,
 			final DialogWindow dialog, AbstractAction actionListener) {
 		JButton button = new JButton(text);
-		addHotkey(keyEventName, actionListener, button);
+		addHotkey(keyEventName, 0, actionListener, button);
 		button.addActionListener(actionListener);
 		return button;
 	}
@@ -49,10 +49,11 @@ public class CommonActionsMaker {
 		return createButtonWithAction(text, keyEventName, dialog, action);
 	}
 
-	public static void addHotkey(int keyEvent, AbstractAction a, JComponent component) {
+	public static void addHotkey(int keyEvent, int keyModifier, AbstractAction a,
+			JComponent component) {
 
 		component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-				.put(KeyStroke.getKeyStroke(keyEvent, 0), KeyEvent.getKeyText(keyEvent));
+				.put(KeyStroke.getKeyStroke(keyEvent, keyModifier), KeyEvent.getKeyText(keyEvent));
 		component.getActionMap().put(KeyEvent.getKeyText(keyEvent), a);
 	}
 

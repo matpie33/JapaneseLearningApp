@@ -54,35 +54,19 @@ public class ElementMaker {
 	private MyList<RepeatingList> repeats;
 	private JMenuBar menuBar;
 	private File fileToSave;
-	private SavingStatus savingStatus;
 	private JButton problematicKanjiButton;
+	private boolean openingFile;
 
 	private class MyDispatcher implements KeyEventDispatcher {
-		private boolean openingFile;
 
 		@Override
 		public boolean dispatchKeyEvent(KeyEvent e) {
-
-			if (e.getKeyCode() == KeyEvent.VK_F && e.isControlDown())
-				searchWord();
-			if (e.getKeyCode() == KeyEvent.VK_Q && e.isControlDown()) {
-				if (!openingFile) {
-					openingFile = true;
-					openKanjiFile();
-					openingFile = false;
-				}
-
-			}
-			if (e.getKeyCode() == KeyEvent.VK_R) {
-				start();
-			}
 			return false;
 		}
 	}
 
 	public ElementMaker(ApplicationWindow parent) {
 
-		savingStatus = SavingStatus.NO_CHANGES;
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 		manager.addKeyEventDispatcher(new MyDispatcher());
 		this.parent = parent;
@@ -134,7 +118,10 @@ public class ElementMaker {
 		menu.add(item);
 	}
 
-	private void openKanjiFile() {
+	public void openKanjiFile() {
+		if (!openingFile) {
+			openingFile = true;
+		}
 		fileToSave = openFile();
 		if (!fileToSave.exists())
 			return;
@@ -265,6 +252,10 @@ public class ElementMaker {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		finally {
+			openingFile = false;
+		}
+
 	}
 
 	private void initListOfWords() {

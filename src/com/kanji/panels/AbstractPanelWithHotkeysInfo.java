@@ -1,6 +1,7 @@
 package com.kanji.panels;
 
 import java.awt.GridBagConstraints;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
@@ -16,6 +17,7 @@ import com.kanji.actions.CommonActionsMaker;
 import com.kanji.actions.GuiElementsMaker;
 import com.kanji.constants.HotkeysDescriptions;
 import com.kanji.constants.Titles;
+import com.kanji.keyEvents.HotkeyWrapper;
 import com.kanji.windows.DialogWindow;
 
 public abstract class AbstractPanelWithHotkeysInfo {
@@ -35,22 +37,29 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	}
 
 	private void createHotkeysPanel() {
-		hotkeysPanel = new MainPanel(BasicColors.OCEAN_BLUE);
+		hotkeysPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
 		JLabel title = new JLabel(Titles.hotkeysTitle);
 		hotkeysPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, title));
 	}
 
 	private void addHotkeysPanel() {
 		if (escapeKeyShouldClose) {
-			addHotkeyInformation(HotkeysDescriptions.CLOSE_WINDOW, KeyEvent.VK_ESCAPE);
+			addHotkeyInformation(HotkeysDescriptions.CLOSE_WINDOW,
+					new HotkeyWrapper(KeyEvent.VK_ESCAPE));
 		}
 		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(hotkeysPanel.getPanel()));
 	}
 
 	public void addHotkey(int keyEvent, AbstractAction action, JComponent component,
 			String hotkeyDescription) {
-		CommonActionsMaker.addHotkey(keyEvent, action, component);
-		addHotkeyInformation(hotkeyDescription, keyEvent);
+		addHotkey(0, keyEvent, action, component, hotkeyDescription);
+	}
+
+	public void addHotkey(int keyModifier, int keyEvent, AbstractAction action,
+			JComponent component, String hotkeyDescription) {
+		HotkeyWrapper wrapper = new HotkeyWrapper(keyModifier, keyEvent);
+		CommonActionsMaker.addHotkey(keyEvent, wrapper.getKeyMask(), action, component);
+		addHotkeyInformation(hotkeyDescription, wrapper);
 	}
 
 	public JButton createButtonWithHotkey(int keyEvent, AbstractAction action, String buttonLabel,
@@ -60,13 +69,15 @@ public abstract class AbstractPanelWithHotkeysInfo {
 		return button;
 	}
 
-	private void addHotkeyInformation(String hotkeyDescription, int keyEvent) {
-		JLabel hotkeyInfo = new JLabel(createInformationAboutHotkey(keyEvent, hotkeyDescription));
+	private void addHotkeyInformation(String hotkeyDescription, HotkeyWrapper hotkey) {
+		JLabel hotkeyInfo = new JLabel(createInformationAboutHotkey(hotkey, hotkeyDescription));
 		hotkeysPanel.addRow(RowMaker.createHorizontallyFilledRow(hotkeyInfo));
 	}
 
-	private String createInformationAboutHotkey(int keyEvent, String description) {
-		return "Klawisz " + KeyEvent.getKeyText(keyEvent) + " : " + description;
+	private String createInformationAboutHotkey(HotkeyWrapper hotkey, String description) {
+		return (hotkey.hasProperKeyModifier()
+				? "Kombinacja " + KeyEvent.getKeyText(hotkey.getKeyModifier()) + " +" : "Klawisz")
+				+ " " + KeyEvent.getKeyText(hotkey.getKeyEvent()) + " : " + description;
 	}
 
 	public void setParentDialog(DialogWindow parent) {

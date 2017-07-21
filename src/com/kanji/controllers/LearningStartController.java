@@ -234,7 +234,10 @@ public class LearningStartController {
 
 	private void validateAndStart(boolean problematicCheckboxSelected) {
 
-		rangesToRepeat = sumRanges();
+		rangesToRepeat = sumRanges(); // TODO problem when someone types range
+										// and immediately presses enter -
+										// ranges to repeat is empty because no
+										// key released was found
 		if (rangesToRepeat.toString().isEmpty() && !problematicCheckboxSelected) {
 			learningStartPanel.showErrorDialog(ExceptionsMessages.noInputSupplied);
 			return;
