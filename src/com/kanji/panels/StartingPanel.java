@@ -80,7 +80,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		};
 		JRootPane rootPane = mainPanel.getPanel().getRootPane();
 		addHotkey(KeyEvent.VK_CONTROL, KeyEvent.VK_Q, loadKanjiDialog, rootPane,
-				HotkeysDescriptions.OPEN_START_LEARNING_DIALOG);
+				HotkeysDescriptions.OPEN_LOAD_KANJI_DIALOG);
 		addHotkey(KeyEvent.VK_CONTROL, KeyEvent.VK_R, startLearningDialog, rootPane,
 				HotkeysDescriptions.OPEN_START_LEARNING_DIALOG);
 		addHotkey(KeyEvent.VK_CONTROL, KeyEvent.VK_F, searchWord, rootPane,
