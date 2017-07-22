@@ -27,6 +27,7 @@ public class ConfirmPanel extends AbstractPanelWithHotkeysInfo {
 		JButton noButton = createButtonReject();
 
 		mainPanel.addRow(RowMaker.createBothSidesFilledRow(prompt));
+		addHotkeysPanelHere();
 		mainPanel
 				.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, noButton, yesButton));
 	}

@@ -26,6 +26,7 @@ public class MessagePanel extends AbstractPanelWithHotkeysInfo {
 				java.awt.event.KeyEvent.VK_ESCAPE, parentDialog);
 
 		mainPanel.addRow(RowMaker.createBothSidesFilledRow(prompt));
+		addHotkeysPanelHere();
 		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, button));
 	}
 

@@ -83,6 +83,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		mainPanel.addRow(RowMaker.createBothSidesFilledRow(scrollPane));
 		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(newRow, sumRangeField)
 				.fillHorizontallySomeElements(sumRangeField));
+		addHotkeysPanelHere();
 		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.EAST, cancel, approve));
 	}
 

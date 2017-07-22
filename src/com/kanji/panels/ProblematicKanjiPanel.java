@@ -148,6 +148,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		JButton button = GuiElementsMaker.createButton(ButtonsNames.buttonApproveText,
 				CommonActionsMaker.createDisposeAction(parentDialog));
 
+		addHotkeysPanelHere();
 		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, button));
 	}
 
@@ -168,7 +169,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 				HotkeysDescriptions.SHOW_NEXT_KANJI);
 		// TODO create a variable how many rows should be initially then just
 		// add so many rows and use that size as preferred,then remove the rows
-		parentDialog.getContainer().setPreferredSize(new Dimension(600, 400));
+		parentDialog.getContainer().setPreferredSize(new Dimension(600, 600));
 		parentDialog.getContainer().addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {

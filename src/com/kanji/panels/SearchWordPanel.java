@@ -93,13 +93,14 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(defaultSearchOption));
 		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(fullWordsSearchOption));
 		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(perfectMatchSearchOption));
+		addHotkeysPanelHere();
 		mainPanel.addRow( // TODO fix in gui maker: if putting rows as highest
 							// as
 							// possible, then west
 							// should be as highest as possible, but now I need
 							// to
 							// use northwest
-				RowMaker.createUnfilledRow(GridBagConstraints.NORTHWEST, previous, next, cancel));
+				RowMaker.createUnfilledRow(GridBagConstraints.NORTHEAST, cancel, previous, next));
 	}
 
 	private JTextField addPromptAndTextFieldAndReturnTextField(int level, String promptMessage) {

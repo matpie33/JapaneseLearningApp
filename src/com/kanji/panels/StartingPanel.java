@@ -54,6 +54,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		createInformationsPanel();
 		createButtonsPanel(maker.getButtons());
 		mainPanel.addRow(RowMaker.createBothSidesFilledRow(listsSplitPane));
+		addHotkeysPanelHere();
 		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(buttonsPanel.getPanel()));
 		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(infoPanel.getPanel()));
 	}

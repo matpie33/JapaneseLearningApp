@@ -36,6 +36,7 @@ public class KanjiPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiArea = addPromptAtLevel(kanjiToDisplay);
 		JButton buttonNext = createButtonShowNextKanji();
 		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, kanjiArea));
+		addHotkeysPanelHere();
 		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, buttonNext));
 	}
 

@@ -32,6 +32,7 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 				CommonActionsMaker.createDisposeAction(parentDialog));
 
 		mainPanel.addRow(RowMaker.createBothSidesFilledRow(prompt));
+		addHotkeysPanelHere();
 		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, okButton));
 
 	}

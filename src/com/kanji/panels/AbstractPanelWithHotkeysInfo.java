@@ -1,7 +1,6 @@
 package com.kanji.panels;
 
 import java.awt.GridBagConstraints;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
@@ -13,6 +12,7 @@ import javax.swing.JPanel;
 import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.RowMaker;
+import com.guimaker.row.SimpleRow;
 import com.kanji.actions.CommonActionsMaker;
 import com.kanji.actions.GuiElementsMaker;
 import com.kanji.constants.HotkeysDescriptions;
@@ -25,6 +25,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	private MainPanel hotkeysPanel;
 	protected DialogWindow parentDialog;
 	private boolean escapeKeyShouldClose;
+	private int hotkeysPanelIndex;
 
 	public AbstractPanelWithHotkeysInfo(boolean isEscapeClosingWindow) {
 		this();
@@ -36,10 +37,15 @@ public abstract class AbstractPanelWithHotkeysInfo {
 		createHotkeysPanel();
 	}
 
+	public void addHotkeysPanelHere() {
+		hotkeysPanelIndex = mainPanel.getNumberOfRows();
+	}
+
 	private void createHotkeysPanel() {
 		hotkeysPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
 		JLabel title = new JLabel(Titles.hotkeysTitle);
-		hotkeysPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, title));
+		title.setForeground(BasicColors.NAVY_BLUE);
+		hotkeysPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.WEST, title));
 	}
 
 	private void addHotkeysPanel() {
@@ -47,7 +53,14 @@ public abstract class AbstractPanelWithHotkeysInfo {
 			addHotkeyInformation(HotkeysDescriptions.CLOSE_WINDOW,
 					new HotkeyWrapper(KeyEvent.VK_ESCAPE));
 		}
-		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(hotkeysPanel.getPanel()));
+		SimpleRow row = RowMaker.createHorizontallyFilledRow(hotkeysPanel.getPanel());
+		if (hotkeysPanelIndex == 0) {
+			mainPanel.addRow(row);
+		}
+		else {
+			mainPanel.insertRow(hotkeysPanelIndex, row);
+		}
+
 	}
 
 	public void addHotkey(int keyEvent, AbstractAction action, JComponent component,
