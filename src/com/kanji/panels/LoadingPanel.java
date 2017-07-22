@@ -4,7 +4,7 @@ import java.awt.GridBagConstraints;
 
 import javax.swing.JButton;
 import javax.swing.JProgressBar;
-import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
 
 import com.guimaker.row.RowMaker;
 import com.kanji.actions.CommonActionsMaker;
@@ -16,7 +16,6 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 	private JButton okButton;
 	private String message;
 
-	// TODO hotkeys descriptions are not on the bottom in this panel
 	public LoadingPanel(String message) {
 		super(true);
 		this.message = message;
@@ -25,30 +24,20 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 	@Override
 	void createElements() {
 
-		int level = 0;
-		JTextArea prompt = addPromptAtLevel(level, message);
+		JScrollPane scrollPane = GuiElementsMaker
+				.createCenteredTextPaneWrappedInScrollPane(message);
 
 		okButton = GuiElementsMaker.createButton(ButtonsNames.buttonApproveText,
 				CommonActionsMaker.createDisposeAction(parentDialog));
 
-		mainPanel.addRow(RowMaker.createBothSidesFilledRow(prompt));
+		mainPanel.addRow(RowMaker.createBothSidesFilledRow(scrollPane));
 		addHotkeysPanelHere();
 		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, okButton));
 
 	}
 
-	private JTextArea addPromptAtLevel(int level, String message) {
-		JTextArea elem = new JTextArea(4, 30);
-		elem.setText(message);
-		elem.setLineWrap(true);
-		elem.setWrapStyleWord(true);
-		elem.setOpaque(false);
-		elem.setEditable(false);
-		return elem;
-	}
-
 	public void setProgressBar(JProgressBar bar) {
-		mainPanel.removeRow(1);
+		mainPanel.removeRow(2);// TODO this is bad
 		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(bar));
 		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, okButton));
 	}

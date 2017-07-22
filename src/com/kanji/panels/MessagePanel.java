@@ -3,10 +3,11 @@ package com.kanji.panels;
 import java.awt.GridBagConstraints;
 
 import javax.swing.JButton;
-import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
 
 import com.guimaker.row.RowMaker;
 import com.kanji.actions.CommonActionsMaker;
+import com.kanji.actions.GuiElementsMaker;
 import com.kanji.constants.ButtonsNames;
 
 public class MessagePanel extends AbstractPanelWithHotkeysInfo {
@@ -20,26 +21,14 @@ public class MessagePanel extends AbstractPanelWithHotkeysInfo {
 
 	@Override
 	void createElements() {
-		int level = 0;
-		JTextArea prompt = addPromptAtLevel(level, message);
 		JButton button = CommonActionsMaker.createButtonDispose(ButtonsNames.buttonApproveText,
 				java.awt.event.KeyEvent.VK_ESCAPE, parentDialog);
+		JScrollPane scrollPane = GuiElementsMaker
+				.createCenteredTextPaneWrappedInScrollPane(message);
 
-		mainPanel.addRow(RowMaker.createBothSidesFilledRow(prompt));
+		mainPanel.addRow(RowMaker.createBothSidesFilledRow(scrollPane));
 		addHotkeysPanelHere();
 		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, button));
-	}
-
-	private JTextArea addPromptAtLevel(int level, String message) {
-		JTextArea elem = new JTextArea(4, 30);
-
-		elem.setText(message);
-		elem.setLineWrap(true);
-		elem.setWrapStyleWord(true);
-		elem.setOpaque(false);
-		elem.setEditable(false);
-
-		return elem;
 	}
 
 }

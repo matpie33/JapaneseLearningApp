@@ -1,10 +1,18 @@
 package com.kanji.actions;
 
 import java.awt.Color;
+import java.awt.Dimension;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+
+import com.guimaker.colors.BasicColors;
 
 public class GuiElementsMaker {
 
@@ -24,6 +32,25 @@ public class GuiElementsMaker {
 		JLabel l = new JLabel(message);
 		l.setForeground(Color.red);
 		return l;
+	}
+
+	public static JScrollPane createCenteredTextPaneWrappedInScrollPane(String text) {
+		JScrollPane pane = new JScrollPane(createCenteredTextPane(text));
+		pane.setPreferredSize(new Dimension(250, 70));
+		return pane;
+	}
+
+	public static JTextPane createCenteredTextPane(String text) {
+		JTextPane textPane = new JTextPane();
+		textPane.setBackground(BasicColors.VERY_LIGHT_BLUE);
+		textPane.setText(text);
+		textPane.setEditable(false);
+		StyledDocument doc = textPane.getStyledDocument();
+		SimpleAttributeSet center = new SimpleAttributeSet();
+		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+		doc.setParagraphAttributes(0, doc.getLength(), center, false);
+
+		return textPane;
 	}
 
 	// TODO remember that we have element maker, gotta refactor it to here.

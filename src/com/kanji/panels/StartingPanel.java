@@ -50,6 +50,9 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 
 	@Override
 	void createElements() {
+		// TODO add line separator between panels
+		// TODO info panel should have some kind of border or other background
+		// color
 		createUpperPanel();
 		createInformationsPanel();
 		createButtonsPanel(maker.getButtons());
@@ -59,6 +62,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(infoPanel.getPanel()));
 	}
 
+	@SuppressWarnings("serial")
 	public void addHotkeys() {
 		AbstractAction searchWord = new AbstractAction() {
 			@Override
@@ -88,6 +92,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 				HotkeysDescriptions.OPEN_SEARCH_WORD_DIALOG);
 	}
 
+	@SuppressWarnings("rawtypes")
 	private void createUpperPanel() {
 		MyList wordsList = maker.getWordsList();
 		MyList repeatsList = maker.getRepeatsList();
@@ -98,7 +103,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private void createInformationsPanel() {
-		infoPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
+		infoPanel = new MainPanel(null);
 		saveInfo = new JLabel();
 		showProblematicKanjis = maker.getProblematicKanjiButton();
 		changeSaveStatus(SavingStatus.NO_CHANGES);
@@ -106,11 +111,12 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private void createButtonsPanel(List<JButton> list) {
-		buttonsPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
+		buttonsPanel = new MainPanel(null);
 		buttonsPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.WEST,
 				list.toArray(new JButton[] {})));
 	}
 
+	@SuppressWarnings("rawtypes")
 	private JScrollPane createScrollPaneForList(MyList list) {
 		Border raisedBevel = BorderFactory.createLineBorder(Color.BLUE, 6);
 		JScrollPane listScrollWords = createScrollPane(BasicColors.OCEAN_BLUE, raisedBevel, list);

@@ -62,7 +62,7 @@ public class LearningStartController {
 		}
 		else {
 			learningStartPanel.hideLabelWithProblematicKanjis(problematicLabelRow);
-			updateRows(problematicLabelRow - 1, -1);
+			updateRowsNumbers(problematicLabelRow - 1, -1);
 		}
 
 	}
@@ -90,14 +90,14 @@ public class LearningStartController {
 	private void removeError(RangesRow rangesRow) {
 		int rowNumber = rangesRow.getTextFieldsRowNumber();
 		learningStartPanel.removeRowFromPanel(rowNumber + 1);
-		updateRows(rowNumber, -1);
+		updateRowsNumbers(rowNumber, -1);
 	}
 
 	private void showError(RangesRow rangesRow, String error) {
 		int rowNumber = rangesRow.getTextFieldsRowNumber();
 		learningStartPanel.showErrorOnThePanel(error, rowNumber + 1);
 		rangesRow.setError(error);
-		updateRows(rowNumber, 1);
+		updateRowsNumbers(rowNumber, 1);
 	}
 
 	private RangesRow findRowWithTextFields(JTextField textFieldFrom, JTextField textFieldTo) {
@@ -147,10 +147,10 @@ public class LearningStartController {
 		updateKanjiNumber(problematicCheckboxSelected);
 	}
 
-	public void updateRows(int fromRowNumber, int direction) {
+	public void updateRowsNumbers(int fromRowNumber, int positiveOrNegativeValue) {
 		for (RangesRow row : rangesRows) {
 			if (row.getTextFieldsRowNumber() > fromRowNumber) {
-				row.setRowNumber(row.getTextFieldsRowNumber() + direction);
+				row.setRowNumber(row.getTextFieldsRowNumber() + positiveOrNegativeValue);
 			}
 		}
 	}
@@ -177,11 +177,11 @@ public class LearningStartController {
 		else if (rangeEnd <= rangeStart) {
 			error = ExceptionsMessages.rangeToValueLessThanRangeFromValue;
 		}
-		else if (isNumberHigherThanMaximum(rangeStart) || isNumberHigherThanMaximum(rangeEnd))
-			error = ExceptionsMessages.rangeValueTooHigh;
-		else if (rangeEnd > numberOfWords) {
+		else if (isNumberHigherThanMaximum(rangeStart) || isNumberHigherThanMaximum(rangeEnd)) {
 			error = ExceptionsMessages.rangeValueHigherThanMaximumKanjiNumber;
+			error += " (" + numberOfWords + ").";
 		}
+
 		return error;
 	}
 
@@ -209,7 +209,7 @@ public class LearningStartController {
 		if (wasError) {
 			decreaseBy = -2;
 		}
-		updateRows(rowWithTextFieldsNumber, decreaseBy);
+		updateRowsNumbers(rowWithTextFieldsNumber, decreaseBy);
 		rangesRows.remove(rowWithTextFields);
 		if (getNumberOfRangesRows() == 1) {
 			learningStartPanel.changeVisibilityOfDeleteButtonInFirstRow(false);

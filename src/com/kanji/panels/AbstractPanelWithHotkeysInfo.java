@@ -42,7 +42,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	}
 
 	private void createHotkeysPanel() {
-		hotkeysPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
+		hotkeysPanel = new MainPanel(null);
 		JLabel title = new JLabel(Titles.hotkeysTitle);
 		title.setForeground(BasicColors.NAVY_BLUE);
 		hotkeysPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.WEST, title));
@@ -88,9 +88,8 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	}
 
 	private String createInformationAboutHotkey(HotkeyWrapper hotkey, String description) {
-		return (hotkey.hasProperKeyModifier()
-				? "Kombinacja " + KeyEvent.getKeyText(hotkey.getKeyModifier()) + " +" : "Klawisz")
-				+ " " + KeyEvent.getKeyText(hotkey.getKeyEvent()) + " : " + description;
+		return (hotkey.hasProperKeyModifier() ? KeyEvent.getKeyText(hotkey.getKeyModifier()) + " + "
+				: "") + KeyEvent.getKeyText(hotkey.getKeyEvent()) + " : " + description;
 	}
 
 	public void setParentDialog(DialogWindow parent) {

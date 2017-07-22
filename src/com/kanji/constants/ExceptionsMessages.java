@@ -13,9 +13,9 @@ public class ExceptionsMessages {
 	public static final String wordAlreadyDefinedException = "Takie slowo juz istnieje.";
 	public static final String wordAlreadyHighlightedException = "To slowo jest juz zaznaczone."
 			+ "Nie znaleziono innych pozycji.";
-	public static final String rangeToValueLessThanRangeFromValue = "Za mała liczba";
+	public static final String rangeToValueLessThanRangeFromValue = "Górna wartość zakresu jest mniejsza lub równa dolnej wartości.";
 	public static final String rangeValueTooHigh = "Wpisana liczba jest za duża";
-	public static final String rangeValueHigherThanMaximumKanjiNumber = "Wpisana liczba jest większa niż liczba kanji";
+	public static final String rangeValueHigherThanMaximumKanjiNumber = "Wpisana liczba jest większa niż liczba kanji na liście";
 	public static final String valueIsNotNumber = "Proszę wpisać liczbę";
 	public static final String noInputSupplied = "Prosze cokolwiek wpisac!";
 	public static final String excelNotLoaded = "Musisz zaczekac. Klasa wczytujaca kanji"

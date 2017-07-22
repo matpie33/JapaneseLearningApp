@@ -5,9 +5,10 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
-import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
 
 import com.guimaker.row.RowMaker;
+import com.kanji.actions.GuiElementsMaker;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
 import com.sun.glass.events.KeyEvent;
@@ -22,25 +23,15 @@ public class ConfirmPanel extends AbstractPanelWithHotkeysInfo {
 
 	@Override
 	void createElements() {
-		JTextArea prompt = addPromptAtLevel(message);
+		JScrollPane scrollPane = GuiElementsMaker
+				.createCenteredTextPaneWrappedInScrollPane(message);
 		JButton yesButton = createButtonConfirm();
 		JButton noButton = createButtonReject();
 
-		mainPanel.addRow(RowMaker.createBothSidesFilledRow(prompt));
+		mainPanel.addRow(RowMaker.createBothSidesFilledRow(scrollPane));
 		addHotkeysPanelHere();
 		mainPanel
 				.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, noButton, yesButton));
-	}
-
-	private JTextArea addPromptAtLevel(String message) {
-		JTextArea elem = new JTextArea(4, 30);
-
-		elem.setText(message);
-		elem.setLineWrap(true);
-		elem.setWrapStyleWord(true);
-		elem.setOpaque(false);
-		elem.setEditable(false);
-		return elem;
 	}
 
 	private JButton createButtonConfirm() {
