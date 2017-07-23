@@ -103,7 +103,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private void createInformationsPanel() {
-		infoPanel = new MainPanel(null);
+		infoPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
 		saveInfo = new JLabel();
 		showProblematicKanjis = maker.getProblematicKanjiButton();
 		changeSaveStatus(SavingStatus.NO_CHANGES);

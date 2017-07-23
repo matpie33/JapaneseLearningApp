@@ -44,7 +44,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	private void createHotkeysPanel() {
 		hotkeysPanel = new MainPanel(null);
 		JLabel title = new JLabel(Titles.hotkeysTitle);
-		title.setForeground(BasicColors.NAVY_BLUE);
+		title.setForeground(BasicColors.VERY_BLUE);
 		hotkeysPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.WEST, title));
 	}
 

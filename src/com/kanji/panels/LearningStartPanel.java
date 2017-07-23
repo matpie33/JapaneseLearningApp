@@ -109,7 +109,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				boolean problematicCheckboxSelected = problematicCheckbox.isSelected();
-				controller.updateProblematicKanjiNumber(problematicCheckboxSelected);
+				controller.updateNumberOfSelectedKanjiAfterCheckboxToggle(problematicCheckboxSelected);
 			}
 		};
 
@@ -253,7 +253,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		return true;
 	}
 
-	public void updateSumOfWords(int sumOfWords) {
+	public void updateSumOfWordsLabel(int sumOfWords) {
 		sumRangeField.setText(Prompts.sumRangePrompt + sumOfWords);
 	}
 
@@ -311,7 +311,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 	public void switchToRepeatingPanel() {
 		parentDialog.getContainer().dispose();
-		controller.switchPanels(problematicCheckbox.isSelected());
+		controller.switchPanelAndSetWordsRangesToRepeat(problematicCheckbox.isSelected());
 	}
 
 	public void showErrorDialog(String message) {
