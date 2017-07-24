@@ -11,7 +11,7 @@ import com.kanji.constants.Prompts;
 import com.kanji.constants.SavingStatus;
 import com.kanji.constants.Titles;
 import com.kanji.controllers.StartingPanelController;
-import com.kanji.fileReading.ExcelReader;
+import com.kanji.fileReading.KanjiCharactersReader;
 import com.kanji.myList.MyList;
 import com.kanji.panels.InsertWordPanel;
 import com.kanji.panels.LearningStartPanel;
@@ -40,7 +40,7 @@ public class ApplicationWindow extends DialogWindow {
 	// we
 	// don't have to use row (0) but somehow easier
 
-	public ExcelReader excel;
+	public KanjiCharactersReader excel;
 
 	public static final String LIST_PANEL = "Panel with lists and buttons";
 	public static final String LEARNING_PANEL = "Panel for repeating words";

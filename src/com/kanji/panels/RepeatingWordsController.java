@@ -11,7 +11,7 @@ import com.kanji.Row.KanjiWords;
 import com.kanji.Row.RepeatingInformation;
 import com.kanji.actions.TextAlignment;
 import com.kanji.constants.Prompts;
-import com.kanji.fileReading.ExcelReader;
+import com.kanji.fileReading.KanjiCharactersReader;
 import com.kanji.myList.MyList;
 import com.kanji.range.Range;
 import com.kanji.range.SetOfRanges;
@@ -20,10 +20,9 @@ import com.kanji.timer.TimeSpentMonitor;
 import com.kanji.windows.ApplicationWindow;
 
 public class RepeatingWordsController implements TimeSpentMonitor {
-	private static final long serialVersionUID = 5557984078176822840L;
-	private MyList words;
-	private List<String> wordsToRepeat;
-	private ExcelReader excel;
+	private MyList<KanjiWords> wordsList;
+	private List<String> wordsToRepeat; // TODO wrong naming
+	private KanjiCharactersReader kanjiCharactersReader;
 	private ApplicationWindow parent;
 	private Set<Integer> problematicKanjis;
 	private Set<Integer> currentProblematicKanjis;
@@ -40,10 +39,10 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 
 	public RepeatingWordsController(ApplicationWindow parent) {
 
-		excel = new ExcelReader();
-		excel.load();
+		kanjiCharactersReader = new KanjiCharactersReader();
+		kanjiCharactersReader.load();
 		currentProblematicKanjis = new HashSet<>();
-		this.wordsToRepeat = new LinkedList();
+		this.wordsToRepeat = new LinkedList<>();
 		this.parent = parent;
 		timeSpentHandler = new TimeSpentHandler(this);
 		panel = new RepeatingWordsPanel(this);
@@ -53,6 +52,70 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 
 	// TODO think about whether the create elements method is needed, here we
 	// didnt use it though it works as intended
+
+	public String getCurrentKanji() {
+		return this.kanjiCharactersReader.getKanjiById(getCurrentWordId());
+	}
+
+	private int getCurrentWordId() {
+		return wordsList.getWords().getIdOfTheWord(this.currentWord);
+	}
+
+	public String createRemainingKanjisPrompt() {
+		return Prompts.remainingKanjiPrompt + " " + this.wordsToRepeat.size() + " "
+				+ Prompts.kanjiPrompt;
+	}
+
+	public void setRepeatingWords(MyList<KanjiWords> wordsList) {
+		this.wordsToRepeat = new LinkedList<>();
+		this.wordsList = wordsList;
+	}
+
+	public void setRangesToRepeat(SetOfRanges ranges) {
+		for (Range range : ranges.getRangesAsList()) {
+			if (!range.isEmpty()) {
+				for (int i = range.getRangeStart(); i <= range.getRangeEnd(); i++) {
+					wordsToRepeat.add(wordsList.findWordInRow(i - 1));
+				}
+			}
+		}
+	}
+
+	public void setProblematicKanjis(Set<Integer> problematicKanjis) {
+		this.problematicKanjis = problematicKanjis;
+		for (int i : problematicKanjis) {
+			String word = ((KanjiWords) wordsList.getWords()).getWordForId(i);
+
+			if (!this.wordsToRepeat.contains(word)) { // TODO maybe set instead
+														// of list?
+				this.wordsToRepeat.add(word);
+
+			}
+		}
+		System.out.println("done");
+	}
+
+	public void startRepeating() {
+
+		previousWord = "";
+		timeSpentHandler.startTimer();
+		removePreviousWordAndRandomlyPickNext();
+		panel.goToNextWord();
+		panel.requestFocusForShowWord();
+	}
+
+	private void removePreviousWordAndRandomlyPickNext() {
+		this.wordsToRepeat.remove(currentWord);
+		previousWord = currentWord;
+
+		if (!this.wordsToRepeat.isEmpty()) {
+			pickRandomWord();
+			panel.clearKanji();
+		}
+		else {
+			displayFinishMessageAndStopTimer();
+		}
+	}
 
 	private void pickRandomWord() {
 		Random randomizer = new Random();
@@ -67,55 +130,6 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 		}
 		else {
 			panel.showWord(word, TextAlignment.CENTERED);
-		}
-	}
-
-	public String getCurrentKanji() {
-		return this.excel
-				.getKanjiById(((KanjiWords) words.getWords()).getIdOfTheWord(this.currentWord));
-	}
-
-	public void pressedButtonPause() {
-		paused = true;
-		timeSpentHandler.stopTimer();
-		parent.showMsgDialog(Prompts.pauseIsEnabled);
-		paused = false;
-		timeSpentHandler.startTimer();
-	}
-
-	public void presedButtonShowWord() {
-		panel.showCurrentKanji();
-	}
-
-	private void removeWordFromCurrentProblematics() {
-		int id = getCurrentWordId();
-		currentProblematicKanjis.remove(Integer.valueOf(id));
-	}
-
-	private void removeWordIfItsProblematic() {
-		int id = getCurrentWordId();
-		problematicKanjis.remove(Integer.valueOf(id));
-	}
-
-	private int getCurrentWordId() {
-		return ((KanjiWords) words.getWords()).getIdOfTheWord(this.currentWord);
-	}
-
-	private void addToProblematic() {
-		int num = getCurrentWordId();
-		this.currentProblematicKanjis.add(Integer.valueOf(num));
-	}
-
-	private void removePreviousWordAndRandomlyPickNext() {
-		this.wordsToRepeat.remove(currentWord);
-		previousWord = currentWord;
-
-		if (!this.wordsToRepeat.isEmpty()) {
-			pickRandomWord();
-			panel.clearKanji();
-		}
-		else {
-			displayFinishMessageAndStopTimer();
 		}
 	}
 
@@ -138,63 +152,15 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 		this.parent.showMsgDialog(message);
 		System.out.println("done");
 		if (currentProblematicKanjis.size() > 0)
-			parent.showProblematicKanjiDialog((KanjiWords) words.getWords(),
+			parent.showProblematicKanjiDialog((KanjiWords) wordsList.getWords(),
 					currentProblematicKanjis);
-	}
-
-	public String createRemainingKanjisPrompt() {
-		return Prompts.remainingKanjiPrompt + " " + this.wordsToRepeat.size() + " "
-				+ Prompts.kanjiPrompt;
-	}
-
-	public void setRepeatingWords(MyList wordsList) {
-		this.wordsToRepeat = new LinkedList<>();
-		this.words = wordsList;
-	}
-
-	public void setRangesToRepeat(SetOfRanges ranges) {
-		for (Range range : ranges.getRangesAsList()) {
-			if (!range.isEmpty()) {
-				for (int i = range.getRangeStart(); i <= range.getRangeEnd(); i++) {
-					wordsToRepeat.add(words.findWordInRow(i - 1));
-				}
-			}
-		}
-	}
-
-	public void setProblematicKanjis(Set<Integer> problematicKanjis) {
-		this.problematicKanjis = problematicKanjis;
-		System.out.println("start");
-		for (int i : problematicKanjis) {
-			String word = ((KanjiWords) words.getWords()).getWordForId(i);
-
-			if (!this.wordsToRepeat.contains(word)) { // TODO maybe set instead
-														// of list?
-				this.wordsToRepeat.add(word);
-
-			}
-		}
-		System.out.println("done");
-	}
-
-	public void startRepeating() {
-
-		previousWord = "";
-		timeSpentHandler.startTimer();
-		removePreviousWordAndRandomlyPickNext();
-		panel.goToNextWord();
-		panel.requestFocusForShowWord();
 	}
 
 	public void reset() {
 		timeSpentHandler.reset();
-		this.problematicKanjis = new HashSet();
+		this.problematicKanjis = new HashSet<>();
 		currentProblematicKanjis.clear();
 		currentWord = "";
-	}
-
-	public void setExcelReader(ExcelReader excel) {
-		this.excel = excel;
 	}
 
 	public void setRepeatingInformation(RepeatingInformation info) {
@@ -216,6 +182,23 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 		panel.removeLastElementFromRow2();
 	}
 
+	private void removeWordFromCurrentProblematics() {
+		int id = getCurrentWordId();
+		currentProblematicKanjis.remove(Integer.valueOf(id));
+	}
+
+	public void pressedButtonPause() {
+		paused = true;
+		timeSpentHandler.stopTimer();
+		parent.showMsgDialog(Prompts.pauseIsEnabled);
+		paused = false;
+		timeSpentHandler.startTimer();
+	}
+
+	public void presedButtonShowWord() {
+		panel.showCurrentKanji();
+	}
+
 	public void pressedRecognizedWordButton() {
 		if (paused) {
 			return;
@@ -223,6 +206,11 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 		removeWordIfItsProblematic();
 		removePreviousWordAndRandomlyPickNext();
 		panel.goToNextWord();
+	}
+
+	private void removeWordIfItsProblematic() {
+		int id = getCurrentWordId();
+		problematicKanjis.remove(Integer.valueOf(id));
 	}
 
 	public void pressedNotRecognizedWordButton() {
@@ -235,13 +223,18 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 		panel.setButtonsToLearningAndAddThem();
 	}
 
+	private void addToProblematic() {
+		int num = getCurrentWordId();
+		this.currentProblematicKanjis.add(Integer.valueOf(num));
+	}
+
 	public void pressedButtonReturn() {
 		RepeatingWordsController.this.parent.showCardPanel(ApplicationWindow.LIST_PANEL);
 		timeSpentHandler.stopTimer();
 	}
 
 	public Font getKanjiFont() {
-		return new Font(this.excel.getFontName(), 1, 80);
+		return new Font(this.kanjiCharactersReader.getFontName(), 1, 80);
 	}
 
 	public boolean previousWordExists() {

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ExcelReader {
+public class KanjiCharactersReader {
 
 	private Font font;
 	private List<String> words;

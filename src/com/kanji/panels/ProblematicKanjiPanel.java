@@ -32,7 +32,7 @@ import com.kanji.actions.CommonActionsMaker;
 import com.kanji.actions.GuiElementsMaker;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
-import com.kanji.fileReading.ExcelReader;
+import com.kanji.fileReading.KanjiCharactersReader;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
 
@@ -43,7 +43,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	private List<KanjiRow> kanjisToBrowse;
 	private JScrollPane scrollPane;
 	private boolean useInternet;
-	private ExcelReader excel;
+	private KanjiCharactersReader excel;
 
 	private class KanjiRow {
 		private MainPanel panel;
@@ -69,7 +69,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiInfos = kanjis;
 		problematicKanjis = problematicKanji;
 		useInternet = true;
-		this.excel = new ExcelReader();
+		this.excel = new KanjiCharactersReader();
 		excel.load();
 		// TODO better use existing excel instead of
 		// creating new here
