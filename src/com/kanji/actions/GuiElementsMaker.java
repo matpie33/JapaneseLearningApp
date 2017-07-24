@@ -34,20 +34,21 @@ public class GuiElementsMaker {
 		return l;
 	}
 
-	public static JScrollPane createCenteredTextPaneWrappedInScrollPane(String text) {
-		JScrollPane pane = new JScrollPane(createCenteredTextPane(text));
+	public static JScrollPane createTextPaneWrappedInScrollPane(String text,
+			TextAlignment alignment) {
+		JScrollPane pane = new JScrollPane(createTextPane(text, alignment));
 		pane.setPreferredSize(new Dimension(250, 70));
 		return pane;
 	}
 
-	public static JTextPane createCenteredTextPane(String text) {
+	public static JTextPane createTextPane(String text, TextAlignment alignment) {
 		JTextPane textPane = new JTextPane();
 		textPane.setBackground(BasicColors.VERY_LIGHT_BLUE);
 		textPane.setText(text);
 		textPane.setEditable(false);
 		StyledDocument doc = textPane.getStyledDocument();
 		SimpleAttributeSet center = new SimpleAttributeSet();
-		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+		StyleConstants.setAlignment(center, alignment.getStyleConstant());
 		doc.setParagraphAttributes(0, doc.getLength(), center, false);
 
 		return textPane;

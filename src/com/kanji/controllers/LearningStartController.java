@@ -30,10 +30,12 @@ public class LearningStartController {
 	private List<String> errors;
 	private List<RangesRow> rangesRows;
 	private int problematicLabelRow;
+	private StartingPanelController startingPanelController;
 
 	public LearningStartController(MyList<RepeatingList> repeatList, int numberOfWords,
 			ApplicationWindow parentFrame, LearningStartPanel learningStartPanel) {
 		this.parentFrame = parentFrame;
+		startingPanelController = parentFrame.getStartingController();
 		this.repeatsList = repeatList;
 		this.numberOfWords = numberOfWords;
 		this.learningStartPanel = learningStartPanel;
@@ -63,7 +65,7 @@ public class LearningStartController {
 	}
 
 	private void addOrSubtractProblematicKanjisFromSum(int direction) {
-		Set<Integer> problematics = parentFrame.getProblematicKanjis();
+		Set<Integer> problematics = startingPanelController.getProblematicKanjis();
 		for (Integer i : problematics) {
 			if (!rangesToRepeat.isValueInsideThisSet(i)) {
 				sumOfWords += direction;
@@ -72,7 +74,7 @@ public class LearningStartController {
 	}
 
 	public int getProblematicKanjiNumber() {
-		return parentFrame.getProblematicKanjis().size();
+		return startingPanelController.getProblematicKanjis().size();
 	}
 
 	public void addRow(int rowNumber, JTextField from, JTextField to) {
@@ -259,7 +261,7 @@ public class LearningStartController {
 		}
 		repeatingInfo += rangesToRepeat;
 		repeatingInfo += ".";
-		parentFrame.setRepeatingInformation(
+		startingPanelController.setRepeatingInformation(
 				new RepeatingInformation(repeatingInfo, calendar.getTime(), false));
 		repeatsList.scrollToBottom();
 	}
@@ -268,7 +270,7 @@ public class LearningStartController {
 		// panel should have parent frame's panels code, and controller should
 		// have parent frame's controller code
 		parentFrame.showCardPanel(ApplicationWindow.LEARNING_PANEL);
-		parentFrame.setWordsRangeToRepeat(rangesToRepeat, problematicCheckboxSelected);
+		startingPanelController.setWordsRangeToRepeat(rangesToRepeat, problematicCheckboxSelected);
 	}
 
 	private SetOfRanges addAllRangesToSet() {

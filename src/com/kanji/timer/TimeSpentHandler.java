@@ -5,9 +5,9 @@ public class TimeSpentHandler {
 	private Thread timerThread;
 	private boolean timerRunning;
 	private double timeElapsed;
-	private int secondsLeft = 0;
-	private int minutesLeft = 0;
-	private int hoursLeft = 0;
+	private int secondsPassed = 0;
+	private int minutesPassed = 0;
+	private int hoursPassed = 0;
 	private double interval = 0.1D;
 	private TimeSpentMonitor timeMonitor;
 
@@ -28,15 +28,15 @@ public class TimeSpentHandler {
 					timeElapsed += interval;
 					if (timeElapsed >= 1) {
 						timeElapsed = 0;
-						secondsLeft++;
+						secondsPassed++;
 					}
-					if (secondsLeft >= 60) {
-						secondsLeft = 0;
-						minutesLeft++;
+					if (secondsPassed >= 60) {
+						secondsPassed = 0;
+						minutesPassed++;
 					}
-					if (minutesLeft >= 60) {
-						minutesLeft = 0;
-						hoursLeft++;
+					if (minutesPassed >= 60) {
+						minutesPassed = 0;
+						hoursPassed++;
 					}
 					timeMonitor.updateTime(getTimePassed());
 					try {
@@ -58,19 +58,20 @@ public class TimeSpentHandler {
 		String hoursSuffix = adjustSuffixForHours();
 		String minutesSuffix = adjustSuffixForMinutes();
 		String secondsSuffix = adjustSuffixForSeconds();
-		return hoursSuffix + ", " + minutesSuffix + ", " + secondsSuffix + ".";
+		return hoursPassed > 0 ? hoursSuffix + ", "
+				: "" + (minutesPassed > 0 ? minutesSuffix + ", " : "") + secondsSuffix + ".";
 	}
 
 	private String adjustSuffixForHours() {
-		return hoursLeft + " godzin" + adjustSuffix(hoursLeft);
+		return hoursPassed + " godzin" + adjustSuffix(hoursPassed);
 	}
 
 	private String adjustSuffixForMinutes() {
-		return minutesLeft + " minut" + adjustSuffix(minutesLeft);
+		return minutesPassed + " minut" + adjustSuffix(minutesPassed);
 	}
 
 	private String adjustSuffixForSeconds() {
-		return secondsLeft + " sekund" + adjustSuffix(secondsLeft);
+		return secondsPassed + " sekund" + adjustSuffix(secondsPassed);
 	}
 
 	private String adjustSuffix(int timeValue) {
@@ -91,9 +92,9 @@ public class TimeSpentHandler {
 
 	public void reset() {
 		this.timeElapsed = 0.0D;
-		secondsLeft = 0;
-		minutesLeft = 0;
-		hoursLeft = 0;
+		secondsPassed = 0;
+		minutesPassed = 0;
+		hoursPassed = 0;
 	}
 
 }

@@ -141,7 +141,7 @@ public class ElementMaker {
 			Set<Integer> problematics;
 			try {
 				problematics = (Set<Integer>) oos.readObject();
-				b.setProblematicKanjis(problematics);
+				b.getStartingController().addProblematicKanjis(problematics);
 			}
 			catch (ClassNotFoundException e1) {
 				// TODO Auto-generated catch block
@@ -449,7 +449,7 @@ public class ElementMaker {
 			oos.writeObject(this.repeats.getWords());
 			if ((this.parent instanceof ApplicationWindow)) {
 				ApplicationWindow b = (ApplicationWindow) this.parent;
-				oos.writeObject(b.getProblematicKanjis());
+				oos.writeObject(b.getStartingController().getProblematicKanjis());
 			}
 			System.out.println("saved");
 			fout.close();

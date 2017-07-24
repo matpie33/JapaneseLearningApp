@@ -9,6 +9,7 @@ import javax.swing.JScrollPane;
 import com.guimaker.row.RowMaker;
 import com.kanji.actions.CommonActionsMaker;
 import com.kanji.actions.GuiElementsMaker;
+import com.kanji.actions.TextAlignment;
 import com.kanji.constants.ButtonsNames;
 
 public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
@@ -24,8 +25,8 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 	@Override
 	void createElements() {
 
-		JScrollPane scrollPane = GuiElementsMaker
-				.createCenteredTextPaneWrappedInScrollPane(message);
+		JScrollPane scrollPane = GuiElementsMaker.createTextPaneWrappedInScrollPane(message,
+				TextAlignment.CENTERED);
 
 		okButton = GuiElementsMaker.createButton(ButtonsNames.buttonApproveText,
 				CommonActionsMaker.createDisposeAction(parentDialog));

@@ -1,28 +1,25 @@
 package com.kanji.windows;
 
 import java.awt.CardLayout;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
 
 import com.kanji.Row.KanjiWords;
-import com.kanji.Row.RepeatingInformation;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.SavingStatus;
 import com.kanji.constants.Titles;
+import com.kanji.controllers.StartingPanelController;
 import com.kanji.fileReading.ExcelReader;
 import com.kanji.myList.MyList;
 import com.kanji.panels.InsertWordPanel;
 import com.kanji.panels.LearningStartPanel;
 import com.kanji.panels.LoadingPanel;
 import com.kanji.panels.ProblematicKanjiPanel;
-import com.kanji.panels.RepeatingWordsPanel;
+import com.kanji.panels.RepeatingWordsController;
 import com.kanji.panels.SearchWordPanel;
 import com.kanji.panels.StartingPanel;
-import com.kanji.range.SetOfRanges;
 import com.kanji.utilities.ElementMaker;
 
 @SuppressWarnings("serial")
@@ -30,12 +27,14 @@ public class ApplicationWindow extends DialogWindow {
 
 	private ElementMaker maker;
 	private JPanel mainApplicationPanel;
-	private RepeatingWordsPanel repeatingWordsPanel;
-	private Set<Integer> problematicKanjis;
-	private JSplitPane listsSplitPane;
+	private RepeatingWordsController repeatingWordsPanel;
 	private ProblematicKanjiPanel problematicKanjiPanel;
 	private StartingPanel startingPanel;
 	private JFrame container;
+	private StartingPanelController startingPanelController; // TODO we should
+																// create it in
+																// starting
+																// panel instead
 
 	// TODO handle the situation in gui maker when the panel has just 1 row so
 	// we
@@ -50,18 +49,22 @@ public class ApplicationWindow extends DialogWindow {
 		super(null);
 		container = new JFrame();
 		// TODO searching is case sensitive, should not be
-		problematicKanjis = new HashSet<Integer>();
 		maker = new ElementMaker(this);
 		mainApplicationPanel = new JPanel(new CardLayout());
 
+		repeatingWordsPanel = new RepeatingWordsController(this);
 		startingPanel = new StartingPanel(this, maker);
-		mainApplicationPanel.add(startingPanel.createPanel(), LIST_PANEL);
+		startingPanelController = new StartingPanelController(maker, repeatingWordsPanel);
 
-		repeatingWordsPanel = new RepeatingWordsPanel(this);
-		mainApplicationPanel.add(repeatingWordsPanel.createPanel(), LEARNING_PANEL);
+		mainApplicationPanel.add(startingPanel.createPanel(), LIST_PANEL);
+		mainApplicationPanel.add(repeatingWordsPanel.getPanel().createPanel(), LEARNING_PANEL);
 
 		setWindowProperties();
 		startingPanel.addHotkeys();
+	}
+
+	public StartingPanelController getStartingController() {
+		return startingPanelController; // TODO remove this method later
 	}
 
 	private void setWindowProperties() {
@@ -80,39 +83,6 @@ public class ApplicationWindow extends DialogWindow {
 		((CardLayout) mainApplicationPanel.getLayout()).show(mainApplicationPanel, cardName);
 	}
 
-	public void setWordsRangeToRepeat(SetOfRanges ranges, boolean withProblematic) {
-
-		repeatingWordsPanel.setRepeatingWords(maker.getWordsList());
-		// TODO if set of ranges is empty, we should not call set ranges to
-		// repeat all, so probably
-		// split this method
-		repeatingWordsPanel.setRangesToRepeat(ranges);
-		repeatingWordsPanel.reset();
-		System.out.println("setting: " + problematicKanjis);
-		if (withProblematic)
-			repeatingWordsPanel.setProblematicKanjis(problematicKanjis);
-
-		repeatingWordsPanel.startRepeating();
-	}
-
-	public void setRepeatingInformation(RepeatingInformation info) {
-		repeatingWordsPanel.setRepeatingInformation(info);
-	}
-
-	public void addProblematicKanjis(Set<Integer> problematicKanjiList) {
-		this.problematicKanjis.addAll(problematicKanjiList);
-
-		System.out.println(this.problematicKanjis);
-	}
-
-	public Set<Integer> getProblematicKanjis() {
-		return problematicKanjis;
-	}
-
-	public void setProblematicKanjis(Set<Integer> problematicKanjis) {
-		this.problematicKanjis.addAll(problematicKanjis);
-	}
-
 	public void save() {
 		this.maker.save();
 	}
@@ -126,16 +96,16 @@ public class ApplicationWindow extends DialogWindow {
 		container.setTitle(Titles.app + "   " + update);
 	}
 
-	public void addToRepeatsList(RepeatingInformation info) {
-		maker.getRepeatsList().getWords().add(info);
-	}
-
 	public void scrollToBottom() {
 		maker.getRepeatsList().scrollToBottom();
 	}
 
 	public void addButtonIcon() {
-		if (problematicKanjiPanel.allProblematicKanjisRepeated()) {
+		if (problematicKanjiPanel.allProblematicKanjisRepeated()) { // TODO
+																	// check it
+																	// from
+																	// caller
+																	// function
 			return;
 		}
 		startingPanel.addButtonIcon();

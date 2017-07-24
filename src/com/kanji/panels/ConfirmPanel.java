@@ -9,6 +9,7 @@ import javax.swing.JScrollPane;
 
 import com.guimaker.row.RowMaker;
 import com.kanji.actions.GuiElementsMaker;
+import com.kanji.actions.TextAlignment;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
 import com.sun.glass.events.KeyEvent;
@@ -23,8 +24,8 @@ public class ConfirmPanel extends AbstractPanelWithHotkeysInfo {
 
 	@Override
 	void createElements() {
-		JScrollPane scrollPane = GuiElementsMaker
-				.createCenteredTextPaneWrappedInScrollPane(message);
+		JScrollPane scrollPane = GuiElementsMaker.createTextPaneWrappedInScrollPane(message,
+				TextAlignment.CENTERED);
 		JButton yesButton = createButtonConfirm();
 		JButton noButton = createButtonReject();
 

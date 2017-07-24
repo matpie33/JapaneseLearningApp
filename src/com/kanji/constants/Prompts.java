@@ -22,5 +22,6 @@ public class Prompts {
 	public static final String repeatingElementPrompt = "wiersz dotyczący powtórek";
 	public static final String kanjiLoadingPrompt = "Trwa wczytywanie kanji...";
 	public static final String problematicKanjisAddedPrompt = "+ problematyczne";
+	public static final String pauseIsEnabled = "Włączono pauzę.";
 
 }

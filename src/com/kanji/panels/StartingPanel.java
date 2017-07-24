@@ -138,7 +138,8 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 
 	public void changeSaveStatus(SavingStatus savingStatus) {
 		saveInfo.setText(Prompts.savingStatusPrompt + savingStatus.getStatus() + "; "
-				+ Prompts.problematicKanjiPrompt + applicationWindow.getProblematicKanjis().size());
+				+ Prompts.problematicKanjiPrompt
+				+ applicationWindow.getStartingController().getProblematicKanjis().size());
 
 	}
 
