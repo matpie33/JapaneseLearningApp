@@ -96,8 +96,6 @@ public abstract class AbstractPanelWithHotkeysInfo {
 		parentDialog = parent;
 	}
 
-	abstract void createElements();
-
 	public JPanel createPanel() {
 		createElements();
 		addHotkeysPanel();
@@ -111,5 +109,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	public DialogWindow getDialog() {
 		return parentDialog;
 	}
+
+	abstract void createElements();
 
 }

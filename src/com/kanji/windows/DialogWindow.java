@@ -44,19 +44,19 @@ public class DialogWindow {
 		}
 	}
 
-	public DialogWindow(DialogWindow b) {
-		if (b instanceof ApplicationWindow) {
-			ApplicationWindow w = (ApplicationWindow) b;
+	public DialogWindow(DialogWindow parent) {
+		if (parent instanceof ApplicationWindow) {
+			ApplicationWindow w = (ApplicationWindow) parent;
 			container = new JDialog(w.getContainer());
 		}
-		else if (b != null && b.getContainer() != null) {
-			container = new JDialog(b.getContainer());
+		else if (parent != null && parent.getContainer() != null) {
+			container = new JDialog(parent.getContainer());
 		}
 		else {
 			container = new JDialog();
 		}
 		container.setAutoRequestFocus(true);
-		parentWindow = b;
+		parentWindow = parent;
 		initialize();
 	}
 

@@ -53,7 +53,6 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 	public LearningStartPanel(ApplicationWindow parentOfParent, int numberOfWords,
 			MyList<RepeatingList> list) {
-		super(true);
 		controller = new LearningStartController(list, numberOfWords, parentOfParent, this);
 		mainPanel = new MainPanel(BasicColors.OCEAN_BLUE, false);
 	}
@@ -72,8 +71,9 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		JTextField problematicKanjis = createProblematicRangeField(Prompts.problematicKanjiPrompt);
 		JButton newRow = createButtonAddRow(ButtonsNames.buttonAddRowText, rangesPanel);
 		sumRangeField = GuiMaker.createTextField(1, Prompts.sumRangePrompt);
-		JButton cancel = GuiElementsMaker.createButton(ButtonsNames.buttonCancelText,
-				CommonActionsMaker.createDisposeAction(parentDialog));
+		JButton cancel = createButtonWithHotkey(KeyEvent.VK_ESCAPE,
+				CommonActionsMaker.createDisposeAction(parentDialog), ButtonsNames.buttonCancelText,
+				HotkeysDescriptions.CLOSE_WINDOW);
 		JButton approve = createButtonStartLearning(ButtonsNames.buttonApproveText,
 				rangesPanel.getPanel());
 
@@ -109,7 +109,8 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				boolean problematicCheckboxSelected = problematicCheckbox.isSelected();
-				controller.updateNumberOfSelectedKanjiAfterCheckboxToggle(problematicCheckboxSelected);
+				controller.updateNumberOfSelectedKanjiAfterCheckboxToggle(
+						problematicCheckboxSelected);
 			}
 		};
 
@@ -295,7 +296,6 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private JButton createButtonStartLearning(String text, final JPanel panel) {
-		JButton button = new JButton(text);
 		@SuppressWarnings("serial")
 		AbstractAction a = new AbstractAction() {
 			@Override
@@ -304,9 +304,8 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 			}
 		};
-		button.addActionListener(a);
-		parentDialog.addHotkeyToWindow(KeyEvent.VK_ENTER, a);
-		return button;
+		return createButtonWithHotkey(KeyEvent.VK_ENTER, a, text,
+				HotkeysDescriptions.START_LEARNING);
 	}
 
 	public void switchToRepeatingPanel() {

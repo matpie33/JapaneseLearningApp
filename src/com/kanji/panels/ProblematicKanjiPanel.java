@@ -32,6 +32,8 @@ import com.kanji.actions.CommonActionsMaker;
 import com.kanji.actions.GuiElementsMaker;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
+import com.kanji.constants.Labels;
+import com.kanji.constants.Prompts;
 import com.kanji.fileReading.KanjiCharactersReader;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
@@ -43,7 +45,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	private List<KanjiRow> kanjisToBrowse;
 	private JScrollPane scrollPane;
 	private boolean useInternet;
-	private KanjiCharactersReader excel;
+	private KanjiCharactersReader kanjiCharactersReader;
 
 	private class KanjiRow {
 		private MainPanel panel;
@@ -69,17 +71,27 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiInfos = kanjis;
 		problematicKanjis = problematicKanji;
 		useInternet = true;
-		this.excel = new KanjiCharactersReader();
-		excel.load();
-		// TODO better use existing excel instead of
+		this.kanjiCharactersReader = new KanjiCharactersReader();
+		kanjiCharactersReader.load();
+		// TODO better use existing kanji reader instead of
 		// creating new here
+	}
+
+	public KanjiCharactersReader getKanjisReader() {
+		return kanjiCharactersReader;
+	}
+
+	@Override
+	public void setParentDialog(DialogWindow dialog) {
+		super.setParentDialog(dialog);
+		configureParentDialog();
+
 	}
 
 	@Override
 	void createElements() {
-		configureParentDialog();
-		JRadioButton withInternet = new JRadioButton("Z internetem");
-		JRadioButton withoutInternet = new JRadioButton("Bez internetu");
+		JRadioButton withInternet = new JRadioButton(Labels.repeatingWithInternet);
+		JRadioButton withoutInternet = new JRadioButton(Labels.repeatingWithoutInternet);
 		ButtonGroup group = new ButtonGroup();
 		group.add(withInternet);
 		group.add(withoutInternet);
@@ -160,7 +172,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 					showNextKanji();
 				}
 				else {
-					parentDialog.showMsgDialog("Koniec");
+					parentDialog.showMsgDialog(Prompts.noMoreKanjis);
 				}
 			}
 		};
@@ -227,7 +239,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 			browseKanji(k.getPanel());
 		}
 		else {
-			parentDialog.showKanjiDialog(excel.getKanjiById(k.getId()), this);
+			parentDialog.showKanjiDialog(kanjiCharactersReader.getKanjiById(k.getId()), this);
 		}
 
 	}

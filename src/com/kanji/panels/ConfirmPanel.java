@@ -2,6 +2,7 @@ package com.kanji.panels;
 
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -12,7 +13,6 @@ import com.kanji.actions.GuiElementsMaker;
 import com.kanji.actions.TextAlignment;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
-import com.sun.glass.events.KeyEvent;
 
 public class ConfirmPanel extends AbstractPanelWithHotkeysInfo {
 

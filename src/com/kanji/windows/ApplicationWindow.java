@@ -10,6 +10,7 @@ import com.kanji.Row.KanjiWords;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.SavingStatus;
 import com.kanji.constants.Titles;
+import com.kanji.controllers.RepeatingWordsController;
 import com.kanji.controllers.StartingPanelController;
 import com.kanji.fileReading.KanjiCharactersReader;
 import com.kanji.myList.MyList;
@@ -17,7 +18,6 @@ import com.kanji.panels.InsertWordPanel;
 import com.kanji.panels.LearningStartPanel;
 import com.kanji.panels.LoadingPanel;
 import com.kanji.panels.ProblematicKanjiPanel;
-import com.kanji.panels.RepeatingWordsController;
 import com.kanji.panels.SearchWordPanel;
 import com.kanji.panels.StartingPanel;
 import com.kanji.utilities.ElementMaker;
@@ -53,8 +53,8 @@ public class ApplicationWindow extends DialogWindow {
 		mainApplicationPanel = new JPanel(new CardLayout());
 
 		repeatingWordsPanel = new RepeatingWordsController(this);
-		startingPanel = new StartingPanel(this, maker);
 		startingPanelController = new StartingPanelController(maker, repeatingWordsPanel);
+		startingPanel = new StartingPanel(this, maker);
 
 		mainApplicationPanel.add(startingPanel.createPanel(), LIST_PANEL);
 		mainApplicationPanel.add(repeatingWordsPanel.getPanel().createPanel(), LEARNING_PANEL);

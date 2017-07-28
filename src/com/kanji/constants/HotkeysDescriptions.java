@@ -14,5 +14,6 @@ public class HotkeysDescriptions {
 	public static final String OPEN_SEARCH_WORD_DIALOG = "otwiera okno do przeszukiwania listy słów";
 	public static final String OPEN_START_LEARNING_DIALOG = "otwiera okno do rozpoczęcia nauki kanji";
 	public static final String OPEN_LOAD_KANJI_DIALOG = "otwiera okno do wczytywania projektu kanji";
+	public static final String START_LEARNING = "ropoczyna powtarzanie kanji";
 
 }

@@ -2,14 +2,10 @@ package com.kanji.fileReading;
 
 import java.awt.Font;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class KanjiCharactersReader {
@@ -38,15 +34,15 @@ public class KanjiCharactersReader {
 			e.printStackTrace();
 		}
 		System.out.println(words);
-		font = new Font("MS PMincho", Font.PLAIN, 60);
+		font = new Font("MS PMincho", Font.BOLD, 100);
 	}
 
 	public String getKanjiById(int id) {
 		return words.get(id - 1);
 	}
 
-	public String getFontName() {
-		return font.getFontName();
+	public Font getFont() {
+		return font;
 	}
 
 }

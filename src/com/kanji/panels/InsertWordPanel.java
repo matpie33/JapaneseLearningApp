@@ -19,11 +19,9 @@ import com.kanji.constants.Prompts;
 import com.kanji.controllers.InsertWordController;
 import com.kanji.myList.MyList;
 import com.kanji.utilities.LimitDocumentFilter;
-import com.kanji.windows.DialogWindow;
 
 public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 
-	private DialogWindow parentDialog;
 	private JTextField insertWordTextField;
 	private JTextField insertNumberTextField;
 	private InsertWordController controller;
@@ -34,14 +32,9 @@ public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	@Override
-	public void setParentDialog(DialogWindow parent) {
-		parentDialog = parent;
-		controller.setParentDialog(parent);
-	}
-
-	@Override
 	void createElements() {
 
+		controller.setParentDialog(parentDialog);
 		JLabel addWordPrompt = new JLabel(Prompts.wordAddDialogPrompt);
 		insertWordTextField = new JTextField(20);
 

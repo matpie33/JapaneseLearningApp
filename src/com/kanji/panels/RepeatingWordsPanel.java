@@ -20,6 +20,7 @@ import com.kanji.actions.TextAlignment;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
 import com.kanji.constants.Titles;
+import com.kanji.controllers.RepeatingWordsController;
 
 public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
@@ -44,15 +45,10 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 		this.controller = controller;
 		centerPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
 		this.repeatingPanel = new MainPanel(this.repeatingBackgroundColor);
-		createGraphicElementsAndAddThem();
-
 	}
 
 	@Override
 	void createElements() {
-	}
-
-	private void createGraphicElementsAndAddThem() {
 		JLabel titleLabel = new JLabel(Titles.repeatingWords);
 		this.time = new JLabel(this.timeLabelText);
 		centerPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.NORTH, titleLabel, time));
