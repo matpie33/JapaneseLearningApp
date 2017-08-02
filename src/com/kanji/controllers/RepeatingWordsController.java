@@ -96,7 +96,6 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 		timeSpentHandler.startTimer();
 		removePreviousWordAndRandomlyPickNext();
 		panel.goToNextWord();
-		panel.requestFocusForShowWord();
 	}
 
 	private void removePreviousWordAndRandomlyPickNext() {
@@ -190,6 +189,7 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 		currentWord = previousWord;
 		removeWordFromCurrentProblematics();
 		panel.removeLastElementFromRow2();
+		panel.showCurrentKanjiAndShowAppropriateButtons();
 	}
 
 	private void removeWordFromCurrentProblematics() {
@@ -206,7 +206,7 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 	}
 
 	public void presedButtonShowWord() {
-		panel.showCurrentKanji();
+		panel.showCurrentKanjiAndShowAppropriateButtons();
 	}
 
 	public void pressedRecognizedWordButton() {

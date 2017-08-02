@@ -83,6 +83,9 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	}
 
 	private void addHotkeyInformation(String hotkeyDescription, HotkeyWrapper hotkey) {
+		if (hotkeyDescription.isEmpty()) {
+			return;
+		}
 		JLabel hotkeyInfo = new JLabel(createInformationAboutHotkey(hotkey, hotkeyDescription));
 		hotkeysPanel.addRow(RowMaker.createHorizontallyFilledRow(hotkeyInfo));
 	}

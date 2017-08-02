@@ -44,27 +44,25 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	public RepeatingWordsPanel(RepeatingWordsController controller) {
 		this.controller = controller;
 		centerPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
-		this.repeatingPanel = new MainPanel(this.repeatingBackgroundColor);
+		repeatingPanel = new MainPanel(this.repeatingBackgroundColor);
 	}
 
 	@Override
 	void createElements() {
 		JLabel titleLabel = new JLabel(Titles.repeatingWords);
-		this.time = new JLabel(this.timeLabelText);
-		centerPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.NORTH, titleLabel, time));
-		initiateRepeatingPanel();
-		this.remainingLabel = new JLabel(controller.createRemainingKanjisPrompt());
+		time = new JLabel(this.timeLabelText);
+		remainingLabel = new JLabel(controller.createRemainingKanjisPrompt());
 		JButton returnButton = createReturnButton();
+
+		createElementsForRepeatingPanel();
+		setButtonsToLearningAndAddThem();
+
+		centerPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.NORTH, titleLabel, time));
+		centerPanel.addRow(RowMaker.createBothSidesFilledRow(repeatingPanel.getPanel()));
 		centerPanel.addRow(
 				RowMaker.createUnfilledRow(GridBagConstraints.SOUTH, remainingLabel, returnButton));
 		mainPanel.addRow(
 				RowMaker.createUnfilledRow(GridBagConstraints.CENTER, centerPanel.getPanel()));
-	}
-
-	private void initiateRepeatingPanel() {
-		createElementsForRepeatingPanel();
-		setButtonsToLearningAndAddThem();
-		centerPanel.addRow(RowMaker.createBothSidesFilledRow(repeatingPanel.getPanel()));
 	}
 
 	public void setButtonsToLearningAndAddThem() {
@@ -81,8 +79,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private void createElementsForRepeatingPanel() {
-		createWordLabel();
-		createWordArea();
+		createWordDescriptionTextArea();
+		createKanjiTextArea();
 		createShowWordButton();
 		createPauseOrResumeButton();
 		createRecognizedWordButton();
@@ -91,26 +89,28 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private void createButtonGoToPreviousWord() {
-		showPreviousWord = new JButton(ButtonsNames.buttonShowPreviousWord);
 		AbstractAction action = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.goToPreviousWord();
-				setButtonsToRecognizeWord(controller.previousWordExists());
-				kanjiTextArea.setText(controller.getCurrentKanji());
 			}
 		};
 
 		showPreviousWord = createButtonWithHotkey(KeyEvent.VK_G, action,
 				ButtonsNames.buttonShowPreviousWord, HotkeysDescriptions.SHOW_PREVIOUS_KANJI);
+		showPreviousWord.setFocusable(false);
 
 	}
 
-	private void createWordLabel() {
+	public void showKanji(String kanji) {
+		kanjiTextArea.setText(controller.getCurrentKanji());
+	}
+
+	private void createWordDescriptionTextArea() {
 		this.wordTextArea = new JTextPane();
 	}
 
-	private void createWordArea() {
+	private void createKanjiTextArea() {
 		Font f = controller.getKanjiFont();
 		kanjiTextArea = GuiElementsMaker.createTextPane("", TextAlignment.JUSTIFIED);
 		kanjiTextArea.setFont(f);
@@ -142,7 +142,6 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 		};
 		pauseOrResume = createButtonWithHotkey(KeyEvent.VK_P, a, ButtonsNames.buttonPause,
 				HotkeysDescriptions.PAUSE);
-		pauseOrResume.setFocusable(false);
 	}
 
 	private void createRecognizedWordButton() {
@@ -170,7 +169,6 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	public void goToNextWord() {
 		setButtonsToLearningAndAddThem();
 		remainingLabel.setText(controller.createRemainingKanjisPrompt());
-		showWord.requestFocusInWindow();
 	}
 
 	private void addElementsToRepeatingPanel(JButton[] buttons) {
@@ -180,8 +178,6 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
 		repeatingPanel
 				.addRow(RowMaker.createHorizontallyFilledRow(buttons).fillHorizontallyEqually());
-		// TODO need refactor : dont remove and add each row each time; instead
-		// try "hide and show"
 
 		mainPanel.getPanel().repaint();
 
@@ -201,14 +197,17 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
 	private void createShowWordButton() {
 		this.showWord = new JButton(ButtonsNames.buttonShowKanjiText);
-		this.showWord.addActionListener(new ActionListener() {
+		AbstractAction action = new AbstractAction() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.presedButtonShowWord();
 			}
-		});
+		};
+		showWord = createButtonWithHotkey(KeyEvent.VK_SPACE, action,
+				ButtonsNames.buttonShowKanjiText, "");
 	}
 
-	public void showCurrentKanji() {
+	public void showCurrentKanjiAndShowAppropriateButtons() {
 		setButtonsToRecognizeWord(controller.previousWordExists());
 		kanjiTextArea.setText(controller.getCurrentKanji());
 	}
@@ -228,10 +227,6 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
 	public void showWord(String word, TextAlignment alignment) {
 		wordTextArea = GuiElementsMaker.createTextPane(word, alignment);
-	}
-
-	public void requestFocusForShowWord() {
-		showWord.requestFocusInWindow();
 	}
 
 }
