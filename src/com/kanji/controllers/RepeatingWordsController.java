@@ -38,8 +38,8 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 
 	public RepeatingWordsController(ApplicationWindow parent) {
 
-		kanjiCharactersReader = new KanjiCharactersReader();
-		kanjiCharactersReader.load();
+		kanjiCharactersReader = KanjiCharactersReader.getInstance();
+		kanjiCharactersReader.loadKanjisIfNeeded();
 		currentProblematicKanjis = new HashSet<>();
 		this.currentlyRepeatedWords = new HashSet<>();
 		this.parent = parent;
@@ -152,7 +152,7 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 		parent.save();
 		parent.scrollToBottom();
 
-		parent.showMsgDialog(createFinishMessage());
+		parent.showMessageDialog(createFinishMessage());
 		if (currentProblematicKanjis.size() > 0)
 			parent.showProblematicKanjiDialog((KanjiWords) wholeWordsList.getWords(),
 					currentProblematicKanjis);
@@ -200,7 +200,7 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 	public void pressedButtonPause() {
 		paused = true;
 		timeSpentHandler.stopTimer();
-		parent.showMsgDialog(Prompts.pauseIsEnabled);
+		parent.showMessageDialog(Prompts.pauseIsEnabled);
 		paused = false;
 		timeSpentHandler.startTimer();
 	}

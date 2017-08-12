@@ -1,6 +1,7 @@
 package com.kanji.panels;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,7 +33,6 @@ import com.kanji.constants.Labels;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.Titles;
 import com.kanji.controllers.ProblematicKanjisController;
-import com.kanji.fileReading.KanjiCharactersReader;
 import com.kanji.windows.DialogWindow;
 
 public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
@@ -43,24 +43,21 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	private Dimension preferredSize = new Dimension(600, 600);
 	private int maximumNumberOfRows = 5;
 
-	// TODO donot give me this set of problematic kanjis, directly give it
-	// controller
 	public ProblematicKanjiPanel(KanjiWords kanjis, Set<Integer> problematicKanji) {
 		super(true);
 		controller = new ProblematicKanjisController(this, problematicKanji, kanjis);
 		panelInScrollPane = new MainPanel(BasicColors.LIGHT_BLUE, true);
-
+		panelInScrollPane.setGapsBetweenRowsTo(5);
 	}
 
-	public KanjiCharactersReader getKanjisReader() {
-		return controller.getKanjisReader();
+	public Font getKanjiFont() {
+		return controller.getKanjisReader().getFont();
 	}
 
 	@Override
 	public void setParentDialog(DialogWindow dialog) {
 		super.setParentDialog(dialog);
 		configureParentDialog();
-
 	}
 
 	@Override
@@ -72,27 +69,21 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		group.add(withoutInternet);
 		JButton button = GuiElementsMaker.createButton(ButtonsNames.buttonApproveText,
 				CommonActionsMaker.createDisposeAction(parentDialog));
-		createPanelWithProblematicKanjis();
+		controller.buildRowsForProblematicKanjis();
 		scrollPane = new JScrollPane(panelInScrollPane.getPanel());
 
-		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER,
-				new JLabel(Titles.currentProblematicWords)));
 		MainPanel radioButtonsPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
 		radioButtonsPanel.addRow(RowMaker.createHorizontallyFilledRow(
 				new JLabel(Titles.optionsForShowingProblematicKanjis)));
 		radioButtonsPanel
 				.addRow(RowMaker.createHorizontallyFilledRow(withInternet, withoutInternet));
-		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(radioButtonsPanel.getPanel()));
 
+		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER,
+				new JLabel(Titles.currentProblematicWords)));
+		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(radioButtonsPanel.getPanel()));
 		mainPanel.addRow(RowMaker.createBothSidesFilledRow(scrollPane));
 		addHotkeysPanelHere();
 		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, button));
-	}
-
-	private void createPanelWithProblematicKanjis() {
-
-		panelInScrollPane.setGapsBetweenRowsTo(5);
-		controller.buildRowsForProblematicKanjis();
 	}
 
 	private JRadioButton createRadioButtonForLearningWithInternet() {
@@ -131,7 +122,6 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private JButton createButtonGoToSource(MainPanel panel, int kanjiId) {
-		// TODO use 1 parameter that can uniquely identify the row
 		JButton button = new JButton(ButtonsNames.buttonGoToSource);
 		button.addActionListener(new ActionListener() {
 			@Override
@@ -154,7 +144,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		addHotkey(KeyEvent.VK_SPACE, a, ((JDialog) parentDialog.getContainer()).getRootPane(),
 				HotkeysDescriptions.SHOW_NEXT_KANJI);
 
-		controller.checkForTooManyRowsToDisplaAll(maximumNumberOfRows);
+		controller.limitSizeIfTooManyRows(maximumNumberOfRows);
 		parentDialog.getContainer().addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
@@ -168,7 +158,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 			controller.goToNextResource();
 		else {
 			parentDialog.closeChild();
-			parentDialog.showMsgDialog(Prompts.noMoreKanjis);
+			parentDialog.showMessageDialog(Prompts.noMoreKanjis);
 		}
 	}
 
@@ -190,8 +180,8 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		parentDialog.showKanjiDialog(kanji, this);
 	}
 
-	public void showMsg(String message) {
-		parentDialog.showMsgDialog(message);
+	public void showMessage(String message) {
+		parentDialog.showMessageDialog(message);
 	}
 
 	public void buildRow(String kanji, int kanjiId) {

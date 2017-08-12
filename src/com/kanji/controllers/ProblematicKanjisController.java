@@ -6,6 +6,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import com.guimaker.panels.MainPanel;
@@ -35,7 +36,7 @@ public class ProblematicKanjisController {
 			this.kanjiId = kanjiId;
 		}
 
-		private MainPanel getPanel() {
+		private MainPanel getMainPanel() {
 			return panel;
 		}
 
@@ -49,22 +50,25 @@ public class ProblematicKanjisController {
 				return false;
 			}
 			KanjiRow row = (KanjiRow) o;
-			return row.getPanel().equals(panel) && row.getId() == kanjiId;
+			return row.getMainPanel().equals(panel) && row.getId() == kanjiId;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(kanjiId);
 		}
 
 	}
 
 	public ProblematicKanjisController(ProblematicKanjiPanel problematicKanjiPanel,
-			Set<Integer> problematicKanji, KanjiWords kanjis) {
+			Set<Integer> problematicKanjisSet, KanjiWords kanjis) {
 		this.problematicKanjiPanel = problematicKanjiPanel;
 		kanjisToBrowse = new ArrayList<>();
 		useInternet = true;
-		this.kanjiCharactersReader = new KanjiCharactersReader();
-		kanjiCharactersReader.load();
-		problematicKanjisIds = problematicKanji;
+		kanjiCharactersReader = KanjiCharactersReader.getInstance();
+		kanjiCharactersReader.loadKanjisIfNeeded();
+		problematicKanjisIds = problematicKanjisSet;
 		kanjiInfos = kanjis;
-		// TODO better use existing kanji reader instead of
-		// creating new here
 	}
 
 	public KanjiCharactersReader getKanjisReader() {
@@ -73,15 +77,14 @@ public class ProblematicKanjisController {
 
 	public void goToNextResource() {
 		KanjiRow row = kanjisToBrowse.get(0);
-		goToSpecifiedResource(row.getPanel(), row.getId());
+		goToSpecifiedResource(row.getMainPanel(), row.getId());
 	}
 
 	public void goToSpecifiedResource(MainPanel panel, int kanjiId) {
 		KanjiRow k = new KanjiRow(panel, kanjiId);
 		repeatedProblematics++;
 		kanjisToBrowse.remove(k);
-		problematicKanjiPanel.highlightRow(k.getPanel().getPanel());
-		// TODO naming is bad here
+		problematicKanjiPanel.highlightRow(k.getMainPanel().getPanel());
 		if (useInternet) {
 			browseKanji(k);
 		}
@@ -107,11 +110,11 @@ public class ProblematicKanjisController {
 			}
 			catch (IOException ex) {
 				ex.printStackTrace();
-				problematicKanjiPanel.showMsg("Problems with browsing");
+				problematicKanjiPanel.showMessage("Problems with browsing");
 			}
 		}
 		else {
-			problematicKanjiPanel.showMsg("Desktop unsupported");
+			problematicKanjiPanel.showMessage("Desktop unsupported");
 		}
 	}
 
@@ -122,7 +125,7 @@ public class ProblematicKanjisController {
 		}
 		catch (URISyntaxException e1) {
 			e1.printStackTrace();
-			problematicKanjiPanel.showMsg("error");
+			problematicKanjiPanel.showMessage("error");
 			return null;
 		}
 		return uriObject;
@@ -148,7 +151,7 @@ public class ProblematicKanjisController {
 			goToNextResource();
 		}
 		else {
-			problematicKanjiPanel.showMsg(Prompts.noMoreKanjis);
+			problematicKanjiPanel.showMessage(Prompts.noMoreKanjis);
 		}
 	}
 
@@ -170,7 +173,7 @@ public class ProblematicKanjisController {
 		}
 	}
 
-	public void checkForTooManyRowsToDisplaAll(int maximumNumberOfRowsVisible) {
+	public void limitSizeIfTooManyRows(int maximumNumberOfRowsVisible) {
 		if (problematicKanjisIds.size() > maximumNumberOfRowsVisible) {
 			problematicKanjiPanel.limitSize();
 		}

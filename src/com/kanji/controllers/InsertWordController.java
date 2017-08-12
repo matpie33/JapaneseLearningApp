@@ -35,7 +35,7 @@ public class InsertWordController {
 		boolean valid = number.matches("\\d+");
 
 		if (!valid)
-			parentDialog.showMsgDialog(ExceptionsMessages.numberFormatException);
+			parentDialog.showMessageDialog(ExceptionsMessages.numberFormatException);
 		return valid;
 	}
 
@@ -46,14 +46,14 @@ public class InsertWordController {
 	private boolean isWordIdUndefinedYet(int number) {
 		boolean defined = ((KanjiWords) list.getWords()).isIdDefined(number);
 		if (defined)
-			parentDialog.showMsgDialog(ExceptionsMessages.idAlreadyDefinedException);
+			parentDialog.showMessageDialog(ExceptionsMessages.idAlreadyDefinedException);
 		return !defined;
 	}
 
 	private boolean isWordUndefinedYet(String word) {
 		boolean defined = ((KanjiWords) list.getWords()).isWordDefined(word);
 		if (defined)
-			parentDialog.showMsgDialog(ExceptionsMessages.wordAlreadyDefinedException);
+			parentDialog.showMessageDialog(ExceptionsMessages.wordAlreadyDefinedException);
 		return !defined;
 	}
 

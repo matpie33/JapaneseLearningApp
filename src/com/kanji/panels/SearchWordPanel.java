@@ -162,11 +162,11 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 			boolean found = list.findAndHighlightNextOccurence(textField.getText(), direction,
 					options);
 			if (!found)
-				parentDialog.showMsgDialog(ExceptionsMessages.wordNotFoundMessage);
+				parentDialog.showMessageDialog(ExceptionsMessages.wordNotFoundMessage);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			parentDialog.showMsgDialog(e.getMessage()); // TODO to
+			parentDialog.showMessageDialog(e.getMessage()); // TODO to
 														// nie
 														// zawsze
 														// dobry

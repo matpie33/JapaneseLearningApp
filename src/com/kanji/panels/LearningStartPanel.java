@@ -314,7 +314,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public void showErrorDialog(String message) {
-		parentDialog.showMsgDialog(message);
+		parentDialog.showMessageDialog(message);
 	}
 
 	public void changeVisibilityOfDeleteButtonInFirstRow(boolean visibility) {

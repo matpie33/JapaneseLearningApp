@@ -135,7 +135,7 @@ public class DialogWindow {
 
 	}
 
-	public void showMsgDialog(String message) {
+	public void showMessageDialog(String message) {
 		showPanel(new MessagePanel(message), Titles.messageDialog, true, Position.CENTER);
 	}
 

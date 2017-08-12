@@ -12,10 +12,26 @@ public class KanjiCharactersReader {
 
 	private Font font;
 	private List<String> words;
+	private static KanjiCharactersReader kanjiCharsReader;
 
-	public void load() {
-		;
+	private KanjiCharactersReader() {
+		font = new Font("MS PMincho", Font.BOLD, 100);
 		words = new ArrayList<String>();
+	}
+
+	public static KanjiCharactersReader getInstance() {
+		if (kanjiCharsReader == null) {
+			kanjiCharsReader = new KanjiCharactersReader();
+		}
+		return kanjiCharsReader;
+	}
+
+	public void loadKanjisIfNeeded() {
+		if (!words.isEmpty()) {
+			System.out.println("!@#$% no need");
+			return;
+		}
+
 		try {
 			BufferedReader br = new BufferedReader(
 					new InputStreamReader(new FileInputStream("kanjis.txt"), "Utf-8"));
@@ -30,11 +46,9 @@ public class KanjiCharactersReader {
 
 		}
 		catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(words);
-		font = new Font("MS PMincho", Font.BOLD, 100);
+
 	}
 
 	public String getKanjiById(int id) {

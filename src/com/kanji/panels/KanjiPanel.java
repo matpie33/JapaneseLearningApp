@@ -45,7 +45,7 @@ public class KanjiPanel extends AbstractPanelWithHotkeysInfo {
 
 	private JTextPane addPromptAtLevel(String message) {
 		JTextPane pane = GuiElementsMaker.createTextPane(message, TextAlignment.CENTERED);
-		Font f = problematicKanjiPanel.getKanjisReader().getFont();
+		Font f = problematicKanjiPanel.getKanjiFont();
 		pane.setFont(f);
 		pane.setBackground(Color.white);
 		return pane;

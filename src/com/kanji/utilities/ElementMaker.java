@@ -371,7 +371,7 @@ public class ElementMaker {
 			@Override
 			public void run() {
 				DialogWindow d = new DialogWindow(parent);
-				d.showMsgDialog("Wait");
+				d.showMessageDialog("Wait");
 				listOfWords.updateWords();
 				listOfWords.setWords(new KanjiWords(listOfWords));
 				int i = 1;
@@ -393,7 +393,7 @@ public class ElementMaker {
 
 		}
 		catch (Exception e) {
-			parent.showMsgDialog(e.getMessage());
+			parent.showMessageDialog(e.getMessage());
 			words = new HashMap<Integer, String>();
 		}
 		return words;
