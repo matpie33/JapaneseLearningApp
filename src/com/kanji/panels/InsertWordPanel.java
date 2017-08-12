@@ -71,6 +71,7 @@ public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 				if (validInput) {
 					insertWordTextField.selectAll();
 					insertWordTextField.requestFocusInWindow();
+					// TODO move that logic to controller
 				}
 			}
 		};

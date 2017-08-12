@@ -172,8 +172,8 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 			delete.setVisible(false);
 		}
 
-		SimpleRow newRow = RowMaker.createHorizontallyFilledRow(from, fieldFrom, labelTo, fieldTo,
-				delete);
+		SimpleRow newRow = RowMaker.createUnfilledRow(GridBagConstraints.NORTH, from, fieldFrom,
+				labelTo, fieldTo, delete);
 
 		if (problematicCheckboxSelected) {
 			controller.increaseProblematicLabelRowNumber();

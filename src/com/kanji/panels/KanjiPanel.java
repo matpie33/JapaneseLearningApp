@@ -55,7 +55,7 @@ public class KanjiPanel extends AbstractPanelWithHotkeysInfo {
 		AbstractAction al = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				problematicKanjiPanel.showNextKanji();
+				problematicKanjiPanel.showNextKanjiOrClose();
 			}
 		};
 		return createButtonWithHotkey(KeyEvent.VK_SPACE, al, ButtonsNames.buttonNextText,

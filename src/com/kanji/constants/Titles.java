@@ -13,5 +13,7 @@ public class Titles {
 	public static final String confirmDialog = "Potwierdzenie.";
 	public static final String kanjiRanges = "Przedziały kanji.";
 	public static final String hotkeysTitle = "Skróty klawiszowe";
+	public static final String currentProblematicWords = "Problematyczne słówka";
+	public static final String optionsForShowingProblematicKanjis = "Opcje wyświetlania kanji";
 
 }

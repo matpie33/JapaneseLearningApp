@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.text.SimpleAttributeSet;
@@ -26,6 +27,12 @@ public class GuiElementsMaker {
 		JButton button = new JButton(message);
 		button.addActionListener(actionOnClick);
 		return button;
+	}
+
+	public static JRadioButton createRadioButton(String buttonLabel) {
+		JRadioButton radioButton = new JRadioButton(buttonLabel);
+		radioButton.setOpaque(false);
+		return radioButton;
 	}
 
 	public static JLabel createErrorLabel(String message) {
@@ -53,6 +60,8 @@ public class GuiElementsMaker {
 
 		return textPane;
 	}
+
+	// TODO remove this, move it to gui maker
 
 	// TODO remember that we have element maker, gotta refactor it to here.
 
