@@ -2,7 +2,6 @@ package com.kanji.panels;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -14,6 +13,7 @@ import javax.swing.JTextPane;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
+import com.guimaker.row.Anchor;
 import com.guimaker.row.RowMaker;
 import com.kanji.actions.GuiElementsMaker;
 import com.kanji.actions.TextAlignment;
@@ -57,12 +57,10 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 		createElementsForRepeatingPanel();
 		setButtonsToLearningAndAddThem();
 
-		centerPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.NORTH, titleLabel, time));
+		centerPanel.addRow(RowMaker.createUnfilledRow(Anchor.NORTH, titleLabel, time));
 		centerPanel.addRow(RowMaker.createBothSidesFilledRow(repeatingPanel.getPanel()));
-		centerPanel.addRow(
-				RowMaker.createUnfilledRow(GridBagConstraints.SOUTH, remainingLabel, returnButton));
-		mainPanel.addRow(
-				RowMaker.createUnfilledRow(GridBagConstraints.CENTER, centerPanel.getPanel()));
+		centerPanel.addRow(RowMaker.createUnfilledRow(Anchor.SOUTH, remainingLabel, returnButton));
+		mainPanel.addRow(RowMaker.createUnfilledRow(Anchor.CENTER, centerPanel.getPanel()));
 	}
 
 	public void setButtonsToLearningAndAddThem() {
@@ -174,7 +172,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private void addElementsToRepeatingPanel(JButton[] buttons) {
 		repeatingPanel.clear();
 		repeatingPanel.addRow(RowMaker.createBothSidesFilledRow(wordTextArea));
-		repeatingPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, kanjiTextArea));
+		repeatingPanel.addRow(RowMaker.createUnfilledRow(Anchor.CENTER, kanjiTextArea));
 
 		repeatingPanel
 				.addRow(RowMaker.createHorizontallyFilledRow(buttons).fillHorizontallyEqually());

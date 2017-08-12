@@ -2,7 +2,6 @@ package com.kanji.panels;
 
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -23,6 +22,7 @@ import javax.swing.JTextArea;
 import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
+import com.guimaker.row.Anchor;
 import com.guimaker.row.RowMaker;
 import com.kanji.Row.KanjiWords;
 import com.kanji.actions.CommonActionsMaker;
@@ -78,12 +78,12 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		radioButtonsPanel
 				.addRow(RowMaker.createHorizontallyFilledRow(withInternet, withoutInternet));
 
-		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER,
+		mainPanel.addRow(RowMaker.createUnfilledRow(Anchor.CENTER,
 				new JLabel(Titles.currentProblematicWords)));
 		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(radioButtonsPanel.getPanel()));
 		mainPanel.addRow(RowMaker.createBothSidesFilledRow(scrollPane));
 		addHotkeysPanelHere();
-		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, button));
+		mainPanel.addRow(RowMaker.createUnfilledRow(Anchor.CENTER, button));
 	}
 
 	private JRadioButton createRadioButtonForLearningWithInternet() {

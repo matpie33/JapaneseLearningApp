@@ -3,7 +3,6 @@ package com.kanji.panels;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.List;
@@ -19,6 +18,7 @@ import javax.swing.border.Border;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
+import com.guimaker.row.Anchor;
 import com.guimaker.row.RowMaker;
 import com.kanji.Row.KanjiWords;
 import com.kanji.constants.HotkeysDescriptions;
@@ -107,13 +107,13 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		saveInfo = new JLabel();
 		showProblematicKanjis = maker.getProblematicKanjiButton();
 		changeSaveStatus(SavingStatus.NO_CHANGES);
-		infoPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.WEST, saveInfo));
+		infoPanel.addRow(RowMaker.createUnfilledRow(Anchor.WEST, saveInfo));
 	}
 
 	private void createButtonsPanel(List<JButton> list) {
 		buttonsPanel = new MainPanel(null);
-		buttonsPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.WEST,
-				list.toArray(new JButton[] {})));
+		buttonsPanel
+				.addRow(RowMaker.createUnfilledRow(Anchor.WEST, list.toArray(new JButton[] {})));
 	}
 
 	@SuppressWarnings("rawtypes")

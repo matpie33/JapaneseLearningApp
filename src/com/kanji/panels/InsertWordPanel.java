@@ -1,6 +1,5 @@
 package com.kanji.panels;
 
-import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -10,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.text.AbstractDocument;
 
+import com.guimaker.row.Anchor;
 import com.guimaker.row.RowMaker;
 import com.kanji.actions.CommonActionsMaker;
 import com.kanji.actions.GuiElementsMaker;
@@ -53,7 +53,7 @@ public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 				.addRow(RowMaker.createHorizontallyFilledRow(addNumberPrompt, insertNumberTextField)
 						.fillHorizontallySomeElements(insertNumberTextField));
 		addHotkeysPanelHere();
-		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.EAST, cancel, approve));
+		mainPanel.addRow(RowMaker.createUnfilledRow(Anchor.EAST, cancel, approve));
 
 	}
 

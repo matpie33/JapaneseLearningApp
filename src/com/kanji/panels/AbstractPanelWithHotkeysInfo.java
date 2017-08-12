@@ -1,6 +1,5 @@
 package com.kanji.panels;
 
-import java.awt.GridBagConstraints;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
@@ -11,6 +10,7 @@ import javax.swing.JPanel;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
+import com.guimaker.row.Anchor;
 import com.guimaker.row.RowMaker;
 import com.guimaker.row.SimpleRow;
 import com.kanji.actions.CommonActionsMaker;
@@ -45,7 +45,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 		hotkeysPanel = new MainPanel(null);
 		JLabel title = new JLabel(Titles.hotkeysTitle);
 		title.setForeground(BasicColors.VERY_BLUE);
-		hotkeysPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.WEST, title));
+		hotkeysPanel.addRow(RowMaker.createUnfilledRow(Anchor.WEST, title));
 	}
 
 	private void addHotkeysPanel() {

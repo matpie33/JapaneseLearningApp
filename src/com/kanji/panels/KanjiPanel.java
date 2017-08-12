@@ -2,7 +2,6 @@ package com.kanji.panels;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -12,6 +11,7 @@ import javax.swing.JTextPane;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
+import com.guimaker.row.Anchor;
 import com.guimaker.row.RowMaker;
 import com.kanji.actions.GuiElementsMaker;
 import com.kanji.actions.TextAlignment;
@@ -38,9 +38,9 @@ public class KanjiPanel extends AbstractPanelWithHotkeysInfo {
 	void createElements() {
 		kanjiArea = addPromptAtLevel(kanjiToDisplay);
 		JButton buttonNext = createButtonShowNextKanji();
-		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, kanjiArea));
+		mainPanel.addRow(RowMaker.createUnfilledRow(Anchor.CENTER, kanjiArea));
 		addHotkeysPanelHere();
-		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, buttonNext));
+		mainPanel.addRow(RowMaker.createUnfilledRow(Anchor.CENTER, buttonNext));
 	}
 
 	private JTextPane addPromptAtLevel(String message) {

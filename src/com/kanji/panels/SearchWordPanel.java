@@ -1,6 +1,5 @@
 package com.kanji.panels;
 
-import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -13,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import com.guimaker.row.Anchor;
 import com.guimaker.row.RowMaker;
 import com.kanji.actions.CommonActionsMaker;
 import com.kanji.actions.GuiElementsMaker;
@@ -100,7 +100,7 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 							// should be as highest as possible, but now I need
 							// to
 							// use northwest
-				RowMaker.createUnfilledRow(GridBagConstraints.NORTHEAST, cancel, previous, next));
+				RowMaker.createUnfilledRow(Anchor.NORTHEAST, cancel, previous, next));
 	}
 
 	private JTextField addPromptAndTextFieldAndReturnTextField(int level, String promptMessage) {
@@ -167,10 +167,10 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 		catch (Exception e) {
 			e.printStackTrace();
 			parentDialog.showMessageDialog(e.getMessage()); // TODO to
-														// nie
-														// zawsze
-														// dobry
-														// pomysł
+			// nie
+			// zawsze
+			// dobry
+			// pomysł
 		}
 	}
 

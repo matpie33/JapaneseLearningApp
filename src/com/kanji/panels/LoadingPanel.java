@@ -1,11 +1,10 @@
 package com.kanji.panels;
 
-import java.awt.GridBagConstraints;
-
 import javax.swing.JButton;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 
+import com.guimaker.row.Anchor;
 import com.guimaker.row.RowMaker;
 import com.kanji.actions.CommonActionsMaker;
 import com.kanji.actions.GuiElementsMaker;
@@ -33,14 +32,14 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 
 		mainPanel.addRow(RowMaker.createBothSidesFilledRow(scrollPane));
 		addHotkeysPanelHere();
-		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, okButton));
+		mainPanel.addRow(RowMaker.createUnfilledRow(Anchor.CENTER, okButton));
 
 	}
 
 	public void setProgressBar(JProgressBar bar) {
 		mainPanel.removeRow(2);// TODO this is bad
 		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(bar));
-		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, okButton));
+		mainPanel.addRow(RowMaker.createUnfilledRow(Anchor.CENTER, okButton));
 	}
 
 }

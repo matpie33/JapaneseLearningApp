@@ -1,6 +1,5 @@
 package com.kanji.panels;
 
-import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -8,6 +7,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
+import com.guimaker.row.Anchor;
 import com.guimaker.row.RowMaker;
 import com.kanji.actions.GuiElementsMaker;
 import com.kanji.actions.TextAlignment;
@@ -32,7 +32,7 @@ public class MessagePanel extends AbstractPanelWithHotkeysInfo {
 
 		mainPanel.addRow(RowMaker.createBothSidesFilledRow(scrollPane));
 		addHotkeysPanelHere();
-		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, button));
+		mainPanel.addRow(RowMaker.createUnfilledRow(Anchor.CENTER, button));
 	}
 
 	private JButton createButtonClose() {

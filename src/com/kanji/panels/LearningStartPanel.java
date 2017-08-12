@@ -2,7 +2,6 @@ package com.kanji.panels;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -26,6 +25,7 @@ import javax.swing.text.AbstractDocument;
 import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
+import com.guimaker.row.Anchor;
 import com.guimaker.row.RowMaker;
 import com.guimaker.row.SimpleRow;
 import com.kanji.Row.RepeatingList;
@@ -63,8 +63,8 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		JTextArea prompt = createPrompt();
 		problematicCheckbox = createProblematicKanjiCheckbox();
 		rangesPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE, true);
-		rangesPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER,
-				new JLabel(Titles.kanjiRanges)));
+		rangesPanel
+				.addRow(RowMaker.createUnfilledRow(Anchor.CENTER, new JLabel(Titles.kanjiRanges)));
 		scrollPane = createRangesPanelScrollPane();
 		addRowToRangesPanel();
 
@@ -84,7 +84,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(newRow, sumRangeField)
 				.fillHorizontallySomeElements(sumRangeField));
 		addHotkeysPanelHere();
-		mainPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.EAST, cancel, approve));
+		mainPanel.addRow(RowMaker.createUnfilledRow(Anchor.EAST, cancel, approve));
 	}
 
 	private JScrollPane createRangesPanelScrollPane() {
@@ -137,7 +137,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		JLabel label = new JLabel(Prompts.problematicKanjisAddedPrompt);
 		label.setForeground(BasicColors.NAVY_BLUE);
 		int rowNumber = rangesPanel.getNumberOfRows();
-		rangesPanel.addRow(RowMaker.createUnfilledRow(GridBagConstraints.CENTER, label));
+		rangesPanel.addRow(RowMaker.createUnfilledRow(Anchor.CENTER, label));
 		c.requestFocusInWindow();
 		return rowNumber;
 
@@ -172,8 +172,8 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 			delete.setVisible(false);
 		}
 
-		SimpleRow newRow = RowMaker.createUnfilledRow(GridBagConstraints.NORTH, from, fieldFrom,
-				labelTo, fieldTo, delete);
+		SimpleRow newRow = RowMaker.createUnfilledRow(Anchor.NORTH, from, fieldFrom, labelTo,
+				fieldTo, delete);
 
 		if (problematicCheckboxSelected) {
 			controller.increaseProblematicLabelRowNumber();
@@ -226,8 +226,9 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 	public boolean showErrorOnThePanel(String message, int rowNumber) {
 		// TODO when pressing start, show more detailed info: add row number to
 		// the error information
-		rangesPanel.insertRow(rowNumber, RowMaker.createUnfilledRow(GridBagConstraints.CENTER,
-				GuiElementsMaker.createErrorLabel(message)).fillAllVertically());
+		rangesPanel.insertRow(rowNumber, RowMaker
+				.createUnfilledRow(Anchor.CENTER, GuiElementsMaker.createErrorLabel(message))
+				.fillAllVertically());
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
