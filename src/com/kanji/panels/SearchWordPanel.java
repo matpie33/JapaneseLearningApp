@@ -8,7 +8,6 @@ import java.awt.event.KeyEvent;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
@@ -17,7 +16,6 @@ import com.guimaker.row.RowMaker;
 import com.kanji.actions.CommonActionsMaker;
 import com.kanji.actions.GuiElementsMaker;
 import com.kanji.constants.ButtonsNames;
-import com.kanji.constants.ExceptionsMessages;
 import com.kanji.constants.NumberValues;
 import com.kanji.constants.Options;
 import com.kanji.constants.Prompts;
@@ -29,54 +27,26 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 	private JTextField textField;
 	private JRadioButton fullWordsSearchOption;
 	private JRadioButton perfectMatchSearchOption;
-	private SearchOptions options;
+	private SearchOptions searchOptions;
 	private MyList list;
 
 	public SearchWordPanel(MyList list) {
 		super(true);
 		this.list = list;
-		options = new SearchOptions();
+		searchOptions = SearchOptions.BY_LETTERS;
 	}
 
 	@Override
 	void createElements() {
-		int level = 0;
 		JLabel prompt = new JLabel(Prompts.wordSearchDialogPrompt);
-		textField = addPromptAndTextFieldAndReturnTextField(level, Prompts.wordSearchDialogPrompt);
-		textField = new JTextField(20);
-		textField.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					tryToFindNextOccurence(NumberValues.FORWARD_DIRECTION);
-				}
-			}
-		});
+		textField = createInputTextField();
 
-		JRadioButton defaultSearchOption = createRadioButton(level,
-				Options.wordSearchDefaultOption);
-		defaultSearchOption.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				options.setDefaultOption();
-			}
-		});
-
-		fullWordsSearchOption = createRadioButton(level, Options.wordSearchOnlyFullWordsOption);
-		fullWordsSearchOption.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				options.enableMatchByWordOnly();
-			}
-		});
-
-		perfectMatchSearchOption = createRadioButton(level, Options.wordSearchPerfectMatchOption);
-		perfectMatchSearchOption.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				options.enableMatchByExpressionOnly();
-			}
-		});
+		JRadioButton defaultSearchOption = createRadioButtonForSearchingOption(
+				SearchOptions.BY_LETTERS, Options.wordSearchDefaultOption);
+		fullWordsSearchOption = createRadioButtonForSearchingOption(SearchOptions.BY_WORD,
+				Options.wordSearchOnlyFullWordsOption);
+		perfectMatchSearchOption = createRadioButtonForSearchingOption(
+				SearchOptions.BY_FULL_EXPRESSION, Options.wordSearchPerfectMatchOption);
 
 		addRadioButtonsToGroup(new JRadioButton[] { defaultSearchOption, fullWordsSearchOption,
 				perfectMatchSearchOption });
@@ -100,12 +70,23 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 							// should be as highest as possible, but now I need
 							// to
 							// use northwest
-				RowMaker.createUnfilledRow(Anchor.NORTHEAST, cancel, previous, next));
+				RowMaker.createUnfilledRow(Anchor.WEST, cancel, previous, next));
 	}
 
-	private JTextField addPromptAndTextFieldAndReturnTextField(int level, String promptMessage) {
+	private JRadioButton createRadioButtonForSearchingOption(SearchOptions searchOption,
+			String optionLabel) {
+		JRadioButton searchOptionRadioButton = new JRadioButton(optionLabel);
+		searchOptionRadioButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				searchOptions = searchOption;
+			}
+		});
+		return searchOptionRadioButton;
+	}
 
-		JLabel prompt = new JLabel(promptMessage);
+	private JTextField createInputTextField() {
+
 		JTextField insertWord = new JTextField(20);
 		insertWord.addKeyListener(new KeyAdapter() {
 			@Override
@@ -116,16 +97,7 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 			}
 		});
 
-		JPanel panel = new JPanel();
-		panel.add(prompt);
-		panel.add(insertWord);
-
 		return insertWord;
-	}
-
-	private JRadioButton createRadioButton(int level, String text) {
-		JRadioButton radioButton = new JRadioButton(text);
-		return radioButton;
 	}
 
 	private void addRadioButtonsToGroup(JRadioButton[] buttons) {
@@ -158,20 +130,8 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private void tryToFindNextOccurence(int direction) {
-		try {
-			boolean found = list.findAndHighlightNextOccurence(textField.getText(), direction,
-					options);
-			if (!found)
-				parentDialog.showMessageDialog(ExceptionsMessages.wordNotFoundMessage);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			parentDialog.showMessageDialog(e.getMessage()); // TODO to
-			// nie
-			// zawsze
-			// dobry
-			// pomysł
-		}
+		list.findAndHighlightNextOccurence(textField.getText(), direction, searchOptions,
+				parentDialog);
 	}
 
 }

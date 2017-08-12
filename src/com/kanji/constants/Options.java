@@ -7,4 +7,6 @@ public class Options {
 	public static final String wordSearchPerfectMatchOption = "Szukaj pozycji zawierających dokładnie to co wpisałem.";
 	public static final String problematicKanjiOption = "Problematyczne";
 
+	// TODO bad class naming, should be with prompts or other existing class
+
 }

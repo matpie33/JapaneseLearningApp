@@ -24,6 +24,7 @@ import com.guimaker.colors.BasicColors;
 import com.kanji.constants.ExceptionsMessages;
 import com.kanji.utilities.ElementMaker;
 import com.kanji.windows.ApplicationWindow;
+import com.kanji.windows.DialogWindow;
 
 public class MyList<Parameters> extends JPanel implements Scrollable {
 	private static final long serialVersionUID = -5024951383001795390L;
@@ -115,8 +116,8 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 		return c;
 	}
 
-	public boolean findAndHighlightNextOccurence(String searchedWord, int searchDirection,
-			SearchOptions options) throws Exception {
+	public void findAndHighlightNextOccurence(String searchedWord, int searchDirection,
+			SearchOptions options, DialogWindow parentDialog) {
 		searchedWord = removeDiacritics(searchedWord);
 		int lastRowToSearch = this.highlightedRowNumber;
 		String highlightedWord = getHighlightedWord();
@@ -130,14 +131,17 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 				word = removeDiacritics(word);
 				if (doesWordContainSearchedWord(word, searchedWord, options)) {
 					highlightAndScrollToRow(rowNumber);
-					return true;
+					return;
 				}
 			}
 		}
 		if (doesWordContainSearchedWord(highlightedWord, searchedWord, options)) {
-			throw new Exception(ExceptionsMessages.wordAlreadyHighlightedException);
+			parentDialog.showMessageDialog(ExceptionsMessages.wordAlreadyHighlightedException);
 		}
-		return false;
+		else {
+			parentDialog.showMessageDialog(ExceptionsMessages.wordNotFoundMessage);
+		}
+
 	}
 
 	private String getHighlightedWord() {
@@ -180,13 +184,14 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 
 	private boolean doesWordContainSearchedWord(String word, String searched,
 			SearchOptions options) {
-		if (options.isMatchByWordEnabled()) {
+		switch (options) {
+		case BY_WORD:
 			return doesPhraseContainSearchedWords(word, searched);
-		}
-		if (options.isMatchByExpressionEnabled()) {
+		case BY_FULL_EXPRESSION:
 			return doesPhraseEqualToSearchedWords(word, searched);
+		default:
+			return doesPhraseContainSearchedCharacterChain(word, searched);
 		}
-		return doesPhraseContainSearchedCharacterChain(word, searched);
 	}
 
 	private boolean doesPhraseContainSearchedWords(String phrase, String searched) {
