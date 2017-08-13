@@ -48,7 +48,6 @@ public class ApplicationWindow extends DialogWindow {
 	public ApplicationWindow() {
 		super(null);
 		container = new JFrame();
-		// TODO searching is case sensitive, should not be
 		maker = new ElementMaker(this);
 		mainApplicationPanel = new JPanel(new CardLayout());
 
@@ -60,7 +59,6 @@ public class ApplicationWindow extends DialogWindow {
 		mainApplicationPanel.add(repeatingWordsPanel.getPanel().createPanel(), LEARNING_PANEL);
 
 		setWindowProperties();
-		startingPanel.addHotkeys();
 	}
 
 	public StartingPanelController getStartingController() {
@@ -101,13 +99,6 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void addButtonIcon() {
-		if (problematicKanjiPanel.allProblematicKanjisRepeated()) { // TODO
-																	// check it
-																	// from
-																	// caller
-																	// function
-			return;
-		}
 		startingPanel.addButtonIcon();
 	}
 
@@ -128,7 +119,7 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void showSearchWordDialog(MyList list) {
-		showPanel(new SearchWordPanel(list), Titles.insertWordDialog, false, Position.LEFT_CORNER);
+		showPanel(new SearchWordPanel(list), Titles.wordSearchDialog, false, Position.LEFT_CORNER);
 	}
 
 	public void showProblematicKanjiDialog(KanjiWords kanjiWords, Set<Integer> problematicKanjis) {
@@ -140,8 +131,7 @@ public class ApplicationWindow extends DialogWindow {
 		showReadyPanel(problematicKanjiPanel.getDialog());
 	}
 
-	public LoadingPanel showProgressDialog() { // TODO progress dialog doesn't
-												// scroll anymore
+	public LoadingPanel showProgressDialog() {
 		LoadingPanel dialog = new LoadingPanel(Prompts.kanjiLoadingPrompt);
 		showPanel(dialog, Titles.messageDialog, false, Position.CENTER);
 		return dialog;

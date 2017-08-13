@@ -4,14 +4,15 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.border.Border;
@@ -20,7 +21,7 @@ import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.Anchor;
 import com.guimaker.row.RowMaker;
-import com.kanji.Row.KanjiWords;
+import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.SavingStatus;
@@ -55,41 +56,94 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		// color
 		createUpperPanel();
 		createInformationsPanel();
-		createButtonsPanel(maker.getButtons());
+		try {
+			createButtonsPanel(addListeners());
+		}
+		catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		mainPanel.addRow(RowMaker.createBothSidesFilledRow(listsSplitPane));
 		addHotkeysPanelHere();
 		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(buttonsPanel.getPanel()));
 		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(infoPanel.getPanel()));
 	}
 
-	@SuppressWarnings("serial")
-	public void addHotkeys() {
-		AbstractAction searchWord = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				applicationWindow.showSearchWordDialog(maker.getWordsList());
+	private List<JButton> addListeners() throws Exception {
+		List<JButton> buttons = new ArrayList<>();
+		for (String name : ButtonsNames.mainPageButtonNames) {
+			int keyEvent;
+			AbstractAction action;
+			String hotkeyDescription;
+
+			switch (name) {
+			case ButtonsNames.buttonOpenText:
+				hotkeyDescription = HotkeysDescriptions.OPEN_LOAD_KANJI_DIALOG;
+				keyEvent = KeyEvent.VK_Q;
+				action = new AbstractAction() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						maker.openKanjiFile();
+					}
+				};
+				break;
+			case ButtonsNames.buttonAddText:
+				hotkeyDescription = HotkeysDescriptions.ADD_WORD;
+				keyEvent = KeyEvent.VK_I;
+				action = new AbstractAction() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						maker.addWord();
+					}
+				};
+				break;
+			case ButtonsNames.buttonSearchText:
+				hotkeyDescription = HotkeysDescriptions.OPEN_SEARCH_WORD_DIALOG;
+				keyEvent = KeyEvent.VK_F;
+				action = new AbstractAction() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						maker.searchWord();
+					}
+				};
+				break;
+			case ButtonsNames.buttonStartText:
+				hotkeyDescription = HotkeysDescriptions.OPEN_START_LEARNING_DIALOG;
+				keyEvent = KeyEvent.VK_R;
+				action = new AbstractAction() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						maker.startLearning();
+					}
+				};
+				break;
+			case ButtonsNames.buttonSaveText:
+				hotkeyDescription = HotkeysDescriptions.SAVE_PROJECT;
+				keyEvent = KeyEvent.VK_S;
+				action = new AbstractAction() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						maker.showSaveDialog();
+					}
+				};
+				break;
+			case ButtonsNames.buttonSaveListText:
+				hotkeyDescription = HotkeysDescriptions.EXPORT_LIST;
+				keyEvent = KeyEvent.VK_T;
+				action = new AbstractAction() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						maker.exportList();
+					}
+				};
+				break;
+			default:
+				throw new Exception("Unsupported button name");
 			}
-		};
-		AbstractAction startLearningDialog = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				applicationWindow.showLearningStartDialog(maker.getRepeatsList(),
-						((KanjiWords) maker.getWordsList().getWords()).getNumberOfKanjis());
-			}
-		};
-		AbstractAction loadKanjiDialog = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				maker.openKanjiFile();
-			}
-		};
-		JRootPane rootPane = mainPanel.getPanel().getRootPane();
-		addHotkey(KeyEvent.VK_CONTROL, KeyEvent.VK_Q, loadKanjiDialog, rootPane,
-				HotkeysDescriptions.OPEN_LOAD_KANJI_DIALOG);
-		addHotkey(KeyEvent.VK_CONTROL, KeyEvent.VK_R, startLearningDialog, rootPane,
-				HotkeysDescriptions.OPEN_START_LEARNING_DIALOG);
-		addHotkey(KeyEvent.VK_CONTROL, KeyEvent.VK_F, searchWord, rootPane,
-				HotkeysDescriptions.OPEN_SEARCH_WORD_DIALOG);
+			buttons.add(createButtonWithHotkey(KeyEvent.VK_CONTROL, keyEvent, action, name,
+					hotkeyDescription));
+		}
+		return buttons;
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -105,9 +159,20 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	private void createInformationsPanel() {
 		infoPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
 		saveInfo = new JLabel();
-		showProblematicKanjis = maker.getProblematicKanjiButton();
+		showProblematicKanjis = createShowProblematicKanjiButton();
 		changeSaveStatus(SavingStatus.NO_CHANGES);
 		infoPanel.addRow(RowMaker.createUnfilledRow(Anchor.WEST, saveInfo));
+	}
+
+	private JButton createShowProblematicKanjiButton() {
+		JButton problematicKanjiButton = new JButton(ButtonsNames.buttonShowProblematicKanji);
+		problematicKanjiButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				applicationWindow.showProblematicKanjiDialog();
+			}
+		});
+		return problematicKanjiButton;
 	}
 
 	private void createButtonsPanel(List<JButton> list) {

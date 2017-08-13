@@ -17,5 +17,8 @@ public class HotkeysDescriptions {
 	public static final String START_LEARNING = "ropoczyna powtarzanie kanji";
 	public static final String SHOW_KANJI_WITH_INTERNET = "ustawia opcję otwierania kanji na stronie kanji.koohii.com (domyślna opcja)";
 	public static final String SHOW_KANJI_WITHOUT_INTERNET = "ustawia opcję wyswietlania samego znaku kanji w nowym oknie";
+	public static final String ADD_WORD = "otwiera okno sluzace do dodawania nowych kanji";
+	public static final String SAVE_PROJECT = "zapisuje projekt";
+	public static final String EXPORT_LIST = "exportuje listę kanji";
 
 }

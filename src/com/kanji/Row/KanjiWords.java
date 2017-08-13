@@ -35,7 +35,6 @@ public class KanjiWords implements Serializable {
 				return true;
 		}
 		return false;
-
 	}
 
 	public boolean isIdDefined(int id) {

@@ -195,15 +195,15 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 	}
 
 	private boolean doesPhraseContainSearchedWords(String phrase, String searched) {
-		return phrase.matches(".*\\b" + searched + "\\b.*");
+		return phrase.toLowerCase().matches(".*\\b" + searched.toLowerCase() + "\\b.*");
 	}
 
 	private boolean doesPhraseEqualToSearchedWords(String phrase, String searched) {
-		return phrase.equals(searched);
+		return phrase.equalsIgnoreCase(searched);
 	}
 
 	private boolean doesPhraseContainSearchedCharacterChain(String phrase, String characterChain) {
-		return phrase.contains(characterChain);
+		return phrase.toLowerCase().contains(characterChain.toLowerCase());
 	}
 
 	private void highlightAndScrollToRow(int rowNumber) {
@@ -301,11 +301,11 @@ public class MyList<Parameters> extends JPanel implements Scrollable {
 
 	public void setWords(Parameters parameters) {
 		this.words = parameters;
-		updateWords();
+		cleanWords();
 		scrollToBottom();
 	}
 
-	public void updateWords() {
+	public void cleanWords() {
 		cleanAll();
 		createTitle();
 		System.out.println("update");

@@ -77,8 +77,13 @@ public abstract class AbstractPanelWithHotkeysInfo {
 
 	public JButton createButtonWithHotkey(int keyEvent, AbstractAction action, String buttonLabel,
 			String hotkeyDescription) {
+		return createButtonWithHotkey(0, keyEvent, action, buttonLabel, hotkeyDescription);
+	}
+
+	public JButton createButtonWithHotkey(int keyModifier, int keyEvent, AbstractAction action,
+			String buttonLabel, String hotkeyDescription) {
 		JButton button = GuiElementsMaker.createButton(buttonLabel, action);
-		addHotkey(keyEvent, action, button, hotkeyDescription);
+		addHotkey(keyModifier, keyEvent, action, button, hotkeyDescription);
 		return button;
 	}
 

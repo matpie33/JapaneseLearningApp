@@ -166,7 +166,9 @@ public class ProblematicKanjisController {
 	public void hideProblematicsPanel(DialogWindow parentDialog) {
 		assert (parentDialog.getParent() instanceof ApplicationWindow);
 		ApplicationWindow parent = (ApplicationWindow) parentDialog.getParent();
-		parent.addButtonIcon();
+		if (!problematicKanjiPanel.allProblematicKanjisRepeated()) {
+			parent.addButtonIcon();
+		}
 		parentDialog.getContainer().dispose();
 		if (allProblematicKanjisRepeated()) {
 			parent.removeButtonProblematicsKanji();
