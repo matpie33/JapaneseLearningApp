@@ -6,10 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Set;
-
-import com.kanji.Row.KanjiWords;
-import com.kanji.Row.RepeatingList;
 
 public class LoadingAndSaving {
 
@@ -26,9 +22,7 @@ public class LoadingAndSaving {
 	public void save(SavingInformation savingInformation) throws IOException {
 		FileOutputStream fout = new FileOutputStream(this.fileToSave);
 		ObjectOutputStream oos = new ObjectOutputStream(fout);
-		oos.writeObject(savingInformation.getKanjiWords());
-		oos.writeObject(savingInformation.getRepeatingList());
-		oos.writeObject(savingInformation.getProblematicKanjis());
+		oos.writeObject(savingInformation);
 		fout.close();
 	}
 
@@ -36,19 +30,15 @@ public class LoadingAndSaving {
 		final FileInputStream fout = new FileInputStream(fileToSave);
 		final ObjectInputStream oos = new ObjectInputStream(fout);
 
-		Object kanjiWords = oos.readObject();
-		Object repeatingList = oos.readObject();
-		Object problematicKanjis = oos.readObject();
+		Object savingInformation = oos.readObject();
+		oos.close();
+		fout.close();
 
-		if (kanjiWords instanceof KanjiWords == false
-				|| repeatingList instanceof RepeatingList == false
-				|| problematicKanjis instanceof Set == false) {
+		if (savingInformation instanceof SavingInformation == false) {
 			throw new Exception("Incompatible information loaded compared to saving informations");
 		}
 
-		// TODO it's unsafe operation, need refactor
-		return new SavingInformation((KanjiWords) kanjiWords, (RepeatingList) repeatingList,
-				(Set) problematicKanjis);
+		return (SavingInformation) savingInformation;
 	}
 
 }

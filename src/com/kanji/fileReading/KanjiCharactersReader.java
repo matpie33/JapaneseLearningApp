@@ -52,7 +52,7 @@ public class KanjiCharactersReader {
 	}
 
 	public String getKanjiById(int id) {
-		return words.get(id - 1);
+		return words.get(id);
 	}
 
 	public Font getFont() {

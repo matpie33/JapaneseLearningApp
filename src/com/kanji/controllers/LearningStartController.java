@@ -9,10 +9,9 @@ import java.util.Set;
 import javax.swing.JTextField;
 
 import com.kanji.Row.RepeatingInformation;
-import com.kanji.Row.RepeatingList;
 import com.kanji.constants.ExceptionsMessages;
 import com.kanji.constants.Options;
-import com.kanji.dataObjects.RangesRow;
+import com.kanji.model.RangesRow;
 import com.kanji.myList.MyList;
 import com.kanji.panels.LearningStartPanel;
 import com.kanji.range.SetOfRanges;
@@ -20,7 +19,7 @@ import com.kanji.windows.ApplicationWindow;
 
 public class LearningStartController {
 
-	private MyList<RepeatingList> repeatsList;
+	private MyList<RepeatingInformation> repeatsList;
 	private SetOfRanges rangesToRepeat;
 	private int numberOfWords;
 	private int sumOfWords;
@@ -32,7 +31,7 @@ public class LearningStartController {
 	private int problematicLabelRow;
 	private StartingPanelController startingPanelController;
 
-	public LearningStartController(MyList<RepeatingList> repeatList, int numberOfWords,
+	public LearningStartController(MyList<RepeatingInformation> repeatList, int numberOfWords,
 			ApplicationWindow parentFrame, LearningStartPanel learningStartPanel) {
 		this.parentFrame = parentFrame;
 		startingPanelController = parentFrame.getStartingController();

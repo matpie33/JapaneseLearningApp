@@ -1,16 +1,16 @@
 package com.kanji.controllers;
 
-import com.kanji.Row.KanjiWords;
+import com.kanji.Row.KanjiInformation;
 import com.kanji.constants.ExceptionsMessages;
 import com.kanji.myList.MyList;
 import com.kanji.windows.DialogWindow;
 
 public class InsertWordController {
 
-	private MyList list;
+	private MyList<KanjiInformation> list;
 	private DialogWindow parentDialog;
 
-	public InsertWordController(MyList list) {
+	public InsertWordController(MyList<KanjiInformation> list) {
 		this.list = list;
 	}
 
@@ -22,13 +22,14 @@ public class InsertWordController {
 
 		if (isIdValidNumber(numberInput)) {
 			int number = Integer.parseInt(numberInput);
-			if (isWordAndIdUndefinedYet(wordInput, number)) {
-				addWordToList(wordInput, number);
+			boolean addedWord = addWordToList(wordInput, number);
+			if (addedWord) {
 				parentDialog.save();
-				return true;
 			}
+			return true;
 		}
 		return false;
+
 	}
 
 	private boolean isIdValidNumber(String number) {
@@ -39,27 +40,12 @@ public class InsertWordController {
 		return valid;
 	}
 
-	private boolean isWordAndIdUndefinedYet(String word, int number) {
-		return (isWordIdUndefinedYet(number) && isWordUndefinedYet(word));
-	}
-
-	private boolean isWordIdUndefinedYet(int number) {
-		boolean defined = ((KanjiWords) list.getWords()).isIdDefined(number);
-		if (defined)
-			parentDialog.showMessageDialog(ExceptionsMessages.idAlreadyDefinedException);
-		return !defined;
-	}
-
-	private boolean isWordUndefinedYet(String word) {
-		boolean defined = ((KanjiWords) list.getWords()).isWordDefined(word);
-		if (defined)
-			parentDialog.showMessageDialog(ExceptionsMessages.wordAlreadyDefinedException);
-		return !defined;
-	}
-
-	private void addWordToList(String word, int number) {
-		((KanjiWords) list.getWords()).addNewRow(word, number);
-		list.scrollToBottom();
+	private boolean addWordToList(String word, int number) {
+		boolean addedWord = list.addWord(new KanjiInformation(word, number));
+		if (addedWord) {
+			list.scrollToBottom();
+		}
+		return addedWord;
 	}
 
 }

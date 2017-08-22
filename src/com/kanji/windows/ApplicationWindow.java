@@ -6,7 +6,7 @@ import java.util.Set;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import com.kanji.Row.KanjiWords;
+import com.kanji.Row.KanjiInformation;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.SavingStatus;
 import com.kanji.constants.Titles;
@@ -122,8 +122,9 @@ public class ApplicationWindow extends DialogWindow {
 		showPanel(new SearchWordPanel(list), Titles.wordSearchDialog, false, Position.LEFT_CORNER);
 	}
 
-	public void showProblematicKanjiDialog(KanjiWords kanjiWords, Set<Integer> problematicKanjis) {
-		problematicKanjiPanel = new ProblematicKanjiPanel(kanjiWords, problematicKanjis);
+	public void showProblematicKanjiDialog(MyList<KanjiInformation> kanjiSearcher,
+			Set<Integer> problematicKanjis) {
+		problematicKanjiPanel = new ProblematicKanjiPanel(kanjiSearcher, problematicKanjis);
 		showPanel(problematicKanjiPanel, Titles.insertWordDialog, true, Position.CENTER);
 	}
 

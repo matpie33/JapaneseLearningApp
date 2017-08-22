@@ -1,27 +1,28 @@
 package com.kanji.utilities;
 
+import java.util.List;
 import java.util.Set;
 
-import com.kanji.Row.KanjiWords;
-import com.kanji.Row.RepeatingList;
+import com.kanji.Row.KanjiInformation;
+import com.kanji.Row.RepeatingInformation;
 
 public class SavingInformation {
-	private KanjiWords kanjiWords;
-	private RepeatingList repeatingList;
+	private List<KanjiInformation> kanjiWords;
+	private List<RepeatingInformation> repeatingList;
 	private Set<Integer> problematicKanjis;
 
-	public SavingInformation(KanjiWords kanjiWords, RepeatingList repeatingList,
-			Set<Integer> problematicKanjis) {
+	public SavingInformation(List<KanjiInformation> kanjiWords,
+			List<RepeatingInformation> repeatingList, Set<Integer> problematicKanjis) {
 		this.kanjiWords = kanjiWords;
 		this.repeatingList = repeatingList;
 		this.problematicKanjis = problematicKanjis;
 	}
 
-	public KanjiWords getKanjiWords() {
+	public List<KanjiInformation> getKanjiWords() {
 		return kanjiWords;
 	}
 
-	public RepeatingList getRepeatingList() {
+	public List<RepeatingInformation> getRepeatingList() {
 		return repeatingList;
 	}
 

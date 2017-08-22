@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JFileChooser;
@@ -19,11 +20,9 @@ import javax.swing.SwingWorker;
 
 import com.guimaker.colors.BasicColors;
 import com.kanji.Row.KanjiInformation;
-import com.kanji.Row.KanjiWords;
-import com.kanji.Row.RepeatingList;
+import com.kanji.Row.RepeatingInformation;
 import com.kanji.constants.MenuTexts;
 import com.kanji.constants.SavingStatus;
-import com.kanji.constants.Titles;
 import com.kanji.myList.MyList;
 import com.kanji.myList.RowInKanjiInformations;
 import com.kanji.myList.RowInRepeatingList;
@@ -33,8 +32,8 @@ import com.kanji.windows.ApplicationWindow;
 public class ElementMaker {
 
 	private ApplicationWindow parent;
-	private MyList<KanjiWords> listOfWords;
-	private MyList<RepeatingList> repeats;
+	private MyList<KanjiInformation> listOfWords;
+	private MyList<RepeatingInformation> repeats;
 	private JMenuBar menuBar;
 	private File fileToSave;
 	private LoadingAndSaving loadingAndSaving;
@@ -98,7 +97,7 @@ public class ElementMaker {
 
 	}
 
-	private void showLoadedKanjisInPanel(KanjiWords kanjiWords) {
+	private void showLoadedKanjisInPanel(List<KanjiInformation> kanjiWords) {
 		final LoadingPanel loadingPanel = parent.showProgressDialog();
 		SwingWorker s = new SwingWorker<Void, Integer>() {
 
@@ -107,13 +106,12 @@ public class ElementMaker {
 			@Override
 			public Void doInBackground() throws Exception {
 				progress = new JProgressBar();
-				populateWordsList(kanjiWords);
+				listOfWords.addWordsList(kanjiWords);
 				loadingPanel.setProgressBar(progress);
-				progress.setMaximum(kanjiWords.getNumberOfKanjis());
-				List<KanjiInformation> wordsList = listOfWords.getWords().getAllWords();
+				progress.setMaximum(kanjiWords.size());
 				List<Integer> ints = new ArrayList<>();
-				for (int i = 0; i < kanjiWords.getNumberOfKanjis(); i++) {
-					kanjiWords.addRow(wordsList.get(i), i + 1);
+				for (int i = 0; i < kanjiWords.size(); i++) {
+					listOfWords.addWord(kanjiWords.get(i));
 					process(ints);
 					ints.add(1);
 				}
@@ -129,22 +127,19 @@ public class ElementMaker {
 			@Override
 			public void done() {
 				parent.closeDialog();
-				listOfWords.repaint();
+				listOfWords.getPanel().repaint();
 				listOfWords.scrollToBottom();
 			}
 		};
 		s.execute();
 	}
 
-	private void showLoadedRepeatingInformations(RepeatingList mapOfRepeats) {
+	private void showLoadedRepeatingInformations(List<RepeatingInformation> mapOfRepeats) {
 		Runnable r2 = new Runnable() {
 			@Override
 			public void run() {
-				repeats.setWords(mapOfRepeats);
-				mapOfRepeats.setList(repeats);
-				mapOfRepeats.initialize();
-				repeats.getWords().addAll();
-				repeats.repaint();
+				repeats.addWordsList(mapOfRepeats);
+				repeats.getPanel().repaint();
 				repeats.scrollToBottom();
 			}
 		};
@@ -152,33 +147,24 @@ public class ElementMaker {
 		t2.start();
 	}
 
-	private void populateWordsList(KanjiWords kanjiWords) {
-		listOfWords.setWords(kanjiWords);
-		kanjiWords.setList(listOfWords);
-		kanjiWords.initialize();
-	}
-
 	private void initListOfWords() {
+		listOfWords = new MyList<KanjiInformation>(parent, this, new RowInKanjiInformations());
 
-		listOfWords = new MyList<KanjiWords>(parent, Titles.wordsList,
-				new RowInKanjiInformations(listOfWords), this);
-
-		KanjiWords words = new KanjiWords(listOfWords);
-		listOfWords.setWords(words);
-		for (int i = 1; i <= 10; i++) {
-			listOfWords.getWords().addRow("Word no. " + i, i, i);
+		for (int i = 1; i <= 15; i++) {
+			listOfWords.addWord(new KanjiInformation("Word no. " + i, i));
 		}
-		listOfWords.getWords()
-				.addRow("Firstly a trivial correction: the integer ALIGN_JUSTIF"
+		listOfWords.addWord(
+				new KanjiInformation("Firstly a trivial correction: the integer ALIGN_JUSTIF"
 						+ " should read ALIGN_JUSTIFIED Secondly, I have tried several variations of getting "
 						+ "justified text in JTextPane including the solution given above and using a menuitem "
-						+ "with alignment action such as: menu.add(new , i, i);", 11, 11);
+						+ "with alignment action such as: menu.add(new , i, i);", 11));
 	}
 
 	private void initRepeatsList() {
-		repeats = new MyList<RepeatingList>(parent, Titles.repeatedWordsList,
-				new RowInRepeatingList(repeats), this);
-		repeats.setWords(new RepeatingList(repeats));
+		repeats = new MyList<RepeatingInformation>(parent, this, new RowInRepeatingList(repeats));
+		repeats.addWord(new RepeatingInformation("abc", new Date(1993, 9, 14), true));
+		repeats.addWord(new RepeatingInformation("abc", new Date(1993, 9, 14), true));
+		repeats.addWord(new RepeatingInformation("abc", new Date(1993, 9, 14), true));
 	}
 
 	private File openFile() {
@@ -212,15 +198,14 @@ public class ElementMaker {
 	}
 
 	public void startLearning() {
-		parent.showLearningStartDialog(repeats,
-				((KanjiWords) listOfWords.getWords()).getNumberOfKanjis());
+		parent.showLearningStartDialog(repeats, listOfWords.getNumberOfWords());
 	}
 
 	public MyList getWordsList() {
 		return listOfWords;
 	}
 
-	public MyList<RepeatingList> getRepeatsList() {
+	public MyList<RepeatingInformation> getRepeatsList() {
 		return repeats;
 	}
 
@@ -250,7 +235,7 @@ public class ElementMaker {
 		try {
 			BufferedWriter p = new BufferedWriter(
 					new OutputStreamWriter(new FileOutputStream(f), "UTF8"));
-			List<KanjiInformation> list = listOfWords.getWords().getAllWords();
+			List<KanjiInformation> list = listOfWords.getWords();
 			for (KanjiInformation kanji : list) {
 				p.write(kanji.getKanjiKeyword() + " " + kanji.getKanjiID());
 				p.newLine();

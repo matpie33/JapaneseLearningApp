@@ -1,14 +1,24 @@
 package com.kanji.myList;
 
-import java.io.Serializable;
-
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
 
-public abstract class RowsCreator<Row> implements Serializable {
+public interface RowsCreator<Row> {
 
-	public abstract JPanel addWord(Row row, int rowsNumber);
+	public JPanel createRow(Row row);
 
-	public abstract void setList(MyList list);
+	public ListWordsController<Row> getController();
+
+	public void setList(MyList<Row> list);
+
+	public JPanel getPanel();
+
+	public void highlightRowAndScroll(int rowNumber);
+
+	public int getHighlightedRowNumber();
+
+	public void scrollToBottom();
+
+	public JScrollPane getScrollPane();
 
 }

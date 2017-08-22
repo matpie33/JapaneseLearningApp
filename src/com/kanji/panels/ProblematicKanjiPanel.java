@@ -24,7 +24,7 @@ import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.Anchor;
 import com.guimaker.row.RowMaker;
-import com.kanji.Row.KanjiWords;
+import com.kanji.Row.KanjiInformation;
 import com.kanji.actions.CommonActionsMaker;
 import com.kanji.actions.GuiElementsMaker;
 import com.kanji.constants.ButtonsNames;
@@ -33,6 +33,7 @@ import com.kanji.constants.Labels;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.Titles;
 import com.kanji.controllers.ProblematicKanjisController;
+import com.kanji.myList.MyList;
 import com.kanji.windows.DialogWindow;
 
 public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
@@ -43,9 +44,10 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	private Dimension preferredSize = new Dimension(600, 600);
 	private int maximumNumberOfRows = 5;
 
-	public ProblematicKanjiPanel(KanjiWords kanjis, Set<Integer> problematicKanji) {
+	public ProblematicKanjiPanel(MyList<KanjiInformation> kanjiSearcher,
+			Set<Integer> problematicKanji) {
 		super(true);
-		controller = new ProblematicKanjisController(this, problematicKanji, kanjis);
+		controller = new ProblematicKanjisController(this, problematicKanji, kanjiSearcher);
 		panelInScrollPane = new MainPanel(BasicColors.LIGHT_BLUE, true);
 		panelInScrollPane.setGapsBetweenRowsTo(5);
 	}

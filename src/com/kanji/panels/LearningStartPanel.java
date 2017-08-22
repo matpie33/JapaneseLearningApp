@@ -28,7 +28,7 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.Anchor;
 import com.guimaker.row.RowMaker;
 import com.guimaker.row.SimpleRow;
-import com.kanji.Row.RepeatingList;
+import com.kanji.Row.RepeatingInformation;
 import com.kanji.actions.CommonActionsMaker;
 import com.kanji.actions.GuiElementsMaker;
 import com.kanji.constants.ButtonsNames;
@@ -52,7 +52,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 	private MainPanel rangesPanel;
 
 	public LearningStartPanel(ApplicationWindow parentOfParent, int numberOfWords,
-			MyList<RepeatingList> list) {
+			MyList<RepeatingInformation> list) {
 		controller = new LearningStartController(list, numberOfWords, parentOfParent, this);
 		mainPanel = new MainPanel(BasicColors.OCEAN_BLUE, false);
 	}

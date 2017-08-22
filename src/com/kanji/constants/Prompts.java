@@ -24,5 +24,6 @@ public class Prompts {
 	public static final String problematicKanjisAddedPrompt = "+ problematyczne";
 	public static final String pauseIsEnabled = "Włączono pauzę.";
 	public static final String noMoreKanjis = "Koniec kanji.";
+	public static final String SEARCH_OPTION_PROMPT = "Szukaj według: ";
 
 }

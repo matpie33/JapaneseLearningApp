@@ -9,7 +9,7 @@ public class Titles {
 	public static final String wordSearchDialog = "Znajdź słowo";
 	public static final String repeatedWordsList = "Powtórzone";
 	public static final String repeatingWords = "Powtórka słówek";
-	public static final String wordsList = "Słówka";
+	public static final String KANJIS_LIST = "Słówka";
 	public static final String confirmDialog = "Potwierdzenie.";
 	public static final String kanjiRanges = "Przedziały kanji.";
 	public static final String hotkeysTitle = "Skróty klawiszowe";

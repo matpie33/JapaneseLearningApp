@@ -52,7 +52,7 @@ public class StartingPanelController {
 	}
 
 	public void addToRepeatsList(RepeatingInformation info) {
-		maker.getRepeatsList().getWords().add(info);
+		maker.getRepeatsList().addWord(info);
 	}
 
 }

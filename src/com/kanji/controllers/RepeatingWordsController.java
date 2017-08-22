@@ -5,11 +5,15 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import com.kanji.Row.KanjiWords;
+import com.kanji.Row.KanjiInformation;
 import com.kanji.Row.RepeatingInformation;
 import com.kanji.actions.TextAlignment;
 import com.kanji.constants.Prompts;
 import com.kanji.fileReading.KanjiCharactersReader;
+import com.kanji.listSearching.KanjiIdChecker;
+import com.kanji.listSearching.KanjiKeywordChecker;
+import com.kanji.listSearching.SearchOptions;
+import com.kanji.listSearching.SearchingDirection;
 import com.kanji.myList.MyList;
 import com.kanji.panels.RepeatingWordsPanel;
 import com.kanji.range.Range;
@@ -19,15 +23,18 @@ import com.kanji.timer.TimeSpentMonitor;
 import com.kanji.windows.ApplicationWindow;
 
 public class RepeatingWordsController implements TimeSpentMonitor {
-	private MyList<KanjiWords> wholeWordsList;
 	private Set<String> currentlyRepeatedWords;
 	private KanjiCharactersReader kanjiCharactersReader;
+
+	// TODO kanji list should not allow adding words with same keyword // or
+	// maybe
 	private ApplicationWindow parent;
 	private Set<Integer> problematicKanjis;
 	private Set<Integer> currentProblematicKanjis;
 	private String currentWord;
 	private String previousWord = "";
 	private boolean paused;
+	private MyList<KanjiInformation> kanjiList;
 
 	private int maxCharactersInRow = 15;
 
@@ -46,15 +53,15 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 		timeSpentHandler = new TimeSpentHandler(this);
 		panel = new RepeatingWordsPanel(this);
 	}
-	// TODO in main panel, replace int GridBagConstraints.NORTH etc. with my own
-	// enum, would be easier to use
 
 	public String getCurrentKanji() {
 		return this.kanjiCharactersReader.getKanjiById(getCurrentWordId());
 	}
 
 	private int getCurrentWordId() {
-		return wholeWordsList.getWords().getIdOfTheWord(this.currentWord);
+		return kanjiList.findRowNumberBasedOnProperty(
+				new KanjiKeywordChecker(SearchOptions.BY_FULL_EXPRESSION), currentWord,
+				SearchingDirection.FORWARD, parent);
 	}
 
 	public String createRemainingKanjisPrompt() {
@@ -62,16 +69,20 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 				+ Prompts.kanjiPrompt;
 	}
 
-	public void setRepeatingWords(MyList<KanjiWords> wordsList) {
+	public void setRepeatingWords(MyList<KanjiInformation> wordsList) {
 		this.currentlyRepeatedWords = new HashSet<>();
-		this.wholeWordsList = wordsList;
+		kanjiList = wordsList;
 	}
 
 	public void setRangesToRepeat(SetOfRanges ranges) {
 		for (Range range : ranges.getRangesAsList()) {
 			if (!range.isEmpty()) {
 				for (int i = range.getRangeStart(); i <= range.getRangeEnd(); i++) {
-					currentlyRepeatedWords.add(wholeWordsList.findWordInRow(i - 1));
+					currentlyRepeatedWords.add(kanjiList
+							.findRowBasedOnProperty(new KanjiIdChecker(), i,
+									SearchingDirection.FORWARD, kanjiList.getParent())
+							.getKanjiKeyword());
+
 				}
 			}
 		}
@@ -84,7 +95,8 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 
 	public void addProblematicKanjisToList() {
 		for (int i : problematicKanjis) {
-			String word = ((KanjiWords) wholeWordsList.getWords()).getWordForId(i);
+			String word = kanjiList.findRowBasedOnProperty(new KanjiIdChecker(), i,
+					SearchingDirection.FORWARD, parent).getKanjiKeyword();
 			if (!this.currentlyRepeatedWords.contains(word)) {
 				this.currentlyRepeatedWords.add(word);
 			}
@@ -154,8 +166,7 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 
 		parent.showMessageDialog(createFinishMessage());
 		if (currentProblematicKanjis.size() > 0)
-			parent.showProblematicKanjiDialog((KanjiWords) wholeWordsList.getWords(),
-					currentProblematicKanjis);
+			parent.showProblematicKanjiDialog(kanjiList, currentProblematicKanjis);
 	}
 
 	private String createFinishMessage() {
@@ -234,7 +245,7 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 	}
 
 	private void addToProblematic() {
-		int num = getCurrentWordId();
+		int num = getCurrentWordId() + 1; // TODO remove this + 1
 		this.currentProblematicKanjis.add(Integer.valueOf(num));
 	}
 

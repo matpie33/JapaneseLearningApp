@@ -1,4 +1,4 @@
-package com.kanji.myList;
+package com.kanji.listSearching;
 
 public enum SearchOptions {
 

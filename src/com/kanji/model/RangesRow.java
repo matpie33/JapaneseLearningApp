@@ -1,4 +1,4 @@
-package com.kanji.dataObjects;
+package com.kanji.model;
 
 import java.util.Objects;
 

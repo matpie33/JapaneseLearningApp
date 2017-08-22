@@ -10,9 +10,12 @@ import java.util.Objects;
 import java.util.Set;
 
 import com.guimaker.panels.MainPanel;
-import com.kanji.Row.KanjiWords;
+import com.kanji.Row.KanjiInformation;
 import com.kanji.constants.Prompts;
 import com.kanji.fileReading.KanjiCharactersReader;
+import com.kanji.listSearching.KanjiIdChecker;
+import com.kanji.listSearching.SearchingDirection;
+import com.kanji.myList.MyList;
 import com.kanji.panels.ProblematicKanjiPanel;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
@@ -25,7 +28,7 @@ public class ProblematicKanjisController {
 	private KanjiCharactersReader kanjiCharactersReader;
 	private List<KanjiRow> kanjisToBrowse;
 	private Set<Integer> problematicKanjisIds;
-	private KanjiWords kanjiInfos;
+	private MyList<KanjiInformation> kanjiList;
 
 	private class KanjiRow {
 		private MainPanel panel;
@@ -61,14 +64,15 @@ public class ProblematicKanjisController {
 	}
 
 	public ProblematicKanjisController(ProblematicKanjiPanel problematicKanjiPanel,
-			Set<Integer> problematicKanjisSet, KanjiWords kanjis) {
+			Set<Integer> problematicKanjisSet, MyList<KanjiInformation> kanjiList) {
 		this.problematicKanjiPanel = problematicKanjiPanel;
 		kanjisToBrowse = new ArrayList<>();
 		useInternet = true;
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		kanjiCharactersReader.loadKanjisIfNeeded();
 		problematicKanjisIds = problematicKanjisSet;
-		kanjiInfos = kanjis;
+		this.kanjiList = kanjiList;
+		System.out.println("who is searcher: " + kanjiList);
 	}
 
 	public KanjiCharactersReader getKanjisReader() {
@@ -89,7 +93,9 @@ public class ProblematicKanjisController {
 			browseKanji(k);
 		}
 		else {
-			problematicKanjiPanel.showKanjiOffline(kanjiCharactersReader.getKanjiById(k.getId()));
+			problematicKanjiPanel
+					.showKanjiOffline(kanjiCharactersReader.getKanjiById(k.getId() - 1));
+			// TODO hardcoding -1 or +1 here and there is definitely not good
 		}
 
 	}
@@ -142,7 +148,11 @@ public class ProblematicKanjisController {
 
 	public void buildRowsForProblematicKanjis() {
 		for (Integer kanjiId : problematicKanjisIds) {
-			problematicKanjiPanel.buildRow(kanjiInfos.getWordForId(kanjiId), kanjiId);
+			problematicKanjiPanel
+					.buildRow(kanjiList
+							.findRowBasedOnProperty(new KanjiIdChecker(), kanjiId,
+									SearchingDirection.FORWARD, kanjiList.getParent())
+							.getKanjiKeyword(), kanjiId);
 		}
 	}
 

@@ -1,8 +1,5 @@
 package com.kanji.panels;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -10,12 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.border.Border;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
@@ -34,8 +29,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	private JScrollPane listScrollWords;
 	private JScrollPane listScrollRepeated;
 	private ElementMaker maker;
-	private final Dimension scrollPanesSize = new Dimension(300, 300);
-	private final Dimension minimumListSize = new Dimension(200, 100);
+
 	private JSplitPane listsSplitPane;
 	private MainPanel buttonsPanel;
 	private MainPanel infoPanel;
@@ -150,8 +144,8 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	private void createUpperPanel() {
 		MyList wordsList = maker.getWordsList();
 		MyList repeatsList = maker.getRepeatsList();
-		listScrollWords = createScrollPaneForList(wordsList);
-		listScrollRepeated = createScrollPaneForList(repeatsList);
+		listScrollWords = wordsList.getScrollPane();
+		listScrollRepeated = repeatsList.getScrollPane();
 		listsSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, listScrollWords,
 				listScrollRepeated);
 	}
@@ -179,26 +173,6 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		buttonsPanel = new MainPanel(null);
 		buttonsPanel
 				.addRow(RowMaker.createUnfilledRow(Anchor.WEST, list.toArray(new JButton[] {})));
-	}
-
-	@SuppressWarnings("rawtypes")
-	private JScrollPane createScrollPaneForList(MyList list) {
-		Border raisedBevel = BorderFactory.createLineBorder(Color.BLUE, 6);
-		JScrollPane listScrollWords = createScrollPane(BasicColors.OCEAN_BLUE, raisedBevel, list);
-		list.setScrollPane(listScrollWords);
-		listScrollWords.setMinimumSize(minimumListSize);
-		return listScrollWords;
-	}
-
-	private JScrollPane createScrollPane(Color bgColor, Border border, Component component) {
-
-		JScrollPane scroll = new JScrollPane(component);
-		scroll.getViewport().setBackground(bgColor);
-		scroll.setBorder(border);
-		scroll.getVerticalScrollBar().setUnitIncrement(20);
-		scroll.setPreferredSize(scrollPanesSize);
-		return scroll;
-
 	}
 
 	public void changeSaveStatus(SavingStatus savingStatus) {

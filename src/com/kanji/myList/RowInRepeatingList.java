@@ -13,38 +13,46 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import com.guimaker.colors.BasicColors;
+import com.guimaker.panels.MainPanel;
+import com.guimaker.row.Anchor;
+import com.guimaker.row.RowMaker;
 import com.kanji.Row.RepeatingInformation;
-import com.kanji.Row.RepeatingList;
 import com.kanji.constants.Prompts;
 
-public class RowInRepeatingList extends RowsCreator<RepeatingInformation> {
+public class RowInRepeatingList implements RowsCreator<RepeatingInformation> {
 
 	private Color defaultColor = Color.RED;
-	private MyList<RepeatingList> list;
+	private MyList<RepeatingInformation> list;
 	private int rowsCounter;
+	private MainPanel panel;
+	private ListWordsController<RepeatingInformation> controller;
 
-	public RowInRepeatingList(MyList<RepeatingList> list) {
+	// TODO refactor this class
+
+	public RowInRepeatingList(MyList<RepeatingInformation> list) {
 		this.list = list;
 		rowsCounter = 1;
+		panel = new MainPanel(BasicColors.VERY_BLUE, true);
+		controller = new ListWordsController<>();
 	}
 
 	@Override
-	public JPanel addWord(RepeatingInformation rep, int rowsNumber) {
+	public JPanel createRow(RepeatingInformation rep) {
 		String word = rep.getRepeatingRange();
 		String time = rep.getTimeSpentOnRepeating();
 		Date date1 = rep.getRepeatingDate();
-		JPanel rowPanel = createPanel();
 
 		String rowNumber = "" + rowsCounter++ + ".";
 		JLabel repeatedWords = createLabel(Prompts.repeatingWordsRangePrompt + word);
@@ -55,20 +63,28 @@ public class RowInRepeatingList extends RowsCreator<RepeatingInformation> {
 		date.setForeground(BasicColors.OCEAN_BLUE);
 		JLabel timeSpent = null;
 
-		List<Component> components = new ArrayList<>();
-		components.add(date);
-		components.add(repeatedWords);
-
 		if (time != null) {
 			timeSpent = createLabel(Prompts.repeatingTimePrompt + time);
-			components.add(timeSpent);
 		}
 
-		JButton delete = createButtonRemove(rowPanel, rep);
-		components.add(delete);
-		addComponentsToPanel(rowPanel, components);
+		JButton delete = createButtonRemove();
 
-		return rowPanel;
+		MainPanel panel = new MainPanel(null);
+		panel.addRow(RowMaker.createHorizontallyFilledRow(date));
+		// TODO add in main panel method for creating a series of rows in one
+		// line
+		panel.addRow(RowMaker.createHorizontallyFilledRow(repeatedWords));
+		if (timeSpent != null) {
+			panel.addRow(RowMaker.createHorizontallyFilledRow(timeSpent));
+		}
+
+		panel.addRow(RowMaker.createUnfilledRow(Anchor.WEST, delete));
+		JPanel wrappingPanel = this.panel
+				.addRow(RowMaker.createHorizontallyFilledRow(panel.getPanel()));
+		wrappingPanel
+				.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, BasicColors.LIGHT_BLUE));
+		addActionListener(delete, wrappingPanel, rep);
+		return this.panel.getPanel();
 
 	}
 
@@ -151,9 +167,13 @@ public class RowInRepeatingList extends RowsCreator<RepeatingInformation> {
 		return anchor;
 	}
 
-	private JButton createButtonRemove(final JPanel text, final RepeatingInformation kanji) {
+	private JButton createButtonRemove() {
 		JButton remove = new JButton("-");
-		remove.addActionListener(new ActionListener() {
+		return remove;
+	}
+
+	private void addActionListener(JButton button, JPanel panel, final RepeatingInformation kanji) {
+		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!list.showMessage(String.format(Prompts.deleteElementPrompt,
@@ -161,17 +181,49 @@ public class RowInRepeatingList extends RowsCreator<RepeatingInformation> {
 					return;
 				}
 
-				list.removeRowContainingTheWord(text);
+				removeRow(panel);
 				list.getWords().remove(kanji);
 				list.save();
 			}
 		});
-		return remove;
 	}
 
 	@Override
-	public void setList(MyList list) {
+	public void setList(MyList<RepeatingInformation> list) {
 		this.list = list;
+	}
+
+	private void removeRow(JPanel row) {
+		panel.removeRow(row);
+	}
+
+	@Override
+	public ListWordsController<RepeatingInformation> getController() {
+		return controller;
+	}
+
+	public JPanel getPanel() {
+		return panel.getPanel();
+	}
+
+	@Override
+	public void highlightRowAndScroll(int rowNumber) {
+		panel.getRows().get(rowNumber).setBackground(Color.red);
+	}
+
+	@Override
+	public int getHighlightedRowNumber() {
+		return -1000;
+	}
+
+	@Override
+	public void scrollToBottom() {
+
+	}
+
+	@Override
+	public JScrollPane getScrollPane() {
+		return new JScrollPane(panel.getPanel());
 	}
 
 }
