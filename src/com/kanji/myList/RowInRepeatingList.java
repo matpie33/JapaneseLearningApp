@@ -35,16 +35,16 @@ public class RowInRepeatingList extends RowsCreator<RepeatingInformation> {
 		Date date1 = rep.getRepeatingDate();
 
 		String rowNumber = "" + rowsCounter++ + ".";
-		JLabel repeatedWords = createLabel(Prompts.repeatingWordsRangePrompt + word);
+		JLabel repeatedWords = createLabel(Prompts.REPEATING_WORDS_RANGE + word);
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
 		JLabel date = createLabel(
-				rowNumber + " " + Prompts.repeatingDatePrompt + sdf.format(date1) + ".");
+				rowNumber + " " + Prompts.REPEATING_DATE + sdf.format(date1) + ".");
 		date.setForeground(BasicColors.OCEAN_BLUE);
 		JLabel timeSpent = null;
 
 		if (time != null) {
-			timeSpent = createLabel(Prompts.repeatingTimePrompt + time);
+			timeSpent = createLabel(Prompts.REPEATING_TIME + time);
 		}
 
 		JButton delete = createButtonRemove();
@@ -83,8 +83,8 @@ public class RowInRepeatingList extends RowsCreator<RepeatingInformation> {
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!list.showMessage(String.format(Prompts.deleteElementPrompt,
-						Prompts.repeatingElementPrompt))) {
+				if (!list.showMessage(String.format(Prompts.DELETE_ELEMENT,
+						Prompts.REPEATING_ELEMENT))) {
 					return;
 				}
 

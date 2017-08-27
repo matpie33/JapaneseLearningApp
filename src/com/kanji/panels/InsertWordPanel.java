@@ -35,17 +35,17 @@ public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 	void createElements() {
 
 		controller.setParentDialog(parentDialog);
-		JLabel addWordPrompt = new JLabel(Prompts.wordAddDialogPrompt);
+		JLabel addWordPrompt = new JLabel(Prompts.ADD_DIALOG);
 		insertWordTextField = new JTextField(20);
 
-		JLabel addNumberPrompt = new JLabel(Prompts.wordAddNumberPrompt);
+		JLabel addNumberPrompt = new JLabel(Prompts.ADD_NUMBER);
 		insertNumberTextField = new JTextField(20);
 		limitCharactersAccordingToInteger(insertNumberTextField);
 
-		JButton cancel = GuiElementsMaker.createButton(ButtonsNames.buttonCancelText,
+		JButton cancel = GuiElementsMaker.createButton(ButtonsNames.CANCEL,
 				CommonActionsMaker.createDisposeAction(parentDialog));
 
-		JButton approve = createButtonValidate(ButtonsNames.buttonApproveText);
+		JButton approve = createButtonValidate(ButtonsNames.APPROVE);
 
 		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(addWordPrompt, insertWordTextField)
 				.fillHorizontallySomeElements(insertWordTextField));

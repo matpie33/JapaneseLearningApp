@@ -42,7 +42,7 @@ public class ConfirmPanel extends AbstractPanelWithHotkeysInfo {
 				parentDialog.setAccepted(true);
 			}
 		};
-		return createButtonWithHotkey(KeyEvent.VK_ENTER, action, ButtonsNames.buttonConfirmText,
+		return createButtonWithHotkey(KeyEvent.VK_ENTER, action, ButtonsNames.CONFIRM,
 				HotkeysDescriptions.CONFIRM_ACTION);
 	}
 
@@ -56,7 +56,7 @@ public class ConfirmPanel extends AbstractPanelWithHotkeysInfo {
 				parentDialog.setAccepted(false);
 			}
 		};
-		return createButtonWithHotkey(KeyEvent.VK_ESCAPE, action, ButtonsNames.buttonRejectText,
+		return createButtonWithHotkey(KeyEvent.VK_ESCAPE, action, ButtonsNames.REJECT,
 				HotkeysDescriptions.REJECT_ACTION);
 	}
 

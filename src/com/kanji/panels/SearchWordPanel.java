@@ -24,7 +24,6 @@ import com.kanji.actions.CommonActionsMaker;
 import com.kanji.actions.GuiElementsMaker;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.Labels;
-import com.kanji.constants.Options;
 import com.kanji.constants.Prompts;
 import com.kanji.listSearching.KanjiIdChecker;
 import com.kanji.listSearching.KanjiKeywordChecker;
@@ -63,9 +62,9 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 	void createElements() {
 		JComboBox<String> comboBox = createCombobox();
 
-		JButton previous = createButtonFindPrevious(ButtonsNames.buttonPreviousText);
-		JButton next = createButtonFindNext(ButtonsNames.buttonNextText);
-		JButton cancel = GuiElementsMaker.createButton(ButtonsNames.buttonCancelText,
+		JButton previous = createButtonFindPrevious(ButtonsNames.FIND_PREVIOUS);
+		JButton next = createButtonFindNext(ButtonsNames.FIND_NEXT);
+		JButton cancel = GuiElementsMaker.createButton(ButtonsNames.CANCEL,
 				CommonActionsMaker.createDisposeAction(parentDialog));
 		JLabel searchOptionPrompt = new JLabel(Prompts.SEARCH_OPTION_PROMPT);
 
@@ -103,7 +102,7 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private MainPanel createSearchByKeywordPanel() {
-		JLabel prompt = new JLabel(Prompts.wordSearchDialogPrompt);
+		JLabel prompt = new JLabel(Prompts.SEARCH_DIALOG);
 		textField = createInputTextField();
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -113,11 +112,11 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 		});
 
 		JRadioButton defaultSearchOption = createRadioButtonForSearchingOption(
-				SearchOptions.BY_LETTERS, Options.wordSearchDefaultOption);
+				SearchOptions.BY_LETTERS, Labels.WORD_SEARCH_DEFAULT_OPTION);
 		fullWordsSearchOption = createRadioButtonForSearchingOption(SearchOptions.BY_WORD,
-				Options.wordSearchOnlyFullWordsOption);
+				Labels.WORD_SEARCH_ONLY_FULL_WORDS_OPTION);
 		perfectMatchSearchOption = createRadioButtonForSearchingOption(
-				SearchOptions.BY_FULL_EXPRESSION, Options.wordSearchPerfectMatchOption);
+				SearchOptions.BY_FULL_EXPRESSION, Labels.WORD_SEARCH_PERFECT_MATCH_OPTION);
 
 		addRadioButtonsToGroup(new JRadioButton[] { defaultSearchOption, fullWordsSearchOption,
 				perfectMatchSearchOption });

@@ -42,7 +42,7 @@ public class MessagePanel extends AbstractPanelWithHotkeysInfo {
 				parentDialog.getContainer().dispose();
 			}
 		};
-		return createButtonWithHotkey(KeyEvent.VK_ESCAPE, dispose, ButtonsNames.buttonApproveText,
+		return createButtonWithHotkey(KeyEvent.VK_ESCAPE, dispose, ButtonsNames.APPROVE,
 				HotkeysDescriptions.CLOSE_WINDOW);
 	}
 

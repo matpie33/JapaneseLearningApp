@@ -130,7 +130,7 @@ public class ProblematicKanjisController {
 			goToNextResource();
 		}
 		else {
-			problematicKanjiPanel.showMessage(Prompts.noMoreKanjis);
+			problematicKanjiPanel.showMessage(Prompts.NO_MORE_KANJIS);
 		}
 	}
 
@@ -165,7 +165,7 @@ public class ProblematicKanjisController {
 			goToNextResource();
 		else {
 			problematicKanjiPanel.getDialog().closeChild();
-			problematicKanjiPanel.getDialog().showMessageDialog(Prompts.noMoreKanjis);
+			problematicKanjiPanel.getDialog().showMessageDialog(Prompts.NO_MORE_KANJIS);
 		}
 	}
 

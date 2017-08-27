@@ -65,18 +65,18 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		ButtonGroup group = new ButtonGroup();
 		group.add(withInternet);
 		group.add(withoutInternet);
-		JButton button = GuiElementsMaker.createButton(ButtonsNames.buttonApproveText,
+		JButton button = GuiElementsMaker.createButton(ButtonsNames.APPROVE,
 				CommonActionsMaker.createDisposeAction(parentDialog));
 		buildRows();
 
 		MainPanel radioButtonsPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
 		radioButtonsPanel.addRow(RowMaker.createHorizontallyFilledRow(
-				new JLabel(Titles.optionsForShowingProblematicKanjis)));
+				new JLabel(Titles.OPTIONS_FOR_SHOWING_PROBLEMATIC_KANJIS)));
 		radioButtonsPanel
 				.addRow(RowMaker.createHorizontallyFilledRow(withInternet, withoutInternet));
 
 		mainPanel.addRow(RowMaker.createUnfilledRow(Anchor.CENTER,
-				new JLabel(Titles.currentProblematicWords)));
+				new JLabel(Titles.CURRENT_PROBLEMATIC_WORDS)));
 		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(radioButtonsPanel.getPanel()));
 		mainPanel.addRow(RowMaker.createBothSidesFilledRow(kanjiRepeatingList.getPanel()));
 		addHotkeysPanelHere();
@@ -85,7 +85,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
 	private JRadioButton createRadioButtonForLearningWithInternet() {
 		JRadioButton withInternet = GuiElementsMaker
-				.createRadioButton(Labels.repeatingWithInternet);
+				.createRadioButton(Labels.REPEATING_WITH_INTERNET);
 		withInternet.setFocusable(false);
 		withInternet.setSelected(true);
 		AbstractAction useInternetAction = createActionListenerForUsingInternet(withInternet, true);
@@ -109,7 +109,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
 	private JRadioButton createRadioButtonForLearningWithoutInternet() {
 		JRadioButton withoutInternet = GuiElementsMaker
-				.createRadioButton(Labels.repeatingWithoutInternet);
+				.createRadioButton(Labels.REPEATING_WITHOUT_INTERNET);
 		withoutInternet.setFocusable(false);
 		AbstractAction dontUseInternetAction = createActionListenerForUsingInternet(withoutInternet,
 				false);

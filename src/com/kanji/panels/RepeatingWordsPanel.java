@@ -56,7 +56,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
 	@Override
 	void createElements() {
-		JLabel titleLabel = new JLabel(Titles.repeatingWords);
+		JLabel titleLabel = new JLabel(Titles.REPEATING_WORDS_DIALOG);
 		time = new JLabel(this.timeLabelText);
 		remainingLabel = new JLabel(repeatingWordsController.createRemainingKanjisPrompt());
 		JButton returnButton = createReturnButton();
@@ -102,7 +102,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 		};
 
 		showPreviousWord = createButtonWithHotkey(KeyEvent.VK_G, action,
-				ButtonsNames.buttonShowPreviousWord, HotkeysDescriptions.SHOW_PREVIOUS_KANJI);
+				ButtonsNames.PREVIOUS_WORD, HotkeysDescriptions.SHOW_PREVIOUS_KANJI);
 		showPreviousWord.setFocusable(false);
 
 	}
@@ -145,7 +145,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 				repeatingWordsController.pressedButtonPause();
 			}
 		};
-		pauseOrResume = createButtonWithHotkey(KeyEvent.VK_P, a, ButtonsNames.buttonPause,
+		pauseOrResume = createButtonWithHotkey(KeyEvent.VK_P, a, ButtonsNames.PAUSE,
 				HotkeysDescriptions.PAUSE);
 	}
 
@@ -156,7 +156,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 			}
 		};
 		recognizedWord = createButtonWithHotkey(KeyEvent.VK_SPACE, a,
-				ButtonsNames.buttonRecognizedWordText,
+				ButtonsNames.RECOGNIZED_WORD,
 				HotkeysDescriptions.SHOW_KANJI_OR_SET_KANJI_AS_KNOWN_KANJI);
 	}
 
@@ -168,7 +168,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 			}
 		};
 		notRecognizedWord = createButtonWithHotkey(KeyEvent.VK_A, a,
-				ButtonsNames.buttonNotRecognizedText, HotkeysDescriptions.SET_KANJI_AS_PROBLEMATIC);
+				ButtonsNames.NOT_RECOGNIZED, HotkeysDescriptions.SET_KANJI_AS_PROBLEMATIC);
 	}
 
 	public void goToNextWord() {
@@ -189,7 +189,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private JButton createReturnButton() {
-		JButton returnButton = new JButton(ButtonsNames.buttonGoBackText);
+		JButton returnButton = new JButton(ButtonsNames.GO_BACK);
 		returnButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				repeatingWordsController.pressedButtonReturn();
@@ -201,7 +201,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private void createShowWordButton() {
-		this.showWord = new JButton(ButtonsNames.buttonShowKanjiText);
+		this.showWord = new JButton(ButtonsNames.SHOW_KANJI);
 		AbstractAction action = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -209,7 +209,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 			}
 		};
 		showWord = createButtonWithHotkey(KeyEvent.VK_SPACE, action,
-				ButtonsNames.buttonShowKanjiText, "");
+				ButtonsNames.SHOW_KANJI, "");
 	}
 
 	public void showCurrentKanjiAndShowAppropriateButtons() {

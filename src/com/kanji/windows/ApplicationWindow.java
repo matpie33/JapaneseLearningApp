@@ -79,7 +79,7 @@ public class ApplicationWindow extends DialogWindow {
 		container.setContentPane(mainApplicationPanel);
 		container.pack();
 		container.setMinimumSize(container.getSize());
-		container.setTitle(Titles.app);
+		container.setTitle(Titles.APPLICATION);
 		container.setLocationRelativeTo(null);
 		container.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		container.setVisible(true);
@@ -100,7 +100,7 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void updateTitle(String update) {
-		container.setTitle(Titles.app + "   " + update);
+		container.setTitle(Titles.APPLICATION + "   " + update);
 	}
 
 	public void scrollToBottom() {
@@ -116,7 +116,7 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void showLearningStartDialog(MyList list, int maximumNumber) {
-		showPanel(new LearningStartPanel(this, maximumNumber, list), Titles.learnStartDialog, false,
+		showPanel(new LearningStartPanel(this, maximumNumber, list), Titles.LEARNING_START_DIALOG, false,
 				Position.CENTER);
 
 	}
@@ -124,17 +124,17 @@ public class ApplicationWindow extends DialogWindow {
 	// TODO dialogs should either be jframe or modal in order for alt tab to
 	// switch focus to the right window
 	public void showInsertDialog(MyList list) {
-		showPanel(new InsertWordPanel(list), Titles.insertWordDialog, false, Position.LEFT_CORNER);
+		showPanel(new InsertWordPanel(list), Titles.INSERT_WORD_DIALOG, false, Position.LEFT_CORNER);
 	}
 
 	public void showSearchWordDialog(MyList<KanjiInformation> list) {
-		showPanel(new SearchWordPanel(list), Titles.wordSearchDialog, false, Position.LEFT_CORNER);
+		showPanel(new SearchWordPanel(list), Titles.WORD_SEARCH_DIALOG, false, Position.LEFT_CORNER);
 	}
 
 	public void showProblematicKanjiDialog(MyList<KanjiInformation> kanjiSearcher,
 			Set<Integer> problematicKanjis) {
 		problematicKanjiPanel = new ProblematicKanjiPanel(kanjiSearcher, problematicKanjis);
-		showPanel(problematicKanjiPanel, Titles.insertWordDialog, true, Position.CENTER);
+		showPanel(problematicKanjiPanel, Titles.INSERT_WORD_DIALOG, true, Position.CENTER);
 	}
 
 	public void showProblematicKanjiDialog() {
@@ -142,8 +142,8 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public LoadingPanel showProgressDialog() {
-		LoadingPanel dialog = new LoadingPanel(Prompts.kanjiLoadingPrompt);
-		showPanel(dialog, Titles.messageDialog, false, Position.CENTER);
+		LoadingPanel dialog = new LoadingPanel(Prompts.KANJI_LOADING);
+		showPanel(dialog, Titles.MESSAGE_DIALOG, false, Position.CENTER);
 		return dialog;
 	}
 
@@ -158,9 +158,9 @@ public class ApplicationWindow extends DialogWindow {
 	private JMenuBar createMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBackground(BasicColors.OCEAN_BLUE);
-		JMenu menu = new JMenu(MenuTexts.menuBarFile);
+		JMenu menu = new JMenu(MenuTexts.MENU_BAR_FILE);
 		menuBar.add(menu);
-		JMenuItem item = new JMenuItem(MenuTexts.menuOpen);
+		JMenuItem item = new JMenuItem(MenuTexts.MENU_OPEN);
 
 		item.addActionListener(new ActionListener() {
 			@Override

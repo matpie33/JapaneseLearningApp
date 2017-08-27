@@ -136,7 +136,7 @@ public class DialogWindow {
 	}
 
 	public void showMessageDialog(String message) {
-		showPanel(new MessagePanel(message), Titles.messageDialog, true, Position.CENTER);
+		showPanel(new MessagePanel(message), Titles.MESSAGE_DIALOG, true, Position.CENTER);
 	}
 
 	public void showPanel(AbstractPanelWithHotkeysInfo panelCreator, String title, boolean modal,
@@ -161,7 +161,7 @@ public class DialogWindow {
 	}
 
 	public boolean showConfirmDialog(String message) {
-		showPanel(new ConfirmPanel(message), Titles.confirmDialog, true, Position.CENTER);
+		showPanel(new ConfirmPanel(message), Titles.CONFIRM_DIALOG, true, Position.CENTER);
 		return isAccepted();
 	}
 

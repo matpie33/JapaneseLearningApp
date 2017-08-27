@@ -61,13 +61,13 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 
 	private List<JButton> addListeners() throws Exception {
 		List<JButton> buttons = new ArrayList<>();
-		for (String name : ButtonsNames.mainPageButtonNames) {
+		for (String name : ButtonsNames.BUTTONS_ON_MAIN_PAGE) {
 			int keyEvent;
 			AbstractAction action;
 			String hotkeyDescription;
 
 			switch (name) {
-			case ButtonsNames.buttonOpenText:
+			case ButtonsNames.OPEN:
 				hotkeyDescription = HotkeysDescriptions.OPEN_LOAD_KANJI_DIALOG;
 				keyEvent = KeyEvent.VK_Q;
 				action = new AbstractAction() {
@@ -77,7 +77,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 					}
 				};
 				break;
-			case ButtonsNames.buttonAddText:
+			case ButtonsNames.ADD:
 				hotkeyDescription = HotkeysDescriptions.ADD_WORD;
 				keyEvent = KeyEvent.VK_I;
 				action = new AbstractAction() {
@@ -87,7 +87,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 					}
 				};
 				break;
-			case ButtonsNames.buttonSearchText:
+			case ButtonsNames.SEARCH:
 				hotkeyDescription = HotkeysDescriptions.OPEN_SEARCH_WORD_DIALOG;
 				keyEvent = KeyEvent.VK_F;
 				action = new AbstractAction() {
@@ -97,7 +97,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 					}
 				};
 				break;
-			case ButtonsNames.buttonStartText:
+			case ButtonsNames.START:
 				hotkeyDescription = HotkeysDescriptions.OPEN_START_LEARNING_DIALOG;
 				keyEvent = KeyEvent.VK_R;
 				action = new AbstractAction() {
@@ -107,7 +107,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 					}
 				};
 				break;
-			case ButtonsNames.buttonSaveText:
+			case ButtonsNames.SAVE:
 				hotkeyDescription = HotkeysDescriptions.SAVE_PROJECT;
 				keyEvent = KeyEvent.VK_S;
 				action = new AbstractAction() {
@@ -117,7 +117,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 					}
 				};
 				break;
-			case ButtonsNames.buttonSaveListText:
+			case ButtonsNames.SAVE_LIST:
 				hotkeyDescription = HotkeysDescriptions.EXPORT_LIST;
 				keyEvent = KeyEvent.VK_T;
 				action = new AbstractAction() {
@@ -152,7 +152,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private JButton createShowProblematicKanjiButton() {
-		JButton problematicKanjiButton = new JButton(ButtonsNames.buttonShowProblematicKanji);
+		JButton problematicKanjiButton = new JButton(ButtonsNames.SHOW_PROBLEMATIC_KANJIS);
 		problematicKanjiButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -169,8 +169,8 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public void changeSaveStatus(SavingStatus savingStatus) {
-		saveInfo.setText(Prompts.savingStatusPrompt + savingStatus.getStatus() + "; "
-				+ Prompts.problematicKanjiPrompt
+		saveInfo.setText(Prompts.SAVING_STATUS + savingStatus.getStatus() + "; "
+				+ Prompts.PROBLEMATIC_KANJI
 				+ applicationWindow.getApplicationController().getProblematicKanjis().size());
 
 		// TODO separate the save info to 2 different labels, and in this method

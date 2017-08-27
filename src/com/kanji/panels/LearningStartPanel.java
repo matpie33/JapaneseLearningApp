@@ -35,7 +35,6 @@ import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
 import com.kanji.constants.Labels;
 import com.kanji.constants.NumberValues;
-import com.kanji.constants.Options;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.Titles;
 import com.kanji.controllers.LearningStartController;
@@ -64,17 +63,17 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		problematicCheckbox = createProblematicKanjiCheckbox();
 		rangesPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE, true);
 		rangesPanel
-				.addRow(RowMaker.createUnfilledRow(Anchor.CENTER, new JLabel(Titles.kanjiRanges)));
+				.addRow(RowMaker.createUnfilledRow(Anchor.CENTER, new JLabel(Titles.KANJI_RANGES)));
 		scrollPane = createRangesPanelScrollPane();
 		addRowToRangesPanel();
 
-		JTextField problematicKanjis = createProblematicRangeField(Prompts.problematicKanjiPrompt);
-		JButton newRow = createButtonAddRow(ButtonsNames.buttonAddRowText, rangesPanel);
-		sumRangeField = GuiMaker.createTextField(1, Prompts.sumRangePrompt);
+		JTextField problematicKanjis = createProblematicRangeField(Prompts.PROBLEMATIC_KANJI);
+		JButton newRow = createButtonAddRow(ButtonsNames.ADD_ROW, rangesPanel);
+		sumRangeField = GuiMaker.createTextField(1, Prompts.RANGE_SUM);
 		JButton cancel = createButtonWithHotkey(KeyEvent.VK_ESCAPE,
-				CommonActionsMaker.createDisposeAction(parentDialog), ButtonsNames.buttonCancelText,
+				CommonActionsMaker.createDisposeAction(parentDialog), ButtonsNames.CANCEL,
 				HotkeysDescriptions.CLOSE_WINDOW);
-		JButton approve = createButtonStartLearning(ButtonsNames.buttonApproveText,
+		JButton approve = createButtonStartLearning(ButtonsNames.APPROVE,
 				rangesPanel.getPanel());
 
 		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(prompt));
@@ -96,12 +95,12 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 	private JTextArea createPrompt() {
 		JTextArea prompt = GuiMaker.createTextArea(false);
 		prompt.setOpaque(false);
-		prompt.setText(Prompts.learnStartPrompt);
+		prompt.setText(Prompts.LEARNING_START);
 		return prompt;
 	}
 
 	private JCheckBox createProblematicKanjiCheckbox() {
-		final JCheckBox problematicCheckbox = new JCheckBox(Options.problematicKanjiOption);
+		final JCheckBox problematicCheckbox = new JCheckBox(Labels.PROBLEMATIC_KANJI_OPTION);
 		if (controller.getProblematicKanjiNumber() == 0) {
 			problematicCheckbox.setEnabled(false);
 		}
@@ -133,7 +132,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 	public int showLabelWithProblematicKanjis() {
 		Component c = parentDialog.getContainer().getFocusOwner();
-		JLabel label = new JLabel(Prompts.problematicKanjisAddedPrompt);
+		JLabel label = new JLabel(Prompts.PROBLEMATIC_KANJIS_ADDED);
 		label.setForeground(BasicColors.NAVY_BLUE);
 		int rowNumber = rangesPanel.getNumberOfRows();
 		rangesPanel.addRow(RowMaker.createUnfilledRow(Anchor.CENTER, label));
@@ -163,8 +162,8 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 			}
 		});
 
-		JLabel from = new JLabel(Labels.rangeFromLabel);
-		JLabel labelTo = new JLabel(Labels.rangeToLabel);
+		JLabel from = new JLabel(Labels.RANGE_FROM_LABEL);
+		JLabel labelTo = new JLabel(Labels.RANGE_TO_LABEL);
 		JTextField fieldTo = textFields[1];
 		JButton delete = createDeleteButton(fieldFrom, fieldTo);
 		if (controller.getNumberOfRangesRows() == 1) {
@@ -255,11 +254,11 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public void updateSumOfWordsLabel(int sumOfWords) {
-		sumRangeField.setText(Prompts.sumRangePrompt + sumOfWords);
+		sumRangeField.setText(Prompts.RANGE_SUM + sumOfWords);
 	}
 
 	private JButton createDeleteButton(JTextField from, JTextField to) {
-		JButton delete = new JButton(ButtonsNames.buttonRemoveRowText);
+		JButton delete = new JButton(ButtonsNames.REMOVE_ROW);
 		delete.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

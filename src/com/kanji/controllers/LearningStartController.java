@@ -12,7 +12,7 @@ import com.kanji.Row.RepeatingInformation;
 import com.kanji.constants.ApplicationPanels;
 import com.kanji.constants.ApplicationPanels;
 import com.kanji.constants.ExceptionsMessages;
-import com.kanji.constants.Options;
+import com.kanji.constants.Labels;
 import com.kanji.model.RangesRow;
 import com.kanji.myList.MyList;
 import com.kanji.panels.LearningStartPanel;
@@ -180,13 +180,13 @@ public class LearningStartController {
 	private String validateRangesInput(int rangeStart, int rangeEnd) {
 		String error = "";
 		if (rangeStart == 0) {
-			error = ExceptionsMessages.rangeStartHaveToBePositive;
+			error = ExceptionsMessages.RANGE_START_MUST_BE_POSITIVE;
 		}
 		else if (rangeEnd <= rangeStart) {
-			error = ExceptionsMessages.rangeToValueLessThanRangeFromValue;
+			error = ExceptionsMessages.RANGE_TO_VALUE_LESS_THAN_RANGE_FROM_VALUE;
 		}
 		else if (isNumberHigherThanMaximum(rangeStart) || isNumberHigherThanMaximum(rangeEnd)) {
-			error = ExceptionsMessages.rangeValueHigherThanMaximumKanjiNumber;
+			error = ExceptionsMessages.RANGE_VALUE_HIGHER_THAN_MAXIMUM_KANJI_NUMBER;
 			error += " (" + numberOfWords + ").";
 		}
 
@@ -244,7 +244,7 @@ public class LearningStartController {
 		// ranges to repeat is empty because no
 		// key released was found
 		if (rangesToRepeat.toString().isEmpty() && !problematicCheckboxSelected) {
-			learningStartPanel.showErrorDialog(ExceptionsMessages.noInputSupplied);
+			learningStartPanel.showErrorDialog(ExceptionsMessages.NO_INPUT_SUPPLIED);
 			return;
 		}
 
@@ -256,7 +256,7 @@ public class LearningStartController {
 		Calendar calendar = Calendar.getInstance();
 		String repeatingInfo = "";
 		if (problematicCheckboxSelected) {
-			repeatingInfo = Options.problematicKanjiOption;
+			repeatingInfo = Labels.PROBLEMATIC_KANJI_OPTION;
 			if (rangesToRepeat.getRangesAsList().size() > 0) {
 				repeatingInfo += ", ";
 			}

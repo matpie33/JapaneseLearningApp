@@ -43,7 +43,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 
 	private void createHotkeysPanel() {
 		hotkeysPanel = new MainPanel(null);
-		JLabel title = new JLabel(Titles.hotkeysTitle);
+		JLabel title = new JLabel(Titles.HOTKEYS);
 		title.setForeground(BasicColors.VERY_BLUE);
 		hotkeysPanel.addRow(RowMaker.createUnfilledRow(Anchor.WEST, title));
 	}

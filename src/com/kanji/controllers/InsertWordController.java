@@ -40,7 +40,7 @@ public class InsertWordController {
 		boolean valid = number.matches("\\d+");
 
 		if (!valid)
-			parentDialog.showMessageDialog(ExceptionsMessages.numberFormatException);
+			parentDialog.showMessageDialog(ExceptionsMessages.NUMBER_FORMAT_EXCEPTION);
 		return valid;
 	}
 

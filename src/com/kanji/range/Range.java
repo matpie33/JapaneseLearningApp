@@ -9,7 +9,7 @@ public class Range {
 	public Range(int rangeStart, int rangeEnd) throws IllegalArgumentException {
 		if (rangeStart > rangeEnd)
 			throw new IllegalArgumentException(
-					ExceptionsMessages.rangeToValueLessThanRangeFromValue);
+					ExceptionsMessages.RANGE_TO_VALUE_LESS_THAN_RANGE_FROM_VALUE);
 		this.rangeStart = rangeStart;
 		this.rangeEnd = rangeEnd;
 	}

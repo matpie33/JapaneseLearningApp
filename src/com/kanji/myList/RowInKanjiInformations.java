@@ -144,7 +144,7 @@ public class RowInKanjiInformations extends RowsCreator<KanjiInformation> {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!list.showMessage(
-						String.format(Prompts.deleteElementPrompt, Prompts.kanjiElementPrompt))) {
+						String.format(Prompts.DELETE_ELEMENT, Prompts.KANJI_ROW))) {
 					return;
 				}
 				removeRow(row);

@@ -66,8 +66,8 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 	}
 
 	public String createRemainingKanjisPrompt() {
-		return Prompts.remainingKanjiPrompt + " " + this.currentlyRepeatedWords.size() + " "
-				+ Prompts.kanjiPrompt;
+		return Prompts.REMAINING_KANJI + " " + this.currentlyRepeatedWords.size() + " "
+				+ Prompts.KANJI;
 	}
 
 	public void setRepeatingWords(MyList<KanjiInformation> wordsList) {
@@ -171,8 +171,8 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 	}
 
 	private String createFinishMessage() {
-		String message = Prompts.repeatingIsDonePrompt;
-		message += Prompts.repeatingTimePrompt;
+		String message = Prompts.REPEATING_DONE;
+		message += Prompts.REPEATING_TIME;
 		message += timeSpentHandler.getTimePassed();
 		return message;
 	}
@@ -212,7 +212,7 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 	public void pressedButtonPause() {
 		paused = true;
 		timeSpentHandler.stopTimer();
-		parent.showMessageDialog(Prompts.pauseIsEnabled);
+		parent.showMessageDialog(Prompts.PAUSE_ENABLED);
 		paused = false;
 		timeSpentHandler.startTimer();
 	}

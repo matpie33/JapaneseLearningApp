@@ -59,7 +59,7 @@ public class KanjiPanel extends AbstractPanelWithHotkeysInfo {
 				problematicKanjiPanel.showNextKanjiOrClose();
 			}
 		};
-		return createButtonWithHotkey(KeyEvent.VK_SPACE, al, ButtonsNames.buttonNextText,
+		return createButtonWithHotkey(KeyEvent.VK_SPACE, al, ButtonsNames.FIND_NEXT,
 				HotkeysDescriptions.SHOW_NEXT_KANJI);
 	}
 

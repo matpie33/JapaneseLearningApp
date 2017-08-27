@@ -40,7 +40,7 @@ public class RowInKanjiRepeatingList extends RowsCreator<KanjiInformation> {
 	}
 
 	private JButton createButtonGoToSource(int rowNumber, int kanjiId) {
-		JButton button = new JButton(ButtonsNames.buttonGoToSource);
+		JButton button = new JButton(ButtonsNames.GO_TO_SOURCE);
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

@@ -102,11 +102,11 @@ public class MyList<Word> {
 		Word highlightedWord = getHighlightedWord();
 		if (highlightedWord != null
 				&& propertyChecker.isPropertyFound(searchedPropertyValue, highlightedWord)) {
-			parentDialog.showMessageDialog(ExceptionsMessages.wordAlreadyHighlightedException);
+			parentDialog.showMessageDialog(ExceptionsMessages.WORD_ALREADY_HIGHLIGHTED_EXCEPTION);
 			return rowCreator.getHighlightedRowNumber();
 		}
 		else {
-			parentDialog.showMessageDialog(ExceptionsMessages.wordNotFoundMessage);
+			parentDialog.showMessageDialog(ExceptionsMessages.WORD_NOT_FOUND_EXCEPTION);
 			return -1;
 		}
 	}
