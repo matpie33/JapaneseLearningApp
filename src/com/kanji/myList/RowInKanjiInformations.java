@@ -84,7 +84,6 @@ public class RowInKanjiInformations extends RowsCreator<KanjiInformation> {
 				if (wordBeingModified.equals(elem.getText())) {
 					return;
 				}
-				System.out.println(list);
 				KanjiInformation kanjiToChange = list
 						.findRowBasedOnPropertyStartingFromHighlightedWord(
 								new KanjiKeywordChecker(SearchOptions.BY_FULL_EXPRESSION),
@@ -143,8 +142,7 @@ public class RowInKanjiInformations extends RowsCreator<KanjiInformation> {
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!list.showMessage(
-						String.format(Prompts.DELETE_ELEMENT, Prompts.KANJI_ROW))) {
+				if (!list.showMessage(String.format(Prompts.DELETE_ELEMENT, Prompts.KANJI_ROW))) {
 					return;
 				}
 				removeRow(row);

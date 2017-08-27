@@ -163,7 +163,6 @@ public class MyList<Word> {
 
 	private void cleanAll() {
 		this.panels.clear();
-		System.out.println("clean");
 	}
 
 	public void save() {

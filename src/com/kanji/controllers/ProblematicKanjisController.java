@@ -39,7 +39,6 @@ public class ProblematicKanjisController {
 		kanjiCharactersReader.loadKanjisIfNeeded();
 		problematicKanjisIds = problematicKanjisSet;
 		this.kanjiList = kanjiList;
-		System.out.println("who is searcher: " + kanjiList);
 	}
 
 	public Font getKanjiFont() {
@@ -106,7 +105,6 @@ public class ProblematicKanjisController {
 
 	public void addKanjiRow(int rowNumber, int kanjiId) {
 		KanjiRow k = new KanjiRow(kanjiId, rowNumber);
-		System.out.println("adding row: " + kanjiId + " number: " + rowNumber);
 		kanjisToBrowse.add(k);
 	}
 

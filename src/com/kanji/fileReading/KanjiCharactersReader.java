@@ -28,7 +28,6 @@ public class KanjiCharactersReader {
 
 	public void loadKanjisIfNeeded() {
 		if (!words.isEmpty()) {
-			System.out.println("!@#$% no need");
 			return;
 		}
 

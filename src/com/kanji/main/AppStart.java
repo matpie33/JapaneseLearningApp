@@ -11,7 +11,6 @@ public class AppStart {
 		int v1 = 1280;
 		int v2 = 768;
 		int v3 = v1 * v2;
-		System.out.println("v3: " + v3);
 
 		ApplicationWindow b = new ApplicationWindow();
 
@@ -21,8 +20,6 @@ public class AppStart {
 		set.addRange(new Range(6, 10));
 		// set.getRanges();
 		// set.addRange(new Range(30,70));
-		System.out.println(set);
-		System.out.println((int) 62.7 % 60);
 
 	}
 
