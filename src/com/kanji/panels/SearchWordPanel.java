@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
@@ -104,6 +105,13 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 	private MainPanel createSearchByKeywordPanel() {
 		JLabel prompt = new JLabel(Prompts.wordSearchDialogPrompt);
 		textField = createInputTextField();
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				textField.requestFocusInWindow();
+			}
+		});
+
 		JRadioButton defaultSearchOption = createRadioButtonForSearchingOption(
 				SearchOptions.BY_LETTERS, Options.wordSearchDefaultOption);
 		fullWordsSearchOption = createRadioButtonForSearchingOption(SearchOptions.BY_WORD,
@@ -206,10 +214,10 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 
 	private void tryToFindNextOccurence(SearchingDirection direction) {
 		if (searchKryteria.equals(SearchKryteria.BY_KEYWORD))
-			list.findAndHighlightRowBasedOnProperty(new KanjiKeywordChecker(searchOptions),
+			list.findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(new KanjiKeywordChecker(searchOptions),
 					textField.getText(), direction, parentDialog);
 		else if (searchKryteria.equals(SearchKryteria.BY_KANJI_ID))
-			list.findAndHighlightRowBasedOnProperty(new KanjiIdChecker(),
+			list.findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(new KanjiIdChecker(),
 					Integer.parseInt(kanjiIdTextfield.getText()), SearchingDirection.FORWARD,
 					parentDialog);
 

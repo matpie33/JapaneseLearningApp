@@ -9,12 +9,15 @@ import java.util.Set;
 import javax.swing.JTextField;
 
 import com.kanji.Row.RepeatingInformation;
+import com.kanji.constants.ApplicationPanels;
+import com.kanji.constants.ApplicationPanels;
 import com.kanji.constants.ExceptionsMessages;
 import com.kanji.constants.Options;
 import com.kanji.model.RangesRow;
 import com.kanji.myList.MyList;
 import com.kanji.panels.LearningStartPanel;
 import com.kanji.range.SetOfRanges;
+import com.kanji.utilities.ApplicationController;
 import com.kanji.windows.ApplicationWindow;
 
 public class LearningStartController {
@@ -29,12 +32,12 @@ public class LearningStartController {
 	private List<String> errors;
 	private List<RangesRow> rangesRows;
 	private int problematicLabelRow;
-	private StartingPanelController startingPanelController;
+	private ApplicationController startingPanelController;
 
 	public LearningStartController(MyList<RepeatingInformation> repeatList, int numberOfWords,
 			ApplicationWindow parentFrame, LearningStartPanel learningStartPanel) {
 		this.parentFrame = parentFrame;
-		startingPanelController = parentFrame.getStartingController();
+		startingPanelController = parentFrame.getApplicationController();
 		this.repeatsList = repeatList;
 		this.numberOfWords = numberOfWords;
 		this.learningStartPanel = learningStartPanel;
@@ -260,7 +263,7 @@ public class LearningStartController {
 		}
 		repeatingInfo += rangesToRepeat;
 		repeatingInfo += ".";
-		startingPanelController.setRepeatingInformation(
+		parentFrame.getApplicationController().setRepeatingInformation(
 				new RepeatingInformation(repeatingInfo, calendar.getTime(), false));
 		repeatsList.scrollToBottom();
 	}
@@ -268,8 +271,9 @@ public class LearningStartController {
 	public void switchPanelAndSetWordsRangesToRepeat(boolean problematicCheckboxSelected) { // TODO
 		// panel should have parent frame's panels code, and controller should
 		// have parent frame's controller code
-		parentFrame.showCardPanel(ApplicationWindow.LEARNING_PANEL);
-		startingPanelController.setWordsRangeToRepeat(rangesToRepeat, problematicCheckboxSelected);
+		parentFrame.showPanel(ApplicationPanels.REPEATING_PANEL);
+		parentFrame.getApplicationController().setWordsRangeToRepeat(rangesToRepeat,
+				problematicCheckboxSelected);
 	}
 
 	private SetOfRanges addAllRangesToSet() {

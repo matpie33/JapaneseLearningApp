@@ -21,6 +21,7 @@ import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
 import com.kanji.constants.Titles;
 import com.kanji.controllers.RepeatingWordsController;
+import com.kanji.windows.ApplicationWindow;
 
 public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
@@ -39,19 +40,25 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private JTextPane wordTextArea;
 	private JButton pauseOrResume;
 	private JButton showWord;
-	private RepeatingWordsController controller;
+	private RepeatingWordsController repeatingWordsController;
 
-	public RepeatingWordsPanel(RepeatingWordsController controller) {
-		this.controller = controller;
+	public RepeatingWordsPanel(ApplicationWindow applicationWindow) {
+		this.repeatingWordsController = new RepeatingWordsController(applicationWindow, this);
 		centerPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
 		repeatingPanel = new MainPanel(this.repeatingBackgroundColor);
+	}
+
+	// TODO maybe create an abstract class panel that return controller and some
+	// more common things;
+	public RepeatingWordsController getController() {
+		return repeatingWordsController;
 	}
 
 	@Override
 	void createElements() {
 		JLabel titleLabel = new JLabel(Titles.repeatingWords);
 		time = new JLabel(this.timeLabelText);
-		remainingLabel = new JLabel(controller.createRemainingKanjisPrompt());
+		remainingLabel = new JLabel(repeatingWordsController.createRemainingKanjisPrompt());
 		JButton returnButton = createReturnButton();
 
 		createElementsForRepeatingPanel();
@@ -64,7 +71,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public void setButtonsToLearningAndAddThem() {
-		addElementsToRepeatingPanel(showWordButtons(controller.previousWordExists()));
+		addElementsToRepeatingPanel(showWordButtons(repeatingWordsController.previousWordExists()));
 	}
 
 	private JButton[] showWordButtons(boolean withPreviousWordButton) {
@@ -90,7 +97,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 		AbstractAction action = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.goToPreviousWord();
+				repeatingWordsController.goToPreviousWord();
 			}
 		};
 
@@ -101,7 +108,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public void showKanji(String kanji) {
-		kanjiTextArea.setText(controller.getCurrentKanji());
+		kanjiTextArea.setText(repeatingWordsController.getCurrentKanji());
 	}
 
 	private void createWordDescriptionTextArea() {
@@ -109,7 +116,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private void createKanjiTextArea() {
-		Font f = controller.getKanjiFont();
+		Font f = repeatingWordsController.getKanjiFont();
 		kanjiTextArea = GuiElementsMaker.createTextPane("", TextAlignment.JUSTIFIED);
 		kanjiTextArea.setFont(f);
 		kanjiTextArea.setOpaque(false);
@@ -135,7 +142,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
 		AbstractAction a = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
-				controller.pressedButtonPause();
+				repeatingWordsController.pressedButtonPause();
 			}
 		};
 		pauseOrResume = createButtonWithHotkey(KeyEvent.VK_P, a, ButtonsNames.buttonPause,
@@ -145,7 +152,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private void createRecognizedWordButton() {
 		AbstractAction a = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
-				controller.pressedRecognizedWordButton();
+				repeatingWordsController.pressedRecognizedWordButton();
 			}
 		};
 		recognizedWord = createButtonWithHotkey(KeyEvent.VK_SPACE, a,
@@ -157,7 +164,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
 		AbstractAction a = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
-				controller.pressedNotRecognizedWordButton();
+				repeatingWordsController.pressedNotRecognizedWordButton();
 			}
 		};
 		notRecognizedWord = createButtonWithHotkey(KeyEvent.VK_A, a,
@@ -166,7 +173,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
 	public void goToNextWord() {
 		setButtonsToLearningAndAddThem();
-		remainingLabel.setText(controller.createRemainingKanjisPrompt());
+		remainingLabel.setText(repeatingWordsController.createRemainingKanjisPrompt());
 	}
 
 	private void addElementsToRepeatingPanel(JButton[] buttons) {
@@ -185,7 +192,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 		JButton returnButton = new JButton(ButtonsNames.buttonGoBackText);
 		returnButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controller.pressedButtonReturn();
+				repeatingWordsController.pressedButtonReturn();
 			}
 		});
 		returnButton.setFocusable(false);
@@ -198,7 +205,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 		AbstractAction action = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.presedButtonShowWord();
+				repeatingWordsController.presedButtonShowWord();
 			}
 		};
 		showWord = createButtonWithHotkey(KeyEvent.VK_SPACE, action,
@@ -206,8 +213,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public void showCurrentKanjiAndShowAppropriateButtons() {
-		setButtonsToRecognizeWord(controller.previousWordExists());
-		kanjiTextArea.setText(controller.getCurrentKanji());
+		setButtonsToRecognizeWord(repeatingWordsController.previousWordExists());
+		kanjiTextArea.setText(repeatingWordsController.getCurrentKanji());
 	}
 
 	public void removeLastElementFromRow2() {

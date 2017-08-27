@@ -1,5 +1,7 @@
 package com.kanji.controllers;
 
+import javax.swing.JTextField;
+
 import com.kanji.Row.KanjiInformation;
 import com.kanji.constants.ExceptionsMessages;
 import com.kanji.myList.MyList;
@@ -18,17 +20,19 @@ public class InsertWordController {
 		parentDialog = parent;
 	}
 
-	public boolean validateAndAddWordIfValid(String numberInput, String wordInput) {
+	public void validateAndAddWordIfValid(JTextField numberInputText, JTextField wordInputText) {
 
+		String numberInput = numberInputText.getText();
+		String wordInput = wordInputText.getText();
 		if (isIdValidNumber(numberInput)) {
 			int number = Integer.parseInt(numberInput);
 			boolean addedWord = addWordToList(wordInput, number);
 			if (addedWord) {
 				parentDialog.save();
+				wordInputText.selectAll();
+				wordInputText.requestFocusInWindow();
 			}
-			return true;
 		}
-		return false;
 
 	}
 

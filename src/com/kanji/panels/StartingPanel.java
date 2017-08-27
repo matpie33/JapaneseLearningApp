@@ -9,7 +9,6 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
 import com.guimaker.colors.BasicColors;
@@ -20,15 +19,12 @@ import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.SavingStatus;
-import com.kanji.myList.MyList;
-import com.kanji.utilities.ElementMaker;
+import com.kanji.utilities.ApplicationController;
 import com.kanji.windows.ApplicationWindow;
 
 public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 
-	private JScrollPane listScrollWords;
-	private JScrollPane listScrollRepeated;
-	private ElementMaker maker;
+	private ApplicationController applicationController;
 
 	private JSplitPane listsSplitPane;
 	private MainPanel buttonsPanel;
@@ -38,9 +34,9 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	private ApplicationWindow applicationWindow;
 	private int infoPanelComponentsRow = 0;
 
-	public StartingPanel(ApplicationWindow a, ElementMaker maker) {
+	public StartingPanel(ApplicationWindow a, ApplicationController maker) {
 		applicationWindow = a;
-		this.maker = maker;
+		this.applicationController = maker;
 	}
 
 	@Override
@@ -77,7 +73,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 				action = new AbstractAction() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						maker.openKanjiFile();
+						applicationController.openKanjiProject();
 					}
 				};
 				break;
@@ -87,7 +83,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 				action = new AbstractAction() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						maker.addWord();
+						applicationController.addWord();
 					}
 				};
 				break;
@@ -97,7 +93,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 				action = new AbstractAction() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						maker.searchWord();
+						applicationController.searchWord();
 					}
 				};
 				break;
@@ -107,7 +103,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 				action = new AbstractAction() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						maker.startLearning();
+						applicationController.startLearning();
 					}
 				};
 				break;
@@ -117,7 +113,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 				action = new AbstractAction() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						maker.showSaveDialog();
+						applicationController.showSaveDialog();
 					}
 				};
 				break;
@@ -127,7 +123,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 				action = new AbstractAction() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						maker.exportList();
+						applicationController.exportList();
 					}
 				};
 				break;
@@ -142,12 +138,9 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 
 	@SuppressWarnings("rawtypes")
 	private void createUpperPanel() {
-		MyList wordsList = maker.getWordsList();
-		MyList repeatsList = maker.getRepeatsList();
-		listScrollWords = wordsList.getScrollPane();
-		listScrollRepeated = repeatsList.getScrollPane();
-		listsSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, listScrollWords,
-				listScrollRepeated);
+		listsSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+				applicationController.getWordsList().getPanel(),
+				applicationController.getRepeatsList().getPanel());
 	}
 
 	private void createInformationsPanel() {
@@ -178,7 +171,10 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	public void changeSaveStatus(SavingStatus savingStatus) {
 		saveInfo.setText(Prompts.savingStatusPrompt + savingStatus.getStatus() + "; "
 				+ Prompts.problematicKanjiPrompt
-				+ applicationWindow.getStartingController().getProblematicKanjis().size());
+				+ applicationWindow.getApplicationController().getProblematicKanjis().size());
+
+		// TODO separate the save info to 2 different labels, and in this method
+		// only change 1 of them
 
 	}
 

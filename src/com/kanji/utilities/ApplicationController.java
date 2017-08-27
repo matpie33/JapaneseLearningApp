@@ -1,7 +1,5 @@
 package com.kanji.utilities;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -9,65 +7,50 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JFileChooser;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 
-import com.guimaker.colors.BasicColors;
 import com.kanji.Row.KanjiInformation;
 import com.kanji.Row.RepeatingInformation;
-import com.kanji.constants.MenuTexts;
 import com.kanji.constants.SavingStatus;
+import com.kanji.controllers.RepeatingWordsController;
 import com.kanji.myList.MyList;
 import com.kanji.myList.RowInKanjiInformations;
 import com.kanji.myList.RowInRepeatingList;
 import com.kanji.panels.LoadingPanel;
+import com.kanji.range.SetOfRanges;
 import com.kanji.windows.ApplicationWindow;
 
-public class ElementMaker {
+public class ApplicationController {
 
+	private RepeatingWordsController repeatingWordsPanelController;
 	private ApplicationWindow parent;
 	private MyList<KanjiInformation> listOfWords;
 	private MyList<RepeatingInformation> repeats;
-	private JMenuBar menuBar;
 	private File fileToSave;
 	private LoadingAndSaving loadingAndSaving;
+	private Set<Integer> problematicKanjis;
 
-	public ElementMaker(ApplicationWindow parent) {
+	public ApplicationController(ApplicationWindow parent,
+			RepeatingWordsController repeatingWordsPanelController) {
+		problematicKanjis = new HashSet<Integer>();
 		this.parent = parent;
 		initElements();
 		loadingAndSaving = new LoadingAndSaving();
+		this.repeatingWordsPanelController = repeatingWordsPanelController;
 	}
 
 	private void initElements() {
 		initListOfWords();
 		initRepeatsList();
-		createMenu();
 	}
 
-	private void createMenu() {
-		menuBar = new JMenuBar();
-		menuBar.setBackground(BasicColors.OCEAN_BLUE);
-		JMenu menu = new JMenu(MenuTexts.menuBarFile);
-		menuBar.add(menu);
-		JMenuItem item = new JMenuItem(MenuTexts.menuOpen);
-
-		item.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				openKanjiFile();
-			}
-		});
-
-		menu.add(item);
-	}
-
-	public void openKanjiFile() {
+	public void openKanjiProject() {
 		fileToSave = openFile();
 		if (!fileToSave.exists())
 			return;
@@ -82,13 +65,8 @@ public class ElementMaker {
 		if (savingInformation == null) {
 			return;
 		}
-		// TODO we cannot rename com.kanji.row package to lower case - it
-		// breaks loading from file - fix that
 		listOfWords.cleanWords();
-
-		parent.getStartingController()
-				.addProblematicKanjis(savingInformation.getProblematicKanjis());
-
+		addProblematicKanjis(savingInformation.getProblematicKanjis());
 		parent.updateTitle(fileToSave.toString());
 		parent.changeSaveStatus(SavingStatus.NO_CHANGES);
 
@@ -148,7 +126,8 @@ public class ElementMaker {
 	}
 
 	private void initListOfWords() {
-		listOfWords = new MyList<KanjiInformation>(parent, this, new RowInKanjiInformations());
+		listOfWords = new MyList<KanjiInformation>(parent, this, new RowInKanjiInformations(),
+				"Lista kanji");
 
 		for (int i = 1; i <= 15; i++) {
 			listOfWords.addWord(new KanjiInformation("Word no. " + i, i));
@@ -161,7 +140,8 @@ public class ElementMaker {
 	}
 
 	private void initRepeatsList() {
-		repeats = new MyList<RepeatingInformation>(parent, this, new RowInRepeatingList(repeats));
+		repeats = new MyList<RepeatingInformation>(parent, this, new RowInRepeatingList(repeats),
+				"Informacje o powtórkach");
 		repeats.addWord(new RepeatingInformation("abc", new Date(1993, 9, 14), true));
 		repeats.addWord(new RepeatingInformation("abc", new Date(1993, 9, 14), true));
 		repeats.addWord(new RepeatingInformation("abc", new Date(1993, 9, 14), true));
@@ -201,16 +181,12 @@ public class ElementMaker {
 		parent.showLearningStartDialog(repeats, listOfWords.getNumberOfWords());
 	}
 
-	public MyList getWordsList() {
+	public MyList<KanjiInformation> getWordsList() {
 		return listOfWords;
 	}
 
 	public MyList<RepeatingInformation> getRepeatsList() {
 		return repeats;
-	}
-
-	public JMenuBar getMenu() {
-		return menuBar;
 	}
 
 	public void save() {
@@ -219,7 +195,7 @@ public class ElementMaker {
 		}
 		parent.changeSaveStatus(SavingStatus.SAVING);
 		SavingInformation savingInformation = new SavingInformation(listOfWords.getWords(),
-				repeats.getWords(), parent.getStartingController().getProblematicKanjis());
+				repeats.getWords(), getProblematicKanjis());
 		try {
 			loadingAndSaving.save(savingInformation);
 		}
@@ -254,6 +230,29 @@ public class ElementMaker {
 			this.fileToSave = fileChooser.getSelectedFile();
 		}
 		save();
+	}
+
+	public void addProblematicKanjis(Set<Integer> problematicKanjiList) {
+		problematicKanjis = problematicKanjiList;
+	}
+
+	public Set<Integer> getProblematicKanjis() {
+		return problematicKanjis;
+	}
+
+	public void addWordToRepeatingList(RepeatingInformation word) {
+		repeats.addWord(word);
+	}
+
+	public void setRepeatingInformation(RepeatingInformation info) {
+		repeatingWordsPanelController.setRepeatingInformation(info);
+	}
+
+	public void setWordsRangeToRepeat(SetOfRanges ranges, boolean withProblematic) {
+		repeatingWordsPanelController.setWordsRangeToRepeat(ranges, withProblematic);
+		// TODO if set of ranges is empty, we should not call set ranges to
+		// repeat all, so probably
+		// split this method
 	}
 
 }

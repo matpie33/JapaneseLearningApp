@@ -17,13 +17,14 @@ import com.kanji.actions.GuiElementsMaker;
 import com.kanji.actions.TextAlignment;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
+import com.kanji.controllers.ProblematicKanjisController;
 
 public class KanjiPanel extends AbstractPanelWithHotkeysInfo {
 	private String kanjiToDisplay;
-	private ProblematicKanjiPanel problematicKanjiPanel;
+	private ProblematicKanjisController problematicKanjiPanel;
 	private JTextPane kanjiArea;
 
-	public KanjiPanel(String kanji, ProblematicKanjiPanel problematicKanjiPanel) {
+	public KanjiPanel(String kanji, ProblematicKanjisController problematicKanjiPanel) {
 		super(true);
 		mainPanel = new MainPanel(BasicColors.OCEAN_BLUE);
 		this.kanjiToDisplay = kanji;

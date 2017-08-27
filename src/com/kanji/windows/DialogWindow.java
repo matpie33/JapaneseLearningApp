@@ -113,7 +113,7 @@ public class DialogWindow {
 
 	public void showKanjiDialog(String message, ProblematicKanjiPanel problematicKanjiPanel) {
 		if (kanjiPanel == null) {
-			kanjiPanel = new KanjiPanel(message, problematicKanjiPanel);
+			kanjiPanel = new KanjiPanel(message, problematicKanjiPanel.getController());
 			showPanel(kanjiPanel, "TODO", false, Position.NEXT_TO_PARENT);
 			childWindow.getContainer().addWindowListener(new WindowAdapter() {
 				// TODO init the listeners somewhere else

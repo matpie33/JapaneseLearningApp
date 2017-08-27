@@ -1,73 +1,81 @@
 package com.kanji.windows;
 
 import java.awt.CardLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Set;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+import com.guimaker.colors.BasicColors;
 import com.kanji.Row.KanjiInformation;
+import com.kanji.constants.ApplicationPanels;
+import com.kanji.constants.MenuTexts;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.SavingStatus;
 import com.kanji.constants.Titles;
-import com.kanji.controllers.RepeatingWordsController;
-import com.kanji.controllers.StartingPanelController;
 import com.kanji.fileReading.KanjiCharactersReader;
 import com.kanji.myList.MyList;
 import com.kanji.panels.InsertWordPanel;
 import com.kanji.panels.LearningStartPanel;
 import com.kanji.panels.LoadingPanel;
 import com.kanji.panels.ProblematicKanjiPanel;
+import com.kanji.panels.RepeatingWordsPanel;
 import com.kanji.panels.SearchWordPanel;
 import com.kanji.panels.StartingPanel;
-import com.kanji.utilities.ElementMaker;
+import com.kanji.utilities.ApplicationController;
 
 @SuppressWarnings("serial")
 public class ApplicationWindow extends DialogWindow {
 
-	private ElementMaker maker;
 	private JPanel mainApplicationPanel;
-	private RepeatingWordsController repeatingWordsPanel;
 	private ProblematicKanjiPanel problematicKanjiPanel;
 	private StartingPanel startingPanel;
 	private JFrame container;
-	private StartingPanelController startingPanelController; // TODO we should
-																// create it in
-																// starting
-																// panel instead
+	private ApplicationController applicationController; // TODO we
+															// should
+	// create it in
+	// starting
+	// panel instead
 
-	// TODO handle the situation in gui maker when the panel has just 1 row so
+	// TODO handle the situation in gui applicationControllerController when the
+	// panel has just 1 row so
 	// we
 	// don't have to use row (0) but somehow easier
 
 	public KanjiCharactersReader excel;
 
-	public static final String LIST_PANEL = "Panel with lists and buttons";
-	public static final String LEARNING_PANEL = "Panel for repeating words";
-
 	public ApplicationWindow() {
 		super(null);
 		container = new JFrame();
-		maker = new ElementMaker(this);
+
 		mainApplicationPanel = new JPanel(new CardLayout());
 
-		repeatingWordsPanel = new RepeatingWordsController(this);
-		startingPanelController = new StartingPanelController(maker, repeatingWordsPanel);
-		startingPanel = new StartingPanel(this, maker);
+		RepeatingWordsPanel repeatingWordsPanel = new RepeatingWordsPanel(this);
+		applicationController = new ApplicationController(this,
+				repeatingWordsPanel.getController());
 
-		mainApplicationPanel.add(startingPanel.createPanel(), LIST_PANEL);
-		mainApplicationPanel.add(repeatingWordsPanel.getPanel().createPanel(), LEARNING_PANEL);
+		startingPanel = new StartingPanel(this, applicationController);
+
+		mainApplicationPanel.add(startingPanel.createPanel(),
+				ApplicationPanels.STARTING_PANEL.getPanelName());
+		mainApplicationPanel.add(repeatingWordsPanel.createPanel(),
+				ApplicationPanels.REPEATING_PANEL.getPanelName());
 
 		setWindowProperties();
 	}
 
-	public StartingPanelController getStartingController() {
-		return startingPanelController; // TODO remove this method later
+	public ApplicationController getApplicationController() {
+		return applicationController; // TODO remove this method later
 	}
 
 	private void setWindowProperties() {
 		container = new JFrame();
-		container.setJMenuBar(maker.getMenu());
+		container.setJMenuBar(createMenuBar());
 		container.setContentPane(mainApplicationPanel);
 		container.pack();
 		container.setMinimumSize(container.getSize());
@@ -77,12 +85,13 @@ public class ApplicationWindow extends DialogWindow {
 		container.setVisible(true);
 	}
 
-	public void showCardPanel(String cardName) {
-		((CardLayout) mainApplicationPanel.getLayout()).show(mainApplicationPanel, cardName);
+	public void showPanel(ApplicationPanels panel) {
+		((CardLayout) mainApplicationPanel.getLayout()).show(mainApplicationPanel,
+				panel.getPanelName());
 	}
 
 	public void save() {
-		this.maker.save();
+		this.applicationController.save();
 	}
 
 	public void changeSaveStatus(SavingStatus savingStatus) {
@@ -95,7 +104,7 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void scrollToBottom() {
-		maker.getRepeatsList().scrollToBottom();
+		applicationController.getRepeatsList().scrollToBottom();
 	}
 
 	public void addButtonIcon() {
@@ -118,7 +127,7 @@ public class ApplicationWindow extends DialogWindow {
 		showPanel(new InsertWordPanel(list), Titles.insertWordDialog, false, Position.LEFT_CORNER);
 	}
 
-	public void showSearchWordDialog(MyList list) {
+	public void showSearchWordDialog(MyList<KanjiInformation> list) {
 		showPanel(new SearchWordPanel(list), Titles.wordSearchDialog, false, Position.LEFT_CORNER);
 	}
 
@@ -144,6 +153,24 @@ public class ApplicationWindow extends DialogWindow {
 
 	public JFrame getContainer() {
 		return container;
+	}
+
+	private JMenuBar createMenuBar() {
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setBackground(BasicColors.OCEAN_BLUE);
+		JMenu menu = new JMenu(MenuTexts.menuBarFile);
+		menuBar.add(menu);
+		JMenuItem item = new JMenuItem(MenuTexts.menuOpen);
+
+		item.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				applicationController.openKanjiProject();
+			}
+		});
+
+		menu.add(item);
+		return menuBar;
 	}
 
 }

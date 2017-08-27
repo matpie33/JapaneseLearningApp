@@ -8,6 +8,7 @@ import java.util.Set;
 import com.kanji.Row.KanjiInformation;
 import com.kanji.Row.RepeatingInformation;
 import com.kanji.actions.TextAlignment;
+import com.kanji.constants.ApplicationPanels;
 import com.kanji.constants.Prompts;
 import com.kanji.fileReading.KanjiCharactersReader;
 import com.kanji.listSearching.KanjiIdChecker;
@@ -43,7 +44,7 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 	private RepeatingInformation repeatInfo;
 	private RepeatingWordsPanel panel;
 
-	public RepeatingWordsController(ApplicationWindow parent) {
+	public RepeatingWordsController(ApplicationWindow parent, RepeatingWordsPanel panel) {
 
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		kanjiCharactersReader.loadKanjisIfNeeded();
@@ -51,7 +52,7 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 		this.currentlyRepeatedWords = new HashSet<>();
 		this.parent = parent;
 		timeSpentHandler = new TimeSpentHandler(this);
-		panel = new RepeatingWordsPanel(this);
+		this.panel = panel;
 	}
 
 	public String getCurrentKanji() {
@@ -59,7 +60,7 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 	}
 
 	private int getCurrentWordId() {
-		return kanjiList.findRowNumberBasedOnProperty(
+		return kanjiList.findRowNumberBasedOnPropertyStartingFromBeginningOfList(
 				new KanjiKeywordChecker(SearchOptions.BY_FULL_EXPRESSION), currentWord,
 				SearchingDirection.FORWARD, parent);
 	}
@@ -79,8 +80,8 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 			if (!range.isEmpty()) {
 				for (int i = range.getRangeStart(); i <= range.getRangeEnd(); i++) {
 					currentlyRepeatedWords.add(kanjiList
-							.findRowBasedOnProperty(new KanjiIdChecker(), i,
-									SearchingDirection.FORWARD, kanjiList.getParent())
+							.findRowBasedOnPropertyStartingFromHighlightedWord(new KanjiIdChecker(),
+									i, SearchingDirection.FORWARD, kanjiList.getParent())
 							.getKanjiKeyword());
 
 				}
@@ -95,8 +96,8 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 
 	public void addProblematicKanjisToList() {
 		for (int i : problematicKanjis) {
-			String word = kanjiList.findRowBasedOnProperty(new KanjiIdChecker(), i,
-					SearchingDirection.FORWARD, parent).getKanjiKeyword();
+			String word = kanjiList.findRowBasedOnPropertyStartingFromHighlightedWord(
+					new KanjiIdChecker(), i, SearchingDirection.FORWARD, parent).getKanjiKeyword();
 			if (!this.currentlyRepeatedWords.contains(word)) {
 				this.currentlyRepeatedWords.add(word);
 			}
@@ -157,9 +158,9 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 		repeatInfo.setTimeSpentOnRepeating(timeSpentHandler.getTimePassed());
 		problematicKanjis.addAll(currentProblematicKanjis);
 
-		parent.getStartingController().addToRepeatsList(repeatInfo);
-		parent.getStartingController().addProblematicKanjis(problematicKanjis);
-		parent.showCardPanel(ApplicationWindow.LIST_PANEL);
+		parent.getApplicationController().addWordToRepeatingList(repeatInfo);
+		parent.getApplicationController().addProblematicKanjis(problematicKanjis);
+		parent.showPanel(ApplicationPanels.STARTING_PANEL);
 
 		parent.save();
 		parent.scrollToBottom();
@@ -250,7 +251,7 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 	}
 
 	public void pressedButtonReturn() {
-		RepeatingWordsController.this.parent.showCardPanel(ApplicationWindow.LIST_PANEL);
+		parent.showPanel(ApplicationPanels.STARTING_PANEL);
 		timeSpentHandler.stopTimer();
 	}
 
@@ -260,6 +261,21 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 
 	public boolean previousWordExists() {
 		return !previousWord.isEmpty();
+	}
+
+	public void setWordsRangeToRepeat(SetOfRanges ranges, boolean withProblematic) {
+		setRepeatingWords(parent.getApplicationController().getWordsList());
+		// TODO if set of ranges is empty, we should not call set ranges to
+		// repeat all, so probably
+		// split this method
+		setRangesToRepeat(ranges);
+		reset();
+		setProblematicKanjis(parent.getApplicationController().getProblematicKanjis());
+		if (withProblematic) {
+			addProblematicKanjisToList();
+		}
+
+		startRepeating();
 	}
 
 }

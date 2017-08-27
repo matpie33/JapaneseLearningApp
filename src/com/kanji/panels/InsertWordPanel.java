@@ -66,13 +66,8 @@ public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 		AbstractAction action = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				boolean validInput = controller.validateAndAddWordIfValid(
-						insertNumberTextField.getText(), insertWordTextField.getText());
-				if (validInput) {
-					insertWordTextField.selectAll();
-					insertWordTextField.requestFocusInWindow();
-					// TODO move that logic to controller
-				}
+				controller.validateAndAddWordIfValid(insertNumberTextField, insertWordTextField);
+
 			}
 		};
 		return GuiElementsMaker.createButton(text, action, KeyEvent.VK_ENTER);

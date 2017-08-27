@@ -4,29 +4,30 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import com.kanji.constants.ExceptionsMessages;
 import com.kanji.listSearching.PropertyChecker;
 import com.kanji.listSearching.SearchingDirection;
-import com.kanji.utilities.ElementMaker;
+import com.kanji.utilities.ApplicationController;
 import com.kanji.windows.DialogWindow;
 
 public class MyList<Word> {
 	private List<JPanel> panels;
 	private DialogWindow parent;
-	private ElementMaker elementsMaker;
+	private ApplicationController applicationController;
 	private RowsCreator<Word> rowCreator;
 	private ListWordsController<Word> listController;
 
-	public MyList(DialogWindow parentDialog, ElementMaker element, RowsCreator<Word> rowCreator) {
+	public MyList(DialogWindow parentDialog, ApplicationController applicationController,
+			RowsCreator<Word> rowCreator, String title) {
 
-		this.elementsMaker = element;
+		this.applicationController = applicationController;
 		this.parent = parentDialog;
 		listController = rowCreator.getController();
 
 		rowCreator.setList(this);
 		this.rowCreator = rowCreator;
+		rowCreator.setTitle(title);
 		initiate();
 
 	}
@@ -50,33 +51,41 @@ public class MyList<Word> {
 		return added;
 	}
 
-	public <Property> void findAndHighlightRowBasedOnProperty(
+	public <Property> void findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(
 			PropertyChecker<Property, Word> propertyChecker, Property searchedPropertyValue,
 			SearchingDirection searchDirection, DialogWindow parentDialog) {
-		int rowNumber = findRowNumberBasedOnProperty(propertyChecker, searchedPropertyValue,
-				searchDirection, parentDialog);
+		int rowNumber = findRowNumberBasedOnPropertyStartingFromHighlightedWord(propertyChecker,
+				searchedPropertyValue, searchDirection, parentDialog);
 		if (rowNumber < 0) {
 			return;
 		}
-		rowCreator.highlightRowAndScroll(rowNumber);
+		rowCreator.highlightRowAndScroll(rowNumber, true);
 		return;
 	}
 
-	public <PropertyType> Word findRowBasedOnProperty(
-			PropertyChecker<PropertyType, Word> propertyChecker, PropertyType searchedPropertyValue,
+	public <Property> Word findRowBasedOnPropertyStartingFromHighlightedWord(
+			PropertyChecker<Property, Word> propertyChecker, Property searchedPropertyValue,
 			SearchingDirection searchDirection, DialogWindow parentDialog) {
-		int rowNumber = findRowNumberBasedOnProperty(propertyChecker, searchedPropertyValue,
-				searchDirection, parentDialog);
+		int rowNumber = findRowNumberBasedOnPropertyStartingFromHighlightedWord(propertyChecker,
+				searchedPropertyValue, searchDirection, parentDialog);
 		return listController.getWordInRow(rowNumber);
 	}
 
-	public <PropertyType> int findRowNumberBasedOnProperty(
-			PropertyChecker<PropertyType, Word> propertyChecker, PropertyType searchedPropertyValue,
-			SearchingDirection searchDirection, DialogWindow parentDialog) {
-		int lastRowToSearch = rowCreator.getHighlightedRowNumber();
+	private <Property> int findRowNumberBasedOnProperty(
+			PropertyChecker<Property, Word> propertyChecker, Property searchedPropertyValue,
+			SearchingDirection searchDirection, DialogWindow parentDialog,
+			boolean startFromBeginningOfList) {
+		int lastRowToSearch;
+		if (startFromBeginningOfList) {
+			lastRowToSearch = 0;
+		}
+		else {
+			lastRowToSearch = rowCreator.getHighlightedRowNumber() + 1;
+		}
+
 		int incrementValue = searchDirection.getIncrementationValue();
-		for (int rowNumber = lastRowToSearch
-				+ incrementValue; rowNumber != lastRowToSearch; rowNumber += incrementValue) {
+		int rowNumber = lastRowToSearch;
+		do {
 			if (isRowNumberOutOfRange(rowNumber)) {
 				rowNumber = setRowNumberToTheOtherEndOfList(rowNumber);
 			}
@@ -86,15 +95,34 @@ public class MyList<Word> {
 					return rowNumber;
 				}
 			}
+			rowNumber += incrementValue;
 		}
+		while (rowNumber != lastRowToSearch);
+
 		Word highlightedWord = getHighlightedWord();
-		if (propertyChecker.isPropertyFound(searchedPropertyValue, highlightedWord)) {
+		if (highlightedWord != null
+				&& propertyChecker.isPropertyFound(searchedPropertyValue, highlightedWord)) {
 			parentDialog.showMessageDialog(ExceptionsMessages.wordAlreadyHighlightedException);
+			return rowCreator.getHighlightedRowNumber();
 		}
 		else {
 			parentDialog.showMessageDialog(ExceptionsMessages.wordNotFoundMessage);
+			return -1;
 		}
-		return -1;
+	}
+
+	public <Property> int findRowNumberBasedOnPropertyStartingFromHighlightedWord(
+			PropertyChecker<Property, Word> propertyChecker, Property searchedPropertyValue,
+			SearchingDirection searchDirection, DialogWindow parentDialog) {
+		return findRowNumberBasedOnProperty(propertyChecker, searchedPropertyValue, searchDirection,
+				parentDialog, false);
+	}
+
+	public <Property> int findRowNumberBasedOnPropertyStartingFromBeginningOfList(
+			PropertyChecker<Property, Word> propertyChecker, Property searchedPropertyValue,
+			SearchingDirection searchDirection, DialogWindow parentDialog) {
+		return findRowNumberBasedOnProperty(propertyChecker, searchedPropertyValue, searchDirection,
+				parentDialog, true);
 	}
 
 	private Word getHighlightedWord() {
@@ -139,7 +167,7 @@ public class MyList<Word> {
 	}
 
 	public void save() {
-		this.elementsMaker.save();
+		this.applicationController.save();
 	}
 
 	public boolean showMessage(String message) {
@@ -160,10 +188,6 @@ public class MyList<Word> {
 
 	public ListWordsController<Word> getListController() {
 		return listController;
-	}
-
-	public JScrollPane getScrollPane() {
-		return rowCreator.getScrollPane();
 	}
 
 	public DialogWindow getParent() {

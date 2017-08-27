@@ -26,7 +26,6 @@ public class RowInRepeatingList extends RowsCreator<RepeatingInformation> {
 	public RowInRepeatingList(MyList<RepeatingInformation> list) {
 		this.list = list;
 		rowsCounter = 1;
-
 	}
 
 	@Override
@@ -60,12 +59,12 @@ public class RowInRepeatingList extends RowsCreator<RepeatingInformation> {
 		}
 
 		panel.addRow(RowMaker.createUnfilledRow(Anchor.WEST, delete));
-		JPanel wrappingPanel = this.panel
+		JPanel wrappingPanel = this.rowsPanel
 				.addRow(RowMaker.createHorizontallyFilledRow(panel.getPanel()));
 		wrappingPanel
 				.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, BasicColors.LIGHT_BLUE));
 		addActionListener(delete, wrappingPanel, rep);
-		return this.panel.getPanel();
+		return this.rowsPanel.getPanel();
 
 	}
 
@@ -102,7 +101,7 @@ public class RowInRepeatingList extends RowsCreator<RepeatingInformation> {
 	}
 
 	private void removeRow(JPanel row) {
-		panel.removeRow(row);
+		rowsPanel.removeRow(row);
 	}
 
 }

@@ -1,9 +1,7 @@
 package com.kanji.panels;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -14,13 +12,9 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
 import com.guimaker.colors.BasicColors;
-import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.Anchor;
 import com.guimaker.row.RowMaker;
@@ -30,30 +24,32 @@ import com.kanji.actions.GuiElementsMaker;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
 import com.kanji.constants.Labels;
-import com.kanji.constants.Prompts;
 import com.kanji.constants.Titles;
 import com.kanji.controllers.ProblematicKanjisController;
 import com.kanji.myList.MyList;
+import com.kanji.myList.RowInKanjiRepeatingList;
 import com.kanji.windows.DialogWindow;
 
 public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
-	private JScrollPane scrollPane;
-	private MainPanel panelInScrollPane;
 	private ProblematicKanjisController controller;
 	private Dimension preferredSize = new Dimension(600, 600);
 	private int maximumNumberOfRows = 5;
+	private MyList<KanjiInformation> kanjiRepeatingList;
+	private RowInKanjiRepeatingList rowInKanjiRepeatingList;
 
-	public ProblematicKanjiPanel(MyList<KanjiInformation> kanjiSearcher,
+	public ProblematicKanjiPanel(MyList<KanjiInformation> kanjiList,
 			Set<Integer> problematicKanji) {
 		super(true);
-		controller = new ProblematicKanjisController(this, problematicKanji, kanjiSearcher);
-		panelInScrollPane = new MainPanel(BasicColors.LIGHT_BLUE, true);
-		panelInScrollPane.setGapsBetweenRowsTo(5);
+		controller = new ProblematicKanjisController(this, problematicKanji, kanjiList);
+
+		rowInKanjiRepeatingList = new RowInKanjiRepeatingList(controller);
+		kanjiRepeatingList = new MyList<KanjiInformation>(parentDialog, null,
+				rowInKanjiRepeatingList, "Kanji do powtorki");
 	}
 
-	public Font getKanjiFont() {
-		return controller.getKanjisReader().getFont();
+	public ProblematicKanjisController getController() {
+		return controller;
 	}
 
 	@Override
@@ -71,8 +67,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		group.add(withoutInternet);
 		JButton button = GuiElementsMaker.createButton(ButtonsNames.buttonApproveText,
 				CommonActionsMaker.createDisposeAction(parentDialog));
-		controller.buildRowsForProblematicKanjis();
-		scrollPane = new JScrollPane(panelInScrollPane.getPanel());
+		buildRows();
 
 		MainPanel radioButtonsPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
 		radioButtonsPanel.addRow(RowMaker.createHorizontallyFilledRow(
@@ -83,7 +78,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		mainPanel.addRow(RowMaker.createUnfilledRow(Anchor.CENTER,
 				new JLabel(Titles.currentProblematicWords)));
 		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(radioButtonsPanel.getPanel()));
-		mainPanel.addRow(RowMaker.createBothSidesFilledRow(scrollPane));
+		mainPanel.addRow(RowMaker.createBothSidesFilledRow(kanjiRepeatingList.getPanel()));
 		addHotkeysPanelHere();
 		mainPanel.addRow(RowMaker.createUnfilledRow(Anchor.CENTER, button));
 	}
@@ -93,57 +88,47 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 				.createRadioButton(Labels.repeatingWithInternet);
 		withInternet.setFocusable(false);
 		withInternet.setSelected(true);
+		AbstractAction useInternetAction = createActionListenerForUsingInternet(withInternet, true);
+		withInternet.addActionListener(useInternetAction);
+		addHotkey(KeyEvent.VK_I, useInternetAction, withInternet,
+				HotkeysDescriptions.SHOW_KANJI_WITH_INTERNET);
+		return withInternet;
+	}
+
+	private AbstractAction createActionListenerForUsingInternet(JRadioButton radioButton,
+			boolean useInternet) {
 		AbstractAction action = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.setUseInternet(true);
-				withInternet.setSelected(true);
+				controller.setUseInternet(useInternet);
+				radioButton.setSelected(true);
 			}
 		};
-		withInternet.addActionListener(action);
-		addHotkey(KeyEvent.VK_I, action, withInternet,
-				HotkeysDescriptions.SHOW_KANJI_WITH_INTERNET);
-		return withInternet;
+		return action;
 	}
 
 	private JRadioButton createRadioButtonForLearningWithoutInternet() {
 		JRadioButton withoutInternet = GuiElementsMaker
 				.createRadioButton(Labels.repeatingWithoutInternet);
 		withoutInternet.setFocusable(false);
-		AbstractAction action = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				withoutInternet.setSelected(true);
-				controller.setUseInternet(false);
-			}
-		};
-		addHotkey(KeyEvent.VK_N, action, withoutInternet,
+		AbstractAction dontUseInternetAction = createActionListenerForUsingInternet(withoutInternet,
+				false);
+		addHotkey(KeyEvent.VK_N, dontUseInternetAction, withoutInternet,
 				HotkeysDescriptions.SHOW_KANJI_WITHOUT_INTERNET);
-		withoutInternet.addActionListener(action);
+		withoutInternet.addActionListener(dontUseInternetAction);
 		return withoutInternet;
 	}
 
-	private JButton createButtonGoToSource(MainPanel panel, int kanjiId) {
-		JButton button = new JButton(ButtonsNames.buttonGoToSource);
-		button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.goToSpecifiedResource(panel, kanjiId);
-			}
-		});
-		button.setFocusable(false);
-		return button;
-	}
-
 	private void configureParentDialog() {
-		AbstractAction a = new AbstractAction() {
+		AbstractAction goToNextResource = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.showNextKanji();
+				controller.goToNextResource();
 			}
 		};
 
-		addHotkey(KeyEvent.VK_SPACE, a, ((JDialog) parentDialog.getContainer()).getRootPane(),
+		addHotkey(KeyEvent.VK_SPACE, goToNextResource,
+				((JDialog) parentDialog.getContainer()).getRootPane(),
 				HotkeysDescriptions.SHOW_NEXT_KANJI);
 
 		controller.limitSizeIfTooManyRows(maximumNumberOfRows);
@@ -153,21 +138,6 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 				controller.hideProblematicsPanel(parentDialog);
 			}
 		});
-	}
-
-	public void showNextKanjiOrClose() {
-		if (controller.hasMoreKanji())
-			controller.goToNextResource();
-		else {
-			parentDialog.closeChild();
-			parentDialog.showMessageDialog(Prompts.noMoreKanjis);
-		}
-	}
-
-	public void highlightRow(JPanel panelWithKanji) {
-		scrollPane.getVerticalScrollBar()
-				.setValue((int) Math.floor(panelWithKanji.getParent().getBounds().getY()));
-		panelWithKanji.setBackground(BasicColors.OCEAN_BLUE);
 	}
 
 	public boolean allProblematicKanjisRepeated() {
@@ -186,20 +156,18 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		parentDialog.showMessageDialog(message);
 	}
 
-	public void buildRow(String kanji, int kanjiId) {
-		final MainPanel panel = new MainPanel(BasicColors.DARK_BLUE);
-		final JLabel id = new JLabel("" + kanjiId);
-		JTextArea kanjiTextArea = GuiMaker.createTextArea(false, false);
-		kanjiTextArea.setText(kanji);
-		controller.addKanjiRow(panel, kanjiId);
-		JButton buttonGoToSource = createButtonGoToSource(panel, kanjiId);
-		panel.addRow(RowMaker.createHorizontallyFilledRow(kanjiTextArea, id, buttonGoToSource)
-				.fillHorizontallySomeElements(kanjiTextArea));
-		panelInScrollPane.addRow(RowMaker.createHorizontallyFilledRow(panel.getPanel()));
+	public void buildRows() {
+		for (KanjiInformation kanji : controller.getKanjis()) {
+			kanjiRepeatingList.addWord(kanji);
+		}
 	}
 
 	public void limitSize() {
 		parentDialog.getContainer().setPreferredSize(preferredSize);
+	}
+
+	public void highlightRow(int rowNumber) {
+		rowInKanjiRepeatingList.highlightRowAndScroll(rowNumber, false);
 	}
 
 }

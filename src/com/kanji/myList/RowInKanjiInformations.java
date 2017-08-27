@@ -11,7 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import com.guimaker.row.Anchor;
 import com.guimaker.row.RowMaker;
 import com.kanji.Row.KanjiInformation;
 import com.kanji.constants.Prompts;
@@ -36,19 +35,18 @@ public class RowInKanjiInformations extends RowsCreator<KanjiInformation> {
 	public RowInKanjiInformations() {
 		JLabel title = new JLabel(Titles.KANJIS_LIST);
 		title.setForeground(Color.white);
-		panel.addRow(RowMaker.createUnfilledRow(Anchor.CENTER, title));
 	}
 
 	@Override
 	public JPanel createRow(KanjiInformation kanji) {
 		createNewRow(kanji);
-		return panel.getPanel();
+		return rowsPanel.getPanel();
 	}
 
 	private void createNewRow(KanjiInformation kanji) {
 		String text = kanji.getKanjiKeyword();
 		int ID = kanji.getKanjiID();
-		JLabel number = new JLabel("" + (panel.getNumberOfRows()));
+		JLabel number = new JLabel("" + rowsPanel.getNumberOfRows() + ".");
 		number.setForeground(wordNumberColor);
 
 		// TODO looks fishy to pass class type as argument to create text area
@@ -56,7 +54,7 @@ public class RowInKanjiInformations extends RowsCreator<KanjiInformation> {
 		JTextArea idTextArea = createTextArea(Integer.toString(ID), Integer.class);
 		JButton remove = createButtonRemove();
 
-		JPanel createdPanel = panel.addRow(
+		JPanel createdPanel = rowsPanel.addRow(
 				RowMaker.createHorizontallyFilledRow(number, wordTextArea, idTextArea, remove));
 		addRemovingActionToButton(remove, createdPanel, kanji);
 
@@ -87,9 +85,10 @@ public class RowInKanjiInformations extends RowsCreator<KanjiInformation> {
 					return;
 				}
 				System.out.println(list);
-				KanjiInformation kanjiToChange = list.findRowBasedOnProperty(
-						new KanjiKeywordChecker(SearchOptions.BY_FULL_EXPRESSION),
-						wordBeingModified, SearchingDirection.FORWARD, list.getParent());
+				KanjiInformation kanjiToChange = list
+						.findRowBasedOnPropertyStartingFromHighlightedWord(
+								new KanjiKeywordChecker(SearchOptions.BY_FULL_EXPRESSION),
+								wordBeingModified, SearchingDirection.FORWARD, list.getParent());
 				KanjiInformation newKanji = new KanjiInformation(elem.getText(),
 						kanjiToChange.getKanjiID());
 				kanjiWords.replace(kanjiToChange, newKanji);
@@ -121,8 +120,9 @@ public class RowInKanjiInformations extends RowsCreator<KanjiInformation> {
 				if (idBeingModified == Integer.parseInt(elem.getText())) {
 					return;
 				}
-				KanjiInformation kanjiToChange = list.findRowBasedOnProperty(new KanjiIdChecker(),
-						idBeingModified, SearchingDirection.FORWARD, list.getParent());
+				KanjiInformation kanjiToChange = list
+						.findRowBasedOnPropertyStartingFromHighlightedWord(new KanjiIdChecker(),
+								idBeingModified, SearchingDirection.FORWARD, list.getParent());
 				KanjiInformation newKanji = new KanjiInformation(kanjiToChange.getKanjiKeyword(),
 						newID);
 				kanjiWords.replace(kanjiToChange, newKanji);
@@ -155,7 +155,7 @@ public class RowInKanjiInformations extends RowsCreator<KanjiInformation> {
 	}
 
 	private void removeRow(JPanel row) {
-		panel.removeRow(row);
+		rowsPanel.removeRow(row);
 	}
 
 }

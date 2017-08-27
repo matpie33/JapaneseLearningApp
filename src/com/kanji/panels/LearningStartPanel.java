@@ -108,9 +108,8 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		ItemListener action = new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				boolean problematicCheckboxSelected = problematicCheckbox.isSelected();
 				controller.updateNumberOfSelectedKanjiAfterCheckboxToggle(
-						problematicCheckboxSelected);
+						problematicCheckbox.isSelected());
 			}
 		};
 
@@ -302,7 +301,6 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.showErrorsOrStart(problematicCheckbox.isSelected());
-
 			}
 		};
 		return createButtonWithHotkey(KeyEvent.VK_ENTER, a, text,

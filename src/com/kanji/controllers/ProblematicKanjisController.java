@@ -1,20 +1,20 @@
 package com.kanji.controllers;
 
 import java.awt.Desktop;
+import java.awt.Font;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
-import com.guimaker.panels.MainPanel;
 import com.kanji.Row.KanjiInformation;
 import com.kanji.constants.Prompts;
 import com.kanji.fileReading.KanjiCharactersReader;
 import com.kanji.listSearching.KanjiIdChecker;
 import com.kanji.listSearching.SearchingDirection;
+import com.kanji.model.KanjiRow;
 import com.kanji.myList.MyList;
 import com.kanji.panels.ProblematicKanjiPanel;
 import com.kanji.windows.ApplicationWindow;
@@ -30,39 +30,6 @@ public class ProblematicKanjisController {
 	private Set<Integer> problematicKanjisIds;
 	private MyList<KanjiInformation> kanjiList;
 
-	private class KanjiRow {
-		private MainPanel panel;
-		private int kanjiId;
-
-		private KanjiRow(MainPanel p, int kanjiId) {
-			panel = p;
-			this.kanjiId = kanjiId;
-		}
-
-		private MainPanel getMainPanel() {
-			return panel;
-		}
-
-		private int getId() {
-			return kanjiId;
-		}
-
-		@Override
-		public boolean equals(Object o) {
-			if (o instanceof KanjiRow == false) {
-				return false;
-			}
-			KanjiRow row = (KanjiRow) o;
-			return row.getMainPanel().equals(panel) && row.getId() == kanjiId;
-		}
-
-		@Override
-		public int hashCode() {
-			return Objects.hash(kanjiId);
-		}
-
-	}
-
 	public ProblematicKanjisController(ProblematicKanjiPanel problematicKanjiPanel,
 			Set<Integer> problematicKanjisSet, MyList<KanjiInformation> kanjiList) {
 		this.problematicKanjiPanel = problematicKanjiPanel;
@@ -75,28 +42,28 @@ public class ProblematicKanjisController {
 		System.out.println("who is searcher: " + kanjiList);
 	}
 
-	public KanjiCharactersReader getKanjisReader() {
-		return kanjiCharactersReader;
+	public Font getKanjiFont() {
+		return kanjiCharactersReader.getFont();
+		// TODO why he has font? he just reads kanji from file
 	}
 
 	public void goToNextResource() {
 		KanjiRow row = kanjisToBrowse.get(0);
-		goToSpecifiedResource(row.getMainPanel(), row.getId());
+		goToSpecifiedResource(row);
 	}
 
-	public void goToSpecifiedResource(MainPanel panel, int kanjiId) {
-		KanjiRow k = new KanjiRow(panel, kanjiId);
+	public void goToSpecifiedResource(KanjiRow row) {
 		repeatedProblematics++;
-		kanjisToBrowse.remove(k);
-		problematicKanjiPanel.highlightRow(k.getMainPanel().getPanel());
+		kanjisToBrowse.remove(row);
 		if (useInternet) {
-			browseKanji(k);
+			browseKanji(row);
 		}
 		else {
 			problematicKanjiPanel
-					.showKanjiOffline(kanjiCharactersReader.getKanjiById(k.getId() - 1));
+					.showKanjiOffline(kanjiCharactersReader.getKanjiById(row.getId() - 1));
 			// TODO hardcoding -1 or +1 here and there is definitely not good
 		}
+		problematicKanjiPanel.highlightRow(row.getRowNumber());
 
 	}
 
@@ -137,8 +104,9 @@ public class ProblematicKanjisController {
 		return uriObject;
 	}
 
-	public void addKanjiRow(MainPanel panel, int kanjiId) {
-		KanjiRow k = new KanjiRow(panel, kanjiId);
+	public void addKanjiRow(int rowNumber, int kanjiId) {
+		KanjiRow k = new KanjiRow(kanjiId, rowNumber);
+		System.out.println("adding row: " + kanjiId + " number: " + rowNumber);
 		kanjisToBrowse.add(k);
 	}
 
@@ -146,14 +114,15 @@ public class ProblematicKanjisController {
 		this.useInternet = useInternet;
 	}
 
-	public void buildRowsForProblematicKanjis() {
+	public List<KanjiInformation> getKanjis() {
+		List<KanjiInformation> kanjis = new ArrayList<>();
 		for (Integer kanjiId : problematicKanjisIds) {
-			problematicKanjiPanel
-					.buildRow(kanjiList
-							.findRowBasedOnProperty(new KanjiIdChecker(), kanjiId,
-									SearchingDirection.FORWARD, kanjiList.getParent())
-							.getKanjiKeyword(), kanjiId);
+			kanjis.add(new KanjiInformation(kanjiList
+					.findRowBasedOnPropertyStartingFromHighlightedWord(new KanjiIdChecker(),
+							kanjiId, SearchingDirection.FORWARD, kanjiList.getParent())
+					.getKanjiKeyword(), kanjiId));
 		}
+		return kanjis;
 	}
 
 	public void showNextKanji() {
@@ -189,6 +158,19 @@ public class ProblematicKanjisController {
 		if (problematicKanjisIds.size() > maximumNumberOfRowsVisible) {
 			problematicKanjiPanel.limitSize();
 		}
+	}
+
+	public void showNextKanjiOrClose() {
+		if (hasMoreKanji())
+			goToNextResource();
+		else {
+			problematicKanjiPanel.getDialog().closeChild();
+			problematicKanjiPanel.getDialog().showMessageDialog(Prompts.noMoreKanjis);
+		}
+	}
+
+	public Set<Integer> getProblematicKanjis() {
+		return problematicKanjisIds;
 	}
 
 }

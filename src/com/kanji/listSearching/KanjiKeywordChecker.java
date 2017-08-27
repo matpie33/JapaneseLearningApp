@@ -14,8 +14,8 @@ public class KanjiKeywordChecker implements PropertyChecker<String, KanjiInforma
 
 	@Override
 	public boolean isPropertyFound(String kanjiKeyWord, KanjiInformation kanjiInformation) {
-		return doesWordContainSearchedWord(kanjiInformation.getKanjiKeyword(),
-				removeDiacritics(kanjiKeyWord), options);
+		return kanjiInformation != null && doesWordContainSearchedWord(
+				kanjiInformation.getKanjiKeyword(), removeDiacritics(kanjiKeyWord), options);
 	}
 
 	private String removeDiacritics(String word) {
