@@ -4,13 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.JButton;
+import javax.swing.AbstractButton;
 import javax.swing.JScrollPane;
 
-import com.guimaker.row.Anchor;
-import com.guimaker.row.RowMaker;
-import com.kanji.actions.GuiElementsMaker;
-import com.kanji.actions.TextAlignment;
+import com.guimaker.enums.Anchor;
+import com.guimaker.enums.FillType;
+import com.guimaker.enums.TextAlignment;
+import com.guimaker.panels.GuiMaker;
+import com.guimaker.row.SimpleRow;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
 
@@ -24,17 +25,17 @@ public class ConfirmPanel extends AbstractPanelWithHotkeysInfo {
 
 	@Override
 	void createElements() {
-		JScrollPane scrollPane = GuiElementsMaker.createTextPaneWrappedInScrollPane(message,
+		JScrollPane scrollPane = GuiMaker.createTextPaneWrappedInScrollPane(message,
 				TextAlignment.CENTERED);
-		JButton yesButton = createButtonConfirm();
-		JButton noButton = createButtonReject();
+		AbstractButton yesButton = createButtonConfirm();
+		AbstractButton noButton = createButtonReject();
 
-		mainPanel.addRow(RowMaker.createBothSidesFilledRow(scrollPane));
+		mainPanel.addRow(new SimpleRow(FillType.BOTH, scrollPane));
 		addHotkeysPanelHere();
-		mainPanel.addRow(RowMaker.createUnfilledRow(Anchor.CENTER, noButton, yesButton));
+		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.CENTER, noButton, yesButton));
 	}
 
-	private JButton createButtonConfirm() {
+	private AbstractButton createButtonConfirm() {
 		AbstractAction action = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -46,7 +47,7 @@ public class ConfirmPanel extends AbstractPanelWithHotkeysInfo {
 				HotkeysDescriptions.CONFIRM_ACTION);
 	}
 
-	private JButton createButtonReject() {
+	private AbstractButton createButtonReject() {
 		AbstractAction action = new AbstractAction() {
 			private static final long serialVersionUID = 5504620933205592893L;
 

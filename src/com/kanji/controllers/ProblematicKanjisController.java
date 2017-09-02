@@ -16,6 +16,7 @@ import com.kanji.listSearching.KanjiIdChecker;
 import com.kanji.listSearching.SearchingDirection;
 import com.kanji.model.KanjiRow;
 import com.kanji.myList.MyList;
+import com.kanji.panels.KanjiPanel;
 import com.kanji.panels.ProblematicKanjiPanel;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
@@ -29,8 +30,10 @@ public class ProblematicKanjisController {
 	private List<KanjiRow> kanjisToBrowse;
 	private Set<Integer> problematicKanjisIds;
 	private MyList<KanjiInformation> kanjiList;
+	private KanjiPanel kanjiPanel;
+	private Font kanjiFont;
 
-	public ProblematicKanjisController(ProblematicKanjiPanel problematicKanjiPanel,
+	public ProblematicKanjisController(Font kanjiFont, ProblematicKanjiPanel problematicKanjiPanel,
 			Set<Integer> problematicKanjisSet, MyList<KanjiInformation> kanjiList) {
 		this.problematicKanjiPanel = problematicKanjiPanel;
 		kanjisToBrowse = new ArrayList<>();
@@ -39,14 +42,10 @@ public class ProblematicKanjisController {
 		kanjiCharactersReader.loadKanjisIfNeeded();
 		problematicKanjisIds = problematicKanjisSet;
 		this.kanjiList = kanjiList;
+		this.kanjiFont = kanjiFont;
 	}
 
-	public Font getKanjiFont() {
-		return kanjiCharactersReader.getFont();
-		// TODO why he has font? he just reads kanji from file
-	}
-
-	public void goToNextResource() {
+	private void goToNextResource() {
 		KanjiRow row = kanjisToBrowse.get(0);
 		goToSpecifiedResource(row);
 	}
@@ -58,9 +57,17 @@ public class ProblematicKanjisController {
 			browseKanji(row);
 		}
 		else {
-			problematicKanjiPanel
-					.showKanjiOffline(kanjiCharactersReader.getKanjiById(row.getId() - 1));
-			// TODO hardcoding -1 or +1 here and there is definitely not good
+			String kanji = kanjiCharactersReader.getKanjiById(row.getId() - 1);
+			// TODO hardcoding -1 or +1 here and there is definitely not
+			// good
+			if (kanjiPanel == null || !kanjiPanel.isDisplayAble()) {
+				kanjiPanel = new KanjiPanel(kanjiFont, kanji, this);
+				problematicKanjiPanel.showKanjiDialog(kanjiPanel);
+			}
+			else {
+				kanjiPanel.changeKanji(kanji);
+			}
+
 		}
 		problematicKanjiPanel.highlightRow(row.getRowNumber());
 
@@ -123,15 +130,6 @@ public class ProblematicKanjisController {
 		return kanjis;
 	}
 
-	public void showNextKanji() {
-		if (hasMoreKanji()) {
-			goToNextResource();
-		}
-		else {
-			problematicKanjiPanel.showMessage(Prompts.NO_MORE_KANJIS);
-		}
-	}
-
 	public boolean allProblematicKanjisRepeated() {
 		return repeatedProblematics == problematicKanjisIds.size();
 	}
@@ -158,7 +156,7 @@ public class ProblematicKanjisController {
 		}
 	}
 
-	public void showNextKanjiOrClose() {
+	public void showNextKanjiOrCloseChildDialog() {
 		if (hasMoreKanji())
 			goToNextResource();
 		else {

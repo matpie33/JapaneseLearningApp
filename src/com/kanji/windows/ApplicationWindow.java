@@ -1,6 +1,7 @@
 package com.kanji.windows;
 
 import java.awt.CardLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Set;
@@ -18,7 +19,6 @@ import com.kanji.constants.MenuTexts;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.SavingStatus;
 import com.kanji.constants.Titles;
-import com.kanji.fileReading.KanjiCharactersReader;
 import com.kanji.myList.MyList;
 import com.kanji.panels.InsertWordPanel;
 import com.kanji.panels.LearningStartPanel;
@@ -36,18 +36,13 @@ public class ApplicationWindow extends DialogWindow {
 	private ProblematicKanjiPanel problematicKanjiPanel;
 	private StartingPanel startingPanel;
 	private JFrame container;
-	private ApplicationController applicationController; // TODO we
-															// should
-	// create it in
-	// starting
-	// panel instead
+	private ApplicationController applicationController;
+	private Font kanjiFont = new Font("MS PMincho", Font.BOLD, 100);
 
 	// TODO handle the situation in gui applicationControllerController when the
 	// panel has just 1 row so
 	// we
 	// don't have to use row (0) but somehow easier
-
-	public KanjiCharactersReader excel;
 
 	public ApplicationWindow() {
 		super(null);
@@ -69,8 +64,12 @@ public class ApplicationWindow extends DialogWindow {
 		setWindowProperties();
 	}
 
+	public Font getKanjiFont() {
+		return kanjiFont;
+	}
+
 	public ApplicationController getApplicationController() {
-		return applicationController; // TODO remove this method later
+		return applicationController;
 	}
 
 	private void setWindowProperties() {
@@ -99,6 +98,11 @@ public class ApplicationWindow extends DialogWindow {
 		container.repaint();
 	}
 
+	public void updateProblematicKanjisAmount() {
+		startingPanel
+				.updateProblematicKanjisAmount(applicationController.getProblematicKanjis().size());
+	}
+
 	public void updateTitle(String update) {
 		container.setTitle(Titles.APPLICATION + "   " + update);
 	}
@@ -116,24 +120,27 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void showLearningStartDialog(MyList list, int maximumNumber) {
-		showPanel(new LearningStartPanel(this, maximumNumber, list), Titles.LEARNING_START_DIALOG, false,
-				Position.CENTER);
+		showPanel(new LearningStartPanel(applicationController, maximumNumber, list),
+				Titles.LEARNING_START_DIALOG, false, Position.CENTER);
 
 	}
 
 	// TODO dialogs should either be jframe or modal in order for alt tab to
 	// switch focus to the right window
 	public void showInsertDialog(MyList list) {
-		showPanel(new InsertWordPanel(list), Titles.INSERT_WORD_DIALOG, false, Position.LEFT_CORNER);
+		showPanel(new InsertWordPanel(list, getApplicationController()), Titles.INSERT_WORD_DIALOG,
+				false, Position.LEFT_CORNER);
 	}
 
 	public void showSearchWordDialog(MyList<KanjiInformation> list) {
-		showPanel(new SearchWordPanel(list), Titles.WORD_SEARCH_DIALOG, false, Position.LEFT_CORNER);
+		showPanel(new SearchWordPanel(list), Titles.WORD_SEARCH_DIALOG, false,
+				Position.LEFT_CORNER);
 	}
 
 	public void showProblematicKanjiDialog(MyList<KanjiInformation> kanjiSearcher,
 			Set<Integer> problematicKanjis) {
-		problematicKanjiPanel = new ProblematicKanjiPanel(kanjiSearcher, problematicKanjis);
+		problematicKanjiPanel = new ProblematicKanjiPanel(getKanjiFont(), this, kanjiSearcher,
+				problematicKanjis);
 		showPanel(problematicKanjiPanel, Titles.INSERT_WORD_DIALOG, true, Position.CENTER);
 	}
 

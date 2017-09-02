@@ -9,8 +9,6 @@ import java.util.Set;
 import javax.swing.JTextField;
 
 import com.kanji.Row.RepeatingInformation;
-import com.kanji.constants.ApplicationPanels;
-import com.kanji.constants.ApplicationPanels;
 import com.kanji.constants.ExceptionsMessages;
 import com.kanji.constants.Labels;
 import com.kanji.model.RangesRow;
@@ -18,7 +16,6 @@ import com.kanji.myList.MyList;
 import com.kanji.panels.LearningStartPanel;
 import com.kanji.range.SetOfRanges;
 import com.kanji.utilities.ApplicationController;
-import com.kanji.windows.ApplicationWindow;
 
 public class LearningStartController {
 
@@ -26,18 +23,15 @@ public class LearningStartController {
 	private SetOfRanges rangesToRepeat;
 	private int numberOfWords;
 	private int sumOfWords;
-	// TODO this should be some controller or something
-	private ApplicationWindow parentFrame;
 	private LearningStartPanel learningStartPanel;
 	private List<String> errors;
 	private List<RangesRow> rangesRows;
 	private int problematicLabelRow;
-	private ApplicationController startingPanelController;
+	private ApplicationController applicationController;
 
 	public LearningStartController(MyList<RepeatingInformation> repeatList, int numberOfWords,
-			ApplicationWindow parentFrame, LearningStartPanel learningStartPanel) {
-		this.parentFrame = parentFrame;
-		startingPanelController = parentFrame.getApplicationController();
+			ApplicationController applicationController, LearningStartPanel learningStartPanel) {
+		this.applicationController = applicationController;
 		this.repeatsList = repeatList;
 		this.numberOfWords = numberOfWords;
 		this.learningStartPanel = learningStartPanel;
@@ -67,7 +61,7 @@ public class LearningStartController {
 	}
 
 	private void addOrSubtractProblematicKanjisFromSum(int direction) {
-		Set<Integer> problematics = startingPanelController.getProblematicKanjis();
+		Set<Integer> problematics = applicationController.getProblematicKanjis();
 		for (Integer i : problematics) {
 			if (!rangesToRepeat.isValueInsideThisSet(i)) {
 				sumOfWords += direction;
@@ -76,7 +70,7 @@ public class LearningStartController {
 	}
 
 	public int getProblematicKanjiNumber() {
-		return startingPanelController.getProblematicKanjis().size();
+		return applicationController.getProblematicKanjis().size();
 	}
 
 	public void addRow(int rowNumber, JTextField from, JTextField to) {
@@ -123,8 +117,12 @@ public class LearningStartController {
 		if (handleEmptyTextFields(e, to, from, problematicCheckboxSelected)) {
 			return;
 		}
-		boolean fromTextFieldWasFocused = from.hasFocus();
+		processTextFieldsInputs(to, from, problematicCheckboxSelected);
+	}
 
+	private void processTextFieldsInputs(JTextField to, JTextField from,
+			boolean problematicCheckboxSelected) {
+		boolean fromTextFieldWasFocused = from.hasFocus();
 		int valueFrom = Integer.parseInt(from.getText());
 		int valueTo = Integer.parseInt(to.getText());
 		String error = validateRangesInput(valueFrom, valueTo);
@@ -238,11 +236,10 @@ public class LearningStartController {
 
 	private void validateAndStart(boolean problematicCheckboxSelected) {
 
-		rangesToRepeat = addAllRangesToSet(); // TODO problem when someone types
-												// range
-		// and immediately presses enter -
-		// ranges to repeat is empty because no
-		// key released was found
+		rangesToRepeat = addAllRangesToSet();
+		if (rangesToRepeat.toString().isEmpty()) {
+			makeSureTheresNoInput(problematicCheckboxSelected);
+		}
 		if (rangesToRepeat.toString().isEmpty() && !problematicCheckboxSelected) {
 			learningStartPanel.showErrorDialog(ExceptionsMessages.NO_INPUT_SUPPLIED);
 			return;
@@ -250,6 +247,13 @@ public class LearningStartController {
 
 		addRangesToRepeatsList(problematicCheckboxSelected);
 		learningStartPanel.switchToRepeatingPanel();
+	}
+
+	private void makeSureTheresNoInput(boolean problematicCheckboxSelected) {
+		for (RangesRow range : rangesRows) {
+			processTextFieldsInputs(range.getTextFieldTo(), range.getTextFieldFrom(),
+					problematicCheckboxSelected);
+		}
 	}
 
 	private void addRangesToRepeatsList(boolean problematicCheckboxSelected) {
@@ -263,17 +267,13 @@ public class LearningStartController {
 		}
 		repeatingInfo += rangesToRepeat;
 		repeatingInfo += ".";
-		parentFrame.getApplicationController().setRepeatingInformation(
+		applicationController.setRepeatingInformation(
 				new RepeatingInformation(repeatingInfo, calendar.getTime(), false));
 		repeatsList.scrollToBottom();
 	}
 
-	public void switchPanelAndSetWordsRangesToRepeat(boolean problematicCheckboxSelected) { // TODO
-		// panel should have parent frame's panels code, and controller should
-		// have parent frame's controller code
-		parentFrame.showPanel(ApplicationPanels.REPEATING_PANEL);
-		parentFrame.getApplicationController().setWordsRangeToRepeat(rangesToRepeat,
-				problematicCheckboxSelected);
+	public void switchPanelAndSetWordsRangesToRepeat(boolean problematicCheckboxSelected) {
+		applicationController.startRepeating(rangesToRepeat, problematicCheckboxSelected);
 	}
 
 	private SetOfRanges addAllRangesToSet() {

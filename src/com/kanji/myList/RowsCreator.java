@@ -13,12 +13,13 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
 import com.guimaker.colors.BasicColors;
+import com.guimaker.enums.Anchor;
+import com.guimaker.enums.FillType;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
-import com.guimaker.row.Anchor;
-import com.guimaker.row.RowMaker;
+import com.guimaker.row.SimpleRow;
 
-public abstract class RowsCreator<Row> {
+public class RowsCreator<Row> {
 
 	protected ListWordsController<Row> kanjiWords;
 	protected MyList<Row> list;
@@ -28,8 +29,9 @@ public abstract class RowsCreator<Row> {
 	private JScrollPane parentScrollPane;
 	private final Dimension scrollPanesSize = new Dimension(350, 300);
 	private JLabel titleLabel;
+	private ListRow<Row> listRow;
 
-	public RowsCreator() {
+	public RowsCreator(ListRow<Row> listRow) {
 		kanjiWords = new ListWordsController<>();
 		highlightedRowNumber = -1;
 		wrappingPanel = new MainPanel(BasicColors.VERY_BLUE, true);
@@ -37,16 +39,22 @@ public abstract class RowsCreator<Row> {
 		titleLabel = new JLabel();
 		titleLabel.setForeground(Color.WHITE);
 		createDefaultScrollPane();
-		wrappingPanel.addRow(RowMaker.createUnfilledRow(Anchor.CENTER, titleLabel));
-		wrappingPanel.addRow(RowMaker.createBothSidesFilledRow(parentScrollPane));
+		wrappingPanel.addRows(new SimpleRow(FillType.NONE, Anchor.CENTER, titleLabel)
+				.nextRow(FillType.BOTH, parentScrollPane));
+		this.listRow = listRow;
 
+	}
+
+	public void addRow(Row row) {
+		JPanel wrappingPanel = this.rowsPanel
+				.addRow(new SimpleRow(FillType.HORIZONTAL, listRow.listRow(row).getPanel()));
+		wrappingPanel
+				.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, BasicColors.LIGHT_BLUE));
 	}
 
 	public void setTitle(String title) {
 		titleLabel.setText(title);
 	}
-
-	public abstract JPanel createRow(Row row);
 
 	public ListWordsController<Row> getController() {
 		return kanjiWords;

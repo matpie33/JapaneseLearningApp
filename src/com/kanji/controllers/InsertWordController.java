@@ -5,15 +5,19 @@ import javax.swing.JTextField;
 import com.kanji.Row.KanjiInformation;
 import com.kanji.constants.ExceptionsMessages;
 import com.kanji.myList.MyList;
+import com.kanji.utilities.ApplicationController;
 import com.kanji.windows.DialogWindow;
 
 public class InsertWordController {
 
 	private MyList<KanjiInformation> list;
 	private DialogWindow parentDialog;
+	private ApplicationController applicationController;
 
-	public InsertWordController(MyList<KanjiInformation> list) {
+	public InsertWordController(MyList<KanjiInformation> list,
+			ApplicationController applicationController) {
 		this.list = list;
+		this.applicationController = applicationController;
 	}
 
 	public void setParentDialog(DialogWindow parent) {
@@ -28,7 +32,7 @@ public class InsertWordController {
 			int number = Integer.parseInt(numberInput);
 			boolean addedWord = addWordToList(wordInput, number);
 			if (addedWord) {
-				parentDialog.save();
+				applicationController.save();
 				wordInputText.selectAll();
 				wordInputText.requestFocusInWindow();
 			}

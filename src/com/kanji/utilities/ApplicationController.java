@@ -17,6 +17,7 @@ import javax.swing.SwingWorker;
 
 import com.kanji.Row.KanjiInformation;
 import com.kanji.Row.RepeatingInformation;
+import com.kanji.constants.ApplicationPanels;
 import com.kanji.constants.SavingStatus;
 import com.kanji.controllers.RepeatingWordsController;
 import com.kanji.myList.MyList;
@@ -126,8 +127,8 @@ public class ApplicationController {
 	}
 
 	private void initListOfWords() {
-		listOfWords = new MyList<KanjiInformation>(parent, this, new RowInKanjiInformations(),
-				"Lista kanji");
+		listOfWords = new MyList<KanjiInformation>(parent, this,
+				new RowInKanjiInformations(listOfWords), "Lista kanji");
 
 		for (int i = 1; i <= 15; i++) {
 			listOfWords.addWord(new KanjiInformation("Word no. " + i, i));
@@ -194,6 +195,7 @@ public class ApplicationController {
 			return;
 		}
 		parent.changeSaveStatus(SavingStatus.SAVING);
+		parent.updateProblematicKanjisAmount();
 		SavingInformation savingInformation = new SavingInformation(listOfWords.getWords(),
 				repeats.getWords(), getProblematicKanjis());
 		try {
@@ -248,8 +250,9 @@ public class ApplicationController {
 		repeatingWordsPanelController.setRepeatingInformation(info);
 	}
 
-	public void setWordsRangeToRepeat(SetOfRanges ranges, boolean withProblematic) {
+	public void startRepeating(SetOfRanges ranges, boolean withProblematic) {
 		repeatingWordsPanelController.setWordsRangeToRepeat(ranges, withProblematic);
+		parent.showPanel(ApplicationPanels.REPEATING_PANEL);
 		// TODO if set of ranges is empty, we should not call set ranges to
 		// repeat all, so probably
 		// split this method

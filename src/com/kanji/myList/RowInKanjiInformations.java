@@ -11,7 +11,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import com.guimaker.row.RowMaker;
+import com.guimaker.enums.FillType;
+import com.guimaker.panels.MainPanel;
+import com.guimaker.row.SimpleRow;
 import com.kanji.Row.KanjiInformation;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.Titles;
@@ -20,33 +22,31 @@ import com.kanji.listSearching.KanjiKeywordChecker;
 import com.kanji.listSearching.SearchOptions;
 import com.kanji.listSearching.SearchingDirection;
 
-public class RowInKanjiInformations extends RowsCreator<KanjiInformation> {
+public class RowInKanjiInformations implements ListRow<KanjiInformation> {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private Color wordNumberColor = Color.WHITE;
+	private ListWordsController<KanjiInformation> kanjiWords;
 
 	private String wordBeingModified;
 	private int idBeingModified;
+	private MyList<KanjiInformation> list;
 
-	// TODO should be common for kanji and repeating list: panel color, border
-	// at the bottom,
-	public RowInKanjiInformations() {
+	public RowInKanjiInformations(MyList<KanjiInformation> list) {
 		JLabel title = new JLabel(Titles.KANJIS_LIST);
 		title.setForeground(Color.white);
+		this.list = list;
+		kanjiWords = new ListWordsController<>();
 	}
 
-	@Override
-	public JPanel createRow(KanjiInformation kanji) {
-		createNewRow(kanji);
-		return rowsPanel.getPanel();
-	}
-
-	private void createNewRow(KanjiInformation kanji) {
+	public MainPanel listRow(KanjiInformation kanji) {
+		MainPanel panel = new MainPanel(null);
 		String text = kanji.getKanjiKeyword();
 		int ID = kanji.getKanjiID();
-		JLabel number = new JLabel("" + rowsPanel.getNumberOfRows() + ".");
+		JLabel number = new JLabel("" + 1 + ".");
+		// JLabel number = new JLabel("" + rowsPanel.getNumberOfRows() + ".");
 		number.setForeground(wordNumberColor);
 
 		// TODO looks fishy to pass class type as argument to create text area
@@ -54,9 +54,10 @@ public class RowInKanjiInformations extends RowsCreator<KanjiInformation> {
 		JTextArea idTextArea = createTextArea(Integer.toString(ID), Integer.class);
 		JButton remove = createButtonRemove();
 
-		JPanel createdPanel = rowsPanel.addRow(
-				RowMaker.createHorizontallyFilledRow(number, wordTextArea, idTextArea, remove));
+		JPanel createdPanel = panel.addRow(
+				new SimpleRow(FillType.HORIZONTAL, number, wordTextArea, idTextArea, remove));
 		addRemovingActionToButton(remove, createdPanel, kanji);
+		return panel;
 
 	}
 
@@ -114,6 +115,8 @@ public class RowInKanjiInformations extends RowsCreator<KanjiInformation> {
 				}
 				else
 					return;
+				// TODO this method and above could be generic - for replacing a
+				// word
 				// TODO else exception
 
 				if (idBeingModified == Integer.parseInt(elem.getText())) {
@@ -153,7 +156,7 @@ public class RowInKanjiInformations extends RowsCreator<KanjiInformation> {
 	}
 
 	private void removeRow(JPanel row) {
-		rowsPanel.removeRow(row);
+		// rowsPanel.removeRow(row);
 	}
 
 }

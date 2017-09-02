@@ -1,19 +1,21 @@
 package com.kanji.panels;
 
-import javax.swing.JButton;
+import javax.swing.AbstractButton;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 
-import com.guimaker.row.Anchor;
-import com.guimaker.row.RowMaker;
-import com.kanji.actions.CommonActionsMaker;
-import com.kanji.actions.GuiElementsMaker;
-import com.kanji.actions.TextAlignment;
+import com.guimaker.enums.Anchor;
+import com.guimaker.enums.ComponentType;
+import com.guimaker.enums.FillType;
+import com.guimaker.enums.TextAlignment;
+import com.guimaker.panels.GuiMaker;
+import com.guimaker.row.SimpleRow;
+import com.guimaker.utilities.CommonActionsMaker;
 import com.kanji.constants.ButtonsNames;
 
 public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 
-	private JButton okButton;
+	private AbstractButton okButton;
 	private String message;
 
 	public LoadingPanel(String message) {
@@ -24,22 +26,22 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 	@Override
 	void createElements() {
 
-		JScrollPane scrollPane = GuiElementsMaker.createTextPaneWrappedInScrollPane(message,
+		JScrollPane scrollPane = GuiMaker.createTextPaneWrappedInScrollPane(message,
 				TextAlignment.CENTERED);
 
-		okButton = GuiElementsMaker.createButton(ButtonsNames.APPROVE,
-				CommonActionsMaker.createDisposeAction(parentDialog));
+		okButton = GuiMaker.createButtonlikeComponent(ComponentType.BUTTON, ButtonsNames.APPROVE,
+				CommonActionsMaker.createDisposeAction(parentDialog.getContainer()));
 
-		mainPanel.addRow(RowMaker.createBothSidesFilledRow(scrollPane));
+		mainPanel.addRow(new SimpleRow(FillType.BOTH, scrollPane));
 		addHotkeysPanelHere();
-		mainPanel.addRow(RowMaker.createUnfilledRow(Anchor.CENTER, okButton));
+		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.CENTER, okButton));
 
 	}
 
 	public void setProgressBar(JProgressBar bar) {
 		mainPanel.removeRow(2);// TODO this is bad
-		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(bar));
-		mainPanel.addRow(RowMaker.createUnfilledRow(Anchor.CENTER, okButton));
+		mainPanel.addRow(new SimpleRow(FillType.HORIZONTAL, bar));
+		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.CENTER, okButton));
 	}
 
 }

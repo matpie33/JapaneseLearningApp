@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -16,12 +17,14 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import com.guimaker.colors.BasicColors;
+import com.guimaker.enums.Anchor;
+import com.guimaker.enums.ComponentType;
+import com.guimaker.enums.FillType;
+import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
-import com.guimaker.row.Anchor;
-import com.guimaker.row.RowMaker;
+import com.guimaker.row.SimpleRow;
+import com.guimaker.utilities.CommonActionsMaker;
 import com.kanji.Row.KanjiInformation;
-import com.kanji.actions.CommonActionsMaker;
-import com.kanji.actions.GuiElementsMaker;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.Labels;
 import com.kanji.constants.Prompts;
@@ -44,10 +47,10 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 	private JPanel searchingPanel;
 	private final String SEARCH_BY_KEYWORD_PANEL_NAME = "Search by keyword panel";
 	private final String SEARCH_BY_KANJI_ID_PANEL_NAME = "Search by kanji id panel";
-	private SearchKryteria searchKryteria;
+	private SearchCriteria searchKryteria;
 	private JTextField kanjiIdTextfield;
 
-	private enum SearchKryteria {
+	private enum SearchCriteria {
 		BY_KEYWORD, BY_KANJI_ID
 	}
 
@@ -55,7 +58,7 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 		super(true);
 		this.list = list;
 		searchOptions = SearchOptions.BY_LETTERS;
-		searchKryteria = SearchKryteria.BY_KEYWORD;
+		searchKryteria = SearchCriteria.BY_KEYWORD;
 	}
 
 	@Override
@@ -64,11 +67,12 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 
 		JButton previous = createButtonFindPrevious(ButtonsNames.FIND_PREVIOUS);
 		JButton next = createButtonFindNext(ButtonsNames.FIND_NEXT);
-		JButton cancel = GuiElementsMaker.createButton(ButtonsNames.CANCEL,
-				CommonActionsMaker.createDisposeAction(parentDialog));
+		AbstractButton cancel = GuiMaker.createButtonlikeComponent(ComponentType.BUTTON,
+				ButtonsNames.CANCEL,
+				CommonActionsMaker.createDisposeAction(parentDialog.getContainer()));
 		JLabel searchOptionPrompt = new JLabel(Prompts.SEARCH_OPTION_PROMPT);
 
-		mainPanel.addRow(RowMaker.createUnfilledRow(Anchor.WEST, searchOptionPrompt, comboBox));
+		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.WEST, searchOptionPrompt, comboBox));
 		MainPanel keywordSearchPanel = createSearchByKeywordPanel();
 		MainPanel kanjiIdSearchPanel = createSearchByKanjiIdPanel();
 
@@ -78,7 +82,7 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 		searchingPanel.add(SEARCH_BY_KEYWORD_PANEL_NAME, keywordSearchPanel.getPanel());
 		searchingPanel.add(SEARCH_BY_KANJI_ID_PANEL_NAME, kanjiIdSearchPanel.getPanel());
 
-		mainPanel.addRow(RowMaker.createUnfilledRow(Anchor.WEST, searchingPanel));
+		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.WEST, searchingPanel));
 
 		addHotkeysPanelHere();
 		mainPanel.addRow( // TODO fix in gui maker: if putting rows as highest
@@ -87,7 +91,7 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 							// should be as highest as possible, but now I need
 							// to
 							// use northwest
-				RowMaker.createUnfilledRow(Anchor.WEST, cancel, previous, next));
+				new SimpleRow(FillType.NONE, Anchor.WEST, cancel, previous, next));
 
 	}
 
@@ -96,7 +100,7 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiIdTextfield = createInputTextField();
 
 		MainPanel kanjiIdSearchPanel = new MainPanel(BasicColors.DARK_BLUE, true);
-		kanjiIdSearchPanel.addRow(RowMaker.createUnfilledRow(Anchor.NORTHWEST,
+		kanjiIdSearchPanel.addRow(new SimpleRow(FillType.NONE, Anchor.NORTHWEST,
 				new JLabel(Labels.KANJI_ID_LABEL), kanjiIdTextfield));
 		return kanjiIdSearchPanel;
 	}
@@ -124,11 +128,9 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 		defaultSearchOption.setSelected(true);
 
 		MainPanel keywordSearchPanel = new MainPanel(BasicColors.DARK_BLUE);
-		keywordSearchPanel.addRow(RowMaker.createHorizontallyFilledRow(prompt, textField)
-				.fillHorizontallySomeElements(textField));
-		keywordSearchPanel.addRow(RowMaker.createHorizontallyFilledRow(defaultSearchOption));
-		keywordSearchPanel.addRow(RowMaker.createHorizontallyFilledRow(fullWordsSearchOption));
-		keywordSearchPanel.addRow(RowMaker.createHorizontallyFilledRow(perfectMatchSearchOption));
+		keywordSearchPanel.addRows(new SimpleRow(FillType.HORIZONTAL, prompt, textField)
+				.fillHorizontallySomeElements(textField).nextRow(defaultSearchOption)
+				.nextRow(fullWordsSearchOption).nextRow(perfectMatchSearchOption));
 		return keywordSearchPanel;
 	}
 
@@ -143,11 +145,11 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 				String option = (String) comboBox.getSelectedItem();
 				if (option == OPTION_BY_KEYWORD) {
 					cardLayout.show(searchingPanel, SEARCH_BY_KEYWORD_PANEL_NAME);
-					searchKryteria = SearchKryteria.BY_KEYWORD;
+					searchKryteria = SearchCriteria.BY_KEYWORD;
 				}
 				else if (option == OPTION_BY_KANJI_ID) {
 					cardLayout.show(searchingPanel, SEARCH_BY_KANJI_ID_PANEL_NAME);
-					searchKryteria = SearchKryteria.BY_KANJI_ID;
+					searchKryteria = SearchCriteria.BY_KANJI_ID;
 				}
 			}
 		});
@@ -207,15 +209,16 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 			public void actionPerformed(ActionEvent e) {
 				tryToFindNextOccurence(SearchingDirection.FORWARD);
 			}
-		});
+		}); // TODO use gui makers method to create button
 		return button;
 	}
 
 	private void tryToFindNextOccurence(SearchingDirection direction) {
-		if (searchKryteria.equals(SearchKryteria.BY_KEYWORD))
-			list.findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(new KanjiKeywordChecker(searchOptions),
-					textField.getText(), direction, parentDialog);
-		else if (searchKryteria.equals(SearchKryteria.BY_KANJI_ID))
+		if (searchKryteria.equals(SearchCriteria.BY_KEYWORD))
+			list.findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(
+					new KanjiKeywordChecker(searchOptions), textField.getText(), direction,
+					parentDialog);
+		else if (searchKryteria.equals(SearchCriteria.BY_KANJI_ID))
 			list.findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(new KanjiIdChecker(),
 					Integer.parseInt(kanjiIdTextfield.getText()), SearchingDirection.FORWARD,
 					parentDialog);

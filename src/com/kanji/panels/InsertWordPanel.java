@@ -4,20 +4,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.JButton;
+import javax.swing.AbstractButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.text.AbstractDocument;
 
-import com.guimaker.row.Anchor;
-import com.guimaker.row.RowMaker;
-import com.kanji.actions.CommonActionsMaker;
-import com.kanji.actions.GuiElementsMaker;
+import com.guimaker.enums.Anchor;
+import com.guimaker.enums.ComponentType;
+import com.guimaker.enums.FillType;
+import com.guimaker.panels.GuiMaker;
+import com.guimaker.row.SimpleRow;
+import com.guimaker.utilities.CommonActionsMaker;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.NumberValues;
 import com.kanji.constants.Prompts;
 import com.kanji.controllers.InsertWordController;
 import com.kanji.myList.MyList;
+import com.kanji.utilities.ApplicationController;
 import com.kanji.utilities.LimitDocumentFilter;
 
 public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
@@ -26,9 +29,9 @@ public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 	private JTextField insertNumberTextField;
 	private InsertWordController controller;
 
-	public InsertWordPanel(MyList list) {
+	public InsertWordPanel(MyList list, ApplicationController applicationController) {
 		super(true);
-		controller = new InsertWordController(list);
+		controller = new InsertWordController(list, applicationController);
 	}
 
 	@Override
@@ -42,18 +45,18 @@ public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 		insertNumberTextField = new JTextField(20);
 		limitCharactersAccordingToInteger(insertNumberTextField);
 
-		JButton cancel = GuiElementsMaker.createButton(ButtonsNames.CANCEL,
-				CommonActionsMaker.createDisposeAction(parentDialog));
+		AbstractButton cancel = GuiMaker.createButtonlikeComponent(ComponentType.BUTTON,
+				ButtonsNames.CANCEL,
+				CommonActionsMaker.createDisposeAction(parentDialog.getContainer()));
 
-		JButton approve = createButtonValidate(ButtonsNames.APPROVE);
+		AbstractButton approve = createButtonValidate(ButtonsNames.APPROVE);
 
-		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(addWordPrompt, insertWordTextField)
-				.fillHorizontallySomeElements(insertWordTextField));
-		mainPanel
-				.addRow(RowMaker.createHorizontallyFilledRow(addNumberPrompt, insertNumberTextField)
-						.fillHorizontallySomeElements(insertNumberTextField));
+		mainPanel.addRows(new SimpleRow(FillType.HORIZONTAL, addWordPrompt, insertWordTextField)
+				.fillHorizontallySomeElements(insertWordTextField)
+				.nextRow(addNumberPrompt, insertNumberTextField)
+				.fillHorizontallySomeElements(insertNumberTextField));
 		addHotkeysPanelHere();
-		mainPanel.addRow(RowMaker.createUnfilledRow(Anchor.EAST, cancel, approve));
+		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.EAST, cancel, approve));
 
 	}
 
@@ -62,7 +65,7 @@ public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 				new LimitDocumentFilter(NumberValues.INTEGER_MAX_VALUE_DIGITS_AMOUNT));
 	}
 
-	private JButton createButtonValidate(String text) {
+	private AbstractButton createButtonValidate(String text) {
 		AbstractAction action = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -70,7 +73,8 @@ public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 
 			}
 		};
-		return GuiElementsMaker.createButton(text, action, KeyEvent.VK_ENTER);
+		return GuiMaker.createButtonlikeComponent(ComponentType.BUTTON, text, action,
+				KeyEvent.VK_ENTER);
 	}
 
 }

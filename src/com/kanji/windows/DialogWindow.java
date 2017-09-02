@@ -1,27 +1,22 @@
 package com.kanji.windows;
 
 import java.awt.Dimension;
-import java.awt.KeyEventDispatcher;
-import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.Window;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-import com.kanji.actions.CommonActionsMaker;
+import com.guimaker.utilities.CommonActionsMaker;
 import com.kanji.constants.Titles;
 import com.kanji.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.panels.ConfirmPanel;
 import com.kanji.panels.KanjiPanel;
 import com.kanji.panels.MessagePanel;
-import com.kanji.panels.ProblematicKanjiPanel;
 
 public class DialogWindow {
 
@@ -31,17 +26,11 @@ public class DialogWindow {
 	private boolean isAccepted;
 	private Position position;
 	private JDialog container;
+	private AbstractPanelWithHotkeysInfo panelType;
 	private KanjiPanel kanjiPanel;
 
 	public enum Position {
 		CENTER, LEFT_CORNER, NEXT_TO_PARENT
-	}
-
-	private class MyDispatcher implements KeyEventDispatcher {
-		@Override
-		public boolean dispatchKeyEvent(KeyEvent e) {
-			return false;
-		}
 	}
 
 	public DialogWindow(DialogWindow parent) {
@@ -57,12 +46,6 @@ public class DialogWindow {
 		}
 		container.setAutoRequestFocus(true);
 		parentWindow = parent;
-		initialize();
-	}
-
-	private void initialize() {
-		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-		manager.addKeyEventDispatcher(new MyDispatcher());
 	}
 
 	public void setPanel(JPanel panel) {
@@ -75,7 +58,8 @@ public class DialogWindow {
 		container.setContentPane(mainPanel);
 		if (panelCreator.isEscapeOnClose()) {
 			CommonActionsMaker.addHotkey(KeyEvent.VK_ESCAPE, 0,
-					CommonActionsMaker.createDisposeAction(this), mainPanel.getRootPane());
+					CommonActionsMaker.createDisposeAction(getContainer()),
+					mainPanel.getRootPane());
 		}
 
 		container.pack();
@@ -105,43 +89,34 @@ public class DialogWindow {
 		}
 	}
 
-	private void setChildNextToParent(Window parentContainer, Window childContainer) {
+	protected void setChildNextToParent(Window parentContainer, Window childContainer) {
 		Point parentLocation = parentContainer.getLocationOnScreen();
 		Dimension parentSize = parentContainer.getSize();
 		childContainer.setLocation(parentLocation.x + parentSize.width, parentLocation.y);
-	}
-
-	public void showKanjiDialog(String message, ProblematicKanjiPanel problematicKanjiPanel) {
-		if (kanjiPanel == null) {
-			kanjiPanel = new KanjiPanel(message, problematicKanjiPanel.getController());
-			showPanel(kanjiPanel, "TODO", false, Position.NEXT_TO_PARENT);
-			childWindow.getContainer().addWindowListener(new WindowAdapter() {
-				// TODO init the listeners somewhere else
-				@Override
-				public void windowClosed(WindowEvent e) {
-					kanjiPanel = null;
-				}
-			});
-			container.addComponentListener(new ComponentAdapter() {
-				@Override
-				public void componentMoved(ComponentEvent e) {
-					setChildNextToParent(container, childWindow.getContainer());
-				}
-			});
-		}
-		else {
-			kanjiPanel.changeKanji(message);
-		}
-
 	}
 
 	public void showMessageDialog(String message) {
 		showPanel(new MessagePanel(message), Titles.MESSAGE_DIALOG, true, Position.CENTER);
 	}
 
+	public void showKanjiDialog(KanjiPanel panel) {
+		showPanel(panel, Titles.KANJI_DIALOG, false, Position.NEXT_TO_PARENT);
+		makeTheChildFollowThisDialog();
+	}
+
+	private void makeTheChildFollowThisDialog() {
+		container.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentMoved(ComponentEvent e) {
+				setChildNextToParent(container, childWindow.getContainer());
+			}
+		});
+	}
+
 	public void showPanel(AbstractPanelWithHotkeysInfo panelCreator, String title, boolean modal,
 			Position position) {
-		if (childWindowIsClosed()) {
+		if (!isDialogOfSameType(panelCreator) || childWindowIsClosed()) {
+			panelType = panelCreator;
 			childWindow = new DialogWindow(this);
 			panelCreator.setParentDialog(childWindow);
 			childWindow.setPosition(position);
@@ -149,6 +124,10 @@ public class DialogWindow {
 			childWindow.setPanel(panel);
 			childWindow.showYourself(panelCreator, title, modal);
 		}
+	}
+
+	public boolean isDialogOfSameType(AbstractPanelWithHotkeysInfo panelTypeToCompare) {
+		return panelTypeToCompare.getClass().isInstance(panelType);
 	}
 
 	public void showReadyPanel(DialogWindow childWindow) {
@@ -167,14 +146,6 @@ public class DialogWindow {
 
 	public void setPosition(Position position) {
 		this.position = position;
-	}
-
-	public void save() { // TODO this should go to application window to avoid
-							// cast
-		if (parentWindow instanceof ApplicationWindow) {
-			ApplicationWindow parent = (ApplicationWindow) parentWindow;
-			parent.save();
-		}
 	}
 
 	public void setAccepted(boolean accepted) {

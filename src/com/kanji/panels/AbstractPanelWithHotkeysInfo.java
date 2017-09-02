@@ -3,21 +3,22 @@ package com.kanji.panels;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.JButton;
+import javax.swing.AbstractButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.guimaker.colors.BasicColors;
+import com.guimaker.enums.Anchor;
+import com.guimaker.enums.ComponentType;
+import com.guimaker.enums.FillType;
+import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
-import com.guimaker.row.Anchor;
-import com.guimaker.row.RowMaker;
 import com.guimaker.row.SimpleRow;
-import com.kanji.actions.CommonActionsMaker;
-import com.kanji.actions.GuiElementsMaker;
+import com.guimaker.utilities.CommonActionsMaker;
+import com.guimaker.utilities.HotkeyWrapper;
 import com.kanji.constants.HotkeysDescriptions;
 import com.kanji.constants.Titles;
-import com.kanji.keyEvents.HotkeyWrapper;
 import com.kanji.windows.DialogWindow;
 
 public abstract class AbstractPanelWithHotkeysInfo {
@@ -45,7 +46,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 		hotkeysPanel = new MainPanel(null);
 		JLabel title = new JLabel(Titles.HOTKEYS);
 		title.setForeground(BasicColors.VERY_BLUE);
-		hotkeysPanel.addRow(RowMaker.createUnfilledRow(Anchor.WEST, title));
+		hotkeysPanel.addRow(new SimpleRow(FillType.NONE, Anchor.WEST, title));
 	}
 
 	private void addHotkeysPanel() {
@@ -53,7 +54,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 			addHotkeyInformation(HotkeysDescriptions.CLOSE_WINDOW,
 					new HotkeyWrapper(KeyEvent.VK_ESCAPE));
 		}
-		SimpleRow row = RowMaker.createHorizontallyFilledRow(hotkeysPanel.getPanel());
+		SimpleRow row = new SimpleRow(FillType.HORIZONTAL, hotkeysPanel.getPanel());
 		if (hotkeysPanelIndex == 0) {
 			mainPanel.addRow(row);
 		}
@@ -61,6 +62,18 @@ public abstract class AbstractPanelWithHotkeysInfo {
 			mainPanel.insertRow(hotkeysPanelIndex, row);
 		}
 
+	}
+
+	public void addHotkeysInformation(int keyModifier, int keyEvent, JComponent component,
+			String hotkeyDescription) {
+		HotkeyWrapper wrapper = new HotkeyWrapper(keyModifier, keyEvent);
+		addHotkeyInformation(hotkeyDescription, wrapper);
+	}
+
+	public void addHotkeysInformation(int keyEvent, JComponent component,
+			String hotkeyDescription) {
+		HotkeyWrapper wrapper = new HotkeyWrapper(0, keyEvent);
+		addHotkeyInformation(hotkeyDescription, wrapper);
 	}
 
 	public void addHotkey(int keyEvent, AbstractAction action, JComponent component,
@@ -75,14 +88,15 @@ public abstract class AbstractPanelWithHotkeysInfo {
 		addHotkeyInformation(hotkeyDescription, wrapper);
 	}
 
-	public JButton createButtonWithHotkey(int keyEvent, AbstractAction action, String buttonLabel,
-			String hotkeyDescription) {
+	public AbstractButton createButtonWithHotkey(int keyEvent, AbstractAction action,
+			String buttonLabel, String hotkeyDescription) {
 		return createButtonWithHotkey(0, keyEvent, action, buttonLabel, hotkeyDescription);
 	}
 
-	public JButton createButtonWithHotkey(int keyModifier, int keyEvent, AbstractAction action,
-			String buttonLabel, String hotkeyDescription) {
-		JButton button = GuiElementsMaker.createButton(buttonLabel, action);
+	public AbstractButton createButtonWithHotkey(int keyModifier, int keyEvent,
+			AbstractAction action, String buttonLabel, String hotkeyDescription) {
+		AbstractButton button = GuiMaker.createButtonlikeComponent(ComponentType.BUTTON,
+				buttonLabel, action);
 		addHotkey(keyModifier, keyEvent, action, button, hotkeyDescription);
 		return button;
 	}
@@ -92,7 +106,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 			return;
 		}
 		JLabel hotkeyInfo = new JLabel(createInformationAboutHotkey(hotkey, hotkeyDescription));
-		hotkeysPanel.addRow(RowMaker.createHorizontallyFilledRow(hotkeyInfo));
+		hotkeysPanel.addRow(new SimpleRow(FillType.HORIZONTAL, hotkeyInfo));
 	}
 
 	private String createInformationAboutHotkey(HotkeyWrapper hotkey, String description) {
@@ -116,6 +130,10 @@ public abstract class AbstractPanelWithHotkeysInfo {
 
 	public DialogWindow getDialog() {
 		return parentDialog;
+	}
+
+	public boolean isDisplayAble() {
+		return parentDialog.getContainer().isDisplayable();
 	}
 
 	abstract void createElements();

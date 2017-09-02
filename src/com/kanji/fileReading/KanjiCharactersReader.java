@@ -1,6 +1,5 @@
 package com.kanji.fileReading;
 
-import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -10,12 +9,10 @@ import java.util.List;
 
 public class KanjiCharactersReader {
 
-	private Font font;
 	private List<String> words;
 	private static KanjiCharactersReader kanjiCharsReader;
 
 	private KanjiCharactersReader() {
-		font = new Font("MS PMincho", Font.BOLD, 100);
 		words = new ArrayList<String>();
 	}
 
@@ -52,10 +49,6 @@ public class KanjiCharactersReader {
 
 	public String getKanjiById(int id) {
 		return words.get(id);
-	}
-
-	public Font getFont() {
-		return font;
 	}
 
 }

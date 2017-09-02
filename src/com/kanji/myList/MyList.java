@@ -19,15 +19,15 @@ public class MyList<Word> {
 	private ListWordsController<Word> listController;
 
 	public MyList(DialogWindow parentDialog, ApplicationController applicationController,
-			RowsCreator<Word> rowCreator, String title) {
+			ListRow<Word> rowCreator, String title) {
 
 		this.applicationController = applicationController;
 		this.parent = parentDialog;
-		listController = rowCreator.getController();
+		this.rowCreator = new RowsCreator<Word>(rowCreator);
+		listController = this.rowCreator.getController();
 
-		rowCreator.setList(this);
-		this.rowCreator = rowCreator;
-		rowCreator.setTitle(title);
+		this.rowCreator.setList(this);
+		this.rowCreator.setTitle(title);
 		initiate();
 
 	}
@@ -38,7 +38,7 @@ public class MyList<Word> {
 	}
 
 	public boolean addWord(Word word) {
-		rowCreator.createRow(word);
+		rowCreator.addRow(word);
 		return listController.add(word);
 
 	}

@@ -6,30 +6,30 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.guimaker.colors.BasicColors;
+import com.guimaker.enums.FillType;
 import com.guimaker.panels.MainPanel;
-import com.guimaker.row.Anchor;
-import com.guimaker.row.RowMaker;
+import com.guimaker.row.SimpleRow;
 import com.kanji.Row.RepeatingInformation;
 import com.kanji.constants.Prompts;
 
-public class RowInRepeatingList extends RowsCreator<RepeatingInformation> {
+public class RowInRepeatingList implements ListRow<RepeatingInformation> {
 
 	private Color defaultColor = Color.RED;
 	private int rowsCounter;
+	private MyList<RepeatingInformation> list;
 
 	public RowInRepeatingList(MyList<RepeatingInformation> list) {
-		this.list = list;
 		rowsCounter = 1;
+		this.list = list;
 	}
 
 	@Override
-	public JPanel createRow(RepeatingInformation rep) {
+	public MainPanel listRow(RepeatingInformation rep) {
 		String word = rep.getRepeatingRange();
 		String time = rep.getTimeSpentOnRepeating();
 		Date date1 = rep.getRepeatingDate();
@@ -50,21 +50,10 @@ public class RowInRepeatingList extends RowsCreator<RepeatingInformation> {
 		JButton delete = createButtonRemove();
 
 		MainPanel panel = new MainPanel(null);
-		panel.addRow(RowMaker.createHorizontallyFilledRow(date));
-		// TODO add in main panel method for creating a series of rows in one
-		// line
-		panel.addRow(RowMaker.createHorizontallyFilledRow(repeatedWords));
-		if (timeSpent != null) {
-			panel.addRow(RowMaker.createHorizontallyFilledRow(timeSpent));
-		}
-
-		panel.addRow(RowMaker.createUnfilledRow(Anchor.WEST, delete));
-		JPanel wrappingPanel = this.rowsPanel
-				.addRow(RowMaker.createHorizontallyFilledRow(panel.getPanel()));
-		wrappingPanel
-				.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, BasicColors.LIGHT_BLUE));
-		addActionListener(delete, wrappingPanel, rep);
-		return this.rowsPanel.getPanel();
+		panel.addRows(new SimpleRow(FillType.HORIZONTAL, date).nextRow(date).nextRow(repeatedWords)
+				.nextRow(timeSpent).nextRow(FillType.NONE, delete));
+		// addActionListener(delete, wrappingPanel, rep);
+		return panel;
 
 	}
 
@@ -83,25 +72,24 @@ public class RowInRepeatingList extends RowsCreator<RepeatingInformation> {
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!list.showMessage(String.format(Prompts.DELETE_ELEMENT,
-						Prompts.REPEATING_ELEMENT))) {
+				if (!list.showMessage(
+						String.format(Prompts.DELETE_ELEMENT, Prompts.REPEATING_ELEMENT))) {
 					return;
 				}
 
-				removeRow(panel);
+				// removeRow(panel);
 				list.getWords().remove(kanji);
 				list.save();
 			}
 		});
 	}
 
-	@Override
 	public void setList(MyList<RepeatingInformation> list) {
 		this.list = list;
 	}
 
-	private void removeRow(JPanel row) {
-		rowsPanel.removeRow(row);
-	}
+	// private void removeRow(JPanel row) {
+	// rowsPanel.removeRow(row);
+	// }
 
 }

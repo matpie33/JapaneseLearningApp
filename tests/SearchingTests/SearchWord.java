@@ -43,7 +43,6 @@ public class SearchWord {
 			boolean isFound = list.findAndHighlightNextOccurence("Ala", NumberValues.FORWARD_DIRECTION, options);
 			assertEquals("Should find in dummy list: Ala as part", true, isFound);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -1,6 +1,7 @@
 package com.kanji.panels;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -8,19 +9,21 @@ import java.awt.event.WindowEvent;
 import java.util.Set;
 
 import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 
 import com.guimaker.colors.BasicColors;
+import com.guimaker.enums.Anchor;
+import com.guimaker.enums.ComponentType;
+import com.guimaker.enums.FillType;
+import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
-import com.guimaker.row.Anchor;
-import com.guimaker.row.RowMaker;
+import com.guimaker.row.SimpleRow;
+import com.guimaker.utilities.CommonActionsMaker;
 import com.kanji.Row.KanjiInformation;
-import com.kanji.actions.CommonActionsMaker;
-import com.kanji.actions.GuiElementsMaker;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
 import com.kanji.constants.Labels;
@@ -28,6 +31,7 @@ import com.kanji.constants.Titles;
 import com.kanji.controllers.ProblematicKanjisController;
 import com.kanji.myList.MyList;
 import com.kanji.myList.RowInKanjiRepeatingList;
+import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
 
 public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
@@ -38,10 +42,11 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	private MyList<KanjiInformation> kanjiRepeatingList;
 	private RowInKanjiRepeatingList rowInKanjiRepeatingList;
 
-	public ProblematicKanjiPanel(MyList<KanjiInformation> kanjiList,
-			Set<Integer> problematicKanji) {
+	public ProblematicKanjiPanel(Font kanjiFont, ApplicationWindow applicationWindow,
+			MyList<KanjiInformation> kanjiList, Set<Integer> problematicKanji) {
 		super(true);
-		controller = new ProblematicKanjisController(this, problematicKanji, kanjiList);
+		parentDialog = applicationWindow;
+		controller = new ProblematicKanjisController(kanjiFont, this, problematicKanji, kanjiList);
 
 		rowInKanjiRepeatingList = new RowInKanjiRepeatingList(controller);
 		kanjiRepeatingList = new MyList<KanjiInformation>(parentDialog, null,
@@ -60,62 +65,59 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
 	@Override
 	void createElements() {
-		JRadioButton withInternet = createRadioButtonForLearningWithInternet();
-		JRadioButton withoutInternet = createRadioButtonForLearningWithoutInternet();
+		AbstractButton withInternet = createRadioButtonForLearningWithInternet();
+		AbstractButton withoutInternet = createRadioButtonForLearningWithoutInternet();
 		ButtonGroup group = new ButtonGroup();
 		group.add(withInternet);
 		group.add(withoutInternet);
-		JButton button = GuiElementsMaker.createButton(ButtonsNames.APPROVE,
-				CommonActionsMaker.createDisposeAction(parentDialog));
+		AbstractButton button = GuiMaker.createButtonlikeComponent(ComponentType.BUTTON,
+				ButtonsNames.APPROVE,
+				CommonActionsMaker.createDisposeAction(parentDialog.getContainer()));
 		buildRows();
 
 		MainPanel radioButtonsPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
-		radioButtonsPanel.addRow(RowMaker.createHorizontallyFilledRow(
-				new JLabel(Titles.OPTIONS_FOR_SHOWING_PROBLEMATIC_KANJIS)));
-		radioButtonsPanel
-				.addRow(RowMaker.createHorizontallyFilledRow(withInternet, withoutInternet));
+		radioButtonsPanel.addRows(new SimpleRow(FillType.HORIZONTAL,
+				new JLabel(Titles.OPTIONS_FOR_SHOWING_PROBLEMATIC_KANJIS)).nextRow(withInternet,
+						withoutInternet));
 
-		mainPanel.addRow(RowMaker.createUnfilledRow(Anchor.CENTER,
-				new JLabel(Titles.CURRENT_PROBLEMATIC_WORDS)));
-		mainPanel.addRow(RowMaker.createHorizontallyFilledRow(radioButtonsPanel.getPanel()));
-		mainPanel.addRow(RowMaker.createBothSidesFilledRow(kanjiRepeatingList.getPanel()));
+		mainPanel.addRows(new SimpleRow(FillType.NONE, Anchor.CENTER,
+				new JLabel(Titles.CURRENT_PROBLEMATIC_WORDS))
+						.nextRow(FillType.HORIZONTAL, radioButtonsPanel.getPanel())
+						.nextRow(FillType.BOTH, kanjiRepeatingList.getPanel()));
 		addHotkeysPanelHere();
-		mainPanel.addRow(RowMaker.createUnfilledRow(Anchor.CENTER, button));
+		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.CENTER, button));
 	}
 
-	private JRadioButton createRadioButtonForLearningWithInternet() {
-		JRadioButton withInternet = GuiElementsMaker
-				.createRadioButton(Labels.REPEATING_WITH_INTERNET);
+	private AbstractButton createRadioButtonForLearningWithInternet() {
+		AbstractButton withInternet = GuiMaker.createButtonlikeComponent(ComponentType.RADIOBUTTON,
+				Labels.REPEATING_WITH_INTERNET, createActionListenerForUsingInternet(true),
+				KeyEvent.VK_I);
 		withInternet.setFocusable(false);
 		withInternet.setSelected(true);
-		AbstractAction useInternetAction = createActionListenerForUsingInternet(withInternet, true);
-		withInternet.addActionListener(useInternetAction);
-		addHotkey(KeyEvent.VK_I, useInternetAction, withInternet,
+		addHotkeysInformation(KeyEvent.VK_I, withInternet,
 				HotkeysDescriptions.SHOW_KANJI_WITH_INTERNET);
 		return withInternet;
 	}
 
-	private AbstractAction createActionListenerForUsingInternet(JRadioButton radioButton,
-			boolean useInternet) {
+	private AbstractAction createActionListenerForUsingInternet(boolean useInternet) {
 		AbstractAction action = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.setUseInternet(useInternet);
-				radioButton.setSelected(true);
+				JRadioButton source = (JRadioButton) e.getSource();
+				source.setSelected(true);
 			}
 		};
 		return action;
 	}
 
-	private JRadioButton createRadioButtonForLearningWithoutInternet() {
-		JRadioButton withoutInternet = GuiElementsMaker
-				.createRadioButton(Labels.REPEATING_WITHOUT_INTERNET);
+	private AbstractButton createRadioButtonForLearningWithoutInternet() {
+		AbstractButton withoutInternet = GuiMaker.createButtonlikeComponent(
+				ComponentType.RADIOBUTTON, Labels.REPEATING_WITHOUT_INTERNET,
+				createActionListenerForUsingInternet(false), KeyEvent.VK_N);
 		withoutInternet.setFocusable(false);
-		AbstractAction dontUseInternetAction = createActionListenerForUsingInternet(withoutInternet,
-				false);
-		addHotkey(KeyEvent.VK_N, dontUseInternetAction, withoutInternet,
+		addHotkeysInformation(KeyEvent.VK_N, withoutInternet,
 				HotkeysDescriptions.SHOW_KANJI_WITHOUT_INTERNET);
-		withoutInternet.addActionListener(dontUseInternetAction);
 		return withoutInternet;
 	}
 
@@ -123,7 +125,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		AbstractAction goToNextResource = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.goToNextResource();
+				controller.showNextKanjiOrCloseChildDialog();
 			}
 		};
 
@@ -148,8 +150,8 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		mainPanel.clear();
 	}
 
-	public void showKanjiOffline(String kanji) {
-		parentDialog.showKanjiDialog(kanji, this);
+	public void showKanjiDialog(KanjiPanel kanjiPanel) {
+		parentDialog.showKanjiDialog(kanjiPanel);
 	}
 
 	public void showMessage(String message) {
@@ -167,7 +169,12 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public void highlightRow(int rowNumber) {
-		rowInKanjiRepeatingList.highlightRowAndScroll(rowNumber, false);
+		// rowInKanjiRepeatingList.highlightRowAndScroll(rowNumber, false);
+	}
+
+	@Override
+	public DialogWindow getDialog() {
+		return parentDialog;
 	}
 
 }

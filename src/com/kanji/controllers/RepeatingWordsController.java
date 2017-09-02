@@ -1,13 +1,12 @@
 package com.kanji.controllers;
 
-import java.awt.Font;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import com.guimaker.enums.TextAlignment;
 import com.kanji.Row.KanjiInformation;
 import com.kanji.Row.RepeatingInformation;
-import com.kanji.actions.TextAlignment;
 import com.kanji.constants.ApplicationPanels;
 import com.kanji.constants.Prompts;
 import com.kanji.fileReading.KanjiCharactersReader;
@@ -27,8 +26,8 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 	private Set<String> currentlyRepeatedWords;
 	private KanjiCharactersReader kanjiCharactersReader;
 
-	// TODO kanji list should not allow adding words with same keyword // or
-	// maybe
+	// TODO currently repeated words are not set - they can be duplicated, IDs
+	// are set
 	private ApplicationWindow parent;
 	private Set<Integer> problematicKanjis;
 	private Set<Integer> currentProblematicKanjis;
@@ -162,7 +161,7 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 		parent.getApplicationController().addProblematicKanjis(problematicKanjis);
 		parent.showPanel(ApplicationPanels.STARTING_PANEL);
 
-		parent.save();
+		parent.getApplicationController().save();
 		parent.scrollToBottom();
 
 		parent.showMessageDialog(createFinishMessage());
@@ -253,10 +252,6 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 	public void pressedButtonReturn() {
 		parent.showPanel(ApplicationPanels.STARTING_PANEL);
 		timeSpentHandler.stopTimer();
-	}
-
-	public Font getKanjiFont() {
-		return this.kanjiCharactersReader.getFont();
 	}
 
 	public boolean previousWordExists() {

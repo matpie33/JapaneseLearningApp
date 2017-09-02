@@ -6,17 +6,18 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import com.guimaker.enums.FillType;
 import com.guimaker.panels.GuiMaker;
-import com.guimaker.row.RowMaker;
+import com.guimaker.panels.MainPanel;
+import com.guimaker.row.SimpleRow;
 import com.kanji.Row.KanjiInformation;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.controllers.ProblematicKanjisController;
 import com.kanji.model.KanjiRow;
 
-public class RowInKanjiRepeatingList extends RowsCreator<KanjiInformation> {
+public class RowInKanjiRepeatingList implements ListRow<KanjiInformation> {
 
 	private ProblematicKanjisController controller;
 
@@ -25,18 +26,19 @@ public class RowInKanjiRepeatingList extends RowsCreator<KanjiInformation> {
 	}
 
 	@Override
-	public JPanel createRow(KanjiInformation row) {
+	public MainPanel listRow(KanjiInformation row) {
+		MainPanel panel = new MainPanel(null);
 		JLabel id = new JLabel("" + row.getKanjiID());
 		id.setForeground(Color.white);
 		JTextArea kanjiTextArea = GuiMaker.createTextArea(false, false);
 		kanjiTextArea.setText(row.getKanjiKeyword());
 		kanjiTextArea.setForeground(Color.white);
-		controller.addKanjiRow(rowsPanel.getNumberOfRows(), row.getKanjiID());
-		JButton buttonGoToSource = createButtonGoToSource(rowsPanel.getNumberOfRows(),
+		controller.addKanjiRow(panel.getNumberOfRows(), row.getKanjiID());
+		JButton buttonGoToSource = createButtonGoToSource(panel.getNumberOfRows(),
 				row.getKanjiID());
-		rowsPanel.addRow(RowMaker.createHorizontallyFilledRow(kanjiTextArea, id, buttonGoToSource)
+		panel.addRow(new SimpleRow(FillType.HORIZONTAL, kanjiTextArea, id, buttonGoToSource)
 				.fillHorizontallySomeElements(kanjiTextArea));
-		return this.rowsPanel.getPanel();
+		return panel;
 	}
 
 	private JButton createButtonGoToSource(int rowNumber, int kanjiId) {
