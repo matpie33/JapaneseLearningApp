@@ -40,8 +40,8 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 
 	public void setProgressBar(JProgressBar bar) {
 		mainPanel.removeRow(2);// TODO this is bad
-		mainPanel.addRow(new SimpleRow(FillType.HORIZONTAL, bar));
-		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.CENTER, okButton));
+		mainPanel.addRow(new SimpleRow(FillType.HORIZONTAL, bar).nextRow(FillType.NONE,
+				Anchor.CENTER, okButton));
 	}
 
 }

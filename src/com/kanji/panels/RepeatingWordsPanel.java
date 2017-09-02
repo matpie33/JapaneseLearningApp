@@ -67,9 +67,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 		setButtonsToLearningAndAddThem();
 
 		centerPanel.addRows(new SimpleRow(FillType.NONE, Anchor.NORTH, titleLabel, time)
-				.nextRow(FillType.BOTH, repeatingPanel.getPanel()));
-		centerPanel
-				.addRow(new SimpleRow(FillType.NONE, Anchor.SOUTH, remainingLabel, returnButton));
+				.nextRow(FillType.BOTH, repeatingPanel.getPanel())
+				.nextRow(FillType.NONE, Anchor.SOUTH, remainingLabel, returnButton));
 		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.CENTER, centerPanel.getPanel()));
 	}
 
@@ -180,12 +179,9 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
 	private void addElementsToRepeatingPanel(AbstractButton[] buttons) {
 		repeatingPanel.clear();
-		repeatingPanel.addRow(new SimpleRow(FillType.BOTH, wordTextArea));
-		repeatingPanel.addRow(new SimpleRow(FillType.NONE, Anchor.CENTER, kanjiTextArea));
-
-		repeatingPanel
-				.addRow(new SimpleRow(FillType.HORIZONTAL, buttons).fillHorizontallyEqually());
-
+		repeatingPanel.addRows(new SimpleRow(FillType.BOTH, wordTextArea)
+				.nextRow(FillType.NONE, Anchor.CENTER, kanjiTextArea)
+				.nextRow(FillType.HORIZONTAL, buttons).fillHorizontallyEqually());
 		mainPanel.getPanel().repaint();
 
 	}

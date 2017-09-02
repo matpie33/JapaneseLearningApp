@@ -78,7 +78,8 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 		mainPanel.addRows(new SimpleRow(FillType.HORIZONTAL, prompt).nextRow(problematicCheckbox)
 				.nextRow(problematicKanjis).nextRow(FillType.BOTH, scrollPane)
-				.nextRow(newRow, sumRangeField).fillHorizontallySomeElements(sumRangeField));
+				.nextRow(FillType.HORIZONTAL, newRow, sumRangeField)
+				.fillHorizontallySomeElements(sumRangeField));
 		addHotkeysPanelHere();
 		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.EAST, cancel, approve));
 	}
