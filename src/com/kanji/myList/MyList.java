@@ -129,6 +129,14 @@ public class MyList<Word> {
 				parentDialog, true);
 	}
 
+	public <Property> Word findRowBasedOnPropertyStartingFromBeginningOfList(
+			PropertyChecker<Property, Word> propertyChecker, Property searchedPropertyValue,
+			SearchingDirection searchDirection, DialogWindow parentDialog) {
+		int rowNumber = findRowNumberBasedOnProperty(propertyChecker, searchedPropertyValue,
+				searchDirection, parentDialog, true);
+		return listController.getWordInRow(rowNumber);
+	}
+
 	private Word getHighlightedWord() {
 		int highlightedRow = rowCreator.getHighlightedRowNumber();
 		if (highlightedRow < 0) {

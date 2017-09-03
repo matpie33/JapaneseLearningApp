@@ -59,9 +59,9 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 	}
 
 	private int getCurrentWordId() {
-		return kanjiList.findRowNumberBasedOnPropertyStartingFromBeginningOfList(
+		return kanjiList.findRowBasedOnPropertyStartingFromBeginningOfList(
 				new KanjiKeywordChecker(SearchOptions.BY_FULL_EXPRESSION), currentWord,
-				SearchingDirection.FORWARD, parent);
+				SearchingDirection.FORWARD, parent).getKanjiID();
 	}
 
 	public String createRemainingKanjisPrompt() {
@@ -245,7 +245,7 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 	}
 
 	private void addToProblematic() {
-		int num = getCurrentWordId() + 1; // TODO remove this + 1
+		int num = getCurrentWordId();
 		this.currentProblematicKanjis.add(Integer.valueOf(num));
 	}
 

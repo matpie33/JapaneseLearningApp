@@ -57,9 +57,7 @@ public class ProblematicKanjisController {
 			browseKanji(row);
 		}
 		else {
-			String kanji = kanjiCharactersReader.getKanjiById(row.getId() - 1);
-			// TODO hardcoding -1 or +1 here and there is definitely not
-			// good
+			String kanji = kanjiCharactersReader.getKanjiById(row.getId());
 			if (kanjiPanel == null || !kanjiPanel.isDisplayAble()) {
 				kanjiPanel = new KanjiPanel(kanjiFont, kanji, this);
 				problematicKanjiPanel.showKanjiDialog(kanjiPanel);

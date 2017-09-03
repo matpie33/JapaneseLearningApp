@@ -42,9 +42,6 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 
 	@Override
 	void createElements() {
-		// TODO add line separator between panels
-		// TODO info panel should have some kind of border or other background
-		// color
 		createUpperPanel();
 		createInformationsPanel();
 		// try {
@@ -179,7 +176,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		problematicKanjis.setText(Prompts.PROBLEMATIC_KANJI + problematicKanjisNumber);
 	}
 
-	public void addButtonIcon() {
+	public void addProblematicKanjisButton() {
 		problematicKanjiButtonIsVisible = true;
 		mainPanel.addElementsToLastRow(showProblematicKanjis);
 	}

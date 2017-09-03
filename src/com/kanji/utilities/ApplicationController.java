@@ -235,6 +235,7 @@ public class ApplicationController {
 	}
 
 	public void addProblematicKanjis(Set<Integer> problematicKanjiList) {
+		parent.updateProblematicKanjisAmount();
 		problematicKanjis = problematicKanjiList;
 	}
 

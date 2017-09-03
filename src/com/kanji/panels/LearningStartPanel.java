@@ -225,6 +225,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 				new SimpleRow(FillType.NONE, Anchor.NORTH, GuiMaker.createErrorLabel(message))
 						.fillAllVertically());
 		SwingUtilities.invokeLater(new Runnable() {
+			// TODO swing utilities
 			@Override
 			public void run() {
 				rangesPanel.getPanel()
@@ -238,6 +239,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+				// TODO swing utilities
 				scrollPane.getVerticalScrollBar()
 						.setValue(scrollPane.getVerticalScrollBar().getMaximum());
 			}

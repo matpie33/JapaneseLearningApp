@@ -14,6 +14,7 @@ public class KanjiCharactersReader {
 
 	private KanjiCharactersReader() {
 		words = new ArrayList<String>();
+
 	}
 
 	public static KanjiCharactersReader getInstance() {
@@ -27,7 +28,7 @@ public class KanjiCharactersReader {
 		if (!words.isEmpty()) {
 			return;
 		}
-
+		words.add("placeholder");
 		try {
 			BufferedReader br = new BufferedReader(
 					new InputStreamReader(new FileInputStream("kanjis.txt"), "Utf-8"));

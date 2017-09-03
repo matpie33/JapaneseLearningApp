@@ -3,7 +3,9 @@ package com.kanji.controllers;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JTextField;
@@ -24,7 +26,7 @@ public class LearningStartController {
 	private int numberOfWords;
 	private int sumOfWords;
 	private LearningStartPanel learningStartPanel;
-	private List<String> errors;
+	private Map<Integer, String> errors;
 	private List<RangesRow> rangesRows;
 	private int problematicLabelRow;
 	private ApplicationController applicationController;
@@ -36,7 +38,7 @@ public class LearningStartController {
 		this.numberOfWords = numberOfWords;
 		this.learningStartPanel = learningStartPanel;
 		rangesRows = new ArrayList<>();
-		errors = new ArrayList<>();
+		errors = new HashMap<>();
 	}
 
 	public void updateNumberOfSelectedKanjiAfterCheckboxToggle(
@@ -91,6 +93,7 @@ public class LearningStartController {
 
 	private void removeError(RangesRow rangesRow) {
 		int rowNumber = rangesRow.getTextFieldsRowNumber();
+		errors.remove(rowNumber);
 		learningStartPanel.removeRowFromPanel(rowNumber + 1);
 		updateRowsNumbers(rowNumber, -1);
 	}
@@ -123,6 +126,9 @@ public class LearningStartController {
 	private void processTextFieldsInputs(JTextField to, JTextField from,
 			boolean problematicCheckboxSelected) {
 		boolean fromTextFieldWasFocused = from.hasFocus();
+		if (from.getText().isEmpty() || to.getText().isEmpty()) {
+			return;
+		}
 		int valueFrom = Integer.parseInt(from.getText());
 		int valueTo = Integer.parseInt(to.getText());
 		String error = validateRangesInput(valueFrom, valueTo);
@@ -293,9 +299,9 @@ public class LearningStartController {
 
 	private String concatenateErrors() {
 		String concatenated = "";
-		for (String error : errors) {
-			concatenated += error;
-			concatenated += "\n";
+		for (Map.Entry<Integer, String> error : errors.entrySet()) {
+			concatenated += "Błąd w wierszu " + error.getKey() + ": " + error.getValue();
+			concatenated += "\n\n";
 		}
 		return concatenated;
 	}
@@ -305,15 +311,13 @@ public class LearningStartController {
 	}
 
 	public boolean gotErrors() {
-		List<String> errors = new ArrayList<>();
 		boolean gotError = false;
 		for (RangesRow r : rangesRows) {
 			if (r.errorNotEmpty()) {
-				errors.add(r.getError());
+				errors.put(r.getTextFieldsRowNumber(), r.getError());
 				gotError = true;
 			}
 		}
-		this.errors = errors;
 		return gotError;
 	}
 

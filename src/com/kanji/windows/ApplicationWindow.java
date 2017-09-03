@@ -107,7 +107,7 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void addButtonIcon() {
-		startingPanel.addButtonIcon();
+		startingPanel.addProblematicKanjisButton();
 	}
 
 	public void removeButtonProblematicsKanji() {
