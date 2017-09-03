@@ -35,6 +35,8 @@ public abstract class AbstractPanelWithHotkeysInfo {
 
 	public AbstractPanelWithHotkeysInfo() {
 		mainPanel = new MainPanel(BasicColors.OCEAN_BLUE);
+
+		mainPanel.setRowColor(BasicColors.VERY_LIGHT_BLUE);
 		createHotkeysPanel();
 	}
 
@@ -43,7 +45,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	}
 
 	private void createHotkeysPanel() {
-		hotkeysPanel = new MainPanel(null);
+		hotkeysPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
 		JLabel title = new JLabel(Titles.HOTKEYS);
 		title.setForeground(BasicColors.VERY_BLUE);
 		hotkeysPanel.addRow(new SimpleRow(FillType.NONE, Anchor.WEST, title));
@@ -54,7 +56,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 			addHotkeyInformation(HotkeysDescriptions.CLOSE_WINDOW,
 					new HotkeyWrapper(KeyEvent.VK_ESCAPE));
 		}
-		SimpleRow row = new SimpleRow(FillType.HORIZONTAL, hotkeysPanel.getPanel());
+		SimpleRow row = new SimpleRow(FillType.HORIZONTAL, Anchor.SOUTH, hotkeysPanel.getPanel());
 		if (hotkeysPanelIndex == 0) {
 			mainPanel.addRow(row);
 		}

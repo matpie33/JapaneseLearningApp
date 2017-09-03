@@ -53,7 +53,6 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 	public LearningStartPanel(ApplicationController applicationController, int numberOfWords,
 			MyList<RepeatingInformation> list) {
 		controller = new LearningStartController(list, numberOfWords, applicationController, this);
-		mainPanel = new MainPanel(BasicColors.OCEAN_BLUE, false);
 	}
 
 	@Override
@@ -223,7 +222,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		// TODO when pressing start, show more detailed info: add row number to
 		// the error information
 		rangesPanel.insertRow(rowNumber,
-				new SimpleRow(FillType.NONE, Anchor.CENTER, GuiMaker.createErrorLabel(message))
+				new SimpleRow(FillType.NONE, Anchor.NORTH, GuiMaker.createErrorLabel(message))
 						.fillAllVertically());
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override

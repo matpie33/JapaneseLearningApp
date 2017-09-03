@@ -39,11 +39,6 @@ public class ApplicationWindow extends DialogWindow {
 	private ApplicationController applicationController;
 	private Font kanjiFont = new Font("MS PMincho", Font.BOLD, 100);
 
-	// TODO handle the situation in gui applicationControllerController when the
-	// panel has just 1 row so
-	// we
-	// don't have to use row (0) but somehow easier
-
 	public ApplicationWindow() {
 		super(null);
 		container = new JFrame();

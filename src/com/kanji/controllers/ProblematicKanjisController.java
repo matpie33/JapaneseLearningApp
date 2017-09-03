@@ -110,8 +110,8 @@ public class ProblematicKanjisController {
 		return uriObject;
 	}
 
-	public void addKanjiRow(int rowNumber, int kanjiId) {
-		KanjiRow k = new KanjiRow(kanjiId, rowNumber);
+	public void addKanjiRow(int kanjiId) {
+		KanjiRow k = new KanjiRow(kanjiId, kanjisToBrowse.size());
 		kanjisToBrowse.add(k);
 	}
 

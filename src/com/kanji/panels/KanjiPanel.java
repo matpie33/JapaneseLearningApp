@@ -9,12 +9,10 @@ import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.JTextPane;
 
-import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.TextAlignment;
 import com.guimaker.panels.GuiMaker;
-import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRow;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
@@ -30,7 +28,6 @@ public class KanjiPanel extends AbstractPanelWithHotkeysInfo {
 			ProblematicKanjisController problematicKanjiPanel) {
 		super(true);
 		this.kanjiFont = kanjiFont;
-		mainPanel = new MainPanel(BasicColors.OCEAN_BLUE);
 		this.kanjiToDisplay = kanji;
 		this.problematicKanjiPanel = problematicKanjiPanel;
 	}

@@ -33,7 +33,7 @@ public class RowInKanjiRepeatingList implements ListRow<KanjiInformation> {
 		JTextArea kanjiTextArea = GuiMaker.createTextArea(false, false);
 		kanjiTextArea.setText(row.getKanjiKeyword());
 		kanjiTextArea.setForeground(Color.white);
-		controller.addKanjiRow(panel.getNumberOfRows(), row.getKanjiID());
+		controller.addKanjiRow(row.getKanjiID());
 		JButton buttonGoToSource = createButtonGoToSource(panel.getNumberOfRows(),
 				row.getKanjiID());
 		panel.addRow(new SimpleRow(FillType.HORIZONTAL, kanjiTextArea, id, buttonGoToSource)

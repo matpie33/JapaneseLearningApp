@@ -33,6 +33,7 @@ public class RowInKanjiInformations implements ListRow<KanjiInformation> {
 	private String wordBeingModified;
 	private int idBeingModified;
 	private MyList<KanjiInformation> list;
+	private int rowNumber = 1;
 
 	public RowInKanjiInformations(MyList<KanjiInformation> list) {
 		JLabel title = new JLabel(Titles.KANJIS_LIST);
@@ -45,8 +46,7 @@ public class RowInKanjiInformations implements ListRow<KanjiInformation> {
 		MainPanel panel = new MainPanel(null);
 		String text = kanji.getKanjiKeyword();
 		int ID = kanji.getKanjiID();
-		JLabel number = new JLabel("" + 1 + ".");
-		// JLabel number = new JLabel("" + rowsPanel.getNumberOfRows() + ".");
+		JLabel number = new JLabel("" + rowNumber++ + ".");
 		number.setForeground(wordNumberColor);
 
 		// TODO looks fishy to pass class type as argument to create text area

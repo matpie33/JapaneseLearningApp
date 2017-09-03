@@ -19,12 +19,10 @@ import com.kanji.constants.Prompts;
 
 public class RowInRepeatingList implements ListRow<RepeatingInformation> {
 
-	private Color defaultColor = Color.RED;
-	private int rowsCounter;
+	private int rowsCounter = 1;
 	private MyList<RepeatingInformation> list;
 
 	public RowInRepeatingList(MyList<RepeatingInformation> list) {
-		rowsCounter = 1;
 		this.list = list;
 	}
 

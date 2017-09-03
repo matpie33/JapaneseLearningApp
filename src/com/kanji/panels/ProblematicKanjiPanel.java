@@ -169,7 +169,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public void highlightRow(int rowNumber) {
-		// rowInKanjiRepeatingList.highlightRowAndScroll(rowNumber, false);
+		kanjiRepeatingList.highlightRow(rowNumber);
 	}
 
 	@Override

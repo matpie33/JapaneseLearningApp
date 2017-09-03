@@ -43,7 +43,6 @@ public class TimeSpentHandler {
 						Thread.sleep((int) (interval * 1000));
 					}
 					catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 

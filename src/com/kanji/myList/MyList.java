@@ -51,6 +51,10 @@ public class MyList<Word> {
 		return added;
 	}
 
+	public void highlightRow(int rowNumber) {
+		rowCreator.highlightRowAndScroll(rowNumber, false);
+	}
+
 	public <Property> void findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(
 			PropertyChecker<Property, Word> propertyChecker, Property searchedPropertyValue,
 			SearchingDirection searchDirection, DialogWindow parentDialog) {

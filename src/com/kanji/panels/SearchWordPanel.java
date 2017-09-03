@@ -6,9 +6,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,7 +16,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.ComponentType;
 import com.guimaker.enums.FillType;
@@ -65,8 +64,8 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 	void createElements() {
 		JComboBox<String> comboBox = createCombobox();
 
-		JButton previous = createButtonFindPrevious(ButtonsNames.FIND_PREVIOUS);
-		JButton next = createButtonFindNext(ButtonsNames.FIND_NEXT);
+		AbstractButton previous = createButtonFindPrevious();
+		AbstractButton next = createButtonFindNext();
 		AbstractButton cancel = GuiMaker.createButtonlikeComponent(ComponentType.BUTTON,
 				ButtonsNames.CANCEL,
 				CommonActionsMaker.createDisposeAction(parentDialog.getContainer()));
@@ -78,11 +77,12 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 
 		this.cardLayout = new CardLayout();
 		searchingPanel = new JPanel(this.cardLayout);
+		searchingPanel.setOpaque(false);
 
 		searchingPanel.add(SEARCH_BY_KEYWORD_PANEL_NAME, keywordSearchPanel.getPanel());
 		searchingPanel.add(SEARCH_BY_KANJI_ID_PANEL_NAME, kanjiIdSearchPanel.getPanel());
 
-		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.WEST, searchingPanel));
+		mainPanel.addRow(new SimpleRow(FillType.HORIZONTAL, searchingPanel));
 
 		addHotkeysPanelHere();
 		mainPanel.addRow( // TODO fix in gui maker: if putting rows as highest
@@ -99,7 +99,7 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 	private MainPanel createSearchByKanjiIdPanel() {
 		kanjiIdTextfield = createInputTextField();
 
-		MainPanel kanjiIdSearchPanel = new MainPanel(BasicColors.DARK_BLUE, true);
+		MainPanel kanjiIdSearchPanel = new MainPanel(null, true);
 		kanjiIdSearchPanel.addRow(new SimpleRow(FillType.NONE, Anchor.NORTHWEST,
 				new JLabel(Labels.KANJI_ID_LABEL), kanjiIdTextfield));
 		return kanjiIdSearchPanel;
@@ -111,7 +111,7 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				textField.requestFocusInWindow();
+				textField.requestFocusInWindow();// TODO another swing utilities
 			}
 		});
 
@@ -127,7 +127,7 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 
 		defaultSearchOption.setSelected(true);
 
-		MainPanel keywordSearchPanel = new MainPanel(BasicColors.DARK_BLUE);
+		MainPanel keywordSearchPanel = new MainPanel(null);
 		keywordSearchPanel.addRows(new SimpleRow(FillType.HORIZONTAL, prompt, textField)
 				.fillHorizontallySomeElements(textField).nextRow(defaultSearchOption)
 				.nextRow(fullWordsSearchOption).nextRow(perfectMatchSearchOption));
@@ -190,27 +190,24 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 			group.add(button);
 	}
 
-	private JButton createButtonFindPrevious(String text) {
-		JButton button = new JButton(text);
-		button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				tryToFindNextOccurence(SearchingDirection.BACKWARD);
-			}
-		});
-
-		return button;
+	private AbstractButton createButtonFindPrevious() {
+		return GuiMaker.createButtonlikeComponent(ComponentType.BUTTON, ButtonsNames.FIND_PREVIOUS,
+				new AbstractAction() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						tryToFindNextOccurence(SearchingDirection.BACKWARD);
+					}
+				});
 	}
 
-	private JButton createButtonFindNext(String text) {
-		JButton button = new JButton(text);
-		button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				tryToFindNextOccurence(SearchingDirection.FORWARD);
-			}
-		}); // TODO use gui makers method to create button
-		return button;
+	private AbstractButton createButtonFindNext() {
+		return GuiMaker.createButtonlikeComponent(ComponentType.BUTTON, ButtonsNames.FIND_NEXT,
+				new AbstractAction() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						tryToFindNextOccurence(SearchingDirection.FORWARD);
+					}
+				});
 	}
 
 	private void tryToFindNextOccurence(SearchingDirection direction) {

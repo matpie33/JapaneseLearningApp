@@ -8,14 +8,13 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JSplitPane;
+import javax.swing.border.BevelBorder;
 
-import com.guimaker.colors.BasicColors;
-import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
-import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRow;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
@@ -29,17 +28,16 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	private ApplicationController applicationController;
 
 	private JSplitPane listsSplitPane;
-	private MainPanel buttonsPanel;
-	private MainPanel infoPanel;
 	private JButton showProblematicKanjis;
 	private JLabel saveInfo;
 	private ApplicationWindow applicationWindow;
-	private int infoPanelComponentsRow = 0;
 	private JLabel problematicKanjis;
+	private boolean problematicKanjiButtonIsVisible;
 
 	public StartingPanel(ApplicationWindow a, ApplicationController maker) {
 		applicationWindow = a;
 		this.applicationController = maker;
+		mainPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 	}
 
 	@Override
@@ -49,17 +47,25 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		// color
 		createUpperPanel();
 		createInformationsPanel();
+		// try {
+		// createButtonsPanel(addListeners());
+		// }
+		// catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		List<AbstractButton> buttons = null;
 		try {
-			createButtonsPanel(addListeners());
+			buttons = addListeners();
 		}
 		catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		mainPanel.addRow(new SimpleRow(FillType.BOTH, listsSplitPane));
 		addHotkeysPanelHere();
-		mainPanel.addRows(new SimpleRow(FillType.HORIZONTAL, buttonsPanel.getPanel())
-				.nextRow(infoPanel.getPanel()));
+		mainPanel.addRows(new SimpleRow(FillType.HORIZONTAL, buttons.toArray(new JButton[] {}))
+				.nextRow(saveInfo, problematicKanjis));
 	}
 
 	private List<AbstractButton> addListeners() throws Exception {
@@ -147,15 +153,11 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private void createInformationsPanel() {
-		infoPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
-		infoPanel.setGapsRightSideBetweenColumnsTo(20);
-		infoPanel.setRightBorder();
 		saveInfo = new JLabel();
 		problematicKanjis = new JLabel();
 		showProblematicKanjis = createShowProblematicKanjiButton();
 		changeSaveStatus(SavingStatus.NO_CHANGES);
 		updateProblematicKanjisAmount(applicationController.getProblematicKanjis().size());
-		infoPanel.addRow(new SimpleRow(FillType.NONE, Anchor.WEST, saveInfo, problematicKanjis));
 	}
 
 	private JButton createShowProblematicKanjiButton() {
@@ -169,12 +171,6 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		return problematicKanjiButton;
 	}
 
-	private void createButtonsPanel(List<AbstractButton> list) {
-		buttonsPanel = new MainPanel(null);
-		buttonsPanel
-				.addRow(new SimpleRow(FillType.NONE, Anchor.WEST, list.toArray(new JButton[] {})));
-	}
-
 	public void changeSaveStatus(SavingStatus savingStatus) {
 		saveInfo.setText(Prompts.SAVING_STATUS + savingStatus.getStatus());
 	}
@@ -184,13 +180,16 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public void addButtonIcon() {
-		infoPanel.addElementsToRow(infoPanelComponentsRow, showProblematicKanjis);
+		problematicKanjiButtonIsVisible = true;
+		mainPanel.addElementsToLastRow(showProblematicKanjis);
 	}
 
 	public void removeButtonProblematicsKanji() {
-		if (infoPanel.rowContainsComponent(infoPanelComponentsRow, showProblematicKanjis)) {
-			infoPanel.removeLastElementFromRow(infoPanelComponentsRow);
+		if (problematicKanjiButtonIsVisible) {
+			mainPanel.removeLastElementFromLastRow();
+			problematicKanjiButtonIsVisible = false;
 		}
+
 	}
 
 }

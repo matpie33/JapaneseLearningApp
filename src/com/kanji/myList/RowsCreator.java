@@ -35,7 +35,7 @@ public class RowsCreator<Row> {
 		kanjiWords = new ListWordsController<>();
 		highlightedRowNumber = -1;
 		wrappingPanel = new MainPanel(BasicColors.VERY_BLUE, true);
-		rowsPanel = new MainPanel(null);
+		rowsPanel = new MainPanel(null, true);
 		titleLabel = new JLabel();
 		titleLabel.setForeground(Color.WHITE);
 		createDefaultScrollPane();
@@ -46,8 +46,8 @@ public class RowsCreator<Row> {
 	}
 
 	public void addRow(Row row) {
-		JPanel wrappingPanel = this.rowsPanel
-				.addRow(new SimpleRow(FillType.HORIZONTAL, listRow.listRow(row).getPanel()));
+		JPanel wrappingPanel = this.rowsPanel.addRow(
+				new SimpleRow(FillType.HORIZONTAL, Anchor.NORTH, listRow.listRow(row).getPanel()));
 		wrappingPanel
 				.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, BasicColors.LIGHT_BLUE));
 	}
