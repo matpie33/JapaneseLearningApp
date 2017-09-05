@@ -44,28 +44,14 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	void createElements() {
 		createUpperPanel();
 		createInformationsPanel();
-		// try {
-		// createButtonsPanel(addListeners());
-		// }
-		// catch (Exception e) {
-		// e.printStackTrace();
-		// }
-		List<AbstractButton> buttons = null;
-		try {
-			buttons = addListeners();
-		}
-		catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		List<AbstractButton> buttons = addListeners();
 		mainPanel.addRow(new SimpleRow(FillType.BOTH, listsSplitPane));
 		addHotkeysPanelHere();
 		mainPanel.addRows(new SimpleRow(FillType.HORIZONTAL, buttons.toArray(new JButton[] {}))
 				.nextRow(saveInfo, problematicKanjis));
 	}
 
-	private List<AbstractButton> addListeners() throws Exception {
+	private List<AbstractButton> addListeners() {
 		List<AbstractButton> buttons = new ArrayList<>();
 		for (String name : ButtonsNames.BUTTONS_ON_MAIN_PAGE) {
 			int keyEvent;
@@ -89,7 +75,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 				action = new AbstractAction() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						applicationController.addWord();
+						applicationController.showInsertWordDialog();
 					}
 				};
 				break;
@@ -99,7 +85,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 				action = new AbstractAction() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						applicationController.searchWord();
+						applicationController.showSearchWordDialog();
 					}
 				};
 				break;
@@ -109,7 +95,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 				action = new AbstractAction() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						applicationController.startLearning();
+						applicationController.showLearningStartDialog();
 					}
 				};
 				break;
@@ -134,7 +120,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 				};
 				break;
 			default:
-				throw new Exception("Unsupported button name");
+				throw new RuntimeException("Unsupported button name");
 			}
 			buttons.add(createButtonWithHotkey(KeyEvent.VK_CONTROL, keyEvent, action, name,
 					hotkeyDescription));

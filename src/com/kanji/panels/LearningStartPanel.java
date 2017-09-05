@@ -49,6 +49,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 	private JCheckBox problematicCheckbox;
 	private LearningStartController controller;
 	private MainPanel rangesPanel;
+	private JTextField firstTextField;
 
 	public LearningStartPanel(ApplicationController applicationController, int numberOfWords,
 			MyList<RepeatingInformation> list) {
@@ -151,13 +152,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		}
 		JTextField[] textFields = createTextFieldsForRangeInput(nextRowNumber);
 		JTextField fieldFrom = textFields[0];
-		SwingUtilities.invokeLater(new Runnable() { // TODO not nice to put
-													// swing utilities here
-			@Override
-			public void run() {
-				fieldFrom.requestFocusInWindow();
-			}
-		});
+		firstTextField = fieldFrom;
 
 		JLabel from = new JLabel(Labels.RANGE_FROM_LABEL);
 		JLabel labelTo = new JLabel(Labels.RANGE_TO_LABEL);
@@ -183,6 +178,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		}
 
 		scrollToBottom();
+		fieldFrom.requestFocusInWindow();
 
 	}
 
@@ -219,8 +215,6 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public boolean showErrorOnThePanel(String message, int rowNumber) {
-		// TODO when pressing start, show more detailed info: add row number to
-		// the error information
 		rangesPanel.insertRow(rowNumber,
 				new SimpleRow(FillType.NONE, Anchor.NORTH, GuiMaker.createErrorLabel(message))
 						.fillAllVertically());
@@ -316,6 +310,11 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 	public void changeVisibilityOfDeleteButtonInFirstRow(boolean visibility) {
 		rangesPanel.changeVisibilityOfLastElementInRow(1, visibility);
+	}
+
+	@Override
+	public void afterVisible() {
+		firstTextField.requestFocusInWindow();
 	}
 
 }

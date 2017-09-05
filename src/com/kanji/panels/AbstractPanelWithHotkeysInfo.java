@@ -140,4 +140,8 @@ public abstract class AbstractPanelWithHotkeysInfo {
 
 	abstract void createElements();
 
+	public void afterVisible() {
+		// not required
+	};
+
 }

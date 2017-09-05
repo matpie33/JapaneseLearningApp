@@ -14,7 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.ComponentType;
@@ -108,12 +107,6 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 	private MainPanel createSearchByKeywordPanel() {
 		JLabel prompt = new JLabel(Prompts.SEARCH_DIALOG);
 		textField = createInputTextField();
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				textField.requestFocusInWindow();// TODO another swing utilities
-			}
-		});
 
 		JRadioButton defaultSearchOption = createRadioButtonForSearchingOption(
 				SearchOptions.BY_LETTERS, Labels.WORD_SEARCH_DEFAULT_OPTION);
@@ -220,6 +213,11 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 					Integer.parseInt(kanjiIdTextfield.getText()), SearchingDirection.FORWARD,
 					parentDialog);
 
+	}
+
+	@Override
+	public void afterVisible() {
+		textField.requestFocusInWindow();
 	}
 
 }

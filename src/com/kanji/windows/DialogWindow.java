@@ -123,6 +123,7 @@ public class DialogWindow {
 			JPanel panel = panelCreator.createPanel();
 			childWindow.setPanel(panel);
 			childWindow.showYourself(panelCreator, title, modal);
+			panelCreator.afterVisible();
 		}
 	}
 

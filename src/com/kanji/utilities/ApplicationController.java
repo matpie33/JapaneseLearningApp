@@ -170,15 +170,15 @@ public class ApplicationController {
 		return file;
 	}
 
-	public void addWord() {
+	public void showInsertWordDialog() {
 		parent.showInsertDialog(listOfWords);
 	}
 
-	public void searchWord() {
+	public void showSearchWordDialog() {
 		parent.showSearchWordDialog(listOfWords);
 	}
 
-	public void startLearning() {
+	public void showLearningStartDialog() {
 		parent.showLearningStartDialog(repeats, listOfWords.getNumberOfWords());
 	}
 
@@ -251,12 +251,13 @@ public class ApplicationController {
 		repeatingWordsPanelController.setRepeatingInformation(info);
 	}
 
-	public void startRepeating(SetOfRanges ranges, boolean withProblematic) {
-		repeatingWordsPanelController.setWordsRangeToRepeat(ranges, withProblematic);
+	public void initiateWordsLists(SetOfRanges ranges, boolean withProblematic) {
+		repeatingWordsPanelController.initiateWordsLists(ranges, withProblematic);
+	}
+
+	public void startRepeating() {
 		parent.showPanel(ApplicationPanels.REPEATING_PANEL);
-		// TODO if set of ranges is empty, we should not call set ranges to
-		// repeat all, so probably
-		// split this method
+		repeatingWordsPanelController.startRepeating();
 	}
 
 }

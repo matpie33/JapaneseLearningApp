@@ -45,6 +45,9 @@ public class ApplicationWindow extends DialogWindow {
 
 		mainApplicationPanel = new JPanel(new CardLayout());
 
+	}
+
+	public void initiate() {
 		RepeatingWordsPanel repeatingWordsPanel = new RepeatingWordsPanel(this);
 		applicationController = new ApplicationController(this,
 				repeatingWordsPanel.getController());

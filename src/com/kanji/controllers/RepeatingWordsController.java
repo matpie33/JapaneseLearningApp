@@ -69,12 +69,7 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 				+ Prompts.KANJI;
 	}
 
-	public void setRepeatingWords(MyList<KanjiInformation> wordsList) {
-		this.currentlyRepeatedWords = new HashSet<>();
-		kanjiList = wordsList;
-	}
-
-	public void setRangesToRepeat(SetOfRanges ranges) {
+	public void addChosenForRepeatingWordsToList(SetOfRanges ranges) {
 		for (Range range : ranges.getRangesAsList()) {
 			if (!range.isEmpty()) {
 				for (int i = range.getRangeStart(); i <= range.getRangeEnd(); i++) {
@@ -88,12 +83,7 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 		}
 	}
 
-	public void setProblematicKanjis(Set<Integer> problematicKanjis) {
-		this.problematicKanjis = problematicKanjis;
-
-	}
-
-	public void addProblematicKanjisToList() {
+	private void addProblematicKanjisToList() {
 		for (int i : problematicKanjis) {
 			String word = kanjiList.findRowBasedOnPropertyStartingFromHighlightedWord(
 					new KanjiIdChecker(), i, SearchingDirection.FORWARD, parent).getKanjiKeyword();
@@ -176,11 +166,14 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 		return message;
 	}
 
-	public void reset() {
+	private void reset() {
 		timeSpentHandler.reset();
 		problematicKanjis = new HashSet<>();
 		currentProblematicKanjis.clear();
+		this.currentlyRepeatedWords = new HashSet<>();
 		currentWord = "";
+		kanjiList = parent.getApplicationController().getWordsList();
+		this.problematicKanjis = parent.getApplicationController().getProblematicKanjis();
 	}
 
 	public void setRepeatingInformation(RepeatingInformation info) {
@@ -258,19 +251,14 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 		return !previousWord.isEmpty();
 	}
 
-	public void setWordsRangeToRepeat(SetOfRanges ranges, boolean withProblematic) {
-		setRepeatingWords(parent.getApplicationController().getWordsList());
-		// TODO if set of ranges is empty, we should not call set ranges to
-		// repeat all, so probably
-		// split this method
-		setRangesToRepeat(ranges);
+	public void initiateWordsLists(SetOfRanges ranges, boolean withProblematic) {
 		reset();
-		setProblematicKanjis(parent.getApplicationController().getProblematicKanjis());
+		if (!ranges.isEmpty()) {
+			addChosenForRepeatingWordsToList(ranges);
+		}
 		if (withProblematic) {
 			addProblematicKanjisToList();
 		}
-
-		startRepeating();
 	}
 
 }

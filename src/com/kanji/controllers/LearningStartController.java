@@ -279,7 +279,8 @@ public class LearningStartController {
 	}
 
 	public void switchPanelAndSetWordsRangesToRepeat(boolean problematicCheckboxSelected) {
-		applicationController.startRepeating(rangesToRepeat, problematicCheckboxSelected);
+		applicationController.initiateWordsLists(rangesToRepeat, problematicCheckboxSelected);
+		applicationController.startRepeating();
 	}
 
 	private SetOfRanges addAllRangesToSet() {
