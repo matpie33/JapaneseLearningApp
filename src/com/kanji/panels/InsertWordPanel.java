@@ -18,9 +18,9 @@ import com.guimaker.utilities.CommonActionsMaker;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.NumberValues;
 import com.kanji.constants.Prompts;
+import com.kanji.controllers.ApplicationController;
 import com.kanji.controllers.InsertWordController;
 import com.kanji.myList.MyList;
-import com.kanji.utilities.ApplicationController;
 import com.kanji.utilities.LimitDocumentFilter;
 
 public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {

@@ -66,7 +66,7 @@ public class SetOfRanges {
 		String msg = "";
 		for (int i = 0; i < ranges.size(); i++) {
 			Range r = ranges.get(i);
-			msg += "od: " + r.rangeStart + " do " + r.rangeEnd;
+			msg += "od " + r.rangeStart + " do " + r.rangeEnd;
 			if (i < ranges.size() - 1) {
 				msg += ", ";
 				msg += "\n";

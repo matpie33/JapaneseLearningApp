@@ -37,9 +37,9 @@ import com.kanji.constants.Labels;
 import com.kanji.constants.NumberValues;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.Titles;
+import com.kanji.controllers.ApplicationController;
 import com.kanji.controllers.LearningStartController;
 import com.kanji.myList.MyList;
-import com.kanji.utilities.ApplicationController;
 import com.kanji.utilities.LimitDocumentFilter;
 
 public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {

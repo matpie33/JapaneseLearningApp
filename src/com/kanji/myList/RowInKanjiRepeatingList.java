@@ -26,7 +26,7 @@ public class RowInKanjiRepeatingList implements ListRow<KanjiInformation> {
 	}
 
 	@Override
-	public MainPanel listRow(KanjiInformation row) {
+	public MainPanel listRow(KanjiInformation row, JLabel rowNumberLabel) {
 		MainPanel panel = new MainPanel(null);
 		JLabel id = new JLabel("" + row.getKanjiID());
 		id.setForeground(Color.white);
@@ -51,6 +51,10 @@ public class RowInKanjiRepeatingList implements ListRow<KanjiInformation> {
 		});
 		button.setFocusable(false);
 		return button;
+	}
+
+	public void setList(MyList<KanjiInformation> list) {
+		;
 	}
 
 }

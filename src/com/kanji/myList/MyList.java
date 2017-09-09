@@ -1,29 +1,36 @@
 package com.kanji.myList;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import com.kanji.Row.KanjiInformation;
+import com.kanji.Row.RepeatingInformation;
 import com.kanji.constants.ExceptionsMessages;
+import com.kanji.constants.Prompts;
+import com.kanji.controllers.ApplicationController;
 import com.kanji.listSearching.PropertyChecker;
 import com.kanji.listSearching.SearchingDirection;
-import com.kanji.utilities.ApplicationController;
 import com.kanji.windows.DialogWindow;
 
 public class MyList<Word> {
 	private List<JPanel> panels;
 	private DialogWindow parent;
 	private ApplicationController applicationController;
-	private RowsCreator<Word> rowCreator;
+	private ListPanelMaker<Word> rowCreator;
 	private ListWordsController<Word> listController;
 
 	public MyList(DialogWindow parentDialog, ApplicationController applicationController,
-			ListRow<Word> rowCreator, String title) {
+			ListRow<Word> listRowMaker, String title) {
 
 		this.applicationController = applicationController;
 		this.parent = parentDialog;
-		this.rowCreator = new RowsCreator<Word>(rowCreator);
+		listRowMaker.setList(this);
+		this.rowCreator = new ListPanelMaker<Word>(listRowMaker);
 		listController = this.rowCreator.getController();
 
 		this.rowCreator.setList(this);
@@ -203,6 +210,34 @@ public class MyList<Word> {
 
 	public DialogWindow getParent() {
 		return parent;
+	}
+
+	public void removeRow(Word word) {
+		int rowNumber = listController.remove(word);
+		rowCreator.removeRow(rowNumber);
+	}
+
+	public JButton createButtonRemove(Word word) {
+		JButton remove = new JButton("-");
+		remove.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String rowSpecificPrompt = "";
+				if (word instanceof KanjiInformation) {
+					rowSpecificPrompt = Prompts.KANJI_ROW;
+				}
+				if (word instanceof RepeatingInformation) {
+					rowSpecificPrompt = Prompts.REPEATING_ELEMENT;
+				}
+
+				if (!showMessage(String.format(Prompts.DELETE_ELEMENT, rowSpecificPrompt))) {
+					return;
+				}
+				removeRow(word);
+				save();
+			}
+		});
+		return remove;
 	}
 
 }

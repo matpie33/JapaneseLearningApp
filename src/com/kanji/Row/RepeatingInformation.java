@@ -1,17 +1,17 @@
 package com.kanji.Row;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class RepeatingInformation implements Serializable {
 
 	private static final long serialVersionUID = 6124164088342544292L;
 	private String repeatingRange;
-	private Date repeatingDate;
+	private LocalDateTime repeatingDate;
 	private boolean wasRepeated;
 	private String timeSpentOnRepeating;
 
-	public RepeatingInformation(String s, Date d, boolean b) {
+	public RepeatingInformation(String s, LocalDateTime d, boolean b) {
 		repeatingRange = s;
 		repeatingDate = d;
 		wasRepeated = b;
@@ -33,11 +33,11 @@ public class RepeatingInformation implements Serializable {
 		this.repeatingRange = repeatingRange;
 	}
 
-	public Date getRepeatingDate() {
+	public LocalDateTime getRepeatingDate() {
 		return repeatingDate;
 	}
 
-	public void setRepeatingDate(Date repeatingDate) {
+	public void setRepeatingDate(LocalDateTime repeatingDate) {
 		this.repeatingDate = repeatingDate;
 	}
 

@@ -1,22 +1,17 @@
 package com.kanji.myList;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import com.guimaker.enums.FillType;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRow;
 import com.kanji.Row.KanjiInformation;
-import com.kanji.constants.Prompts;
-import com.kanji.constants.Titles;
 import com.kanji.listSearching.KanjiIdChecker;
 import com.kanji.listSearching.KanjiKeywordChecker;
 import com.kanji.listSearching.SearchOptions;
@@ -28,35 +23,25 @@ public class RowInKanjiInformations implements ListRow<KanjiInformation> {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Color wordNumberColor = Color.WHITE;
-	private ListWordsController<KanjiInformation> kanjiWords;
+	private ListWordsController<KanjiInformation> kanjiWords = new ListWordsController<>();
 
 	private String wordBeingModified;
 	private int idBeingModified;
 	private MyList<KanjiInformation> list;
-	private int rowNumber = 1;
 
-	public RowInKanjiInformations(MyList<KanjiInformation> list) {
-		JLabel title = new JLabel(Titles.KANJIS_LIST);
-		title.setForeground(Color.white);
-		this.list = list;
-		kanjiWords = new ListWordsController<>();
-	}
-
-	public MainPanel listRow(KanjiInformation kanji) {
+	@Override
+	public MainPanel listRow(KanjiInformation kanji, JLabel rowNumberLabel) {
 		MainPanel panel = new MainPanel(null);
 		String text = kanji.getKanjiKeyword();
 		int ID = kanji.getKanjiID();
-		JLabel number = new JLabel("" + rowNumber++ + ".");
-		number.setForeground(wordNumberColor);
-
+		rowNumberLabel.setForeground(wordNumberColor);
 		// TODO looks fishy to pass class type as argument to create text area
 		JTextArea wordTextArea = createTextArea(text, String.class);
 		JTextArea idTextArea = createTextArea(Integer.toString(ID), Integer.class);
-		JButton remove = createButtonRemove();
+		JButton remove = list.createButtonRemove(kanji);
 
-		JPanel createdPanel = panel.addRow(
-				new SimpleRow(FillType.HORIZONTAL, number, wordTextArea, idTextArea, remove));
-		addRemovingActionToButton(remove, createdPanel, kanji);
+		panel.addRow(new SimpleRow(FillType.HORIZONTAL, rowNumberLabel, wordTextArea, idTextArea,
+				remove));
 		return panel;
 
 	}
@@ -136,27 +121,9 @@ public class RowInKanjiInformations implements ListRow<KanjiInformation> {
 		return focusListener;
 	}
 
-	private JButton createButtonRemove() {
-		JButton remove = new JButton("-");
-		return remove;
-	}
-
-	private void addRemovingActionToButton(JButton button, JPanel row, KanjiInformation kanji) {
-		button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!list.showMessage(String.format(Prompts.DELETE_ELEMENT, Prompts.KANJI_ROW))) {
-					return;
-				}
-				removeRow(row);
-				list.getWords().remove(kanji);
-				list.save();
-			}
-		});
-	}
-
-	private void removeRow(JPanel row) {
-		// rowsPanel.removeRow(row);
+	@Override
+	public void setList(MyList<KanjiInformation> list) {
+		this.list = list;
 	}
 
 }

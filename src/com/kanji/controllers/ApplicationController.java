@@ -1,12 +1,12 @@
-package com.kanji.utilities;
+package com.kanji.controllers;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,12 +19,13 @@ import com.kanji.Row.KanjiInformation;
 import com.kanji.Row.RepeatingInformation;
 import com.kanji.constants.ApplicationPanels;
 import com.kanji.constants.SavingStatus;
-import com.kanji.controllers.RepeatingWordsController;
 import com.kanji.myList.MyList;
 import com.kanji.myList.RowInKanjiInformations;
 import com.kanji.myList.RowInRepeatingList;
 import com.kanji.panels.LoadingPanel;
 import com.kanji.range.SetOfRanges;
+import com.kanji.utilities.LoadingAndSaving;
+import com.kanji.utilities.SavingInformation;
 import com.kanji.windows.ApplicationWindow;
 
 public class ApplicationController {
@@ -127,8 +128,8 @@ public class ApplicationController {
 	}
 
 	private void initListOfWords() {
-		listOfWords = new MyList<KanjiInformation>(parent, this,
-				new RowInKanjiInformations(listOfWords), "Lista kanji");
+		listOfWords = new MyList<KanjiInformation>(parent, this, new RowInKanjiInformations(),
+				"Lista kanji");
 
 		for (int i = 1; i <= 15; i++) {
 			listOfWords.addWord(new KanjiInformation("Word no. " + i, i));
@@ -141,11 +142,14 @@ public class ApplicationController {
 	}
 
 	private void initRepeatsList() {
-		repeats = new MyList<RepeatingInformation>(parent, this, new RowInRepeatingList(repeats),
+		repeats = new MyList<RepeatingInformation>(parent, this, new RowInRepeatingList(),
 				"Informacje o powtórkach");
-		repeats.addWord(new RepeatingInformation("abc", new Date(1993, 9, 14), true));
-		repeats.addWord(new RepeatingInformation("abc", new Date(1993, 9, 14), true));
-		repeats.addWord(new RepeatingInformation("abc", new Date(1993, 9, 14), true));
+		repeats.addWord(
+				new RepeatingInformation("abc", LocalDateTime.of(1993, 11, 13, 13, 25), true));
+		repeats.addWord(
+				new RepeatingInformation("abc", LocalDateTime.of(2005, 1, 1, 11, 11), true));
+		repeats.addWord(
+				new RepeatingInformation("abc", LocalDateTime.of(2000, 12, 31, 10, 0), true));
 	}
 
 	private File openFile() {

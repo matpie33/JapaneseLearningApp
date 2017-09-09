@@ -20,8 +20,10 @@ public class ListWordsController<WordsType> {
 
 	}
 
-	public void remove(WordsType r) {
+	public int remove(WordsType r) {
+		int index = wordsList.indexOf(r);
 		wordsList.remove(r);
+		return index;
 	}
 
 	public List<WordsType> getWords() {

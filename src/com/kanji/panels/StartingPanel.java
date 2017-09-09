@@ -20,7 +20,7 @@ import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.SavingStatus;
-import com.kanji.utilities.ApplicationController;
+import com.kanji.controllers.ApplicationController;
 import com.kanji.windows.ApplicationWindow;
 
 public class StartingPanel extends AbstractPanelWithHotkeysInfo {

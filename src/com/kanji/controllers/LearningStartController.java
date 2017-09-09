@@ -1,8 +1,8 @@
 package com.kanji.controllers;
 
 import java.awt.event.KeyEvent;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +17,6 @@ import com.kanji.model.RangesRow;
 import com.kanji.myList.MyList;
 import com.kanji.panels.LearningStartPanel;
 import com.kanji.range.SetOfRanges;
-import com.kanji.utilities.ApplicationController;
 
 public class LearningStartController {
 
@@ -263,7 +262,6 @@ public class LearningStartController {
 	}
 
 	private void addRangesToRepeatsList(boolean problematicCheckboxSelected) {
-		Calendar calendar = Calendar.getInstance();
 		String repeatingInfo = "";
 		if (problematicCheckboxSelected) {
 			repeatingInfo = Labels.PROBLEMATIC_KANJI_OPTION;
@@ -274,7 +272,7 @@ public class LearningStartController {
 		repeatingInfo += rangesToRepeat;
 		repeatingInfo += ".";
 		applicationController.setRepeatingInformation(
-				new RepeatingInformation(repeatingInfo, calendar.getTime(), false));
+				new RepeatingInformation(repeatingInfo, LocalDateTime.now(), false));
 		repeatsList.scrollToBottom();
 	}
 

@@ -3,6 +3,8 @@ package com.kanji.myList;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -19,7 +21,7 @@ import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRow;
 
-public class RowsCreator<Row> {
+public class ListPanelMaker<Row> {
 
 	protected ListWordsController<Row> kanjiWords;
 	protected MyList<Row> list;
@@ -30,8 +32,9 @@ public class RowsCreator<Row> {
 	private final Dimension scrollPanesSize = new Dimension(350, 300);
 	private JLabel titleLabel;
 	private ListRow<Row> listRow;
+	private List<JLabel> labels = new ArrayList<>();
 
-	public RowsCreator(ListRow<Row> listRow) {
+	public ListPanelMaker(ListRow<Row> listRow) {
 		kanjiWords = new ListWordsController<>();
 		highlightedRowNumber = -1;
 		wrappingPanel = new MainPanel(BasicColors.VERY_BLUE, true);
@@ -46,8 +49,11 @@ public class RowsCreator<Row> {
 	}
 
 	public void addRow(Row row) {
-		JPanel wrappingPanel = this.rowsPanel.addRow(
-				new SimpleRow(FillType.HORIZONTAL, Anchor.NORTH, listRow.listRow(row).getPanel()));
+		JLabel rowNumberLabel = new JLabel("" + (rowsPanel.getNumberOfRows() + 1) + ".");
+		labels.add(rowNumberLabel);
+
+		JPanel wrappingPanel = this.rowsPanel.addRow(new SimpleRow(FillType.HORIZONTAL,
+				Anchor.NORTH, listRow.listRow(row, rowNumberLabel).getPanel()));
 		wrappingPanel
 				.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, BasicColors.LIGHT_BLUE));
 	}
@@ -123,6 +129,25 @@ public class RowsCreator<Row> {
 
 	public void setScrollPane(JScrollPane scr) {
 		this.parentScrollPane = scr;
+	}
+
+	public void removeRow(JPanel panel) {
+		int rowNumber = rowsPanel.getIndexOfPanel(panel);
+		removeRow(rowNumber);
+	}
+
+	public void removeRow(int rowNumber) {
+		rowsPanel.removeRow(rowNumber);
+		updateRowNumbers(rowNumber);
+		labels.remove(rowNumber);
+	}
+
+	private void updateRowNumbers(int startingIndex) {
+		for (int i = startingIndex; i < labels.size(); i++) {
+			JLabel label = labels.get(i);
+			label.setText("" + i + ".");
+		}
+
 	}
 
 }

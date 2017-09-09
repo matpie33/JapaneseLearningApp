@@ -19,6 +19,7 @@ import com.kanji.constants.MenuTexts;
 import com.kanji.constants.Prompts;
 import com.kanji.constants.SavingStatus;
 import com.kanji.constants.Titles;
+import com.kanji.controllers.ApplicationController;
 import com.kanji.myList.MyList;
 import com.kanji.panels.InsertWordPanel;
 import com.kanji.panels.LearningStartPanel;
@@ -27,7 +28,6 @@ import com.kanji.panels.ProblematicKanjiPanel;
 import com.kanji.panels.RepeatingWordsPanel;
 import com.kanji.panels.SearchWordPanel;
 import com.kanji.panels.StartingPanel;
-import com.kanji.utilities.ApplicationController;
 
 @SuppressWarnings("serial")
 public class ApplicationWindow extends DialogWindow {

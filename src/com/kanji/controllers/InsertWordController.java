@@ -5,7 +5,6 @@ import javax.swing.JTextField;
 import com.kanji.Row.KanjiInformation;
 import com.kanji.constants.ExceptionsMessages;
 import com.kanji.myList.MyList;
-import com.kanji.utilities.ApplicationController;
 import com.kanji.windows.DialogWindow;
 
 public class InsertWordController {
