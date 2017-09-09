@@ -14,12 +14,12 @@ import com.guimaker.row.SimpleRow;
 import com.kanji.Row.RepeatingInformation;
 import com.kanji.constants.Prompts;
 
-public class RowInRepeatingList implements ListRow<RepeatingInformation> {
+public class RowInRepeatingList implements ListRowMaker<RepeatingInformation> {
 
 	private MyList<RepeatingInformation> list;
 
 	@Override
-	public MainPanel listRow(RepeatingInformation rep, JLabel rowNumberLabel) {
+	public MainPanel createListRow(RepeatingInformation rep, JLabel rowNumberLabel) {
 		String word = rep.getRepeatingRange();
 		String time = rep.getTimeSpentOnRepeating();
 		LocalDateTime date1 = rep.getRepeatingDate();

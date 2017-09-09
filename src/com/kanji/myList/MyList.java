@@ -21,20 +21,15 @@ public class MyList<Word> {
 	private List<JPanel> panels;
 	private DialogWindow parent;
 	private ApplicationController applicationController;
-	private ListPanelMaker<Word> rowCreator;
 	private ListWordsController<Word> listController;
 
 	public MyList(DialogWindow parentDialog, ApplicationController applicationController,
-			ListRow<Word> listRowMaker, String title) {
+			ListRowMaker<Word> listRowMaker, String title) {
 
 		this.applicationController = applicationController;
 		this.parent = parentDialog;
 		listRowMaker.setList(this);
-		this.rowCreator = new ListPanelMaker<Word>(listRowMaker);
-		listController = this.rowCreator.getController();
-
-		this.rowCreator.setList(this);
-		this.rowCreator.setTitle(title);
+		listController = new ListWordsController<>(listRowMaker, title, this);
 		initiate();
 
 	}
@@ -45,7 +40,6 @@ public class MyList<Word> {
 	}
 
 	public boolean addWord(Word word) {
-		rowCreator.addRow(word);
 		return listController.add(word);
 
 	}
@@ -59,7 +53,7 @@ public class MyList<Word> {
 	}
 
 	public void highlightRow(int rowNumber) {
-		rowCreator.highlightRowAndScroll(rowNumber, false);
+		listController.highlightRowAndScroll(rowNumber, false);
 	}
 
 	public <Property> void findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(
@@ -70,7 +64,7 @@ public class MyList<Word> {
 		if (rowNumber < 0) {
 			return;
 		}
-		rowCreator.highlightRowAndScroll(rowNumber, true);
+		listController.highlightRowAndScroll(rowNumber, true);
 		return;
 	}
 
@@ -91,7 +85,7 @@ public class MyList<Word> {
 			lastRowToSearch = 0;
 		}
 		else {
-			lastRowToSearch = rowCreator.getHighlightedRowNumber() + 1;
+			lastRowToSearch = listController.getHighlightedRowNumber() + 1;
 		}
 
 		int incrementValue = searchDirection.getIncrementationValue();
@@ -114,7 +108,7 @@ public class MyList<Word> {
 		if (highlightedWord != null
 				&& propertyChecker.isPropertyFound(searchedPropertyValue, highlightedWord)) {
 			parentDialog.showMessageDialog(ExceptionsMessages.WORD_ALREADY_HIGHLIGHTED_EXCEPTION);
-			return rowCreator.getHighlightedRowNumber();
+			return listController.getHighlightedRowNumber();
 		}
 		else {
 			parentDialog.showMessageDialog(ExceptionsMessages.WORD_NOT_FOUND_EXCEPTION);
@@ -145,7 +139,7 @@ public class MyList<Word> {
 	}
 
 	private Word getHighlightedWord() {
-		int highlightedRow = rowCreator.getHighlightedRowNumber();
+		int highlightedRow = listController.getHighlightedRowNumber();
 		if (highlightedRow < 0) {
 			return null;
 		}
@@ -173,7 +167,7 @@ public class MyList<Word> {
 	}
 
 	public void scrollToBottom() {
-		rowCreator.scrollToBottom();
+		listController.scrollToBottom();
 	}
 
 	public void cleanWords() {
@@ -193,7 +187,7 @@ public class MyList<Word> {
 	}
 
 	public JPanel getPanel() {
-		return rowCreator.getPanel();
+		return listController.getPanel();
 	}
 
 	public int getNumberOfWords() {
@@ -213,8 +207,7 @@ public class MyList<Word> {
 	}
 
 	public void removeRow(Word word) {
-		int rowNumber = listController.remove(word);
-		rowCreator.removeRow(rowNumber);
+		listController.remove(word);
 	}
 
 	public JButton createButtonRemove(Word word) {

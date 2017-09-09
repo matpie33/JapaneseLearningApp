@@ -17,7 +17,7 @@ import com.kanji.constants.ButtonsNames;
 import com.kanji.controllers.ProblematicKanjisController;
 import com.kanji.model.KanjiRow;
 
-public class RowInKanjiRepeatingList implements ListRow<KanjiInformation> {
+public class RowInKanjiRepeatingList implements ListRowMaker<KanjiInformation> {
 
 	private ProblematicKanjisController controller;
 
@@ -26,7 +26,7 @@ public class RowInKanjiRepeatingList implements ListRow<KanjiInformation> {
 	}
 
 	@Override
-	public MainPanel listRow(KanjiInformation row, JLabel rowNumberLabel) {
+	public MainPanel createListRow(KanjiInformation row, JLabel rowNumberLabel) {
 		MainPanel panel = new MainPanel(null);
 		JLabel id = new JLabel("" + row.getKanjiID());
 		id.setForeground(Color.white);

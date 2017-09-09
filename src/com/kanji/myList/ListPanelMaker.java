@@ -3,8 +3,6 @@ package com.kanji.myList;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -20,22 +18,22 @@ import com.guimaker.enums.FillType;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRow;
+import com.kanji.model.ListRow;
 
-public class ListPanelMaker<Row> {
+public class ListPanelMaker<Word> {
 
-	protected ListWordsController<Row> kanjiWords;
-	protected MyList<Row> list;
+	protected ListWordsController<Word> kanjiWords;
+	protected MyList<Word> list;
 	protected MainPanel wrappingPanel;
 	protected MainPanel rowsPanel;
 	private int highlightedRowNumber;
 	private JScrollPane parentScrollPane;
 	private final Dimension scrollPanesSize = new Dimension(350, 300);
 	private JLabel titleLabel;
-	private ListRow<Row> listRow;
-	private List<JLabel> labels = new ArrayList<>();
+	private ListRowMaker<Word> listRow;
 
-	public ListPanelMaker(ListRow<Row> listRow) {
-		kanjiWords = new ListWordsController<>();
+	public ListPanelMaker(ListRowMaker<Word> listRow, ListWordsController<Word> controller) {
+		kanjiWords = controller;
 		highlightedRowNumber = -1;
 		wrappingPanel = new MainPanel(BasicColors.VERY_BLUE, true);
 		rowsPanel = new MainPanel(null, true);
@@ -48,25 +46,29 @@ public class ListPanelMaker<Row> {
 
 	}
 
-	public void addRow(Row row) {
-		JLabel rowNumberLabel = new JLabel("" + (rowsPanel.getNumberOfRows() + 1) + ".");
-		labels.add(rowNumberLabel);
+	public ListRow<Word> addRow(Word row) {
+		JLabel rowNumberLabel = new JLabel(createTextForRowNumber(rowsPanel.getNumberOfRows() + 1));
 
 		JPanel wrappingPanel = this.rowsPanel.addRow(new SimpleRow(FillType.HORIZONTAL,
-				Anchor.NORTH, listRow.listRow(row, rowNumberLabel).getPanel()));
+				Anchor.NORTH, listRow.createListRow(row, rowNumberLabel).getPanel()));
 		wrappingPanel
 				.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, BasicColors.LIGHT_BLUE));
+		return new ListRow<Word>(row, wrappingPanel, rowNumberLabel);
+	}
+
+	public String createTextForRowNumber(int rowNumber) {
+		return "" + rowNumber + ".";
 	}
 
 	public void setTitle(String title) {
 		titleLabel.setText(title);
 	}
 
-	public ListWordsController<Row> getController() {
+	public ListWordsController<Word> getController() {
 		return kanjiWords;
 	}
 
-	public void setList(MyList<Row> list) {
+	public void setList(MyList<Word> list) {
 		this.list = list;
 	}
 
@@ -109,6 +111,7 @@ public class ListPanelMaker<Row> {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+				// TODO swing utilities
 				wrappingPanel.getPanel().revalidate();
 				parentScrollPane.revalidate();
 				JScrollBar scrollBar = parentScrollPane.getVerticalScrollBar();
@@ -131,23 +134,10 @@ public class ListPanelMaker<Row> {
 		this.parentScrollPane = scr;
 	}
 
-	public void removeRow(JPanel panel) {
+	public int removeRow(JPanel panel) {
 		int rowNumber = rowsPanel.getIndexOfPanel(panel);
-		removeRow(rowNumber);
-	}
-
-	public void removeRow(int rowNumber) {
 		rowsPanel.removeRow(rowNumber);
-		updateRowNumbers(rowNumber);
-		labels.remove(rowNumber);
-	}
-
-	private void updateRowNumbers(int startingIndex) {
-		for (int i = startingIndex; i < labels.size(); i++) {
-			JLabel label = labels.get(i);
-			label.setText("" + i + ".");
-		}
-
+		return rowNumber;
 	}
 
 }

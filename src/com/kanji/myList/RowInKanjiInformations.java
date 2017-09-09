@@ -17,20 +17,20 @@ import com.kanji.listSearching.KanjiKeywordChecker;
 import com.kanji.listSearching.SearchOptions;
 import com.kanji.listSearching.SearchingDirection;
 
-public class RowInKanjiInformations implements ListRow<KanjiInformation> {
+public class RowInKanjiInformations implements ListRowMaker<KanjiInformation> {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private Color wordNumberColor = Color.WHITE;
-	private ListWordsController<KanjiInformation> kanjiWords = new ListWordsController<>();
+	private ListWordsController<KanjiInformation> listWordsController;
 
 	private String wordBeingModified;
 	private int idBeingModified;
 	private MyList<KanjiInformation> list;
 
 	@Override
-	public MainPanel listRow(KanjiInformation kanji, JLabel rowNumberLabel) {
+	public MainPanel createListRow(KanjiInformation kanji, JLabel rowNumberLabel) {
 		MainPanel panel = new MainPanel(null);
 		String text = kanji.getKanjiKeyword();
 		int ID = kanji.getKanjiID();
@@ -76,7 +76,7 @@ public class RowInKanjiInformations implements ListRow<KanjiInformation> {
 								wordBeingModified, SearchingDirection.FORWARD, list.getParent());
 				KanjiInformation newKanji = new KanjiInformation(elem.getText(),
 						kanjiToChange.getKanjiID());
-				kanjiWords.replace(kanjiToChange, newKanji);
+				listWordsController.replace(kanjiToChange, newKanji);
 				wordBeingModified = "";
 				list.save();
 			}
@@ -112,7 +112,7 @@ public class RowInKanjiInformations implements ListRow<KanjiInformation> {
 								idBeingModified, SearchingDirection.FORWARD, list.getParent());
 				KanjiInformation newKanji = new KanjiInformation(kanjiToChange.getKanjiKeyword(),
 						newID);
-				kanjiWords.replace(kanjiToChange, newKanji);
+				listWordsController.replace(kanjiToChange, newKanji);
 				list.save();
 				idBeingModified = -1;
 
