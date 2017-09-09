@@ -1,12 +1,13 @@
 package com.kanji.utilities;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
 import com.kanji.Row.KanjiInformation;
 import com.kanji.Row.RepeatingInformation;
 
-public class SavingInformation {
+public class SavingInformation implements Serializable {
 	private List<KanjiInformation> kanjiWords;
 	private List<RepeatingInformation> repeatingList;
 	private Set<Integer> problematicKanjis;

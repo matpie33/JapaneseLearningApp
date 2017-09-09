@@ -90,4 +90,9 @@ public class ListWordsController<Word> {
 		return rowCreator.getPanel();
 	}
 
+	public void clear() {
+		wordsList.clear();
+		rowCreator.clear();
+	}
+
 }

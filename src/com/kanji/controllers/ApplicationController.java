@@ -34,7 +34,6 @@ public class ApplicationController {
 	private ApplicationWindow parent;
 	private MyList<KanjiInformation> listOfWords;
 	private MyList<RepeatingInformation> repeats;
-	private File fileToSave;
 	private LoadingAndSaving loadingAndSaving;
 	private Set<Integer> problematicKanjis;
 
@@ -53,7 +52,8 @@ public class ApplicationController {
 	}
 
 	public void openKanjiProject() {
-		fileToSave = openFile();
+		File fileToSave = openFile();
+		loadingAndSaving.setFileToSave(fileToSave);
 		if (!fileToSave.exists())
 			return;
 		SavingInformation savingInformation = null;
@@ -86,7 +86,7 @@ public class ApplicationController {
 			@Override
 			public Void doInBackground() throws Exception {
 				progress = new JProgressBar();
-				listOfWords.addWordsList(kanjiWords);
+				listOfWords.cleanWords();
 				loadingPanel.setProgressBar(progress);
 				progress.setMaximum(kanjiWords.size());
 				List<Integer> ints = new ArrayList<>();
@@ -118,6 +118,7 @@ public class ApplicationController {
 		Runnable r2 = new Runnable() {
 			@Override
 			public void run() {
+				repeats.cleanWords();
 				repeats.addWordsList(mapOfRepeats);
 				repeats.getPanel().repaint();
 				repeats.scrollToBottom();
@@ -195,13 +196,15 @@ public class ApplicationController {
 	}
 
 	public void save() {
-		if (this.fileToSave == null) {
+		if (!loadingAndSaving.hasFileToSave()) {
 			return;
 		}
 		parent.changeSaveStatus(SavingStatus.SAVING);
-		parent.updateProblematicKanjisAmount();
+		parent.updateProblematicKanjisAmount(); // TODO this is not needed when
+												// we click save button
 		SavingInformation savingInformation = new SavingInformation(listOfWords.getWords(),
 				repeats.getWords(), getProblematicKanjis());
+
 		try {
 			loadingAndSaving.save(savingInformation);
 		}
@@ -230,10 +233,13 @@ public class ApplicationController {
 	}
 
 	public void showSaveDialog() {
-		JFileChooser fileChooser = new JFileChooser();
-		int option = fileChooser.showSaveDialog(this.parent.getContainer());
-		if (option == 0) {
-			this.fileToSave = fileChooser.getSelectedFile();
+		if (!loadingAndSaving.hasFileToSave()) {
+			JFileChooser fileChooser = new JFileChooser();
+			int option = fileChooser.showSaveDialog(this.parent.getContainer());
+			if (option == JFileChooser.APPROVE_OPTION) {
+				File file = fileChooser.getSelectedFile();
+				loadingAndSaving.setFileToSave(file);
+			}
 		}
 		save();
 	}

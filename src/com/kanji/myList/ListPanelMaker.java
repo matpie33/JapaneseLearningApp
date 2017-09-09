@@ -140,4 +140,8 @@ public class ListPanelMaker<Word> {
 		return rowNumber;
 	}
 
+	public void clear() {
+		rowsPanel.clear();
+	}
+
 }

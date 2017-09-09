@@ -2,7 +2,6 @@ package com.kanji.myList;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -18,25 +17,16 @@ import com.kanji.listSearching.SearchingDirection;
 import com.kanji.windows.DialogWindow;
 
 public class MyList<Word> {
-	private List<JPanel> panels;
 	private DialogWindow parent;
 	private ApplicationController applicationController;
 	private ListWordsController<Word> listController;
 
 	public MyList(DialogWindow parentDialog, ApplicationController applicationController,
 			ListRowMaker<Word> listRowMaker, String title) {
-
 		this.applicationController = applicationController;
 		this.parent = parentDialog;
 		listRowMaker.setList(this);
 		listController = new ListWordsController<>(listRowMaker, title, this);
-		initiate();
-
-	}
-
-	private void initiate() {
-		// this.wordsAndID = new LinkedHashMap<Integer,String>();
-		this.panels = new LinkedList<>();
 	}
 
 	public boolean addWord(Word word) {
@@ -171,11 +161,7 @@ public class MyList<Word> {
 	}
 
 	public void cleanWords() {
-		cleanAll();
-	}
-
-	private void cleanAll() {
-		this.panels.clear();
+		listController.clear();
 	}
 
 	public void save() {
