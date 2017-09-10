@@ -12,7 +12,7 @@ import com.kanji.Row.RepeatingInformation;
 import com.kanji.constants.ExceptionsMessages;
 import com.kanji.constants.Prompts;
 import com.kanji.controllers.ApplicationController;
-import com.kanji.listSearching.PropertyChecker;
+import com.kanji.listSearching.PropertyManager;
 import com.kanji.listSearching.SearchingDirection;
 import com.kanji.windows.DialogWindow;
 
@@ -47,7 +47,7 @@ public class MyList<Word> {
 	}
 
 	public <Property> void findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(
-			PropertyChecker<Property, Word> propertyChecker, Property searchedPropertyValue,
+			PropertyManager<Property, Word> propertyChecker, Property searchedPropertyValue,
 			SearchingDirection searchDirection, DialogWindow parentDialog) {
 		int rowNumber = findRowNumberBasedOnPropertyStartingFromHighlightedWord(propertyChecker,
 				searchedPropertyValue, searchDirection, parentDialog);
@@ -59,7 +59,7 @@ public class MyList<Word> {
 	}
 
 	public <Property> Word findRowBasedOnPropertyStartingFromHighlightedWord(
-			PropertyChecker<Property, Word> propertyChecker, Property searchedPropertyValue,
+			PropertyManager<Property, Word> propertyChecker, Property searchedPropertyValue,
 			SearchingDirection searchDirection, DialogWindow parentDialog) {
 		int rowNumber = findRowNumberBasedOnPropertyStartingFromHighlightedWord(propertyChecker,
 				searchedPropertyValue, searchDirection, parentDialog);
@@ -67,7 +67,7 @@ public class MyList<Word> {
 	}
 
 	private <Property> int findRowNumberBasedOnProperty(
-			PropertyChecker<Property, Word> propertyChecker, Property searchedPropertyValue,
+			PropertyManager<Property, Word> propertyChecker, Property searchedPropertyValue,
 			SearchingDirection searchDirection, DialogWindow parentDialog,
 			boolean startFromBeginningOfList) {
 		int lastRowToSearch;
@@ -107,21 +107,21 @@ public class MyList<Word> {
 	}
 
 	public <Property> int findRowNumberBasedOnPropertyStartingFromHighlightedWord(
-			PropertyChecker<Property, Word> propertyChecker, Property searchedPropertyValue,
+			PropertyManager<Property, Word> propertyChecker, Property searchedPropertyValue,
 			SearchingDirection searchDirection, DialogWindow parentDialog) {
 		return findRowNumberBasedOnProperty(propertyChecker, searchedPropertyValue, searchDirection,
 				parentDialog, false);
 	}
 
 	public <Property> int findRowNumberBasedOnPropertyStartingFromBeginningOfList(
-			PropertyChecker<Property, Word> propertyChecker, Property searchedPropertyValue,
+			PropertyManager<Property, Word> propertyChecker, Property searchedPropertyValue,
 			SearchingDirection searchDirection, DialogWindow parentDialog) {
 		return findRowNumberBasedOnProperty(propertyChecker, searchedPropertyValue, searchDirection,
 				parentDialog, true);
 	}
 
 	public <Property> Word findRowBasedOnPropertyStartingFromBeginningOfList(
-			PropertyChecker<Property, Word> propertyChecker, Property searchedPropertyValue,
+			PropertyManager<Property, Word> propertyChecker, Property searchedPropertyValue,
 			SearchingDirection searchDirection, DialogWindow parentDialog) {
 		int rowNumber = findRowNumberBasedOnProperty(propertyChecker, searchedPropertyValue,
 				searchDirection, parentDialog, true);
@@ -217,6 +217,20 @@ public class MyList<Word> {
 			}
 		});
 		return remove;
+	}
+
+	public <Property> void replaceProperty(PropertyManager<Property, Word> propertyChecker,
+			Property oldValue, DialogWindow parentDialog, Property newValue) {
+		Word kanjiToChange = findRowBasedOnPropertyStartingFromHighlightedWord(propertyChecker,
+				oldValue, SearchingDirection.FORWARD, parentDialog);
+		propertyChecker.replaceValueOfProperty(newValue, kanjiToChange);
+		listController.getWords();
+		save();
+	}
+
+	public <Property> boolean isPropertyDefined(PropertyManager<Property, Word> propertyManager,
+			Property propertyToCheck) {
+		return listController.isPropertyDefined(propertyManager, propertyToCheck);
 	}
 
 }

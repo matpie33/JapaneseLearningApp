@@ -129,7 +129,7 @@ public class ApplicationController {
 	}
 
 	private void initListOfWords() {
-		listOfWords = new MyList<KanjiInformation>(parent, this, new RowInKanjiInformations(),
+		listOfWords = new MyList<KanjiInformation>(parent, this, new RowInKanjiInformations(parent),
 				"Lista kanji");
 
 		for (int i = 1; i <= 15; i++) {

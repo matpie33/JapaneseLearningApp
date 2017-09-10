@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.kanji.listSearching.PropertyManager;
 import com.kanji.model.ListRow;
 
 public class ListWordsController<Word> {
@@ -21,12 +22,20 @@ public class ListWordsController<Word> {
 	}
 
 	public boolean add(Word r) {
-		if (!wordsList.contains(r)) {
+		if (!isWordDefined(r)) {
 			wordsList.add(rowCreator.addRow(r));
 			return true;
 		}
 		return false;
+	}
 
+	private boolean isWordDefined(Word r) {
+		for (ListRow<Word> listRow : wordsList) {
+			if (listRow.getWord().equals(r)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void remove(Word word) {
@@ -93,6 +102,16 @@ public class ListWordsController<Word> {
 	public void clear() {
 		wordsList.clear();
 		rowCreator.clear();
+	}
+
+	public <Property> boolean isPropertyDefined(PropertyManager<Property, Word> propertyManager,
+			Property propertyToCheck) {
+		for (ListRow<Word> listRow : wordsList) {
+			if (propertyManager.isPropertyFound(propertyToCheck, listRow.getWord())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

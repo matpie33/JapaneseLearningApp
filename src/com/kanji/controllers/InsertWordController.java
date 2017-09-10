@@ -4,6 +4,7 @@ import javax.swing.JTextField;
 
 import com.kanji.Row.KanjiInformation;
 import com.kanji.constants.ExceptionsMessages;
+import com.kanji.listSearching.KanjiIdChecker;
 import com.kanji.myList.MyList;
 import com.kanji.windows.DialogWindow;
 
@@ -35,6 +36,10 @@ public class InsertWordController {
 				wordInputText.selectAll();
 				wordInputText.requestFocusInWindow();
 			}
+			else {
+				numberInputText.selectAll();
+				numberInputText.requestFocusInWindow();
+			}
 		}
 
 	}
@@ -48,9 +53,14 @@ public class InsertWordController {
 	}
 
 	private boolean addWordToList(String word, int number) {
-		boolean addedWord = list.addWord(new KanjiInformation(word, number));
+		boolean addedWord = !list.isPropertyDefined(new KanjiIdChecker(), number);
 		if (addedWord) {
+			list.addWord(new KanjiInformation(word, number));
 			list.scrollToBottom();
+		}
+		else {
+			parentDialog.showMessageDialog(
+					String.format(ExceptionsMessages.ID_ALREADY_DEFINED_EXCEPTION, number));
 		}
 		return addedWord;
 	}

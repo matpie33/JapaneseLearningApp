@@ -4,12 +4,21 @@ import java.text.Normalizer;
 
 import com.kanji.Row.KanjiInformation;
 
-public class KanjiKeywordChecker implements PropertyChecker<String, KanjiInformation> {
+public class KanjiKeywordChecker implements PropertyManager<String, KanjiInformation> {
 
 	private SearchOptions options;
 
+	public KanjiKeywordChecker() {
+		this(SearchOptions.BY_FULL_EXPRESSION);
+	}
+
 	public KanjiKeywordChecker(SearchOptions options) {
 		this.options = options;
+	}
+
+	@Override
+	public void replaceValueOfProperty(String keyWord, KanjiInformation kanjiWord) {
+		kanjiWord.setKanjiKeyword(keyWord);
 	}
 
 	@Override
@@ -47,6 +56,11 @@ public class KanjiKeywordChecker implements PropertyChecker<String, KanjiInforma
 
 	private boolean doesPhraseContainSearchedCharacterChain(String phrase, String characterChain) {
 		return phrase.toLowerCase().contains(characterChain.toLowerCase());
+	}
+
+	@Override
+	public String convertStringToProperty(String valueToConvert) {
+		return valueToConvert;
 	}
 
 }

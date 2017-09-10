@@ -9,7 +9,7 @@ public class ExceptionsMessages {
 	public static final String DUPLICATED_ID_EXCEPTION = "Na liście występuje wielokrotnie pewne id. "
 			+ "Należy poprawić.";
 	public static final String NUMBER_FORMAT_EXCEPTION = "Niepoprawnie wpisana liczba.";
-	public static final String ID_ALREADY_DEFINED_EXCEPTION = "Takie id juz istnieje.";
+	public static final String ID_ALREADY_DEFINED_EXCEPTION = "Id o wartości %d juz istnieje.";
 	public static final String WORD_ALREADY_DEFINED_EXCEPTION = "Takie slowo juz istnieje.";
 	public static final String WORD_ALREADY_HIGHLIGHTED_EXCEPTION = "To slowo jest juz zaznaczone."
 			+ "Nie znaleziono innych pozycji.";
