@@ -6,22 +6,15 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 
-import com.guimaker.enums.FillType;
+import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
-import com.guimaker.row.SimpleRow;
 import com.kanji.Row.KanjiInformation;
 import com.kanji.listSearching.KanjiIdChecker;
 import com.kanji.listSearching.KanjiKeywordChecker;
 import com.kanji.windows.ApplicationWindow;
 
 public class RowInKanjiInformations implements ListRowMaker<KanjiInformation> {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Color wordNumberColor = Color.WHITE;
-	private ListWordsController<KanjiInformation> listWordsController;
 	private MyList<KanjiInformation> list;
 	private ApplicationWindow applicationWindow;
 
@@ -31,20 +24,24 @@ public class RowInKanjiInformations implements ListRowMaker<KanjiInformation> {
 
 	@Override
 	public MainPanel createListRow(KanjiInformation kanji, JLabel rowNumberLabel) {
+		rowNumberLabel.setForeground(BasicColors.OCEAN_BLUE);
 		MainPanel panel = new MainPanel(null);
+		JLabel kanjiKeyword = GuiMaker.createLabel("kanji: ", BasicColors.OCEAN_BLUE);
+		JLabel kanjiId = GuiMaker.createLabel("kanji id:", Color.WHITE);
 		String text = kanji.getKanjiKeyword();
 		int ID = kanji.getKanjiID();
-		rowNumberLabel.setForeground(wordNumberColor);
 		JTextArea wordTextArea = GuiMaker.createTextArea(text, new ListPropertyChangeHandler<>(list,
 				applicationWindow, new KanjiKeywordChecker()));
-		JTextArea idTextArea = GuiMaker.createTextArea(true, 5, Integer.toString(ID),
+		JTextArea idTextArea = GuiMaker.createTextArea(5, Integer.toString(ID),
 				new ListPropertyChangeHandler<>(list, applicationWindow, new KanjiIdChecker()));
 		// TODO this should be consistent with what we allow when creating word
 		// - insertWordPanel
 		JButton remove = list.createButtonRemove(kanji);
+		panel.addElementsInColumnStartingFromColumn(wordTextArea, 0, rowNumberLabel, kanjiKeyword,
+				wordTextArea);
+		panel.addElementsInColumnStartingFromColumn(1, kanjiId, idTextArea);
+		panel.addElementsInColumnStartingFromColumn(remove, 1, remove);
 
-		panel.addRow(new SimpleRow(FillType.HORIZONTAL, rowNumberLabel, wordTextArea, idTextArea,
-				remove));
 		return panel;
 
 	}

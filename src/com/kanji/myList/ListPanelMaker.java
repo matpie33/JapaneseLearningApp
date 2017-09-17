@@ -36,7 +36,7 @@ public class ListPanelMaker<Word> {
 		kanjiWords = controller;
 		highlightedRowNumber = -1;
 		wrappingPanel = new MainPanel(BasicColors.VERY_BLUE, true);
-		rowsPanel = new MainPanel(null, true);
+		rowsPanel = new MainPanel(null, true, false);
 		titleLabel = new JLabel();
 		titleLabel.setForeground(Color.WHITE);
 		createDefaultScrollPane();

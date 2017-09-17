@@ -40,6 +40,7 @@ public class ListPropertyChangeHandler<Property, PropertyHolder> implements Focu
 		if (list.isPropertyDefined(propertyManager, propertyNewValue)) {
 			applicationWindow.showMessageDialog(String
 					.format(ExceptionsMessages.ID_ALREADY_DEFINED_EXCEPTION, propertyNewValue));
+			// TODO ouch its not generic and throws exception for strings.
 			elem.setText(propertyBeingModified.toString());
 			elem.requestFocusInWindow();
 			elem.selectAll();
