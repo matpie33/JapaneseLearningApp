@@ -73,11 +73,7 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 		for (Range range : ranges.getRangesAsList()) {
 			if (!range.isEmpty()) {
 				for (int i = range.getRangeStart(); i <= range.getRangeEnd(); i++) {
-					currentlyRepeatedWords.add(kanjiList
-							.findRowBasedOnPropertyStartingFromHighlightedWord(new KanjiIdChecker(),
-									i, SearchingDirection.FORWARD, kanjiList.getParent())
-							.getKanjiKeyword());
-
+					currentlyRepeatedWords.add(kanjiList.getWordInRow(i - 1).getKanjiKeyword());
 				}
 			}
 		}

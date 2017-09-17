@@ -8,13 +8,12 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JSplitPane;
-import javax.swing.border.BevelBorder;
 
 import com.guimaker.enums.FillType;
+import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRow;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
@@ -37,7 +36,6 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	public StartingPanel(ApplicationWindow a, ApplicationController maker) {
 		applicationWindow = a;
 		this.applicationController = maker;
-		mainPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 	}
 
 	@Override
@@ -45,10 +43,12 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		createUpperPanel();
 		createInformationsPanel();
 		List<AbstractButton> buttons = addListeners();
-		mainPanel.addRow(new SimpleRow(FillType.BOTH, listsSplitPane));
+		mainPanel.addRow(new SimpleRow(FillType.BOTH, listsSplitPane).setNotOpaque());
 		addHotkeysPanelHere();
-		mainPanel.addRows(new SimpleRow(FillType.HORIZONTAL, buttons.toArray(new JButton[] {}))
-				.nextRow(saveInfo, problematicKanjis));
+		MainPanel bottomPanel = new MainPanel(null);
+		bottomPanel.addRows(new SimpleRow(FillType.HORIZONTAL, buttons.toArray(new JButton[] {}))
+				.setNotOpaque().disableBorder().nextRow(saveInfo, problematicKanjis));
+		mainPanel.addRow(new SimpleRow(FillType.BOTH, bottomPanel.getPanel()));
 	}
 
 	private List<AbstractButton> addListeners() {

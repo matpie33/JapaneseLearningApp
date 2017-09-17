@@ -3,7 +3,6 @@ package com.kanji.panels;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
@@ -24,6 +23,7 @@ import com.guimaker.row.SimpleRow;
 import com.guimaker.utilities.CommonActionsMaker;
 import com.kanji.Row.KanjiInformation;
 import com.kanji.constants.ButtonsNames;
+import com.kanji.constants.HotkeysDescriptions;
 import com.kanji.constants.Labels;
 import com.kanji.constants.Prompts;
 import com.kanji.listSearching.KanjiIdChecker;
@@ -70,7 +70,6 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 				CommonActionsMaker.createDisposeAction(parentDialog.getContainer()));
 		JLabel searchOptionPrompt = new JLabel(Prompts.SEARCH_OPTION_PROMPT);
 
-		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.WEST, searchOptionPrompt, comboBox));
 		MainPanel keywordSearchPanel = createSearchByKeywordPanel();
 		MainPanel kanjiIdSearchPanel = createSearchByKanjiIdPanel();
 
@@ -81,7 +80,11 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 		searchingPanel.add(SEARCH_BY_KEYWORD_PANEL_NAME, keywordSearchPanel.getPanel());
 		searchingPanel.add(SEARCH_BY_KANJI_ID_PANEL_NAME, kanjiIdSearchPanel.getPanel());
 
-		mainPanel.addRow(new SimpleRow(FillType.HORIZONTAL, searchingPanel));
+		MainPanel searchPanel = new MainPanel(null);
+
+		searchPanel.addRow(new SimpleRow(FillType.NONE, Anchor.WEST, searchOptionPrompt, comboBox));
+		searchPanel.addRow(new SimpleRow(FillType.HORIZONTAL, searchingPanel));
+		mainPanel.addRow(new SimpleRow(FillType.BOTH, searchPanel.getPanel()));
 
 		addHotkeysPanelHere();
 		mainPanel.addRow( // TODO fix in gui maker: if putting rows as highest
@@ -163,17 +166,7 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private JTextField createInputTextField() {
-
 		JTextField insertWord = new JTextField(20);
-		insertWord.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					tryToFindNextOccurence(SearchingDirection.FORWARD);
-				}
-			}
-		});
-
 		return insertWord;
 	}
 
@@ -184,23 +177,25 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private AbstractButton createButtonFindPrevious() {
-		return GuiMaker.createButtonlikeComponent(ComponentType.BUTTON, ButtonsNames.FIND_PREVIOUS,
-				new AbstractAction() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						tryToFindNextOccurence(SearchingDirection.BACKWARD);
-					}
-				});
+		AbstractAction a = new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tryToFindNextOccurence(SearchingDirection.BACKWARD);
+			}
+		};
+		return createButtonWithHotkey(KeyEvent.VK_SHIFT, KeyEvent.VK_ENTER, a,
+				ButtonsNames.FIND_PREVIOUS, HotkeysDescriptions.SEARCH_PREVIOUS_KANJI);
 	}
 
 	private AbstractButton createButtonFindNext() {
-		return GuiMaker.createButtonlikeComponent(ComponentType.BUTTON, ButtonsNames.FIND_NEXT,
-				new AbstractAction() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						tryToFindNextOccurence(SearchingDirection.FORWARD);
-					}
-				});
+		AbstractAction a = new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tryToFindNextOccurence(SearchingDirection.FORWARD);
+			}
+		};
+		return createButtonWithHotkey(KeyEvent.VK_ENTER, a, ButtonsNames.FIND_NEXT,
+				HotkeysDescriptions.SEARCH_NEXT_KANJI);
 	}
 
 	private void tryToFindNextOccurence(SearchingDirection direction) {

@@ -20,5 +20,7 @@ public class HotkeysDescriptions {
 	public static final String ADD_WORD = "otwiera okno sluzace do dodawania nowych kanji";
 	public static final String SAVE_PROJECT = "zapisuje projekt";
 	public static final String EXPORT_LIST = "exportuje listę kanji";
+	public static final String SEARCH_NEXT_KANJI = "szuka słowa poruszając się w dół listy";
+	public static final String SEARCH_PREVIOUS_KANJI = "szuka słowa poruszając się w górę listy";
 
 }

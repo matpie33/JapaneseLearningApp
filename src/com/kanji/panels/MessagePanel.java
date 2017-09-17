@@ -30,7 +30,6 @@ public class MessagePanel extends AbstractPanelWithHotkeysInfo {
 		AbstractButton button = createButtonClose();
 		JScrollPane scrollPane = GuiMaker.createTextPaneWrappedInScrollPane(message,
 				TextAlignment.CENTERED);
-
 		mainPanel.addRow(new SimpleRow(FillType.BOTH, scrollPane));
 		addHotkeysPanelHere();
 		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.CENTER, button));

@@ -6,6 +6,7 @@ public class Labels {
 	public static final String REPEATING_WITH_INTERNET = "Z internetem";
 	public static final String REPEATING_WITHOUT_INTERNET = "Bez internetu";
 	public static final String KANJI_ID_LABEL = "Kanji id: ";
+	public static final String KANJI_KEYWORD_LABEL = "Kanji: ";
 
 	public static final String COMBOBOX_OPTION_SEARCH_BY_KEYWORD = "slowa kluczowego";
 	public static final String COMBOBOX_OPTION_SEARCH_BY_KANJI_ID = "id kanji";

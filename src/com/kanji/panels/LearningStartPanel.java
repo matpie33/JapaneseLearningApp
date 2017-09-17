@@ -20,6 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.text.AbstractDocument;
 
@@ -62,30 +63,34 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		JTextArea prompt = createPrompt();
 		problematicCheckbox = createProblematicKanjiCheckbox();
 		rangesPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE, true);
-		rangesPanel.addRow(
-				new SimpleRow(FillType.NONE, Anchor.CENTER, new JLabel(Titles.KANJI_RANGES)));
 		scrollPane = createRangesPanelScrollPane();
 		addRowToRangesPanel();
 
 		JTextField problematicKanjis = createProblematicRangeField(Prompts.PROBLEMATIC_KANJI);
 		JButton newRow = createButtonAddRow(ButtonsNames.ADD_ROW, rangesPanel);
-		sumRangeField = GuiMaker.createTextField(1, Prompts.RANGE_SUM);
+		sumRangeField = GuiMaker.createTextField(1, Prompts.RANGE_SUM, false);
 		AbstractButton cancel = createButtonWithHotkey(KeyEvent.VK_ESCAPE,
 				CommonActionsMaker.createDisposeAction(parentDialog.getContainer()),
 				ButtonsNames.CANCEL, HotkeysDescriptions.CLOSE_WINDOW);
 		AbstractButton approve = createButtonStartLearning(ButtonsNames.APPROVE,
 				rangesPanel.getPanel());
 
-		mainPanel.addRows(new SimpleRow(FillType.HORIZONTAL, prompt).nextRow(problematicCheckbox)
-				.nextRow(problematicKanjis).nextRow(FillType.BOTH, scrollPane)
-				.nextRow(FillType.HORIZONTAL, newRow, sumRangeField)
-				.fillHorizontallySomeElements(sumRangeField));
+		mainPanel.addRow(
+				(new SimpleRow(FillType.HORIZONTAL, prompt).disableBorder().setNotOpaque()));
+		MainPanel problematicPanel = new MainPanel(null);
+		problematicPanel.addRows(
+				new SimpleRow(FillType.HORIZONTAL, problematicCheckbox).nextRow(problematicKanjis)
+						.nextRow(FillType.NONE, Anchor.CENTER, new JLabel(Titles.KANJI_RANGES))
+						.nextRow(FillType.BOTH, scrollPane)
+						.nextRow(FillType.HORIZONTAL, newRow, sumRangeField)
+						.fillVertically(sumRangeField).fillHorizontallySomeElements(sumRangeField));
+		mainPanel.addRow(new SimpleRow(FillType.BOTH, problematicPanel.getPanel()));
 		addHotkeysPanelHere();
 		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.EAST, cancel, approve));
 	}
 
 	private JScrollPane createRangesPanelScrollPane() {
-		Border b = BorderFactory.createLineBorder(BasicColors.VERY_BLUE);
+		Border b = BorderFactory.createBevelBorder(BevelBorder.LOWERED);
 		return GuiMaker.createScrollPane(BasicColors.DARK_BLUE, b, rangesPanel.getPanel(),
 				new Dimension(350, 200));
 	}

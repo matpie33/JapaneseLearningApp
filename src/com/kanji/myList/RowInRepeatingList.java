@@ -32,7 +32,6 @@ public class RowInRepeatingList implements ListRowMaker<RepeatingInformation> {
 		DateTimeFormatter sdf = DateTimeFormatter.ofPattern("dd MMMM yyyy / HH:mm");
 		JLabel date = GuiMaker.createLabel(Prompts.REPEATING_DATE + sdf.format(date1), labelsColor);
 		date.setForeground(BasicColors.OCEAN_BLUE);
-		rowNumberLabel.setForeground(BasicColors.OCEAN_BLUE);
 		JLabel timeSpent = null;
 
 		if (time != null) {

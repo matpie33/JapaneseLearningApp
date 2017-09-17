@@ -10,6 +10,7 @@ import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.kanji.Row.KanjiInformation;
+import com.kanji.constants.Labels;
 import com.kanji.listSearching.KanjiIdChecker;
 import com.kanji.listSearching.KanjiKeywordChecker;
 import com.kanji.windows.ApplicationWindow;
@@ -24,10 +25,10 @@ public class RowInKanjiInformations implements ListRowMaker<KanjiInformation> {
 
 	@Override
 	public MainPanel createListRow(KanjiInformation kanji, JLabel rowNumberLabel) {
-		rowNumberLabel.setForeground(BasicColors.OCEAN_BLUE);
 		MainPanel panel = new MainPanel(null);
-		JLabel kanjiKeyword = GuiMaker.createLabel("kanji: ", BasicColors.OCEAN_BLUE);
-		JLabel kanjiId = GuiMaker.createLabel("kanji id:", Color.WHITE);
+		JLabel kanjiKeyword = GuiMaker.createLabel(Labels.KANJI_KEYWORD_LABEL,
+				BasicColors.OCEAN_BLUE);
+		JLabel kanjiId = GuiMaker.createLabel(Labels.KANJI_ID_LABEL, Color.WHITE);
 		String text = kanji.getKanjiKeyword();
 		int ID = kanji.getKanjiID();
 		JTextArea wordTextArea = GuiMaker.createTextArea(text, new ListPropertyChangeHandler<>(list,

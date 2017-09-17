@@ -48,7 +48,7 @@ public class ListPanelMaker<Word> {
 
 	public ListRow<Word> addRow(Word row) {
 		JLabel rowNumberLabel = new JLabel(createTextForRowNumber(rowsPanel.getNumberOfRows() + 1));
-
+		rowNumberLabel.setForeground(BasicColors.OCEAN_BLUE);
 		JPanel wrappingPanel = this.rowsPanel.addRow(new SimpleRow(FillType.HORIZONTAL,
 				Anchor.NORTH, listRow.createListRow(row, rowNumberLabel).getPanel()));
 		wrappingPanel

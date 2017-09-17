@@ -13,6 +13,7 @@ import com.guimaker.enums.Anchor;
 import com.guimaker.enums.ComponentType;
 import com.guimaker.enums.FillType;
 import com.guimaker.panels.GuiMaker;
+import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRow;
 import com.guimaker.utilities.CommonActionsMaker;
 import com.kanji.constants.ButtonsNames;
@@ -51,10 +52,14 @@ public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 
 		AbstractButton approve = createButtonValidate(ButtonsNames.APPROVE);
 
-		mainPanel.addRows(new SimpleRow(FillType.HORIZONTAL, addWordPrompt, insertWordTextField)
+		MainPanel addWordPanel = new MainPanel(null);
+
+		addWordPanel.addRows(new SimpleRow(FillType.HORIZONTAL, addWordPrompt, insertWordTextField)
 				.fillHorizontallySomeElements(insertWordTextField)
 				.nextRow(addNumberPrompt, insertNumberTextField)
 				.fillHorizontallySomeElements(insertNumberTextField));
+
+		mainPanel.addRow(new SimpleRow(FillType.BOTH, addWordPanel.getPanel()));
 		addHotkeysPanelHere();
 		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.EAST, cancel, approve));
 

@@ -5,7 +5,7 @@ public class Prompts {
 	public static final String ADD_DIALOG = "Podaj słówko";
 	public static final String ADD_NUMBER = "Podaj numerek";
 	public static final String SEARCH_DIALOG = "Wpisz szukane słowo";
-	public static final String LEARNING_START = "Proszę wpisać numery słówek, które chcesz powtórzyć. "
+	public static final String LEARNING_START = "Proszę wpisać numery wierszy na liście kanji, które chcesz powtórzyć. "
 			+ "Zewnetrzne numery slowek rowniez beda uwzglednione.";
 	public static final String RANGE_SUM = "Łączna liczba kanji: ";
 	public static final String PROBLEMATIC_KANJI = "Problematycznych kanji: ";

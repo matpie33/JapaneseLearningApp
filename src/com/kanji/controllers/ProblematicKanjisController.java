@@ -167,4 +167,8 @@ public class ProblematicKanjisController {
 		return problematicKanjisIds;
 	}
 
+	public int getNumberOfRows() {
+		return kanjisToBrowse.size();
+	}
+
 }

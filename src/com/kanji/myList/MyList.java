@@ -71,14 +71,14 @@ public class MyList<Word> {
 			SearchingDirection searchDirection, DialogWindow parentDialog,
 			boolean startFromBeginningOfList) {
 		int lastRowToSearch;
+		int incrementValue = searchDirection.getIncrementationValue();
 		if (startFromBeginningOfList) {
 			lastRowToSearch = 0;
 		}
 		else {
-			lastRowToSearch = listController.getHighlightedRowNumber() + 1;
+			lastRowToSearch = listController.getHighlightedRowNumber() + incrementValue;
 		}
 
-		int incrementValue = searchDirection.getIncrementationValue();
 		int rowNumber = lastRowToSearch;
 		do {
 			if (isRowNumberOutOfRange(rowNumber)) {
@@ -231,6 +231,10 @@ public class MyList<Word> {
 	public <Property> boolean isPropertyDefined(PropertyManager<Property, Word> propertyManager,
 			Property propertyToCheck) {
 		return listController.isPropertyDefined(propertyManager, propertyToCheck);
+	}
+
+	public Word getWordInRow(int rowNumber1Based) {
+		return listController.getWordInRow(rowNumber1Based);
 	}
 
 }

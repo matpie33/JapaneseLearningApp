@@ -4,9 +4,11 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
@@ -35,8 +37,8 @@ public abstract class AbstractPanelWithHotkeysInfo {
 
 	public AbstractPanelWithHotkeysInfo() {
 		mainPanel = new MainPanel(BasicColors.OCEAN_BLUE);
-
 		mainPanel.setRowColor(BasicColors.VERY_LIGHT_BLUE);
+		mainPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		createHotkeysPanel();
 	}
 
@@ -97,6 +99,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 
 	public AbstractButton createButtonWithHotkey(int keyModifier, int keyEvent,
 			AbstractAction action, String buttonLabel, String hotkeyDescription) {
+		// TODO replace keyModifier with an enum
 		AbstractButton button = GuiMaker.createButtonlikeComponent(ComponentType.BUTTON,
 				buttonLabel, action);
 		addHotkey(keyModifier, keyEvent, action, button, hotkeyDescription);
