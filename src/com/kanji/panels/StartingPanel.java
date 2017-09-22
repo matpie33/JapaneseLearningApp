@@ -48,6 +48,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		MainPanel bottomPanel = new MainPanel(null);
 		bottomPanel.addRows(new SimpleRow(FillType.HORIZONTAL, buttons.toArray(new JButton[] {}))
 				.setNotOpaque().disableBorder().nextRow(saveInfo, problematicKanjis));
+		// TODO problematic kanji button now takes 2 rows
 		mainPanel.addRow(new SimpleRow(FillType.BOTH, bottomPanel.getPanel()));
 	}
 
@@ -128,7 +129,6 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		return buttons;
 	}
 
-	@SuppressWarnings("rawtypes")
 	private void createUpperPanel() {
 		listsSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 				applicationController.getWordsList().getPanel(),

@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
@@ -19,13 +20,13 @@ import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRow;
 import com.kanji.model.ListRow;
+import com.kanji.utilities.CommonListElements;
 
 public class ListPanelMaker<Word> {
 
-	protected ListWordsController<Word> kanjiWords;
-	protected MyList<Word> list;
-	protected MainPanel wrappingPanel;
-	protected MainPanel rowsPanel;
+	private ListWordsController<Word> listWordsController;
+	private MainPanel wrappingPanel;
+	private MainPanel rowsPanel;
 	private int highlightedRowNumber;
 	private JScrollPane parentScrollPane;
 	private final Dimension scrollPanesSize = new Dimension(350, 300);
@@ -33,7 +34,7 @@ public class ListPanelMaker<Word> {
 	private ListRowMaker<Word> listRow;
 
 	public ListPanelMaker(ListRowMaker<Word> listRow, ListWordsController<Word> controller) {
-		kanjiWords = controller;
+		listWordsController = controller;
 		highlightedRowNumber = -1;
 		wrappingPanel = new MainPanel(BasicColors.VERY_BLUE, true);
 		rowsPanel = new MainPanel(null, true, false);
@@ -46,14 +47,17 @@ public class ListPanelMaker<Word> {
 
 	}
 
-	public ListRow<Word> addRow(Word row) {
+	public ListRow<Word> addRow(Word word) {
 		JLabel rowNumberLabel = new JLabel(createTextForRowNumber(rowsPanel.getNumberOfRows() + 1));
+		JButton remove = new JButton("-");
+		remove.addActionListener(listWordsController.createDeleteRowAction(word));
+		CommonListElements commonListElements = new CommonListElements(remove, rowNumberLabel);
 		rowNumberLabel.setForeground(BasicColors.OCEAN_BLUE);
 		JPanel wrappingPanel = this.rowsPanel.addRow(new SimpleRow(FillType.HORIZONTAL,
-				Anchor.NORTH, listRow.createListRow(row, rowNumberLabel).getPanel()));
+				Anchor.NORTH, listRow.createListRow(word, commonListElements).getPanel()));
 		wrappingPanel
 				.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, BasicColors.LIGHT_BLUE));
-		return new ListRow<Word>(row, wrappingPanel, rowNumberLabel);
+		return new ListRow<Word>(word, wrappingPanel, rowNumberLabel);
 	}
 
 	public String createTextForRowNumber(int rowNumber) {
@@ -65,11 +69,7 @@ public class ListPanelMaker<Word> {
 	}
 
 	public ListWordsController<Word> getController() {
-		return kanjiWords;
-	}
-
-	public void setList(MyList<Word> list) {
-		this.list = list;
+		return listWordsController;
 	}
 
 	public JPanel getPanel() {

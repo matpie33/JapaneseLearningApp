@@ -175,6 +175,10 @@ public class ApplicationController {
 		return file;
 	}
 
+	public boolean showConfirmDialog(String message) {
+		return parent.showConfirmDialog(message);
+	}
+
 	public void showInsertWordDialog() {
 		parent.showInsertDialog(listOfWords);
 	}

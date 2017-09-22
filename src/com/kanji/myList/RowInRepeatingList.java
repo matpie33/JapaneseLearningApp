@@ -14,6 +14,7 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRow;
 import com.kanji.Row.RepeatingInformation;
 import com.kanji.constants.Prompts;
+import com.kanji.utilities.CommonListElements;
 
 public class RowInRepeatingList implements ListRowMaker<RepeatingInformation> {
 
@@ -21,7 +22,8 @@ public class RowInRepeatingList implements ListRowMaker<RepeatingInformation> {
 	private final Color labelsColor = Color.WHITE;
 
 	@Override
-	public MainPanel createListRow(RepeatingInformation rep, JLabel rowNumberLabel) {
+	public MainPanel createListRow(RepeatingInformation rep,
+			CommonListElements commonListElements) {
 		String word = rep.getRepeatingRange();
 		String time = rep.getTimeSpentOnRepeating();
 		LocalDateTime date1 = rep.getRepeatingDate();
@@ -38,21 +40,14 @@ public class RowInRepeatingList implements ListRowMaker<RepeatingInformation> {
 			timeSpent = GuiMaker.createLabel(Prompts.REPEATING_TIME + time, labelsColor);
 		}
 
-		JButton delete = list.createButtonRemove(rep);
+		JButton delete = commonListElements.getButtonDelete();
 
 		MainPanel panel = new MainPanel(null);
-		panel.addRows(new SimpleRow(FillType.HORIZONTAL, rowNumberLabel, date)
-				.nextRow(repeatedWords).nextRow(timeSpent).nextRow(FillType.NONE, delete));
-		// addActionListener(delete, wrappingPanel, rep);
+		panel.addRows(
+				new SimpleRow(FillType.HORIZONTAL, commonListElements.getRowNumberLabel(), date)
+						.nextRow(repeatedWords).nextRow(timeSpent).nextRow(FillType.NONE, delete));
 		return panel;
 
-	}
-
-	@Override
-	public void setList(MyList<RepeatingInformation> list) {
-		// TODO we should strive to eliminate this method, as it's not different
-		// accross row types
-		this.list = list;
 	}
 
 }

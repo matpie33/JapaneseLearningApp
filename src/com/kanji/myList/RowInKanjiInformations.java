@@ -13,6 +13,7 @@ import com.kanji.Row.KanjiInformation;
 import com.kanji.constants.Labels;
 import com.kanji.listSearching.KanjiIdChecker;
 import com.kanji.listSearching.KanjiKeywordChecker;
+import com.kanji.utilities.CommonListElements;
 import com.kanji.windows.ApplicationWindow;
 
 public class RowInKanjiInformations implements ListRowMaker<KanjiInformation> {
@@ -24,7 +25,7 @@ public class RowInKanjiInformations implements ListRowMaker<KanjiInformation> {
 	}
 
 	@Override
-	public MainPanel createListRow(KanjiInformation kanji, JLabel rowNumberLabel) {
+	public MainPanel createListRow(KanjiInformation kanji, CommonListElements commonListElements) {
 		MainPanel panel = new MainPanel(null);
 		JLabel kanjiKeyword = GuiMaker.createLabel(Labels.KANJI_KEYWORD_LABEL,
 				BasicColors.OCEAN_BLUE);
@@ -37,19 +38,14 @@ public class RowInKanjiInformations implements ListRowMaker<KanjiInformation> {
 				new ListPropertyChangeHandler<>(list, applicationWindow, new KanjiIdChecker()));
 		// TODO this should be consistent with what we allow when creating word
 		// - insertWordPanel
-		JButton remove = list.createButtonRemove(kanji);
-		panel.addElementsInColumnStartingFromColumn(wordTextArea, 0, rowNumberLabel, kanjiKeyword,
-				wordTextArea);
+		JButton remove = commonListElements.getButtonDelete();
+		panel.addElementsInColumnStartingFromColumn(wordTextArea, 0,
+				commonListElements.getRowNumberLabel(), kanjiKeyword, wordTextArea);
 		panel.addElementsInColumnStartingFromColumn(1, kanjiId, idTextArea);
 		panel.addElementsInColumnStartingFromColumn(remove, 1, remove);
 
 		return panel;
 
-	}
-
-	@Override
-	public void setList(MyList<KanjiInformation> list) {
-		this.list = list;
 	}
 
 }

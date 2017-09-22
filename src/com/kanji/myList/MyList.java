@@ -1,16 +1,10 @@
 package com.kanji.myList;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import com.kanji.Row.KanjiInformation;
-import com.kanji.Row.RepeatingInformation;
 import com.kanji.constants.ExceptionsMessages;
-import com.kanji.constants.Prompts;
 import com.kanji.controllers.ApplicationController;
 import com.kanji.listSearching.PropertyManager;
 import com.kanji.listSearching.SearchingDirection;
@@ -25,8 +19,7 @@ public class MyList<Word> {
 			ListRowMaker<Word> listRowMaker, String title) {
 		this.applicationController = applicationController;
 		this.parent = parentDialog;
-		listRowMaker.setList(this);
-		listController = new ListWordsController<>(listRowMaker, title, this);
+		listController = new ListWordsController<>(listRowMaker, title, applicationController);
 	}
 
 	public boolean addWord(Word word) {
@@ -194,29 +187,6 @@ public class MyList<Word> {
 
 	public void removeRow(Word word) {
 		listController.remove(word);
-	}
-
-	public JButton createButtonRemove(Word word) {
-		JButton remove = new JButton("-");
-		remove.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String rowSpecificPrompt = "";
-				if (word instanceof KanjiInformation) {
-					rowSpecificPrompt = Prompts.KANJI_ROW;
-				}
-				if (word instanceof RepeatingInformation) {
-					rowSpecificPrompt = Prompts.REPEATING_ELEMENT;
-				}
-
-				if (!showMessage(String.format(Prompts.DELETE_ELEMENT, rowSpecificPrompt))) {
-					return;
-				}
-				removeRow(word);
-				save();
-			}
-		});
-		return remove;
 	}
 
 	public <Property> void replaceProperty(PropertyManager<Property, Word> propertyChecker,

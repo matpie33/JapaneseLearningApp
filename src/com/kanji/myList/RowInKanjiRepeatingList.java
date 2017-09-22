@@ -16,6 +16,7 @@ import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.Labels;
 import com.kanji.controllers.ProblematicKanjisController;
 import com.kanji.model.KanjiRow;
+import com.kanji.utilities.CommonListElements;
 
 public class RowInKanjiRepeatingList implements ListRowMaker<KanjiInformation> {
 
@@ -26,7 +27,7 @@ public class RowInKanjiRepeatingList implements ListRowMaker<KanjiInformation> {
 	}
 
 	@Override
-	public MainPanel createListRow(KanjiInformation row, JLabel rowNumberLabel) {
+	public MainPanel createListRow(KanjiInformation row, CommonListElements commonListElements) {
 		MainPanel panel = new MainPanel(null);
 		JLabel id = new JLabel("" + row.getKanjiID());
 		id.setForeground(Color.white);
@@ -39,8 +40,8 @@ public class RowInKanjiRepeatingList implements ListRowMaker<KanjiInformation> {
 		controller.addKanjiRow(row.getKanjiID());
 
 		JButton buttonGoToSource = createButtonGoToSource(rowNumber, row.getKanjiID());
-		panel.addElementsInColumnStartingFromColumn(kanjiTextArea, 0, rowNumberLabel, kanjiKeyword,
-				kanjiTextArea);
+		panel.addElementsInColumnStartingFromColumn(kanjiTextArea, 0,
+				commonListElements.getRowNumberLabel(), kanjiKeyword, kanjiTextArea);
 		panel.addElementsInColumnStartingFromColumn(1, kanjiId, id);
 		panel.addElementsInColumnStartingFromColumn(buttonGoToSource, 1, buttonGoToSource);
 		return panel;
@@ -56,10 +57,6 @@ public class RowInKanjiRepeatingList implements ListRowMaker<KanjiInformation> {
 		});
 		button.setFocusable(false);
 		return button;
-	}
-
-	public void setList(MyList<KanjiInformation> list) {
-		;
 	}
 
 }

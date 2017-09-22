@@ -1,11 +1,9 @@
 package com.kanji.myList;
 
-import javax.swing.JLabel;
-
 import com.guimaker.panels.MainPanel;
+import com.kanji.utilities.CommonListElements;
 
 public interface ListRowMaker<Word> {
-	public MainPanel createListRow(Word data, JLabel rowNumberLabel);
+	public MainPanel createListRow(Word data, CommonListElements commonListElements);
 
-	public void setList(MyList<Word> list);
 }

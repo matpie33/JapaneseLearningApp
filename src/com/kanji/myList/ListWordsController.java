@@ -1,11 +1,17 @@
 package com.kanji.myList;
 
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.AbstractAction;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.kanji.Row.KanjiInformation;
+import com.kanji.Row.RepeatingInformation;
+import com.kanji.constants.Prompts;
+import com.kanji.controllers.ApplicationController;
 import com.kanji.listSearching.PropertyManager;
 import com.kanji.model.ListRow;
 
@@ -13,11 +19,13 @@ public class ListWordsController<Word> {
 	private static final long serialVersionUID = -3144332338336535803L;
 	private List<ListRow<Word>> wordsList;
 	private ListPanelMaker<Word> rowCreator;
+	private ApplicationController applicationController;
 
-	public ListWordsController(ListRowMaker<Word> listRowMaker, String title, MyList<Word> list) {
+	public ListWordsController(ListRowMaker<Word> listRowMaker, String title,
+			ApplicationController applicationController) {
+		this.applicationController = applicationController;
 		wordsList = new ArrayList<>();
 		rowCreator = new ListPanelMaker<>(listRowMaker, this);
-		this.rowCreator.setList(list);
 		this.rowCreator.setTitle(title);
 	}
 
@@ -112,6 +120,28 @@ public class ListWordsController<Word> {
 			}
 		}
 		return false;
+	}
+
+	public AbstractAction createDeleteRowAction(Word word) {
+		return new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String rowSpecificPrompt = "";
+				if (word instanceof KanjiInformation) {
+					rowSpecificPrompt = Prompts.KANJI_ROW;
+				}
+				if (word instanceof RepeatingInformation) {
+					rowSpecificPrompt = Prompts.REPEATING_ELEMENT;
+				}
+
+				if (!applicationController.showConfirmDialog(
+						String.format(Prompts.DELETE_ELEMENT, rowSpecificPrompt))) {
+					return;
+				}
+				remove(word);
+				applicationController.save();
+			}
+		};
 	}
 
 }
