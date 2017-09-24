@@ -51,7 +51,7 @@ public class ApplicationWindow extends DialogWindow {
 		RepeatingWordsPanel repeatingWordsPanel = new RepeatingWordsPanel(this);
 		applicationController = new ApplicationController(this,
 				repeatingWordsPanel.getController());
-
+		applicationController.initializeListsElements();
 		startingPanel = new StartingPanel(this, applicationController);
 
 		mainApplicationPanel.add(startingPanel.createPanel(),

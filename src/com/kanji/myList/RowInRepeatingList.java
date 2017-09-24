@@ -18,7 +18,6 @@ import com.kanji.utilities.CommonListElements;
 
 public class RowInRepeatingList implements ListRowMaker<RepeatingInformation> {
 
-	private MyList<RepeatingInformation> list;
 	private final Color labelsColor = Color.WHITE;
 
 	@Override

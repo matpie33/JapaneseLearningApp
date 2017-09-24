@@ -13,11 +13,11 @@ import com.kanji.Row.KanjiInformation;
 import com.kanji.constants.Labels;
 import com.kanji.listSearching.KanjiIdChecker;
 import com.kanji.listSearching.KanjiKeywordChecker;
+import com.kanji.utilities.CommonGuiElementsMaker;
 import com.kanji.utilities.CommonListElements;
 import com.kanji.windows.ApplicationWindow;
 
 public class RowInKanjiInformations implements ListRowMaker<KanjiInformation> {
-	private MyList<KanjiInformation> list;
 	private ApplicationWindow applicationWindow;
 
 	public RowInKanjiInformations(ApplicationWindow applicationWindow) {
@@ -32,12 +32,15 @@ public class RowInKanjiInformations implements ListRowMaker<KanjiInformation> {
 		JLabel kanjiId = GuiMaker.createLabel(Labels.KANJI_ID_LABEL, Color.WHITE);
 		String text = kanji.getKanjiKeyword();
 		int ID = kanji.getKanjiID();
-		JTextArea wordTextArea = GuiMaker.createTextArea(text, new ListPropertyChangeHandler<>(list,
-				applicationWindow, new KanjiKeywordChecker()));
-		JTextArea idTextArea = GuiMaker.createTextArea(5, Integer.toString(ID),
-				new ListPropertyChangeHandler<>(list, applicationWindow, new KanjiIdChecker()));
-		// TODO this should be consistent with what we allow when creating word
-		// - insertWordPanel
+		JTextArea wordTextArea = CommonGuiElementsMaker.createKanjiWordInput(text);
+		wordTextArea.addFocusListener(new ListPropertyChangeHandler<>(
+				applicationWindow.getApplicationController().getWordsList(), applicationWindow,
+				new KanjiKeywordChecker()));
+		JTextArea idTextArea = CommonGuiElementsMaker.createKanjiIdInput();
+		idTextArea.setText(Integer.toString(ID));
+		idTextArea.addFocusListener(new ListPropertyChangeHandler<>(
+				applicationWindow.getApplicationController().getWordsList(), applicationWindow,
+				new KanjiIdChecker()));
 		JButton remove = commonListElements.getButtonDelete();
 		panel.addElementsInColumnStartingFromColumn(wordTextArea, 0,
 				commonListElements.getRowNumberLabel(), kanjiKeyword, wordTextArea);

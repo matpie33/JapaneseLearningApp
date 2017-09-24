@@ -16,5 +16,7 @@ public class Titles {
 	public static final String CURRENT_PROBLEMATIC_WORDS = "Problematyczne słówka";
 	public static final String OPTIONS_FOR_SHOWING_PROBLEMATIC_KANJIS = "Opcje wyświetlania kanji";
 	public static final String KANJI_DIALOG = "Kanji";
+	public static final String KANJI_LIST = "Lista kanji";
+	public static final String REPEATING_LIST = "Informacje o powtórkach";
 
 }

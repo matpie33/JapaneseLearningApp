@@ -19,6 +19,7 @@ import com.kanji.Row.KanjiInformation;
 import com.kanji.Row.RepeatingInformation;
 import com.kanji.constants.ApplicationPanels;
 import com.kanji.constants.SavingStatus;
+import com.kanji.constants.Titles;
 import com.kanji.myList.MyList;
 import com.kanji.myList.RowInKanjiInformations;
 import com.kanji.myList.RowInRepeatingList;
@@ -41,13 +42,16 @@ public class ApplicationController {
 			RepeatingWordsController repeatingWordsPanelController) {
 		problematicKanjis = new HashSet<Integer>();
 		this.parent = parent;
-		initElements();
+		listOfWords = new MyList<KanjiInformation>(parent, this, new RowInKanjiInformations(parent),
+				Titles.KANJI_LIST);
+		repeats = new MyList<RepeatingInformation>(parent, this, new RowInRepeatingList(),
+				Titles.REPEATING_LIST);
 		loadingAndSaving = new LoadingAndSaving();
 		this.repeatingWordsPanelController = repeatingWordsPanelController;
 	}
 
-	private void initElements() {
-		initListOfWords();
+	public void initializeListsElements() {
+		initWordsList();
 		initRepeatsList();
 	}
 
@@ -128,9 +132,7 @@ public class ApplicationController {
 		t2.start();
 	}
 
-	private void initListOfWords() {
-		listOfWords = new MyList<KanjiInformation>(parent, this, new RowInKanjiInformations(parent),
-				"Lista kanji");
+	private void initWordsList() {
 
 		for (int i = 1; i <= 15; i++) {
 			listOfWords.addWord(new KanjiInformation("Word no. " + i, i));
@@ -143,8 +145,7 @@ public class ApplicationController {
 	}
 
 	private void initRepeatsList() {
-		repeats = new MyList<RepeatingInformation>(parent, this, new RowInRepeatingList(),
-				"Informacje o powtórkach");
+
 		repeats.addWord(
 				new RepeatingInformation("abc", LocalDateTime.of(1993, 11, 13, 13, 25), true));
 		repeats.addWord(
