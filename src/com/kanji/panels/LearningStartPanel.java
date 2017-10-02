@@ -60,8 +60,6 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		controller = new LearningStartController(list, numberOfWords, applicationController, this);
 	}
 
-	// TODO scrolling with mouse wheel not working
-
 	@Override
 	void createElements() {
 
@@ -96,10 +94,9 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 	private JScrollPane createRangesPanelScrollPane() {
 		Border b = BorderFactory.createBevelBorder(BevelBorder.LOWERED);
-		return GuiMaker
-				.createScrollPane(new ScrollPaneOptions().componentToWrap(rangesPanel.getPanel())
-						.backgroundColor(BasicColors.DARK_BLUE).border(b)
-						.preferredSize(new Dimension(350, 200)));
+		return GuiMaker.createScrollPane(new ScrollPaneOptions()
+				.componentToWrap(rangesPanel.getPanel()).backgroundColor(BasicColors.DARK_BLUE)
+				.border(b).preferredSize(new Dimension(350, 200)));
 	}
 
 	private JTextArea createPrompt() {
