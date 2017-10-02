@@ -1,5 +1,6 @@
 package com.kanji.panels;
 
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
@@ -19,6 +20,7 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRow;
 import com.guimaker.utilities.CommonActionsMaker;
 import com.guimaker.utilities.HotkeyWrapper;
+import com.guimaker.utilities.KeyModifiers;
 import com.kanji.constants.HotkeysDescriptions;
 import com.kanji.constants.Titles;
 import com.kanji.windows.DialogWindow;
@@ -68,7 +70,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 
 	}
 
-	public void addHotkeysInformation(int keyModifier, int keyEvent, JComponent component,
+	public void addHotkeysInformation(KeyModifiers keyModifier, int keyEvent, JComponent component,
 			String hotkeyDescription) {
 		HotkeyWrapper wrapper = new HotkeyWrapper(keyModifier, keyEvent);
 		addHotkeyInformation(hotkeyDescription, wrapper);
@@ -76,16 +78,16 @@ public abstract class AbstractPanelWithHotkeysInfo {
 
 	public void addHotkeysInformation(int keyEvent, JComponent component,
 			String hotkeyDescription) {
-		HotkeyWrapper wrapper = new HotkeyWrapper(0, keyEvent);
+		HotkeyWrapper wrapper = new HotkeyWrapper(KeyModifiers.NONE, keyEvent);
 		addHotkeyInformation(hotkeyDescription, wrapper);
 	}
 
 	public void addHotkey(int keyEvent, AbstractAction action, JComponent component,
 			String hotkeyDescription) {
-		addHotkey(0, keyEvent, action, component, hotkeyDescription);
+		addHotkey(KeyModifiers.NONE, keyEvent, action, component, hotkeyDescription);
 	}
 
-	public void addHotkey(int keyModifier, int keyEvent, AbstractAction action,
+	public void addHotkey(KeyModifiers keyModifier, int keyEvent, AbstractAction action,
 			JComponent component, String hotkeyDescription) {
 		HotkeyWrapper wrapper = new HotkeyWrapper(keyModifier, keyEvent);
 		CommonActionsMaker.addHotkey(keyEvent, wrapper.getKeyMask(), action, component);
@@ -94,10 +96,11 @@ public abstract class AbstractPanelWithHotkeysInfo {
 
 	public AbstractButton createButtonWithHotkey(int keyEvent, AbstractAction action,
 			String buttonLabel, String hotkeyDescription) {
-		return createButtonWithHotkey(0, keyEvent, action, buttonLabel, hotkeyDescription);
+		return createButtonWithHotkey(KeyModifiers.NONE, keyEvent, action, buttonLabel,
+				hotkeyDescription);
 	}
 
-	public AbstractButton createButtonWithHotkey(int keyModifier, int keyEvent,
+	public AbstractButton createButtonWithHotkey(KeyModifiers keyModifier, int keyEvent,
 			AbstractAction action, String buttonLabel, String hotkeyDescription) {
 		// TODO replace keyModifier with an enum
 		AbstractButton button = GuiMaker.createButtonlikeComponent(ComponentType.BUTTON,
@@ -115,8 +118,9 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	}
 
 	private String createInformationAboutHotkey(HotkeyWrapper hotkey, String description) {
-		return (hotkey.hasProperKeyModifier() ? KeyEvent.getKeyText(hotkey.getKeyModifier()) + " + "
-				: "") + KeyEvent.getKeyText(hotkey.getKeyEvent()) + " : " + description;
+		return (hotkey.hasKeyModifier()
+				? InputEvent.getModifiersExText(hotkey.getKeyMask()) + " + " : "")
+				+ KeyEvent.getKeyText(hotkey.getKeyEvent()) + " : " + description;
 	}
 
 	public void setParentDialog(DialogWindow parent) {

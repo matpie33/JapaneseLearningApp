@@ -15,6 +15,7 @@ import javax.swing.JSplitPane;
 import com.guimaker.enums.FillType;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRow;
+import com.guimaker.utilities.KeyModifiers;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
 import com.kanji.constants.Prompts;
@@ -123,7 +124,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 			default:
 				throw new RuntimeException("Unsupported button name");
 			}
-			buttons.add(createButtonWithHotkey(KeyEvent.VK_CONTROL, keyEvent, action, name,
+			buttons.add(createButtonWithHotkey(KeyModifiers.CONTROL, keyEvent, action, name,
 					hotkeyDescription));
 		}
 		return buttons;

@@ -21,6 +21,7 @@ import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRow;
 import com.guimaker.utilities.CommonActionsMaker;
+import com.guimaker.utilities.KeyModifiers;
 import com.kanji.Row.KanjiInformation;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
@@ -183,7 +184,7 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 				tryToFindNextOccurence(SearchingDirection.BACKWARD);
 			}
 		};
-		return createButtonWithHotkey(KeyEvent.VK_SHIFT, KeyEvent.VK_ENTER, a,
+		return createButtonWithHotkey(KeyModifiers.SHIFT, KeyEvent.VK_ENTER, a,
 				ButtonsNames.FIND_PREVIOUS, HotkeysDescriptions.SEARCH_PREVIOUS_KANJI);
 	}
 
