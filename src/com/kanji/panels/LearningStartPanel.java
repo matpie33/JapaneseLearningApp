@@ -27,6 +27,8 @@ import javax.swing.text.AbstractDocument;
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
+import com.guimaker.options.ScrollPaneOptions;
+import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRow;
@@ -41,6 +43,7 @@ import com.kanji.constants.Titles;
 import com.kanji.controllers.ApplicationController;
 import com.kanji.controllers.LearningStartController;
 import com.kanji.myList.MyList;
+import com.kanji.utilities.CommonGuiElementsMaker;
 import com.kanji.utilities.LimitDocumentFilter;
 
 public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
@@ -56,6 +59,8 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 			MyList<RepeatingInformation> list) {
 		controller = new LearningStartController(list, numberOfWords, applicationController, this);
 	}
+
+	// TODO scrolling with mouse wheel not working
 
 	@Override
 	void createElements() {
@@ -91,12 +96,14 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 	private JScrollPane createRangesPanelScrollPane() {
 		Border b = BorderFactory.createBevelBorder(BevelBorder.LOWERED);
-		return GuiMaker.createScrollPane(BasicColors.DARK_BLUE, b, rangesPanel.getPanel(),
-				new Dimension(350, 200));
+		return GuiMaker
+				.createScrollPane(new ScrollPaneOptions().componentToWrap(rangesPanel.getPanel())
+						.backgroundColor(BasicColors.DARK_BLUE).border(b)
+						.preferredSize(new Dimension(350, 200)));
 	}
 
 	private JTextArea createPrompt() {
-		JTextArea prompt = GuiMaker.createTextArea(false);
+		JTextArea prompt = GuiMaker.createTextArea(new TextComponentOptions().editable(false));
 		prompt.setOpaque(false);
 		prompt.setText(Prompts.LEARNING_START);
 		return prompt;
@@ -220,9 +227,11 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public boolean showErrorOnThePanel(String message, int rowNumber) {
-		rangesPanel.insertRow(rowNumber,
-				new SimpleRow(FillType.NONE, Anchor.NORTH, GuiMaker.createErrorLabel(message))
-						.fillAllVertically());
+		rangesPanel
+				.insertRow(rowNumber,
+						new SimpleRow(FillType.NONE, Anchor.NORTH,
+								CommonGuiElementsMaker.createErrorLabel(message))
+										.fillAllVertically());
 		SwingUtilities.invokeLater(new Runnable() {
 			// TODO swing utilities
 			@Override

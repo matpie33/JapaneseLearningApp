@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.FillType;
+import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRow;
@@ -27,16 +28,20 @@ public class RowInRepeatingList implements ListRowMaker<RepeatingInformation> {
 		String time = rep.getTimeSpentOnRepeating();
 		LocalDateTime date1 = rep.getRepeatingDate();
 
-		JLabel repeatedWords = GuiMaker.createLabel(Prompts.REPEATING_WORDS_RANGE + word,
-				labelsColor);
+		JLabel repeatedWords = GuiMaker.createLabel(new ComponentOptions()
+				.text(Prompts.REPEATING_WORDS_RANGE + word).foregroundColor(labelsColor));
 
 		DateTimeFormatter sdf = DateTimeFormatter.ofPattern("dd MMMM yyyy / HH:mm");
-		JLabel date = GuiMaker.createLabel(Prompts.REPEATING_DATE + sdf.format(date1), labelsColor);
+		JLabel date = GuiMaker.createLabel(
+				new ComponentOptions().text(Prompts.REPEATING_DATE + sdf.format(date1))
+						.foregroundColor(labelsColor));
+
 		date.setForeground(BasicColors.OCEAN_BLUE);
 		JLabel timeSpent = null;
 
 		if (time != null) {
-			timeSpent = GuiMaker.createLabel(Prompts.REPEATING_TIME + time, labelsColor);
+			timeSpent = GuiMaker.createLabel(new ComponentOptions()
+					.text(Prompts.REPEATING_TIME + time).foregroundColor(labelsColor));
 		}
 
 		JButton delete = commonListElements.getButtonDelete();

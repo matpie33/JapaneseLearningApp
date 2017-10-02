@@ -16,6 +16,7 @@ import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.TextAlignment;
+import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRow;
@@ -119,7 +120,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private void createKanjiTextArea() {
-		kanjiTextArea = GuiMaker.createTextPane("", TextAlignment.JUSTIFIED);
+		kanjiTextArea = GuiMaker.createTextPane(
+				new TextPaneOptions().textAlignment(TextAlignment.JUSTIFIED).text(""));
 		kanjiTextArea.setFont(kanjiFont);
 		kanjiTextArea.setOpaque(false);
 	}
@@ -228,7 +230,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public void showWord(String word, TextAlignment alignment) {
-		wordTextArea = GuiMaker.createTextPane(word, alignment);
+		wordTextArea = GuiMaker
+				.createTextPane(new TextPaneOptions().textAlignment(alignment).text(word));
 	}
 
 }

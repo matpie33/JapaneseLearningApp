@@ -59,8 +59,7 @@ public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 
 		addWordPanel.addRows(new SimpleRow(FillType.HORIZONTAL, addWordPrompt, insertWordTextField)
 				.fillHorizontallySomeElements(insertWordTextField)
-				.nextRow(addNumberPrompt, insertNumberTextField)
-				.fillHorizontallySomeElements(insertNumberTextField));
+				.nextRow(FillType.NONE, addNumberPrompt, insertNumberTextField));
 
 		mainPanel.addRow(new SimpleRow(FillType.BOTH, addWordPanel.getPanel()));
 		addHotkeysPanelHere();

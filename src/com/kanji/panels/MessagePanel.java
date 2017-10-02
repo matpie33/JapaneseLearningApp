@@ -1,5 +1,6 @@
 package com.kanji.panels;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -10,6 +11,7 @@ import javax.swing.JScrollPane;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.TextAlignment;
+import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.row.SimpleRow;
 import com.kanji.constants.ButtonsNames;
@@ -25,11 +27,15 @@ public class MessagePanel extends AbstractPanelWithHotkeysInfo {
 		this.message = message;
 	}
 
+	// TODO message panel and confirm differ only with buttons
+
 	@Override
 	void createElements() {
 		AbstractButton button = createButtonClose();
-		JScrollPane scrollPane = GuiMaker.createTextPaneWrappedInScrollPane(message,
-				TextAlignment.CENTERED);
+		JScrollPane scrollPane = GuiMaker.createTextPaneWrappedInScrollPane(
+				// TODO add vertical alignment
+				new TextPaneOptions().textAlignment(TextAlignment.CENTERED).text(message)
+						.preferredSize(new Dimension(200, 100)).enabled(false));
 		mainPanel.addRow(new SimpleRow(FillType.BOTH, scrollPane));
 		addHotkeysPanelHere();
 		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.CENTER, button));

@@ -8,6 +8,7 @@ import com.guimaker.enums.Anchor;
 import com.guimaker.enums.ComponentType;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.TextAlignment;
+import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.row.SimpleRow;
 import com.guimaker.utilities.CommonActionsMaker;
@@ -26,8 +27,8 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 	@Override
 	void createElements() {
 
-		JScrollPane scrollPane = GuiMaker.createTextPaneWrappedInScrollPane(message,
-				TextAlignment.CENTERED);
+		JScrollPane scrollPane = GuiMaker.createTextPaneWrappedInScrollPane(
+				new TextPaneOptions().textAlignment(TextAlignment.CENTERED).text(message));
 
 		okButton = GuiMaker.createButtonlikeComponent(ComponentType.BUTTON, ButtonsNames.APPROVE,
 				CommonActionsMaker.createDisposeAction(parentDialog.getContainer()));

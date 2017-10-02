@@ -16,6 +16,7 @@ import javax.swing.border.Border;
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
+import com.guimaker.options.ScrollPaneOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRow;
@@ -79,8 +80,10 @@ public class ListPanelMaker<Word> {
 	private void createDefaultScrollPane() {
 		this.parentScrollPane = new JScrollPane();
 		Border raisedBevel = BorderFactory.createMatteBorder(3, 3, 0, 0, BasicColors.LIGHT_BLUE);
-		parentScrollPane = GuiMaker.createScrollPane(BasicColors.VERY_BLUE, raisedBevel,
-				rowsPanel.getPanel(), scrollPanesSize);
+		parentScrollPane = GuiMaker.createScrollPane(new ScrollPaneOptions()
+				.componentToWrap(rowsPanel.getPanel()).backgroundColor(BasicColors.VERY_BLUE)
+				.border(raisedBevel).preferredSize(scrollPanesSize));
+
 	}
 
 	public void highlightRowAndScroll(int rowNumber, boolean clearLastHighlightedWord) {

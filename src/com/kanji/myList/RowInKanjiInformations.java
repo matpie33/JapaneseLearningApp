@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 
 import com.guimaker.colors.BasicColors;
+import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.kanji.Row.KanjiInformation;
@@ -27,9 +28,10 @@ public class RowInKanjiInformations implements ListRowMaker<KanjiInformation> {
 	@Override
 	public MainPanel createListRow(KanjiInformation kanji, CommonListElements commonListElements) {
 		MainPanel panel = new MainPanel(null);
-		JLabel kanjiKeyword = GuiMaker.createLabel(Labels.KANJI_KEYWORD_LABEL,
-				BasicColors.OCEAN_BLUE);
-		JLabel kanjiId = GuiMaker.createLabel(Labels.KANJI_ID_LABEL, Color.WHITE);
+		JLabel kanjiKeyword = GuiMaker.createLabel(new ComponentOptions()
+				.text(Labels.KANJI_KEYWORD_LABEL).foregroundColor(BasicColors.OCEAN_BLUE));
+		JLabel kanjiId = GuiMaker.createLabel(new ComponentOptions().text(Labels.KANJI_ID_LABEL)
+				.foregroundColor(Color.WHITE));
 		String text = kanji.getKanjiKeyword();
 		int ID = kanji.getKanjiID();
 		JTextArea wordTextArea = CommonGuiElementsMaker.createKanjiWordInput(text);

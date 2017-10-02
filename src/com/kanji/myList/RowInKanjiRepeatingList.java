@@ -9,6 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 
 import com.guimaker.colors.BasicColors;
+import com.guimaker.options.ComponentOptions;
+import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.kanji.Row.KanjiInformation;
@@ -31,11 +33,13 @@ public class RowInKanjiRepeatingList implements ListRowMaker<KanjiInformation> {
 		MainPanel panel = new MainPanel(null);
 		JLabel id = new JLabel("" + row.getKanjiID());
 		id.setForeground(Color.white);
-		JTextArea kanjiTextArea = GuiMaker.createTextArea(false, true);
+		JTextArea kanjiTextArea = GuiMaker
+				.createTextArea(new TextComponentOptions().editable(false).opaque(true));
 		kanjiTextArea.setText(row.getKanjiKeyword());
-		JLabel kanjiKeyword = GuiMaker.createLabel(Labels.KANJI_KEYWORD_LABEL,
-				BasicColors.OCEAN_BLUE);
-		JLabel kanjiId = GuiMaker.createLabel(Labels.KANJI_ID_LABEL, Color.WHITE);
+		JLabel kanjiKeyword = GuiMaker.createLabel(new ComponentOptions()
+				.text(Labels.KANJI_KEYWORD_LABEL).foregroundColor(BasicColors.OCEAN_BLUE));
+		JLabel kanjiId = GuiMaker.createLabel(new ComponentOptions().text(Labels.KANJI_ID_LABEL)
+				.foregroundColor(Color.WHITE));
 		int rowNumber = controller.getNumberOfRows();
 		controller.addKanjiRow(row.getKanjiID());
 

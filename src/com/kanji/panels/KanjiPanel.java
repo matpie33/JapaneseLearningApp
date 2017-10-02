@@ -12,6 +12,7 @@ import javax.swing.JTextPane;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.TextAlignment;
+import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.row.SimpleRow;
 import com.kanji.constants.ButtonsNames;
@@ -48,7 +49,8 @@ public class KanjiPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private JTextPane addPromptAtLevel(String message) {
-		JTextPane pane = GuiMaker.createTextPane(message, TextAlignment.CENTERED);
+		JTextPane pane = GuiMaker.createTextPane(new TextPaneOptions().editable(false)
+				.textAlignment(TextAlignment.CENTERED).text(message));
 		pane.setFont(kanjiFont);
 		pane.setBackground(Color.white);
 		return pane;
