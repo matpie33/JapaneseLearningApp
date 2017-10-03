@@ -120,8 +120,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private void createKanjiTextArea() {
-		kanjiTextArea = GuiMaker.createTextPane(
-				new TextPaneOptions().textAlignment(TextAlignment.JUSTIFIED).text(""));
+		kanjiTextArea = GuiMaker.createTextPane(new TextPaneOptions()
+				.textAlignment(TextAlignment.JUSTIFIED).text("").enabled(false));
 		kanjiTextArea.setFont(kanjiFont);
 		kanjiTextArea.setOpaque(false);
 	}
@@ -177,6 +177,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	public void goToNextWord() {
 		setButtonsToLearningAndAddThem();
 		remainingLabel.setText(repeatingWordsController.createRemainingKanjisPrompt());
+		wordTextArea.requestFocusInWindow();
 	}
 
 	private void addElementsToRepeatingPanel(AbstractButton[] buttons) {
@@ -230,8 +231,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public void showWord(String word, TextAlignment alignment) {
-		wordTextArea = GuiMaker
-				.createTextPane(new TextPaneOptions().textAlignment(alignment).text(word));
+		wordTextArea = GuiMaker.createTextPane(
+				new TextPaneOptions().textAlignment(alignment).text(word).enabled(false));
 	}
 
 }

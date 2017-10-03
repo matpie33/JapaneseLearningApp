@@ -26,7 +26,7 @@ import com.kanji.windows.ApplicationWindow;
 public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 
 	private ApplicationController applicationController;
-
+	private MainPanel bottomPanel;
 	private JSplitPane listsSplitPane;
 	private JButton showProblematicKanjis;
 	private JLabel saveInfo;
@@ -46,11 +46,10 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		List<AbstractButton> buttons = addListeners();
 		mainPanel.addRow(new SimpleRow(FillType.BOTH, listsSplitPane).setNotOpaque());
 		addHotkeysPanelHere();
-		MainPanel bottomPanel = new MainPanel(null);
+		bottomPanel = new MainPanel(null);
 		bottomPanel.addRows(new SimpleRow(FillType.HORIZONTAL, buttons.toArray(new JButton[] {}))
 				.setNotOpaque().disableBorder().nextRow(saveInfo, problematicKanjis));
-		// TODO problematic kanji button now takes 2 rows
-		mainPanel.addRow(new SimpleRow(FillType.BOTH, bottomPanel.getPanel()));
+		mainPanel.addRow(new SimpleRow(FillType.HORIZONTAL, bottomPanel.getPanel()));
 	}
 
 	private List<AbstractButton> addListeners() {
@@ -165,12 +164,12 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 
 	public void addProblematicKanjisButton() {
 		problematicKanjiButtonIsVisible = true;
-		mainPanel.addElementsToLastRow(showProblematicKanjis);
+		bottomPanel.addElementsToRow(0, showProblematicKanjis);
 	}
 
 	public void removeButtonProblematicsKanji() {
 		if (problematicKanjiButtonIsVisible) {
-			mainPanel.removeLastElementFromLastRow();
+			bottomPanel.removeElementsFromRow(0, showProblematicKanjis);
 			problematicKanjiButtonIsVisible = false;
 		}
 

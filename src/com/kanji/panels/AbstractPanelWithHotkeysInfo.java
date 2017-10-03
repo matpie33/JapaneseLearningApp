@@ -102,7 +102,6 @@ public abstract class AbstractPanelWithHotkeysInfo {
 
 	public AbstractButton createButtonWithHotkey(KeyModifiers keyModifier, int keyEvent,
 			AbstractAction action, String buttonLabel, String hotkeyDescription) {
-		// TODO replace keyModifier with an enum
 		AbstractButton button = GuiMaker.createButtonlikeComponent(ComponentType.BUTTON,
 				buttonLabel, action);
 		addHotkey(keyModifier, keyEvent, action, button, hotkeyDescription);
@@ -118,9 +117,8 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	}
 
 	private String createInformationAboutHotkey(HotkeyWrapper hotkey, String description) {
-		return (hotkey.hasKeyModifier()
-				? InputEvent.getModifiersExText(hotkey.getKeyMask()) + " + " : "")
-				+ KeyEvent.getKeyText(hotkey.getKeyEvent()) + " : " + description;
+		return (hotkey.hasKeyModifier() ? InputEvent.getModifiersExText(hotkey.getKeyMask()) + " + "
+				: "") + KeyEvent.getKeyText(hotkey.getKeyEvent()) + " : " + description;
 	}
 
 	public void setParentDialog(DialogWindow parent) {
