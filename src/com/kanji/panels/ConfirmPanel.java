@@ -29,7 +29,7 @@ public class ConfirmPanel extends AbstractPanelWithHotkeysInfo {
 	void createElements() {
 		JScrollPane scrollPane = GuiMaker.createTextPaneWrappedInScrollPane(
 				new TextPaneOptions().textAlignment(TextAlignment.CENTERED).text(message)
-						.preferredSize(new Dimension(250, 70)).enabled(false));
+						.preferredSize(new Dimension(250, 70)).enabled(false).opaque(false));
 		AbstractButton yesButton = createButtonConfirm();
 		AbstractButton noButton = createButtonReject();
 

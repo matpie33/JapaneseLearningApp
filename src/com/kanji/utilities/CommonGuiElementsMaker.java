@@ -17,7 +17,8 @@ public class CommonGuiElementsMaker {
 	}
 
 	public static JTextArea createKanjiIdInput() {
-		return GuiMaker.createTextArea(new TextComponentOptions().maximumCharacters(5));
+		return GuiMaker
+				.createTextArea(new TextComponentOptions().maximumCharacters(5).digitsOnly(true));
 	}
 
 	public static JLabel createErrorLabel(String message) {

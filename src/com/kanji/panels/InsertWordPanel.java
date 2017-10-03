@@ -47,7 +47,6 @@ public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 
 		JLabel addNumberPrompt = new JLabel(Prompts.ADD_NUMBER);
 		insertNumberTextField = CommonGuiElementsMaker.createKanjiIdInput();
-		limitCharactersAccordingToInteger(insertNumberTextField);
 
 		AbstractButton cancel = GuiMaker.createButtonlikeComponent(ComponentType.BUTTON,
 				ButtonsNames.CANCEL,

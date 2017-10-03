@@ -5,7 +5,6 @@ import java.awt.event.FocusListener;
 
 import javax.swing.text.JTextComponent;
 
-import com.kanji.constants.ExceptionsMessages;
 import com.kanji.listSearching.PropertyManager;
 import com.kanji.windows.ApplicationWindow;
 
@@ -15,13 +14,16 @@ public class ListPropertyChangeHandler<Property, PropertyHolder> implements Focu
 	private ApplicationWindow applicationWindow;
 	private Property propertyBeingModified;
 	private PropertyManager<Property, PropertyHolder> propertyManager;
+	private String propertyDefinedExceptionMessage;
 
 	public ListPropertyChangeHandler(MyList<PropertyHolder> list,
 			ApplicationWindow applicationWindow,
-			PropertyManager<Property, PropertyHolder> propertyManager) {
+			PropertyManager<Property, PropertyHolder> propertyManager,
+			String propertyDefinedExceptionMessage) {
 		this.list = list;
 		this.applicationWindow = applicationWindow;
 		this.propertyManager = propertyManager;
+		this.propertyDefinedExceptionMessage = propertyDefinedExceptionMessage;
 	}
 
 	public void focusGained(FocusEvent e) {
@@ -38,9 +40,8 @@ public class ListPropertyChangeHandler<Property, PropertyHolder> implements Focu
 			return;
 		}
 		if (list.isPropertyDefined(propertyManager, propertyNewValue)) {
-			applicationWindow.showMessageDialog(String
-					.format(ExceptionsMessages.ID_ALREADY_DEFINED_EXCEPTION, propertyNewValue));
-			// TODO ouch its not generic and throws exception for strings.
+			applicationWindow.showMessageDialog(
+					String.format(propertyDefinedExceptionMessage, propertyNewValue));
 			elem.setText(propertyBeingModified.toString());
 			elem.requestFocusInWindow();
 			elem.selectAll();

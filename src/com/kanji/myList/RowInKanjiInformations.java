@@ -11,6 +11,7 @@ import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.kanji.Row.KanjiInformation;
+import com.kanji.constants.ExceptionsMessages;
 import com.kanji.constants.Labels;
 import com.kanji.listSearching.KanjiIdChecker;
 import com.kanji.listSearching.KanjiKeywordChecker;
@@ -30,19 +31,19 @@ public class RowInKanjiInformations implements ListRowMaker<KanjiInformation> {
 		MainPanel panel = new MainPanel(null);
 		JLabel kanjiKeyword = GuiMaker.createLabel(new ComponentOptions()
 				.text(Labels.KANJI_KEYWORD_LABEL).foregroundColor(BasicColors.OCEAN_BLUE));
-		JLabel kanjiId = GuiMaker.createLabel(new ComponentOptions().text(Labels.KANJI_ID_LABEL)
-				.foregroundColor(Color.WHITE));
+		JLabel kanjiId = GuiMaker.createLabel(
+				new ComponentOptions().text(Labels.KANJI_ID_LABEL).foregroundColor(Color.WHITE));
 		String text = kanji.getKanjiKeyword();
 		int ID = kanji.getKanjiID();
 		JTextArea wordTextArea = CommonGuiElementsMaker.createKanjiWordInput(text);
 		wordTextArea.addFocusListener(new ListPropertyChangeHandler<>(
 				applicationWindow.getApplicationController().getWordsList(), applicationWindow,
-				new KanjiKeywordChecker()));
+				new KanjiKeywordChecker(), ExceptionsMessages.WORD_ALREADY_DEFINED_EXCEPTION));
 		JTextArea idTextArea = CommonGuiElementsMaker.createKanjiIdInput();
 		idTextArea.setText(Integer.toString(ID));
 		idTextArea.addFocusListener(new ListPropertyChangeHandler<>(
 				applicationWindow.getApplicationController().getWordsList(), applicationWindow,
-				new KanjiIdChecker()));
+				new KanjiIdChecker(), ExceptionsMessages.ID_ALREADY_DEFINED_EXCEPTION));
 		JButton remove = commonListElements.getButtonDelete();
 		panel.addElementsInColumnStartingFromColumn(wordTextArea, 0,
 				commonListElements.getRowNumberLabel(), kanjiKeyword, wordTextArea);
