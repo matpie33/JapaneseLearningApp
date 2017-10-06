@@ -34,8 +34,7 @@ public class ConfirmPanel extends AbstractPanelWithHotkeysInfo {
 		AbstractButton noButton = createButtonReject();
 
 		mainPanel.addRow(new SimpleRow(FillType.BOTH, scrollPane));
-		addHotkeysPanelHere();
-		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.CENTER, noButton, yesButton));
+		setNavigationButtons(Anchor.CENTER, noButton, yesButton);
 	}
 
 	private AbstractButton createButtonConfirm() {

@@ -63,7 +63,8 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 	@Override
 	void createElements() {
 
-		JTextArea prompt = createPrompt();
+		JTextArea prompt = GuiMaker.createTextArea(new TextComponentOptions().editable(false)
+				.opaque(false).text(Prompts.LEARNING_START).border(null));
 		problematicCheckbox = createProblematicKanjiCheckbox();
 		rangesPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE, true);
 		scrollPane = createRangesPanelScrollPane();
@@ -78,18 +79,16 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		AbstractButton approve = createButtonStartLearning(ButtonsNames.APPROVE,
 				rangesPanel.getPanel());
 
-		mainPanel.addRow(
-				(new SimpleRow(FillType.HORIZONTAL, prompt).disableBorder().setNotOpaque()));
 		MainPanel problematicPanel = new MainPanel(null);
-		problematicPanel.addRows(
-				new SimpleRow(FillType.HORIZONTAL, problematicCheckbox).nextRow(problematicKanjis)
-						.nextRow(FillType.NONE, Anchor.CENTER, new JLabel(Titles.KANJI_RANGES))
-						.nextRow(FillType.BOTH, scrollPane)
-						.nextRow(FillType.HORIZONTAL, newRow, sumRangeField)
-						.fillVertically(sumRangeField).fillHorizontallySomeElements(sumRangeField));
-		mainPanel.addRow(new SimpleRow(FillType.BOTH, problematicPanel.getPanel()));
-		addHotkeysPanelHere();
-		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.EAST, cancel, approve));
+		problematicPanel.addRows((new SimpleRow(FillType.BOTH, prompt).disableBorder()
+				.nextRow(FillType.HORIZONTAL, problematicCheckbox).nextRow(problematicKanjis)
+				.nextRow(FillType.NONE, Anchor.CENTER, new JLabel(Titles.KANJI_RANGES))
+				.nextRow(FillType.BOTH, scrollPane).useAllExtraVerticalSpace()
+				.nextRow(FillType.HORIZONTAL, newRow, sumRangeField).fillVertically(sumRangeField)
+				.fillHorizontallySomeElements(sumRangeField)));
+		mainPanel.addRow(new SimpleRow(FillType.BOTH, problematicPanel.getPanel())
+				.useAllExtraVerticalSpace());
+		setNavigationButtons(cancel, approve);
 	}
 
 	private JScrollPane createRangesPanelScrollPane() {
@@ -97,13 +96,6 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		return GuiMaker.createScrollPane(new ScrollPaneOptions()
 				.componentToWrap(rangesPanel.getPanel()).backgroundColor(BasicColors.DARK_BLUE)
 				.border(b).preferredSize(new Dimension(350, 200)));
-	}
-
-	private JTextArea createPrompt() {
-		JTextArea prompt = GuiMaker.createTextArea(new TextComponentOptions().editable(false));
-		prompt.setOpaque(false);
-		prompt.setText(Prompts.LEARNING_START);
-		return prompt;
 	}
 
 	private JCheckBox createProblematicKanjiCheckbox() {

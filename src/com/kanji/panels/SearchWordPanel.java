@@ -84,17 +84,17 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 		MainPanel searchPanel = new MainPanel(null);
 
 		searchPanel.addRow(new SimpleRow(FillType.NONE, Anchor.WEST, searchOptionPrompt, comboBox));
-		searchPanel.addRow(new SimpleRow(FillType.HORIZONTAL, searchingPanel));
-		mainPanel.addRow(new SimpleRow(FillType.BOTH, searchPanel.getPanel()));
+		searchPanel.addRow(new SimpleRow(FillType.HORIZONTAL, Anchor.NORTHWEST, searchingPanel)
+				.useAllExtraVerticalSpace());
+		mainPanel.addRow(new SimpleRow(FillType.BOTH, Anchor.NORTHWEST, searchPanel.getPanel()));
 
-		addHotkeysPanelHere();
-		mainPanel.addRow( // TODO fix in gui maker: if putting rows as highest
-							// as
-							// possible, then west
-							// should be as highest as possible, but now I need
-							// to
-							// use northwest
-				new SimpleRow(FillType.NONE, Anchor.WEST, cancel, previous, next));
+		// TODO fix in gui maker: if putting rows as highest
+		// as
+		// possible, then west
+		// should be as highest as possible, but now I need
+		// to
+		// use northwest
+		setNavigationButtons(cancel, previous, next);
 
 	}
 

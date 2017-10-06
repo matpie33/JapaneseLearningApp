@@ -6,6 +6,7 @@ import java.awt.Point;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
@@ -54,7 +55,7 @@ public class ListPanelMaker<Word> {
 		remove.addActionListener(listWordsController.createDeleteRowAction(word));
 		CommonListElements commonListElements = new CommonListElements(remove, rowNumberLabel);
 		rowNumberLabel.setForeground(BasicColors.OCEAN_BLUE);
-		JPanel wrappingPanel = this.rowsPanel.addRow(new SimpleRow(FillType.HORIZONTAL,
+		JComponent wrappingPanel = this.rowsPanel.addRow(new SimpleRow(FillType.HORIZONTAL,
 				Anchor.NORTH, listRow.createListRow(word, commonListElements).getPanel()));
 		wrappingPanel
 				.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, BasicColors.LIGHT_BLUE));
@@ -101,7 +102,7 @@ public class ListPanelMaker<Word> {
 		rowsPanel.setPanelColor(rowNumber, color);
 	}
 
-	public void scrollTo(JPanel panel) {
+	public void scrollTo(JComponent panel) {
 		int r = panel.getY();
 		this.parentScrollPane.getViewport().setViewPosition(new Point(0, r));
 	}
@@ -137,7 +138,7 @@ public class ListPanelMaker<Word> {
 		this.parentScrollPane = scr;
 	}
 
-	public int removeRow(JPanel panel) {
+	public int removeRow(JComponent panel) {
 		int rowNumber = rowsPanel.getIndexOfPanel(panel);
 		rowsPanel.removeRow(rowNumber);
 		return rowNumber;

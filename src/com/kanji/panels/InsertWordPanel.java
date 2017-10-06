@@ -9,7 +9,6 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.text.AbstractDocument;
 
-import com.guimaker.enums.Anchor;
 import com.guimaker.enums.ComponentType;
 import com.guimaker.enums.FillType;
 import com.guimaker.panels.GuiMaker;
@@ -58,11 +57,12 @@ public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 
 		addWordPanel.addRows(new SimpleRow(FillType.BOTH, addWordPrompt, insertWordTextField)
 				.fillHorizontallySomeElements(insertWordTextField)
+				.fillVertically(insertWordTextField)
 				.nextRow(FillType.NONE, addNumberPrompt, insertNumberTextField));
 
-		mainPanel.addRow(new SimpleRow(FillType.BOTH, addWordPanel.getPanel()));
-		addHotkeysPanelHere();
-		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.EAST, cancel, approve));
+		mainPanel.addRow(
+				new SimpleRow(FillType.BOTH, addWordPanel.getPanel()).useAllExtraVerticalSpace());
+		setNavigationButtons(cancel, approve);
 
 	}
 

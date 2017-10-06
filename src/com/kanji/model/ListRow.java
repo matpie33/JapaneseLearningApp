@@ -1,15 +1,15 @@
 package com.kanji.model;
 
+import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 public class ListRow<Word> {
 
 	private Word word;
-	private JPanel panel;
+	private JComponent panel;
 	private JLabel indexLabel;
 
-	public ListRow(Word word, JPanel panel, JLabel indexLabel) {
+	public ListRow(Word word, JComponent panel, JLabel indexLabel) {
 		this.word = word;
 		this.panel = panel;
 		this.indexLabel = indexLabel;
@@ -19,7 +19,7 @@ public class ListRow<Word> {
 		return word;
 	}
 
-	public JPanel getPanel() {
+	public JComponent getPanel() {
 		return panel;
 	}
 

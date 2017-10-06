@@ -70,7 +70,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 		centerPanel.addRows(new SimpleRow(FillType.NONE, Anchor.NORTH, titleLabel, time)
 				.nextRow(FillType.BOTH, repeatingPanel.getPanel())
 				.nextRow(FillType.NONE, Anchor.SOUTH, remainingLabel, returnButton));
-		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.CENTER, centerPanel.getPanel()));
+		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.CENTER, centerPanel.getPanel())
+				.useAllExtraVerticalSpace());
 	}
 
 	public void setButtonsToLearningAndAddThem() {

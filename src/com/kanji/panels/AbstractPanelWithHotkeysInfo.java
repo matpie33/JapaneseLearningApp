@@ -31,6 +31,8 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	protected DialogWindow parentDialog;
 	private boolean escapeKeyShouldClose;
 	private int hotkeysPanelIndex;
+	private AbstractButton[] navigationButtons;
+	private Anchor buttonsAnchor = Anchor.EAST;
 
 	public AbstractPanelWithHotkeysInfo(boolean isEscapeClosingWindow) {
 		this();
@@ -48,8 +50,18 @@ public abstract class AbstractPanelWithHotkeysInfo {
 		hotkeysPanelIndex = mainPanel.getNumberOfRows();
 	}
 
+	public void setNavigationButtons(AbstractButton... buttons) {
+		navigationButtons = buttons;
+	}
+
+	public void setNavigationButtons(Anchor anchor, AbstractButton... buttons) {
+		navigationButtons = buttons;
+		buttonsAnchor = anchor;
+	}
+
 	private void createHotkeysPanel() {
 		hotkeysPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
+		hotkeysPanelIndex = -1;
 		JLabel title = new JLabel(Titles.HOTKEYS);
 		title.setForeground(BasicColors.VERY_BLUE);
 		hotkeysPanel.addRow(new SimpleRow(FillType.NONE, Anchor.WEST, title));
@@ -61,12 +73,22 @@ public abstract class AbstractPanelWithHotkeysInfo {
 					new HotkeyWrapper(KeyEvent.VK_ESCAPE));
 		}
 		SimpleRow row = new SimpleRow(FillType.HORIZONTAL, Anchor.SOUTH, hotkeysPanel.getPanel());
-		if (hotkeysPanelIndex == 0) {
+		if (hotkeysPanelIndex == -1) {
 			mainPanel.addRow(row);
 		}
-		else {
+		else if (hotkeysPanelIndex > 0) {
 			mainPanel.insertRow(hotkeysPanelIndex, row);
 		}
+		if (navigationButtons != null)
+			mainPanel.addRow( // TODO fix in gui maker: if putting rows as
+								// highest
+					// as
+					// possible, then west
+					// should be as highest as possible, but now I need
+					// to
+					// use northwest
+					new SimpleRow(FillType.NONE, buttonsAnchor, navigationButtons).disableBorder()
+							.setNotOpaque());
 
 	}
 

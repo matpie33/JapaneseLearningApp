@@ -80,12 +80,9 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 				new JLabel(Titles.OPTIONS_FOR_SHOWING_PROBLEMATIC_KANJIS)).nextRow(withInternet,
 						withoutInternet));
 
-		mainPanel.addRows(new SimpleRow(FillType.NONE, Anchor.CENTER,
-				new JLabel(Titles.CURRENT_PROBLEMATIC_WORDS))
-						.nextRow(FillType.HORIZONTAL, radioButtonsPanel.getPanel())
-						.nextRow(FillType.BOTH, kanjiRepeatingList.getPanel()));
-		addHotkeysPanelHere();
-		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.CENTER, button));
+		mainPanel.addRows(new SimpleRow(FillType.HORIZONTAL, radioButtonsPanel.getPanel())
+				.nextRow(FillType.BOTH, kanjiRepeatingList.getPanel()));
+		setNavigationButtons(Anchor.CENTER, button);
 	}
 
 	private AbstractButton createRadioButtonForLearningWithInternet() {

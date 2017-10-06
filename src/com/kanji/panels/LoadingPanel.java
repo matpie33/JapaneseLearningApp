@@ -34,8 +34,7 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 				CommonActionsMaker.createDisposeAction(parentDialog.getContainer()));
 
 		mainPanel.addRow(new SimpleRow(FillType.BOTH, scrollPane));
-		addHotkeysPanelHere();
-		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.CENTER, okButton));
+		setNavigationButtons(Anchor.CENTER, okButton);
 
 	}
 

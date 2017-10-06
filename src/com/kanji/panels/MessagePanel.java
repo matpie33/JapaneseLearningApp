@@ -37,8 +37,7 @@ public class MessagePanel extends AbstractPanelWithHotkeysInfo {
 				new TextPaneOptions().textAlignment(TextAlignment.CENTERED).text(message)
 						.opaque(false).preferredSize(new Dimension(200, 100)).enabled(false));
 		mainPanel.addRow(new SimpleRow(FillType.BOTH, scrollPane));
-		addHotkeysPanelHere();
-		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.CENTER, button));
+		setNavigationButtons(Anchor.CENTER, button);
 	}
 
 	private AbstractButton createButtonClose() {
