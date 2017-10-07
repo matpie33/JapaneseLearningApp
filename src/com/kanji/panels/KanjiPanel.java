@@ -44,7 +44,7 @@ public class KanjiPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiArea = addPromptAtLevel(kanjiToDisplay);
 		AbstractButton buttonNext = createButtonShowNextKanji();
 		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.CENTER, kanjiArea));
-		setNavigationButtons(Anchor.CENTER, buttonNext);
+		setNavigationButtons(Anchor.CENTER, createButtonClose(), buttonNext);
 	}
 
 	private JTextPane addPromptAtLevel(String message) {

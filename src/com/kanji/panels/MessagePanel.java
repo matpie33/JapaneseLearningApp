@@ -1,10 +1,6 @@
 package com.kanji.panels;
 
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-
-import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.JScrollPane;
 
@@ -14,8 +10,6 @@ import com.guimaker.enums.TextAlignment;
 import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.row.SimpleRow;
-import com.kanji.constants.ButtonsNames;
-import com.kanji.constants.HotkeysDescriptions;
 
 public class MessagePanel extends AbstractPanelWithHotkeysInfo {
 
@@ -27,28 +21,15 @@ public class MessagePanel extends AbstractPanelWithHotkeysInfo {
 		this.message = message;
 	}
 
-	// TODO message panel and confirm differ only with buttons
-
 	@Override
 	void createElements() {
-		AbstractButton button = createButtonClose();
+		AbstractButton buttonClose = createButtonClose();
 		JScrollPane scrollPane = GuiMaker.createTextPaneWrappedInScrollPane(
 				// TODO add vertical alignment
 				new TextPaneOptions().textAlignment(TextAlignment.CENTERED).text(message)
 						.opaque(false).preferredSize(new Dimension(200, 100)).enabled(false));
 		mainPanel.addRow(new SimpleRow(FillType.BOTH, scrollPane));
-		setNavigationButtons(Anchor.CENTER, button);
-	}
-
-	private AbstractButton createButtonClose() {
-		AbstractAction dispose = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				parentDialog.getContainer().dispose();
-			}
-		};
-		return createButtonWithHotkey(KeyEvent.VK_ESCAPE, dispose, ButtonsNames.APPROVE,
-				HotkeysDescriptions.CLOSE_WINDOW);
+		setNavigationButtons(Anchor.CENTER, buttonClose);
 	}
 
 }

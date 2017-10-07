@@ -7,3 +7,6 @@ dist/
 target
 .project
 .settings*
+.idea
+*.iml
+out

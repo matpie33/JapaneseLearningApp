@@ -5,6 +5,9 @@ public class ButtonsNames {
 	public static final String ADD = "Dodaj słówko";
 
 	public static final String APPROVE = "OK";
+	public static final String ADD_WORD = "Dodaj";
+	public static final String START_LEARNING = "Start";
+	public static final String CLOSE_WINDOW = "Zamknij";
 	public static final String CANCEL = "Anuluj";
 	public static final String FIND_NEXT = "Następny";
 	public static final String ADD_ROW = "Dodaj wiersz";

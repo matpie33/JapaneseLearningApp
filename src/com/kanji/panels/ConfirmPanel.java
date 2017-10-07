@@ -17,23 +17,19 @@ import com.guimaker.row.SimpleRow;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
 
-public class ConfirmPanel extends AbstractPanelWithHotkeysInfo {
+public class ConfirmPanel extends MessagePanel {
 
 	private String message;
 
 	public ConfirmPanel(String message) {
-		this.message = message;
+		super(message);
 	}
 
 	@Override
 	void createElements() {
-		JScrollPane scrollPane = GuiMaker.createTextPaneWrappedInScrollPane(
-				new TextPaneOptions().textAlignment(TextAlignment.CENTERED).text(message)
-						.preferredSize(new Dimension(250, 70)).enabled(false).opaque(false));
+		super.createElements();
 		AbstractButton yesButton = createButtonConfirm();
 		AbstractButton noButton = createButtonReject();
-
-		mainPanel.addRow(new SimpleRow(FillType.BOTH, scrollPane));
 		setNavigationButtons(Anchor.CENTER, noButton, yesButton);
 	}
 

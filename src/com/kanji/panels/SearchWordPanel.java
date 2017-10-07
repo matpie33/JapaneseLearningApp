@@ -66,9 +66,7 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 
 		AbstractButton previous = createButtonFindPrevious();
 		AbstractButton next = createButtonFindNext();
-		AbstractButton cancel = GuiMaker.createButtonlikeComponent(ComponentType.BUTTON,
-				ButtonsNames.CANCEL,
-				CommonActionsMaker.createDisposeAction(parentDialog.getContainer()));
+		AbstractButton cancel = createButtonClose();
 		JLabel searchOptionPrompt = new JLabel(Prompts.SEARCH_OPTION_PROMPT);
 
 		MainPanel keywordSearchPanel = createSearchByKeywordPanel();

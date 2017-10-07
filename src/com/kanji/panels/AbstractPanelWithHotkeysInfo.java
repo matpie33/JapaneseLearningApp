@@ -1,5 +1,6 @@
 package com.kanji.panels;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
@@ -21,6 +22,7 @@ import com.guimaker.row.SimpleRow;
 import com.guimaker.utilities.CommonActionsMaker;
 import com.guimaker.utilities.HotkeyWrapper;
 import com.guimaker.utilities.KeyModifiers;
+import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
 import com.kanji.constants.Titles;
 import com.kanji.windows.DialogWindow;
@@ -170,5 +172,17 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	public void afterVisible() {
 		// not required
 	};
+
+	protected AbstractButton createButtonClose() {
+		AbstractAction dispose = new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parentDialog.getContainer().dispose();
+			}
+		};
+		return createButtonWithHotkey(KeyEvent.VK_ESCAPE, dispose, ButtonsNames.CLOSE_WINDOW,
+				HotkeysDescriptions.CLOSE_WINDOW);
+	}
+
 
 }

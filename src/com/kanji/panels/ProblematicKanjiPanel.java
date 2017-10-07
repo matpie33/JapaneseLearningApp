@@ -70,9 +70,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		ButtonGroup group = new ButtonGroup();
 		group.add(withInternet);
 		group.add(withoutInternet);
-		AbstractButton button = GuiMaker.createButtonlikeComponent(ComponentType.BUTTON,
-				ButtonsNames.APPROVE,
-				CommonActionsMaker.createDisposeAction(parentDialog.getContainer()));
+		AbstractButton buttonClose = createButtonClose();
 		buildRows();
 
 		MainPanel radioButtonsPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
@@ -82,7 +80,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
 		mainPanel.addRows(new SimpleRow(FillType.HORIZONTAL, radioButtonsPanel.getPanel())
 				.nextRow(FillType.BOTH, kanjiRepeatingList.getPanel()));
-		setNavigationButtons(Anchor.CENTER, button);
+		setNavigationButtons(Anchor.CENTER, buttonClose);
 	}
 
 	private AbstractButton createRadioButtonForLearningWithInternet() {

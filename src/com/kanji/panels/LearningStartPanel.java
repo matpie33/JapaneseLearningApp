@@ -73,10 +73,8 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		JTextField problematicKanjis = createProblematicRangeField(Prompts.PROBLEMATIC_KANJI);
 		JButton newRow = createButtonAddRow(ButtonsNames.ADD_ROW, rangesPanel);
 		sumRangeField = GuiMaker.createTextField(1, Prompts.RANGE_SUM, false);
-		AbstractButton cancel = createButtonWithHotkey(KeyEvent.VK_ESCAPE,
-				CommonActionsMaker.createDisposeAction(parentDialog.getContainer()),
-				ButtonsNames.CANCEL, HotkeysDescriptions.CLOSE_WINDOW);
-		AbstractButton approve = createButtonStartLearning(ButtonsNames.APPROVE,
+		AbstractButton cancel = createButtonClose();
+		AbstractButton approve = createButtonStartLearning(ButtonsNames.START_LEARNING,
 				rangesPanel.getPanel());
 
 		MainPanel problematicPanel = new MainPanel(null);

@@ -30,8 +30,7 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 		JScrollPane scrollPane = GuiMaker.createTextPaneWrappedInScrollPane(
 				new TextPaneOptions().textAlignment(TextAlignment.CENTERED).text(message));
 
-		okButton = GuiMaker.createButtonlikeComponent(ComponentType.BUTTON, ButtonsNames.APPROVE,
-				CommonActionsMaker.createDisposeAction(parentDialog.getContainer()));
+		okButton = createButtonClose();
 
 		mainPanel.addRow(new SimpleRow(FillType.BOTH, scrollPane));
 		setNavigationButtons(Anchor.CENTER, okButton);
