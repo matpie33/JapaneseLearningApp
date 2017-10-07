@@ -32,7 +32,7 @@ import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRow;
-import com.guimaker.utilities.CommonActionsMaker;
+import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.Row.RepeatingInformation;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
@@ -78,13 +78,13 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 				rangesPanel.getPanel());
 
 		MainPanel problematicPanel = new MainPanel(null);
-		problematicPanel.addRows((new SimpleRow(FillType.BOTH, prompt).disableBorder()
+		problematicPanel.addRows((SimpleRowBuilder.createRow(FillType.BOTH, prompt).disableBorder()
 				.nextRow(FillType.HORIZONTAL, problematicCheckbox).nextRow(problematicKanjis)
 				.nextRow(FillType.NONE, Anchor.CENTER, new JLabel(Titles.KANJI_RANGES))
 				.nextRow(FillType.BOTH, scrollPane).useAllExtraVerticalSpace()
 				.nextRow(FillType.HORIZONTAL, newRow, sumRangeField).fillVertically(sumRangeField)
 				.fillHorizontallySomeElements(sumRangeField)));
-		mainPanel.addRow(new SimpleRow(FillType.BOTH, problematicPanel.getPanel())
+		mainPanel.addRow( SimpleRowBuilder.createRow(FillType.BOTH, problematicPanel.getPanel())
 				.useAllExtraVerticalSpace());
 		setNavigationButtons(cancel, approve);
 	}
@@ -132,7 +132,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		JLabel label = new JLabel(Prompts.PROBLEMATIC_KANJIS_ADDED);
 		label.setForeground(BasicColors.NAVY_BLUE);
 		int rowNumber = rangesPanel.getNumberOfRows();
-		rangesPanel.addRow(new SimpleRow(FillType.NONE, Anchor.CENTER, label));
+		rangesPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, label));
 		c.requestFocusInWindow();
 		return rowNumber;
 
@@ -161,7 +161,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 			delete.setVisible(false);
 		}
 
-		SimpleRow newRow = new SimpleRow(FillType.NONE, Anchor.NORTH, from, fieldFrom, labelTo,
+		SimpleRow newRow = SimpleRowBuilder.createRow(FillType.NONE, Anchor.NORTH, from, fieldFrom, labelTo,
 				fieldTo, delete);
 
 		if (problematicCheckboxSelected) {
@@ -216,7 +216,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 	public boolean showErrorOnThePanel(String message, int rowNumber) {
 		rangesPanel
 				.insertRow(rowNumber,
-						new SimpleRow(FillType.NONE, Anchor.NORTH,
+						SimpleRowBuilder.createRow(FillType.NONE, Anchor.NORTH,
 								CommonGuiElementsMaker.createErrorLabel(message))
 										.fillAllVertically());
 		SwingUtilities.invokeLater(new Runnable() {

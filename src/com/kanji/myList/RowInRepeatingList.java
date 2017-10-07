@@ -12,7 +12,7 @@ import com.guimaker.enums.FillType;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
-import com.guimaker.row.SimpleRow;
+import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.Row.RepeatingInformation;
 import com.kanji.constants.Prompts;
 import com.kanji.utilities.CommonListElements;
@@ -48,7 +48,8 @@ public class RowInRepeatingList implements ListRowMaker<RepeatingInformation> {
 
 		MainPanel panel = new MainPanel(null);
 		panel.addRows(
-				new SimpleRow(FillType.HORIZONTAL, commonListElements.getRowNumberLabel(), date)
+				SimpleRowBuilder
+						.createRow(FillType.HORIZONTAL, commonListElements.getRowNumberLabel(), date)
 						.nextRow(repeatedWords).nextRow(timeSpent).nextRow(FillType.NONE, delete));
 		return panel;
 

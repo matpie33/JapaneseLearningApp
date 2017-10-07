@@ -14,7 +14,7 @@ import javax.swing.JSplitPane;
 
 import com.guimaker.enums.FillType;
 import com.guimaker.panels.MainPanel;
-import com.guimaker.row.SimpleRow;
+import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
@@ -44,12 +44,12 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		createUpperPanel();
 		createInformationsPanel();
 		List<AbstractButton> buttons = addListeners();
-		mainPanel.addRow(new SimpleRow(FillType.BOTH, listsSplitPane));
+		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, listsSplitPane));
 		addHotkeysPanelHere();
 		bottomPanel = new MainPanel(null);
-		bottomPanel.addRows(new SimpleRow(FillType.HORIZONTAL, buttons.toArray(new JButton[] {}))
+		bottomPanel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL, buttons.toArray(new JButton[] {}))
 				.setNotOpaque().disableBorder().nextRow(saveInfo, problematicKanjis));
-		mainPanel.addRow(new SimpleRow(FillType.HORIZONTAL, bottomPanel.getPanel()));
+		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.HORIZONTAL, bottomPanel.getPanel()));
 	}
 
 	private List<AbstractButton> addListeners() {

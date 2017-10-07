@@ -5,14 +5,11 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 
 import com.guimaker.enums.Anchor;
-import com.guimaker.enums.ComponentType;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.TextAlignment;
 import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panels.GuiMaker;
-import com.guimaker.row.SimpleRow;
-import com.guimaker.utilities.CommonActionsMaker;
-import com.kanji.constants.ButtonsNames;
+import com.guimaker.row.SimpleRowBuilder;
 
 public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 
@@ -31,14 +28,14 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 
 		okButton = createButtonClose();
 
-		mainPanel.addRow(new SimpleRow(FillType.BOTH, scrollPane));
+		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, scrollPane));
 		setNavigationButtons(Anchor.CENTER, okButton);
 
 	}
 
 	public void setProgressBar(JProgressBar bar) {
 		mainPanel.removeRow(2);// TODO this is bad
-		mainPanel.addRow(new SimpleRow(FillType.HORIZONTAL, bar).nextRow(FillType.NONE,
+		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.HORIZONTAL, bar).nextRow(FillType.NONE,
 				Anchor.CENTER, okButton));
 	}
 

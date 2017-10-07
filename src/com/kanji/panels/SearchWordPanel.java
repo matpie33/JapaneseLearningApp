@@ -15,12 +15,9 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import com.guimaker.enums.Anchor;
-import com.guimaker.enums.ComponentType;
 import com.guimaker.enums.FillType;
-import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
-import com.guimaker.row.SimpleRow;
-import com.guimaker.utilities.CommonActionsMaker;
+import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
 import com.kanji.Row.KanjiInformation;
 import com.kanji.constants.ButtonsNames;
@@ -80,10 +77,11 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 
 		MainPanel searchPanel = new MainPanel(null);
 
-		searchPanel.addRow(new SimpleRow(FillType.NONE, Anchor.WEST, searchOptionPrompt, comboBox));
-		searchPanel.addRow(new SimpleRow(FillType.HORIZONTAL, Anchor.NORTHWEST, searchingPanel)
+		searchPanel.addRow(
+				SimpleRowBuilder.createRow(FillType.NONE, Anchor.WEST, searchOptionPrompt, comboBox));
+		searchPanel.addRow(SimpleRowBuilder.createRow(FillType.HORIZONTAL, Anchor.NORTHWEST, searchingPanel)
 				.useAllExtraVerticalSpace());
-		mainPanel.addRow(new SimpleRow(FillType.BOTH, Anchor.NORTHWEST, searchPanel.getPanel()));
+		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, Anchor.NORTHWEST, searchPanel.getPanel()));
 
 		// TODO fix in gui maker: if putting rows as highest
 		// as
@@ -100,7 +98,7 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiIdTextfield = createInputTextField();
 
 		MainPanel kanjiIdSearchPanel = new MainPanel(null, true);
-		kanjiIdSearchPanel.addRow(new SimpleRow(FillType.NONE, Anchor.NORTHWEST,
+		kanjiIdSearchPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE, Anchor.NORTHWEST,
 				new JLabel(Labels.KANJI_ID_LABEL), kanjiIdTextfield));
 		return kanjiIdSearchPanel;
 	}
@@ -122,7 +120,7 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 		defaultSearchOption.setSelected(true);
 
 		MainPanel keywordSearchPanel = new MainPanel(null);
-		keywordSearchPanel.addRows(new SimpleRow(FillType.HORIZONTAL, prompt, textField)
+		keywordSearchPanel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL, prompt, textField)
 				.fillHorizontallySomeElements(textField).nextRow(defaultSearchOption)
 				.nextRow(fullWordsSearchOption).nextRow(perfectMatchSearchOption));
 		return keywordSearchPanel;

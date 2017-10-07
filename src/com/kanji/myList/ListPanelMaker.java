@@ -20,7 +20,7 @@ import com.guimaker.enums.FillType;
 import com.guimaker.options.ScrollPaneOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
-import com.guimaker.row.SimpleRow;
+import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.model.ListRow;
 import com.kanji.utilities.CommonListElements;
 
@@ -43,7 +43,7 @@ public class ListPanelMaker<Word> {
 		titleLabel = new JLabel();
 		titleLabel.setForeground(Color.WHITE);
 		createDefaultScrollPane();
-		wrappingPanel.addRows(new SimpleRow(FillType.NONE, Anchor.CENTER, titleLabel)
+		wrappingPanel.addRows(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, titleLabel)
 				.nextRow(FillType.BOTH, parentScrollPane));
 		this.listRow = listRow;
 	}
@@ -54,7 +54,7 @@ public class ListPanelMaker<Word> {
 		remove.addActionListener(listWordsController.createDeleteRowAction(word));
 		CommonListElements commonListElements = new CommonListElements(remove, rowNumberLabel);
 		rowNumberLabel.setForeground(BasicColors.OCEAN_BLUE);
-		JComponent wrappingPanel = this.rowsPanel.addRow(new SimpleRow(FillType.HORIZONTAL,
+		JComponent wrappingPanel = this.rowsPanel.addRow(SimpleRowBuilder.createRow(FillType.HORIZONTAL,
 				Anchor.NORTH, listRow.createListRow(word, commonListElements).getPanel()));
 		wrappingPanel
 				.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, BasicColors.LIGHT_BLUE));

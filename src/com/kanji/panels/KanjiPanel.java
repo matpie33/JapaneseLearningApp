@@ -14,7 +14,7 @@ import com.guimaker.enums.FillType;
 import com.guimaker.enums.TextAlignment;
 import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panels.GuiMaker;
-import com.guimaker.row.SimpleRow;
+import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
 import com.kanji.controllers.ProblematicKanjisController;
@@ -40,7 +40,7 @@ public class KanjiPanel extends AbstractPanelWithHotkeysInfo {
 	void createElements() {
 		kanjiArea = addPromptAtLevel(kanjiToDisplay);
 		AbstractButton buttonNext = createButtonShowNextKanji();
-		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.CENTER, kanjiArea));
+		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, kanjiArea));
 		setNavigationButtons(Anchor.CENTER, createButtonClose(), buttonNext);
 	}
 

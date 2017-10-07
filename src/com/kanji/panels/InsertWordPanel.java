@@ -4,7 +4,7 @@ import com.guimaker.enums.ComponentType;
 import com.guimaker.enums.FillType;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
-import com.guimaker.row.SimpleRow;
+import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.Row.KanjiInformation;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.Prompts;
@@ -43,13 +43,14 @@ public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 
 		MainPanel addWordPanel = new MainPanel(null);
 
-		addWordPanel.addRows(new SimpleRow(FillType.BOTH, addWordPrompt, insertWordTextField)
+		addWordPanel.addRows(
+				SimpleRowBuilder.createRow(FillType.BOTH, addWordPrompt, insertWordTextField)
 				.fillHorizontallySomeElements(insertWordTextField)
 				.fillVertically(insertWordTextField)
 				.nextRow(FillType.NONE, addNumberPrompt, insertNumberTextField));
 
 		mainPanel.addRow(
-				new SimpleRow(FillType.BOTH, addWordPanel.getPanel()).useAllExtraVerticalSpace());
+				SimpleRowBuilder.createRow(FillType.BOTH, addWordPanel.getPanel()).useAllExtraVerticalSpace());
 		setNavigationButtons(cancel, approve);
 
 	}

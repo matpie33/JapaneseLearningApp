@@ -19,6 +19,7 @@ import com.guimaker.enums.FillType;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRow;
+import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.CommonActionsMaker;
 import com.guimaker.utilities.HotkeyWrapper;
 import com.guimaker.utilities.KeyModifiers;
@@ -61,11 +62,11 @@ public abstract class AbstractPanelWithHotkeysInfo {
         hotkeysPanelIndex = -1;
         JLabel title = new JLabel(Titles.HOTKEYS);
         title.setForeground(BasicColors.VERY_BLUE);
-        hotkeysPanel.addRow(new SimpleRow(FillType.NONE, Anchor.WEST, title));
+        hotkeysPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE, Anchor.WEST, title));
     }
 
     private void addHotkeysPanel() {
-        SimpleRow row = new SimpleRow(FillType.HORIZONTAL, Anchor.SOUTH, hotkeysPanel.getPanel());
+        SimpleRow row = SimpleRowBuilder.createRow(FillType.HORIZONTAL, Anchor.SOUTH, hotkeysPanel.getPanel());
         if (hotkeysPanelIndex == -1) {
             mainPanel.addRow(row);
         } else if (hotkeysPanelIndex > 0) {
@@ -79,7 +80,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
                     // should be as highest as possible, but now I need
                     // to
                     // use northwest
-                    new SimpleRow(FillType.NONE, buttonsAnchor, navigationButtons).disableBorder()
+					SimpleRowBuilder.createRow(FillType.NONE, buttonsAnchor, navigationButtons).disableBorder()
                             .setNotOpaque());
 
     }
@@ -121,7 +122,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
             return;
         }
         JLabel hotkeyInfo = new JLabel(createInformationAboutHotkey(hotkey, hotkeyDescription));
-        hotkeysPanel.addRow(new SimpleRow(FillType.HORIZONTAL, hotkeyInfo));
+        hotkeysPanel.addRow(SimpleRowBuilder.createRow(FillType.HORIZONTAL, hotkeyInfo));
     }
 
     private String createInformationAboutHotkey(HotkeyWrapper hotkey, String description) {

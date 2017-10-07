@@ -9,7 +9,7 @@ import com.guimaker.enums.FillType;
 import com.guimaker.enums.TextAlignment;
 import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panels.GuiMaker;
-import com.guimaker.row.SimpleRow;
+import com.guimaker.row.SimpleRowBuilder;
 
 public class MessagePanel extends AbstractPanelWithHotkeysInfo {
 
@@ -26,7 +26,7 @@ public class MessagePanel extends AbstractPanelWithHotkeysInfo {
 				// TODO add vertical alignment
 				new TextPaneOptions().textAlignment(TextAlignment.CENTERED).text(message)
 						.opaque(false).preferredSize(new Dimension(200, 100)).enabled(false));
-		mainPanel.addRow(new SimpleRow(FillType.BOTH, scrollPane));
+		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, scrollPane));
 		setNavigationButtons(Anchor.CENTER, buttonClose);
 	}
 

@@ -19,7 +19,7 @@ import com.guimaker.enums.TextAlignment;
 import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
-import com.guimaker.row.SimpleRow;
+import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
 import com.kanji.constants.Titles;
@@ -67,10 +67,10 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 		createElementsForRepeatingPanel();
 		setButtonsToLearningAndAddThem();
 
-		centerPanel.addRows(new SimpleRow(FillType.NONE, Anchor.NORTH, titleLabel, time)
+		centerPanel.addRows(SimpleRowBuilder.createRow(FillType.NONE, Anchor.NORTH, titleLabel, time)
 				.nextRow(FillType.BOTH, repeatingPanel.getPanel())
 				.nextRow(FillType.NONE, Anchor.SOUTH, remainingLabel, returnButton));
-		mainPanel.addRow(new SimpleRow(FillType.NONE, Anchor.CENTER, centerPanel.getPanel())
+		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, centerPanel.getPanel())
 				.useAllExtraVerticalSpace());
 	}
 
@@ -183,7 +183,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
 	private void addElementsToRepeatingPanel(AbstractButton[] buttons) {
 		repeatingPanel.clear();
-		repeatingPanel.addRows(new SimpleRow(FillType.BOTH, wordTextArea)
+		repeatingPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH, wordTextArea)
 				.nextRow(FillType.NONE, Anchor.CENTER, kanjiTextArea)
 				.nextRow(FillType.HORIZONTAL, buttons).fillHorizontallyEqually());
 		mainPanel.getPanel().repaint();

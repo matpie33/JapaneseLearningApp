@@ -21,7 +21,7 @@ import com.guimaker.enums.ComponentType;
 import com.guimaker.enums.FillType;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
-import com.guimaker.row.SimpleRow;
+import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.Row.KanjiInformation;
 import com.kanji.constants.HotkeysDescriptions;
 import com.kanji.constants.Labels;
@@ -71,11 +71,11 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		buildRows();
 
 		MainPanel radioButtonsPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
-		radioButtonsPanel.addRows(new SimpleRow(FillType.HORIZONTAL,
+		radioButtonsPanel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL,
 				new JLabel(Titles.OPTIONS_FOR_SHOWING_PROBLEMATIC_KANJIS)).nextRow(withInternet,
 						withoutInternet));
 
-		mainPanel.addRows(new SimpleRow(FillType.HORIZONTAL, radioButtonsPanel.getPanel())
+		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL, radioButtonsPanel.getPanel())
 				.nextRow(FillType.BOTH, kanjiRepeatingList.getPanel()).setNotOpaque());
 		setNavigationButtons(Anchor.CENTER, buttonClose);
 	}
