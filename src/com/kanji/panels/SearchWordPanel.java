@@ -77,11 +77,11 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 
 		MainPanel searchPanel = new MainPanel(null);
 
-		searchPanel.addRow(
+		searchPanel.addRows(
 				SimpleRowBuilder.createRow(FillType.NONE, Anchor.WEST, searchOptionPrompt, comboBox));
-		searchPanel.addRow(SimpleRowBuilder.createRow(FillType.HORIZONTAL, Anchor.NORTHWEST, searchingPanel)
+		searchPanel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL, Anchor.NORTHWEST, searchingPanel)
 				.useAllExtraVerticalSpace());
-		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, Anchor.NORTHWEST, searchPanel.getPanel()));
+		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH, Anchor.NORTHWEST, searchPanel.getPanel()));
 
 		// TODO fix in gui maker: if putting rows as highest
 		// as
@@ -98,7 +98,7 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiIdTextfield = createInputTextField();
 
 		MainPanel kanjiIdSearchPanel = new MainPanel(null, true);
-		kanjiIdSearchPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE, Anchor.NORTHWEST,
+		kanjiIdSearchPanel.addRows(SimpleRowBuilder.createRow(FillType.NONE, Anchor.NORTHWEST,
 				new JLabel(Labels.KANJI_ID_LABEL), kanjiIdTextfield));
 		return kanjiIdSearchPanel;
 	}

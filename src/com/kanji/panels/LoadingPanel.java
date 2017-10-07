@@ -28,14 +28,14 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 
 		okButton = createButtonClose();
 
-		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, scrollPane));
+		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH, scrollPane));
 		setNavigationButtons(Anchor.CENTER, okButton);
 
 	}
 
 	public void setProgressBar(JProgressBar bar) {
 		mainPanel.removeRow(2);// TODO this is bad
-		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.HORIZONTAL, bar).nextRow(FillType.NONE,
+		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL, bar).nextRow(FillType.NONE,
 				Anchor.CENTER, okButton));
 	}
 

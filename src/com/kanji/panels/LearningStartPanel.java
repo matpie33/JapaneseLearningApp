@@ -84,7 +84,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 				.nextRow(FillType.BOTH, scrollPane).useAllExtraVerticalSpace()
 				.nextRow(FillType.HORIZONTAL, newRow, sumRangeField).fillVertically(sumRangeField)
 				.fillHorizontallySomeElements(sumRangeField)));
-		mainPanel.addRow( SimpleRowBuilder.createRow(FillType.BOTH, problematicPanel.getPanel())
+		mainPanel.addRows( SimpleRowBuilder.createRow(FillType.BOTH, problematicPanel.getPanel())
 				.useAllExtraVerticalSpace());
 		setNavigationButtons(cancel, approve);
 	}
@@ -132,7 +132,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		JLabel label = new JLabel(Prompts.PROBLEMATIC_KANJIS_ADDED);
 		label.setForeground(BasicColors.NAVY_BLUE);
 		int rowNumber = rangesPanel.getNumberOfRows();
-		rangesPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, label));
+		rangesPanel.addRows(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, label));
 		c.requestFocusInWindow();
 		return rowNumber;
 
@@ -169,7 +169,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 			rangesPanel.insertRow(nextRowNumber, newRow);
 		}
 		else {
-			rangesPanel.addRow(newRow);
+			rangesPanel.addRows(newRow);
 		}
 
 		if (controller.getNumberOfRangesRows() == 2) {

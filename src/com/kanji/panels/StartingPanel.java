@@ -44,12 +44,12 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		createUpperPanel();
 		createInformationsPanel();
 		List<AbstractButton> buttons = addListeners();
-		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, listsSplitPane));
+		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH, listsSplitPane));
 		addHotkeysPanelHere();
 		bottomPanel = new MainPanel(null);
 		bottomPanel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL, buttons.toArray(new JButton[] {}))
 				.setNotOpaque().disableBorder().nextRow(saveInfo, problematicKanjis));
-		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.HORIZONTAL, bottomPanel.getPanel()));
+		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL, bottomPanel.getPanel()));
 	}
 
 	private List<AbstractButton> addListeners() {

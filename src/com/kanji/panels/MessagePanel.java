@@ -26,7 +26,7 @@ public class MessagePanel extends AbstractPanelWithHotkeysInfo {
 				// TODO add vertical alignment
 				new TextPaneOptions().textAlignment(TextAlignment.CENTERED).text(message)
 						.opaque(false).preferredSize(new Dimension(200, 100)).enabled(false));
-		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, scrollPane));
+		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH, scrollPane));
 		setNavigationButtons(Anchor.CENTER, buttonClose);
 	}
 

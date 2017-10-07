@@ -49,7 +49,7 @@ public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 				.fillVertically(insertWordTextField)
 				.nextRow(FillType.NONE, addNumberPrompt, insertNumberTextField));
 
-		mainPanel.addRow(
+		mainPanel.addRows(
 				SimpleRowBuilder.createRow(FillType.BOTH, addWordPanel.getPanel()).useAllExtraVerticalSpace());
 		setNavigationButtons(cancel, approve);
 

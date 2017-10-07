@@ -62,18 +62,18 @@ public abstract class AbstractPanelWithHotkeysInfo {
         hotkeysPanelIndex = -1;
         JLabel title = new JLabel(Titles.HOTKEYS);
         title.setForeground(BasicColors.VERY_BLUE);
-        hotkeysPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE, Anchor.WEST, title));
+        hotkeysPanel.addRows(SimpleRowBuilder.createRow(FillType.NONE, Anchor.WEST, title));
     }
 
     private void addHotkeysPanel() {
         SimpleRow row = SimpleRowBuilder.createRow(FillType.HORIZONTAL, Anchor.SOUTH, hotkeysPanel.getPanel());
         if (hotkeysPanelIndex == -1) {
-            mainPanel.addRow(row);
+            mainPanel.addRows(row);
         } else if (hotkeysPanelIndex > 0) {
             mainPanel.insertRow(hotkeysPanelIndex, row);
         }
         if (navigationButtons != null)
-            mainPanel.addRow( // TODO fix in gui maker: if putting rows as
+            mainPanel.addRows( // TODO fix in gui maker: if putting rows as
                     // highest
                     // as
                     // possible, then west
@@ -122,7 +122,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
             return;
         }
         JLabel hotkeyInfo = new JLabel(createInformationAboutHotkey(hotkey, hotkeyDescription));
-        hotkeysPanel.addRow(SimpleRowBuilder.createRow(FillType.HORIZONTAL, hotkeyInfo));
+        hotkeysPanel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL, hotkeyInfo));
     }
 
     private String createInformationAboutHotkey(HotkeyWrapper hotkey, String description) {
