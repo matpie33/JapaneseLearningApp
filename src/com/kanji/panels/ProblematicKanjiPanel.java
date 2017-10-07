@@ -22,9 +22,7 @@ import com.guimaker.enums.FillType;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRow;
-import com.guimaker.utilities.CommonActionsMaker;
 import com.kanji.Row.KanjiInformation;
-import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
 import com.kanji.constants.Labels;
 import com.kanji.constants.Titles;
@@ -44,13 +42,12 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
 	public ProblematicKanjiPanel(Font kanjiFont, ApplicationWindow applicationWindow,
 			MyList<KanjiInformation> kanjiList, Set<Integer> problematicKanji) {
-		super(true);
 		parentDialog = applicationWindow;
 		controller = new ProblematicKanjisController(kanjiFont, this, problematicKanji, kanjiList);
 
 		rowInKanjiRepeatingList = new RowInKanjiRepeatingList(controller);
 		kanjiRepeatingList = new MyList<KanjiInformation>(parentDialog, null,
-				rowInKanjiRepeatingList, "Kanji do powtorki");
+				rowInKanjiRepeatingList, Titles.PROBLEMATIC_KANJIS);
 	}
 
 	public ProblematicKanjisController getController() {
@@ -79,7 +76,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 						withoutInternet));
 
 		mainPanel.addRows(new SimpleRow(FillType.HORIZONTAL, radioButtonsPanel.getPanel())
-				.nextRow(FillType.BOTH, kanjiRepeatingList.getPanel()));
+				.nextRow(FillType.BOTH, kanjiRepeatingList.getPanel()).setNotOpaque());
 		setNavigationButtons(Anchor.CENTER, buttonClose);
 	}
 
@@ -89,8 +86,8 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 				KeyEvent.VK_I);
 		withInternet.setFocusable(false);
 		withInternet.setSelected(true);
-		addHotkeysInformation(KeyEvent.VK_I, withInternet,
-				HotkeysDescriptions.SHOW_KANJI_WITH_INTERNET);
+		addHotkeysInformation(KeyEvent.VK_I,
+                HotkeysDescriptions.SHOW_KANJI_WITH_INTERNET);
 		return withInternet;
 	}
 
@@ -111,8 +108,8 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 				ComponentType.RADIOBUTTON, Labels.REPEATING_WITHOUT_INTERNET,
 				createActionListenerForUsingInternet(false), KeyEvent.VK_N);
 		withoutInternet.setFocusable(false);
-		addHotkeysInformation(KeyEvent.VK_N, withoutInternet,
-				HotkeysDescriptions.SHOW_KANJI_WITHOUT_INTERNET);
+		addHotkeysInformation(KeyEvent.VK_N,
+                HotkeysDescriptions.SHOW_KANJI_WITHOUT_INTERNET);
 		return withoutInternet;
 	}
 
@@ -139,10 +136,6 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
 	public boolean allProblematicKanjisRepeated() {
 		return controller.allProblematicKanjisRepeated();
-	}
-
-	public void clear() {
-		mainPanel.clear();
 	}
 
 	public void showKanjiDialog(KanjiPanel kanjiPanel) {

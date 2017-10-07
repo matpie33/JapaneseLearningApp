@@ -16,8 +16,6 @@ public class MessagePanel extends AbstractPanelWithHotkeysInfo {
 	private String message;
 
 	public MessagePanel(String message) {
-		// super(true); //TODO this is misleading - we add escape for closing,
-		// but we don't call super with true as parameter
 		this.message = message;
 	}
 

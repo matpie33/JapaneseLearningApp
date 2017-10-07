@@ -56,12 +56,6 @@ public class DialogWindow {
 			boolean modal) {
 		container.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		container.setContentPane(mainPanel);
-		if (panelCreator.isEscapeOnClose()) {
-			CommonActionsMaker.addHotkey(KeyEvent.VK_ESCAPE, 0,
-					CommonActionsMaker.createDisposeAction(getContainer()),
-					mainPanel.getRootPane());
-		}
-
 		container.pack();
 		setCoordinatesBasedOnPosition();
 		container.setModal(modal);

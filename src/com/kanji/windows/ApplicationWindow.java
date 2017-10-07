@@ -140,7 +140,7 @@ public class ApplicationWindow extends DialogWindow {
 			Set<Integer> problematicKanjis) {
 		problematicKanjiPanel = new ProblematicKanjiPanel(getKanjiFont(), this, kanjiSearcher,
 				problematicKanjis);
-		showPanel(problematicKanjiPanel, Titles.INSERT_WORD_DIALOG, true, Position.CENTER);
+		showPanel(problematicKanjiPanel, Titles.PROBLEMATIC_KANJIS_WINDOW, true, Position.CENTER);
 	}
 
 	public void showProblematicKanjiDialog() {

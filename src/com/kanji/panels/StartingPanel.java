@@ -44,7 +44,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		createUpperPanel();
 		createInformationsPanel();
 		List<AbstractButton> buttons = addListeners();
-		mainPanel.addRow(new SimpleRow(FillType.BOTH, listsSplitPane).setNotOpaque());
+		mainPanel.addRow(new SimpleRow(FillType.BOTH, listsSplitPane));
 		addHotkeysPanelHere();
 		bottomPanel = new MainPanel(null);
 		bottomPanel.addRows(new SimpleRow(FillType.HORIZONTAL, buttons.toArray(new JButton[] {}))

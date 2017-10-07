@@ -1,29 +1,21 @@
 package com.kanji.panels;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-
-import javax.swing.AbstractAction;
-import javax.swing.AbstractButton;
-import javax.swing.JLabel;
-import javax.swing.JTextArea;
-import javax.swing.text.AbstractDocument;
-
 import com.guimaker.enums.ComponentType;
 import com.guimaker.enums.FillType;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRow;
-import com.guimaker.utilities.CommonActionsMaker;
 import com.kanji.Row.KanjiInformation;
 import com.kanji.constants.ButtonsNames;
-import com.kanji.constants.NumberValues;
 import com.kanji.constants.Prompts;
 import com.kanji.controllers.ApplicationController;
 import com.kanji.controllers.InsertWordController;
 import com.kanji.myList.MyList;
 import com.kanji.utilities.CommonGuiElementsMaker;
-import com.kanji.utilities.LimitDocumentFilter;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 
@@ -33,7 +25,6 @@ public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 
 	public InsertWordPanel(MyList<KanjiInformation> list,
 			ApplicationController applicationController) {
-		super(true);
 		controller = new InsertWordController(list, applicationController);
 	}
 
@@ -61,11 +52,6 @@ public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 				new SimpleRow(FillType.BOTH, addWordPanel.getPanel()).useAllExtraVerticalSpace());
 		setNavigationButtons(cancel, approve);
 
-	}
-
-	private void limitCharactersAccordingToInteger(JTextArea textField) {
-		((AbstractDocument) textField.getDocument()).setDocumentFilter(
-				new LimitDocumentFilter(NumberValues.INTEGER_MAX_VALUE_DIGITS_AMOUNT));
 	}
 
 	private AbstractButton createButtonValidate(String text) {

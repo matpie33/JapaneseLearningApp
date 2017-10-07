@@ -54,7 +54,6 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public SearchWordPanel(MyList<KanjiInformation> list) {
-		super(true);
 		this.list = list;
 		searchOptions = SearchOptions.BY_LETTERS;
 		searchKryteria = SearchCriteria.BY_KEYWORD;

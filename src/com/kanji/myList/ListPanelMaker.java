@@ -38,7 +38,7 @@ public class ListPanelMaker<Word> {
 	public ListPanelMaker(ListRowMaker<Word> listRow, ListWordsController<Word> controller) {
 		listWordsController = controller;
 		highlightedRowNumber = -1;
-		wrappingPanel = new MainPanel(BasicColors.VERY_BLUE, true);
+		wrappingPanel = new MainPanel(BasicColors.NAVY_BLUE, true);
 		rowsPanel = new MainPanel(null, true, false);
 		titleLabel = new JLabel();
 		titleLabel.setForeground(Color.WHITE);
@@ -46,7 +46,6 @@ public class ListPanelMaker<Word> {
 		wrappingPanel.addRows(new SimpleRow(FillType.NONE, Anchor.CENTER, titleLabel)
 				.nextRow(FillType.BOTH, parentScrollPane));
 		this.listRow = listRow;
-
 	}
 
 	public ListRow<Word> addRow(Word word) {
@@ -79,7 +78,6 @@ public class ListPanelMaker<Word> {
 	}
 
 	private void createDefaultScrollPane() {
-		this.parentScrollPane = new JScrollPane();
 		Border raisedBevel = BorderFactory.createMatteBorder(3, 3, 0, 0, BasicColors.LIGHT_BLUE);
 		parentScrollPane = GuiMaker.createScrollPane(new ScrollPaneOptions()
 				.componentToWrap(rowsPanel.getPanel()).backgroundColor(BasicColors.VERY_BLUE)
@@ -94,7 +92,6 @@ public class ListPanelMaker<Word> {
 		changePanelColor(rowNumber, Color.red);
 		highlightedRowNumber = rowNumber;
 		scrollTo(rowsPanel.getRows().get(rowNumber));
-		// scrollTo(panel);
 		this.wrappingPanel.getPanel().repaint();
 	}
 

@@ -20,7 +20,6 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 	private String message;
 
 	public LoadingPanel(String message) {
-		super(true);
 		this.message = message;
 	}
 

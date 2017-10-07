@@ -42,9 +42,9 @@ public class ApplicationController {
 			RepeatingWordsController repeatingWordsPanelController) {
 		problematicKanjis = new HashSet<Integer>();
 		this.parent = parent;
-		listOfWords = new MyList<KanjiInformation>(parent, this, new RowInKanjiInformations(parent),
+		listOfWords = new MyList<>(parent, this, new RowInKanjiInformations(parent),
 				Titles.KANJI_LIST);
-		repeats = new MyList<RepeatingInformation>(parent, this, new RowInRepeatingList(),
+		repeats = new MyList<>(parent, this, new RowInRepeatingList(),
 				Titles.REPEATING_LIST);
 		loadingAndSaving = new LoadingAndSaving();
 		this.repeatingWordsPanelController = repeatingWordsPanelController;

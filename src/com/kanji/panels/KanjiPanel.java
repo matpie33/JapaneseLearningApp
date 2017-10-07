@@ -24,12 +24,9 @@ public class KanjiPanel extends AbstractPanelWithHotkeysInfo {
 	private ProblematicKanjisController problematicKanjiPanel;
 	private JTextPane kanjiArea;
 	private Font kanjiFont;
-	// TODO not proper layout in this panel when around 6 kanji in problematic
-	// kanjis list
 
 	public KanjiPanel(Font kanjiFont, String kanji,
 			ProblematicKanjisController problematicKanjiPanel) {
-		super(true);
 		this.kanjiFont = kanjiFont;
 		this.kanjiToDisplay = kanji;
 		this.problematicKanjiPanel = problematicKanjiPanel;

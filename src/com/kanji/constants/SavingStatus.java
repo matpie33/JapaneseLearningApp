@@ -5,7 +5,7 @@ public enum SavingStatus {
 
 	private String status;
 
-	private SavingStatus(String status) {
+	SavingStatus(String status) {
 		this.status = status;
 	}
 
