@@ -1,42 +1,42 @@
 package com.kanji.panels;
 
-import javax.swing.AbstractButton;
-import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
-import com.guimaker.enums.TextAlignment;
-import com.guimaker.options.TextPaneOptions;
+import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiMaker;
+import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
+import com.kanji.constants.Prompts;
 
 public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 
-	private AbstractButton okButton;
+	private AbstractButton buttonClose;
 	private String message;
+	private JProgressBar progressBar;
 
 	public LoadingPanel(String message) {
 		this.message = message;
+		progressBar = new JProgressBar();
 	}
 
 	@Override
 	void createElements() {
 
-		JScrollPane scrollPane = GuiMaker.createTextPaneWrappedInScrollPane(
-				new TextPaneOptions().textAlignment(TextAlignment.CENTERED).text(message));
+		//TODO add method in gui maker to enable connecting one row with another or create a separate row
+		JLabel loading = GuiMaker.createLabel(new ComponentOptions().text(Prompts.LOADING_PROMPT));
 
-		okButton = createButtonClose();
-
-		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH, scrollPane));
-		setNavigationButtons(Anchor.CENTER, okButton);
+		buttonClose = createButtonClose();
+		MainPanel loadingPanel = new MainPanel(null);
+		loadingPanel.addRows(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, loading).nextRow(FillType.HORIZONTAL, progressBar));
+		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH, loadingPanel.getPanel()));
+		setNavigationButtons(Anchor.CENTER, buttonClose);
 
 	}
 
-	public void setProgressBar(JProgressBar bar) {
-		mainPanel.removeRow(2);// TODO this is bad
-		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL, bar).nextRow(FillType.NONE,
-				Anchor.CENTER, okButton));
+	public JProgressBar getProgressBar (){
+		return progressBar;
 	}
 
 }

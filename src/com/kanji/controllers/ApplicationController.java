@@ -85,17 +85,16 @@ public class ApplicationController {
 		final LoadingPanel loadingPanel = parent.showProgressDialog();
 		SwingWorker s = new SwingWorker<Void, Integer>() {
 
-			private JProgressBar progress;
+			private JProgressBar progressBar = loadingPanel.getProgressBar();
 
 			@Override
 			public Void doInBackground() throws Exception {
-				progress = new JProgressBar();
 				listOfWords.cleanWords();
-				loadingPanel.setProgressBar(progress);
-				progress.setMaximum(kanjiWords.size());
+				progressBar.setMaximum(kanjiWords.size());
 				List<Integer> ints = new ArrayList<>();
 				for (int i = 0; i < kanjiWords.size(); i++) {
 					listOfWords.addWord(kanjiWords.get(i));
+					//TODO performance of loading list with ~3000 words is around 15sec
 					process(ints);
 					ints.add(1);
 				}
@@ -104,8 +103,8 @@ public class ApplicationController {
 			}
 
 			@Override
-			public void process(List<Integer> something) {
-				progress.setValue(something.size());
+			public void process(List<Integer> percentDone) {
+				progressBar.setValue(percentDone.size());
 			}
 
 			@Override

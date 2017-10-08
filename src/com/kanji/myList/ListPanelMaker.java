@@ -34,6 +34,7 @@ public class ListPanelMaker<Word> {
 	private final Dimension scrollPanesSize = new Dimension(350, 300);
 	private JLabel titleLabel;
 	private ListRowMaker<Word> listRow;
+	private Border rowBorder = BorderFactory.createMatteBorder(0, 0, 2, 0, BasicColors.LIGHT_BLUE);
 
 	public ListPanelMaker(ListRowMaker<Word> listRow, ListWordsController<Word> controller) {
 		listWordsController = controller;
@@ -57,7 +58,7 @@ public class ListPanelMaker<Word> {
 		JComponent wrappingPanel = this.rowsPanel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL,
 				Anchor.NORTH, listRow.createListRow(word, commonListElements).getPanel()));
 		wrappingPanel
-				.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, BasicColors.LIGHT_BLUE));
+				.setBorder(rowBorder);
 		return new ListRow<Word>(word, wrappingPanel, rowNumberLabel);
 	}
 
