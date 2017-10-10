@@ -32,7 +32,7 @@ public class InsertWordController {
 			int number = Integer.parseInt(numberInput);
 			boolean addedWord = addWordToList(wordInput, number);
 			if (addedWord) {
-				applicationController.save();
+				applicationController.saveProject();
 				wordInputText.selectAll();
 				wordInputText.requestFocusInWindow();
 			}

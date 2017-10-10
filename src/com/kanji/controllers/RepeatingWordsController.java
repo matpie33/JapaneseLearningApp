@@ -147,7 +147,7 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 		parent.getApplicationController().addProblematicKanjis(problematicKanjis);
 		parent.showPanel(ApplicationPanels.STARTING_PANEL);
 
-		parent.getApplicationController().save();
+		parent.getApplicationController().saveProject();
 		parent.scrollToBottom();
 
 		parent.showMessageDialog(createFinishMessage());

@@ -139,7 +139,7 @@ public class ListWordsController<Word> {
 					return;
 				}
 				remove(word);
-				applicationController.save();
+				applicationController.saveProject();
 			}
 		};
 	}

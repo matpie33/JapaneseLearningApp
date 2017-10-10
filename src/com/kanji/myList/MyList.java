@@ -158,7 +158,7 @@ public class MyList<Word> {
 	}
 
 	public void save() {
-		this.applicationController.save();
+		this.applicationController.saveProject();
 	}
 
 	public boolean showMessage(String message) {

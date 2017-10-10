@@ -8,6 +8,7 @@ import java.util.*;
 import javax.swing.JFileChooser;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.kanji.Row.KanjiInformation;
 import com.kanji.Row.RepeatingInformation;
@@ -231,13 +232,13 @@ public class ApplicationController {
 		return listOfRepeatingDates;
 	}
 
-	public void save() {
+	public void saveProject() {
 		if (!loadingAndSaving.hasFileToSave()) {
 			return;
 		}
 		parent.changeSaveStatus(SavingStatus.SAVING);
 		parent.updateProblematicKanjisAmount(); // TODO this is not needed when
-												// we click save button
+												// we click saveProject button
 		SavingInformation savingInformation = new SavingInformation(listOfWords.getWords(),
 				listOfRepeatingDates.getWords(), getProblematicKanjis());
 
@@ -260,6 +261,7 @@ public class ApplicationController {
 		}
 
 		File f = fileChooser.getSelectedFile();
+		f = new File(f.toString() +".txt");
 		CustomFileReader reader = new CustomFileReader();
 		try {
 			reader.writeToFile(f, listOfWords, listOfRepeatingDates);
@@ -277,7 +279,7 @@ public class ApplicationController {
 			if (option == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();
 				loadingAndSaving.setFileToSave(file);
-				save();
+				saveProject();
 			}
 		}
 
