@@ -60,7 +60,18 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 			String hotkeyDescription;
 
 			switch (name) {
-			case ButtonsNames.OPEN:
+			case ButtonsNames.LOAD_LIST:
+				//TODO detect situation that multiple actions are binded to the same hotkey and throw exception
+				keyEvent = KeyEvent.VK_D;
+				hotkeyDescription = HotkeysDescriptions.LOAD_KANJI_LIST;
+				action = new AbstractAction() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						applicationController.loadKanjiList();
+					}
+				};
+				break;
+			case ButtonsNames.LOAD_PROJECT:
 				hotkeyDescription = HotkeysDescriptions.OPEN_LOAD_KANJI_DIALOG;
 				keyEvent = KeyEvent.VK_Q;
 				action = new AbstractAction() {
@@ -116,7 +127,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 				action = new AbstractAction() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						applicationController.exportList();
+						applicationController.saveList();
 					}
 				};
 				break;

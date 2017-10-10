@@ -1,15 +1,9 @@
 package com.kanji.controllers;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.swing.JFileChooser;
 import javax.swing.JProgressBar;
@@ -17,14 +11,15 @@ import javax.swing.SwingWorker;
 
 import com.kanji.Row.KanjiInformation;
 import com.kanji.Row.RepeatingInformation;
-import com.kanji.constants.ApplicationPanels;
-import com.kanji.constants.SavingStatus;
-import com.kanji.constants.Titles;
+import com.kanji.constants.*;
+import com.kanji.exception.DuplicatedWordException;
+import com.kanji.model.KanjisAndRepeatingInfo;
 import com.kanji.myList.MyList;
 import com.kanji.myList.RowInKanjiInformations;
 import com.kanji.myList.RowInRepeatingList;
 import com.kanji.panels.LoadingPanel;
 import com.kanji.range.SetOfRanges;
+import com.kanji.utilities.CustomFileReader;
 import com.kanji.utilities.LoadingAndSaving;
 import com.kanji.utilities.SavingInformation;
 import com.kanji.windows.ApplicationWindow;
@@ -34,7 +29,7 @@ public class ApplicationController {
 	private RepeatingWordsController repeatingWordsPanelController;
 	private ApplicationWindow parent;
 	private MyList<KanjiInformation> listOfWords;
-	private MyList<RepeatingInformation> repeats;
+	private MyList<RepeatingInformation> listOfRepeatingDates;
 	private LoadingAndSaving loadingAndSaving;
 	private Set<Integer> problematicKanjis;
 
@@ -44,7 +39,7 @@ public class ApplicationController {
 		this.parent = parent;
 		listOfWords = new MyList<>(parent, this, new RowInKanjiInformations(parent),
 				Titles.KANJI_LIST);
-		repeats = new MyList<>(parent, this, new RowInRepeatingList(),
+		listOfRepeatingDates = new MyList<>(parent, this, new RowInRepeatingList(),
 				Titles.REPEATING_LIST);
 		loadingAndSaving = new LoadingAndSaving();
 		this.repeatingWordsPanelController = repeatingWordsPanelController;
@@ -53,6 +48,41 @@ public class ApplicationController {
 	public void initializeListsElements() {
 		initWordsList();
 		initRepeatsList();
+	}
+
+	private JFileChooser createFileChooser(){
+		// TODO think about some more clever way of determining whether we are
+		// in test or deployment directory
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setCurrentDirectory(getWorkingDirectory(fileChooser));
+		return fileChooser;
+	}
+
+	public void loadKanjiList (){
+		JFileChooser fileChooser = createFileChooser();
+		int option = fileChooser.showOpenDialog(parent.getContainer());
+		if (option == JFileChooser.CANCEL_OPTION){
+			return;
+		}
+		File file = fileChooser.getSelectedFile();
+		CustomFileReader fileReader = new CustomFileReader();
+		try {
+			KanjisAndRepeatingInfo words = fileReader.readFile(file);
+			List <KanjiInformation> kanjiInformations = words.getKanjiInformations();
+			List <RepeatingInformation> repeatingInformations = words.getRepeatingInformations();
+			listOfWords.cleanWords();
+			listOfRepeatingDates.cleanWords();
+			for (KanjiInformation kanjiInformation: kanjiInformations){
+				listOfWords.addWord(kanjiInformation);
+			}
+			for (RepeatingInformation repeatingInformation: repeatingInformations){
+				listOfRepeatingDates.addWord(repeatingInformation);
+			}
+		}
+		catch (DuplicatedWordException|IOException e) {
+			parent.showMessageDialog(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	public void openKanjiProject() {
@@ -121,10 +151,10 @@ public class ApplicationController {
 		Runnable r2 = new Runnable() {
 			@Override
 			public void run() {
-				repeats.cleanWords();
-				repeats.addWordsList(mapOfRepeats);
-				repeats.getPanel().repaint();
-				repeats.scrollToBottom();
+				listOfRepeatingDates.cleanWords();
+				listOfRepeatingDates.addWordsList(mapOfRepeats);
+				listOfRepeatingDates.getPanel().repaint();
+				listOfRepeatingDates.scrollToBottom();
 			}
 		};
 		Thread t2 = new Thread(r2);
@@ -145,27 +175,18 @@ public class ApplicationController {
 
 	private void initRepeatsList() {
 
-		repeats.addWord(
-				new RepeatingInformation("abc", LocalDateTime.of(1993, 11, 13, 13, 25), true));
-		repeats.addWord(
-				new RepeatingInformation("abc", LocalDateTime.of(2005, 1, 1, 11, 11), true));
-		repeats.addWord(
-				new RepeatingInformation("abc", LocalDateTime.of(2000, 12, 31, 10, 0), true));
+		listOfRepeatingDates.addWord(
+				new RepeatingInformation("abc", LocalDateTime.of(1993, 11, 13, 13, 25), true, "3 minuty"));
+		listOfRepeatingDates.addWord(
+				new RepeatingInformation("abc", LocalDateTime.of(2005, 1, 1, 11, 11), true, "4 minuty"));
+		listOfRepeatingDates.addWord(
+				new RepeatingInformation("abc", LocalDateTime.of(2000, 12, 31, 10, 0), true, "5 minut"));
 	}
 
 	private File openFile() {
-		JFileChooser fileChooser = new JFileChooser();
+		JFileChooser fileChooser = createFileChooser();
 		String directory;
-		// TODO think about some more clever way of determining whether we are
-		// in test or deployment directory
-		if (System.getProperty("user.dir").contains("dist")) {
-			directory = "Powtórki kanji";
-		}
-		else {
-			directory = "Testy do kanji";
-		}
-		fileChooser.setCurrentDirectory(
-				new File(fileChooser.getCurrentDirectory() + File.separator + directory));
+
 
 		int chosenOption = fileChooser.showOpenDialog(parent.getContainer());
 		if (chosenOption == JFileChooser.CANCEL_OPTION)
@@ -173,6 +194,17 @@ public class ApplicationController {
 		File file = fileChooser.getSelectedFile();
 		loadingAndSaving.setFileToSave(file);
 		return file;
+	}
+
+	private File getWorkingDirectory (JFileChooser fileChooser){
+		String directory;
+		if (System.getProperty("user.dir").contains("dist")) {
+			directory = "Powtórki kanji";
+		}
+		else {
+			directory = "Testy do kanji";
+		}
+		return new File(fileChooser.getCurrentDirectory() + File.separator + directory);
 	}
 
 	public boolean showConfirmDialog(String message) {
@@ -188,7 +220,7 @@ public class ApplicationController {
 	}
 
 	public void showLearningStartDialog() {
-		parent.showLearningStartDialog(repeats, listOfWords.getNumberOfWords());
+		parent.showLearningStartDialog(listOfRepeatingDates, listOfWords.getNumberOfWords());
 	}
 
 	public MyList<KanjiInformation> getWordsList() {
@@ -196,7 +228,7 @@ public class ApplicationController {
 	}
 
 	public MyList<RepeatingInformation> getRepeatsList() {
-		return repeats;
+		return listOfRepeatingDates;
 	}
 
 	public void save() {
@@ -207,7 +239,7 @@ public class ApplicationController {
 		parent.updateProblematicKanjisAmount(); // TODO this is not needed when
 												// we click save button
 		SavingInformation savingInformation = new SavingInformation(listOfWords.getWords(),
-				repeats.getWords(), getProblematicKanjis());
+				listOfRepeatingDates.getWords(), getProblematicKanjis());
 
 		try {
 			loadingAndSaving.save(savingInformation);
@@ -219,33 +251,36 @@ public class ApplicationController {
 		parent.changeSaveStatus(SavingStatus.SAVED);
 	}
 
-	public void exportList() {
-		File f = new File("list.txt");
+	public void saveList() {
+		JFileChooser fileChooser = createFileChooser();
+
+		int option = fileChooser.showSaveDialog(parent.getContainer());
+		if (option != JFileChooser.APPROVE_OPTION){
+			return;
+		}
+
+		File f = fileChooser.getSelectedFile();
+		CustomFileReader reader = new CustomFileReader();
 		try {
-			BufferedWriter p = new BufferedWriter(
-					new OutputStreamWriter(new FileOutputStream(f), "UTF8"));
-			List<KanjiInformation> list = listOfWords.getWords();
-			for (KanjiInformation kanji : list) {
-				p.write(kanji.getKanjiKeyword() + " " + kanji.getKanjiID());
-				p.newLine();
-			}
-			p.close();
+			reader.writeToFile(f, listOfWords, listOfRepeatingDates);
 		}
 		catch (IOException e) {
+			parent.showMessageDialog(e.getMessage());
 			e.printStackTrace();
 		}
 	}
 
 	public void showSaveDialog() {
 		if (!loadingAndSaving.hasFileToSave()) {
-			JFileChooser fileChooser = new JFileChooser();
+			JFileChooser fileChooser = createFileChooser();
 			int option = fileChooser.showSaveDialog(this.parent.getContainer());
 			if (option == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();
 				loadingAndSaving.setFileToSave(file);
+				save();
 			}
 		}
-		save();
+
 	}
 
 	public void addProblematicKanjis(Set<Integer> problematicKanjiList) {
@@ -258,7 +293,7 @@ public class ApplicationController {
 	}
 
 	public void addWordToRepeatingList(RepeatingInformation word) {
-		repeats.addWord(word);
+		listOfRepeatingDates.addWord(word);
 	}
 
 	public void setRepeatingInformation(RepeatingInformation info) {

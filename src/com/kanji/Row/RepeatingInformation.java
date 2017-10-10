@@ -1,5 +1,6 @@
 package com.kanji.Row;
 
+import javax.rmi.CORBA.Tie;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -11,10 +12,15 @@ public class RepeatingInformation implements Serializable {
 	private boolean wasRepeated;
 	private String timeSpentOnRepeating;
 
-	public RepeatingInformation(String s, LocalDateTime d, boolean b) {
-		repeatingRange = s;
-		repeatingDate = d;
-		wasRepeated = b;
+	public RepeatingInformation(String repeatingRange, LocalDateTime repeatingDate, boolean wasRepeated) {
+		this(repeatingRange,repeatingDate,wasRepeated, "nie wiadomo");
+	}
+
+	public RepeatingInformation(String repeatingRange, LocalDateTime repeatingDate, boolean wasRepeated, String timeSpentOnRepeating) {
+		this.repeatingRange = repeatingRange;
+		this.repeatingDate = repeatingDate;
+		this.wasRepeated = wasRepeated;
+		this.timeSpentOnRepeating = timeSpentOnRepeating;
 	}
 
 	public String getTimeSpentOnRepeating() {
@@ -51,7 +57,7 @@ public class RepeatingInformation implements Serializable {
 
 	@Override
 	public String toString() {
-		return "date:" + repeatingDate + "range" + repeatingRange;
+		return "date:" + repeatingDate + "range" + repeatingRange + " timeSpent" +timeSpentOnRepeating;
 	}
 
 }
