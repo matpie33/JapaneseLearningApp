@@ -31,6 +31,7 @@ import javax.swing.SwingWorker;
 import com.guimaker.colors.BasicColors;
 import com.kanji.Row.KanjiInformation;
 import com.kanji.Row.KanjiWords;
+import com.kanji.Row.RepeatingInformation;
 import com.kanji.Row.RepeatingList;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.MenuTexts;
@@ -466,11 +467,31 @@ public class ElementMaker {
 			// Map<Integer, String> words = this.listOfWords.getWords();
 			BufferedWriter p = new BufferedWriter(
 					new OutputStreamWriter(new FileOutputStream(f), "UTF8"));
+			p.write("Kanji information");
+			p.newLine();
 			List<KanjiInformation> list = listOfWords.getWords().getAllWords();
 			for (KanjiInformation kanji : list) {
-				p.write(kanji.getKanjiKeyword() + " " + kanji.getKanjiID());
+				p.write(kanji.getKanjiKeyword() + "#" + kanji.getKanjiID()+"#");
 				p.newLine();
 			}
+			p.write("Repeating dates");
+			p.newLine();
+			List<RepeatingInformation> repeatList = repeats.getWords().getAllWords();
+			for (RepeatingInformation repeat : repeatList) {
+				p.write(repeat.getRepeatingRange().replace("\n", ",") + "#" +repeat.getRepeatingDate()+"#"+ repeat.getTimeSpentOnRepeating() +"#");
+				p.newLine();
+			}
+			p.write("Problematic kanjis");
+			p.newLine();
+
+			Set <Integer> problematicKanjis = parent.getStartingController().getProblematicKanjis();
+			System.out.println(problematicKanjis);
+
+			for (Integer i: problematicKanjis){
+				p.write(i.toString());
+				p.write("#");
+			}
+			System.out.println("hi");
 			p.close();
 		}
 		catch (IOException e) {

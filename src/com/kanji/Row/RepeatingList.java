@@ -59,4 +59,9 @@ public class RepeatingList implements Serializable {
 		repeatingList.remove(r);
 	}
 
+	public List <RepeatingInformation> getAllWords (){
+		return repeatingList;
+	}
+
+
 }
