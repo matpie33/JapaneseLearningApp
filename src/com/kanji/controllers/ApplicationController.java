@@ -8,7 +8,6 @@ import java.util.*;
 import javax.swing.JFileChooser;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.kanji.Row.KanjiInformation;
 import com.kanji.Row.RepeatingInformation;
@@ -142,9 +141,9 @@ public class ApplicationController {
 
 			@Override
 			public void done() {
-				parent.closeDialog();
-				listOfWords.getPanel().repaint();
+				parent.updateStartingPanel();
 				listOfWords.scrollToBottom();
+				parent.closeDialog();
 			}
 		};
 		s.execute();

@@ -13,6 +13,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import com.guimaker.colors.BasicColors;
+import com.guimaker.panels.MainPanel;
 import com.kanji.Row.KanjiInformation;
 import com.kanji.constants.ApplicationPanels;
 import com.kanji.constants.MenuTexts;
@@ -54,7 +55,6 @@ public class ApplicationWindow extends DialogWindow {
 				repeatingWordsPanel.getController());
 		applicationController.initializeListsElements();
 		startingPanel = new StartingPanel(this, applicationController);
-
 		mainApplicationPanel.add(startingPanel.createPanel(),
 				ApplicationPanels.STARTING_PANEL.getPanelName());
 		mainApplicationPanel.add(repeatingWordsPanel.createPanel(),
@@ -177,6 +177,10 @@ public class ApplicationWindow extends DialogWindow {
 
 		menu.add(item);
 		return menuBar;
+	}
+
+	public void updateStartingPanel(){
+		startingPanel.getPanel().revalidate();
 	}
 
 }

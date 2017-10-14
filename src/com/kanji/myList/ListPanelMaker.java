@@ -116,12 +116,6 @@ public class ListPanelMaker<Word> {
 			@Override
 			public void run() {
 				// TODO swing utilities
-				wrappingPanel.getPanel().repaint();
-				wrappingPanel.getPanel().revalidate();
-				parentScrollPane.getViewport().repaint();
-				parentScrollPane.getViewport().revalidate();
-				parentScrollPane.repaint();
-				parentScrollPane.revalidate();
 				JScrollBar scrollBar = parentScrollPane.getVerticalScrollBar();
 				scrollBar.setValue(scrollBar.getMaximum());
 			}

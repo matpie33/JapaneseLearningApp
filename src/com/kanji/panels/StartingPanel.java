@@ -6,11 +6,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.AbstractAction;
-import javax.swing.AbstractButton;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JSplitPane;
+import javax.swing.*;
 
 import com.guimaker.enums.FillType;
 import com.guimaker.panels.MainPanel;
@@ -183,7 +179,10 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 			bottomPanel.removeElementsFromRow(0, showProblematicKanjis);
 			problematicKanjiButtonIsVisible = false;
 		}
+	}
 
+	public JPanel getPanel (){
+		return mainPanel.getPanel();
 	}
 
 }
