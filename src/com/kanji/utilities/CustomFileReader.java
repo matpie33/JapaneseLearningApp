@@ -4,6 +4,7 @@ import java.awt.Desktop;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import com.kanji.Row.KanjiInformation;
@@ -18,10 +19,11 @@ public class CustomFileReader {
 	private File readedFile;
 	private final String WORD_TEXT = "Słowo to: ";
 	private final String NUMBER_TEXT = "Numer id to: ";
-	private final String HEADERS_REGEX = KANJIS_HEADER + "|"+ REPEATING_DATES_HEADER;
+	private final String HEADERS_REGEX = KANJIS_HEADER + "|"+ REPEATING_DATES_HEADER +"|"+ PROBLEMATIC_KANJIS_HEADER;
 	private BufferedReader in;
 	private static final String KANJIS_HEADER = "Kanji information";
 	private static final String REPEATING_DATES_HEADER = "Repeating dates";
+	private static final String PROBLEMATIC_KANJIS_HEADER = "Problematic kanjis";
 	private static final String SEPARATOR = "#";
 
 	public KanjisAndRepeatingInfo readFile(File file) throws DuplicatedWordException, IOException {
@@ -30,7 +32,8 @@ public class CustomFileReader {
 				new InputStreamReader(new FileInputStream(file), "UTF8"));
 		List <KanjiInformation> kanjiInformations = findWordsAndIDs(file);
 		List <RepeatingInformation> repeatingInformations = findRepeatingInformations(file);
-		KanjisAndRepeatingInfo kanjisAndRepeatingInfo = new KanjisAndRepeatingInfo(kanjiInformations, repeatingInformations);
+		Set <Integer> problematicKanjis = findProblematicKanjisNumbers();
+		KanjisAndRepeatingInfo kanjisAndRepeatingInfo = new KanjisAndRepeatingInfo(kanjiInformations, repeatingInformations, problematicKanjis);
 		in.close();
 		return kanjisAndRepeatingInfo;
 	}
@@ -111,11 +114,28 @@ public class CustomFileReader {
 		return false;
 	}
 
+	private Set <Integer> findProblematicKanjisNumbers () throws IOException {
+		Set <Integer> information = new HashSet<>();
+		String line;
+		while ((line = in.readLine()) != null) {
+			int indexOfNextSeparator = -1;
+
+			while(indexOfNextSeparator<line.length()-1){
+				Pair<String, Integer> wordAndIndex = getNextSeparatedWord(line, indexOfNextSeparator);
+				String problematicKanji = wordAndIndex.getKey();
+				indexOfNextSeparator = wordAndIndex.getValue();
+				information.add(Integer.parseInt(problematicKanji));
+			}
+		}
+		return information;
+	}
+
 	private List <RepeatingInformation> findRepeatingInformations (File file)
 			throws DuplicatedWordException, IOException {
 		List <RepeatingInformation> information = new ArrayList<>();
 		String line;
-		while ((line = in.readLine()) != null) {
+
+		while (!(line = in.readLine()).matches( HEADERS_REGEX)) {
 			int indexOfNextSeparator = -1;
 			Pair<String, Integer> wordAndIndex = getNextSeparatedWord(line, indexOfNextSeparator);
 			String ranges = wordAndIndex.getKey();
@@ -125,7 +145,8 @@ public class CustomFileReader {
 			indexOfNextSeparator = wordAndIndex.getValue();
 			wordAndIndex = getNextSeparatedWord(line, indexOfNextSeparator);
 			String timeSpent = wordAndIndex.getKey();
-			RepeatingInformation r = new RepeatingInformation(ranges, LocalDateTime.parse(date), true, timeSpent);
+			RepeatingInformation r = new RepeatingInformation(ranges, LocalDateTime.parse(date, DateTimeFormatter
+					.ofPattern ( "EEE MMM d HH:mm:ss zzz yyyy" , Locale.ENGLISH )), true, timeSpent);
 			information.add(r);
 
 		}

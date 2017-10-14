@@ -71,6 +71,8 @@ public class ApplicationController {
 			KanjisAndRepeatingInfo words = fileReader.readFile(file);
 			List <KanjiInformation> kanjiInformations = words.getKanjiInformations();
 			List <RepeatingInformation> repeatingInformations = words.getRepeatingInformations();
+			Set <Integer> problematicKanjis = words.getProblematicKanjis();
+			addProblematicKanjis(problematicKanjis);
 			listOfWords.cleanWords();
 			listOfRepeatingDates.cleanWords();
 			for (KanjiInformation kanjiInformation: kanjiInformations){
@@ -286,8 +288,8 @@ public class ApplicationController {
 	}
 
 	public void addProblematicKanjis(Set<Integer> problematicKanjiList) {
-		parent.updateProblematicKanjisAmount();
 		problematicKanjis = problematicKanjiList;
+		parent.updateProblematicKanjisAmount();
 	}
 
 	public Set<Integer> getProblematicKanjis() {

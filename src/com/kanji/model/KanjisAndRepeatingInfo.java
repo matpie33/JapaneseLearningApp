@@ -4,15 +4,19 @@ import com.kanji.Row.KanjiInformation;
 import com.kanji.Row.RepeatingInformation;
 
 import java.util.List;
+import java.util.Set;
 
 public class KanjisAndRepeatingInfo {
 
 	private List <KanjiInformation> kanjiInformations;
 	private List <RepeatingInformation> repeatingInformations;
+	private Set<Integer> problematicKanjis;
 
-	public KanjisAndRepeatingInfo (List <KanjiInformation> kanjiInformations, List <RepeatingInformation> repeatingInformations){
+	public KanjisAndRepeatingInfo (List <KanjiInformation> kanjiInformations, List <RepeatingInformation> repeatingInformations, Set<Integer> problematicKanjis){
 		this.kanjiInformations = kanjiInformations;
 		this.repeatingInformations = repeatingInformations;
+		this.problematicKanjis = problematicKanjis;
+
 	}
 
 	public List <KanjiInformation> getKanjiInformations (){
@@ -21,6 +25,10 @@ public class KanjisAndRepeatingInfo {
 
 	public List <RepeatingInformation> getRepeatingInformations (){
 		return repeatingInformations;
+	}
+
+	public Set<Integer> getProblematicKanjis() {
+		return problematicKanjis;
 	}
 
 }
