@@ -195,7 +195,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 			@Override
 			public void keyTyped(KeyEvent e) {
-				controller.handleKeyTyped(e, to, from, problematicCheckbox.isSelected());
+				controller.handleKeyTyped(e, problematicCheckbox.isSelected());
 			}
 
 			@Override

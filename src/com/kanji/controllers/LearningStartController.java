@@ -83,8 +83,7 @@ public class LearningStartController {
 		problematicLabelRow++;
 	}
 
-	public void handleKeyTyped(KeyEvent e, JTextField to, JTextField from,
-			boolean problematicCheckboxSelected) {
+	public void handleKeyTyped(KeyEvent e, boolean problematicCheckboxSelected) {
 		if (!(e.getKeyChar() + "").matches("\\d")) {
 			e.consume();
 		}
