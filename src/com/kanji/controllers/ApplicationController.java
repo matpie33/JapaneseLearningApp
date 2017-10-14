@@ -155,7 +155,7 @@ public class ApplicationController {
 			public void run() {
 				listOfRepeatingDates.cleanWords();
 				listOfRepeatingDates.addWordsList(mapOfRepeats);
-				listOfRepeatingDates.getPanel().repaint();
+				parent.updateStartingPanel();
 				listOfRepeatingDates.scrollToBottom();
 			}
 		};
