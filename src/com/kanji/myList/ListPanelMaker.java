@@ -20,6 +20,7 @@ import com.guimaker.enums.FillType;
 import com.guimaker.options.ScrollPaneOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
+import com.guimaker.row.SimpleRow;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.model.ListRow;
 import com.kanji.utilities.CommonListElements;
@@ -28,7 +29,6 @@ public class ListPanelMaker<Word> {
 
 	private ListWordsController<Word> listWordsController;
 	private MainPanel wrappingPanel;
-	private MainPanel rowsPanel;
 	private int highlightedRowNumber;
 	private JScrollPane parentScrollPane;
 	private final Dimension scrollPanesSize = new Dimension(350, 300);
@@ -40,26 +40,28 @@ public class ListPanelMaker<Word> {
 		listWordsController = controller;
 		highlightedRowNumber = -1;
 		wrappingPanel = new MainPanel(BasicColors.NAVY_BLUE, true);
-		rowsPanel = new MainPanel(null, true, false);
 		titleLabel = new JLabel();
 		titleLabel.setForeground(Color.WHITE);
+		wrappingPanel
+				.setBorder(rowBorder);
 		createDefaultScrollPane();
-		wrappingPanel.addRows(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, titleLabel)
-				.nextRow(FillType.BOTH, parentScrollPane));
+		createTitle();
 		this.listRow = listRow;
 	}
 
+	private void createTitle (){
+		wrappingPanel.addRows(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, titleLabel).disableBorder());
+	}
+
 	public ListRow<Word> addRow(Word word) {
-		JLabel rowNumberLabel = new JLabel(createTextForRowNumber(rowsPanel.getNumberOfRows() + 1));
+		JLabel rowNumberLabel = new JLabel(createTextForRowNumber(wrappingPanel.getNumberOfRows()));
 		JButton remove = new JButton("-");
 		remove.addActionListener(listWordsController.createDeleteRowAction(word));
 		CommonListElements commonListElements = new CommonListElements(remove, rowNumberLabel);
 		rowNumberLabel.setForeground(BasicColors.OCEAN_BLUE);
-		JComponent wrappingPanel = this.rowsPanel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL,
+		wrappingPanel.addRow(SimpleRowBuilder.createRow(FillType.HORIZONTAL,
 				Anchor.NORTH, listRow.createListRow(word, commonListElements).getPanel()));
-		wrappingPanel
-				.setBorder(rowBorder);
-		return new ListRow<Word>(word, wrappingPanel, rowNumberLabel);
+		return new ListRow<Word>(word, null, rowNumberLabel);
 	}
 
 	public String createTextForRowNumber(int rowNumber) {
@@ -74,30 +76,30 @@ public class ListPanelMaker<Word> {
 		return listWordsController;
 	}
 
-	public JPanel getPanel() {
-		return wrappingPanel.getPanel();
+	public JScrollPane getPanel() {
+		return parentScrollPane;
 	}
 
 	private void createDefaultScrollPane() {
 		Border raisedBevel = BorderFactory.createMatteBorder(3, 3, 0, 0, BasicColors.LIGHT_BLUE);
 		parentScrollPane = GuiMaker.createScrollPane(new ScrollPaneOptions()
-				.componentToWrap(rowsPanel.getPanel()).backgroundColor(BasicColors.VERY_BLUE)
+				.componentToWrap(wrappingPanel.getPanel()).backgroundColor(BasicColors.VERY_BLUE)
 				.border(raisedBevel).preferredSize(scrollPanesSize));
 
 	}
 
 	public void highlightRowAndScroll(int rowNumber, boolean clearLastHighlightedWord) {
 		if (highlightedRowNumber >= 0 && clearLastHighlightedWord) {
-			rowsPanel.clearPanelColor(highlightedRowNumber);
+			wrappingPanel.clearPanelColor(highlightedRowNumber);
 		}
 		changePanelColor(rowNumber, Color.red);
 		highlightedRowNumber = rowNumber;
-		scrollTo(rowsPanel.getRows().get(rowNumber));
+		scrollTo(wrappingPanel.getRows().get(rowNumber));
 		this.wrappingPanel.getPanel().repaint();
 	}
 
 	private void changePanelColor(int rowNumber, Color color) {
-		rowsPanel.setPanelColor(rowNumber, color);
+		wrappingPanel.setPanelColor(rowNumber, color);
 	}
 
 	public void scrollTo(JComponent panel) {
@@ -114,7 +116,11 @@ public class ListPanelMaker<Word> {
 			@Override
 			public void run() {
 				// TODO swing utilities
+				wrappingPanel.getPanel().repaint();
 				wrappingPanel.getPanel().revalidate();
+				parentScrollPane.getViewport().repaint();
+				parentScrollPane.getViewport().revalidate();
+				parentScrollPane.repaint();
 				parentScrollPane.revalidate();
 				JScrollBar scrollBar = parentScrollPane.getVerticalScrollBar();
 				scrollBar.setValue(scrollBar.getMaximum());
@@ -137,13 +143,14 @@ public class ListPanelMaker<Word> {
 	}
 
 	public int removeRow(JComponent panel) {
-		int rowNumber = rowsPanel.getIndexOfPanel(panel);
-		rowsPanel.removeRow(rowNumber);
+		int rowNumber = wrappingPanel.getIndexOfPanel(panel);
+		wrappingPanel.removeRow(rowNumber);
 		return rowNumber;
 	}
 
 	public void clear() {
-		rowsPanel.clear();
+		wrappingPanel.clear();
+		createTitle();
 	}
 
 }

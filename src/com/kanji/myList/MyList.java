@@ -2,7 +2,7 @@ package com.kanji.myList;
 
 import java.util.List;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import com.kanji.constants.ExceptionsMessages;
 import com.kanji.controllers.ApplicationController;
@@ -165,7 +165,7 @@ public class MyList<Word> {
 		return parent.showConfirmDialog(message);
 	}
 
-	public JPanel getPanel() {
+	public JScrollPane getPanel() {
 		return listController.getPanel();
 	}
 

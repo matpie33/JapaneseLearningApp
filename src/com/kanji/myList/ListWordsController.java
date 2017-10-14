@@ -4,9 +4,7 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.AbstractAction;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import com.kanji.Row.KanjiInformation;
 import com.kanji.Row.RepeatingInformation;
@@ -103,7 +101,7 @@ public class ListWordsController<Word> {
 		rowCreator.scrollToBottom();
 	}
 
-	public JPanel getPanel() {
+	public JScrollPane getPanel() {
 		return rowCreator.getPanel();
 	}
 
