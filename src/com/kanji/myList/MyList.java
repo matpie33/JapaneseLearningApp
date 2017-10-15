@@ -106,13 +106,6 @@ public class MyList<Word> {
 				parentDialog, false);
 	}
 
-	public <Property> int findRowNumberBasedOnPropertyStartingFromBeginningOfList(
-			PropertyManager<Property, Word> propertyChecker, Property searchedPropertyValue,
-			SearchingDirection searchDirection, DialogWindow parentDialog) {
-		return findRowNumberBasedOnProperty(propertyChecker, searchedPropertyValue, searchDirection,
-				parentDialog, true);
-	}
-
 	public <Property> Word findRowBasedOnPropertyStartingFromBeginningOfList(
 			PropertyManager<Property, Word> propertyChecker, Property searchedPropertyValue,
 			SearchingDirection searchDirection, DialogWindow parentDialog) {
@@ -144,11 +137,6 @@ public class MyList<Word> {
 		return rowNumber;
 	}
 
-	public void setWords(Word parameters) {
-		cleanWords();
-		// scrollToBottom();
-	}
-
 	public void scrollToBottom() {
 		listController.scrollToBottom();
 	}
@@ -159,10 +147,6 @@ public class MyList<Word> {
 
 	public void save() {
 		this.applicationController.saveProject();
-	}
-
-	public boolean showMessage(String message) {
-		return parent.showConfirmDialog(message);
 	}
 
 	public JScrollPane getPanel() {
@@ -183,10 +167,6 @@ public class MyList<Word> {
 
 	public DialogWindow getParent() {
 		return parent;
-	}
-
-	public void removeRow(Word word) {
-		listController.remove(word);
 	}
 
 	public <Property> void replaceProperty(PropertyManager<Property, Word> propertyChecker,
