@@ -81,10 +81,6 @@ public class ListWordsController<Word> {
 		return wordsList.size();
 	}
 
-	public void replace(Word wordToReplace, Word newWord) {
-		getWords().set(getWords().indexOf(wordToReplace), newWord);
-	}
-
 	public Word getWordInRow(int rowNumber1Based) {
 		return wordsList.get(rowNumber1Based).getWord();
 	}
