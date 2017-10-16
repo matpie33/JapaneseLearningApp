@@ -62,17 +62,18 @@ public class MyList<Word> {
 	private <Property> int findRowNumberBasedOnProperty(
 			PropertyManager<Property, Word> propertyChecker, Property searchedPropertyValue,
 			SearchingDirection searchDirection, DialogWindow parentDialog,
-			boolean startFromBeginningOfList) {
-		int lastRowToSearch;
+			boolean checkHighlightedWordToo) {
+
+
+
+		int lastRowToSearch = 0;
 		int incrementValue = searchDirection.getIncrementationValue();
-		if (startFromBeginningOfList) {
-			lastRowToSearch = 0;
-		}
-		else {
-			lastRowToSearch = listController.getHighlightedRowNumber() + incrementValue;
+		if (!checkHighlightedWordToo) {
+			lastRowToSearch = listController.getHighlightedRowNumber() ;
 		}
 
-		int rowNumber = lastRowToSearch;
+		int rowNumber = checkHighlightedWordToo? 0: lastRowToSearch + incrementValue;
+		boolean endCondition;
 		do {
 			if (isRowNumberOutOfRange(rowNumber)) {
 				rowNumber = setRowNumberToTheOtherEndOfList(rowNumber);
@@ -84,16 +85,17 @@ public class MyList<Word> {
 				}
 			}
 			rowNumber += incrementValue;
+			endCondition = checkHighlightedWordToo? rowNumber<listController.getNumberOfWords(): rowNumber != lastRowToSearch;
 		}
-		while (rowNumber != lastRowToSearch);
+		while (endCondition);
 
 		Word highlightedWord = getHighlightedWord();
-		if (highlightedWord != null
+		if (!checkHighlightedWordToo && highlightedWord != null
 				&& propertyChecker.isPropertyFound(searchedPropertyValue, highlightedWord)) {
 			parentDialog.showMessageDialog(ExceptionsMessages.WORD_ALREADY_HIGHLIGHTED_EXCEPTION);
 			return listController.getHighlightedRowNumber();
 		}
-		else {
+		else{
 			parentDialog.showMessageDialog(ExceptionsMessages.WORD_NOT_FOUND_EXCEPTION);
 			return -1;
 		}

@@ -121,7 +121,7 @@ public class ProblematicKanjisController {
 		List<KanjiInformation> kanjis = new ArrayList<>();
 		for (Integer kanjiId : problematicKanjisIds) {
 			kanjis.add(new KanjiInformation(kanjiList
-					.findRowBasedOnPropertyStartingFromHighlightedWord(new KanjiIdChecker(),
+					.findRowBasedOnPropertyStartingFromBeginningOfList(new KanjiIdChecker(),
 							kanjiId, SearchingDirection.FORWARD, kanjiList.getParent())
 					.getKanjiKeyword(), kanjiId));
 		}
