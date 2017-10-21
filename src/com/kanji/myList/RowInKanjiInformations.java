@@ -5,6 +5,7 @@ import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
+import javax.swing.text.JTextComponent;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.options.ComponentOptions;
@@ -35,11 +36,11 @@ public class RowInKanjiInformations implements ListRowMaker<KanjiInformation> {
 				new ComponentOptions().text(Labels.KANJI_ID_LABEL).foregroundColor(Color.WHITE));
 		String text = kanji.getKanjiKeyword();
 		int ID = kanji.getKanjiID();
-		JTextArea wordTextArea = CommonGuiElementsMaker.createKanjiWordInput(text);
+		JTextComponent wordTextArea = CommonGuiElementsMaker.createKanjiWordInput(text);
 		wordTextArea.addFocusListener(new ListPropertyChangeHandler<>(
 				applicationWindow.getApplicationController().getWordsList(), applicationWindow,
 				new KanjiKeywordChecker(), ExceptionsMessages.WORD_ALREADY_DEFINED_EXCEPTION));
-		JTextArea idTextArea = CommonGuiElementsMaker.createKanjiIdInput();
+		JTextComponent idTextArea = CommonGuiElementsMaker.createKanjiIdInput();
 		idTextArea.setText(Integer.toString(ID));
 		idTextArea.addFocusListener(new ListPropertyChangeHandler<>(
 				applicationWindow.getApplicationController().getWordsList(), applicationWindow,

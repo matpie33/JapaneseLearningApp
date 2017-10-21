@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.JTextPane;
+import javax.swing.text.JTextComponent;
 
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
@@ -22,7 +23,7 @@ import com.kanji.controllers.ProblematicKanjisController;
 public class KanjiPanel extends AbstractPanelWithHotkeysInfo {
 	private String kanjiToDisplay;
 	private ProblematicKanjisController problematicKanjiPanel;
-	private JTextPane kanjiArea;
+	private JTextComponent kanjiArea;
 	private Font kanjiFont;
 
 	public KanjiPanel(Font kanjiFont, String kanji,
@@ -44,8 +45,8 @@ public class KanjiPanel extends AbstractPanelWithHotkeysInfo {
 		setNavigationButtons(Anchor.CENTER, createButtonClose(), buttonNext);
 	}
 
-	private JTextPane addPromptAtLevel(String message) {
-		JTextPane pane = GuiMaker.createTextPane(new TextPaneOptions().editable(false)
+	private JTextComponent addPromptAtLevel(String message) {
+		JTextComponent pane = GuiMaker.createTextPane(new TextPaneOptions().editable(false)
 				.textAlignment(TextAlignment.CENTERED).text(message));
 		pane.setFont(kanjiFont);
 		pane.setBackground(Color.white);

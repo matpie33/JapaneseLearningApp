@@ -126,7 +126,8 @@ public class ApplicationController {
 				List<Integer> ints = new ArrayList<>();
 				for (int i = 0; i < kanjiWords.size(); i++) {
 					listOfWords.addWord(kanjiWords.get(i));
-					//TODO performance of loading list with ~3000 words is around 15sec
+					//TODO create methods add list of words: it would not have update view in it
+					// and method addWord should use updateView
 					process(ints);
 					ints.add(1);
 				}
@@ -238,8 +239,6 @@ public class ApplicationController {
 			return;
 		}
 		parent.changeSaveStatus(SavingStatus.SAVING);
-		parent.updateProblematicKanjisAmount(); // TODO this is not needed when
-												// we click saveProject button
 		SavingInformation savingInformation = new SavingInformation(listOfWords.getWords(),
 				listOfRepeatingDates.getWords(), getProblematicKanjis());
 

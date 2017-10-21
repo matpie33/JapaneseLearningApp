@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.text.JTextComponent;
 
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
@@ -32,7 +33,7 @@ import com.kanji.myList.MyList;
 
 public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 
-	private JTextField textField;
+	private JTextComponent textField;
 	private JRadioButton fullWordsSearchOption;
 	private JRadioButton perfectMatchSearchOption;
 	private SearchOptions searchOptions;
@@ -44,7 +45,7 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 	private final String SEARCH_BY_KEYWORD_PANEL_NAME = "Search by keyword panel";
 	private final String SEARCH_BY_KANJI_ID_PANEL_NAME = "Search by kanji id panel";
 	private SearchCriteria searchKryteria;
-	private JTextField kanjiIdTextfield;
+	private JTextComponent kanjiIdTextfield;
 
 	private enum SearchCriteria {
 		BY_KEYWORD, BY_KANJI_ID
@@ -161,8 +162,8 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 		return searchOptionRadioButton;
 	}
 
-	private JTextField createInputTextField() {
-		JTextField insertWord = new JTextField(20);
+	private JTextComponent createInputTextField() {
+		JTextComponent insertWord = new JTextField(20);
 		return insertWord;
 	}
 

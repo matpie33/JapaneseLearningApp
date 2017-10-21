@@ -56,9 +56,9 @@ public class ListPanelMaker<Word> {
 		remove.addActionListener(listWordsController.createDeleteRowAction(word));
 		CommonListElements commonListElements = new CommonListElements(remove, rowNumberLabel);
 		rowNumberLabel.setForeground(BasicColors.OCEAN_BLUE);
-		rowsPanel.addRow(SimpleRowBuilder.createRow(FillType.HORIZONTAL,
+		JComponent row = rowsPanel.addRow(SimpleRowBuilder.createRow(FillType.HORIZONTAL,
 				Anchor.NORTH, listRow.createListRow(word, commonListElements).getPanel()));
-		return new ListRow<Word>(word, null, rowNumberLabel);
+		return new ListRow<Word>(word, row, rowNumberLabel);
 	}
 
 	public String createTextForRowNumber(int rowNumber) {

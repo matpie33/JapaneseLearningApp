@@ -1,6 +1,7 @@
 package com.kanji.controllers;
 
 import javax.swing.JTextArea;
+import javax.swing.text.JTextComponent;
 
 import com.kanji.Row.KanjiInformation;
 import com.kanji.constants.ExceptionsMessages;
@@ -24,7 +25,7 @@ public class InsertWordController {
 		parentDialog = parent;
 	}
 
-	public void validateAndAddWordIfValid(JTextArea numberInputText, JTextArea wordInputText) {
+	public void validateAndAddWordIfValid(JTextComponent numberInputText, JTextComponent wordInputText) {
 
 		String numberInput = numberInputText.getText();
 		String wordInput = wordInputText.getText();

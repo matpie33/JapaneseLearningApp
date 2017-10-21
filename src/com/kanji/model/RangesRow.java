@@ -3,17 +3,18 @@ package com.kanji.model;
 import java.util.Objects;
 
 import javax.swing.JTextField;
+import javax.swing.text.JTextComponent;
 
 import com.kanji.range.Range;
 
 public class RangesRow {
-	private JTextField textFieldFrom;
-	private JTextField textFieldTo;
+	private JTextComponent textFieldFrom;
+	private JTextComponent textFieldTo;
 	private String error;
 	private int rowNumber;
 	private Range range;
 
-	public RangesRow(JTextField textFieldFrom, JTextField textFieldTo, int rowNumber) {
+	public RangesRow(JTextComponent textFieldFrom, JTextComponent textFieldTo, int rowNumber) {
 		this.textFieldFrom = textFieldFrom;
 		this.textFieldTo = textFieldTo;
 		error = "";
@@ -21,11 +22,11 @@ public class RangesRow {
 		range = new Range(0, 0);
 	}
 
-	public JTextField getTextFieldFrom() {
+	public JTextComponent getTextFieldFrom() {
 		return textFieldFrom;
 	}
 
-	public JTextField getTextFieldTo() {
+	public JTextComponent getTextFieldTo() {
 		return textFieldTo;
 	}
 
@@ -58,7 +59,7 @@ public class RangesRow {
 
 	}
 
-	public boolean gotTextFields(JTextField textFieldFrom, JTextField textFieldTo) {
+	public boolean gotTextFields(JTextComponent textFieldFrom, JTextComponent textFieldTo) {
 		return this.textFieldFrom == textFieldFrom && this.textFieldTo == textFieldTo;
 	}
 

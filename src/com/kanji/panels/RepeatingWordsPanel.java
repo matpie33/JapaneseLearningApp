@@ -11,6 +11,7 @@ import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextPane;
+import javax.swing.text.JTextComponent;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
@@ -39,8 +40,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private MainPanel centerPanel;
 	private JLabel remainingLabel;
 
-	private JTextPane kanjiTextArea;
-	private JTextPane wordTextArea;
+	private JTextComponent kanjiTextArea;
+	private JTextComponent wordTextArea;
 	private AbstractButton pauseOrResume;
 	private AbstractButton showWord;
 	private RepeatingWordsController repeatingWordsController;

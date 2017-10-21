@@ -15,19 +15,19 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.text.AbstractDocument;
+import javax.swing.text.JTextComponent;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.options.ScrollPaneOptions;
+import com.guimaker.options.TextAreaOptions;
 import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
@@ -49,11 +49,11 @@ import com.kanji.utilities.LimitDocumentFilter;
 public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 	private JScrollPane scrollPane;
-	private JTextField sumRangeField;
+	private JTextComponent sumRangeField;
 	private JCheckBox problematicCheckbox;
 	private LearningStartController controller;
 	private MainPanel rangesPanel;
-	private JTextField firstTextField;
+	private JTextComponent firstTextField;
 
 	public LearningStartPanel(ApplicationController applicationController, int numberOfWords,
 			MyList<RepeatingInformation> list) {
@@ -63,19 +63,18 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 	@Override
 	void createElements() {
 
-		JTextArea prompt = GuiMaker.createTextArea(new TextComponentOptions().editable(false)
+		JTextComponent prompt = GuiMaker.createTextArea(new TextAreaOptions().editable(false)
 				.opaque(false).text(Prompts.LEARNING_START).border(null));
 		problematicCheckbox = createProblematicKanjiCheckbox();
 		rangesPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE, true);
 		scrollPane = createRangesPanelScrollPane();
 		addRowToRangesPanel();
 
-		JTextField problematicKanjis = createProblematicRangeField(Prompts.PROBLEMATIC_KANJI);
-		JButton newRow = createButtonAddRow(ButtonsNames.ADD_ROW, rangesPanel);
-		sumRangeField = GuiMaker.createTextField(1, Prompts.RANGE_SUM, false);
+		JTextComponent problematicKanjis = createProblematicRangeField(Prompts.PROBLEMATIC_KANJI);
+		JButton newRow = createButtonAddRow(ButtonsNames.ADD_ROW);
+		sumRangeField = GuiMaker.createTextField(new TextComponentOptions().text(Prompts.RANGE_SUM).editable(false));
 		AbstractButton cancel = createButtonClose();
-		AbstractButton approve = createButtonStartLearning(ButtonsNames.START_LEARNING,
-				rangesPanel.getPanel());
+		AbstractButton approve = createButtonStartLearning(ButtonsNames.START_LEARNING);
 
 		MainPanel problematicPanel = new MainPanel(null);
 		problematicPanel.addRows((SimpleRowBuilder.createRow(FillType.BOTH, prompt).disableBorder()
@@ -149,13 +148,13 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		if (problematicCheckboxSelected) {
 			nextRowNumber -= 1;
 		}
-		JTextField[] textFields = createTextFieldsForRangeInput(nextRowNumber);
-		JTextField fieldFrom = textFields[0];
+		JTextComponent[] textFields = createTextFieldsForRangeInput(nextRowNumber);
+		JTextComponent fieldFrom = textFields[0];
 		firstTextField = fieldFrom;
 
 		JLabel from = new JLabel(Labels.RANGE_FROM_LABEL);
 		JLabel labelTo = new JLabel(Labels.RANGE_TO_LABEL);
-		JTextField fieldTo = textFields[1];
+		JTextComponent fieldTo = textFields[1];
 		JButton delete = createDeleteButton(fieldFrom, fieldTo);
 		if (controller.getNumberOfRangesRows() == 1) {
 			delete.setVisible(false);
@@ -170,6 +169,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		}
 		else {
 			rangesPanel.addRows(newRow);
+			rangesPanel.updateView();
 		}
 
 		if (controller.getNumberOfRangesRows() == 2) {
@@ -181,15 +181,15 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 	}
 
-	private JTextField[] createTextFieldsForRangeInput(int rowNumber) {
-		JTextField[] textFields = new JTextField[2];
+	private JTextComponent[] createTextFieldsForRangeInput(int rowNumber) {
+		JTextComponent[] textFields = new JTextComponent[2];
 		for (int i = 0; i < 2; i++) {
 			textFields[i] = new JTextField(5);
 			((AbstractDocument) textFields[i].getDocument()).setDocumentFilter(
 					new LimitDocumentFilter(NumberValues.INTEGER_MAX_VALUE_DIGITS_AMOUNT));
 		}
-		final JTextField from = textFields[0];
-		final JTextField to = textFields[1];
+		final JTextComponent from = textFields[0];
+		final JTextComponent to = textFields[1];
 		controller.addRow(rowNumber, from, to);
 		KeyAdapter keyAdapter = new KeyAdapter() {
 
@@ -213,7 +213,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		return textFields;
 	}
 
-	public boolean showErrorOnThePanel(String message, int rowNumber) {
+	public void showErrorOnThePanel(String message, int rowNumber) {
 		rangesPanel
 				.insertRow(rowNumber,
 						SimpleRowBuilder.createRow(FillType.NONE, Anchor.NORTH,
@@ -227,7 +227,6 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 						.scrollRectToVisible(rangesPanel.getRows().get(rowNumber).getBounds());
 			}
 		});
-		return true;
 	}
 
 	private void scrollToBottom() {
@@ -242,16 +241,15 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 	}
 
-	public boolean removeRowFromPanel(int rowNumber) {
+	public void removeRowFromPanel(int rowNumber) {
 		rangesPanel.removeRow(rowNumber);
-		return true;
 	}
 
 	public void updateSumOfWordsLabel(int sumOfWords) {
 		sumRangeField.setText(Prompts.RANGE_SUM + sumOfWords);
 	}
 
-	private JButton createDeleteButton(JTextField from, JTextField to) {
+	private JButton createDeleteButton(JTextComponent from, JTextComponent to) {
 		JButton delete = new JButton(ButtonsNames.REMOVE_ROW);
 		delete.addActionListener(new ActionListener() {
 			@Override
@@ -266,11 +264,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		rangesPanel.removeRow(rowNumber);
 	}
 
-	public void removeDeleteButtonFromFirstRow() {
-		rangesPanel.removeLastElementFromRow(0);
-	}
-
-	private JButton createButtonAddRow(String text, final MainPanel panel) {
+	private JButton createButtonAddRow(String text) {
 		JButton button = new JButton(text);
 		button.addActionListener(new ActionListener() {
 			@Override
@@ -281,14 +275,14 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		return button;
 	}
 
-	private JTextField createProblematicRangeField(String text) {
-		JTextField sumRange = new JTextField(text);
+	private JTextComponent createProblematicRangeField(String text) {
+		JTextComponent sumRange = new JTextField(text);
 		sumRange.setEditable(false);
 		sumRange.setText(sumRange.getText() + controller.getProblematicKanjiNumber());
 		return sumRange;
 	}
 
-	private AbstractButton createButtonStartLearning(String text, final JPanel panel) {
+	private AbstractButton createButtonStartLearning(String text) {
 		@SuppressWarnings("serial")
 		AbstractAction a = new AbstractAction() {
 			@Override
@@ -310,7 +304,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public void changeVisibilityOfDeleteButtonInFirstRow(boolean visibility) {
-		rangesPanel.changeVisibilityOfLastElementInRow(1, visibility);
+		rangesPanel.changeVisibilityOfLastElementInRow(0, visibility);
 	}
 
 	@Override

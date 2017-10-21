@@ -1,12 +1,11 @@
 package com.kanji.panels;
 
-import com.guimaker.enums.ComponentType;
 import com.guimaker.enums.FillType;
-import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.Row.KanjiInformation;
 import com.kanji.constants.ButtonsNames;
+import com.kanji.constants.HotkeysDescriptions;
 import com.kanji.constants.Prompts;
 import com.kanji.controllers.ApplicationController;
 import com.kanji.controllers.InsertWordController;
@@ -14,13 +13,14 @@ import com.kanji.myList.MyList;
 import com.kanji.utilities.CommonGuiElementsMaker;
 
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 
-	private JTextArea insertWordTextField;
-	private JTextArea insertNumberTextField;
+	private JTextComponent insertWordTextComponent;
+	private JTextComponent insertNumberTextComponent;
 	private InsertWordController controller;
 
 	public InsertWordPanel(MyList<KanjiInformation> list,
@@ -33,10 +33,10 @@ public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 
 		controller.setParentDialog(parentDialog);
 		JLabel addWordPrompt = new JLabel(Prompts.ADD_DIALOG);
-		insertWordTextField = CommonGuiElementsMaker.createKanjiWordInput("");
+		insertWordTextComponent = CommonGuiElementsMaker.createKanjiWordInput("");
 
 		JLabel addNumberPrompt = new JLabel(Prompts.ADD_NUMBER);
-		insertNumberTextField = CommonGuiElementsMaker.createKanjiIdInput();
+		insertNumberTextComponent = CommonGuiElementsMaker.createKanjiIdInput();
 
 		AbstractButton cancel = createButtonClose();
 		AbstractButton approve = createButtonValidate(ButtonsNames.ADD_WORD);
@@ -44,10 +44,10 @@ public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 		MainPanel addWordPanel = new MainPanel(null);
 
 		addWordPanel.addRows(
-				SimpleRowBuilder.createRow(FillType.BOTH, addWordPrompt, insertWordTextField)
-				.fillHorizontallySomeElements(insertWordTextField)
-				.fillVertically(insertWordTextField)
-				.nextRow(FillType.NONE, addNumberPrompt, insertNumberTextField));
+				SimpleRowBuilder.createRow(FillType.BOTH, addWordPrompt, insertWordTextComponent)
+				.fillHorizontallySomeElements(insertWordTextComponent)
+				.fillVertically(insertWordTextComponent)
+				.nextRow(FillType.NONE, addNumberPrompt, insertNumberTextComponent));
 
 		mainPanel.addRows(
 				SimpleRowBuilder.createRow(FillType.BOTH, addWordPanel.getPanel()).useAllExtraVerticalSpace());
@@ -59,11 +59,11 @@ public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 		AbstractAction action = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.validateAndAddWordIfValid(insertNumberTextField, insertWordTextField);
-			}
+				controller.validateAndAddWordIfValid(insertNumberTextComponent, insertWordTextComponent);
+				}
 		};
-		return GuiMaker.createButtonlikeComponent(ComponentType.BUTTON, text, action,
-				KeyEvent.VK_ENTER);
+		return createButtonWithHotkey(KeyEvent.VK_ENTER, action, text,
+				HotkeysDescriptions.ADD_WORD);
 	}
 
 }

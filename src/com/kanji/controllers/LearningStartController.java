@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JTextField;
+import javax.swing.text.JTextComponent;
 
 import com.kanji.Row.RepeatingInformation;
 import com.kanji.constants.ExceptionsMessages;
@@ -74,7 +75,7 @@ public class LearningStartController {
 		return applicationController.getProblematicKanjis().size();
 	}
 
-	public void addRow(int rowNumber, JTextField from, JTextField to) {
+	public void addRow(int rowNumber, JTextComponent from, JTextComponent to) {
 		RangesRow rangesRow = new RangesRow(from, to, rowNumber);
 		rangesRows.add(rangesRow);
 	}
@@ -103,7 +104,7 @@ public class LearningStartController {
 		updateRowsNumbers(rowNumber, 1);
 	}
 
-	private RangesRow findRowWithTextFields(JTextField textFieldFrom, JTextField textFieldTo) {
+	private RangesRow findRowWithTextFields(JTextComponent textFieldFrom, JTextComponent textFieldTo) {
 		for (RangesRow row : rangesRows) {
 			if (row.gotTextFields(textFieldFrom, textFieldTo)) {
 				return row;
@@ -112,7 +113,7 @@ public class LearningStartController {
 		return null;
 	}
 
-	public void handleKeyReleased(KeyEvent e, JTextField to, JTextField from,
+	public void handleKeyReleased(KeyEvent e, JTextComponent to, JTextComponent from,
 			boolean problematicCheckboxSelected) {
 
 		if (handleEmptyTextFields(e, to, from, problematicCheckboxSelected)) {
@@ -121,7 +122,7 @@ public class LearningStartController {
 		processTextFieldsInputs(to, from, problematicCheckboxSelected);
 	}
 
-	private void processTextFieldsInputs(JTextField to, JTextField from,
+	private void processTextFieldsInputs(JTextComponent to, JTextComponent from,
 			boolean problematicCheckboxSelected) {
 		boolean fromTextFieldWasFocused = from.hasFocus();
 		if (from.getText().isEmpty() || to.getText().isEmpty()) {
@@ -165,7 +166,7 @@ public class LearningStartController {
 		}
 	}
 
-	private boolean handleEmptyTextFields(KeyEvent e, JTextField to, JTextField from,
+	private boolean handleEmptyTextFields(KeyEvent e, JTextComponent to, JTextComponent from,
 			boolean problematicCheckboxSelected) {
 		if (from.getText().isEmpty() || to.getText().isEmpty()) {
 			if (e.getKeyChar() == KeyEvent.VK_BACK_SPACE) {
@@ -204,7 +205,7 @@ public class LearningStartController {
 		learningStartPanel.updateSumOfWordsLabel(getSumOfWords());
 	}
 
-	public void removeRangeRow(JTextField from, JTextField to,
+	public void removeRangeRow(JTextComponent from, JTextComponent to,
 			boolean problematicCheckboxSelected) {
 
 		RangesRow rowWithTextFields = findRowWithTextFields(from, to);
