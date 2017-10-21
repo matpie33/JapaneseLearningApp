@@ -38,7 +38,7 @@ public class ListPanelMaker<Word> {
 	public ListPanelMaker(ListRowMaker<Word> listRow, ListWordsController<Word> controller) {
 		listWordsController = controller;
 		highlightedRowNumber = -1;
-		rowsPanel = new MainPanel(BasicColors.NAVY_BLUE, true);
+		rowsPanel = new MainPanel(null, true);
 		titleLabel = new JLabel();
 		titleLabel.setForeground(Color.WHITE);
 		wrappingPanel = new MainPanel(null);

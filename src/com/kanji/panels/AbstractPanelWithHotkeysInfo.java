@@ -11,6 +11,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
@@ -35,14 +36,18 @@ public abstract class AbstractPanelWithHotkeysInfo {
     private int hotkeysPanelIndex;
     private AbstractButton[] navigationButtons;
     private Anchor buttonsAnchor = Anchor.EAST;
-
+    private Border defaultBorder = BorderFactory.createBevelBorder(BevelBorder.LOWERED);
 
     public AbstractPanelWithHotkeysInfo() {
         mainPanel = new MainPanel(BasicColors.OCEAN_BLUE);
         mainPanel.setRowColor(BasicColors.VERY_LIGHT_BLUE);
-        mainPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+        mainPanel.setBorder(defaultBorder);
         createHotkeysPanel();
     }
+
+    protected Border getDefaultBorder(){
+    	return defaultBorder;
+	}
 
     void addHotkeysPanelHere() {
         hotkeysPanelIndex = mainPanel.getNumberOfRows();

@@ -61,7 +61,7 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 	private int getCurrentWordId() {
 		return kanjiList.findRowBasedOnPropertyStartingFromBeginningOfList(
 				new KanjiKeywordChecker(SearchOptions.BY_FULL_EXPRESSION), currentWord,
-				SearchingDirection.FORWARD, parent).getKanjiID();
+				SearchingDirection.FORWARD).getKanjiID();
 	}
 
 	public String createRemainingKanjisPrompt() {
@@ -82,7 +82,7 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 	private void addProblematicKanjisToList() {
 		for (int i : problematicKanjis) {
 			String word = kanjiList.findRowBasedOnPropertyStartingFromHighlightedWord(
-					new KanjiIdChecker(), i, SearchingDirection.FORWARD, parent).getKanjiKeyword();
+					new KanjiIdChecker(), i, SearchingDirection.FORWARD).getKanjiKeyword();
 			if (!this.currentlyRepeatedWords.contains(word)) {
 				this.currentlyRepeatedWords.add(word);
 			}

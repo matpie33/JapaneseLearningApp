@@ -52,6 +52,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiFont = applicationWindow.getKanjiFont();
 		centerPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
 		repeatingPanel = new MainPanel(this.repeatingBackgroundColor);
+		repeatingPanel.setBorder(getDefaultBorder());
 	}
 
 	public RepeatingWordsController getController() {
@@ -69,8 +70,9 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 		setButtonsToLearningAndAddThem();
 
 		centerPanel.addRows(SimpleRowBuilder.createRow(FillType.NONE, Anchor.NORTH, titleLabel, time)
-				.nextRow(FillType.BOTH, repeatingPanel.getPanel())
-				.nextRow(FillType.NONE, Anchor.SOUTH, remainingLabel, returnButton));
+				.nextRow(FillType.BOTH, repeatingPanel.getPanel()).setBorder(getDefaultBorder())
+				.nextRow(FillType.NONE, Anchor.CENTER, remainingLabel, returnButton));
+		//TODO in gui maker enable me to put some element in some anchor so that remaining label can be positioned vertically center
 		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, centerPanel.getPanel())
 				.useAllExtraVerticalSpace());
 	}
@@ -184,9 +186,9 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
 	private void addElementsToRepeatingPanel(AbstractButton[] buttons) {
 		repeatingPanel.clear();
-		repeatingPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH, wordTextArea)
-				.nextRow(FillType.NONE, Anchor.CENTER, kanjiTextArea)
-				.nextRow(FillType.HORIZONTAL, buttons).fillHorizontallyEqually());
+		repeatingPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH, wordTextArea).setColor(BasicColors.GREY)
+				.nextRow(FillType.NONE, Anchor.CENTER, kanjiTextArea).disableBorder()
+				.nextRow(FillType.HORIZONTAL, buttons).fillHorizontallyEqually().disableBorder());
 		mainPanel.getPanel().repaint();
 
 	}

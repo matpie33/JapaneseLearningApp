@@ -122,7 +122,7 @@ public class ProblematicKanjisController {
 		for (Integer kanjiId : problematicKanjisIds) {
 			kanjis.add(new KanjiInformation(kanjiList
 					.findRowBasedOnPropertyStartingFromBeginningOfList(new KanjiIdChecker(),
-							kanjiId, SearchingDirection.FORWARD, kanjiList.getParent())
+							kanjiId, SearchingDirection.FORWARD)
 					.getKanjiKeyword(), kanjiId));
 		}
 		return kanjis;

@@ -198,12 +198,11 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 	private void tryToFindNextOccurence(SearchingDirection direction) {
 		if (searchKryteria.equals(SearchCriteria.BY_KEYWORD))
 			list.findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(
-					new KanjiKeywordChecker(searchOptions), textField.getText(), direction,
-					parentDialog);
+					new KanjiKeywordChecker(searchOptions), textField.getText(), direction);
 		else if (searchKryteria.equals(SearchCriteria.BY_KANJI_ID))
 			list.findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(new KanjiIdChecker(),
-					Integer.parseInt(kanjiIdTextfield.getText()), SearchingDirection.FORWARD,
-					parentDialog);
+					Integer.parseInt(kanjiIdTextfield.getText()), SearchingDirection.FORWARD
+					);
 
 	}
 

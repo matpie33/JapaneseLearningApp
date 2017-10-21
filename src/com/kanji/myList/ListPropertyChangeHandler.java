@@ -47,7 +47,7 @@ public class ListPropertyChangeHandler<Property, PropertyHolder> implements Focu
 			elem.selectAll();
 			return;
 		}
-		list.replaceProperty(propertyManager, propertyBeingModified, list.getParent(),
+		list.replaceProperty(propertyManager, propertyBeingModified,
 				propertyNewValue);
 		propertyBeingModified = null;
 	}

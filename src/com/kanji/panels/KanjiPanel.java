@@ -41,15 +41,14 @@ public class KanjiPanel extends AbstractPanelWithHotkeysInfo {
 	void createElements() {
 		kanjiArea = addPromptAtLevel(kanjiToDisplay);
 		AbstractButton buttonNext = createButtonShowNextKanji();
-		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, kanjiArea));
+		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, kanjiArea).setNotOpaque());
 		setNavigationButtons(Anchor.CENTER, createButtonClose(), buttonNext);
 	}
 
 	private JTextComponent addPromptAtLevel(String message) {
-		JTextComponent pane = GuiMaker.createTextPane(new TextPaneOptions().editable(false)
+		JTextComponent pane = GuiMaker.createTextPane(new TextPaneOptions().border(null).editable(false)
 				.textAlignment(TextAlignment.CENTERED).text(message));
 		pane.setFont(kanjiFont);
-		pane.setBackground(Color.white);
 		return pane;
 	}
 

@@ -24,7 +24,6 @@ public class MyList<Word> {
 
 	public boolean addWord(Word word) {
 		return listController.add(word);
-
 	}
 
 	public boolean addWordsList(List<Word> words) {
@@ -41,9 +40,9 @@ public class MyList<Word> {
 
 	public <Property> void findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(
 			PropertyManager<Property, Word> propertyChecker, Property searchedPropertyValue,
-			SearchingDirection searchDirection, DialogWindow parentDialog) {
+			SearchingDirection searchDirection) {
 		int rowNumber = findRowNumberBasedOnPropertyStartingFromHighlightedWord(propertyChecker,
-				searchedPropertyValue, searchDirection, parentDialog);
+				searchedPropertyValue, searchDirection);
 		if (rowNumber < 0) {
 			return;
 		}
@@ -53,27 +52,24 @@ public class MyList<Word> {
 
 	public <Property> Word findRowBasedOnPropertyStartingFromHighlightedWord(
 			PropertyManager<Property, Word> propertyChecker, Property searchedPropertyValue,
-			SearchingDirection searchDirection, DialogWindow parentDialog) {
+			SearchingDirection searchDirection) {
 		int rowNumber = findRowNumberBasedOnPropertyStartingFromHighlightedWord(propertyChecker,
-				searchedPropertyValue, searchDirection, parentDialog);
+				searchedPropertyValue, searchDirection);
 		return listController.getWordInRow(rowNumber);
 	}
 
 	private <Property> int findRowNumberBasedOnProperty(
 			PropertyManager<Property, Word> propertyChecker, Property searchedPropertyValue,
-			SearchingDirection searchDirection, DialogWindow parentDialog,
-			boolean checkHighlightedWordToo) {
-
-
+			SearchingDirection searchDirection, boolean checkHighlightedWordToo) {
 
 		int lastRowToSearch = 0;
 		int incrementValue = searchDirection.getIncrementationValue();
 		if (!checkHighlightedWordToo) {
-			lastRowToSearch = listController.getHighlightedRowNumber() ;
+			lastRowToSearch = listController.getHighlightedRowNumber() >= 0? listController.getHighlightedRowNumber(): 0 ;
 		}
 
 		int rowNumber = checkHighlightedWordToo? 0: lastRowToSearch + incrementValue;
-		boolean endCondition;
+		boolean shouldContinueSearching;
 		do {
 			if (isRowNumberOutOfRange(rowNumber)) {
 				rowNumber = setRowNumberToTheOtherEndOfList(rowNumber);
@@ -85,34 +81,34 @@ public class MyList<Word> {
 				}
 			}
 			rowNumber += incrementValue;
-			endCondition = checkHighlightedWordToo? rowNumber<listController.getNumberOfWords(): rowNumber != lastRowToSearch;
+			shouldContinueSearching = checkHighlightedWordToo? rowNumber<listController.getNumberOfWords(): rowNumber != lastRowToSearch;
 		}
-		while (endCondition);
+		while (shouldContinueSearching);
 
 		Word highlightedWord = getHighlightedWord();
 		if (!checkHighlightedWordToo && highlightedWord != null
 				&& propertyChecker.isPropertyFound(searchedPropertyValue, highlightedWord)) {
-			parentDialog.showMessageDialog(ExceptionsMessages.WORD_ALREADY_HIGHLIGHTED_EXCEPTION);
+			parent.showMessageDialog(ExceptionsMessages.WORD_ALREADY_HIGHLIGHTED_EXCEPTION);
 			return listController.getHighlightedRowNumber();
 		}
 		else{
-			parentDialog.showMessageDialog(ExceptionsMessages.WORD_NOT_FOUND_EXCEPTION);
+			parent.showMessageDialog(ExceptionsMessages.WORD_NOT_FOUND_EXCEPTION);
 			return -1;
 		}
 	}
 
 	public <Property> int findRowNumberBasedOnPropertyStartingFromHighlightedWord(
 			PropertyManager<Property, Word> propertyChecker, Property searchedPropertyValue,
-			SearchingDirection searchDirection, DialogWindow parentDialog) {
+			SearchingDirection searchDirection) {
 		return findRowNumberBasedOnProperty(propertyChecker, searchedPropertyValue, searchDirection,
-				parentDialog, false);
+				 false);
 	}
 
 	public <Property> Word findRowBasedOnPropertyStartingFromBeginningOfList(
 			PropertyManager<Property, Word> propertyChecker, Property searchedPropertyValue,
-			SearchingDirection searchDirection, DialogWindow parentDialog) {
+			SearchingDirection searchDirection) {
 		int rowNumber = findRowNumberBasedOnProperty(propertyChecker, searchedPropertyValue,
-				searchDirection, parentDialog, true);
+				searchDirection, true);
 		return listController.getWordInRow(rowNumber);
 	}
 
@@ -167,14 +163,10 @@ public class MyList<Word> {
 		return listController;
 	}
 
-	public DialogWindow getParent() {
-		return parent;
-	}
-
 	public <Property> void replaceProperty(PropertyManager<Property, Word> propertyChecker,
-			Property oldValue, DialogWindow parentDialog, Property newValue) {
+			Property oldValue, Property newValue) {
 		Word kanjiToChange = findRowBasedOnPropertyStartingFromHighlightedWord(propertyChecker,
-				oldValue, SearchingDirection.FORWARD, parentDialog);
+				oldValue, SearchingDirection.FORWARD);
 		propertyChecker.replaceValueOfProperty(newValue, kanjiToChange);
 		listController.getWords();
 		save();
