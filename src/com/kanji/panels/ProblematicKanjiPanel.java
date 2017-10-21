@@ -46,7 +46,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		controller = new ProblematicKanjisController(kanjiFont, this, problematicKanji, kanjiList);
 
 		rowInKanjiRepeatingList = new RowInKanjiRepeatingList(controller);
-		kanjiRepeatingList = new MyList<KanjiInformation>(parentDialog, null,
+		kanjiRepeatingList = new MyList<>(parentDialog, applicationWindow.getStartingPanel(), null,
 				rowInKanjiRepeatingList, Titles.PROBLEMATIC_KANJIS);
 	}
 

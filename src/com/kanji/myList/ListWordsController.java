@@ -19,11 +19,11 @@ public class ListWordsController<Word> {
 	private ListPanelMaker<Word> rowCreator;
 	private ApplicationController applicationController;
 
-	public ListWordsController(ListRowMaker<Word> listRowMaker, String title,
+	public ListWordsController(ListRowMaker<Word> listRowMaker, JPanel parentPanel, String title,
 			ApplicationController applicationController) {
 		this.applicationController = applicationController;
 		wordsList = new ArrayList<>();
-		rowCreator = new ListPanelMaker<>(listRowMaker, this);
+		rowCreator = new ListPanelMaker<>(listRowMaker, parentPanel, this);
 		this.rowCreator.setTitle(title);
 	}
 

@@ -53,8 +53,9 @@ public class ApplicationWindow extends DialogWindow {
 		RepeatingWordsPanel repeatingWordsPanel = new RepeatingWordsPanel(this);
 		applicationController = new ApplicationController(this,
 				repeatingWordsPanel.getController());
-		applicationController.initializeListsElements();
 		startingPanel = new StartingPanel(this, applicationController);
+		applicationController.initializeListsElements();
+
 		mainApplicationPanel.add(startingPanel.createPanel(),
 				ApplicationPanels.STARTING_PANEL.getPanelName());
 		mainApplicationPanel.add(repeatingWordsPanel.createPanel(),
@@ -179,8 +180,8 @@ public class ApplicationWindow extends DialogWindow {
 		return menuBar;
 	}
 
-	public void updateStartingPanel(){
-		startingPanel.getPanel().revalidate();
+	public JPanel getStartingPanel (){
+		return startingPanel.getPanel();
 	}
 
 }

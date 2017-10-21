@@ -37,13 +37,13 @@ public class ApplicationController {
 			RepeatingWordsController repeatingWordsPanelController) {
 		problematicKanjis = new HashSet<Integer>();
 		this.parent = parent;
-		listOfWords = new MyList<>(parent, this, new RowInKanjiInformations(parent),
-				Titles.KANJI_LIST);
-		listOfRepeatingDates = new MyList<>(parent, this, new RowInRepeatingList(),
-				Titles.REPEATING_LIST);
+
+
 		loadingAndSaving = new LoadingAndSaving();
 		this.repeatingWordsPanelController = repeatingWordsPanelController;
 	}
+
+	//TODO dependencies between classes are weird and should be reconsidered
 
 	public void initializeListsElements() {
 		initWordsList();
@@ -123,26 +123,19 @@ public class ApplicationController {
 			public Void doInBackground() throws Exception {
 				listOfWords.cleanWords();
 				progressBar.setMaximum(kanjiWords.size());
-				List<Integer> ints = new ArrayList<>();
 				for (int i = 0; i < kanjiWords.size(); i++) {
 					listOfWords.addWord(kanjiWords.get(i));
 					//TODO create methods add list of words: it would not have update view in it
 					// and method addWord should use updateView
-					process(ints);
-					ints.add(1);
+					progressBar.setValue(i);
 				}
 
 				return null;
 			}
 
-			@Override
-			public void process(List<Integer> percentDone) {
-				progressBar.setValue(percentDone.size());
-			}
 
 			@Override
 			public void done() {
-				parent.updateStartingPanel();
 				listOfWords.scrollToBottom();
 				parent.closeDialog();
 			}
@@ -151,21 +144,21 @@ public class ApplicationController {
 	}
 
 	private void showLoadedRepeatingInformations(List<RepeatingInformation> mapOfRepeats) {
-		Runnable r2 = new Runnable() {
+		SwingWorker s = new SwingWorker<Void, Integer>() {
 			@Override
-			public void run() {
+			public Void doInBackground() throws Exception {
 				listOfRepeatingDates.cleanWords();
 				listOfRepeatingDates.addWordsList(mapOfRepeats);
-				parent.updateStartingPanel();
 				listOfRepeatingDates.scrollToBottom();
+				return null;
 			}
 		};
-		Thread t2 = new Thread(r2);
-		t2.start();
+		s.execute();
 	}
 
 	private void initWordsList() {
-
+		listOfWords = new MyList<>(parent, parent.getStartingPanel(), this, new RowInKanjiInformations(parent),
+				Titles.KANJI_LIST);
 		for (int i = 1; i <= 15; i++) {
 			listOfWords.addWord(new KanjiInformation("Word no. " + i, i));
 		}
@@ -177,7 +170,8 @@ public class ApplicationController {
 	}
 
 	private void initRepeatsList() {
-
+		listOfRepeatingDates = new MyList<>(parent, parent.getStartingPanel(),this, new RowInRepeatingList(),
+				Titles.REPEATING_LIST);
 		listOfRepeatingDates.addWord(
 				new RepeatingInformation("abc", LocalDateTime.of(1993, 11, 13, 13, 25), true, "3 minuty"));
 		listOfRepeatingDates.addWord(

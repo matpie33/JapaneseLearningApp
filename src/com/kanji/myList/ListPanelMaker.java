@@ -4,13 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.border.Border;
 
 import com.guimaker.colors.BasicColors;
@@ -34,8 +28,9 @@ public class ListPanelMaker<Word> {
 	private ListRowMaker<Word> listRow;
 	private Border rowBorder = BorderFactory.createMatteBorder(0, 0, 2, 0, BasicColors.LIGHT_BLUE);
 	private MainPanel wrappingPanel;
+	private JPanel parentPanel;
 
-	public ListPanelMaker(ListRowMaker<Word> listRow, ListWordsController<Word> controller) {
+	public ListPanelMaker(ListRowMaker<Word> listRow, JPanel parentPanel, ListWordsController<Word> controller) {
 		listWordsController = controller;
 		highlightedRowNumber = -1;
 		rowsPanel = new MainPanel(null, true);
@@ -48,6 +43,7 @@ public class ListPanelMaker<Word> {
 				.setBorder(rowBorder);
 		createDefaultScrollPane();
 		this.listRow = listRow;
+		this.parentPanel = parentPanel;
 	}
 
 	public ListRow<Word> addRow(Word word) {
@@ -109,10 +105,13 @@ public class ListPanelMaker<Word> {
 	}
 
 	public void scrollToBottom() {
+		parentPanel.revalidate();
+
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				// TODO swing utilities
+
 				JScrollBar scrollBar = parentScrollPane.getVerticalScrollBar();
 				scrollBar.setValue(scrollBar.getMaximum());
 			}

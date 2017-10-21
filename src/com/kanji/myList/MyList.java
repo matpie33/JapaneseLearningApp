@@ -15,11 +15,11 @@ public class MyList<Word> {
 	private ApplicationController applicationController;
 	private ListWordsController<Word> listController;
 
-	public MyList(DialogWindow parentDialog, ApplicationController applicationController,
+	public MyList(DialogWindow parentDialog, JPanel parentPanel, ApplicationController applicationController,
 			ListRowMaker<Word> listRowMaker, String title) {
 		this.applicationController = applicationController;
 		this.parent = parentDialog;
-		listController = new ListWordsController<>(listRowMaker, title, applicationController);
+		listController = new ListWordsController<>(listRowMaker, parentPanel, title, applicationController);
 	}
 
 	public boolean addWord(Word word) {
