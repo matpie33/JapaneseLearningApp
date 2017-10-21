@@ -3,6 +3,8 @@ package com.kanji.panels;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
@@ -37,6 +39,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
     private AbstractButton[] navigationButtons;
     private Anchor buttonsAnchor = Anchor.EAST;
     private Border defaultBorder = BorderFactory.createBevelBorder(BevelBorder.LOWERED);
+    private Map<HotkeyWrapper, AbstractAction> hotkeysMapping = new HashMap<>();
 
     public AbstractPanelWithHotkeysInfo() {
         mainPanel = new MainPanel(BasicColors.OCEAN_BLUE);
@@ -104,6 +107,10 @@ public abstract class AbstractPanelWithHotkeysInfo {
     private void addHotkey(KeyModifiers keyModifier, int keyEvent, AbstractAction action,
                           JComponent component, String hotkeyDescription) {
         HotkeyWrapper wrapper = new HotkeyWrapper(keyModifier, keyEvent);
+        if (hotkeysMapping.containsKey(wrapper)){
+        	throw new IllegalArgumentException("Multiple actions binded to the same key: " + KeyEvent.getKeyText(wrapper.getKeyEvent())+" in the class: "+this);
+		}
+        hotkeysMapping.put(wrapper, action);
         CommonActionsMaker.addHotkey(keyEvent, wrapper.getKeyMask(), action, component);
         addHotkeyInformation(hotkeyDescription, wrapper);
     }

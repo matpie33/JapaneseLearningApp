@@ -25,11 +25,12 @@ import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
 import com.kanji.constants.Titles;
 import com.kanji.controllers.RepeatingWordsController;
+import com.kanji.utilities.RepeatingState;
 import com.kanji.windows.ApplicationWindow;
 
 public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
-	private AbstractButton recognizedWord;
+	private AbstractButton showKanjiOrRecognizeWord;
 	private AbstractButton notRecognizedWord;
 	private MainPanel repeatingPanel;
 	private final Color repeatingBackgroundColor = Color.white;
@@ -43,9 +44,9 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private JTextComponent kanjiTextArea;
 	private JTextComponent wordTextArea;
 	private AbstractButton pauseOrResume;
-	private AbstractButton showWord;
 	private RepeatingWordsController repeatingWordsController;
 	private Font kanjiFont;
+	private RepeatingState repeatingState;
 
 	public RepeatingWordsPanel(ApplicationWindow applicationWindow) {
 		this.repeatingWordsController = new RepeatingWordsController(applicationWindow, this);
@@ -53,6 +54,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 		centerPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
 		repeatingPanel = new MainPanel(this.repeatingBackgroundColor);
 		repeatingPanel.setBorder(getDefaultBorder());
+		repeatingState = RepeatingState.WORD_NOT_SHOWING;
 	}
 
 	public RepeatingWordsController getController() {
@@ -83,18 +85,17 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
 	private AbstractButton[] showWordButtons(boolean withPreviousWordButton) {
 		if (withPreviousWordButton) {
-			return new AbstractButton[] { this.pauseOrResume, this.showWord,
+			return new AbstractButton[] { this.pauseOrResume, showKanjiOrRecognizeWord,
 					this.showPreviousWord };
 		}
 		else {
-			return new AbstractButton[] { this.pauseOrResume, this.showWord };
+			return new AbstractButton[] { this.pauseOrResume, showKanjiOrRecognizeWord };
 		}
 	}
 
 	private void createElementsForRepeatingPanel() {
 		createWordDescriptionTextArea();
 		createKanjiTextArea();
-		createShowWordButton();
 		createPauseOrResumeButton();
 		createRecognizedWordButton();
 		createNotRecognizedWordButton();
@@ -136,11 +137,11 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
 	private AbstractButton[] recognizeWordButtons(boolean withShowPreviousWordButton) {
 		if (withShowPreviousWordButton) {
-			return new AbstractButton[] { this.pauseOrResume, this.recognizedWord,
+			return new AbstractButton[] { this.pauseOrResume, this.showKanjiOrRecognizeWord,
 					this.notRecognizedWord, showPreviousWord };
 		}
 		else {
-			return new AbstractButton[] { this.pauseOrResume, this.recognizedWord,
+			return new AbstractButton[] { this.pauseOrResume, this.showKanjiOrRecognizeWord,
 					this.notRecognizedWord };
 		}
 
@@ -160,10 +161,20 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private void createRecognizedWordButton() {
 		AbstractAction a = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
-				repeatingWordsController.pressedRecognizedWordButton();
+				if (repeatingState == RepeatingState.WORD_IS_SHOWING){
+					repeatingWordsController.pressedRecognizedWordButton();
+					showKanjiOrRecognizeWord.setText(ButtonsNames.SHOW_KANJI);
+				}
+				else{
+					repeatingWordsController.presedButtonShowWord();
+					repeatingState = RepeatingState.WORD_IS_SHOWING;
+					showKanjiOrRecognizeWord.setText(ButtonsNames.RECOGNIZED_WORD);
+				}
+
+
 			}
 		};
-		recognizedWord = createButtonWithHotkey(KeyEvent.VK_SPACE, a, ButtonsNames.RECOGNIZED_WORD,
+		showKanjiOrRecognizeWord = createButtonWithHotkey(KeyEvent.VK_SPACE, a, ButtonsNames.SHOW_KANJI,
 				HotkeysDescriptions.SHOW_KANJI_OR_SET_KANJI_AS_KNOWN_KANJI);
 	}
 
@@ -179,6 +190,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public void goToNextWord() {
+		repeatingState = RepeatingState.WORD_NOT_SHOWING;
 		setButtonsToLearningAndAddThem();
 		remainingLabel.setText(repeatingWordsController.createRemainingKanjisPrompt());
 		wordTextArea.requestFocusInWindow();
@@ -205,16 +217,6 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
 	}
 
-	private void createShowWordButton() {
-		this.showWord = new JButton(ButtonsNames.SHOW_KANJI);
-		AbstractAction action = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				repeatingWordsController.presedButtonShowWord();
-			}
-		};
-		showWord = createButtonWithHotkey(KeyEvent.VK_SPACE, action, ButtonsNames.SHOW_KANJI, "");
-	}
 
 	public void showCurrentKanjiAndShowAppropriateButtons() {
 		setButtonsToRecognizeWord(repeatingWordsController.previousWordExists());

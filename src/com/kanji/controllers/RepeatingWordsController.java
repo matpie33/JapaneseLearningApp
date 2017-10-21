@@ -1,8 +1,6 @@
 package com.kanji.controllers;
 
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import com.guimaker.enums.TextAlignment;
 import com.kanji.Row.KanjiInformation;
@@ -23,11 +21,8 @@ import com.kanji.timer.TimeSpentMonitor;
 import com.kanji.windows.ApplicationWindow;
 
 public class RepeatingWordsController implements TimeSpentMonitor {
-	private Set<String> currentlyRepeatedWords;
+	private List<String> currentlyRepeatedWords;
 	private KanjiCharactersReader kanjiCharactersReader;
-
-	// TODO currently repeated words are not set - they can be duplicated, IDs
-	// are set
 	private ApplicationWindow parent;
 	private Set<Integer> problematicKanjis;
 	private Set<Integer> currentProblematicKanjis;
@@ -48,7 +43,7 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		kanjiCharactersReader.loadKanjisIfNeeded();
 		currentProblematicKanjis = new HashSet<>();
-		this.currentlyRepeatedWords = new HashSet<>();
+		this.currentlyRepeatedWords = new ArrayList<>();
 		this.parent = parent;
 		timeSpentHandler = new TimeSpentHandler(this);
 		this.panel = panel;
@@ -112,19 +107,8 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 	private void pickRandomWord() {
 		Random randomizer = new Random();
 		int index = randomizer.nextInt(this.currentlyRepeatedWords.size());
-		this.currentWord = getRandomElementFromSetByIndex(index);
+		this.currentWord = currentlyRepeatedWords.get(index);
 		showWord(currentWord);
-	}
-
-	private String getRandomElementFromSetByIndex(int index) {
-		int i = 0;
-		for (String s : currentlyRepeatedWords) {
-			if (i == index) {
-				return s;
-			}
-			i++;
-		}
-		return "";
 	}
 
 	private void showWord(String word) {
@@ -167,7 +151,7 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 		timeSpentHandler.reset();
 		problematicKanjis = new HashSet<>();
 		currentProblematicKanjis.clear();
-		this.currentlyRepeatedWords = new HashSet<>();
+		this.currentlyRepeatedWords = new ArrayList<>();
 		currentWord = "";
 		kanjiList = parent.getApplicationController().getWordsList();
 		this.problematicKanjis = parent.getApplicationController().getProblematicKanjis();
