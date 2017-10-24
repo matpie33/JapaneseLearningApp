@@ -15,6 +15,7 @@ import com.guimaker.row.SimpleRowBuilder;
 public class MessagePanel extends AbstractPanelWithHotkeysInfo {
 
 	private String message;
+	protected AbstractButton buttonClose;
 
 	public MessagePanel(String message) {
 		this.message = message;
@@ -22,7 +23,7 @@ public class MessagePanel extends AbstractPanelWithHotkeysInfo {
 
 	@Override
 	void createElements() {
-		AbstractButton buttonClose = createButtonClose();
+		buttonClose = createButtonClose();
 		JScrollPane scrollPane = GuiMaker.createTextPaneWrappedInScrollPane(
 				// TODO add vertical alignment
 				new TextPaneOptions().backgroundColor(Color.WHITE).textAlignment(TextAlignment.CENTERED).text(message)

@@ -23,5 +23,6 @@ public class HotkeysDescriptions {
 	public static final String SEARCH_NEXT_KANJI = "szuka słowa poruszając się w dół listy";
 	public static final String SEARCH_PREVIOUS_KANJI = "szuka słowa poruszając się w górę listy";
 	public static final String LOAD_KANJI_LIST = "Wczytuje listę słowek i powtórek z pliku tekstowego";
+	public static final String RETURN_FROM_LEARNING = "Przerywa naukę.";
 
 }

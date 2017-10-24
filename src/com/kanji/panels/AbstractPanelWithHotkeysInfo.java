@@ -126,6 +126,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
         AbstractButton button = GuiMaker.createButtonlikeComponent(ComponentType.BUTTON,
                 buttonLabel, action);
         addHotkey(keyModifier, keyEvent, action, button, hotkeyDescription);
+        button.setFocusable(false);
         return button;
     }
 

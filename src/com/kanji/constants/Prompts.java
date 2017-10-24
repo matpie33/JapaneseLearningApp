@@ -26,5 +26,6 @@ public class Prompts {
 	public static final String NO_MORE_KANJIS = "Koniec kanji.";
 	public static final String SEARCH_OPTION_PROMPT = "Szukaj według: ";
 	public static final String LOADING_PROMPT = "Wczytywanie...";
+	public static final String EXIT_LEARNING = "Czy na pewno chcesz przerwać naukę?";
 
 }
