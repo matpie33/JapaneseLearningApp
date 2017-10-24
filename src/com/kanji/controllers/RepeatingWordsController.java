@@ -173,7 +173,6 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 		showWord(previousWord);
 		currentWord = previousWord;
 		removeWordFromCurrentProblematics();
-		panel.removeLastElementFromRow2();
 		panel.showCurrentKanjiAndShowAppropriateButtons();
 	}
 

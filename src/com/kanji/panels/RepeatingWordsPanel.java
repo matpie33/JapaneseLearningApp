@@ -23,6 +23,7 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.ButtonsNames;
 import com.kanji.constants.HotkeysDescriptions;
+import com.kanji.constants.Labels;
 import com.kanji.constants.Titles;
 import com.kanji.controllers.RepeatingWordsController;
 import com.kanji.utilities.RepeatingState;
@@ -37,7 +38,6 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private AbstractButton showPreviousWord;
 
 	private JLabel time;
-	private String timeLabelText = "Czas: ";
 	private MainPanel centerPanel;
 	private JLabel remainingLabel;
 
@@ -64,12 +64,18 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	@Override
 	void createElements() {
 		JLabel titleLabel = new JLabel(Titles.REPEATING_WORDS_DIALOG);
-		time = new JLabel(this.timeLabelText);
+		time = new JLabel();
 		remainingLabel = new JLabel(repeatingWordsController.createRemainingKanjisPrompt());
 		JButton returnButton = createReturnButton();
 
 		createElementsForRepeatingPanel();
 		setButtonsToLearningAndAddThem();
+		AbstractButton [] navigationButtons = new AbstractButton[] { this.pauseOrResume,
+				showKanjiOrRecognizeWord, notRecognizedWord, this.showPreviousWord };
+		repeatingPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH, wordTextArea).setColor(BasicColors.GREY)
+				.nextRow(FillType.NONE, Anchor.CENTER, kanjiTextArea).disableBorder()
+				.nextRow(FillType.HORIZONTAL, navigationButtons).fillHorizontallyEqually().disableBorder());
+		mainPanel.getPanel().repaint();
 
 		centerPanel.addRows(SimpleRowBuilder.createRow(FillType.NONE, Anchor.NORTH, titleLabel, time)
 				.nextRow(FillType.BOTH, repeatingPanel.getPanel()).setBorder(getDefaultBorder())
@@ -80,17 +86,13 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public void setButtonsToLearningAndAddThem() {
-		addElementsToRepeatingPanel(showWordButtons(repeatingWordsController.previousWordExists()));
+		showKanjiOrRecognizeWord.setText(ButtonsNames.SHOW_KANJI);
+		setVisibilityOfRecognizingButtons(false);
+		showPreviousWord.setEnabled(repeatingWordsController.previousWordExists());
 	}
 
-	private AbstractButton[] showWordButtons(boolean withPreviousWordButton) {
-		if (withPreviousWordButton) {
-			return new AbstractButton[] { this.pauseOrResume, showKanjiOrRecognizeWord,
-					this.showPreviousWord };
-		}
-		else {
-			return new AbstractButton[] { this.pauseOrResume, showKanjiOrRecognizeWord };
-		}
+	private void setVisibilityOfRecognizingButtons (boolean visibility){
+		notRecognizedWord.setEnabled(visibility);
 	}
 
 	private void createElementsForRepeatingPanel() {
@@ -107,6 +109,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				repeatingWordsController.goToPreviousWord();
+				showPreviousWord.setEnabled(false);
+				repeatingState = RepeatingState.WORD_IS_SHOWING;
 			}
 		};
 
@@ -116,12 +120,9 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
 	}
 
-	public void showKanji(String kanji) {
-		kanjiTextArea.setText(repeatingWordsController.getCurrentKanji());
-	}
-
 	private void createWordDescriptionTextArea() {
-		this.wordTextArea = new JTextPane();
+		wordTextArea = GuiMaker.createTextPane(
+				new TextPaneOptions().textAlignment(TextAlignment.CENTERED).text("").enabled(false));
 	}
 
 	private void createKanjiTextArea() {
@@ -131,20 +132,10 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiTextArea.setOpaque(false);
 	}
 
-	public void setButtonsToRecognizeWord(boolean withShowPreviousWordButton) {
-		addElementsToRepeatingPanel(recognizeWordButtons(withShowPreviousWordButton));
-	}
-
-	private AbstractButton[] recognizeWordButtons(boolean withShowPreviousWordButton) {
-		if (withShowPreviousWordButton) {
-			return new AbstractButton[] { this.pauseOrResume, this.showKanjiOrRecognizeWord,
-					this.notRecognizedWord, showPreviousWord };
-		}
-		else {
-			return new AbstractButton[] { this.pauseOrResume, this.showKanjiOrRecognizeWord,
-					this.notRecognizedWord };
-		}
-
+	public void setButtonsToRecognizeWord() {
+		showKanjiOrRecognizeWord.setText(ButtonsNames.RECOGNIZED_WORD);
+		setVisibilityOfRecognizingButtons(true);
+		showPreviousWord.setEnabled(repeatingWordsController.previousWordExists());
 	}
 
 	private void createPauseOrResumeButton() {
@@ -163,15 +154,12 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 			public void actionPerformed(ActionEvent e) {
 				if (repeatingState == RepeatingState.WORD_IS_SHOWING){
 					repeatingWordsController.pressedRecognizedWordButton();
-					showKanjiOrRecognizeWord.setText(ButtonsNames.SHOW_KANJI);
 				}
 				else{
 					repeatingWordsController.presedButtonShowWord();
 					repeatingState = RepeatingState.WORD_IS_SHOWING;
 					showKanjiOrRecognizeWord.setText(ButtonsNames.RECOGNIZED_WORD);
 				}
-
-
 			}
 		};
 		showKanjiOrRecognizeWord = createButtonWithHotkey(KeyEvent.VK_SPACE, a, ButtonsNames.SHOW_KANJI,
@@ -191,18 +179,11 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
 	public void goToNextWord() {
 		repeatingState = RepeatingState.WORD_NOT_SHOWING;
+		showKanjiOrRecognizeWord.setText(ButtonsNames.SHOW_KANJI);
+		showPreviousWord.setEnabled(true);
 		setButtonsToLearningAndAddThem();
 		remainingLabel.setText(repeatingWordsController.createRemainingKanjisPrompt());
 		wordTextArea.requestFocusInWindow();
-	}
-
-	private void addElementsToRepeatingPanel(AbstractButton[] buttons) {
-		repeatingPanel.clear();
-		repeatingPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH, wordTextArea).setColor(BasicColors.GREY)
-				.nextRow(FillType.NONE, Anchor.CENTER, kanjiTextArea).disableBorder()
-				.nextRow(FillType.HORIZONTAL, buttons).fillHorizontallyEqually().disableBorder());
-		mainPanel.getPanel().repaint();
-
 	}
 
 	private JButton createReturnButton() {
@@ -214,22 +195,17 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 		});
 		returnButton.setFocusable(false);
 		return returnButton;
-
 	}
 
 
 	public void showCurrentKanjiAndShowAppropriateButtons() {
-		setButtonsToRecognizeWord(repeatingWordsController.previousWordExists());
+		setButtonsToRecognizeWord();
+
 		kanjiTextArea.setText(repeatingWordsController.getCurrentKanji());
 	}
 
-	public void removeLastElementFromRow2() {
-		repeatingPanel.removeLastElementFromRow(2); // TODO not remove,
-		// just hide
-	}
-
 	public void updateTime(String timePassed) {
-		time.setText(timeLabelText + timePassed);
+		time.setText(Labels.TIME_LABEL + timePassed);
 	}
 
 	public void clearKanji() {
@@ -237,8 +213,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public void showWord(String word, TextAlignment alignment) {
-		wordTextArea = GuiMaker.createTextPane(
-				new TextPaneOptions().textAlignment(alignment).text(word).enabled(false));
+			wordTextArea.setText(word);
 	}
 
 }

@@ -14,4 +14,5 @@ public class Labels {
 	public static final String WORD_SEARCH_ONLY_FULL_WORDS_OPTION = "Szukaj pozycji, które zawierają dane słowo i być może coś więcej.";
 	public static final String WORD_SEARCH_PERFECT_MATCH_OPTION = "Szukaj pozycji zawierających dokładnie to co wpisałem.";
 	public static final String PROBLEMATIC_KANJI_OPTION = "Problematyczne";
+	public static final String TIME_LABEL = "Czas: ";
 }
