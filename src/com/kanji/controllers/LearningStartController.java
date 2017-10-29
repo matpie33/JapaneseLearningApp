@@ -299,7 +299,7 @@ public class LearningStartController {
 	private String concatenateErrors() {
 		String concatenated = "";
 		for (Map.Entry<Integer, String> error : errors.entrySet()) {
-			concatenated += "Błąd w wierszu " + error.getKey() + ": " + error.getValue();
+			concatenated += "Błąd w wierszu " + (error.getKey()+1) + ": " + error.getValue();
 			concatenated += "\n\n";
 		}
 		return concatenated;

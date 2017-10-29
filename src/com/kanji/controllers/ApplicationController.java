@@ -89,9 +89,10 @@ public class ApplicationController {
 
 	public void openKanjiProject() {
 		File fileToSave = openFile();
-		loadingAndSaving.setFileToSave(fileToSave);
 		if (!fileToSave.exists())
 			return;
+		loadingAndSaving.setFileToSave(fileToSave);
+
 		SavingInformation savingInformation = null;
 		try {
 			savingInformation = loadingAndSaving.load();
@@ -183,7 +184,6 @@ public class ApplicationController {
 	private File openFile() {
 		JFileChooser fileChooser = createFileChooser();
 		String directory;
-
 
 		int chosenOption = fileChooser.showOpenDialog(parent.getContainer());
 		if (chosenOption == JFileChooser.CANCEL_OPTION)
