@@ -165,7 +165,7 @@ public class MyList<Word> {
 
 	public <Property> void replaceProperty(PropertyManager<Property, Word> propertyChecker,
 			Property oldValue, Property newValue) {
-		Word kanjiToChange = findRowBasedOnPropertyStartingFromHighlightedWord(propertyChecker,
+		Word kanjiToChange = findRowBasedOnPropertyStartingFromBeginningOfList(propertyChecker,
 				oldValue, SearchingDirection.FORWARD);
 		propertyChecker.replaceValueOfProperty(newValue, kanjiToChange);
 		listController.getWords();

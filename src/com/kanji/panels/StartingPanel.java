@@ -57,7 +57,6 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 
 			switch (name) {
 			case ButtonsNames.LOAD_LIST:
-				//TODO detect situation that multiple actions are binded to the same hotkey and throw exception
 				keyEvent = KeyEvent.VK_D;
 				hotkeyDescription = HotkeysDescriptions.LOAD_KANJI_LIST;
 				action = new AbstractAction() {

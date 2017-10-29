@@ -26,8 +26,8 @@ public class LoadingAndSaving {
 		fout.close();
 	}
 
-	public SavingInformation load() throws Exception {
-		final FileInputStream fout = new FileInputStream(fileToSave);
+	public SavingInformation load(File file) throws Exception {
+		final FileInputStream fout = new FileInputStream(file);
 		final ObjectInputStream oos = new ObjectInputStream(fout);
 
 		Object savingInformation = oos.readObject();

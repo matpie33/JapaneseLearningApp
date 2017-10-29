@@ -91,19 +91,18 @@ public class ApplicationController {
 		File fileToSave = openFile();
 		if (!fileToSave.exists())
 			return;
-		loadingAndSaving.setFileToSave(fileToSave);
 
 		SavingInformation savingInformation = null;
 		try {
-			savingInformation = loadingAndSaving.load();
+			savingInformation = loadingAndSaving.load(fileToSave);
 		}
 		catch (Exception e1) {
 			parent.showMessageDialog("Exception loading from file.");
 			e1.printStackTrace();
-		}
-		if (savingInformation == null) {
 			return;
 		}
+		loadingAndSaving.setFileToSave(fileToSave);
+
 		listOfWords.cleanWords();
 		addProblematicKanjis(savingInformation.getProblematicKanjis());
 		parent.updateTitle(fileToSave.toString());
@@ -189,7 +188,6 @@ public class ApplicationController {
 		if (chosenOption == JFileChooser.CANCEL_OPTION)
 			return new File("");
 		File file = fileChooser.getSelectedFile();
-		loadingAndSaving.setFileToSave(file);
 		return file;
 	}
 
