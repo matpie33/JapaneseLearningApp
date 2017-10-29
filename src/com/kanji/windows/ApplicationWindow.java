@@ -39,7 +39,6 @@ public class ApplicationWindow extends DialogWindow {
 	private JFrame container;
 	private ApplicationController applicationController;
 	private Font kanjiFont = new Font("MS PMincho", Font.BOLD, 100);
-	//TODO when we load file that is not proper format, then we can't saveProject anymore - we get exceptions
 
 	public ApplicationWindow() {
 		super(null);
