@@ -1,6 +1,6 @@
 package com.kanji.controllers;
 
-import javax.swing.JTextArea;
+import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
 import com.kanji.Row.KanjiInformation;
@@ -8,6 +8,8 @@ import com.kanji.constants.ExceptionsMessages;
 import com.kanji.listSearching.KanjiIdChecker;
 import com.kanji.myList.MyList;
 import com.kanji.windows.DialogWindow;
+
+import java.awt.event.ActionEvent;
 
 public class InsertWordController {
 
@@ -64,6 +66,16 @@ public class InsertWordController {
 					String.format(ExceptionsMessages.ID_ALREADY_DEFINED_EXCEPTION, number));
 		}
 		return addedWord;
+	}
+
+	public AbstractAction createActionValidateAndAddWord (JTextComponent insertNumberTextComponent,
+			JTextComponent insertWordTextComponent){
+		return new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				validateAndAddWordIfValid(insertNumberTextComponent, insertWordTextComponent);
+			}
+		};
 	}
 
 }

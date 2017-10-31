@@ -43,9 +43,7 @@ public class ApplicationWindow extends DialogWindow {
 	public ApplicationWindow() {
 		super(null);
 		container = new JFrame();
-
 		mainApplicationPanel = new JPanel(new CardLayout());
-
 	}
 
 	public void initiate() {

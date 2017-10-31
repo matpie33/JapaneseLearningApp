@@ -2,6 +2,7 @@ package com.kanji.controllers;
 
 import java.awt.Desktop;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -20,6 +21,8 @@ import com.kanji.panels.KanjiPanel;
 import com.kanji.panels.ProblematicKanjiPanel;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
+
+import javax.swing.*;
 
 public class ProblematicKanjisController {
 
@@ -154,13 +157,29 @@ public class ProblematicKanjisController {
 		}
 	}
 
-	public void showNextKanjiOrCloseChildDialog() {
-		if (hasMoreKanji())
-			goToNextResource();
-		else {
-			problematicKanjiPanel.getDialog().closeChild();
-			problematicKanjiPanel.getDialog().showMessageDialog(Prompts.NO_MORE_KANJIS);
-		}
+	public AbstractAction createActionShowNextKanjiOrCloseDialog() {
+		return new AbstractAction(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				if (hasMoreKanji())
+					goToNextResource();
+				else {
+					problematicKanjiPanel.getDialog().closeChild();
+					problematicKanjiPanel.getDialog().showMessageDialog(Prompts.NO_MORE_KANJIS);
+				}
+			}
+		};
+
+	}
+
+	public AbstractAction createActionForShowingKanjiUsingInternet (boolean useInternet){
+		return new AbstractAction() {
+			@Override public void actionPerformed(ActionEvent e) {
+				setUseInternet(useInternet);
+				JRadioButton source = (JRadioButton) e.getSource();
+				source.setSelected(true);
+			}
+		};
 	}
 
 	public Set<Integer> getProblematicKanjis() {

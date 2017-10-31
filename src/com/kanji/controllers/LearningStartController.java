@@ -1,6 +1,6 @@
 package com.kanji.controllers;
 
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
 import com.kanji.Row.RepeatingInformation;
@@ -52,8 +52,7 @@ public class LearningStartController {
 		addOrSubtractProblematicKanjisFromSum(direction);
 		learningStartPanel.updateSumOfWordsLabel(getSumOfWords());
 		if (isProblematicKanjiCheckboxSelected) {
-			int rowNumber = learningStartPanel.showLabelWithProblematicKanjis();
-			problematicLabelRow = rowNumber;
+			problematicLabelRow = learningStartPanel.showLabelWithProblematicKanjis();
 		}
 		else {
 			learningStartPanel.hideLabelWithProblematicKanjis(problematicLabelRow);
@@ -328,6 +327,71 @@ public class LearningStartController {
 		else {
 			validateAndStart(problematicCheckboxSelected);
 		}
+	}
+
+	public ItemListener createListenerAddProblematicKanjis (JCheckBox problematicKanjiCheckbox){
+		return new ItemListener() {
+			@Override public void itemStateChanged(ItemEvent e) {
+				updateNumberOfSelectedKanjiAfterCheckboxToggle(
+						problematicKanjiCheckbox.isSelected());
+
+			}
+		};
+	}
+
+	public KeyAdapter createListenerForKeyTyped (JCheckBox problematicCheckbox, JTextComponent from,
+			JTextComponent to){
+		return new KeyAdapter() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				handleKeyTyped(e, problematicCheckbox.isSelected());
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				handleKeyReleased(e, to, from, problematicCheckbox.isSelected());
+			}
+
+		};
+	}
+
+	public AbstractAction createActionDeleteRow (JCheckBox problematicCheckbox,
+			JTextComponent from, JTextComponent to) {
+		return new AbstractAction() {
+			@Override public void actionPerformed(ActionEvent e) {
+				removeRangeRow(from, to, problematicCheckbox.isSelected());
+			}
+		};
+	}
+
+	public AbstractAction createActionAddRow (){
+		return new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				learningStartPanel.addRowToRangesPanel();
+			}
+		};
+	}
+
+	public AbstractAction createActionStartLearning (JCheckBox problematicCheckbox){
+		return new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showErrorsOrStart(problematicCheckbox.isSelected());
+			}
+		};
+	}
+
+	public AbstractAction createActionSelectProblematicCheckbox (JCheckBox problematicCheckbox){
+		return new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (problematicCheckbox.isEnabled()) {
+					problematicCheckbox.setSelected(!problematicCheckbox.isSelected());
+				}
+			}
+		};
 	}
 
 }

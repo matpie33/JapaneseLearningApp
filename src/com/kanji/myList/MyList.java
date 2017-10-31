@@ -68,7 +68,7 @@ public class MyList<Word> {
 			lastRowToSearch = listController.getHighlightedRowNumber() >= 0? listController.getHighlightedRowNumber(): 0 ;
 		}
 
-		int rowNumber = checkHighlightedWordToo? 0: lastRowToSearch + incrementValue;
+		int rowNumber = checkHighlightedWordToo? 0: listController.getHighlightedRowNumber() >= 0 ? lastRowToSearch + incrementValue: 0;
 		boolean shouldContinueSearching;
 		do {
 			if (isRowNumberOutOfRange(rowNumber)) {

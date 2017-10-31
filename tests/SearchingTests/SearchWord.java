@@ -4,7 +4,7 @@
 //import com.kanji.fileReading.CustomFileReader;
 //import com.kanji.myList.MyList;
 //import com.kanji.myList.RowAsJLabel;
-//import com.kanji.myList.SearchOptions;
+//import com.kanji.myList.SearchCriteria;
 //import com.kanji.window.BaseWindow;
 //import org.junit.Before;
 //import org.junit.Test;
@@ -35,7 +35,7 @@
 //
 //	@Test
 //	public void shouldFindPartOfWord(){
-//		SearchOptions options = new SearchOptions ();
+//		SearchCriteria options = new SearchCriteria ();
 //
 //		try {
 //			boolean isFound = list.findAndHighlightNextOccurence("Ala", NumberValues.FORWARD_DIRECTION, options);
@@ -47,7 +47,7 @@
 //
 //	@Test
 //	public void shouldFindWholeWord(){
-//		SearchOptions options = new SearchOptions ();
+//		SearchCriteria options = new SearchCriteria ();
 //		options.enableMatchByWordOnly();
 //
 //		try {
@@ -61,7 +61,7 @@
 //
 //	@Test
 //	public void shouldNotFindCharactersAsWord (){
-//		SearchOptions options = new SearchOptions ();
+//		SearchCriteria options = new SearchCriteria ();
 //		options.enableMatchByWordOnly();
 //
 //		try {

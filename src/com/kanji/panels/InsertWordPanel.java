@@ -56,14 +56,9 @@ public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private AbstractButton createButtonValidate(String text) {
-		AbstractAction action = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.validateAndAddWordIfValid(insertNumberTextComponent, insertWordTextComponent);
-				}
-		};
-		return createButtonWithHotkey(KeyEvent.VK_ENTER, action, text,
-				HotkeysDescriptions.ADD_WORD);
+		return createButtonWithHotkey(KeyEvent.VK_ENTER,
+				controller.createActionValidateAndAddWord(insertNumberTextComponent,
+								insertWordTextComponent), text, HotkeysDescriptions.ADD_WORD);
 	}
 
 }

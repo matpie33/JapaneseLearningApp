@@ -1,13 +1,11 @@
 package com.kanji.panels;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
-import javax.swing.JTextPane;
 import javax.swing.text.JTextComponent;
 
 import com.guimaker.enums.Anchor;
@@ -22,15 +20,15 @@ import com.kanji.controllers.ProblematicKanjisController;
 
 public class KanjiPanel extends AbstractPanelWithHotkeysInfo {
 	private String kanjiToDisplay;
-	private ProblematicKanjisController problematicKanjiPanel;
+	private ProblematicKanjisController problematicKanjiController;
 	private JTextComponent kanjiArea;
 	private Font kanjiFont;
 
 	public KanjiPanel(Font kanjiFont, String kanji,
-			ProblematicKanjisController problematicKanjiPanel) {
+			ProblematicKanjisController problematicKanjiController) {
 		this.kanjiFont = kanjiFont;
 		this.kanjiToDisplay = kanji;
-		this.problematicKanjiPanel = problematicKanjiPanel;
+		this.problematicKanjiController = problematicKanjiController;
 	}
 
 	public void changeKanji(String kanji) {
@@ -53,14 +51,9 @@ public class KanjiPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private AbstractButton createButtonShowNextKanji() {
-		AbstractAction al = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				problematicKanjiPanel.showNextKanjiOrCloseChildDialog();
-			}
-		};
-		return createButtonWithHotkey(KeyEvent.VK_SPACE, al, ButtonsNames.FIND_NEXT,
-				HotkeysDescriptions.SHOW_NEXT_KANJI);
+		return createButtonWithHotkey(KeyEvent.VK_SPACE,
+				problematicKanjiController.createActionShowNextKanjiOrCloseDialog(),
+				ButtonsNames.FIND_NEXT,	HotkeysDescriptions.SHOW_NEXT_KANJI);
 	}
 
 }

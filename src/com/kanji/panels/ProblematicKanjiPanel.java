@@ -82,7 +82,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
 	private AbstractButton createRadioButtonForLearningWithInternet() {
 		AbstractButton withInternet = GuiMaker.createButtonlikeComponent(ComponentType.RADIOBUTTON,
-				Labels.REPEATING_WITH_INTERNET, createActionListenerForUsingInternet(true),
+				Labels.REPEATING_WITH_INTERNET, controller.createActionForShowingKanjiUsingInternet(true),
 				KeyEvent.VK_I);
 		withInternet.setFocusable(false);
 		withInternet.setSelected(true);
@@ -91,22 +91,10 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		return withInternet;
 	}
 
-	private AbstractAction createActionListenerForUsingInternet(boolean useInternet) {
-		AbstractAction action = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.setUseInternet(useInternet);
-				JRadioButton source = (JRadioButton) e.getSource();
-				source.setSelected(true);
-			}
-		};
-		return action;
-	}
-
 	private AbstractButton createRadioButtonForLearningWithoutInternet() {
 		AbstractButton withoutInternet = GuiMaker.createButtonlikeComponent(
 				ComponentType.RADIOBUTTON, Labels.REPEATING_WITHOUT_INTERNET,
-				createActionListenerForUsingInternet(false), KeyEvent.VK_N);
+				controller.createActionForShowingKanjiUsingInternet(false), KeyEvent.VK_N);
 		withoutInternet.setFocusable(false);
 		addHotkeysInformation(KeyEvent.VK_N,
                 HotkeysDescriptions.SHOW_KANJI_WITHOUT_INTERNET);
@@ -114,14 +102,8 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private void configureParentDialog() {
-		AbstractAction goToNextResource = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.showNextKanjiOrCloseChildDialog();
-			}
-		};
 
-		addHotkey(KeyEvent.VK_SPACE, goToNextResource,
+		addHotkey(KeyEvent.VK_SPACE, controller.createActionShowNextKanjiOrCloseDialog(),
 				((JDialog) parentDialog.getContainer()).getRootPane(),
 				HotkeysDescriptions.SHOW_NEXT_KANJI);
 

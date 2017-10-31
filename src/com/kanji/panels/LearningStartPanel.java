@@ -100,25 +100,9 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		if (controller.getProblematicKanjiNumber() == 0) {
 			problematicCheckbox.setEnabled(false);
 		}
-		ItemListener action = new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				controller.updateNumberOfSelectedKanjiAfterCheckboxToggle(
-						problematicCheckbox.isSelected());
-			}
-		};
-
-		@SuppressWarnings("serial")
-		AbstractAction action2 = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (problematicCheckbox.isEnabled()) {
-					problematicCheckbox.setSelected(!problematicCheckbox.isSelected());
-				}
-			}
-		};
-
-		problematicCheckbox.addItemListener(action);
+		AbstractAction action2 = controller.createActionSelectProblematicCheckbox(problematicCheckbox);
+		problematicCheckbox.addItemListener(controller.createListenerAddProblematicKanjis(
+				problematicCheckbox));
 		addHotkey(KeyEvent.VK_P, action2, mainPanel.getPanel(),
 				HotkeysDescriptions.ADD_PROBLEMATIC_KANJIS);
 
@@ -131,7 +115,8 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		JLabel label = new JLabel(Prompts.PROBLEMATIC_KANJIS_ADDED);
 		label.setForeground(BasicColors.NAVY_BLUE);
 		int rowNumber = rangesPanel.getNumberOfRows();
-		rangesPanel.addRows(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, label));
+		rangesPanel.addRows(SimpleRowBuilder.createRow(FillType.NONE, Anchor.NORTH, label));
+		rangesPanel.updateView();
 		c.requestFocusInWindow();
 		return rowNumber;
 
@@ -141,24 +126,30 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		rangesPanel.removeRow(rowNumber);
 	}
 
-	private void addRowToRangesPanel() {
+	public void addRowToRangesPanel() {
 
 		boolean problematicCheckboxSelected = problematicCheckbox.isSelected();
 		int nextRowNumber = rangesPanel.getNumberOfRows();
 		if (problematicCheckboxSelected) {
 			nextRowNumber -= 1;
 		}
-		JTextComponent[] textFields = createTextFieldsForRangeInput(nextRowNumber);
-		JTextComponent fieldFrom = textFields[0];
+		JTextComponent fieldFrom = createRangeTextComponent();
+		JTextComponent fieldTo = createRangeTextComponent();
+		controller.addRow(nextRowNumber, fieldFrom, fieldTo);
+		KeyAdapter keyAdapter = controller.createListenerForKeyTyped(problematicCheckbox, fieldFrom, fieldTo);
+
+		fieldFrom.addKeyListener(keyAdapter);
+		fieldTo.addKeyListener(keyAdapter);
+
 		firstTextField = fieldFrom;
 
-		JLabel from = new JLabel(Labels.RANGE_FROM_LABEL);
-		JLabel labelTo = new JLabel(Labels.RANGE_TO_LABEL);
-		JTextComponent fieldTo = textFields[1];
 		JButton delete = createDeleteButton(fieldFrom, fieldTo);
 		if (controller.getNumberOfRangesRows() == 1) {
 			delete.setVisible(false);
 		}
+
+		JLabel from = new JLabel(Labels.RANGE_FROM_LABEL);
+		JLabel labelTo = new JLabel(Labels.RANGE_TO_LABEL);
 
 		SimpleRow newRow = SimpleRowBuilder.createRow(FillType.NONE, Anchor.NORTH, from, fieldFrom, labelTo,
 				fieldTo, delete);
@@ -169,8 +160,8 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		}
 		else {
 			rangesPanel.addRows(newRow);
-			rangesPanel.updateView();
 		}
+		rangesPanel.updateView();
 
 		if (controller.getNumberOfRangesRows() == 2) {
 			changeVisibilityOfDeleteButtonInFirstRow(true);
@@ -181,36 +172,9 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 	}
 
-	private JTextComponent[] createTextFieldsForRangeInput(int rowNumber) {
-		JTextComponent[] textFields = new JTextComponent[2];
-		for (int i = 0; i < 2; i++) {
-			textFields[i] = new JTextField(5);
-			((AbstractDocument) textFields[i].getDocument()).setDocumentFilter(
-					new LimitDocumentFilter(NumberValues.INTEGER_MAX_VALUE_DIGITS_AMOUNT));
-		}
-		final JTextComponent from = textFields[0];
-		final JTextComponent to = textFields[1];
-		controller.addRow(rowNumber, from, to);
-		KeyAdapter keyAdapter = new KeyAdapter() {
-
-			@Override
-			public void keyTyped(KeyEvent e) {
-				controller.handleKeyTyped(e, problematicCheckbox.isSelected());
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				controller.handleKeyReleased(e, to, from, problematicCheckbox.isSelected());
-			}
-
-		};
-
-		from.addKeyListener(keyAdapter);
-		to.addKeyListener(keyAdapter);
-
-		textFields[0] = from;
-		textFields[1] = to;
-		return textFields;
+	private JTextComponent createRangeTextComponent (){
+		return GuiMaker.createTextField(new TextComponentOptions().
+				maximumCharacters(5).rowsAndColumns(1,5));
 	}
 
 	public void showErrorOnThePanel(String message, int rowNumber) {
@@ -251,12 +215,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 	private JButton createDeleteButton(JTextComponent from, JTextComponent to) {
 		JButton delete = new JButton(ButtonsNames.REMOVE_ROW);
-		delete.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.removeRangeRow(from, to, problematicCheckbox.isSelected());
-			}
-		});
+		delete.addActionListener(controller.createActionDeleteRow(problematicCheckbox, from, to));
 		return delete;
 	}
 
@@ -266,12 +225,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 	private JButton createButtonAddRow(String text) {
 		JButton button = new JButton(text);
-		button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				addRowToRangesPanel();
-			}
-		});
+		button.addActionListener(controller.createActionAddRow());
 		return button;
 	}
 
@@ -283,14 +237,8 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private AbstractButton createButtonStartLearning(String text) {
-		@SuppressWarnings("serial")
-		AbstractAction a = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.showErrorsOrStart(problematicCheckbox.isSelected());
-			}
-		};
-		return createButtonWithHotkey(KeyEvent.VK_ENTER, a, text,
+		return createButtonWithHotkey(KeyEvent.VK_ENTER,
+				controller.createActionStartLearning(problematicCheckbox), text,
 				HotkeysDescriptions.START_LEARNING);
 	}
 
