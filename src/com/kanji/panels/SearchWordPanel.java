@@ -1,6 +1,6 @@
 package com.kanji.panels;
 
-import java.awt.CardLayout;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +32,7 @@ import com.kanji.listSearching.KanjiKeywordChecker;
 import com.kanji.listSearching.SearchOptions;
 import com.kanji.listSearching.SearchingDirection;
 import com.kanji.myList.MyList;
+import com.kanji.utilities.CommonGuiElementsMaker;
 
 public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 
@@ -76,7 +77,7 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 				SimpleRowBuilder.createRow(FillType.NONE, Anchor.WEST, searchOptionPrompt, comboBox));
 		searchPanel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL, Anchor.NORTHWEST, searchingPanel)
 				.useAllExtraVerticalSpace());
-		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH, Anchor.NORTHWEST, searchPanel.getPanel()));
+		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH, Anchor.WEST, searchPanel.getPanel()));
 
 		// TODO fix in gui maker: if putting rows as highest
 		// as
@@ -140,7 +141,7 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private JTextComponent createInputTextField() {
-		JTextComponent insertWord = new JTextField(20);
+		JTextComponent insertWord = CommonGuiElementsMaker.createKanjiIdInput();
 		return insertWord;
 	}
 
