@@ -112,9 +112,6 @@ public class ApplicationWindow extends DialogWindow {
 		startingPanel.addProblematicKanjisButton();
 	}
 
-	public void removeButtonProblematicsKanji() {
-		startingPanel.removeButtonProblematicsKanji();
-	}
 
 	public void showLearningStartDialog(MyList list, int maximumNumber) {
 		showPanel(new LearningStartPanel(applicationController, maximumNumber, list),
@@ -134,11 +131,17 @@ public class ApplicationWindow extends DialogWindow {
 				Position.LEFT_CORNER);
 	}
 
-	public void showProblematicKanjiDialog(MyList<KanjiInformation> kanjiSearcher,
-			Set<Integer> problematicKanjis) {
-		problematicKanjiPanel = new ProblematicKanjiPanel(getKanjiFont(), this, kanjiSearcher,
-				problematicKanjis);
-		showPanel(problematicKanjiPanel, Titles.PROBLEMATIC_KANJIS_WINDOW, true, Position.CENTER);
+	public void showProblematicKanjiDialog(Set<Integer> problematicKanjis) {
+		if (problematicKanjiPanel != null){
+			problematicKanjiPanel.addProblematicKanjis(problematicKanjis);
+			showProblematicKanjiDialog();
+		}
+		else{
+			problematicKanjiPanel = new ProblematicKanjiPanel(getKanjiFont(), this, applicationController.getWordsList(),
+					problematicKanjis);
+			showPanel(problematicKanjiPanel, Titles.PROBLEMATIC_KANJIS_WINDOW, true, Position.CENTER);
+		}
+
 	}
 
 	public void showProblematicKanjiDialog() {

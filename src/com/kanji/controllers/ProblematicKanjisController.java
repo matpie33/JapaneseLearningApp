@@ -12,11 +12,13 @@ import java.util.Set;
 
 import com.kanji.Row.KanjiInformation;
 import com.kanji.constants.Prompts;
+import com.kanji.constants.Titles;
 import com.kanji.fileReading.KanjiCharactersReader;
 import com.kanji.listSearching.KanjiIdChecker;
 import com.kanji.listSearching.SearchingDirection;
 import com.kanji.model.KanjiRow;
 import com.kanji.myList.MyList;
+import com.kanji.myList.RowInKanjiRepeatingList;
 import com.kanji.panels.KanjiPanel;
 import com.kanji.panels.ProblematicKanjiPanel;
 import com.kanji.windows.ApplicationWindow;
@@ -35,17 +37,39 @@ public class ProblematicKanjisController {
 	private MyList<KanjiInformation> kanjiList;
 	private KanjiPanel kanjiPanel;
 	private Font kanjiFont;
+	private MyList<KanjiInformation> kanjiRepeatingList;
 
-	public ProblematicKanjisController(Font kanjiFont, ProblematicKanjiPanel problematicKanjiPanel,
+	public ProblematicKanjisController(ApplicationWindow applicationWindow, Font kanjiFont, ProblematicKanjiPanel problematicKanjiPanel,
 			Set<Integer> problematicKanjisSet, MyList<KanjiInformation> kanjiList) {
 		this.problematicKanjiPanel = problematicKanjiPanel;
 		kanjisToBrowse = new ArrayList<>();
 		useInternet = true;
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		kanjiCharactersReader.loadKanjisIfNeeded();
+		kanjiRepeatingList = new MyList<>(applicationWindow, applicationWindow.getStartingPanel(), null,
+				new RowInKanjiRepeatingList(this), Titles.PROBLEMATIC_KANJIS);
 		problematicKanjisIds = problematicKanjisSet;
 		this.kanjiList = kanjiList;
 		this.kanjiFont = kanjiFont;
+		addProblematicKanjis(problematicKanjisIds);
+	}
+
+	public void addProblematicKanjis(Set<Integer> problematicKanjisIds){
+		if (kanjisToBrowse.isEmpty()){
+			kanjiRepeatingList.cleanWords();
+		}
+		for (Integer kanjiId: problematicKanjisIds){
+			KanjiRow k = new KanjiRow(kanjiId, kanjiRepeatingList.getNumberOfWords());
+			boolean addedToList = kanjiRepeatingList.addWord(new KanjiInformation(kanjiList
+					.findRowBasedOnPropertyStartingFromBeginningOfList(new KanjiIdChecker(),
+							kanjiId, SearchingDirection.FORWARD)
+					.getKanjiKeyword(), kanjiId));
+			if (addedToList){
+				kanjisToBrowse.add(k);
+			}
+
+		}
+
 	}
 
 	private void goToNextResource() {
@@ -61,7 +85,7 @@ public class ProblematicKanjisController {
 		}
 		else {
 			String kanji = kanjiCharactersReader.getKanjiById(row.getId());
-			if (kanjiPanel == null || !kanjiPanel.isDisplayAble()) {
+			if (kanjiPanel == null || !kanjiPanel.isDisplayable()) {
 				kanjiPanel = new KanjiPanel(kanjiFont, kanji, this);
 				problematicKanjiPanel.showKanjiDialog(kanjiPanel);
 			}
@@ -139,16 +163,13 @@ public class ProblematicKanjisController {
 		return !kanjisToBrowse.isEmpty();
 	}
 
-	public void hideProblematicsPanel(DialogWindow parentDialog) {
+	public void addButtonForShowingProblematicKanjis(DialogWindow parentDialog) {
 		assert (parentDialog.getParent() instanceof ApplicationWindow);
 		ApplicationWindow parent = (ApplicationWindow) parentDialog.getParent();
 		if (!problematicKanjiPanel.allProblematicKanjisRepeated()) {
 			parent.addButtonIcon();
 		}
 		parentDialog.getContainer().dispose();
-		if (allProblematicKanjisRepeated()) {
-			parent.removeButtonProblematicsKanji();
-		}
 	}
 
 	public void limitSizeIfTooManyRows(int maximumNumberOfRowsVisible) {
@@ -187,7 +208,13 @@ public class ProblematicKanjisController {
 	}
 
 	public int getNumberOfRows() {
-		return kanjisToBrowse.size();
+		return kanjiRepeatingList.getNumberOfWords();
 	}
+
+	public MyList <KanjiInformation> getKanjiRepeatingList (){
+		return kanjiRepeatingList;
+	}
+
+
 
 }

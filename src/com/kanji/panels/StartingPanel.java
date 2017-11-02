@@ -24,7 +24,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	private ApplicationController applicationController;
 	private MainPanel bottomPanel;
 	private JSplitPane listsSplitPane;
-	private JButton showProblematicKanjis;
+	private AbstractButton showProblematicKanjis;
 	private JLabel saveInfo;
 	private ApplicationWindow applicationWindow;
 	private JLabel problematicKanjis;
@@ -37,7 +37,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 
 	@Override
 	void createElements() {
-		createUpperPanel();
+		createSplitPane();
 		createInformationsPanel();
 		List<AbstractButton> buttons = addListeners();
 		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH, listsSplitPane));
@@ -45,7 +45,17 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		bottomPanel = new MainPanel(null);
 		bottomPanel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL, buttons.toArray(new JButton[] {}))
 				.setNotOpaque().disableBorder().nextRow(saveInfo, problematicKanjis));
+		showProblematicKanjis.setEnabled(false);
 		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL, bottomPanel.getPanel()));
+	}
+
+	private void createSplitPane (){
+		listsSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+				applicationController.getWordsList().getPanel(),
+				applicationController.getRepeatsList().getPanel());
+		listsSplitPane.setOneTouchExpandable(true);
+		listsSplitPane.setContinuousLayout(true);
+		listsSplitPane.setResizeWeight(0.5);
 	}
 
 	private List<AbstractButton> addListeners() {
@@ -126,19 +136,27 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 					}
 				};
 				break;
+			case ButtonsNames.SHOW_PROBLEMATIC_KANJIS:
+				hotkeyDescription = HotkeysDescriptions.EXPORT_LIST;
+				keyEvent = KeyEvent.VK_P;
+				action = new AbstractAction() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						applicationWindow.showProblematicKanjiDialog();
+					}
+				};
+				break;
 			default:
 				throw new RuntimeException("Unsupported button name");
 			}
-			buttons.add(createButtonWithHotkey(KeyModifiers.CONTROL, keyEvent, action, name,
-					hotkeyDescription));
+			AbstractButton button = createButtonWithHotkey(KeyModifiers.CONTROL, keyEvent, action, name,
+					hotkeyDescription);
+			if (name.equals(ButtonsNames.SHOW_PROBLEMATIC_KANJIS)){
+				showProblematicKanjis = button;
+			}
+			buttons.add(button);
 		}
 		return buttons;
-	}
-
-	private void createUpperPanel() {
-		listsSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-				applicationController.getWordsList().getPanel(),
-				applicationController.getRepeatsList().getPanel());
 	}
 
 	private void createInformationsPanel() {
@@ -170,7 +188,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 
 	public void addProblematicKanjisButton() {
 		problematicKanjiButtonIsVisible = true;
-		bottomPanel.addElementsToRow(0, showProblematicKanjis);
+		showProblematicKanjis.setEnabled(true);
 	}
 
 	public void removeButtonProblematicsKanji() {

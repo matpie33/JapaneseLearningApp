@@ -158,7 +158,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
         return parentDialog;
     }
 
-    public boolean isDisplayAble() {
+    public boolean isDisplayable() {
         return parentDialog.getContainer().isDisplayable();
     }
 

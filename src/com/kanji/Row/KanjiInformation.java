@@ -1,6 +1,7 @@
 package com.kanji.Row;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class KanjiInformation implements Serializable {
 
@@ -26,6 +27,21 @@ public class KanjiInformation implements Serializable {
 
 	public void setKanjiID(int kanjiID) {
 		this.id = kanjiID;
+	}
+
+	@Override
+	public boolean equals (Object another){
+		if (another instanceof KanjiInformation == false){
+			return false;
+		}
+		KanjiInformation kanjiInformation = (KanjiInformation) another;
+		return kanjiInformation.getKanjiKeyword().equals(keyword) && kanjiInformation.getKanjiID() == id;
+
+	}
+
+	@Override
+	public int hashCode(){
+		return Objects.hash(id, keyword);
 	}
 
 	@Override

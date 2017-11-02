@@ -36,14 +36,13 @@ public class RowInKanjiRepeatingList implements ListRowMaker<KanjiInformation> {
 		JLabel id = new JLabel("" + row.getKanjiID());
 		id.setForeground(Color.white);
 		JTextComponent kanjiTextArea = GuiMaker
-				.createTextArea(new TextAreaOptions().editable(false).opaque(true));
+				.createTextArea(new TextAreaOptions().editable(false).opaque(true).rowsAndColumns(3,5));
 		kanjiTextArea.setText(row.getKanjiKeyword());
 		JLabel kanjiKeyword = GuiMaker.createLabel(new ComponentOptions()
 				.text(Labels.KANJI_KEYWORD_LABEL).foregroundColor(BasicColors.OCEAN_BLUE));
 		JLabel kanjiId = GuiMaker.createLabel(new ComponentOptions().text(Labels.KANJI_ID_LABEL)
 				.foregroundColor(Color.WHITE));
 		int rowNumber = controller.getNumberOfRows();
-		controller.addKanjiRow(row.getKanjiID());
 
 		JButton buttonGoToSource = createButtonGoToSource(rowNumber, row.getKanjiID());
 		panel.addElementsInColumnStartingFromColumn(kanjiTextArea, 0,

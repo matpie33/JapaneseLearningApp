@@ -31,6 +31,6 @@ public class ButtonsNames {
 	public static final String REJECT = "Nie";
 
 	public static final String[] BUTTONS_ON_MAIN_PAGE = { START, SEARCH, ADD, LOAD_PROJECT, LOAD_LIST, SAVE,
-			SAVE_LIST };
+			SAVE_LIST, SHOW_PROBLEMATIC_KANJIS };
 
 }

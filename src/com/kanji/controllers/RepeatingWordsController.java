@@ -134,7 +134,7 @@ public class RepeatingWordsController implements TimeSpentMonitor {
 
 		parent.showMessageDialog(createFinishMessage());
 		if (currentProblematicKanjis.size() > 0)
-			parent.showProblematicKanjiDialog(kanjiList, currentProblematicKanjis);
+			parent.showProblematicKanjiDialog(currentProblematicKanjis);
 	}
 
 	private String createFinishMessage() {

@@ -2,18 +2,15 @@ package com.kanji.panels;
 
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Set;
 
-import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JRadioButton;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
@@ -28,7 +25,6 @@ import com.kanji.constants.Labels;
 import com.kanji.constants.Titles;
 import com.kanji.controllers.ProblematicKanjisController;
 import com.kanji.myList.MyList;
-import com.kanji.myList.RowInKanjiRepeatingList;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
 
@@ -37,17 +33,11 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	private ProblematicKanjisController controller;
 	private Dimension preferredSize = new Dimension(600, 600);
 	private int maximumNumberOfRows = 5;
-	private MyList<KanjiInformation> kanjiRepeatingList;
-	private RowInKanjiRepeatingList rowInKanjiRepeatingList;
 
 	public ProblematicKanjiPanel(Font kanjiFont, ApplicationWindow applicationWindow,
 			MyList<KanjiInformation> kanjiList, Set<Integer> problematicKanji) {
 		parentDialog = applicationWindow;
-		controller = new ProblematicKanjisController(kanjiFont, this, problematicKanji, kanjiList);
-
-		rowInKanjiRepeatingList = new RowInKanjiRepeatingList(controller);
-		kanjiRepeatingList = new MyList<>(parentDialog, applicationWindow.getStartingPanel(), null,
-				rowInKanjiRepeatingList, Titles.PROBLEMATIC_KANJIS);
+		controller = new ProblematicKanjisController(applicationWindow, kanjiFont, this, problematicKanji, kanjiList);
 	}
 
 	public ProblematicKanjisController getController() {
@@ -68,7 +58,6 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		group.add(withInternet);
 		group.add(withoutInternet);
 		AbstractButton buttonClose = createButtonClose();
-		buildRows();
 
 		MainPanel radioButtonsPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
 		radioButtonsPanel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL,
@@ -76,7 +65,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 						withoutInternet));
 
 		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL, radioButtonsPanel.getPanel())
-				.nextRow(FillType.BOTH, kanjiRepeatingList.getPanel()).setNotOpaque());
+				.nextRow(FillType.BOTH, controller.getKanjiRepeatingList().getPanel()).setNotOpaque());
 		setNavigationButtons(Anchor.CENTER, buttonClose);
 	}
 
@@ -111,7 +100,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		parentDialog.getContainer().addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
-				controller.hideProblematicsPanel(parentDialog);
+				controller.addButtonForShowingProblematicKanjis(parentDialog);
 			}
 		});
 	}
@@ -128,23 +117,21 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		parentDialog.showMessageDialog(message);
 	}
 
-	public void buildRows() {
-		for (KanjiInformation kanji : controller.getKanjis()) {
-			kanjiRepeatingList.addWord(kanji);
-		}
-	}
-
 	public void limitSize() {
 		parentDialog.getContainer().setPreferredSize(preferredSize);
 	}
 
 	public void highlightRow(int rowNumber) {
-		kanjiRepeatingList.highlightRow(rowNumber);
+		controller.getKanjiRepeatingList().highlightRow(rowNumber);
 	}
 
 	@Override
 	public DialogWindow getDialog() {
 		return parentDialog;
+	}
+
+	public void addProblematicKanjis (Set<Integer> problematicKanjis){
+		controller.addProblematicKanjis(problematicKanjis);
 	}
 
 }

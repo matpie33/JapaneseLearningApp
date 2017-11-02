@@ -89,7 +89,6 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 
 	}
 
-	// TODO searching by word sometimes enters infinite loop
 	private MainPanel createSearchByKanjiIdPanel() {
 		kanjiIdTextfield = createInputTextField();
 
