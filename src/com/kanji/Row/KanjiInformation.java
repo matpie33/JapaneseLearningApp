@@ -5,6 +5,7 @@ import java.util.Objects;
 
 public class KanjiInformation implements Serializable {
 
+	private static final long serialVersionUID = 5172798853536032765L;
 	private String keyword;
 	private int id;
 
@@ -31,7 +32,7 @@ public class KanjiInformation implements Serializable {
 
 	@Override
 	public boolean equals (Object another){
-		if (another instanceof KanjiInformation == false){
+		if (!(another instanceof KanjiInformation)){
 			return false;
 		}
 		KanjiInformation kanjiInformation = (KanjiInformation) another;
