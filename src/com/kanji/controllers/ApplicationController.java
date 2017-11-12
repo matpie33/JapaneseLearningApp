@@ -349,21 +349,6 @@ public class ApplicationController implements ApplicationStateManager {
 				listOfRepeatingDates.getWords(), getProblematicKanjis());
 	}
 
-	@Override
-	public void stop (){
-		if (applicationStateManager == this){ //TODO not the best code
-			return;
-		}
-		applicationStateManager.stop();
-	}
-
-	@Override
-	public void resume(){
-		if (applicationStateManager == this){
-			return;
-		}
-		applicationStateManager.resume();
-	}
 
 	public void switchStateManager (ApplicationStateManager stateManager){
 		this.applicationStateManager = stateManager;

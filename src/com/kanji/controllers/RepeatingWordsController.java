@@ -50,6 +50,7 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 		this.currentlyRepeatedWords = new ArrayList<>();
 		this.parent = parent;
 		timeSpentHandler = new TimeSpentHandler(this);
+		parent.setTimeSpentHandler(timeSpentHandler);
 		this.panel = panel;
 		repeatingWordsPanelState = RepeatingWordsPanelState.WORD_NOT_SHOWING;
 	}
@@ -326,16 +327,6 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 						repeatInfo, timeSpentHandler.getTimeForSerialization());
 		savingInformation.setKanjiRepeatingState(kanjiRepeatingState);
 		return savingInformation;
-	}
-
-	@Override
-	public void stop (){
-		stopLearning();
-	}
-
-	@Override
-	public void resume(){
-		resumeLearning();
 	}
 
 	public void displayMessageAboutUnfinishedRepeating(){

@@ -234,11 +234,4 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 		return savingInformation;
 	}
 
-	@Override public void stop() {
-		//TODO interface segregation (SOLID) - don't force me to implement something I don't need to implement
-	}
-
-	@Override public void resume() {
-
-	}
 }

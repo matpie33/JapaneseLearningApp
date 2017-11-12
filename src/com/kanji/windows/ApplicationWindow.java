@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.swing.JFrame;
@@ -31,6 +32,7 @@ import com.kanji.panels.ProblematicKanjiPanel;
 import com.kanji.panels.RepeatingWordsPanel;
 import com.kanji.panels.SearchWordPanel;
 import com.kanji.panels.StartingPanel;
+import com.kanji.timer.TimeSpentHandler;
 
 @SuppressWarnings("serial")
 public class ApplicationWindow extends DialogWindow {
@@ -40,12 +42,14 @@ public class ApplicationWindow extends DialogWindow {
 	private StartingPanel startingPanel;
 	private JFrame container;
 	private ApplicationController applicationController;
+	private Optional<TimeSpentHandler> timeSpentHandler;
 	private Font kanjiFont = new Font("MS PMincho", Font.BOLD, 100);
 
 	public ApplicationWindow() {
 		super(null);
 		container = new JFrame();
 		mainApplicationPanel = new JPanel(new CardLayout());
+		timeSpentHandler = Optional.empty();
 	}
 
 	public void initiate() {
@@ -87,7 +91,7 @@ public class ApplicationWindow extends DialogWindow {
 	private WindowAdapter createClosingAdapter (){
 		return new WindowAdapter() {
 			@Override public void windowClosing(WindowEvent e) {
-				applicationController.stop();
+				stopTimeMeasuring();
 				boolean shouldClose = applicationController.isClosingSafe();
 				if (!shouldClose){
 					shouldClose = showConfirmDialog(Prompts.CLOSE_APPLICATION);
@@ -98,7 +102,7 @@ public class ApplicationWindow extends DialogWindow {
 					System.exit(0);
 				}
 				else{
-					applicationController.resume();
+					resumeTimeMeasuring();
 				}
 			}
 		};
@@ -107,10 +111,6 @@ public class ApplicationWindow extends DialogWindow {
 	public void showPanel(ApplicationPanels panel) {
 		((CardLayout) mainApplicationPanel.getLayout()).show(mainApplicationPanel,
 				panel.getPanelName());
-	}
-
-	public void save() {
-		this.applicationController.saveProject();
 	}
 
 	public void changeSaveStatus(SavingStatus savingStatus) {
@@ -218,6 +218,18 @@ public class ApplicationWindow extends DialogWindow {
 
 	public JPanel getStartingPanel (){
 		return startingPanel.getPanel();
+	}
+
+	public void setTimeSpentHandler(TimeSpentHandler timeSpentHandler){
+		this.timeSpentHandler = Optional.of(timeSpentHandler);
+	}
+
+	public void stopTimeMeasuring(){
+		timeSpentHandler.ifPresent(TimeSpentHandler::stopTimer);
+	}
+
+	public void resumeTimeMeasuring(){
+		timeSpentHandler.ifPresent(TimeSpentHandler::startTimer);
 	}
 
 }
