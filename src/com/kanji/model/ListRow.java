@@ -8,6 +8,7 @@ public class ListRow<Word> {
 	private Word word;
 	private JComponent panel;
 	private JLabel indexLabel;
+	private boolean highlighted;
 
 	public ListRow(Word word, JComponent panel, JLabel indexLabel) {
 		this.word = word;
@@ -30,5 +31,14 @@ public class ListRow<Word> {
 	public void setIndexLabel(JLabel label) {
 		indexLabel = label;
 	}
+
+	public boolean isHighlighted() {
+		return highlighted;
+	}
+
+	public void setHighlighted(boolean highlighted) {
+		this.highlighted = highlighted;
+	}
+
 
 }

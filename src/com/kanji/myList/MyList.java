@@ -1,6 +1,7 @@
 package com.kanji.myList;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.*;
 
@@ -155,6 +156,10 @@ public class MyList<Word> {
 		return listController.getNumberOfWords();
 	}
 
+	public boolean areAllWordsHighlighted (){
+		return listController.getWordsByHighlight(true).size() == getNumberOfWords();
+	}
+
 	public List<Word> getWords() {
 		return listController.getWords();
 	}
@@ -179,6 +184,14 @@ public class MyList<Word> {
 
 	public Word getWordInRow(int rowNumber1Based) {
 		return listController.getWordInRow(rowNumber1Based);
+	}
+
+	public List<Word> getHighlightedWords(){
+		return listController.getWordsByHighlight(true);
+	}
+
+	public List<Word> getNotHighlightedWords(){
+		return listController.getWordsByHighlight(false);
 	}
 
 }

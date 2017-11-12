@@ -4,6 +4,8 @@ import java.awt.CardLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Set;
 
 import javax.swing.JFrame;
@@ -13,7 +15,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import com.guimaker.colors.BasicColors;
-import com.guimaker.panels.MainPanel;
 import com.kanji.Row.KanjiInformation;
 import com.kanji.constants.ApplicationPanels;
 import com.kanji.constants.MenuTexts;
@@ -21,6 +22,7 @@ import com.kanji.constants.Prompts;
 import com.kanji.constants.SavingStatus;
 import com.kanji.constants.Titles;
 import com.kanji.controllers.ApplicationController;
+import com.kanji.model.ProblematicKanjisState;
 import com.kanji.myList.MyList;
 import com.kanji.panels.InsertWordPanel;
 import com.kanji.panels.LearningStartPanel;
@@ -77,8 +79,29 @@ public class ApplicationWindow extends DialogWindow {
 		container.setMinimumSize(container.getSize());
 		container.setTitle(Titles.APPLICATION);
 		container.setLocationRelativeTo(null);
-		container.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		container.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		container.setVisible(true);
+		container.addWindowListener(createClosingAdapter());
+	}
+
+	private WindowAdapter createClosingAdapter (){
+		return new WindowAdapter() {
+			@Override public void windowClosing(WindowEvent e) {
+				applicationController.stop();
+				boolean shouldClose = applicationController.isClosingSafe();
+				if (!shouldClose){
+					shouldClose = showConfirmDialog(Prompts.CLOSE_APPLICATION);
+					System.out.println("confirmed");
+				}
+				if (shouldClose){
+					applicationController.saveProject();
+					System.exit(0);
+				}
+				else{
+					applicationController.resume();
+				}
+			}
+		};
 	}
 
 	public void showPanel(ApplicationPanels panel) {
@@ -132,20 +155,33 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void showProblematicKanjiDialog(Set<Integer> problematicKanjis) {
+
 		if (problematicKanjiPanel != null){
 			problematicKanjiPanel.addProblematicKanjis(problematicKanjis);
 			showProblematicKanjiDialog();
 		}
 		else{
-			problematicKanjiPanel = new ProblematicKanjiPanel(getKanjiFont(), this, applicationController.getWordsList(),
-					problematicKanjis);
+
+			problematicKanjiPanel = new ProblematicKanjiPanel(getKanjiFont(), applicationController.getWordsList(),
+					this);
+			problematicKanjiPanel.addProblematicKanjis(problematicKanjis);
 			showPanel(problematicKanjiPanel, Titles.PROBLEMATIC_KANJIS_WINDOW, true, Position.CENTER);
 		}
+		applicationController.switchStateManager(problematicKanjiPanel.getController());
 
 	}
 
 	public void showProblematicKanjiDialog() {
 		showReadyPanel(problematicKanjiPanel.getDialog());
+	}
+
+	public void showProblematicKanjiDialog(ProblematicKanjisState problematicKanjisState) {
+		problematicKanjiPanel = new ProblematicKanjiPanel(getKanjiFont(), applicationController.getWordsList(),
+				this, problematicKanjisState);
+		showPanel(problematicKanjiPanel, Titles.PROBLEMATIC_KANJIS_WINDOW, true, Position.CENTER);
+		applicationController.switchStateManager(problematicKanjiPanel.getController());
+		applicationController.setIsClosingSafe(false);
+		//TODO copypasted alot
 	}
 
 	public LoadingPanel showProgressDialog() {

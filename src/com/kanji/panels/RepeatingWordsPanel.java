@@ -119,7 +119,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
 	private void createPauseOrResumeButton() {
 		pauseOrResume = createButtonWithHotkey(KeyEvent.VK_P,
-				repeatingWordsController.createButtonPause(), ButtonsNames.PAUSE,
+				repeatingWordsController.createActionPause(), ButtonsNames.PAUSE,
 				HotkeysDescriptions.PAUSE);
 	}
 

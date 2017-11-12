@@ -2,7 +2,9 @@ package com.kanji.myList;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.*;
 
@@ -86,6 +88,7 @@ public class ListWordsController<Word> {
 	}
 
 	public void highlightRowAndScroll(int rowNumber, boolean clearLastHighlightedWord) {
+		wordsList.get(rowNumber).setHighlighted(true);
 		rowCreator.highlightRowAndScroll(rowNumber, clearLastHighlightedWord);
 	}
 
@@ -136,6 +139,16 @@ public class ListWordsController<Word> {
 				applicationController.saveProject();
 			}
 		};
+	}
+
+	public List<Word> getWordsByHighlight (boolean highlighted){
+		List <Word> highlightedWords = new ArrayList<>();
+		for (ListRow<Word> word: wordsList){
+			if (word.isHighlighted() == highlighted){
+				highlightedWords.add(word.getWord());
+			}
+		}
+		return highlightedWords;
 	}
 
 }

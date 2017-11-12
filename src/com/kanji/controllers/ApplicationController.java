@@ -19,12 +19,13 @@ import com.kanji.myList.RowInKanjiInformations;
 import com.kanji.myList.RowInRepeatingList;
 import com.kanji.panels.LoadingPanel;
 import com.kanji.range.SetOfRanges;
+import com.kanji.saving.ApplicationStateManager;
 import com.kanji.utilities.CustomFileReader;
 import com.kanji.utilities.LoadingAndSaving;
 import com.kanji.utilities.SavingInformation;
 import com.kanji.windows.ApplicationWindow;
 
-public class ApplicationController {
+public class ApplicationController implements ApplicationStateManager {
 
 	private RepeatingWordsController repeatingWordsPanelController;
 	private ApplicationWindow parent;
@@ -32,12 +33,15 @@ public class ApplicationController {
 	private MyList<RepeatingInformation> listOfRepeatingDates;
 	private LoadingAndSaving loadingAndSaving;
 	private Set<Integer> problematicKanjis;
+	private boolean isClosingSafe;
+	private ApplicationStateManager applicationStateManager;
 
 	public ApplicationController(ApplicationWindow parent,
 			RepeatingWordsController repeatingWordsPanelController) {
-		problematicKanjis = new HashSet<Integer>();
+		problematicKanjis = new HashSet<>();
 		this.parent = parent;
-
+		isClosingSafe = true;
+		applicationStateManager = this;
 
 		loadingAndSaving = new LoadingAndSaving();
 		this.repeatingWordsPanelController = repeatingWordsPanelController;
@@ -71,7 +75,7 @@ public class ApplicationController {
 			List <KanjiInformation> kanjiInformations = words.getKanjiInformations();
 			List <RepeatingInformation> repeatingInformations = words.getRepeatingInformations();
 			Set <Integer> problematicKanjis = words.getProblematicKanjis();
-			addProblematicKanjis(problematicKanjis);
+			setProblematicKanjis(problematicKanjis);
 			listOfWords.cleanWords();
 			listOfRepeatingDates.cleanWords();
 			for (KanjiInformation kanjiInformation: kanjiInformations){
@@ -104,16 +108,18 @@ public class ApplicationController {
 		loadingAndSaving.setFileToSave(fileToSave);
 
 		listOfWords.cleanWords();
-		addProblematicKanjis(savingInformation.getProblematicKanjis());
+		setProblematicKanjis(savingInformation.getProblematicKanjis());
 		parent.updateTitle(fileToSave.toString());
 		parent.changeSaveStatus(SavingStatus.NO_CHANGES);
 
-		showLoadedKanjisInPanel(savingInformation.getKanjiWords());
+		showLoadedKanjisInPanel(savingInformation);
 		showLoadedRepeatingInformations(savingInformation.getRepeatingList());
+
+
 
 	}
 
-	private void showLoadedKanjisInPanel(List<KanjiInformation> kanjiWords) {
+	private void showLoadedKanjisInPanel(SavingInformation savingInformation) {
 		final LoadingPanel loadingPanel = parent.showProgressDialog();
 		SwingWorker s = new SwingWorker<Void, Integer>() {
 
@@ -122,6 +128,7 @@ public class ApplicationController {
 			@Override
 			public Void doInBackground() throws Exception {
 				listOfWords.cleanWords();
+				List <KanjiInformation> kanjiWords = savingInformation.getKanjiWords();
 				progressBar.setMaximum(kanjiWords.size());
 				for (int i = 0; i < kanjiWords.size(); i++) {
 					listOfWords.addWord(kanjiWords.get(i));
@@ -138,6 +145,22 @@ public class ApplicationController {
 			public void done() {
 				listOfWords.scrollToBottom();
 				parent.closeDialog();
+
+				//TODO avoid if else, instead use interfaces, like: stateManager checkAndRestoreState
+				if (savingInformation.hasRepeatingInformationState()){
+					//TODO It doesn't belong to this method
+					repeatingWordsPanelController.reset();
+					repeatingWordsPanelController.resumeUnfinishedRepeating(
+							savingInformation.getRepeatingInformationState());
+					repeatingWordsPanelController.displayMessageAboutUnfinishedRepeating();
+					startRepeating();
+
+				}
+
+				if (savingInformation.hasProblematicKanjiState()){
+					repeatingWordsPanelController.displayMessageAboutUnfinishedRepeating();
+					parent.showProblematicKanjiDialog(savingInformation.getProblematicKanjisState());
+				}
 			}
 		};
 		s.execute();
@@ -231,8 +254,7 @@ public class ApplicationController {
 			return;
 		}
 		parent.changeSaveStatus(SavingStatus.SAVING);
-		SavingInformation savingInformation = new SavingInformation(listOfWords.getWords(),
-				listOfRepeatingDates.getWords(), getProblematicKanjis());
+		SavingInformation savingInformation = getSavingInformation();
 
 		try {
 			loadingAndSaving.save(savingInformation);
@@ -242,6 +264,10 @@ public class ApplicationController {
 			e1.printStackTrace();
 		}
 		parent.changeSaveStatus(SavingStatus.SAVED);
+	}
+
+	public SavingInformation getSavingInformation (){
+		return applicationStateManager.getApplicationState();
 	}
 
 	public void saveList() {
@@ -277,7 +303,7 @@ public class ApplicationController {
 
 	}
 
-	public void addProblematicKanjis(Set<Integer> problematicKanjiList) {
+	public void setProblematicKanjis(Set<Integer> problematicKanjiList) {
 		problematicKanjis = problematicKanjiList;
 		parent.updateProblematicKanjisAmount();
 	}
@@ -300,7 +326,50 @@ public class ApplicationController {
 
 	public void startRepeating() {
 		parent.showPanel(ApplicationPanels.REPEATING_PANEL);
+		isClosingSafe = false;
 		repeatingWordsPanelController.startRepeating();
+		applicationStateManager = repeatingWordsPanelController;
 	}
+
+
+	public void finishedRepeating(){
+		isClosingSafe = true;
+		applicationStateManager = this;
+	}
+
+	public boolean isClosingSafe (){
+		//TODO rethink it - shouldn't it be inside switch state manager method?
+		return isClosingSafe;
+	}
+
+	@Override public SavingInformation getApplicationState() {
+		return new SavingInformation(listOfWords.getWords(),
+				listOfRepeatingDates.getWords(), getProblematicKanjis());
+	}
+
+	@Override
+	public void stop (){
+		if (applicationStateManager == this){ //TODO not the best code
+			return;
+		}
+		applicationStateManager.stop();
+	}
+
+	@Override
+	public void resume(){
+		if (applicationStateManager == this){
+			return;
+		}
+		applicationStateManager.resume();
+	}
+
+	public void switchStateManager (ApplicationStateManager stateManager){
+		this.applicationStateManager = stateManager;
+	}
+
+	public void setIsClosingSafe (boolean isSafe){
+		isClosingSafe = isSafe;
+	}
+
 
 }

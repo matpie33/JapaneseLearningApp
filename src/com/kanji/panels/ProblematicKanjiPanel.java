@@ -24,6 +24,7 @@ import com.kanji.constants.HotkeysDescriptions;
 import com.kanji.constants.Labels;
 import com.kanji.constants.Titles;
 import com.kanji.controllers.ProblematicKanjisController;
+import com.kanji.model.ProblematicKanjisState;
 import com.kanji.myList.MyList;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
@@ -34,10 +35,19 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	private Dimension preferredSize = new Dimension(600, 600);
 	private int maximumNumberOfRows = 5;
 
-	public ProblematicKanjiPanel(Font kanjiFont, ApplicationWindow applicationWindow,
-			MyList<KanjiInformation> kanjiList, Set<Integer> problematicKanji) {
-		parentDialog = applicationWindow;
-		controller = new ProblematicKanjisController(applicationWindow, kanjiFont, this, problematicKanji, kanjiList);
+	public ProblematicKanjiPanel(Font kanjiFont, MyList <KanjiInformation> kanjiList,
+			ApplicationWindow parentDialog) {
+		this.parentDialog = parentDialog;
+		controller = new ProblematicKanjisController(parentDialog, kanjiFont,
+				this, kanjiList);
+	}
+
+	public ProblematicKanjiPanel (Font kanjiFont, MyList <KanjiInformation> kanjiList,
+			ApplicationWindow parentDialog,	ProblematicKanjisState problematicKanjisState){
+		this(kanjiFont, kanjiList, parentDialog);
+		controller.createProblematicKanjisList(problematicKanjisState.getReviewedKanjis(),
+				problematicKanjisState.getNotReviewKanjis());
+		controller.highlightReviewedWords(problematicKanjisState.getReviewedKanjis().size());
 	}
 
 	public ProblematicKanjisController getController() {
@@ -100,13 +110,9 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		parentDialog.getContainer().addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
-				controller.addButtonForShowingProblematicKanjis(parentDialog);
+				controller.closeDialogAndManageState(parentDialog);
 			}
 		});
-	}
-
-	public boolean allProblematicKanjisRepeated() {
-		return controller.allProblematicKanjisRepeated();
 	}
 
 	public void showKanjiDialog(KanjiPanel kanjiPanel) {
@@ -123,6 +129,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
 	public void highlightRow(int rowNumber) {
 		controller.getKanjiRepeatingList().highlightRow(rowNumber);
+		//TODO move it to controller or keep kanji repeating list as member variable
 	}
 
 	@Override
