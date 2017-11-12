@@ -12,10 +12,10 @@ import com.guimaker.enums.FillType;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
-import com.kanji.constants.ButtonsNames;
-import com.kanji.constants.HotkeysDescriptions;
-import com.kanji.constants.Prompts;
-import com.kanji.constants.SavingStatus;
+import com.kanji.strings.ButtonsNames;
+import com.kanji.strings.HotkeysDescriptions;
+import com.kanji.strings.Prompts;
+import com.kanji.enums.SavingStatus;
 import com.kanji.controllers.ApplicationController;
 import com.kanji.windows.ApplicationWindow;
 

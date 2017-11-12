@@ -1,4 +1,4 @@
-package com.kanji.myList;
+package com.kanji.listRows;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -6,20 +6,19 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JTextArea;
 import javax.swing.text.JTextComponent;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.TextAreaOptions;
-import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
-import com.kanji.Row.KanjiInformation;
-import com.kanji.constants.ButtonsNames;
-import com.kanji.constants.Labels;
+import com.kanji.listElements.KanjiInformation;
+import com.kanji.strings.ButtonsNames;
+import com.kanji.strings.Labels;
 import com.kanji.controllers.ProblematicKanjisController;
 import com.kanji.model.KanjiRow;
+import com.kanji.myList.ListRowMaker;
 import com.kanji.utilities.CommonListElements;
 
 public class RowInKanjiRepeatingList implements ListRowMaker<KanjiInformation> {

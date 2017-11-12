@@ -2,7 +2,7 @@ package com.kanji.listSearching;
 
 import java.text.Normalizer;
 
-import com.kanji.Row.KanjiInformation;
+import com.kanji.listElements.KanjiInformation;
 
 public class KanjiKeywordChecker implements PropertyManager<String, KanjiInformation> {
 

@@ -1,4 +1,4 @@
-package com.kanji.utilities;
+package com.kanji.saving;
 
 import java.io.File;
 import java.io.FileInputStream;

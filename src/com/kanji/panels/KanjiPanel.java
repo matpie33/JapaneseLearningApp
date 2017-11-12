@@ -1,10 +1,8 @@
 package com.kanji.panels;
 
 import java.awt.Font;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.text.JTextComponent;
 
@@ -14,8 +12,8 @@ import com.guimaker.enums.TextAlignment;
 import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.row.SimpleRowBuilder;
-import com.kanji.constants.ButtonsNames;
-import com.kanji.constants.HotkeysDescriptions;
+import com.kanji.strings.ButtonsNames;
+import com.kanji.strings.HotkeysDescriptions;
 import com.kanji.controllers.ProblematicKanjisController;
 
 public class KanjiPanel extends AbstractPanelWithHotkeysInfo {

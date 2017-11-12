@@ -2,15 +2,13 @@ package com.kanji.myList;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.*;
 
-import com.kanji.Row.KanjiInformation;
-import com.kanji.Row.RepeatingInformation;
-import com.kanji.constants.Prompts;
+import com.kanji.listElements.KanjiInformation;
+import com.kanji.listElements.RepeatingInformation;
+import com.kanji.strings.Prompts;
 import com.kanji.controllers.ApplicationController;
 import com.kanji.listSearching.PropertyManager;
 import com.kanji.model.ListRow;

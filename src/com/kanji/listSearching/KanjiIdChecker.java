@@ -1,6 +1,6 @@
 package com.kanji.listSearching;
 
-import com.kanji.Row.KanjiInformation;
+import com.kanji.listElements.KanjiInformation;
 
 public class KanjiIdChecker implements PropertyManager<Integer, KanjiInformation> {
 

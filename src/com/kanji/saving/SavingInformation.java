@@ -1,19 +1,18 @@
-package com.kanji.utilities;
+package com.kanji.saving;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
-import com.kanji.Row.KanjiInformation;
-import com.kanji.Row.RepeatingInformation;
-import com.kanji.model.ProblematicKanjisState;
+import com.kanji.listElements.KanjiInformation;
+import com.kanji.listElements.RepeatingInformation;
 
 public class SavingInformation implements Serializable {
 	private final static long serialVersionUID = -8017224611162128282L;
 	private List<KanjiInformation> kanjiWords;
 	private List<RepeatingInformation> repeatingList;
 	private Set<Integer> problematicKanjis;
-	private RepeatingInformationState repeatingInformationState;
+	private KanjiRepeatingState kanjiRepeatingState;
 	private ProblematicKanjisState problematicKanjisState;
 
 	public SavingInformation(List<KanjiInformation> kanjiWords,
@@ -36,19 +35,19 @@ public class SavingInformation implements Serializable {
 	}
 
 	public boolean hasRepeatingInformationState (){
-		return repeatingInformationState != null;
+		return kanjiRepeatingState != null;
 	}
 
 	public boolean hasProblematicKanjiState (){
 		return problematicKanjisState != null;
 	}
 
-	public RepeatingInformationState getRepeatingInformationState() {
-		return repeatingInformationState;
+	public KanjiRepeatingState getKanjiRepeatingState() {
+		return kanjiRepeatingState;
 	}
 
-	public void setRepeatingInformationState (RepeatingInformationState state){
-		this.repeatingInformationState = state;
+	public void setKanjiRepeatingState(KanjiRepeatingState state){
+		this.kanjiRepeatingState = state;
 	}
 
 	public ProblematicKanjisState getProblematicKanjisState() {

@@ -1,4 +1,4 @@
-package com.kanji.constants;
+package com.kanji.strings;
 
 public class Labels {
 	public static final String RANGE_FROM_LABEL = "Od: ";

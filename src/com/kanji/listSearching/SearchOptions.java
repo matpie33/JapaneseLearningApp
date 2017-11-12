@@ -1,6 +1,6 @@
 package com.kanji.listSearching;
 
-import com.kanji.constants.Labels;
+import com.kanji.strings.Labels;
 
 public enum SearchOptions {
 

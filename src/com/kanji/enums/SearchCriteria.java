@@ -1,6 +1,6 @@
 package com.kanji.enums;
 
-import com.kanji.constants.Labels;
+import com.kanji.strings.Labels;
 
 import java.util.Arrays;
 

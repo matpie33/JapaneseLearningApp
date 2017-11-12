@@ -1,4 +1,4 @@
-package com.kanji.fileReading;
+package com.kanji.utilities;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

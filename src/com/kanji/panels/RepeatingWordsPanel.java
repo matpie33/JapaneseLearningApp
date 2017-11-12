@@ -17,10 +17,10 @@ import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
-import com.kanji.constants.ButtonsNames;
-import com.kanji.constants.HotkeysDescriptions;
-import com.kanji.constants.Labels;
-import com.kanji.constants.Titles;
+import com.kanji.strings.ButtonsNames;
+import com.kanji.strings.HotkeysDescriptions;
+import com.kanji.strings.Labels;
+import com.kanji.strings.Titles;
 import com.kanji.controllers.RepeatingWordsController;
 import com.kanji.windows.ApplicationWindow;
 

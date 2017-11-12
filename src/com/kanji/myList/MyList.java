@@ -1,11 +1,10 @@
 package com.kanji.myList;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.*;
 
-import com.kanji.constants.ExceptionsMessages;
+import com.kanji.strings.ExceptionsMessages;
 import com.kanji.controllers.ApplicationController;
 import com.kanji.listSearching.PropertyManager;
 import com.kanji.listSearching.SearchingDirection;

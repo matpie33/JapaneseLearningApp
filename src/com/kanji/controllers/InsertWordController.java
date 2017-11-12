@@ -3,8 +3,8 @@ package com.kanji.controllers;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
-import com.kanji.Row.KanjiInformation;
-import com.kanji.constants.ExceptionsMessages;
+import com.kanji.listElements.KanjiInformation;
+import com.kanji.strings.ExceptionsMessages;
 import com.kanji.listSearching.KanjiIdChecker;
 import com.kanji.myList.MyList;
 import com.kanji.windows.DialogWindow;

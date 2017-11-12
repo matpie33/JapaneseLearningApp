@@ -1,13 +1,12 @@
-package com.kanji.model;
+package com.kanji.saving;
 
-import com.kanji.Row.KanjiInformation;
+import com.kanji.listElements.KanjiInformation;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 public class ProblematicKanjisState implements Serializable {
-	//TODO move classes representing saving state to common package  ~saving
 
 	private static final long serialVersionUID = -1667110131673682347L;
 	private Map<KanjiInformation, Boolean> problematicKanjis;

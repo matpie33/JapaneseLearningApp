@@ -1,4 +1,4 @@
-package com.kanji.constants;
+package com.kanji.enums;
 
 public enum SavingStatus {
 	SAVING("Zapisywanie"), SAVED("Zapisano"), NO_CHANGES("Brak zmian");

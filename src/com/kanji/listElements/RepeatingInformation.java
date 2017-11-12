@@ -1,6 +1,5 @@
-package com.kanji.Row;
+package com.kanji.listElements;
 
-import javax.rmi.CORBA.Tie;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 

@@ -10,20 +10,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.kanji.Row.KanjiInformation;
-import com.kanji.constants.Prompts;
-import com.kanji.constants.Titles;
-import com.kanji.fileReading.KanjiCharactersReader;
+import com.kanji.listElements.KanjiInformation;
+import com.kanji.strings.Prompts;
+import com.kanji.strings.Titles;
+import com.kanji.utilities.KanjiCharactersReader;
 import com.kanji.listSearching.KanjiIdChecker;
 import com.kanji.listSearching.SearchingDirection;
 import com.kanji.model.KanjiRow;
-import com.kanji.model.ProblematicKanjisState;
+import com.kanji.saving.ProblematicKanjisState;
 import com.kanji.myList.MyList;
-import com.kanji.myList.RowInKanjiRepeatingList;
+import com.kanji.listRows.RowInKanjiRepeatingList;
 import com.kanji.panels.KanjiPanel;
 import com.kanji.panels.ProblematicKanjiPanel;
 import com.kanji.saving.ApplicationStateManager;
-import com.kanji.utilities.SavingInformation;
+import com.kanji.saving.SavingInformation;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
 

@@ -3,10 +3,10 @@ package com.kanji.panels;
 import com.guimaker.enums.FillType;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.kanji.Row.KanjiInformation;
-import com.kanji.constants.ButtonsNames;
-import com.kanji.constants.HotkeysDescriptions;
-import com.kanji.constants.Prompts;
+import com.kanji.listElements.KanjiInformation;
+import com.kanji.strings.ButtonsNames;
+import com.kanji.strings.HotkeysDescriptions;
+import com.kanji.strings.Prompts;
 import com.kanji.controllers.ApplicationController;
 import com.kanji.controllers.InsertWordController;
 import com.kanji.myList.MyList;
@@ -14,7 +14,6 @@ import com.kanji.utilities.CommonGuiElementsMaker;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {

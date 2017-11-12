@@ -26,9 +26,9 @@ import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.CommonActionsMaker;
 import com.guimaker.utilities.HotkeyWrapper;
 import com.guimaker.utilities.KeyModifiers;
-import com.kanji.constants.ButtonsNames;
-import com.kanji.constants.HotkeysDescriptions;
-import com.kanji.constants.Titles;
+import com.kanji.strings.ButtonsNames;
+import com.kanji.strings.HotkeysDescriptions;
+import com.kanji.strings.Titles;
 import com.kanji.windows.DialogWindow;
 
 public abstract class AbstractPanelWithHotkeysInfo {

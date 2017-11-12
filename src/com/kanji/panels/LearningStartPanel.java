@@ -2,10 +2,6 @@ package com.kanji.panels;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -20,7 +16,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
-import javax.swing.text.AbstractDocument;
 import javax.swing.text.JTextComponent;
 
 import com.guimaker.colors.BasicColors;
@@ -33,18 +28,16 @@ import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRow;
 import com.guimaker.row.SimpleRowBuilder;
-import com.kanji.Row.RepeatingInformation;
-import com.kanji.constants.ButtonsNames;
-import com.kanji.constants.HotkeysDescriptions;
-import com.kanji.constants.Labels;
-import com.kanji.constants.NumberValues;
-import com.kanji.constants.Prompts;
-import com.kanji.constants.Titles;
+import com.kanji.listElements.RepeatingInformation;
+import com.kanji.strings.ButtonsNames;
+import com.kanji.strings.HotkeysDescriptions;
+import com.kanji.strings.Labels;
+import com.kanji.strings.Prompts;
+import com.kanji.strings.Titles;
 import com.kanji.controllers.ApplicationController;
 import com.kanji.controllers.LearningStartController;
 import com.kanji.myList.MyList;
 import com.kanji.utilities.CommonGuiElementsMaker;
-import com.kanji.utilities.LimitDocumentFilter;
 
 public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 

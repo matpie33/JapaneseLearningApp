@@ -1,4 +1,4 @@
-package com.kanji.Row;
+package com.kanji.listElements;
 
 import java.io.Serializable;
 import java.util.Objects;

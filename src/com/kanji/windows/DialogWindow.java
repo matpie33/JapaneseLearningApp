@@ -5,14 +5,13 @@ import java.awt.Point;
 import java.awt.Window;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 import com.guimaker.utilities.CommonActionsMaker;
-import com.kanji.constants.Titles;
+import com.kanji.strings.Titles;
 import com.kanji.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.panels.ConfirmPanel;
 import com.kanji.panels.KanjiPanel;

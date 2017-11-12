@@ -2,14 +2,12 @@ package com.kanji.utilities;
 
 import java.awt.Desktop;
 import java.io.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import com.kanji.Row.KanjiInformation;
-import com.kanji.Row.RepeatingInformation;
-import com.kanji.constants.ExceptionsMessages;
+import com.kanji.listElements.KanjiInformation;
+import com.kanji.listElements.RepeatingInformation;
+import com.kanji.strings.ExceptionsMessages;
 import com.kanji.exception.DuplicatedWordException;
 import com.kanji.model.KanjisAndRepeatingInfo;
 import com.kanji.myList.MyList;
@@ -38,7 +36,8 @@ public class CustomFileReader {
 		return kanjisAndRepeatingInfo;
 	}
 
-	public void writeToFile(File f, MyList<KanjiInformation> listOfWords, MyList <RepeatingInformation> repeats)
+	public void writeToFile(File f, MyList<KanjiInformation> listOfWords,
+			MyList <RepeatingInformation> repeats, Set <Integer> problematicKanjis)
 			throws IOException {
 		BufferedWriter p = new BufferedWriter(
 				new OutputStreamWriter(new FileOutputStream(f), "UTF8"));
@@ -57,6 +56,12 @@ public class CustomFileReader {
 					repeatingDate.getRepeatingDate()+ SEPARATOR +
 					repeatingDate.getTimeSpentOnRepeating()+ SEPARATOR);
 			p.newLine();
+		}
+		p.write(PROBLEMATIC_KANJIS_HEADER);
+		p.newLine();
+		for (Integer i: problematicKanjis){
+			p.write(i.toString());
+			p.write("#");
 		}
 		p.close();
 	}
@@ -145,8 +150,7 @@ public class CustomFileReader {
 			indexOfNextSeparator = wordAndIndex.getValue();
 			wordAndIndex = getNextSeparatedWord(line, indexOfNextSeparator);
 			String timeSpent = wordAndIndex.getKey();
-			RepeatingInformation r = new RepeatingInformation(ranges, LocalDateTime.parse(date, DateTimeFormatter
-					.ofPattern ( "EEE MMM d HH:mm:ss zzz yyyy" , Locale.ENGLISH )), true, timeSpent);
+			RepeatingInformation r = new RepeatingInformation(ranges, LocalDateTime.parse(date), true, timeSpent);
 			information.add(r);
 
 		}

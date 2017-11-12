@@ -11,9 +11,9 @@ import java.util.Set;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
-import com.kanji.Row.RepeatingInformation;
-import com.kanji.constants.ExceptionsMessages;
-import com.kanji.constants.Labels;
+import com.kanji.listElements.RepeatingInformation;
+import com.kanji.strings.ExceptionsMessages;
+import com.kanji.strings.Labels;
 import com.kanji.model.RangesRow;
 import com.kanji.myList.MyList;
 import com.kanji.panels.LearningStartPanel;

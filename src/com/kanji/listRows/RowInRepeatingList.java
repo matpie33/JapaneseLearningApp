@@ -1,4 +1,4 @@
-package com.kanji.myList;
+package com.kanji.listRows;
 
 import java.awt.Color;
 import java.time.LocalDateTime;
@@ -13,8 +13,9 @@ import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.kanji.Row.RepeatingInformation;
-import com.kanji.constants.Prompts;
+import com.kanji.listElements.RepeatingInformation;
+import com.kanji.strings.Prompts;
+import com.kanji.myList.ListRowMaker;
 import com.kanji.utilities.CommonListElements;
 
 public class RowInRepeatingList implements ListRowMaker<RepeatingInformation> {

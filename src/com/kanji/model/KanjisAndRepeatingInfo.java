@@ -1,7 +1,7 @@
 package com.kanji.model;
 
-import com.kanji.Row.KanjiInformation;
-import com.kanji.Row.RepeatingInformation;
+import com.kanji.listElements.KanjiInformation;
+import com.kanji.listElements.RepeatingInformation;
 
 import java.util.List;
 import java.util.Set;

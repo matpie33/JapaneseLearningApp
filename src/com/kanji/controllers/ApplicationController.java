@@ -9,20 +9,22 @@ import javax.swing.JFileChooser;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 
-import com.kanji.Row.KanjiInformation;
-import com.kanji.Row.RepeatingInformation;
-import com.kanji.constants.*;
+import com.kanji.listElements.KanjiInformation;
+import com.kanji.listElements.RepeatingInformation;
+import com.kanji.strings.*;
+import com.kanji.enums.ApplicationPanels;
+import com.kanji.enums.SavingStatus;
 import com.kanji.exception.DuplicatedWordException;
 import com.kanji.model.KanjisAndRepeatingInfo;
 import com.kanji.myList.MyList;
-import com.kanji.myList.RowInKanjiInformations;
-import com.kanji.myList.RowInRepeatingList;
+import com.kanji.listRows.RowInKanjiInformations;
+import com.kanji.listRows.RowInRepeatingList;
 import com.kanji.panels.LoadingPanel;
 import com.kanji.range.SetOfRanges;
 import com.kanji.saving.ApplicationStateManager;
 import com.kanji.utilities.CustomFileReader;
-import com.kanji.utilities.LoadingAndSaving;
-import com.kanji.utilities.SavingInformation;
+import com.kanji.saving.LoadingAndSaving;
+import com.kanji.saving.SavingInformation;
 import com.kanji.windows.ApplicationWindow;
 
 public class ApplicationController implements ApplicationStateManager {
@@ -151,7 +153,7 @@ public class ApplicationController implements ApplicationStateManager {
 					//TODO It doesn't belong to this method
 					repeatingWordsPanelController.reset();
 					repeatingWordsPanelController.resumeUnfinishedRepeating(
-							savingInformation.getRepeatingInformationState());
+							savingInformation.getKanjiRepeatingState());
 					repeatingWordsPanelController.displayMessageAboutUnfinishedRepeating();
 					startRepeating();
 
@@ -282,7 +284,7 @@ public class ApplicationController implements ApplicationStateManager {
 		f = new File(f.toString() +".txt");
 		CustomFileReader reader = new CustomFileReader();
 		try {
-			reader.writeToFile(f, listOfWords, listOfRepeatingDates);
+			reader.writeToFile(f, listOfWords, listOfRepeatingDates, getProblematicKanjis());
 		}
 		catch (IOException e) {
 			parent.showMessageDialog(e.getMessage());

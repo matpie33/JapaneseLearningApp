@@ -8,7 +8,7 @@ import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.kanji.constants.Prompts;
+import com.kanji.strings.Prompts;
 
 public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 

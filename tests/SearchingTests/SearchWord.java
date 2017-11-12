@@ -1,6 +1,6 @@
 //package SearchingTests;
 //
-//import com.kanji.constants.NumberValues;
+//import com.kanji.strings.NumberValues;
 //import com.kanji.fileReading.CustomFileReader;
 //import com.kanji.myList.MyList;
 //import com.kanji.myList.RowAsJLabel;

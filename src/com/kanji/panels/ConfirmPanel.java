@@ -1,8 +1,8 @@
 package com.kanji.panels;
 
 import com.guimaker.enums.Anchor;
-import com.kanji.constants.ButtonsNames;
-import com.kanji.constants.HotkeysDescriptions;
+import com.kanji.strings.ButtonsNames;
+import com.kanji.strings.HotkeysDescriptions;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
