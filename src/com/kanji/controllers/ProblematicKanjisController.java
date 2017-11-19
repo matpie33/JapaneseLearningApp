@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.kanji.enums.ApplicationSaveableState;
 import com.kanji.listElements.KanjiInformation;
 import com.kanji.strings.Prompts;
 import com.kanji.strings.Titles;
@@ -40,11 +41,14 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 	private Font kanjiFont;
 	private MyList<KanjiInformation> kanjiRepeatingList;
 	private ApplicationController applicationController;
+	private ApplicationWindow applicationWindow;
 
-	public ProblematicKanjisController(ApplicationWindow applicationWindow, Font kanjiFont, ProblematicKanjiPanel problematicKanjiPanel,
-			MyList<KanjiInformation> kanjiList) {
+	public ProblematicKanjisController(ApplicationWindow applicationWindow,
+			Font kanjiFont,	MyList<KanjiInformation> kanjiList) {
 		applicationController = applicationWindow.getApplicationController();
-		this.problematicKanjiPanel = problematicKanjiPanel;
+		this.applicationWindow = applicationWindow;
+		this.problematicKanjiPanel = new ProblematicKanjiPanel(kanjiFont, kanjiList,
+				applicationWindow, this);
 		kanjisToBrowse = new ArrayList<>();
 		useInternet = true;
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
@@ -53,7 +57,10 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 				new RowInKanjiRepeatingList(this), Titles.PROBLEMATIC_KANJIS);
 		this.kanjiList = kanjiList;
 		this.kanjiFont = kanjiFont;
+	}
 
+	public ProblematicKanjiPanel getProblematicKanjiPanel() {
+		return problematicKanjiPanel;
 	}
 
 	public void createProblematicKanjisList (List <KanjiInformation> reviewedKanjis,
@@ -69,9 +76,7 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 			kanjiRepeatingList.addWord(kanjiInformation);
 			kanjisToBrowse.add(new KanjiRow(kanjiInformation.getKanjiID(),
 					firstUnreviewedKanjiRowNumber+i));
-
 		}
-
 	}
 
 	public void highlightReviewedWords(int numberOfReviewedWords){
@@ -231,7 +236,14 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 				kanjiRepeatingList.getHighlightedWords(), kanjiRepeatingList.getNotHighlightedWords());
 		SavingInformation savingInformation = applicationController.getApplicationState();
 		savingInformation.setProblematicKanjisState(information);
+		savingInformation.setApplicationSaveableState(ApplicationSaveableState.REVIEWING_PROBLEMATIC_KANJIS);
 		return savingInformation;
+	}
+
+	@Override
+	public void restoreState(SavingInformation savingInformation){
+		applicationWindow.displayMessageAboutUnfinishedRepeating();
+		applicationWindow.showProblematicKanjiDialog(savingInformation.getProblematicKanjisState());
 	}
 
 }

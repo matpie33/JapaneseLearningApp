@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import com.kanji.enums.ApplicationSaveableState;
 import com.kanji.listElements.KanjiInformation;
 import com.kanji.listElements.RepeatingInformation;
 import com.kanji.enums.ApplicationPanels;
@@ -43,7 +44,7 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 	private RepeatingInformation repeatInfo;
 	private RepeatingWordsPanel panel;
 
-	public RepeatingWordsController(ApplicationWindow parent, RepeatingWordsPanel panel) {
+	public RepeatingWordsController(ApplicationWindow parent) {
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		kanjiCharactersReader.loadKanjisIfNeeded();
 		currentProblematicKanjis = new HashSet<>();
@@ -51,8 +52,12 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 		this.parent = parent;
 		timeSpentHandler = new TimeSpentHandler(this);
 		parent.setTimeSpentHandler(timeSpentHandler);
-		this.panel = panel;
+		this.panel = new RepeatingWordsPanel(parent, this);
 		repeatingWordsPanelState = RepeatingWordsPanelState.WORD_NOT_SHOWING;
+	}
+
+	public RepeatingWordsPanel getRepeatingWordsPanel (){
+		return panel;
 	}
 
 	private String getCurrentKanji() {
@@ -326,11 +331,17 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 				new KanjiRepeatingState(currentProblematicKanjis, currentlyRepeatedWords,
 						repeatInfo, timeSpentHandler.getTimeForSerialization());
 		savingInformation.setKanjiRepeatingState(kanjiRepeatingState);
+		savingInformation.setApplicationSaveableState(ApplicationSaveableState.REPEATING_WORDS);
 		return savingInformation;
 	}
 
-	public void displayMessageAboutUnfinishedRepeating(){
-		parent.showMessageDialog(Prompts.UNFINISHED_REPEATING);
+	@Override
+	public void restoreState(SavingInformation savingInformation){
+		reset();
+		resumeUnfinishedRepeating(
+				savingInformation.getKanjiRepeatingState());
+		parent.displayMessageAboutUnfinishedRepeating();
+		parent.getApplicationController().startRepeating();
 	}
 
 }

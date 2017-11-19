@@ -29,7 +29,6 @@ import com.kanji.panels.InsertWordPanel;
 import com.kanji.panels.LearningStartPanel;
 import com.kanji.panels.LoadingPanel;
 import com.kanji.panels.ProblematicKanjiPanel;
-import com.kanji.panels.RepeatingWordsPanel;
 import com.kanji.panels.SearchWordPanel;
 import com.kanji.panels.StartingPanel;
 import com.kanji.timer.TimeSpentHandler;
@@ -53,15 +52,16 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void initiate() {
-		RepeatingWordsPanel repeatingWordsPanel = new RepeatingWordsPanel(this);
-		applicationController = new ApplicationController(this,
-				repeatingWordsPanel.getController());
+		applicationController = new ApplicationController(this);
+
 		startingPanel = new StartingPanel(this, applicationController);
 		applicationController.initializeListsElements();
+		applicationController.initializeApplicationStateManagers();
+		problematicKanjiPanel = applicationController.getProblematicKanjiPanel ();
 
 		mainApplicationPanel.add(startingPanel.createPanel(),
 				ApplicationPanels.STARTING_PANEL.getPanelName());
-		mainApplicationPanel.add(repeatingWordsPanel.createPanel(),
+		mainApplicationPanel.add(applicationController.getRepeatingWordsPanel().createPanel(),
 				ApplicationPanels.REPEATING_PANEL.getPanelName());
 
 		setWindowProperties();
@@ -95,7 +95,6 @@ public class ApplicationWindow extends DialogWindow {
 				boolean shouldClose = applicationController.isClosingSafe();
 				if (!shouldClose){
 					shouldClose = showConfirmDialog(Prompts.CLOSE_APPLICATION);
-					System.out.println("confirmed");
 				}
 				if (shouldClose){
 					applicationController.saveProject();
@@ -135,9 +134,8 @@ public class ApplicationWindow extends DialogWindow {
 		startingPanel.addProblematicKanjisButton();
 	}
 
-
 	public void showLearningStartDialog(MyList list, int maximumNumber) {
-		showPanel(new LearningStartPanel(applicationController, maximumNumber, list),
+		createDialog(new LearningStartPanel(applicationController, maximumNumber, list),
 				Titles.LEARNING_START_DIALOG, false, Position.CENTER);
 
 	}
@@ -145,48 +143,39 @@ public class ApplicationWindow extends DialogWindow {
 	// TODO dialogs should either be jframe or modal in order for alt tab to
 	// switch focus to the right window
 	public void showInsertDialog(MyList list) {
-		showPanel(new InsertWordPanel(list, getApplicationController()), Titles.INSERT_WORD_DIALOG,
+		createDialog(new InsertWordPanel(list, getApplicationController()), Titles.INSERT_WORD_DIALOG,
 				false, Position.LEFT_CORNER);
 	}
 
 	public void showSearchWordDialog(MyList<KanjiInformation> list) {
-		showPanel(new SearchWordPanel(list), Titles.WORD_SEARCH_DIALOG, false,
+		createDialog(new SearchWordPanel(list), Titles.WORD_SEARCH_DIALOG, false,
 				Position.LEFT_CORNER);
 	}
 
 	public void showProblematicKanjiDialog(Set<Integer> problematicKanjis) {
-
-		if (problematicKanjiPanel != null){
-			problematicKanjiPanel.addProblematicKanjis(problematicKanjis);
-			showProblematicKanjiDialog();
-		}
-		else{
-
-			problematicKanjiPanel = new ProblematicKanjiPanel(getKanjiFont(), applicationController.getWordsList(),
-					this);
-			problematicKanjiPanel.addProblematicKanjis(problematicKanjis);
-			showPanel(problematicKanjiPanel, Titles.PROBLEMATIC_KANJIS_WINDOW, true, Position.CENTER);
-		}
-		applicationController.switchStateManager(problematicKanjiPanel.getController());
-
+		problematicKanjiPanel.addProblematicKanjis(problematicKanjis);
+		showProblematicKanjiDialog();
 	}
 
 	public void showProblematicKanjiDialog() {
-		showReadyPanel(problematicKanjiPanel.getDialog());
+		if (!problematicKanjiPanel.isDisplayable()){
+			showReadyPanel(problematicKanjiPanel.getDialog());
+		}
+		else{
+			createDialog(problematicKanjiPanel, Titles.PROBLEMATIC_KANJIS_WINDOW,
+					true, Position.CENTER);
+		}
+		applicationController.switchStateManager(problematicKanjiPanel.getController());
 	}
 
 	public void showProblematicKanjiDialog(ProblematicKanjisState problematicKanjisState) {
-		problematicKanjiPanel = new ProblematicKanjiPanel(getKanjiFont(), applicationController.getWordsList(),
-				this, problematicKanjisState);
-		showPanel(problematicKanjiPanel, Titles.PROBLEMATIC_KANJIS_WINDOW, true, Position.CENTER);
-		applicationController.switchStateManager(problematicKanjiPanel.getController());
-		applicationController.setIsClosingSafe(false);
-		//TODO copypasted alot
+		problematicKanjiPanel.restoreState(problematicKanjisState);
+		showProblematicKanjiDialog();
 	}
 
 	public LoadingPanel showProgressDialog() {
 		LoadingPanel dialog = new LoadingPanel(Prompts.KANJI_LOADING);
-		showPanel(dialog, Titles.MESSAGE_DIALOG, false, Position.CENTER);
+		createDialog(dialog, Titles.MESSAGE_DIALOG, false, Position.CENTER);
 		return dialog;
 	}
 
@@ -230,6 +219,10 @@ public class ApplicationWindow extends DialogWindow {
 
 	public void resumeTimeMeasuring(){
 		timeSpentHandler.ifPresent(TimeSpentHandler::startTimer);
+	}
+
+	public void displayMessageAboutUnfinishedRepeating (){
+		showMessageDialog(Prompts.UNFINISHED_REPEATING);
 	}
 
 }

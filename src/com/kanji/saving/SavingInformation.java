@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
+import com.kanji.enums.ApplicationSaveableState;
 import com.kanji.listElements.KanjiInformation;
 import com.kanji.listElements.RepeatingInformation;
 
@@ -14,6 +15,8 @@ public class SavingInformation implements Serializable {
 	private Set<Integer> problematicKanjis;
 	private KanjiRepeatingState kanjiRepeatingState;
 	private ProblematicKanjisState problematicKanjisState;
+	private ApplicationSaveableState applicationSaveableState;
+
 
 	public SavingInformation(List<KanjiInformation> kanjiWords,
 			List<RepeatingInformation> repeatingList, Set<Integer> problematicKanjis) {
@@ -58,4 +61,17 @@ public class SavingInformation implements Serializable {
 			ProblematicKanjisState problematicKanjisState) {
 		this.problematicKanjisState = problematicKanjisState;
 	}
+
+	public ApplicationSaveableState getApplicationSaveableState (){
+		return applicationSaveableState;
+	}
+
+	public void setApplicationSaveableState(ApplicationSaveableState applicationSaveableState) {
+		this.applicationSaveableState = applicationSaveableState;
+	}
+
+	public boolean hasStateToRestore(){
+		return applicationSaveableState != null;
+	}
+
 }

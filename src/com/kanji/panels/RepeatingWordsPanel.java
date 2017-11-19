@@ -40,12 +40,14 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private RepeatingWordsController repeatingWordsController;
 	private Font kanjiFont;
 
-	public RepeatingWordsPanel(ApplicationWindow applicationWindow) {
-		this.repeatingWordsController = new RepeatingWordsController(applicationWindow, this);
+	public RepeatingWordsPanel(ApplicationWindow applicationWindow,
+			RepeatingWordsController controller) {
+
 		kanjiFont = applicationWindow.getKanjiFont();
 		centerPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
 		repeatingPanel = new MainPanel(this.repeatingBackgroundColor);
 		repeatingPanel.setBorder(getDefaultBorder());
+		this.repeatingWordsController = controller;
 	}
 
 	public RepeatingWordsController getController() {

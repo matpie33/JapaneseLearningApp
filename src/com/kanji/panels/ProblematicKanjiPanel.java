@@ -36,15 +36,12 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	private int maximumNumberOfRows = 5;
 
 	public ProblematicKanjiPanel(Font kanjiFont, MyList <KanjiInformation> kanjiList,
-			ApplicationWindow parentDialog) {
+			ApplicationWindow parentDialog, ProblematicKanjisController controller) {
 		this.parentDialog = parentDialog;
-		controller = new ProblematicKanjisController(parentDialog, kanjiFont,
-				this, kanjiList);
+		this.controller = controller;
 	}
 
-	public ProblematicKanjiPanel (Font kanjiFont, MyList <KanjiInformation> kanjiList,
-			ApplicationWindow parentDialog,	ProblematicKanjisState problematicKanjisState){
-		this(kanjiFont, kanjiList, parentDialog);
+	public void restoreState (ProblematicKanjisState problematicKanjisState){
 		controller.createProblematicKanjisList(problematicKanjisState.getReviewedKanjis(),
 				problematicKanjisState.getNotReviewKanjis());
 		controller.highlightReviewedWords(problematicKanjisState.getReviewedKanjis().size());

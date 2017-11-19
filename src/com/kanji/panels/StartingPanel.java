@@ -28,11 +28,10 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	private JLabel saveInfo;
 	private ApplicationWindow applicationWindow;
 	private JLabel problematicKanjis;
-	private boolean problematicKanjiButtonIsVisible;
 
-	public StartingPanel(ApplicationWindow a, ApplicationController maker) {
+	public StartingPanel(ApplicationWindow a, ApplicationController applicationController) {
 		applicationWindow = a;
-		this.applicationController = maker;
+		this.applicationController = applicationController;
 	}
 
 	@Override
@@ -137,7 +136,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 				};
 				break;
 			case ButtonsNames.SHOW_PROBLEMATIC_KANJIS:
-				hotkeyDescription = HotkeysDescriptions.EXPORT_LIST;
+				hotkeyDescription = HotkeysDescriptions.REVIEW_PROBLEMATIC_KANJIS;
 				keyEvent = KeyEvent.VK_P;
 				action = new AbstractAction() {
 					@Override
@@ -187,19 +186,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public void addProblematicKanjisButton() {
-		problematicKanjiButtonIsVisible = true;
 		showProblematicKanjis.setEnabled(true);
-	}
-
-	public void removeButtonProblematicsKanji() {
-		if (problematicKanjiButtonIsVisible) {
-			bottomPanel.removeElementsFromRow(0, showProblematicKanjis);
-			problematicKanjiButtonIsVisible = false;
-		}
-	}
-
-	public JPanel getPanel (){
-		return mainPanel.getPanel();
 	}
 
 }

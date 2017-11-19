@@ -9,8 +9,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 
+import com.kanji.enums.ApplicationSaveableState;
 import com.kanji.listElements.KanjiInformation;
 import com.kanji.listElements.RepeatingInformation;
+import com.kanji.panels.ProblematicKanjiPanel;
+import com.kanji.panels.RepeatingWordsPanel;
 import com.kanji.strings.*;
 import com.kanji.enums.ApplicationPanels;
 import com.kanji.enums.SavingStatus;
@@ -37,16 +40,36 @@ public class ApplicationController implements ApplicationStateManager {
 	private Set<Integer> problematicKanjis;
 	private boolean isClosingSafe;
 	private ApplicationStateManager applicationStateManager;
+	private Map <ApplicationSaveableState, ApplicationStateManager> applicationStateToManagerMap;
+	private ProblematicKanjisController problematicKanjisController;
 
-	public ApplicationController(ApplicationWindow parent,
-			RepeatingWordsController repeatingWordsPanelController) {
+	public ApplicationController(ApplicationWindow parent) {
 		problematicKanjis = new HashSet<>();
 		this.parent = parent;
 		isClosingSafe = true;
 		applicationStateManager = this;
+		applicationStateToManagerMap = new HashMap<>();
 
 		loadingAndSaving = new LoadingAndSaving();
-		this.repeatingWordsPanelController = repeatingWordsPanelController;
+
+	}
+
+	public ProblematicKanjiPanel getProblematicKanjiPanel (){
+		return problematicKanjisController.getProblematicKanjiPanel();
+	}
+
+	public RepeatingWordsPanel getRepeatingWordsPanel (){
+		return repeatingWordsPanelController.getRepeatingWordsPanel();
+	}
+
+	public void initializeApplicationStateManagers(){
+		problematicKanjisController = new ProblematicKanjisController(parent,
+				parent.getKanjiFont(), listOfWords);
+		this.repeatingWordsPanelController = new RepeatingWordsController(parent);
+		applicationStateToManagerMap.put(ApplicationSaveableState.REPEATING_WORDS,
+				repeatingWordsPanelController);
+		applicationStateToManagerMap.put(ApplicationSaveableState.REVIEWING_PROBLEMATIC_KANJIS,
+				problematicKanjisController);
 	}
 
 	//TODO dependencies between classes are weird and should be reconsidered
@@ -117,8 +140,6 @@ public class ApplicationController implements ApplicationStateManager {
 		showLoadedKanjisInPanel(savingInformation);
 		showLoadedRepeatingInformations(savingInformation.getRepeatingList());
 
-
-
 	}
 
 	private void showLoadedKanjisInPanel(SavingInformation savingInformation) {
@@ -147,25 +168,23 @@ public class ApplicationController implements ApplicationStateManager {
 			public void done() {
 				listOfWords.scrollToBottom();
 				parent.closeDialog();
-
-				//TODO avoid if else, instead use interfaces, like: stateManager checkAndRestoreState
-				if (savingInformation.hasRepeatingInformationState()){
-					//TODO It doesn't belong to this method
-					repeatingWordsPanelController.reset();
-					repeatingWordsPanelController.resumeUnfinishedRepeating(
-							savingInformation.getKanjiRepeatingState());
-					repeatingWordsPanelController.displayMessageAboutUnfinishedRepeating();
-					startRepeating();
-
-				}
-
-				if (savingInformation.hasProblematicKanjiState()){
-					repeatingWordsPanelController.displayMessageAboutUnfinishedRepeating();
-					parent.showProblematicKanjiDialog(savingInformation.getProblematicKanjisState());
+				if (savingInformation.hasStateToRestore()){
+					getStateManagerForHandlingState(savingInformation.
+							getApplicationSaveableState()).restoreState(savingInformation);
 				}
 			}
 		};
 		s.execute();
+	}
+
+	private ApplicationStateManager getStateManagerForHandlingState (ApplicationSaveableState state){
+		for (Map.Entry <ApplicationSaveableState, ApplicationStateManager> entry:
+				applicationStateToManagerMap.entrySet()){
+			if (entry.getKey().equals(state)){
+				return entry.getValue();
+			}
+		}
+		throw new IllegalArgumentException("No state manager found for given state: "+state);
 	}
 
 	private void showLoadedRepeatingInformations(List<RepeatingInformation> mapOfRepeats) {
@@ -256,7 +275,7 @@ public class ApplicationController implements ApplicationStateManager {
 			return;
 		}
 		parent.changeSaveStatus(SavingStatus.SAVING);
-		SavingInformation savingInformation = getSavingInformation();
+		SavingInformation savingInformation = applicationStateManager.getApplicationState();
 
 		try {
 			loadingAndSaving.save(savingInformation);
@@ -266,10 +285,6 @@ public class ApplicationController implements ApplicationStateManager {
 			e1.printStackTrace();
 		}
 		parent.changeSaveStatus(SavingStatus.SAVED);
-	}
-
-	public SavingInformation getSavingInformation (){
-		return applicationStateManager.getApplicationState();
 	}
 
 	public void saveList() {
@@ -333,7 +348,6 @@ public class ApplicationController implements ApplicationStateManager {
 		applicationStateManager = repeatingWordsPanelController;
 	}
 
-
 	public void finishedRepeating(){
 		isClosingSafe = true;
 		applicationStateManager = this;
@@ -349,14 +363,19 @@ public class ApplicationController implements ApplicationStateManager {
 				listOfRepeatingDates.getWords(), getProblematicKanjis());
 	}
 
+	@Override
+	public void restoreState(SavingInformation savingInformation){
+		applicationStateManager.restoreState(savingInformation);
+	}
 
 	public void switchStateManager (ApplicationStateManager stateManager){
 		this.applicationStateManager = stateManager;
+		isClosingSafe = false;
 	}
 
-	public void setIsClosingSafe (boolean isSafe){
-		isClosingSafe = isSafe;
+	public void clearStateManager (){
+		applicationStateManager = this;
+		isClosingSafe = true;
 	}
-
 
 }

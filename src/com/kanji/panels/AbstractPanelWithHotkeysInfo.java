@@ -179,5 +179,9 @@ public abstract class AbstractPanelWithHotkeysInfo {
                 HotkeysDescriptions.CLOSE_WINDOW);
     }
 
+	public JPanel getPanel (){
+		return mainPanel.getPanel();
+	}
+
 
 }

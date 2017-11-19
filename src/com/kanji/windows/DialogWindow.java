@@ -89,11 +89,11 @@ public class DialogWindow {
 	}
 
 	public void showMessageDialog(String message) {
-		showPanel(new MessagePanel(message), Titles.MESSAGE_DIALOG, true, Position.CENTER);
+		createDialog(new MessagePanel(message), Titles.MESSAGE_DIALOG, true, Position.CENTER);
 	}
 
 	public void showKanjiDialog(KanjiPanel panel) {
-		showPanel(panel, Titles.KANJI_DIALOG, false, Position.NEXT_TO_PARENT);
+		createDialog(panel, Titles.KANJI_DIALOG, false, Position.NEXT_TO_PARENT);
 		makeTheChildFollowThisDialog();
 	}
 
@@ -106,7 +106,7 @@ public class DialogWindow {
 		});
 	}
 
-	public void showPanel(AbstractPanelWithHotkeysInfo panelCreator, String title, boolean modal,
+	public void createDialog(AbstractPanelWithHotkeysInfo panelCreator, String title, boolean modal,
 			Position position) {
 		if (!isDialogOfSameType(panelCreator) || childWindowIsClosed()) {
 			panelType = panelCreator;
@@ -135,7 +135,7 @@ public class DialogWindow {
 	}
 
 	public boolean showConfirmDialog(String message) {
-		showPanel(new ConfirmPanel(message), Titles.CONFIRM_DIALOG, true, Position.CENTER);
+		createDialog(new ConfirmPanel(message), Titles.CONFIRM_DIALOG, true, Position.CENTER);
 		return isAccepted();
 	}
 
