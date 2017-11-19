@@ -37,20 +37,13 @@ public class SavingInformation implements Serializable {
 		return problematicKanjis;
 	}
 
-	public boolean hasRepeatingInformationState (){
-		return kanjiRepeatingState != null;
-	}
-
-	public boolean hasProblematicKanjiState (){
-		return problematicKanjisState != null;
-	}
-
 	public KanjiRepeatingState getKanjiRepeatingState() {
 		return kanjiRepeatingState;
 	}
 
 	public void setKanjiRepeatingState(KanjiRepeatingState state){
 		this.kanjiRepeatingState = state;
+		applicationSaveableState = ApplicationSaveableState.REPEATING_WORDS;
 	}
 
 	public ProblematicKanjisState getProblematicKanjisState() {
@@ -60,14 +53,11 @@ public class SavingInformation implements Serializable {
 	public void setProblematicKanjisState(
 			ProblematicKanjisState problematicKanjisState) {
 		this.problematicKanjisState = problematicKanjisState;
+		applicationSaveableState = ApplicationSaveableState.REVIEWING_PROBLEMATIC_KANJIS;
 	}
 
 	public ApplicationSaveableState getApplicationSaveableState (){
 		return applicationSaveableState;
-	}
-
-	public void setApplicationSaveableState(ApplicationSaveableState applicationSaveableState) {
-		this.applicationSaveableState = applicationSaveableState;
 	}
 
 	public boolean hasStateToRestore(){

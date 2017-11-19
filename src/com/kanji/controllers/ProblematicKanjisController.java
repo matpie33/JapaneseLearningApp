@@ -236,7 +236,6 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 				kanjiRepeatingList.getHighlightedWords(), kanjiRepeatingList.getNotHighlightedWords());
 		SavingInformation savingInformation = applicationController.getApplicationState();
 		savingInformation.setProblematicKanjisState(information);
-		savingInformation.setApplicationSaveableState(ApplicationSaveableState.REVIEWING_PROBLEMATIC_KANJIS);
 		return savingInformation;
 	}
 

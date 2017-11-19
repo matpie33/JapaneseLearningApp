@@ -145,8 +145,6 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 		parent.getApplicationController().setProblematicKanjis(problematicKanjis);
 		parent.showPanel(ApplicationPanels.STARTING_PANEL);
 
-
-		parent.updateProblematicKanjisAmount();
 		parent.scrollToBottom();
 
 		parent.showMessageDialog(createFinishMessage());
@@ -331,7 +329,6 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 				new KanjiRepeatingState(currentProblematicKanjis, currentlyRepeatedWords,
 						repeatInfo, timeSpentHandler.getTimeForSerialization());
 		savingInformation.setKanjiRepeatingState(kanjiRepeatingState);
-		savingInformation.setApplicationSaveableState(ApplicationSaveableState.REPEATING_WORDS);
 		return savingInformation;
 	}
 

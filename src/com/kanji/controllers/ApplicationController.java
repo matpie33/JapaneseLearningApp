@@ -354,7 +354,6 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	public boolean isClosingSafe (){
-		//TODO rethink it - shouldn't it be inside switch state manager method?
 		return isClosingSafe;
 	}
 
