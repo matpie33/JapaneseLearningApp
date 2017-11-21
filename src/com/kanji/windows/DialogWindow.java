@@ -1,8 +1,6 @@
 package com.kanji.windows;
 
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Window;
+import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
@@ -14,7 +12,6 @@ import com.guimaker.utilities.CommonActionsMaker;
 import com.kanji.strings.Titles;
 import com.kanji.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.panels.ConfirmPanel;
-import com.kanji.panels.KanjiPanel;
 import com.kanji.panels.MessagePanel;
 
 public class DialogWindow {
@@ -26,7 +23,6 @@ public class DialogWindow {
 	private Position position;
 	private JDialog container;
 	private AbstractPanelWithHotkeysInfo panelType;
-	private KanjiPanel kanjiPanel;
 
 	public enum Position {
 		CENTER, LEFT_CORNER, NEXT_TO_PARENT
@@ -92,11 +88,6 @@ public class DialogWindow {
 		createDialog(new MessagePanel(message), Titles.MESSAGE_DIALOG, true, Position.CENTER);
 	}
 
-	public void showKanjiDialog(KanjiPanel panel) {
-		createDialog(panel, Titles.KANJI_DIALOG, false, Position.NEXT_TO_PARENT);
-		makeTheChildFollowThisDialog();
-	}
-
 	private void makeTheChildFollowThisDialog() {
 		container.addComponentListener(new ComponentAdapter() {
 			@Override
@@ -155,16 +146,13 @@ public class DialogWindow {
 		return container;
 	}
 
-	public void addHotkeyToWindow(int keyEvent, AbstractAction a) {
-		CommonActionsMaker.addHotkey(keyEvent, 0, a, container.getRootPane());
-	}
-
 	public DialogWindow getParent() {
 		return parentWindow;
 	}
 
-	public void closeChild() {
-		childWindow.getContainer().dispose();
+	public void maximize (){
+		container.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().
+				getMaximumWindowBounds());
 	}
 
 }

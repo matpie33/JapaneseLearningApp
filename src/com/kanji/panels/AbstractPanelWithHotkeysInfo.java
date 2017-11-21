@@ -75,13 +75,14 @@ public abstract class AbstractPanelWithHotkeysInfo {
 
     private void addHotkeysPanel() {
         SimpleRow row = SimpleRowBuilder.createRow(FillType.HORIZONTAL, Anchor.SOUTH, hotkeysPanel.getPanel());
+        MainPanel panelForHotkeys = parentPanelForHotkeys();
         if (hotkeysPanelIndex == -1) {
-            mainPanel.addRows(row);
+			panelForHotkeys.addRows(row);
         } else if (hotkeysPanelIndex > 0) {
-            mainPanel.insertRow(hotkeysPanelIndex, row);
+			panelForHotkeys.insertRow(hotkeysPanelIndex, row);
         }
         if (navigationButtons != null)
-            mainPanel.addRows( // TODO fix in gui maker: if putting rows as
+			panelForHotkeys.addRows( // TODO fix in gui maker: if putting rows as
                     // highest
                     // as
                     // possible, then west
@@ -93,6 +94,9 @@ public abstract class AbstractPanelWithHotkeysInfo {
 
     }
 
+    protected MainPanel parentPanelForHotkeys (){
+    	return mainPanel;
+	}
 
     void addHotkeysInformation(int keyEvent, String hotkeyDescription) {
         HotkeyWrapper wrapper = new HotkeyWrapper(KeyModifiers.NONE, keyEvent);

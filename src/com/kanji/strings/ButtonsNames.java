@@ -11,6 +11,7 @@ public class ButtonsNames {
 	public static final String ADD_ROW = "Dodaj wiersz";
 	public static final String NOT_RECOGNIZED = "Nie pamietam";
 	public static final String GO_BACK = "Powrót";
+	public static final String MAXIMIZE = "Maksymalizuj";
 	// Buttons
 	public static final String START = "Rozpocznij";
 	public static final String SEARCH = "Znajdź słówko";

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.kanji.enums.ApplicationSaveableState;
 import com.kanji.listElements.KanjiInformation;
 import com.kanji.strings.Prompts;
 import com.kanji.strings.Titles;
@@ -21,7 +20,6 @@ import com.kanji.model.KanjiRow;
 import com.kanji.saving.ProblematicKanjisState;
 import com.kanji.myList.MyList;
 import com.kanji.listRows.RowInKanjiRepeatingList;
-import com.kanji.panels.KanjiPanel;
 import com.kanji.panels.ProblematicKanjiPanel;
 import com.kanji.saving.ApplicationStateManager;
 import com.kanji.saving.SavingInformation;
@@ -37,11 +35,11 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 	private KanjiCharactersReader kanjiCharactersReader;
 	private List<KanjiRow> kanjisToBrowse;
 	private MyList<KanjiInformation> kanjiList;
-	private KanjiPanel kanjiPanel;
 	private Font kanjiFont;
 	private MyList<KanjiInformation> kanjiRepeatingList;
 	private ApplicationController applicationController;
 	private ApplicationWindow applicationWindow;
+	private final String KANJI_KOOHI_LOGIN_PAGE = "https://kanji.koohii.com/account";
 
 	public ProblematicKanjisController(ApplicationWindow applicationWindow,
 			Font kanjiFont,	MyList<KanjiInformation> kanjiList) {
@@ -57,6 +55,7 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 				new RowInKanjiRepeatingList(this), Titles.PROBLEMATIC_KANJIS);
 		this.kanjiList = kanjiList;
 		this.kanjiFont = kanjiFont;
+		problematicKanjiPanel.renderPage(KANJI_KOOHI_LOGIN_PAGE);
 	}
 
 	public ProblematicKanjiPanel getProblematicKanjiPanel() {
@@ -115,13 +114,7 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 		}
 		else {
 			String kanji = kanjiCharactersReader.getKanjiById(row.getId());
-			if (kanjiPanel == null || !kanjiPanel.isDisplayable()) {
-				kanjiPanel = new KanjiPanel(kanjiFont, kanji, this);
-				problematicKanjiPanel.showKanjiDialog(kanjiPanel);
-			}
-			else {
-				kanjiPanel.changeKanji(kanji);
-			}
+			problematicKanjiPanel.showKanjiDialog(kanji);
 
 		}
 		problematicKanjiPanel.highlightRow(row.getRowNumber());
@@ -131,10 +124,7 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 	private void browseKanji(KanjiRow kanjiRow) {
 		String uriText = "http://kanji.koohii.com/study/kanji/";
 		uriText += kanjiRow.getId();
-		URI uriObject = constructUriFromText(uriText);
-		if (uriObject != null) {
-			openUrlInBrowser(uriObject);
-		}
+		problematicKanjiPanel.renderPage(uriText);
 	}
 
 	private void openUrlInBrowser(URI uriObject) {
@@ -205,7 +195,6 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 				if (hasMoreKanji())
 					goToNextResource();
 				else {
-					problematicKanjiPanel.getDialog().closeChild();
 					problematicKanjiPanel.getDialog().showMessageDialog(Prompts.NO_MORE_KANJIS);
 				}
 			}
@@ -219,6 +208,14 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 				setUseInternet(useInternet);
 				JRadioButton source = (JRadioButton) e.getSource();
 				source.setSelected(true);
+			}
+		};
+	}
+
+	public AbstractAction createMaximizeAction (){
+		return new AbstractAction() {
+			@Override public void actionPerformed(ActionEvent e) {
+				problematicKanjiPanel.getDialog().maximize();
 			}
 		};
 	}
