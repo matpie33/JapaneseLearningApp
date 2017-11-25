@@ -162,8 +162,10 @@ public class ApplicationWindow extends DialogWindow {
 			showReadyPanel(problematicKanjiPanel.getDialog());
 		}
 		else{
+			problematicKanjiPanel.showKanjiKoohiLoginPage();
 			createDialog(problematicKanjiPanel, Titles.PROBLEMATIC_KANJIS_WINDOW,
 					true, Position.CENTER);
+
 		}
 		applicationController.switchStateManager(problematicKanjiPanel.getController());
 	}
