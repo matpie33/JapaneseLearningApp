@@ -4,9 +4,7 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-import javax.swing.AbstractAction;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import com.guimaker.utilities.CommonActionsMaker;
 import com.kanji.strings.Titles;
@@ -151,8 +149,13 @@ public class DialogWindow {
 	}
 
 	public void maximize (){
-		container.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().
-				getMaximumWindowBounds());
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override public void run() {
+				container.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().
+						getMaximumWindowBounds());
+			}
+		});
+
 	}
 
 }

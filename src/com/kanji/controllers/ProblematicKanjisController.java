@@ -203,14 +203,6 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 		};
 	}
 
-	public AbstractAction createMaximizeAction (){
-		return new AbstractAction() {
-			@Override public void actionPerformed(ActionEvent e) {
-				problematicKanjiPanel.getDialog().maximize();
-			}
-		};
-	}
-
 	public int getNumberOfRows() {
 		return kanjiRepeatingList.getNumberOfWords();
 	}

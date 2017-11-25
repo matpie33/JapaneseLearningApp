@@ -95,10 +95,6 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiDisplayingPanel.add(kanjiOnlineDisplayingPanel, ONLINE_KANJI_PANEL);
 
 		AbstractButton buttonClose = createButtonClose();
-		AbstractButton maximize = createButtonWithHotkey(KeyModifiers.ALT,
-				KeyEvent.VK_ENTER, controller.createMaximizeAction(),
-				ButtonsNames.MAXIMIZE, HotkeysDescriptions.MAXIMIZE_WINDOW);
-		//TODO make the dialog full screen immediately without the need for button
 		kanjiOnlineDisplayingPanel.setPreferredSize(new Dimension(400,600));
 		kanjiOnlineDisplayingPanel.setBorder(getDefaultBorder());
 		kanjiOnlineDisplayingPanel.setBackground(Color.white);
@@ -108,8 +104,8 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
 		wordsList = new MainPanel(null);
 		wordsList.setBorder(getDefaultBorder());
-		wordsList.addRows(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, maximize)
-				.nextRow(FillType.BOTH, controller.getKanjiRepeatingList().getPanel())
+		wordsList.addRow(SimpleRowBuilder.createRow(FillType.BOTH,
+				controller.getKanjiRepeatingList().getPanel())
 						.setNotOpaque());
 
 		mainPanel.addElementsInColumnStartingFromColumn(kanjiDisplayingPanel,
