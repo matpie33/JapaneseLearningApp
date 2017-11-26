@@ -16,6 +16,7 @@ public class SavingInformation implements Serializable {
 	private KanjiRepeatingState kanjiRepeatingState;
 	private ProblematicKanjisState problematicKanjisState;
 	private ApplicationSaveableState applicationSaveableState;
+	private List <String> kanjiKoohiCookiesHeaders;
 
 
 	public SavingInformation(List<KanjiInformation> kanjiWords,
@@ -62,6 +63,15 @@ public class SavingInformation implements Serializable {
 
 	public boolean hasStateToRestore(){
 		return applicationSaveableState != null;
+	}
+
+	public void setKanjiKoohiCookiesHeaders (List <String> kanjiKoohiCookiesHeaders){
+		this.kanjiKoohiCookiesHeaders = kanjiKoohiCookiesHeaders;
+	}
+
+	public List<String> getKanjiKoohiCookiesHeaders(){
+		System.out.println(kanjiKoohiCookiesHeaders);
+		return kanjiKoohiCookiesHeaders;
 	}
 
 }

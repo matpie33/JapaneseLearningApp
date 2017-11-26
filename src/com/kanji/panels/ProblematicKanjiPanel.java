@@ -4,6 +4,9 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.HttpCookie;
 import java.util.Set;
 
 import com.kanji.strings.*;
@@ -45,6 +48,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	private MainPanel kanjiOfflineDisplayingPanel;
 	private JPanel kanjiDisplayingPanel;
 	private Font messageFont;
+	private WebView webView;
 
 	private final String OFFLINE_KANJI_PANEL = "Offline kanji";
 	private final String ONLINE_KANJI_PANEL = "Online kanji";
@@ -58,11 +62,18 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiDisplayingPanel = new JPanel();
 		kanjiOfflineDisplayingPanel = new MainPanel(BasicColors.VERY_BLUE);
 		messageFont = new JLabel().getFont().deriveFont(15f);
+
 	}
 
 	public void showKanjiKoohiLoginPage (){
+		Platform.runLater(new Runnable() {
+			@Override public void run() {
+				webView = new WebView();
+				controller.showKanjiKoohiLoginPage();
+			}
+		});
 		System.out.println("show kanji koohi");
-		controller.showKanjiKoohiLoginPage();
+
 	}
 
 	public void restoreState (ProblematicKanjisState problematicKanjisState){
@@ -119,7 +130,6 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				WebView webView = new WebView();
 				WebEngine engine = webView.getEngine();
 
 				StackPane pane = new StackPane(webView);
@@ -127,6 +137,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 				engine.load(url);
 				engine.getLoadWorker().stateProperty().addListener(connectionFailListener);
 				showPanel(ONLINE_KANJI_PANEL);
+
 			}
 		});
 

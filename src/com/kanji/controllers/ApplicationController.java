@@ -131,6 +131,17 @@ public class ApplicationController implements ApplicationStateManager {
 			return;
 		}
 		loadingAndSaving.setFileToSave(fileToSave);
+		try {
+			if (savingInformation.getKanjiKoohiCookiesHeaders() != null){
+				//TODO this should go to application controller's "restore
+				// state method along with filling the mylists"
+				problematicKanjisController.setCookies(savingInformation.getKanjiKoohiCookiesHeaders());
+			}
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+			parent.showMessageDialog("Error setting cookies");
+		}
 
 		listOfWords.cleanWords();
 		setProblematicKanjis(savingInformation.getProblematicKanjis());
@@ -358,8 +369,13 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	@Override public SavingInformation getApplicationState() {
-		return new SavingInformation(listOfWords.getWords(),
+		SavingInformation savingInformation = new SavingInformation(listOfWords.getWords(),
 				listOfRepeatingDates.getWords(), getProblematicKanjis());
+		List <String> kanjiKoohiCookiesHeaders = problematicKanjisController.getCookieHeaders();
+		if (!kanjiKoohiCookiesHeaders.isEmpty()){
+			savingInformation.setKanjiKoohiCookiesHeaders(kanjiKoohiCookiesHeaders);
+		}
+		return savingInformation;
 	}
 
 	@Override

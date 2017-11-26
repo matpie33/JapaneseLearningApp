@@ -3,12 +3,11 @@ package com.kanji.controllers;
 import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.net.*;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import com.kanji.listElements.KanjiInformation;
 import com.kanji.strings.Prompts;
@@ -42,6 +41,7 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 	private ApplicationController applicationController;
 	private ApplicationWindow applicationWindow;
 	private final String KANJI_KOOHI_LOGIN_PAGE = "https://kanji.koohii.com/account";
+	private CookieManager cookieManager;
 
 	public ProblematicKanjisController(ApplicationWindow applicationWindow,
 			Font kanjiFont,	MyList<KanjiInformation> kanjiList) {
@@ -56,7 +56,11 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 		kanjiRepeatingList = new MyList<>(applicationWindow, applicationWindow.getStartingPanel(), null,
 				new RowInKanjiRepeatingList(this), Titles.PROBLEMATIC_KANJIS);
 		this.kanjiList = kanjiList;
+		cookieManager = new CookieManager();
+		CookieHandler.setDefault(cookieManager);
+
 	}
+
 
 	public void showKanjiKoohiLoginPage (){
 		ChangeListener connectionFailListener = new ChangeListener<Worker.State>() {
@@ -175,9 +179,8 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 			applicationController.saveProject();
 		}
 		parentDialog.getContainer().dispose();
-
-
 	}
+
 
 	public AbstractAction createActionShowNextKanjiOrCloseDialog() {
 		return new AbstractAction(){
@@ -223,6 +226,17 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 	public void restoreState(SavingInformation savingInformation){
 		applicationWindow.displayMessageAboutUnfinishedRepeating();
 		applicationWindow.showProblematicKanjiDialog(savingInformation.getProblematicKanjisState());
+	}
+
+	public List <String> getCookieHeaders (){
+		return cookieManager.getCookieStore().getCookies().stream().map(cookie ->
+			cookie.toString()).collect(Collectors.toList());
+	}
+
+	public void setCookies(List <String> cookiesHeaders) throws IOException {
+		Map<String, List <String>> headers = new LinkedHashMap<>();
+		headers.put("Set-Cookie", cookiesHeaders);
+		cookieManager.put(URI.create(KANJI_KOOHI_LOGIN_PAGE), headers);
 	}
 
 }
