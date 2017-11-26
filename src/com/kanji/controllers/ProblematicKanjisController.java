@@ -41,6 +41,7 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 	private ApplicationController applicationController;
 	private ApplicationWindow applicationWindow;
 	private final String KANJI_KOOHI_LOGIN_PAGE = "https://kanji.koohii.com/account";
+	private final String KANJI_KOOHI_MAIN_PAGE = "https://kanji.koohii.com/study";
 	private CookieManager cookieManager;
 
 	public ProblematicKanjisController(ApplicationWindow applicationWindow,
@@ -63,6 +64,7 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 
 
 	public void showKanjiKoohiLoginPage (){
+
 		ChangeListener connectionFailListener = new ChangeListener<Worker.State>() {
 			@Override
 			public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, final Worker.State newValue) {
@@ -71,7 +73,24 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 				}
 			}
 		};
-		problematicKanjiPanel.renderPage(connectionFailListener, KANJI_KOOHI_LOGIN_PAGE);
+
+		String pageToRender = "";
+		if (isLoginDataRemembered()){
+			pageToRender = KANJI_KOOHI_MAIN_PAGE;
+		}
+		else{
+			pageToRender = KANJI_KOOHI_LOGIN_PAGE;
+		}
+		problematicKanjiPanel.renderPage(connectionFailListener, pageToRender);
+	}
+
+	private boolean isLoginDataRemembered (){
+		for (HttpCookie cookies: cookieManager.getCookieStore().getCookies()){
+			if (cookies.getName().equals("koohii")){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public ProblematicKanjiPanel getProblematicKanjiPanel() {
