@@ -4,12 +4,12 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.HttpCookie;
+import java.util.Arrays;
 import java.util.Set;
 
+import com.kanji.enums.SplitPaneOrientation;
 import com.kanji.strings.*;
+import com.kanji.utilities.CommonGuiElementsMaker;
 import javafx.beans.value.ChangeListener;
 
 import javax.swing.*;
@@ -17,14 +17,12 @@ import javax.swing.text.JTextComponent;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
-import com.guimaker.enums.ComponentType;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.TextAlignment;
 import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.guimaker.utilities.KeyModifiers;
 import com.kanji.listElements.KanjiInformation;
 import com.kanji.controllers.ProblematicKanjisController;
 import com.kanji.saving.ProblematicKanjisState;
@@ -49,6 +47,9 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	private JPanel kanjiDisplayingPanel;
 	private Font messageFont;
 	private WebView webView;
+	private JFXPanel dictionaryPanel;
+	private WebView dictWebView;
+	private final String DICTIONARY_PL_EN_MAIN_PAGE = "https://pl.bab.la/slownik/polski-angielski/";
 
 	private final String OFFLINE_KANJI_PANEL = "Offline kanji";
 	private final String ONLINE_KANJI_PANEL = "Online kanji";
@@ -59,21 +60,25 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		this.controller = controller;
 		kanjiOnlineDisplayingPanel = new JFXPanel();
 		this.kanjiFont = kanjiFont;
-		kanjiDisplayingPanel = new JPanel();
+		kanjiDisplayingPanel = new JPanel(new CardLayout());
 		kanjiOfflineDisplayingPanel = new MainPanel(BasicColors.VERY_BLUE);
 		messageFont = new JLabel().getFont().deriveFont(15f);
-
+		initiateWebView();
 	}
 
-	public void showKanjiKoohiLoginPage (){
+	private void initiateWebView (){
 		Platform.runLater(new Runnable() {
 			@Override public void run() {
 				webView = new WebView();
-				controller.showKanjiKoohiLoginPage();
+				dictWebView = new WebView();
+				//TODO rewrite it using lambdas and method references
 			}
 		});
-		System.out.println("show kanji koohi");
+	}
 
+	public void showKanjiKoohiLoginPage (){
+		controller.showKanjiKoohiLoginPage();
+		createDictionaryPanel();
 	}
 
 	public void restoreState (ProblematicKanjisState problematicKanjisState){
@@ -97,47 +102,73 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
 		kanjiTextPane = GuiMaker.createTextPane(new TextPaneOptions().border(null).editable(false)
 				.textAlignment(TextAlignment.CENTERED).text("").border(getDefaultBorder()));
-
 		kanjiTextPane.setText(Prompts.NO_KANJI_TO_DISPLAY);
 		kanjiTextPane.setFont(messageFont);
 
-		kanjiDisplayingPanel.setLayout(new CardLayout());
 		kanjiDisplayingPanel.add(kanjiOfflineDisplayingPanel.getPanel(), OFFLINE_KANJI_PANEL);
 		kanjiDisplayingPanel.add(kanjiOnlineDisplayingPanel, ONLINE_KANJI_PANEL);
 
 		AbstractButton buttonClose = createButtonClose();
-		kanjiOnlineDisplayingPanel.setPreferredSize(new Dimension(400,600));
 		kanjiOnlineDisplayingPanel.setBorder(getDefaultBorder());
 		kanjiOnlineDisplayingPanel.setBackground(Color.white);
 
 		kanjiOfflineDisplayingPanel
 				.addRow(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, kanjiTextPane));
 
-		wordsList = new MainPanel(null);
+		wordsList = new MainPanel(BasicColors.OCEAN_BLUE);
 		wordsList.setBorder(getDefaultBorder());
-		wordsList.addRow(SimpleRowBuilder.createRow(FillType.BOTH,
-				controller.getKanjiRepeatingList().getPanel())
-						.setNotOpaque());
+		wordsList.addRows(SimpleRowBuilder.createRow(FillType.BOTH,
+				controller.getKanjiRepeatingList().getPanel()));
 
-		mainPanel.addElementsInColumnStartingFromColumn(kanjiDisplayingPanel,
-				0, wordsList.getPanel(), kanjiDisplayingPanel);
+		JSplitPane wordsAndDictionaryPane = CommonGuiElementsMaker.createSplitPane(
+				SplitPaneOrientation.VERTICAL);
+		wordsAndDictionaryPane.setLeftComponent(dictionaryPanel);
+		wordsAndDictionaryPane.setRightComponent(wordsList.getPanel());
+		wordsAndDictionaryPane.setResizeWeight(0.7);
+
+		JSplitPane mainSplitPane = CommonGuiElementsMaker.createSplitPane(
+				SplitPaneOrientation.HORIZONTAL);
+		mainSplitPane.setLeftComponent(wordsAndDictionaryPane);
+		mainSplitPane.setRightComponent(kanjiDisplayingPanel);
+		mainSplitPane.setResizeWeight(0.3);
+
+		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH,
+				mainSplitPane));
+
 		setNavigationButtons(Anchor.CENTER, buttonClose);
+	}
+
+	private void createDictionaryPanel (){
+		WebEngine engine = dictWebView.getEngine();
+		StackPane pane = new StackPane(dictWebView);
+
+		dictionaryPanel = new JFXPanel();
+		dictionaryPanel.setScene(new Scene(pane));
+		Platform.runLater(new Runnable() {
+			@Override public void run() {
+				engine.load(DICTIONARY_PL_EN_MAIN_PAGE);
+				//TODO throw exception in main dictionaryPanel when using add row method for adding multiple rows
+			}
+		});
 
 	}
 
 	public void renderPage (ChangeListener connectionFailListener, String url){
 		Platform.setImplicitExit(false);
+		//TODO try to rewrite to with implicit exit as true to spare memory
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
 				WebEngine engine = webView.getEngine();
-
 				StackPane pane = new StackPane(webView);
 				kanjiOnlineDisplayingPanel.setScene(new Scene(pane));
 				engine.load(url);
 				engine.getLoadWorker().stateProperty().addListener(connectionFailListener);
-				showPanel(ONLINE_KANJI_PANEL);
-
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override public void run() {
+						showPanel(ONLINE_KANJI_PANEL);
+					}
+				});
 			}
 		});
 
@@ -151,7 +182,6 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	protected MainPanel parentPanelForHotkeys (){
 		return wordsList;
 	}
-
 
 	private void configureParentDialog() {
 

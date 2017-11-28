@@ -12,11 +12,13 @@ import com.guimaker.enums.FillType;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
+import com.kanji.enums.SplitPaneOrientation;
 import com.kanji.strings.ButtonsNames;
 import com.kanji.strings.HotkeysDescriptions;
 import com.kanji.strings.Prompts;
 import com.kanji.enums.SavingStatus;
 import com.kanji.controllers.ApplicationController;
+import com.kanji.utilities.CommonGuiElementsMaker;
 import com.kanji.windows.ApplicationWindow;
 
 public class StartingPanel extends AbstractPanelWithHotkeysInfo {
@@ -49,11 +51,10 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private void createSplitPane (){
-		listsSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-				applicationController.getWordsList().getPanel(),
-				applicationController.getRepeatsList().getPanel());
-		listsSplitPane.setOneTouchExpandable(true);
-		listsSplitPane.setContinuousLayout(true);
+		listsSplitPane = CommonGuiElementsMaker.createSplitPane(
+				SplitPaneOrientation.HORIZONTAL);
+		listsSplitPane.setLeftComponent(applicationController.getWordsList().getPanel());
+		listsSplitPane.setRightComponent(applicationController.getRepeatsList().getPanel());
 		listsSplitPane.setResizeWeight(0.5);
 	}
 

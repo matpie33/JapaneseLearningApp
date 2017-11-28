@@ -9,6 +9,7 @@ import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.TextAreaOptions;
 import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiMaker;
+import com.kanji.enums.SplitPaneOrientation;
 
 public class CommonGuiElementsMaker {
 
@@ -25,6 +26,12 @@ public class CommonGuiElementsMaker {
 	public static JLabel createErrorLabel(String message) {
 		return GuiMaker
 				.createLabel(new ComponentOptions().text(message).foregroundColor(Color.RED));
+	}
+
+	public static JSplitPane createSplitPane(SplitPaneOrientation splitPaneOrientation) {
+		JSplitPane splitPane = new JSplitPane(splitPaneOrientation.getValue());
+		splitPane.setContinuousLayout(true);
+		return splitPane;
 	}
 
 }
