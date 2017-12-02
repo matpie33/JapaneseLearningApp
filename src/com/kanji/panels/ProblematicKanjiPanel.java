@@ -4,13 +4,14 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Arrays;
 import java.util.Set;
 
 import com.kanji.enums.SplitPaneOrientation;
 import com.kanji.strings.*;
 import com.kanji.utilities.CommonGuiElementsMaker;
-import javafx.beans.value.ChangeListener;
+import com.kanji.webPanel.ConnectionFailKanjiOfflinePage;
+import com.kanji.webPanel.ConnectionFailMessagePage;
+import com.kanji.webPanel.WebPagePanel;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -29,11 +30,7 @@ import com.kanji.saving.ProblematicKanjisState;
 import com.kanji.myList.MyList;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
-import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
-import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
-import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
 public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
@@ -44,15 +41,10 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	private JTextComponent kanjiTextPane;
 	private Font kanjiFont;
 	private MainPanel kanjiOfflineDisplayingPanel;
-	private JPanel kanjiDisplayingPanel;
 	private Font messageFont;
-	private WebView webView;
-	private JFXPanel dictionaryPanel;
-	private WebView dictWebView;
 	private final String DICTIONARY_PL_EN_MAIN_PAGE = "https://pl.bab.la/slownik/polski-angielski/";
-
-	private final String OFFLINE_KANJI_PANEL = "Offline kanji";
-	private final String ONLINE_KANJI_PANEL = "Online kanji";
+	private WebPagePanel dictionaryWebPanel;
+	private WebPagePanel kanjiWebPanel;
 
 	public ProblematicKanjiPanel(Font kanjiFont, MyList <KanjiInformation> kanjiList,
 			ApplicationWindow parentDialog, ProblematicKanjisController controller) {
@@ -60,25 +52,15 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		this.controller = controller;
 		kanjiOnlineDisplayingPanel = new JFXPanel();
 		this.kanjiFont = kanjiFont;
-		kanjiDisplayingPanel = new JPanel(new CardLayout());
 		kanjiOfflineDisplayingPanel = new MainPanel(BasicColors.VERY_BLUE);
 		messageFont = new JLabel().getFont().deriveFont(15f);
-		initiateWebView();
-	}
-
-	private void initiateWebView (){
-		Platform.runLater(new Runnable() {
-			@Override public void run() {
-				webView = new WebView();
-				dictWebView = new WebView();
-				//TODO rewrite it using lambdas and method references
-			}
-		});
+		dictionaryWebPanel = new WebPagePanel(controller, new ConnectionFailMessagePage());
+		kanjiWebPanel = new WebPagePanel(controller, new ConnectionFailKanjiOfflinePage(kanjiFont));
 	}
 
 	public void showKanjiKoohiLoginPage (){
 		controller.showKanjiKoohiLoginPage();
-		createDictionaryPanel();
+		dictionaryWebPanel.showPage(DICTIONARY_PL_EN_MAIN_PAGE);
 	}
 
 	public void restoreState (ProblematicKanjisState problematicKanjisState){
@@ -105,9 +87,6 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiTextPane.setText(Prompts.NO_KANJI_TO_DISPLAY);
 		kanjiTextPane.setFont(messageFont);
 
-		kanjiDisplayingPanel.add(kanjiOfflineDisplayingPanel.getPanel(), OFFLINE_KANJI_PANEL);
-		kanjiDisplayingPanel.add(kanjiOnlineDisplayingPanel, ONLINE_KANJI_PANEL);
-
 		AbstractButton buttonClose = createButtonClose();
 		kanjiOnlineDisplayingPanel.setBorder(getDefaultBorder());
 		kanjiOnlineDisplayingPanel.setBackground(Color.white);
@@ -122,60 +101,20 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
 		JSplitPane wordsAndDictionaryPane = CommonGuiElementsMaker.createSplitPane(
 				SplitPaneOrientation.VERTICAL);
-		wordsAndDictionaryPane.setLeftComponent(dictionaryPanel);
+		wordsAndDictionaryPane.setLeftComponent(dictionaryWebPanel.getPanel());
 		wordsAndDictionaryPane.setRightComponent(wordsList.getPanel());
 		wordsAndDictionaryPane.setResizeWeight(0.7);
 
 		JSplitPane mainSplitPane = CommonGuiElementsMaker.createSplitPane(
 				SplitPaneOrientation.HORIZONTAL);
 		mainSplitPane.setLeftComponent(wordsAndDictionaryPane);
-		mainSplitPane.setRightComponent(kanjiDisplayingPanel);
+		mainSplitPane.setRightComponent(kanjiWebPanel.getPanel());
 		mainSplitPane.setResizeWeight(0.3);
 
 		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH,
 				mainSplitPane));
 
 		setNavigationButtons(Anchor.CENTER, buttonClose);
-	}
-
-	private void createDictionaryPanel (){
-		WebEngine engine = dictWebView.getEngine();
-		StackPane pane = new StackPane(dictWebView);
-
-		dictionaryPanel = new JFXPanel();
-		dictionaryPanel.setScene(new Scene(pane));
-		Platform.runLater(new Runnable() {
-			@Override public void run() {
-				engine.load(DICTIONARY_PL_EN_MAIN_PAGE);
-				//TODO throw exception in main dictionaryPanel when using add row method for adding multiple rows
-			}
-		});
-
-	}
-
-	public void renderPage (ChangeListener connectionFailListener, String url){
-		Platform.setImplicitExit(false);
-		//TODO try to rewrite to with implicit exit as true to spare memory
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				WebEngine engine = webView.getEngine();
-				StackPane pane = new StackPane(webView);
-				kanjiOnlineDisplayingPanel.setScene(new Scene(pane));
-				engine.load(url);
-				engine.getLoadWorker().stateProperty().addListener(connectionFailListener);
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override public void run() {
-						showPanel(ONLINE_KANJI_PANEL);
-					}
-				});
-			}
-		});
-
-	}
-
-	public void displayConnectionErrorMessage (){
-		showMessageInKanjiPanel(Prompts.CONNECTION_ERROR);
 	}
 
 	@Override
@@ -198,22 +137,8 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		parentDialog.maximize();
 	}
 
-	public void showKanji(String kanji) {
-		if (!kanjiTextPane.getFont().equals(kanjiFont)){
-			kanjiTextPane.setFont(kanjiFont);
-		}
-		kanjiTextPane.setText(kanji);
-		showPanel(OFFLINE_KANJI_PANEL);
-	}
-
-	public void showMessageInKanjiPanel (String message){
-		kanjiTextPane.setText(message);
-		kanjiTextPane.setFont(messageFont);
-		showPanel(OFFLINE_KANJI_PANEL);
-	}
-
-	private void showPanel (String panelLabel){
-		((CardLayout) kanjiDisplayingPanel.getLayout()).show(kanjiDisplayingPanel, panelLabel);
+	public void showPageInKoohi (String url){
+		kanjiWebPanel.showPage(url);
 	}
 
 	public void highlightRow(int rowNumber) {

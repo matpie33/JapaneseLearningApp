@@ -9,6 +9,8 @@ import java.net.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.kanji.kanjiContext.KanjiContext;
+import com.kanji.kanjiContext.KanjiContextOwner;
 import com.kanji.listElements.KanjiInformation;
 import com.kanji.strings.Prompts;
 import com.kanji.strings.Titles;
@@ -30,9 +32,8 @@ import javafx.concurrent.Worker;
 
 import javax.swing.*;
 
-public class ProblematicKanjisController implements ApplicationStateManager{
+public class ProblematicKanjisController implements ApplicationStateManager, KanjiContextOwner{
 
-	private boolean useInternet;
 	private ProblematicKanjiPanel problematicKanjiPanel;
 	private KanjiCharactersReader kanjiCharactersReader;
 	private List<KanjiRow> kanjisToBrowse;
@@ -43,6 +44,7 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 	private final String KANJI_KOOHI_LOGIN_PAGE = "https://kanji.koohii.com/account";
 	private final String KANJI_KOOHI_MAIN_PAGE = "https://kanji.koohii.com/study";
 	private CookieManager cookieManager;
+	private KanjiContext kanjiContext;
 
 	public ProblematicKanjisController(ApplicationWindow applicationWindow,
 			Font kanjiFont,	MyList<KanjiInformation> kanjiList) {
@@ -51,7 +53,6 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 		this.problematicKanjiPanel = new ProblematicKanjiPanel(kanjiFont, kanjiList,
 				applicationWindow, this);
 		kanjisToBrowse = new ArrayList<>();
-		useInternet = true;
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		kanjiCharactersReader.loadKanjisIfNeeded();
 		kanjiRepeatingList = new MyList<>(applicationWindow, applicationWindow.getStartingPanel(), null,
@@ -59,20 +60,10 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 		this.kanjiList = kanjiList;
 		cookieManager = new CookieManager();
 		CookieHandler.setDefault(cookieManager);
-
+		kanjiContext = KanjiContext.emptyContext();
 	}
 
-
 	public void showKanjiKoohiLoginPage (){
-
-		ChangeListener connectionFailListener = new ChangeListener<Worker.State>() {
-			@Override
-			public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, final Worker.State newValue) {
-				if (newValue == Worker.State.FAILED) {
-					problematicKanjiPanel.displayConnectionErrorMessage();
-				}
-			}
-		};
 
 		String pageToRender = "";
 		if (isLoginDataRemembered()){
@@ -81,7 +72,7 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 		else{
 			pageToRender = KANJI_KOOHI_LOGIN_PAGE;
 		}
-		problematicKanjiPanel.renderPage(connectionFailListener, pageToRender);
+		problematicKanjiPanel.showPageInKoohi(pageToRender);
 	}
 
 	private boolean isLoginDataRemembered (){
@@ -144,40 +135,18 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 
 	public void goToSpecifiedResource(KanjiRow row) {
 		kanjisToBrowse.remove(row);
-		if (useInternet) {
-			browseKanji(row);
-		}
-		else {
-			browseKanjiOffline(row);
-		}
+		kanjiContext = new KanjiContext(kanjiCharactersReader.getKanjiById(row.getId()), row.getId());
+		browseKanji(row);
 		problematicKanjiPanel.highlightRow(row.getRowNumber());
-
-	}
-
-	private void browseKanjiOffline (KanjiRow row){
-		String kanji = kanjiCharactersReader.getKanjiById(row.getId());
-		problematicKanjiPanel.showKanji(kanji);
 
 	}
 
 	private void browseKanji(KanjiRow kanjiRow) {
 		String uriText = "http://kanji.koohii.com/study/kanji/";
 		uriText += kanjiRow.getId();
-
-		ChangeListener connectionFailListener = new ChangeListener<Worker.State>() {
-			@Override
-			public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, final Worker.State newValue) {
-				if (newValue == Worker.State.FAILED) {
-					browseKanjiOffline(kanjiRow);
-				}
-			}
-		};
-		problematicKanjiPanel.renderPage(connectionFailListener, uriText);
+		problematicKanjiPanel.showPageInKoohi(uriText);
 	}
 
-	public void setUseInternet(boolean useInternet) {
-		this.useInternet = useInternet;
-	}
 
 	public boolean allProblematicKanjisRepeated() {
 		return kanjiRepeatingList.areAllWordsHighlighted();
@@ -190,10 +159,8 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 	public void closeDialogAndManageState(DialogWindow parentDialog) {
 		assert (parentDialog.getParent() instanceof ApplicationWindow);
 		ApplicationWindow parent = (ApplicationWindow) parentDialog.getParent();
-		if (!allProblematicKanjisRepeated()) {
-			parent.addButtonIcon();
-		}
-		else{
+		parent.addButtonIcon();
+		if (allProblematicKanjisRepeated()) {
 			applicationController.finishedRepeating();
 			applicationController.saveProject();
 		}
@@ -210,17 +177,6 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 				else {
 					problematicKanjiPanel.getDialog().showMessageDialog(Prompts.NO_MORE_KANJIS);
 				}
-			}
-		};
-
-	}
-
-	public AbstractAction createActionForShowingKanjiUsingInternet (boolean useInternet){
-		return new AbstractAction() {
-			@Override public void actionPerformed(ActionEvent e) {
-				setUseInternet(useInternet);
-				JRadioButton source = (JRadioButton) e.getSource();
-				source.setSelected(true);
 			}
 		};
 	}
@@ -258,4 +214,7 @@ public class ProblematicKanjisController implements ApplicationStateManager{
 		cookieManager.put(URI.create(KANJI_KOOHI_LOGIN_PAGE), headers);
 	}
 
+	@Override public KanjiContext getKanjiContext() {
+		return kanjiContext;
+	}
 }
