@@ -56,7 +56,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
         hotkeysPanelIndex = mainPanel.getNumberOfRows();
     }
 
-    void setNavigationButtons(AbstractButton... buttons) {
+    public void setNavigationButtons(AbstractButton... buttons) {
         navigationButtons = buttons;
     }
 
@@ -74,8 +74,12 @@ public abstract class AbstractPanelWithHotkeysInfo {
     }
 
     private void addHotkeysPanel() {
+		if (hotkeysMapping.isEmpty()){
+			return;
+		}
         SimpleRow row = SimpleRowBuilder.createRow(FillType.HORIZONTAL, Anchor.SOUTH, hotkeysPanel.getPanel());
         MainPanel panelForHotkeys = parentPanelForHotkeys();
+
         if (hotkeysPanelIndex == -1) {
 			panelForHotkeys.addRows(row);
         } else if (hotkeysPanelIndex > 0) {
@@ -119,13 +123,13 @@ public abstract class AbstractPanelWithHotkeysInfo {
         addHotkeyInformation(hotkeyDescription, wrapper);
     }
 
-    AbstractButton createButtonWithHotkey(int keyEvent, AbstractAction action,
+	public AbstractButton createButtonWithHotkey(int keyEvent, AbstractAction action,
                                                  String buttonLabel, String hotkeyDescription) {
         return createButtonWithHotkey(KeyModifiers.NONE, keyEvent, action, buttonLabel,
                 hotkeyDescription);
     }
 
-    AbstractButton createButtonWithHotkey(KeyModifiers keyModifier, int keyEvent,
+    public AbstractButton createButtonWithHotkey(KeyModifiers keyModifier, int keyEvent,
                                                  AbstractAction action, String buttonLabel, String hotkeyDescription) {
         AbstractButton button = GuiMaker.createButtonlikeComponent(ComponentType.BUTTON,
                 buttonLabel, action);
@@ -166,7 +170,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
         return parentDialog.getContainer().isDisplayable();
     }
 
-    abstract void createElements();
+    public abstract void createElements();
 
     public void afterVisible() {
         // not required

@@ -1,7 +1,6 @@
 package com.kanji.windows;
 
-import java.awt.CardLayout;
-import java.awt.Font;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -9,11 +8,7 @@ import java.awt.event.WindowEvent;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import com.guimaker.colors.BasicColors;
 import com.kanji.listElements.KanjiInformation;
@@ -53,9 +48,9 @@ public class ApplicationWindow extends DialogWindow {
 
 	public void initiate() {
 		applicationController = new ApplicationController(this);
-
-		startingPanel = new StartingPanel(this, applicationController);
 		applicationController.initializeListsElements();
+		startingPanel = new StartingPanel(this);
+
 		applicationController.initializeApplicationStateManagers();
 		problematicKanjiPanel = applicationController.getProblematicKanjiPanel ();
 
@@ -87,6 +82,7 @@ public class ApplicationWindow extends DialogWindow {
 		container.setVisible(true);
 		container.addWindowListener(createClosingAdapter());
 	}
+
 
 	private WindowAdapter createClosingAdapter (){
 		return new WindowAdapter() {
@@ -127,7 +123,7 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void scrollToBottom() {
-		applicationController.getRepeatsList().scrollToBottom();
+		applicationController.getKanjiRepeatingDates().scrollToBottom();
 	}
 
 	public void addButtonIcon() {

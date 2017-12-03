@@ -55,8 +55,8 @@ public class ProblematicKanjisController implements ApplicationStateManager, Kan
 		kanjisToBrowse = new ArrayList<>();
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		kanjiCharactersReader.loadKanjisIfNeeded();
-		kanjiRepeatingList = new MyList<>(applicationWindow, applicationWindow.getStartingPanel(), null,
-				new RowInKanjiRepeatingList(this), Titles.PROBLEMATIC_KANJIS);
+		kanjiRepeatingList = new MyList<>(applicationWindow,null,
+				new RowInKanjiRepeatingList(this), Titles.PROBLEMATIC_KANJIS, false);
 		this.kanjiList = kanjiList;
 		cookieManager = new CookieManager();
 		CookieHandler.setDefault(cookieManager);

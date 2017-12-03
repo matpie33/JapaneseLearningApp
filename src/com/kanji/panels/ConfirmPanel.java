@@ -15,7 +15,7 @@ public class ConfirmPanel extends MessagePanel {
 	}
 
 	@Override
-	void createElements() {
+	public void createElements() {
 		//TODO there's not really anything to extend in message panel, and there's issue
 		// with button close - we cannot override the hotkey information
 		super.createElements();

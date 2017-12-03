@@ -3,6 +3,8 @@ package com.kanji.myList;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -14,34 +16,42 @@ import com.guimaker.options.ScrollPaneOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
+import com.guimaker.utilities.KeyModifiers;
+import com.kanji.controllers.ApplicationController;
 import com.kanji.model.ListRow;
+import com.kanji.panels.AbstractPanelWithHotkeysInfo;
+import com.kanji.strings.ButtonsNames;
+import com.kanji.strings.HotkeysDescriptions;
 import com.kanji.utilities.CommonListElements;
 
-public class ListPanelMaker<Word> {
+public class ListPanelMaker<Word> extends AbstractPanelWithHotkeysInfo {
 
 	private ListWordsController<Word> listWordsController;
 	private MainPanel rowsPanel;
 	private int highlightedRowNumber;
 	private JScrollPane parentScrollPane;
-	private final Dimension scrollPanesSize = new Dimension(350, 300);
+	private final Dimension scrollPanesSize = new Dimension(350, 200);
 	private JLabel titleLabel;
 	private ListRowMaker<Word> listRow;
 	private Border rowBorder = BorderFactory.createMatteBorder(0, 0, 2, 0, BasicColors.LIGHT_BLUE);
-	private MainPanel wrappingPanel;
 	private JPanel parentPanel;
+	private ApplicationController applicationController;
+	private MainPanel listPanel;
+	private boolean enableWordAdding;
 
-	public ListPanelMaker(ListRowMaker<Word> listRow, JPanel parentPanel, ListWordsController<Word> controller) {
+	public ListPanelMaker(boolean enableWordAdding, ApplicationController applicationController, ListRowMaker<Word> listRow,
+			JPanel parentPanel, ListWordsController<Word> controller) {
+		this.applicationController = applicationController;
 		listWordsController = controller;
 		highlightedRowNumber = -1;
+		this. enableWordAdding = enableWordAdding;
+
 		rowsPanel = new MainPanel(null, true);
+		listPanel = new MainPanel(null);
 		titleLabel = new JLabel();
-		titleLabel.setForeground(Color.WHITE);
-		wrappingPanel = new MainPanel(null);
-		wrappingPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, titleLabel));
-		wrappingPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, rowsPanel.getPanel()));
-		rowsPanel
-				.setBorder(rowBorder);
 		createDefaultScrollPane();
+
+		rowsPanel.setBorder(rowBorder);
 		this.listRow = listRow;
 		this.parentPanel = parentPanel;
 	}
@@ -69,16 +79,51 @@ public class ListPanelMaker<Word> {
 		return listWordsController;
 	}
 
-	public JScrollPane getPanel() {
-		return parentScrollPane;
+	@Override
+	public void createElements() {
+		listPanel.addRows(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, titleLabel)
+				.nextRow(FillType.BOTH, parentScrollPane));
+		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, listPanel.getPanel()));
+		setNavigationButtons(enableWordAdding?
+				new AbstractButton[] {createButtonAddWord(), createButtonFindWord()}:
+				new AbstractButton[] {createButtonFindWord()});
 	}
 
 	private void createDefaultScrollPane() {
 		Border raisedBevel = BorderFactory.createMatteBorder(3, 3, 0, 0, BasicColors.LIGHT_BLUE);
 		parentScrollPane = GuiMaker.createScrollPane(new ScrollPaneOptions()
-				.componentToWrap(wrappingPanel.getPanel()).backgroundColor(BasicColors.VERY_BLUE)
+				.componentToWrap(rowsPanel.getPanel()).backgroundColor(BasicColors.VERY_BLUE)
 				.border(raisedBevel).preferredSize(scrollPanesSize));
 
+	}
+
+	private AbstractButton createButtonAddWord (){
+		String name = ButtonsNames.ADD;
+		String hotkeyDescription = HotkeysDescriptions.ADD_WORD;
+		int keyEvent = KeyEvent.VK_I;
+		AbstractAction action = new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				applicationController.showInsertWordDialog();
+			}
+		};
+		return createButtonWithHotkey(KeyModifiers.CONTROL, keyEvent, action, name,
+				hotkeyDescription);
+
+	}
+
+	private AbstractButton createButtonFindWord () {
+		String name = ButtonsNames.SEARCH;
+		//TODO differentiate between my list - kanji vs repeating list vs problematic kanjis?
+		String hotkeyDescription = HotkeysDescriptions.OPEN_SEARCH_WORD_DIALOG;
+		int keyEvent = KeyEvent.VK_F;
+		AbstractAction action = new AbstractAction() {
+			@Override public void actionPerformed(ActionEvent e) {
+				applicationController.showSearchWordDialog();
+			}
+		};
+		return createButtonWithHotkey(KeyModifiers.CONTROL, keyEvent, action, name,
+				hotkeyDescription);
 	}
 
 	public void highlightRowAndScroll(int rowNumber, boolean clearLastHighlightedWord) {

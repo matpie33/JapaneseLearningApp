@@ -55,7 +55,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	@Override
-	void createElements() {
+	public void createElements() {
 		JLabel titleLabel = new JLabel(Titles.REPEATING_WORDS_DIALOG);
 		time = new JLabel();
 		remainingLabel = new JLabel(repeatingWordsController.createRemainingKanjisPrompt());

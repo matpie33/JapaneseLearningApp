@@ -17,7 +17,7 @@ public class ButtonsNames {
 	public static final String SEARCH = "Znajdź słówko";
 	public static final String LOAD_PROJECT = "Wczytaj projekt";
 	public static final String LOAD_LIST = "Wczytaj listę";
-	public static final String SAVE = "Zapisz";
+	public static final String SAVE = "Zapisz projekt";
 	public static final String SAVE_LIST = "Zapisz listę";
 	public static final String FIND_PREVIOUS = "Poprzedni";
 	public static final String REMOVE_ROW = "Usuń wiersz";
@@ -31,7 +31,7 @@ public class ButtonsNames {
 	public static final String CONFIRM = "Tak";
 	public static final String REJECT = "Nie";
 
-	public static final String[] BUTTONS_ON_MAIN_PAGE = { START, SEARCH, ADD, LOAD_PROJECT, LOAD_LIST, SAVE,
+	public static final String[] BUTTONS_ON_MAIN_PAGE = { START, LOAD_PROJECT, LOAD_LIST, SAVE,
 			SAVE_LIST, SHOW_PROBLEMATIC_KANJIS };
 
 }

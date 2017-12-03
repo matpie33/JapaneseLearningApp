@@ -18,6 +18,11 @@ public class CommonGuiElementsMaker {
 				new TextAreaOptions().text(defaultContent).rowsAndColumns(3, 15));
 	}
 
+	public static JTextComponent createTextField(String defaultContent) {
+		return GuiMaker.createTextField(
+				new TextComponentOptions().text(defaultContent).rowsAndColumns(1, 15));
+	}
+
 	public static JTextComponent createKanjiIdInput() {
 		return GuiMaker
 				.createTextField(new TextComponentOptions().maximumCharacters(5).digitsOnly(true).rowsAndColumns(1,5));

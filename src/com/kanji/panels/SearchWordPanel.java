@@ -52,7 +52,7 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	@Override
-	void createElements() {
+	public void createElements() {
 		JComboBox<String> comboBox = createCombobox();
 
 		AbstractButton previous = createButtonFindPrevious();
@@ -99,7 +99,7 @@ public class SearchWordPanel extends AbstractPanelWithHotkeysInfo {
 
 	private MainPanel createSearchByKeywordPanel() {
 		JLabel prompt = new JLabel(Prompts.SEARCH_DIALOG);
-		textField = createInputTextField();
+		textField = CommonGuiElementsMaker.createKanjiWordInput("");
 		List<JRadioButton> radioButtons = Arrays.asList(SearchOptions.values()).stream().
 				map(option->createRadioButtonForSearchingOption(option)).collect(
 				Collectors.toList());

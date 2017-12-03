@@ -28,7 +28,7 @@ public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	@Override
-	void createElements() {
+	public void createElements() {
 
 		controller.setParentDialog(parentDialog);
 		JLabel addWordPrompt = new JLabel(Prompts.ADD_DIALOG);

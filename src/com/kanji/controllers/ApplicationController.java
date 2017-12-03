@@ -10,8 +10,10 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 
 import com.kanji.enums.ApplicationSaveableState;
+import com.kanji.listElements.JapaneseWordInformation;
 import com.kanji.listElements.KanjiInformation;
 import com.kanji.listElements.RepeatingInformation;
+import com.kanji.listRows.RowInJapaneseWordInformations;
 import com.kanji.panels.ProblematicKanjiPanel;
 import com.kanji.panels.RepeatingWordsPanel;
 import com.kanji.strings.*;
@@ -34,8 +36,10 @@ public class ApplicationController implements ApplicationStateManager {
 
 	private RepeatingWordsController repeatingWordsPanelController;
 	private ApplicationWindow parent;
-	private MyList<KanjiInformation> listOfWords;
-	private MyList<RepeatingInformation> listOfRepeatingDates;
+	private MyList<KanjiInformation> kanjiList;
+	private MyList<RepeatingInformation> kanjiRepeatingDates;
+	private MyList<RepeatingInformation> japaneseWordsRepeatingDates;
+	private MyList<JapaneseWordInformation> japaneseWords;
 	private LoadingAndSaving loadingAndSaving;
 	private Set<Integer> problematicKanjis;
 	private boolean isClosingSafe;
@@ -64,7 +68,7 @@ public class ApplicationController implements ApplicationStateManager {
 
 	public void initializeApplicationStateManagers(){
 		problematicKanjisController = new ProblematicKanjisController(parent,
-				parent.getKanjiFont(), listOfWords);
+				parent.getKanjiFont(), kanjiList);
 		this.repeatingWordsPanelController = new RepeatingWordsController(parent);
 		applicationStateToManagerMap.put(ApplicationSaveableState.REPEATING_WORDS,
 				repeatingWordsPanelController);
@@ -75,8 +79,29 @@ public class ApplicationController implements ApplicationStateManager {
 	//TODO dependencies between classes are weird and should be reconsidered
 
 	public void initializeListsElements() {
-		initWordsList();
-		initRepeatsList();
+		initKanjiList();
+		initializeKanjiRepeatingDates();
+		initJapaneseWordsList();
+		initJapaneseRepeatingDates();
+	}
+
+	private void initJapaneseWordsList(){
+		japaneseWords = new MyList<>(parent, this, new RowInJapaneseWordInformations(parent),
+				Titles.KANJI_LIST, true);
+		japaneseWords.addWord(new JapaneseWordInformation("ねこ", "kot"));
+		japaneseWords.addWord(new JapaneseWordInformation("犬",
+				"いぬ", "pies"));
+	}
+
+	private void initJapaneseRepeatingDates(){
+		japaneseWordsRepeatingDates = new MyList<>(parent,this, new RowInRepeatingList(),
+				Titles.REPEATING_LIST, false);
+		japaneseWordsRepeatingDates.addWord(
+				new RepeatingInformation("abc", LocalDateTime.of(1993, 11, 13, 13, 25), true, "3 minuty"));
+		japaneseWordsRepeatingDates.addWord(
+				new RepeatingInformation("abc", LocalDateTime.of(2005, 1, 1, 11, 11), true, "4 minuty"));
+		japaneseWordsRepeatingDates.addWord(
+				new RepeatingInformation("abc", LocalDateTime.of(2000, 12, 31, 10, 0), true, "5 minut"));
 	}
 
 	private JFileChooser createFileChooser(){
@@ -101,13 +126,13 @@ public class ApplicationController implements ApplicationStateManager {
 			List <RepeatingInformation> repeatingInformations = words.getRepeatingInformations();
 			Set <Integer> problematicKanjis = words.getProblematicKanjis();
 			setProblematicKanjis(problematicKanjis);
-			listOfWords.cleanWords();
-			listOfRepeatingDates.cleanWords();
+			kanjiList.cleanWords();
+			kanjiRepeatingDates.cleanWords();
 			for (KanjiInformation kanjiInformation: kanjiInformations){
-				listOfWords.addWord(kanjiInformation);
+				kanjiList.addWord(kanjiInformation);
 			}
 			for (RepeatingInformation repeatingInformation: repeatingInformations){
-				listOfRepeatingDates.addWord(repeatingInformation);
+				kanjiRepeatingDates.addWord(repeatingInformation);
 			}
 		}
 		catch (DuplicatedWordException|IOException e) {
@@ -143,7 +168,7 @@ public class ApplicationController implements ApplicationStateManager {
 			parent.showMessageDialog("Error setting cookies");
 		}
 
-		listOfWords.cleanWords();
+		kanjiList.cleanWords();
 		setProblematicKanjis(savingInformation.getProblematicKanjis());
 		parent.updateTitle(fileToSave.toString());
 		parent.changeSaveStatus(SavingStatus.NO_CHANGES);
@@ -161,11 +186,11 @@ public class ApplicationController implements ApplicationStateManager {
 
 			@Override
 			public Void doInBackground() throws Exception {
-				listOfWords.cleanWords();
+				kanjiList.cleanWords();
 				List <KanjiInformation> kanjiWords = savingInformation.getKanjiWords();
 				progressBar.setMaximum(kanjiWords.size());
 				for (int i = 0; i < kanjiWords.size(); i++) {
-					listOfWords.addWord(kanjiWords.get(i));
+					kanjiList.addWord(kanjiWords.get(i));
 					//TODO create methods add list of words: it would not have update view in it
 					// and method addWord should use updateView
 					progressBar.setValue(i);
@@ -177,7 +202,7 @@ public class ApplicationController implements ApplicationStateManager {
 
 			@Override
 			public void done() {
-				listOfWords.scrollToBottom();
+				kanjiList.scrollToBottom();
 				parent.closeDialog();
 				if (savingInformation.hasStateToRestore()){
 					getStateManagerForHandlingState(savingInformation.
@@ -202,36 +227,36 @@ public class ApplicationController implements ApplicationStateManager {
 		SwingWorker s = new SwingWorker<Void, Integer>() {
 			@Override
 			public Void doInBackground() throws Exception {
-				listOfRepeatingDates.cleanWords();
-				listOfRepeatingDates.addWordsList(mapOfRepeats);
-				listOfRepeatingDates.scrollToBottom();
+				kanjiRepeatingDates.cleanWords();
+				kanjiRepeatingDates.addWordsList(mapOfRepeats);
+				kanjiRepeatingDates.scrollToBottom();
 				return null;
 			}
 		};
 		s.execute();
 	}
 
-	private void initWordsList() {
-		listOfWords = new MyList<>(parent, parent.getStartingPanel(), this, new RowInKanjiInformations(parent),
-				Titles.KANJI_LIST);
+	private void initKanjiList() {
+		kanjiList = new MyList<>(parent, this, new RowInKanjiInformations(parent),
+				Titles.KANJI_LIST, true);
 		for (int i = 1; i <= 15; i++) {
-			listOfWords.addWord(new KanjiInformation("Word no. " + i, i));
+			kanjiList.addWord(new KanjiInformation("Word no. " + i, i));
 		}
-		listOfWords.addWord(
+		kanjiList.addWord(
 				new KanjiInformation("Firstly a trivial correction: the integer ALIGN_JUSTIF"
 						+ " should read ALIGN_JUSTIFIED Secondly, I have tried several variations of getting "
 						+ "justified text in JTextPane including the solution given above and using a menuitem "
 						+ "with alignment action such as: menu.add(new , i, i);", 11));
 	}
 
-	private void initRepeatsList() {
-		listOfRepeatingDates = new MyList<>(parent, parent.getStartingPanel(),this, new RowInRepeatingList(),
-				Titles.REPEATING_LIST);
-		listOfRepeatingDates.addWord(
+	private void initializeKanjiRepeatingDates() {
+		kanjiRepeatingDates = new MyList<>(parent,this, new RowInRepeatingList(),
+				Titles.REPEATING_LIST, false);
+		kanjiRepeatingDates.addWord(
 				new RepeatingInformation("abc", LocalDateTime.of(1993, 11, 13, 13, 25), true, "3 minuty"));
-		listOfRepeatingDates.addWord(
+		kanjiRepeatingDates.addWord(
 				new RepeatingInformation("abc", LocalDateTime.of(2005, 1, 1, 11, 11), true, "4 minuty"));
-		listOfRepeatingDates.addWord(
+		kanjiRepeatingDates.addWord(
 				new RepeatingInformation("abc", LocalDateTime.of(2000, 12, 31, 10, 0), true, "5 minut"));
 	}
 
@@ -262,23 +287,31 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	public void showInsertWordDialog() {
-		parent.showInsertDialog(listOfWords);
+		parent.showInsertDialog(kanjiList);
 	}
 
 	public void showSearchWordDialog() {
-		parent.showSearchWordDialog(listOfWords);
+		parent.showSearchWordDialog(kanjiList);
 	}
 
 	public void showLearningStartDialog() {
-		parent.showLearningStartDialog(listOfRepeatingDates, listOfWords.getNumberOfWords());
+		parent.showLearningStartDialog(kanjiRepeatingDates, kanjiList.getNumberOfWords());
 	}
 
-	public MyList<KanjiInformation> getWordsList() {
-		return listOfWords;
+	public MyList<JapaneseWordInformation> getJapaneseWords() {
+		return japaneseWords;
 	}
 
-	public MyList<RepeatingInformation> getRepeatsList() {
-		return listOfRepeatingDates;
+	public MyList<RepeatingInformation> getJapaneseWordsRepeatingDates() {
+		return japaneseWordsRepeatingDates;
+	}
+
+	public MyList<KanjiInformation> getKanjiList() {
+		return kanjiList;
+	}
+
+	public MyList<RepeatingInformation> getKanjiRepeatingDates() {
+		return kanjiRepeatingDates;
 	}
 
 	public void saveProject() {
@@ -310,7 +343,7 @@ public class ApplicationController implements ApplicationStateManager {
 		f = new File(f.toString() +".txt");
 		CustomFileReader reader = new CustomFileReader();
 		try {
-			reader.writeToFile(f, listOfWords, listOfRepeatingDates, getProblematicKanjis());
+			reader.writeToFile(f, kanjiList, kanjiRepeatingDates, getProblematicKanjis());
 		}
 		catch (IOException e) {
 			parent.showMessageDialog(e.getMessage());
@@ -341,7 +374,7 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	public void addWordToRepeatingList(RepeatingInformation word) {
-		listOfRepeatingDates.addWord(word);
+		kanjiRepeatingDates.addWord(word);
 	}
 
 	public void setRepeatingInformation(RepeatingInformation info) {
@@ -369,8 +402,8 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	@Override public SavingInformation getApplicationState() {
-		SavingInformation savingInformation = new SavingInformation(listOfWords.getWords(),
-				listOfRepeatingDates.getWords(), getProblematicKanjis());
+		SavingInformation savingInformation = new SavingInformation(kanjiList.getWords(),
+				kanjiRepeatingDates.getWords(), getProblematicKanjis());
 		List <String> kanjiKoohiCookiesHeaders = problematicKanjisController.getCookieHeaders();
 		if (!kanjiKoohiCookiesHeaders.isEmpty()){
 			savingInformation.setKanjiKoohiCookiesHeaders(kanjiKoohiCookiesHeaders);

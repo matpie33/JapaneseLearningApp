@@ -80,7 +80,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	@Override
-	void createElements() {
+	public void createElements() {
 
 		kanjiTextPane = GuiMaker.createTextPane(new TextPaneOptions().border(null).editable(false)
 				.textAlignment(TextAlignment.CENTERED).text("").border(getDefaultBorder()));

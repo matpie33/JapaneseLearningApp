@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import com.kanji.enums.ApplicationSaveableState;
 import com.kanji.listElements.KanjiInformation;
 import com.kanji.listElements.RepeatingInformation;
 import com.kanji.enums.ApplicationPanels;
@@ -172,7 +171,7 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 		currentProblematicKanjis.clear();
 		this.currentlyRepeatedWords = new ArrayList<>();
 		currentWord = "";
-		kanjiList = parent.getApplicationController().getWordsList();
+		kanjiList = parent.getApplicationController().getKanjiList();
 		this.problematicKanjis = parent.getApplicationController().getProblematicKanjis();
 	}
 

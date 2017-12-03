@@ -19,11 +19,12 @@ public class ListWordsController<Word> {
 	private ListPanelMaker<Word> rowCreator;
 	private ApplicationController applicationController;
 
-	public ListWordsController(ListRowMaker<Word> listRowMaker, JPanel parentPanel, String title,
-			ApplicationController applicationController) {
+	public ListWordsController(boolean enableWordAdding, ListRowMaker<Word> listRowMaker,
+			JPanel parentPanel, String title, ApplicationController applicationController) {
 		this.applicationController = applicationController;
 		wordsList = new ArrayList<>();
-		rowCreator = new ListPanelMaker<>(listRowMaker, parentPanel, this);
+		rowCreator = new ListPanelMaker<>(enableWordAdding, applicationController, listRowMaker, parentPanel, this);
+		rowCreator.createPanel();
 		this.rowCreator.setTitle(title);
 	}
 
@@ -98,7 +99,7 @@ public class ListWordsController<Word> {
 		rowCreator.scrollToBottom();
 	}
 
-	public JScrollPane getPanel() {
+	public JPanel getPanel() {
 		return rowCreator.getPanel();
 	}
 

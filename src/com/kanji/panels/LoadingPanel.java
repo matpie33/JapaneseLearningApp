@@ -22,7 +22,7 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	@Override
-	void createElements() {
+	public void createElements() {
 
 		//TODO add method in gui maker to enable connecting one row with another or create a separate row
 		JLabel loading = GuiMaker.createLabel(new ComponentOptions().text(Prompts.LOADING_PROMPT));

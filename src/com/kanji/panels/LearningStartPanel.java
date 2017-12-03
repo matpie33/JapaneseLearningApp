@@ -54,7 +54,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	@Override
-	void createElements() {
+	public void createElements() {
 
 		JTextComponent prompt = GuiMaker.createTextArea(new TextAreaOptions().editable(false)
 				.opaque(false).text(Prompts.LEARNING_START).border(null));

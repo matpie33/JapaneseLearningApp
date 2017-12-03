@@ -14,12 +14,14 @@ public class MyList<Word> {
 	private DialogWindow parent;
 	private ApplicationController applicationController;
 	private ListWordsController<Word> listController;
+	private JPanel parentPanel;
 
-	public MyList(DialogWindow parentDialog, JPanel parentPanel, ApplicationController applicationController,
-			ListRowMaker<Word> listRowMaker, String title) {
+	public MyList(DialogWindow parentDialog, ApplicationController applicationController,
+			ListRowMaker<Word> listRowMaker, String title, boolean enableWordAdding) {
 		this.applicationController = applicationController;
 		this.parent = parentDialog;
-		listController = new ListWordsController<>(listRowMaker, parentPanel, title, applicationController);
+		parentPanel = new JPanel();
+		listController = new ListWordsController<>(enableWordAdding, listRowMaker, parentPanel, title, applicationController);
 	}
 
 	public boolean addWord(Word word) {
@@ -147,7 +149,7 @@ public class MyList<Word> {
 		this.applicationController.saveProject();
 	}
 
-	public JScrollPane getPanel() {
+	public JPanel getPanel() {
 		return listController.getPanel();
 	}
 

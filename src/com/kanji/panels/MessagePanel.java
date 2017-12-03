@@ -22,7 +22,7 @@ public class MessagePanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	@Override
-	void createElements() {
+	public void createElements() {
 		buttonClose = createButtonClose();
 		JScrollPane scrollPane = GuiMaker.createTextPaneWrappedInScrollPane(
 				// TODO add vertical alignment
