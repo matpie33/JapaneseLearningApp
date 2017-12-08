@@ -1,19 +1,22 @@
 package com.kanji.controllers;
 
-import com.kanji.enums.SearchCriteria;
-import com.kanji.listSearching.SearchOptions;
-import com.kanji.listSearching.SearchingDirection;
+import com.kanji.enums.SearchOptions;
+import com.kanji.enums.SearchingDirection;
+import com.kanji.model.TextInputAndPropertyManagerForListElement;
+import com.kanji.myList.MyList;
 import com.kanji.panels.SearchWordPanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-public class SearchWordController {
+public class SearchWordController <Word> {
 
 	private SearchWordPanel searchWordPanel;
+	private MyList<Word> list;
 
-	public SearchWordController (SearchWordPanel panel){
+	public SearchWordController (SearchWordPanel panel, MyList list){
 		this.searchWordPanel = panel;
+		this.list = list;
 	}
 
 	public AbstractAction createActionSwitchSearchingByOption (){
@@ -22,8 +25,7 @@ public class SearchWordController {
 			public void actionPerformed(ActionEvent e) {
 				JComboBox comboBox = (JComboBox) e.getSource();
 				String optionLabel = (String) comboBox.getSelectedItem();
-				SearchCriteria searchCriteria = SearchCriteria.findByComboboxLabel(optionLabel);
-				searchWordPanel.switchToSearchingBy(searchCriteria);
+				searchWordPanel.switchToPanel(optionLabel);
 			}
 		};
 	}
@@ -40,10 +42,19 @@ public class SearchWordController {
 	public AbstractAction createActionFindWord (SearchingDirection searchingDirection){
 		return new AbstractAction() {
 			@Override public void actionPerformed(ActionEvent e) {
-				searchWordPanel.tryToFindNextOccurence(searchingDirection);
+				TextInputAndPropertyManagerForListElement textInputAndPropertyManagerForListElement
+						= searchWordPanel.getTextInputAndPropertyManager();
+				list.findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(
+						textInputAndPropertyManagerForListElement.getPropertyManager(),
+						textInputAndPropertyManagerForListElement.getPropertyManager().
+								convertStringToProperty(
+										textInputAndPropertyManagerForListElement.getTextComponent().
+												getText()),
+						searchingDirection);
 			}
 		};
 	}
+
 
 
 }

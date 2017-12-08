@@ -1,4 +1,4 @@
-package com.kanji.listSearching;
+package com.kanji.enums;
 
 import com.kanji.strings.Labels;
 

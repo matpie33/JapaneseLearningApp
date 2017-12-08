@@ -1,9 +1,18 @@
 package com.kanji.listElements;
 
+import com.kanji.enums.ListElementType;
+import com.kanji.listSearching.JapaneseWordKanaChecker;
+import com.kanji.listSearching.JapaneseWordKanjiChecker;
+import com.kanji.listSearching.JapaneseWordMeaningChecker;
+import com.kanji.strings.Labels;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class JapaneseWordInformation {
 
 	private String wordInKana;
-	private String wordInKanji;
+	private String wordInKanji = "";
 	private String wordMeaning;
 
 	public JapaneseWordInformation (String wordInKana, String wordMeaning){
@@ -30,7 +39,30 @@ public class JapaneseWordInformation {
 	}
 
 	public boolean hasKanjiWriting(){
-		return wordInKanji != null;
+		return !wordInKanji.isEmpty();
 	}
 
+	public static List<ListElementData> getElementsTypesAndLabels() {
+		List<ListElementData> listElementData = new ArrayList<>();
+		listElementData.add(new ListElementData(Labels.WORD_IN_KANA,
+				new JapaneseWordKanaChecker(), ListElementType.STRING_SHORT_WORD, Labels.COMBOBOX_OPTION_SEARCH_BY_KANA));
+		listElementData.add(new ListElementData(Labels.WORD_IN_KANJI,
+				new JapaneseWordKanjiChecker(), ListElementType.STRING_SHORT_WORD, Labels.COMBOBOX_OPTION_SEARCH_BY_KANJI));
+		listElementData.add(new ListElementData(Labels.WORD_MEANING,
+				new JapaneseWordMeaningChecker(), ListElementType.STRING_SHORT_WORD, Labels.COMBOBOX_OPTION_SEARCH_BY_WORD_MEANING));
+
+		return listElementData;
+	}
+
+	public void setWordInKana(String wordInKana) {
+		this.wordInKana = wordInKana;
+	}
+
+	public void setWordInKanji(String wordInKanji) {
+		this.wordInKanji = wordInKanji;
+	}
+
+	public void setWordMeaning(String wordMeaning) {
+		this.wordMeaning = wordMeaning;
+	}
 }

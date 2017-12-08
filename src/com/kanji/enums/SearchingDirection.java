@@ -1,4 +1,4 @@
-package com.kanji.listSearching;
+package com.kanji.enums;
 
 public enum SearchingDirection {
 

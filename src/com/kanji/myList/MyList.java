@@ -1,13 +1,16 @@
 package com.kanji.myList;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.*;
 
+import com.kanji.enums.ListElementType;
+import com.kanji.listElements.ListElementData;
 import com.kanji.strings.ExceptionsMessages;
 import com.kanji.controllers.ApplicationController;
 import com.kanji.listSearching.PropertyManager;
-import com.kanji.listSearching.SearchingDirection;
+import com.kanji.enums.SearchingDirection;
 import com.kanji.windows.DialogWindow;
 
 public class MyList<Word> {
@@ -15,13 +18,16 @@ public class MyList<Word> {
 	private ApplicationController applicationController;
 	private ListWordsController<Word> listController;
 	private JPanel parentPanel;
+	private List<ListElementData> listElementData;
 
 	public MyList(DialogWindow parentDialog, ApplicationController applicationController,
-			ListRowMaker<Word> listRowMaker, String title, boolean enableWordAdding) {
+			ListRowMaker<Word> listRowMaker, String title, boolean enableWordAdding,
+			List<ListElementData> listElementData) {
 		this.applicationController = applicationController;
 		this.parent = parentDialog;
 		parentPanel = new JPanel();
-		listController = new ListWordsController<>(enableWordAdding, listRowMaker, parentPanel, title, applicationController);
+		this.listElementData = listElementData;
+		listController = new ListWordsController<>(this, enableWordAdding, listRowMaker, parentPanel, title, applicationController);
 	}
 
 	public boolean addWord(Word word) {
@@ -194,5 +200,10 @@ public class MyList<Word> {
 	public List<Word> getNotHighlightedWords(){
 		return listController.getWordsByHighlight(false);
 	}
+
+	public List <ListElementData> getListElementData (){
+		return listElementData;
+	}
+
 
 }

@@ -1,7 +1,14 @@
 package com.kanji.listElements;
 
+import com.kanji.enums.ListElementType;
+import com.kanji.listSearching.KanjiIdChecker;
+import com.kanji.listSearching.KanjiKeywordChecker;
+import com.kanji.strings.Labels;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RepeatingInformation implements Serializable {
 
@@ -59,4 +66,7 @@ public class RepeatingInformation implements Serializable {
 		return "date:" + repeatingDate + "range" + repeatingRange + " timeSpent" +timeSpentOnRepeating;
 	}
 
+	public static List<ListElementData> getElementsTypesAndLabels() {
+		return new ArrayList<>();
+	}
 }

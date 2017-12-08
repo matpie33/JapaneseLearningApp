@@ -143,7 +143,7 @@ public class ApplicationWindow extends DialogWindow {
 				false, Position.LEFT_CORNER);
 	}
 
-	public void showSearchWordDialog(MyList<KanjiInformation> list) {
+	public void showSearchWordDialog(MyList list) {
 		createDialog(new SearchWordPanel(list), Titles.WORD_SEARCH_DIALOG, false,
 				Position.LEFT_CORNER);
 	}

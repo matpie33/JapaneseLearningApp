@@ -79,23 +79,23 @@ public class ApplicationController implements ApplicationStateManager {
 	//TODO dependencies between classes are weird and should be reconsidered
 
 	public void initializeListsElements() {
-		initKanjiList();
+		initializeKanjiList();
 		initializeKanjiRepeatingDates();
-		initJapaneseWordsList();
-		initJapaneseRepeatingDates();
+		initializeJapaneseWordsList();
+		initializeJapaneseRepeatingDates();
 	}
 
-	private void initJapaneseWordsList(){
+	private void initializeJapaneseWordsList(){
 		japaneseWords = new MyList<>(parent, this, new RowInJapaneseWordInformations(parent),
-				Titles.KANJI_LIST, true);
+				Titles.KANJI_LIST, true, JapaneseWordInformation.getElementsTypesAndLabels());
 		japaneseWords.addWord(new JapaneseWordInformation("ねこ", "kot"));
 		japaneseWords.addWord(new JapaneseWordInformation("犬",
 				"いぬ", "pies"));
 	}
 
-	private void initJapaneseRepeatingDates(){
+	private void initializeJapaneseRepeatingDates(){
 		japaneseWordsRepeatingDates = new MyList<>(parent,this, new RowInRepeatingList(),
-				Titles.REPEATING_LIST, false);
+				Titles.REPEATING_LIST, false, RepeatingInformation.getElementsTypesAndLabels());
 		japaneseWordsRepeatingDates.addWord(
 				new RepeatingInformation("abc", LocalDateTime.of(1993, 11, 13, 13, 25), true, "3 minuty"));
 		japaneseWordsRepeatingDates.addWord(
@@ -236,9 +236,9 @@ public class ApplicationController implements ApplicationStateManager {
 		s.execute();
 	}
 
-	private void initKanjiList() {
+	private void initializeKanjiList() {
 		kanjiList = new MyList<>(parent, this, new RowInKanjiInformations(parent),
-				Titles.KANJI_LIST, true);
+				Titles.KANJI_LIST, true, KanjiInformation.getElementsTypesAndLabels());
 		for (int i = 1; i <= 15; i++) {
 			kanjiList.addWord(new KanjiInformation("Word no. " + i, i));
 		}
@@ -251,7 +251,7 @@ public class ApplicationController implements ApplicationStateManager {
 
 	private void initializeKanjiRepeatingDates() {
 		kanjiRepeatingDates = new MyList<>(parent,this, new RowInRepeatingList(),
-				Titles.REPEATING_LIST, false);
+				Titles.REPEATING_LIST, false, RepeatingInformation.getElementsTypesAndLabels());
 		kanjiRepeatingDates.addWord(
 				new RepeatingInformation("abc", LocalDateTime.of(1993, 11, 13, 13, 25), true, "3 minuty"));
 		kanjiRepeatingDates.addWord(
@@ -290,8 +290,8 @@ public class ApplicationController implements ApplicationStateManager {
 		parent.showInsertDialog(kanjiList);
 	}
 
-	public void showSearchWordDialog() {
-		parent.showSearchWordDialog(kanjiList);
+	public void showSearchWordDialog(MyList list) {
+		parent.showSearchWordDialog(list);
 	}
 
 	public void showLearningStartDialog() {

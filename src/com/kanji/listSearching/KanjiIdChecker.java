@@ -5,8 +5,8 @@ import com.kanji.listElements.KanjiInformation;
 public class KanjiIdChecker implements PropertyManager<Integer, KanjiInformation> {
 
 	@Override
-	public boolean isPropertyFound(Integer property, KanjiInformation stringHolder) {
-		return stringHolder.getKanjiID() == property;
+	public boolean isPropertyFound(Integer property, KanjiInformation kanjiInformation) {
+		return kanjiInformation.getKanjiID() == property;
 	}
 
 	@Override

@@ -2,7 +2,7 @@ package com.kanji.strings;
 
 public class Prompts {
 
-	public static final String ADD_DIALOG = "Podaj słówko";
+	public static final String ADD_WORD = "Podaj słówko";
 	public static final String NO_KANJI_TO_DISPLAY = "Brak kanji do wyświetlenia.";
 	public static final String ADD_NUMBER = "Podaj numerek";
 	public static final String SEARCH_DIALOG = "Wpisz szukane słowo";

@@ -1,31 +1,31 @@
 package com.kanji.listSearching;
 
+import com.kanji.enums.SearchOptions;
+import com.kanji.listElements.JapaneseWordInformation;
+
 import java.text.Normalizer;
 
-import com.kanji.enums.SearchOptions;
-import com.kanji.listElements.KanjiInformation;
-
-public class KanjiKeywordChecker implements PropertyManager<String, KanjiInformation> {
-
+public class JapaneseWordMeaningChecker implements PropertyManager<String, JapaneseWordInformation> {
+	//TODO I hate to create a class which is veeery similar to each other for every word element
 	private SearchOptions options;
 
-	public KanjiKeywordChecker() {
+	public JapaneseWordMeaningChecker() {
 		this(SearchOptions.BY_FULL_EXPRESSION);
 	}
 
-	public KanjiKeywordChecker(SearchOptions options) {
+	public JapaneseWordMeaningChecker(SearchOptions options) {
 		this.options = options;
 	}
 
 	@Override
-	public void replaceValueOfProperty(String keyWord, KanjiInformation kanjiWord) {
-		kanjiWord.setKanjiKeyword(keyWord);
+	public void replaceValueOfProperty(String wordInKanji, JapaneseWordInformation wordInformation) {
+		wordInformation.setWordMeaning(wordInKanji);
 	}
 
 	@Override
-	public boolean isPropertyFound(String kanjiKeyWord, KanjiInformation kanjiInformation) {
-		return kanjiInformation != null && doesWordContainSearchedWord(
-				removeDiacritics(kanjiInformation.getKanjiKeyword()), removeDiacritics(kanjiKeyWord), options);
+	public boolean isPropertyFound(String wordInKanji, JapaneseWordInformation wordInformation) {
+		return wordInformation != null && doesWordContainSearchedWord(
+				removeDiacritics(wordInformation.getWordMeaning()), removeDiacritics(wordInKanji), options);
 	}
 
 	private String removeDiacritics(String word) {

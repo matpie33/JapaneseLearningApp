@@ -38,9 +38,11 @@ public class ListPanelMaker<Word> extends AbstractPanelWithHotkeysInfo {
 	private ApplicationController applicationController;
 	private MainPanel listPanel;
 	private boolean enableWordAdding;
+	private MyList list;
 
-	public ListPanelMaker(boolean enableWordAdding, ApplicationController applicationController, ListRowMaker<Word> listRow,
+	public ListPanelMaker(MyList list, boolean enableWordAdding, ApplicationController applicationController, ListRowMaker<Word> listRow,
 			JPanel parentPanel, ListWordsController<Word> controller) {
+		this.list = list;
 		this.applicationController = applicationController;
 		listWordsController = controller;
 		highlightedRowNumber = -1;
@@ -119,7 +121,7 @@ public class ListPanelMaker<Word> extends AbstractPanelWithHotkeysInfo {
 		int keyEvent = KeyEvent.VK_F;
 		AbstractAction action = new AbstractAction() {
 			@Override public void actionPerformed(ActionEvent e) {
-				applicationController.showSearchWordDialog();
+				applicationController.showSearchWordDialog(list);
 			}
 		};
 		return createButtonWithHotkey(KeyModifiers.CONTROL, keyEvent, action, name,

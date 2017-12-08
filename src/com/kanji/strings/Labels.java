@@ -13,6 +13,9 @@ public class Labels {
 
 	public static final String COMBOBOX_OPTION_SEARCH_BY_KEYWORD = "slowa kluczowego";
 	public static final String COMBOBOX_OPTION_SEARCH_BY_KANJI_ID = "id kanji";
+	public static final String COMBOBOX_OPTION_SEARCH_BY_KANA = "zapisu kaną";
+	public static final String COMBOBOX_OPTION_SEARCH_BY_KANJI = "zapisu kanji";
+	public static final String COMBOBOX_OPTION_SEARCH_BY_WORD_MEANING = "znaczenia";
 	public static final String WORD_SEARCH_WORD_FRAGMENT = "Szukaj wszystkich pozycji zawierających dany fragment";
 	public static final String WORD_SEARCH_ONLY_FULL_WORDS_OPTION = "Szukaj pozycji, które zawierają dane słowo i być może coś więcej.";
 	public static final String WORD_SEARCH_PERFECT_MATCH_OPTION = "Szukaj pozycji zawierających dokładnie to co wpisałem.";

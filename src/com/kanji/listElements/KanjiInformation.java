@@ -1,6 +1,13 @@
 package com.kanji.listElements;
 
+import com.kanji.enums.ListElementType;
+import com.kanji.listSearching.KanjiIdChecker;
+import com.kanji.listSearching.KanjiKeywordChecker;
+import com.kanji.strings.Labels;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class KanjiInformation implements Serializable {
@@ -50,4 +57,12 @@ public class KanjiInformation implements Serializable {
 		return "Keyword: " + keyword + " int: " + id;
 	}
 
+	public static List<ListElementData> getElementsTypesAndLabels() {
+		List <ListElementData> listElementData = new ArrayList<>();
+		listElementData.add(new ListElementData(Labels.KANJI_KEYWORD_LABEL, new KanjiKeywordChecker(),
+				ListElementType.STRING_LONG_WORD, Labels.COMBOBOX_OPTION_SEARCH_BY_KEYWORD));
+		listElementData.add(new ListElementData(Labels.KANJI_ID_LABEL, new KanjiIdChecker(),
+				ListElementType.NUMERIC_INPUT, Labels.COMBOBOX_OPTION_SEARCH_BY_KANJI_ID));
+		return listElementData;
+	}
 }

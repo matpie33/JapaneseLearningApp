@@ -31,7 +31,7 @@ public class InsertWordPanel extends AbstractPanelWithHotkeysInfo {
 	public void createElements() {
 
 		controller.setParentDialog(parentDialog);
-		JLabel addWordPrompt = new JLabel(Prompts.ADD_DIALOG);
+		JLabel addWordPrompt = new JLabel(Prompts.ADD_WORD);
 		insertWordTextComponent = CommonGuiElementsMaker.createKanjiWordInput("");
 
 		JLabel addNumberPrompt = new JLabel(Prompts.ADD_NUMBER);

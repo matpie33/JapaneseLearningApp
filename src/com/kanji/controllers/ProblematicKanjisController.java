@@ -1,9 +1,7 @@
 package com.kanji.controllers;
 
-import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.io.File;
 import java.io.IOException;
 import java.net.*;
 import java.util.*;
@@ -16,7 +14,7 @@ import com.kanji.strings.Prompts;
 import com.kanji.strings.Titles;
 import com.kanji.utilities.KanjiCharactersReader;
 import com.kanji.listSearching.KanjiIdChecker;
-import com.kanji.listSearching.SearchingDirection;
+import com.kanji.enums.SearchingDirection;
 import com.kanji.model.KanjiRow;
 import com.kanji.saving.ProblematicKanjisState;
 import com.kanji.myList.MyList;
@@ -26,9 +24,6 @@ import com.kanji.saving.ApplicationStateManager;
 import com.kanji.saving.SavingInformation;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Worker;
 
 import javax.swing.*;
 
@@ -56,7 +51,9 @@ public class ProblematicKanjisController implements ApplicationStateManager, Kan
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		kanjiCharactersReader.loadKanjisIfNeeded();
 		kanjiRepeatingList = new MyList<>(applicationWindow,null,
-				new RowInKanjiRepeatingList(this), Titles.PROBLEMATIC_KANJIS, false);
+				new RowInKanjiRepeatingList(this),
+				Titles.PROBLEMATIC_KANJIS, false,
+				KanjiInformation.getElementsTypesAndLabels());
 		this.kanjiList = kanjiList;
 		cookieManager = new CookieManager();
 		CookieHandler.setDefault(cookieManager);
