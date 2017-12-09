@@ -7,6 +7,7 @@ import java.net.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.kanji.enums.ListWordType;
 import com.kanji.kanjiContext.KanjiContext;
 import com.kanji.kanjiContext.KanjiContextOwner;
 import com.kanji.listElements.KanjiInformation;
@@ -38,6 +39,8 @@ public class ProblematicKanjisController implements ApplicationStateManager, Kan
 	private ApplicationWindow applicationWindow;
 	private final String KANJI_KOOHI_LOGIN_PAGE = "https://kanji.koohii.com/account";
 	private final String KANJI_KOOHI_MAIN_PAGE = "https://kanji.koohii.com/study";
+	private final String KANJI_KOOHI_REVIEW_BASE_PAGE = "http://kanji.koohii.com/study/kanji/";
+	//TODO dictionary in panel, and kanji koohi in controller
 	private CookieManager cookieManager;
 	private KanjiContext kanjiContext;
 
@@ -53,7 +56,7 @@ public class ProblematicKanjisController implements ApplicationStateManager, Kan
 		kanjiRepeatingList = new MyList<>(applicationWindow,null,
 				new RowInKanjiRepeatingList(this),
 				Titles.PROBLEMATIC_KANJIS, false,
-				KanjiInformation.getElementsTypesAndLabels());
+				KanjiInformation.getElementsTypesAndLabels(), ListWordType.KANJI);
 		this.kanjiList = kanjiList;
 		cookieManager = new CookieManager();
 		CookieHandler.setDefault(cookieManager);
@@ -139,7 +142,7 @@ public class ProblematicKanjisController implements ApplicationStateManager, Kan
 	}
 
 	private void browseKanji(KanjiRow kanjiRow) {
-		String uriText = "http://kanji.koohii.com/study/kanji/";
+		String uriText = KANJI_KOOHI_REVIEW_BASE_PAGE;
 		uriText += kanjiRow.getId();
 		problematicKanjiPanel.showPageInKoohi(uriText);
 	}

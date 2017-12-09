@@ -18,13 +18,14 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
 import com.kanji.controllers.ApplicationController;
+import com.kanji.listElements.ListElement;
 import com.kanji.model.ListRow;
 import com.kanji.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.strings.ButtonsNames;
 import com.kanji.strings.HotkeysDescriptions;
 import com.kanji.utilities.CommonListElements;
 
-public class ListPanelMaker<Word> extends AbstractPanelWithHotkeysInfo {
+public class ListPanelMaker<Word extends ListElement> extends AbstractPanelWithHotkeysInfo {
 
 	private ListWordsController<Word> listWordsController;
 	private MainPanel rowsPanel;
@@ -55,7 +56,6 @@ public class ListPanelMaker<Word> extends AbstractPanelWithHotkeysInfo {
 
 		rowsPanel.setBorder(rowBorder);
 		this.listRow = listRow;
-		this.parentPanel = parentPanel;
 	}
 
 	public ListRow<Word> addRow(Word word) {
@@ -66,6 +66,7 @@ public class ListPanelMaker<Word> extends AbstractPanelWithHotkeysInfo {
 		rowNumberLabel.setForeground(BasicColors.OCEAN_BLUE);
 		JComponent row = rowsPanel.addRow(SimpleRowBuilder.createRow(FillType.HORIZONTAL,
 				Anchor.NORTH, listRow.createListRow(word, commonListElements).getPanel()));
+		rowsPanel.updateView();
 		return new ListRow<Word>(word, row, rowNumberLabel);
 	}
 
@@ -106,7 +107,7 @@ public class ListPanelMaker<Word> extends AbstractPanelWithHotkeysInfo {
 		AbstractAction action = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				applicationController.showInsertWordDialog();
+				applicationController.showInsertWordDialog(list);
 			}
 		};
 		return createButtonWithHotkey(KeyModifiers.CONTROL, keyEvent, action, name,
@@ -152,13 +153,11 @@ public class ListPanelMaker<Word> extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public void scrollToBottom() {
-		parentPanel.revalidate();
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				// TODO swing utilities
-
 				JScrollBar scrollBar = parentScrollPane.getVerticalScrollBar();
 				scrollBar.setValue(scrollBar.getMaximum());
 			}

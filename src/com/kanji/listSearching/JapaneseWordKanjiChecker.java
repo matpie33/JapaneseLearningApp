@@ -3,6 +3,7 @@ package com.kanji.listSearching;
 import com.kanji.enums.SearchOptions;
 import com.kanji.listElements.JapaneseWordInformation;
 
+import javax.swing.text.JTextComponent;
 import java.text.Normalizer;
 
 public class JapaneseWordKanjiChecker implements PropertyManager<String, JapaneseWordInformation> {
@@ -62,6 +63,13 @@ public class JapaneseWordKanjiChecker implements PropertyManager<String, Japanes
 	@Override
 	public String convertStringToProperty(String valueToConvert) {
 		return valueToConvert;
+	}
+
+	@Override
+	public boolean tryToReplacePropertyWithValueFromInput (JTextComponent input,
+			JapaneseWordInformation propertyHolder){
+		propertyHolder.setWordInKanji(input.getText());
+		return true; //TODO add validation if needed
 	}
 
 }

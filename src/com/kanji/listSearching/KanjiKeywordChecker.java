@@ -5,6 +5,8 @@ import java.text.Normalizer;
 import com.kanji.enums.SearchOptions;
 import com.kanji.listElements.KanjiInformation;
 
+import javax.swing.text.JTextComponent;
+
 public class KanjiKeywordChecker implements PropertyManager<String, KanjiInformation> {
 
 	private SearchOptions options;
@@ -62,6 +64,13 @@ public class KanjiKeywordChecker implements PropertyManager<String, KanjiInforma
 	@Override
 	public String convertStringToProperty(String valueToConvert) {
 		return valueToConvert;
+	}
+
+	@Override
+	public boolean tryToReplacePropertyWithValueFromInput (JTextComponent input,
+			KanjiInformation propertyHolder) {
+		propertyHolder.setKanjiKeyword(input.getText());
+		return true; //TODO validate if needed
 	}
 
 }

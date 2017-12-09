@@ -6,32 +6,58 @@ import java.util.Map;
 import javax.swing.*;
 
 import com.kanji.enums.ListElementType;
-import com.kanji.listElements.ListElementData;
+import com.kanji.enums.ListWordType;
+import com.kanji.listElements.*;
 import com.kanji.strings.ExceptionsMessages;
 import com.kanji.controllers.ApplicationController;
 import com.kanji.listSearching.PropertyManager;
 import com.kanji.enums.SearchingDirection;
 import com.kanji.windows.DialogWindow;
 
-public class MyList<Word> {
+public class MyList<Word extends ListElement> {
 	private DialogWindow parent;
 	private ApplicationController applicationController;
 	private ListWordsController<Word> listController;
 	private JPanel parentPanel;
 	private List<ListElementData> listElementData;
+	private ListWordType listWordType;
 
 	public MyList(DialogWindow parentDialog, ApplicationController applicationController,
 			ListRowMaker<Word> listRowMaker, String title, boolean enableWordAdding,
-			List<ListElementData> listElementData) {
+			List<ListElementData> listElementData, ListWordType listWordType) {
 		this.applicationController = applicationController;
 		this.parent = parentDialog;
 		parentPanel = new JPanel();
 		this.listElementData = listElementData;
 		listController = new ListWordsController<>(this, enableWordAdding, listRowMaker, parentPanel, title, applicationController);
+		this.listWordType = listWordType;
 	}
 
 	public boolean addWord(Word word) {
 		return listController.add(word);
+	}
+
+	public ListWordType getListWordType(){
+		return listWordType;
+	}
+
+	public Word createWord (){
+		Object listWord;
+		//TODO verify earlier that the listWordType matches the Word type
+		switch (listWordType) {
+			case KANJI:
+				listWord =  new KanjiInformation("", 0);
+				break;
+			case REPEATING_DATA:
+				listWord = new RepeatingInformation("", null, false);
+				break;
+				case JAPANESE_WORD:
+				listWord = new JapaneseWordInformation("", "");
+				break;
+			default:
+				throw new RuntimeException("Unknown list word type");
+		}
+		return (Word) listWord;
 	}
 
 	public boolean addWordsList(List<Word> words) {
@@ -156,6 +182,7 @@ public class MyList<Word> {
 	}
 
 	public JPanel getPanel() {
+
 		return listController.getPanel();
 	}
 
@@ -187,6 +214,11 @@ public class MyList<Word> {
 	public <Property> boolean isPropertyDefined(PropertyManager<Property, Word> propertyManager,
 			Property propertyToCheck) {
 		return listController.isPropertyDefined(propertyManager, propertyToCheck);
+		//TODO remove this method
+	}
+
+	public boolean isWordDefined (Word word){
+		return listController.isWordDefined(word);
 	}
 
 	public Word getWordInRow(int rowNumber1Based) {

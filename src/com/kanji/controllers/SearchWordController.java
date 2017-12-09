@@ -2,6 +2,7 @@ package com.kanji.controllers;
 
 import com.kanji.enums.SearchOptions;
 import com.kanji.enums.SearchingDirection;
+import com.kanji.listElements.ListElement;
 import com.kanji.model.TextInputAndPropertyManagerForListElement;
 import com.kanji.myList.MyList;
 import com.kanji.panels.SearchWordPanel;
@@ -9,7 +10,7 @@ import com.kanji.panels.SearchWordPanel;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-public class SearchWordController <Word> {
+public class SearchWordController <Word extends ListElement> {
 
 	private SearchWordPanel searchWordPanel;
 	private MyList<Word> list;

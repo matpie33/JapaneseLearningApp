@@ -7,13 +7,14 @@ import java.util.List;
 import javax.swing.*;
 
 import com.kanji.listElements.KanjiInformation;
+import com.kanji.listElements.ListElement;
 import com.kanji.listElements.RepeatingInformation;
 import com.kanji.strings.Prompts;
 import com.kanji.controllers.ApplicationController;
 import com.kanji.listSearching.PropertyManager;
 import com.kanji.model.ListRow;
 
-public class ListWordsController<Word> {
+public class ListWordsController<Word extends ListElement> {
 	private static final long serialVersionUID = -3144332338336535803L;
 	private List<ListRow<Word>> wordsList;
 	private ListPanelMaker<Word> rowCreator;
@@ -36,14 +37,6 @@ public class ListWordsController<Word> {
 		return false;
 	}
 
-	private boolean isWordDefined(Word r) {
-		for (ListRow<Word> listRow : wordsList) {
-			if (listRow.getWord().equals(r)) {
-				return true;
-			}
-		}
-		return false;
-	}
 
 	public void remove(Word word) {
 		ListRow<Word> listRow = findListRowContainingWord(word);
@@ -106,6 +99,15 @@ public class ListWordsController<Word> {
 	public void clear() {
 		wordsList.clear();
 		rowCreator.clear();
+	}
+
+	public boolean isWordDefined (Word word){
+		for (ListRow<Word> listRow : wordsList) {
+			if (listRow.getWord().isSameAs(word)){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public <Property> boolean isPropertyDefined(PropertyManager<Property, Word> propertyManager,

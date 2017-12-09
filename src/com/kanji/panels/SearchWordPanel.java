@@ -15,6 +15,7 @@ import com.guimaker.enums.FillType;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
+import com.kanji.listElements.ListElement;
 import com.kanji.listElements.ListElementData;
 import com.kanji.model.TextInputAndPropertyManagerForListElement;
 import com.kanji.strings.ButtonsNames;
@@ -28,7 +29,7 @@ import com.kanji.enums.SearchingDirection;
 import com.kanji.myList.MyList;
 import com.kanji.utilities.CommonGuiElementsMaker;
 
-public class SearchWordPanel <Word> extends AbstractPanelWithHotkeysInfo {
+public class SearchWordPanel <Word extends ListElement> extends AbstractPanelWithHotkeysInfo {
 
 	private JTextComponent textField;
 	private SearchOptions searchOptions;

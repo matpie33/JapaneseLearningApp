@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RepeatingInformation implements Serializable {
+public class RepeatingInformation implements Serializable, ListElement {
 
 	private static final long serialVersionUID = 6124164088342544292L;
 	private String repeatingRange;
@@ -69,4 +69,13 @@ public class RepeatingInformation implements Serializable {
 	public static List<ListElementData> getElementsTypesAndLabels() {
 		return new ArrayList<>();
 	}
+
+	@Override public boolean isSameAs(ListElement element) {
+		if (element instanceof RepeatingInformation){
+			RepeatingInformation otherWord = (RepeatingInformation)element;
+			return otherWord.getRepeatingDate().isEqual(repeatingDate);
+		}
+		return false;
+	}
+
 }

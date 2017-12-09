@@ -10,6 +10,7 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 
 import com.kanji.enums.ApplicationSaveableState;
+import com.kanji.enums.ListWordType;
 import com.kanji.listElements.JapaneseWordInformation;
 import com.kanji.listElements.KanjiInformation;
 import com.kanji.listElements.RepeatingInformation;
@@ -87,15 +88,17 @@ public class ApplicationController implements ApplicationStateManager {
 
 	private void initializeJapaneseWordsList(){
 		japaneseWords = new MyList<>(parent, this, new RowInJapaneseWordInformations(parent),
-				Titles.KANJI_LIST, true, JapaneseWordInformation.getElementsTypesAndLabels());
+				Titles.KANJI_LIST, true,
+				JapaneseWordInformation.getElementsTypesAndLabels(), ListWordType.JAPANESE_WORD);
 		japaneseWords.addWord(new JapaneseWordInformation("ねこ", "kot"));
 		japaneseWords.addWord(new JapaneseWordInformation("犬",
 				"いぬ", "pies"));
 	}
 
 	private void initializeJapaneseRepeatingDates(){
-		japaneseWordsRepeatingDates = new MyList<>(parent,this, new RowInRepeatingList(),
-				Titles.REPEATING_LIST, false, RepeatingInformation.getElementsTypesAndLabels());
+		japaneseWordsRepeatingDates = new MyList<>(parent,this,
+				new RowInRepeatingList(), Titles.REPEATING_LIST, false,
+				RepeatingInformation.getElementsTypesAndLabels(), ListWordType.REPEATING_DATA);
 		japaneseWordsRepeatingDates.addWord(
 				new RepeatingInformation("abc", LocalDateTime.of(1993, 11, 13, 13, 25), true, "3 minuty"));
 		japaneseWordsRepeatingDates.addWord(
@@ -238,7 +241,8 @@ public class ApplicationController implements ApplicationStateManager {
 
 	private void initializeKanjiList() {
 		kanjiList = new MyList<>(parent, this, new RowInKanjiInformations(parent),
-				Titles.KANJI_LIST, true, KanjiInformation.getElementsTypesAndLabels());
+				Titles.KANJI_LIST, true,
+				KanjiInformation.getElementsTypesAndLabels(), ListWordType.KANJI);
 		for (int i = 1; i <= 15; i++) {
 			kanjiList.addWord(new KanjiInformation("Word no. " + i, i));
 		}
@@ -251,7 +255,8 @@ public class ApplicationController implements ApplicationStateManager {
 
 	private void initializeKanjiRepeatingDates() {
 		kanjiRepeatingDates = new MyList<>(parent,this, new RowInRepeatingList(),
-				Titles.REPEATING_LIST, false, RepeatingInformation.getElementsTypesAndLabels());
+				Titles.REPEATING_LIST, false,
+				RepeatingInformation.getElementsTypesAndLabels(), ListWordType.REPEATING_DATA);
 		kanjiRepeatingDates.addWord(
 				new RepeatingInformation("abc", LocalDateTime.of(1993, 11, 13, 13, 25), true, "3 minuty"));
 		kanjiRepeatingDates.addWord(
@@ -286,8 +291,8 @@ public class ApplicationController implements ApplicationStateManager {
 		return parent.showConfirmDialog(message);
 	}
 
-	public void showInsertWordDialog() {
-		parent.showInsertDialog(kanjiList);
+	public void showInsertWordDialog(MyList list) {
+		parent.showInsertDialog(list);
 	}
 
 	public void showSearchWordDialog(MyList list) {

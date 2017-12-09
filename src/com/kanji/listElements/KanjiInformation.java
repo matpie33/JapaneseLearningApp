@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class KanjiInformation implements Serializable {
+public class KanjiInformation implements Serializable, ListElement {
 
 	private static final long serialVersionUID = 5172798853536032765L;
 	private String keyword;
@@ -65,4 +65,13 @@ public class KanjiInformation implements Serializable {
 				ListElementType.NUMERIC_INPUT, Labels.COMBOBOX_OPTION_SEARCH_BY_KANJI_ID));
 		return listElementData;
 	}
+
+	//TODO it's probably beter to override equals and hashcode and use set instead of lists
+	@Override public boolean isSameAs(ListElement element) {
+		if (element instanceof KanjiInformation){
+			return ((KanjiInformation)element).getKanjiID() == id;
+		}
+		return false;
+	}
+
 }

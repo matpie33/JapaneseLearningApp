@@ -5,10 +5,11 @@ import java.awt.event.FocusListener;
 
 import javax.swing.text.JTextComponent;
 
+import com.kanji.listElements.ListElement;
 import com.kanji.listSearching.PropertyManager;
 import com.kanji.windows.ApplicationWindow;
 
-public class ListPropertyChangeHandler<Property, PropertyHolder> implements FocusListener {
+public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElement> implements FocusListener {
 
 	private MyList<PropertyHolder> list;
 	private ApplicationWindow applicationWindow;

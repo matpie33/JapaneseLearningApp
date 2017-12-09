@@ -4,12 +4,15 @@ import com.kanji.enums.ListElementType;
 import com.kanji.listSearching.JapaneseWordKanaChecker;
 import com.kanji.listSearching.JapaneseWordKanjiChecker;
 import com.kanji.listSearching.JapaneseWordMeaningChecker;
+import com.kanji.listSearching.PropertyManager;
 import com.kanji.strings.Labels;
 
+import javax.swing.text.JTextComponent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class JapaneseWordInformation {
+public class JapaneseWordInformation implements ListElement {
 
 	private String wordInKana;
 	private String wordInKanji = "";
@@ -65,4 +68,14 @@ public class JapaneseWordInformation {
 	public void setWordMeaning(String wordMeaning) {
 		this.wordMeaning = wordMeaning;
 	}
+
+	@Override public boolean isSameAs(ListElement element) {
+		if (element instanceof JapaneseWordInformation){
+			JapaneseWordInformation otherWord = (JapaneseWordInformation)element;
+			return otherWord.getWordInKana().equals(wordInKana) && otherWord.getWordInKanji()
+					.equals(wordInKanji);
+		}
+		return false;
+	}
+
 }

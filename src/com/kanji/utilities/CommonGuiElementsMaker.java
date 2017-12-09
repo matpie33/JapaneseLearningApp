@@ -16,7 +16,7 @@ public class CommonGuiElementsMaker {
 	public static JTextComponent createKanjiWordInput(String defaultContent) {
 		return GuiMaker.createTextArea(
 				new TextAreaOptions().text(defaultContent).rowsAndColumns(3, 15)
-						.moveToNextComponentWhenTabbed(false));
+						.moveToNextComponentWhenTabbed(true));
 	}
 
 	public static JTextComponent createTextField(String defaultContent) {
