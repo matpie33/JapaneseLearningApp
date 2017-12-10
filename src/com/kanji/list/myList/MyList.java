@@ -15,7 +15,6 @@ public class MyList<Word extends ListElement> {
 	private DialogWindow parent;
 	private ApplicationController applicationController;
 	private ListWordsController<Word> listController;
-	private JPanel parentPanel;
 	private List<ListElementData<Word>> listElementData;
 	private ListElementInitializer<Word> wordInitializer;
 
@@ -24,9 +23,8 @@ public class MyList<Word extends ListElement> {
 			List<ListElementData<Word>> listElementData, ListElementInitializer wordInitializer) {
 		this.applicationController = applicationController;
 		this.parent = parentDialog;
-		parentPanel = new JPanel();
 		this.listElementData = listElementData;
-		listController = new ListWordsController<>(this, enableWordAdding, listRowMaker, parentPanel, title, applicationController);
+		listController = new ListWordsController<>(this, enableWordAdding, listRowMaker, title, applicationController);
 		this.wordInitializer = wordInitializer;
 	}
 

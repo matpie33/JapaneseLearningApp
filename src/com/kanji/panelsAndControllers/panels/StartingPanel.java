@@ -3,8 +3,7 @@ package com.kanji.panelsAndControllers.panels;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import javax.swing.*;
 
@@ -16,6 +15,7 @@ import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.enums.SavingStatus;
+import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.windows.ApplicationWindow;
 
@@ -30,6 +30,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	private AbstractButton showProblematicKanjis;
 	private ApplicationWindow applicationWindow;
 	private ApplicationController applicationController;
+	private Map<String, WordsAndRepeatingInformationsPanel> listToTabLabel = new LinkedHashMap<>();
 
 
 	public StartingPanel (ApplicationWindow a){
@@ -47,8 +48,13 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	public void createElements() {
 		createInformationsPanel();
 
-		tabs.addTab("Powtórki kanji", kanjiRepeatingPanel.createPanel());
-		tabs.addTab("Powtórki słówek", japaneseWordsRepeatingPanel.createPanel());
+		listToTabLabel.put("Powtórki kanji", kanjiRepeatingPanel);
+		listToTabLabel.put("Powtórki słówek", japaneseWordsRepeatingPanel);
+
+		for (Map.Entry<String, WordsAndRepeatingInformationsPanel> listAndTabLabel:
+				listToTabLabel.entrySet()){
+			tabs.addTab(listAndTabLabel.getKey(), listAndTabLabel.getValue().createPanel());
+		}
 
 		List<AbstractButton> buttons = createButtons();
 		bottomPanel = new MainPanel(null);
@@ -171,6 +177,14 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 
 	public void addProblematicKanjisButton() {
 		showProblematicKanjis.setEnabled(true);
+	}
+
+	public MyList getActiveWordsList(){
+		return listToTabLabel.get(tabs.getTitleAt(tabs.getSelectedIndex())).getWordsList();
+	}
+
+	public MyList getActiveRepeatingList(){
+		return listToTabLabel.get(tabs.getTitleAt(tabs.getSelectedIndex())).getRepeatingList();
 	}
 
 }

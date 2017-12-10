@@ -21,10 +21,10 @@ public class ListWordsController<Word extends ListElement> {
 	private ApplicationController applicationController;
 
 	public ListWordsController(MyList list, boolean enableWordAdding, ListRowMaker<Word> listRowMaker,
-			JPanel parentPanel, String title, ApplicationController applicationController) {
+			String title, ApplicationController applicationController) {
 		this.applicationController = applicationController;
 		wordsList = new ArrayList<>();
-		rowCreator = new ListPanelMaker<>(list, enableWordAdding, applicationController, listRowMaker, parentPanel, this);
+		rowCreator = new ListPanelMaker<>(list, enableWordAdding, applicationController, listRowMaker, this);
 		rowCreator.createPanel();
 		this.rowCreator.setTitle(title);
 	}

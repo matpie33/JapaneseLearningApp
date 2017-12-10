@@ -202,8 +202,8 @@ public class ApplicationWindow extends DialogWindow {
 		return menuBar;
 	}
 
-	public JPanel getStartingPanel (){
-		return startingPanel.getPanel();
+	public StartingPanel getStartingPanel (){
+		return startingPanel;
 	}
 
 	public void setTimeSpentHandler(TimeSpentHandler timeSpentHandler){

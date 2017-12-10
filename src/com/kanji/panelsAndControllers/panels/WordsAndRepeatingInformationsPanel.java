@@ -34,4 +34,11 @@ public class WordsAndRepeatingInformationsPanel extends AbstractPanelWithHotkeys
 		listsSplitPane.setResizeWeight(0.5);
 	}
 
+	public MyList getRepeatingList() {
+		return repeatingList;
+	}
+
+	public MyList getWordsList() {
+		return wordsList;
+	}
 }

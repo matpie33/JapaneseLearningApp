@@ -35,15 +35,12 @@ public class ListPanelMaker<Word extends ListElement> extends AbstractPanelWithH
 	private JLabel titleLabel;
 	private ListRowMaker<Word> listRow;
 	private Border rowBorder = BorderFactory.createMatteBorder(0, 0, 2, 0, BasicColors.LIGHT_BLUE);
-	private JPanel parentPanel;
 	private ApplicationController applicationController;
 	private MainPanel listPanel;
 	private boolean enableWordAdding;
-	private MyList list;
 
 	public ListPanelMaker(MyList list, boolean enableWordAdding, ApplicationController applicationController, ListRowMaker<Word> listRow,
-			JPanel parentPanel, ListWordsController<Word> controller) {
-		this.list = list;
+			ListWordsController<Word> controller) {
 		this.applicationController = applicationController;
 		listWordsController = controller;
 		highlightedRowNumber = -1;
@@ -78,10 +75,6 @@ public class ListPanelMaker<Word extends ListElement> extends AbstractPanelWithH
 		titleLabel.setText(title);
 	}
 
-	public ListWordsController<Word> getController() {
-		return listWordsController;
-	}
-
 	@Override
 	public void createElements() {
 		listPanel.addRows(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, titleLabel)
@@ -107,9 +100,10 @@ public class ListPanelMaker<Word extends ListElement> extends AbstractPanelWithH
 		AbstractAction action = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				applicationController.showInsertWordDialog(list);
+				applicationController.showInsertWordDialog();
 			}
 		};
+		//TODO add in my list a parameter with hotkeys mapping for add/search panels
 		return createButtonWithHotkey(KeyModifiers.CONTROL, keyEvent, action, name,
 				hotkeyDescription);
 
@@ -122,7 +116,7 @@ public class ListPanelMaker<Word extends ListElement> extends AbstractPanelWithH
 		int keyEvent = KeyEvent.VK_F;
 		AbstractAction action = new AbstractAction() {
 			@Override public void actionPerformed(ActionEvent e) {
-				applicationController.showSearchWordDialog(list);
+				applicationController.showSearchWordDialog();
 			}
 		};
 		return createButtonWithHotkey(KeyModifiers.CONTROL, keyEvent, action, name,

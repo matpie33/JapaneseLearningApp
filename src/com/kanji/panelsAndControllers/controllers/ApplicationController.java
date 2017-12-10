@@ -47,15 +47,14 @@ public class ApplicationController implements ApplicationStateManager {
 	private Map <ApplicationSaveableState, ApplicationStateManager> applicationStateToManagerMap;
 	private ProblematicKanjisController problematicKanjisController;
 
+
 	public ApplicationController(ApplicationWindow parent) {
 		problematicKanjis = new HashSet<>();
 		this.parent = parent;
 		isClosingSafe = true;
 		applicationStateManager = this;
 		applicationStateToManagerMap = new HashMap<>();
-
 		loadingAndSaving = new LoadingAndSaving();
-
 	}
 
 	public ProblematicKanjiPanel getProblematicKanjiPanel (){
@@ -294,12 +293,12 @@ public class ApplicationController implements ApplicationStateManager {
 		return parent.showConfirmDialog(message);
 	}
 
-	public void showInsertWordDialog(MyList list) {
-		parent.showInsertDialog(list);
+	public void showInsertWordDialog() {
+		parent.showInsertDialog(parent.getStartingPanel().getActiveRepeatingList());
 	}
 
-	public void showSearchWordDialog(MyList list) {
-		parent.showSearchWordDialog(list);
+	public void showSearchWordDialog() {
+		parent.showSearchWordDialog(parent.getStartingPanel().getActiveWordsList());
 	}
 
 	public void showLearningStartDialog() {
