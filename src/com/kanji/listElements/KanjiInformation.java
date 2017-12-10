@@ -57,13 +57,17 @@ public class KanjiInformation implements Serializable, ListElement {
 		return "Keyword: " + keyword + " int: " + id;
 	}
 
-	public static List<ListElementData> getElementsTypesAndLabels() {
-		List <ListElementData> listElementData = new ArrayList<>();
-		listElementData.add(new ListElementData(Labels.KANJI_KEYWORD_LABEL, new KanjiKeywordChecker(),
+	public static List<ListElementData<KanjiInformation>> getElementsTypesAndLabels() {
+		List <ListElementData<KanjiInformation>> listElementData = new ArrayList<>();
+		listElementData.add(new ListElementData<>(Labels.KANJI_KEYWORD_LABEL, new KanjiKeywordChecker(),
 				ListElementType.STRING_LONG_WORD, Labels.COMBOBOX_OPTION_SEARCH_BY_KEYWORD));
-		listElementData.add(new ListElementData(Labels.KANJI_ID_LABEL, new KanjiIdChecker(),
+		listElementData.add(new ListElementData<>(Labels.KANJI_ID_LABEL, new KanjiIdChecker(),
 				ListElementType.NUMERIC_INPUT, Labels.COMBOBOX_OPTION_SEARCH_BY_KANJI_ID));
 		return listElementData;
+	}
+
+	public static ListElementInitializer<KanjiInformation> getInitializer (){
+		return () -> new KanjiInformation("", 0);
 	}
 
 	//TODO it's probably beter to override equals and hashcode and use set instead of lists

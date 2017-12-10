@@ -5,7 +5,6 @@ import javax.swing.text.JTextComponent;
 
 import com.kanji.listElements.KanjiInformation;
 import com.kanji.listElements.ListElement;
-import com.kanji.listElements.ListElementFactory;
 import com.kanji.listSearching.PropertyManager;
 import com.kanji.strings.ExceptionsMessages;
 import com.kanji.listSearching.KanjiIdChecker;

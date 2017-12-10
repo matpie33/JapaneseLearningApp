@@ -3,14 +3,14 @@ package com.kanji.listElements;
 import com.kanji.enums.ListElementType;
 import com.kanji.listSearching.PropertyManager;
 
-public class ListElementData<PropertyType, PropertyHolder> {
+public class ListElementData<ListElement> {
 
 	private String elementLabel;
-	private PropertyManager propertyManager;
+	private PropertyManager<?, ListElement> propertyManager;
 	private ListElementType listElementType;
 	private String comboboxLabel;
 
-	public ListElementData (String elementLabel, PropertyManager propertyManager,
+	public ListElementData (String elementLabel, PropertyManager<?, ListElement> propertyManager,
 			ListElementType listElementType, String comboboxLabel){
 		this.elementLabel = elementLabel;
 		this.propertyManager = propertyManager;

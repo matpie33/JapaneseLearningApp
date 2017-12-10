@@ -66,8 +66,12 @@ public class RepeatingInformation implements Serializable, ListElement {
 		return "date:" + repeatingDate + "range" + repeatingRange + " timeSpent" +timeSpentOnRepeating;
 	}
 
-	public static List<ListElementData> getElementsTypesAndLabels() {
+	public static List<ListElementData<RepeatingInformation>> getElementsTypesAndLabels() {
 		return new ArrayList<>();
+	}
+
+	public static ListElementInitializer<RepeatingInformation> getInitializer (){
+		return () -> new RepeatingInformation("", null, false);
 	}
 
 	@Override public boolean isSameAs(ListElement element) {

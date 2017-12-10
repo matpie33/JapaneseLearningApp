@@ -1,10 +1,7 @@
 package com.kanji.listElements;
 
 import com.kanji.enums.ListElementType;
-import com.kanji.listSearching.JapaneseWordKanaChecker;
-import com.kanji.listSearching.JapaneseWordKanjiChecker;
-import com.kanji.listSearching.JapaneseWordMeaningChecker;
-import com.kanji.listSearching.PropertyManager;
+import com.kanji.listSearching.*;
 import com.kanji.strings.Labels;
 
 import javax.swing.text.JTextComponent;
@@ -45,15 +42,14 @@ public class JapaneseWordInformation implements ListElement {
 		return !wordInKanji.isEmpty();
 	}
 
-	public static List<ListElementData> getElementsTypesAndLabels() {
-		List<ListElementData> listElementData = new ArrayList<>();
-		listElementData.add(new ListElementData(Labels.WORD_IN_KANA,
-				new JapaneseWordKanaChecker(), ListElementType.STRING_SHORT_WORD, Labels.COMBOBOX_OPTION_SEARCH_BY_KANA));
-		listElementData.add(new ListElementData(Labels.WORD_IN_KANJI,
-				new JapaneseWordKanjiChecker(), ListElementType.STRING_SHORT_WORD, Labels.COMBOBOX_OPTION_SEARCH_BY_KANJI));
-		listElementData.add(new ListElementData(Labels.WORD_MEANING,
+	public static List<ListElementData<JapaneseWordInformation>> getElementsTypesAndLabels() {
+		List<ListElementData<JapaneseWordInformation>> listElementData = new ArrayList<>();
+		listElementData.add(new ListElementData<>(Labels.WORD_MEANING,
 				new JapaneseWordMeaningChecker(), ListElementType.STRING_SHORT_WORD, Labels.COMBOBOX_OPTION_SEARCH_BY_WORD_MEANING));
-
+		listElementData.add(new ListElementData<>(Labels.WORD_IN_KANA,
+				new JapaneseWordKanaChecker(), ListElementType.STRING_SHORT_WORD, Labels.COMBOBOX_OPTION_SEARCH_BY_KANA));
+		listElementData.add(new ListElementData<>(Labels.WORD_IN_KANJI,
+				new JapaneseWordKanjiChecker(), ListElementType.STRING_SHORT_WORD, Labels.COMBOBOX_OPTION_SEARCH_BY_KANJI));
 		return listElementData;
 	}
 
@@ -67,6 +63,10 @@ public class JapaneseWordInformation implements ListElement {
 
 	public void setWordMeaning(String wordMeaning) {
 		this.wordMeaning = wordMeaning;
+	}
+
+	public static ListElementInitializer<JapaneseWordInformation> getInitializer (){
+		return () -> new JapaneseWordInformation("", "");
 	}
 
 	@Override public boolean isSameAs(ListElement element) {

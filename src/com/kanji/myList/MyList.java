@@ -6,7 +6,6 @@ import java.util.Map;
 import javax.swing.*;
 
 import com.kanji.enums.ListElementType;
-import com.kanji.enums.ListWordType;
 import com.kanji.listElements.*;
 import com.kanji.strings.ExceptionsMessages;
 import com.kanji.controllers.ApplicationController;
@@ -19,45 +18,26 @@ public class MyList<Word extends ListElement> {
 	private ApplicationController applicationController;
 	private ListWordsController<Word> listController;
 	private JPanel parentPanel;
-	private List<ListElementData> listElementData;
-	private ListWordType listWordType;
+	private List<ListElementData<Word>> listElementData;
+	private ListElementInitializer<Word> wordInitializer;
 
 	public MyList(DialogWindow parentDialog, ApplicationController applicationController,
 			ListRowMaker<Word> listRowMaker, String title, boolean enableWordAdding,
-			List<ListElementData> listElementData, ListWordType listWordType) {
+			List<ListElementData<Word>> listElementData, ListElementInitializer wordInitializer) {
 		this.applicationController = applicationController;
 		this.parent = parentDialog;
 		parentPanel = new JPanel();
 		this.listElementData = listElementData;
 		listController = new ListWordsController<>(this, enableWordAdding, listRowMaker, parentPanel, title, applicationController);
-		this.listWordType = listWordType;
+		this.wordInitializer = wordInitializer;
 	}
 
 	public boolean addWord(Word word) {
 		return listController.add(word);
 	}
 
-	public ListWordType getListWordType(){
-		return listWordType;
-	}
-
 	public Word createWord (){
-		Object listWord;
-		//TODO verify earlier that the listWordType matches the Word type
-		switch (listWordType) {
-			case KANJI:
-				listWord =  new KanjiInformation("", 0);
-				break;
-			case REPEATING_DATA:
-				listWord = new RepeatingInformation("", null, false);
-				break;
-				case JAPANESE_WORD:
-				listWord = new JapaneseWordInformation("", "");
-				break;
-			default:
-				throw new RuntimeException("Unknown list word type");
-		}
-		return (Word) listWord;
+		return wordInitializer.initializeElement();
 	}
 
 	public boolean addWordsList(List<Word> words) {
@@ -233,7 +213,7 @@ public class MyList<Word extends ListElement> {
 		return listController.getWordsByHighlight(false);
 	}
 
-	public List <ListElementData> getListElementData (){
+	public List <ListElementData<Word>> getListElementData (){
 		return listElementData;
 	}
 

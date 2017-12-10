@@ -7,7 +7,6 @@ import java.net.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.kanji.enums.ListWordType;
 import com.kanji.kanjiContext.KanjiContext;
 import com.kanji.kanjiContext.KanjiContextOwner;
 import com.kanji.listElements.KanjiInformation;
@@ -56,7 +55,8 @@ public class ProblematicKanjisController implements ApplicationStateManager, Kan
 		kanjiRepeatingList = new MyList<>(applicationWindow,null,
 				new RowInKanjiRepeatingList(this),
 				Titles.PROBLEMATIC_KANJIS, false,
-				KanjiInformation.getElementsTypesAndLabels(), ListWordType.KANJI);
+				KanjiInformation.getElementsTypesAndLabels(),
+				KanjiInformation.getInitializer());
 		this.kanjiList = kanjiList;
 		cookieManager = new CookieManager();
 		CookieHandler.setDefault(cookieManager);
