@@ -11,7 +11,7 @@ import com.kanji.strings.Prompts;
 import com.kanji.utilities.KanjiCharactersReader;
 import com.kanji.listSearching.KanjiIdChecker;
 import com.kanji.listSearching.KanjiKeywordChecker;
-import com.kanji.enums.SearchOptions;
+import com.kanji.enums.WordSearchOptions;
 import com.kanji.enums.SearchingDirection;
 import com.kanji.myList.MyList;
 import com.kanji.panels.RepeatingWordsPanel;
@@ -64,8 +64,10 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 	}
 
 	private int getCurrentWordId() {
+		KanjiKeywordChecker kanjiKeywordChecker = new KanjiKeywordChecker();
+		kanjiKeywordChecker.setWordSearchOptions(WordSearchOptions.BY_FULL_EXPRESSION);
 		return kanjiList.findRowBasedOnPropertyStartingFromBeginningOfList(
-				new KanjiKeywordChecker(SearchOptions.BY_FULL_EXPRESSION), currentWord,
+				kanjiKeywordChecker, currentWord,
 				SearchingDirection.FORWARD).getKanjiID();
 	}
 

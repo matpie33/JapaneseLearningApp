@@ -1,6 +1,6 @@
 package com.kanji.controllers;
 
-import com.kanji.enums.SearchOptions;
+import com.kanji.enums.WordSearchOptions;
 import com.kanji.enums.SearchingDirection;
 import com.kanji.listElements.ListElement;
 import com.kanji.model.TextInputAndPropertyManagerForListElement;
@@ -31,7 +31,7 @@ public class SearchWordController <Word extends ListElement> {
 		};
 	}
 
-	public AbstractAction createActionSwitchSearchCriteria (SearchOptions options){
+	public AbstractAction createActionSwitchSearchCriteria (WordSearchOptions options){
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

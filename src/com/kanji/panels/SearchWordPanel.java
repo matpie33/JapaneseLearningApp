@@ -17,27 +17,24 @@ import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
 import com.kanji.listElements.ListElement;
 import com.kanji.listElements.ListElementData;
+import com.kanji.listSearching.PropertyManager;
+import com.kanji.listSearching.WordSearchOptionsHolder;
 import com.kanji.model.TextInputAndPropertyManagerForListElement;
 import com.kanji.strings.ButtonsNames;
 import com.kanji.strings.HotkeysDescriptions;
 import com.kanji.strings.Labels;
 import com.kanji.strings.Prompts;
 import com.kanji.controllers.SearchWordController;
-import com.kanji.enums.SearchCriteria;
-import com.kanji.enums.SearchOptions;
+import com.kanji.enums.WordSearchOptions;
 import com.kanji.enums.SearchingDirection;
 import com.kanji.myList.MyList;
 import com.kanji.utilities.CommonGuiElementsMaker;
 
 public class SearchWordPanel <Word extends ListElement> extends AbstractPanelWithHotkeysInfo {
 
-	private JTextComponent textField;
-	private SearchOptions searchOptions;
 	private MyList<Word> list;
 	private CardLayout cardLayout;
 	private JPanel searchingPanel;
-	private SearchCriteria searchCriteria;
-	private JTextComponent kanjiIdTextfield;
 	private SearchWordController<Word> searchWordController;
 	private String selectedComboboxLabel;
 	private List<String> comboboxLabels;
@@ -46,8 +43,6 @@ public class SearchWordPanel <Word extends ListElement> extends AbstractPanelWit
 	public SearchWordPanel(MyList<Word> list) {
 		searchWordController = new SearchWordController<>(this, list);
 		this.list = list;
-		searchOptions = SearchOptions.BY_WORD_FRAGMENT;
-		searchCriteria = SearchCriteria.BY_KEYWORD;
 		listOfInputsAndPropertyManagersForListElementType = new ArrayList<>();
 		comboboxLabels = new ArrayList<>();
 	}
@@ -126,7 +121,7 @@ public class SearchWordPanel <Word extends ListElement> extends AbstractPanelWit
 
 	private MainPanel createSearchByWordPanel(JTextComponent inputField) {
 		JLabel prompt = new JLabel(Prompts.SEARCH_DIALOG);
-		List<JRadioButton> radioButtons = Arrays.asList(SearchOptions.values()).stream().
+		List<JRadioButton> radioButtons = Arrays.asList(WordSearchOptions.values()).stream().
 				map(option->createRadioButtonForSearchingOption(option)).collect(
 				Collectors.toList());
 		radioButtons.get(0).setSelected(true);
@@ -156,21 +151,12 @@ public class SearchWordPanel <Word extends ListElement> extends AbstractPanelWit
 
 	}
 
-	private JRadioButton createRadioButtonForSearchingOption(SearchOptions searchOption) {
+	private JRadioButton createRadioButtonForSearchingOption(WordSearchOptions searchOption) {
 		JRadioButton searchOptionRadioButton = new JRadioButton(searchOption.getPanelLabel());
 		searchOptionRadioButton.setFocusable(false);
 		searchOptionRadioButton.addActionListener(
 				searchWordController.createActionSwitchSearchCriteria(searchOption));
 		return searchOptionRadioButton;
-	}
-
-	public void setSearchOptions (SearchOptions options){
-		searchOptions = options;
-	}
-
-	private JTextComponent createInputTextField() {
-		JTextComponent insertWord = CommonGuiElementsMaker.createKanjiIdInput();
-		return insertWord;
 	}
 
 	private void addRadioButtonsToGroup(List <JRadioButton> buttons) {
@@ -199,6 +185,15 @@ public class SearchWordPanel <Word extends ListElement> extends AbstractPanelWit
 			}
 		}
 		return null;
+	}
+
+	public void setSearchOptions (WordSearchOptions wordSearchOptions){
+		PropertyManager currentPropertyManager =
+				getTextInputAndPropertyManager().getPropertyManager();
+		if (currentPropertyManager instanceof WordSearchOptionsHolder){
+			((WordSearchOptionsHolder) currentPropertyManager)
+					.setWordSearchOptions(wordSearchOptions);
+		}
 	}
 
 }
