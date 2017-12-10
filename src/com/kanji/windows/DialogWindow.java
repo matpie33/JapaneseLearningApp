@@ -6,11 +6,10 @@ import java.awt.event.ComponentEvent;
 
 import javax.swing.*;
 
-import com.guimaker.utilities.CommonActionsMaker;
-import com.kanji.strings.Titles;
-import com.kanji.panels.AbstractPanelWithHotkeysInfo;
-import com.kanji.panels.ConfirmPanel;
-import com.kanji.panels.MessagePanel;
+import com.kanji.constants.strings.Titles;
+import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
+import com.kanji.panelsAndControllers.panels.ConfirmPanel;
+import com.kanji.panelsAndControllers.panels.MessagePanel;
 
 public class DialogWindow {
 

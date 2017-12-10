@@ -5,12 +5,12 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import com.kanji.listElements.KanjiInformation;
-import com.kanji.listElements.RepeatingInformation;
-import com.kanji.strings.ExceptionsMessages;
+import com.kanji.list.listElements.KanjiInformation;
+import com.kanji.list.listElements.RepeatingInformation;
+import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.exception.DuplicatedWordException;
 import com.kanji.model.KanjisAndRepeatingInfo;
-import com.kanji.myList.MyList;
+import com.kanji.list.myList.MyList;
 import javafx.util.Pair;
 
 public class CustomFileReader {

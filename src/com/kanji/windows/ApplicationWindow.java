@@ -11,21 +11,20 @@ import java.util.Set;
 import javax.swing.*;
 
 import com.guimaker.colors.BasicColors;
-import com.kanji.listElements.KanjiInformation;
-import com.kanji.enums.ApplicationPanels;
-import com.kanji.strings.MenuTexts;
-import com.kanji.strings.Prompts;
-import com.kanji.enums.SavingStatus;
-import com.kanji.strings.Titles;
-import com.kanji.controllers.ApplicationController;
+import com.kanji.constants.enums.ApplicationPanels;
+import com.kanji.constants.strings.MenuTexts;
+import com.kanji.constants.strings.Prompts;
+import com.kanji.constants.enums.SavingStatus;
+import com.kanji.constants.strings.Titles;
+import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.saving.ProblematicKanjisState;
-import com.kanji.myList.MyList;
-import com.kanji.panels.InsertWordPanel;
-import com.kanji.panels.LearningStartPanel;
-import com.kanji.panels.LoadingPanel;
-import com.kanji.panels.ProblematicKanjiPanel;
-import com.kanji.panels.SearchWordPanel;
-import com.kanji.panels.StartingPanel;
+import com.kanji.list.myList.MyList;
+import com.kanji.panelsAndControllers.panels.InsertWordPanel;
+import com.kanji.panelsAndControllers.panels.LearningStartPanel;
+import com.kanji.panelsAndControllers.panels.LoadingPanel;
+import com.kanji.panelsAndControllers.panels.ProblematicKanjiPanel;
+import com.kanji.panelsAndControllers.panels.SearchWordPanel;
+import com.kanji.panelsAndControllers.panels.StartingPanel;
 import com.kanji.timer.TimeSpentHandler;
 
 @SuppressWarnings("serial")

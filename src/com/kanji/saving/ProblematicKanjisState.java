@@ -1,6 +1,6 @@
 package com.kanji.saving;
 
-import com.kanji.listElements.KanjiInformation;
+import com.kanji.list.listElements.KanjiInformation;
 
 import java.io.Serializable;
 import java.util.List;

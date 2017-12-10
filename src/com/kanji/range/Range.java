@@ -1,6 +1,6 @@
 package com.kanji.range;
 
-import com.kanji.strings.ExceptionsMessages;
+import com.kanji.constants.strings.ExceptionsMessages;
 
 public class Range {
 	int rangeStart;

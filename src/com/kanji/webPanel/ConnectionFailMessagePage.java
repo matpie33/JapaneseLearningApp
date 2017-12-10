@@ -8,8 +8,7 @@ import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.kanjiContext.KanjiContext;
-import com.kanji.strings.Prompts;
-import sun.applet.Main;
+import com.kanji.constants.strings.Prompts;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;

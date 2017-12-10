@@ -1,6 +1,6 @@
 package com.kanji.utilities;
 
-import com.kanji.enums.WordSearchOptions;
+import com.kanji.constants.enums.WordSearchOptions;
 
 import java.text.Normalizer;
 

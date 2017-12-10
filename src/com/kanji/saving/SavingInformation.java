@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
-import com.kanji.enums.ApplicationSaveableState;
-import com.kanji.listElements.KanjiInformation;
-import com.kanji.listElements.RepeatingInformation;
+import com.kanji.constants.enums.ApplicationSaveableState;
+import com.kanji.list.listElements.KanjiInformation;
+import com.kanji.list.listElements.RepeatingInformation;
 
 public class SavingInformation implements Serializable {
 	private final static long serialVersionUID = -8017224611162128282L;

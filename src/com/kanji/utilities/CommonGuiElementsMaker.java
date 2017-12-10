@@ -9,7 +9,7 @@ import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.TextAreaOptions;
 import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiMaker;
-import com.kanji.enums.SplitPaneOrientation;
+import com.kanji.constants.enums.SplitPaneOrientation;
 
 public class CommonGuiElementsMaker {
 

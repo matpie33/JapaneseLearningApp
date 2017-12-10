@@ -1,10 +1,10 @@
 //package SearchingTests;
 //
-//import com.kanji.strings.NumberValues;
+//import com.kanji.constants.strings.NumberValues;
 //import com.kanji.fileReading.CustomFileReader;
-//import com.kanji.myList.MyList;
-//import com.kanji.myList.RowAsJLabel;
-//import com.kanji.myList.SearchCriteria;
+//import com.kanji.list.myList.MyList;
+//import com.kanji.list.myList.RowAsJLabel;
+//import com.kanji.list.myList.SearchCriteria;
 //import com.kanji.window.BaseWindow;
 //import org.junit.Before;
 //import org.junit.Test;

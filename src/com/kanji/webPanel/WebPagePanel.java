@@ -8,7 +8,7 @@ import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.kanjiContext.KanjiContextOwner;
-import com.kanji.strings.Prompts;
+import com.kanji.constants.strings.Prompts;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

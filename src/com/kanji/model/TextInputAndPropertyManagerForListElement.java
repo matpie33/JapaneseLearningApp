@@ -1,6 +1,6 @@
 package com.kanji.model;
 
-import com.kanji.listSearching.PropertyManager;
+import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 
 import javax.swing.text.JTextComponent;
 
@@ -8,13 +8,13 @@ public class TextInputAndPropertyManagerForListElement {
 
 	private String comboboxLabel;
 	private JTextComponent textComponent;
-	private PropertyManager propertyManager;
+	private ListElementPropertyManager listElementPropertyManager;
 
 	public TextInputAndPropertyManagerForListElement(String comboboxLabel, JTextComponent textComponent,
-			PropertyManager propertyManager){
+			ListElementPropertyManager listElementPropertyManager){
 		this.comboboxLabel = comboboxLabel;
 		this.textComponent = textComponent;
-		this.propertyManager = propertyManager;
+		this.listElementPropertyManager = listElementPropertyManager;
 	}
 
 	public String getComboboxLabel() {
@@ -25,7 +25,7 @@ public class TextInputAndPropertyManagerForListElement {
 		return textComponent;
 	}
 
-	public PropertyManager getPropertyManager() {
-		return propertyManager;
+	public ListElementPropertyManager getListElementPropertyManager() {
+		return listElementPropertyManager;
 	}
 }

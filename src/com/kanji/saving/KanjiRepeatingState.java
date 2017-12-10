@@ -1,6 +1,6 @@
 package com.kanji.saving;
 
-import com.kanji.listElements.RepeatingInformation;
+import com.kanji.list.listElements.RepeatingInformation;
 import com.kanji.timer.TimeRepresentation;
 
 import java.io.Serializable;
