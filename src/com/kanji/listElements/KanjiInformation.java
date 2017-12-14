@@ -36,7 +36,7 @@ public class KanjiInformation implements Serializable {
 			return false;
 		}
 		KanjiInformation kanjiInformation = (KanjiInformation) another;
-		return kanjiInformation.getKanjiKeyword().equals(keyword) && kanjiInformation.getKanjiID() == id;
+		return kanjiInformation.getKanjiKeyword().equals(keyword) || kanjiInformation.getKanjiID() == id;
 
 	}
 
