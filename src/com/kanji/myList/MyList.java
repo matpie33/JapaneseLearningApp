@@ -182,7 +182,7 @@ public class MyList<Word> {
 	}
 
 	public Word getWordInRow(int rowNumber1Based) {
-		return listController.getWordInRow(rowNumber1Based);
+		return listController.getWordInRow(rowNumber1Based-1);
 	}
 
 	public List<Word> getHighlightedWords(){

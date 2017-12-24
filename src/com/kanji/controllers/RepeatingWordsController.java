@@ -29,8 +29,8 @@ import javax.swing.*;
 public class RepeatingWordsController implements TimeSpentMonitor, ApplicationStateManager {
 	private KanjiCharactersReader kanjiCharactersReader;
 	private ApplicationWindow parent;
-	private Set<Integer> problematicKanjis;
-	private Set<Integer> currentProblematicKanjis;
+	private Set<Integer> problematicKanjisIds;
+	private Set<Integer> currentProblematicKanjisIds;
 	private KanjiInformation currentWord = new KanjiInformation("", 0);
 	private KanjiInformation previousWord = new KanjiInformation("", 0);
 	private boolean paused;
@@ -44,7 +44,7 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 	public RepeatingWordsController(ApplicationWindow parent) {
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		kanjiCharactersReader.loadKanjisIfNeeded();
-		currentProblematicKanjis = new HashSet<>();
+		currentProblematicKanjisIds = new HashSet<>();
 		this.parent = parent;
 		timeSpentHandler = new TimeSpentHandler(this);
 		parent.setTimeSpentHandler(timeSpentHandler);
@@ -66,23 +66,27 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 				+ Prompts.KANJI;
 	}
 
-	private void addSelectedWordsToList(SetOfRanges ranges) {
-		for (Range range : ranges.getRangesAsList()) {
+	private void addSelectedWordsToList(SetOfRanges rangesOfRowNumbers) {
+		for (Range range : rangesOfRowNumbers.getRangesAsList()) {
 			if (!range.isEmpty()) {
 				for (int i = range.getRangeStart(); i <= range.getRangeEnd(); i++) {
-					kanjisLeftToRepeat.add(getKanjiInformationById(i));
+					kanjisLeftToRepeat.add(getKanjiInformationByRowNumber(i));
 				}
 			}
 		}
 	}
 
-	private KanjiInformation getKanjiInformationById (int id){
-		return kanjiList.findRowBasedOnPropertyStartingFromHighlightedWord
-				(new KanjiIdChecker(), id, SearchingDirection.FORWARD);
+	private KanjiInformation getKanjiInformationByRowNumber(int rowNumber1Based){
+		return kanjiList.getWordInRow(rowNumber1Based);
+	}
+
+	private KanjiInformation getKanjiInformationById(int id){
+		return kanjiList.findRowBasedOnPropertyStartingFromBeginningOfList(new KanjiIdChecker(),
+				id, SearchingDirection.FORWARD);
 	}
 
 	private void addProblematicKanjisToList() {
-		for (int i : problematicKanjis) {
+		for (int i : problematicKanjisIds) {
 			if (!this.kanjisLeftToRepeat.contains(new KanjiInformation("", i))) {
 				this.kanjisLeftToRepeat.add(getKanjiInformationById(i));
 			}
@@ -105,7 +109,7 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 		for (String keyword: kanjiRepeatingState.getCurrentlyRepeatedWords()){
 			kanjisLeftToRepeat.add(getKanjiInformationByKeyword(keyword));
 		}
-		currentProblematicKanjis = kanjiRepeatingState.getCurrentProblematicKanjis();
+		currentProblematicKanjisIds = kanjiRepeatingState.getCurrentProblematicKanjis();
 		repeatInfo = kanjiRepeatingState.getRepeatingInformation();
 		repeatInfo.setRepeatingDate(LocalDateTime.now());
 		timeSpentHandler.resumeTime(kanjiRepeatingState.getTimeRepresentation());
@@ -127,9 +131,7 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 	private void pickRandomWord() {
 		Random randomizer = new Random();
 		int index = randomizer.nextInt(kanjisLeftToRepeat.size());
-		currentWord = kanjiList.findRowBasedOnPropertyStartingFromHighlightedWord
-				(new KanjiIdChecker(), kanjisLeftToRepeat.get(index).getKanjiID(),
-						SearchingDirection.FORWARD);
+		currentWord = kanjisLeftToRepeat.get(index);
 		showWord(currentWord.getKanjiKeyword());
 	}
 
@@ -142,18 +144,18 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 		timeSpentHandler.stopTimer();
 		repeatInfo.setWasRepeated(true);
 		repeatInfo.setTimeSpentOnRepeating(timeSpentHandler.getTimePassed());
-		problematicKanjis.addAll(currentProblematicKanjis);
+		problematicKanjisIds.addAll(currentProblematicKanjisIds);
 
 		parent.getApplicationController().addWordToRepeatingList(repeatInfo);
-		parent.getApplicationController().setProblematicKanjis(problematicKanjis);
+		parent.getApplicationController().setProblematicKanjis(problematicKanjisIds);
 		parent.showPanel(ApplicationPanels.STARTING_PANEL);
 
 		parent.scrollToBottom();
 
 		parent.showMessageDialog(createFinishMessage());
-		if (currentProblematicKanjis.size() > 0){
+		if (currentProblematicKanjisIds.size() > 0){
 			parent.getApplicationController().saveProject();
-			parent.showProblematicKanjiDialog(currentProblematicKanjis);
+			parent.showProblematicKanjiDialog(currentProblematicKanjisIds);
 		}
 		else{
 			parent.getApplicationController().finishedRepeating();
@@ -171,12 +173,12 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 
 	public void reset() {
 		timeSpentHandler.reset();
-		problematicKanjis = new HashSet<>(); //TODO this line can be removed
-		currentProblematicKanjis.clear();
+		problematicKanjisIds = new HashSet<>(); //TODO this line can be removed
+		currentProblematicKanjisIds.clear();
 		this.kanjisLeftToRepeat = new ArrayList<>();
 		currentWord = new KanjiInformation("", 0);
 		kanjiList = parent.getApplicationController().getWordsList();
-		this.problematicKanjis = parent.getApplicationController().getProblematicKanjis();
+		this.problematicKanjisIds = parent.getApplicationController().getProblematicKanjis();
 	}
 
 	void setRepeatingInformation(RepeatingInformation info) {
@@ -200,7 +202,7 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 
 	private void removeWordFromCurrentProblematics() {
 		int id = currentWord.getKanjiID();
-		currentProblematicKanjis.remove(id);
+		currentProblematicKanjisIds.remove(id);
 	}
 
 	private void pauseAndResume() {
@@ -235,8 +237,7 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 	}
 
 	private void removeWordIfItsProblematic() {
-		int id = currentWord.getKanjiID();
-		problematicKanjis.remove(id);
+		problematicKanjisIds.remove(getRowNumberInListForCurrentWord());
 	}
 
 	private void markWordAsNotRecognized() {
@@ -249,8 +250,12 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 	}
 
 	private void addWordToProblematicList() {
+		this.currentProblematicKanjisIds.add(getRowNumberInListForCurrentWord());
+	}
+
+	private int getRowNumberInListForCurrentWord (){
 		int num = currentWord.getKanjiID();
-		this.currentProblematicKanjis.add(num);
+		return num;
 	}
 
 	private void pressedButtonReturn() {
@@ -329,7 +334,7 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 	@Override public SavingInformation getApplicationState() {
 		SavingInformation savingInformation = parent.getApplicationController().getApplicationState();
 		KanjiRepeatingState kanjiRepeatingState =
-				new KanjiRepeatingState(currentProblematicKanjis, collectKanjiKeywordsLeftToRepeat(),
+				new KanjiRepeatingState(currentProblematicKanjisIds, collectKanjiKeywordsLeftToRepeat(),
 						repeatInfo, timeSpentHandler.getTimeForSerialization());
 		savingInformation.setKanjiRepeatingState(kanjiRepeatingState);
 		return savingInformation;
