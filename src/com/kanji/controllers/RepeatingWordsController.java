@@ -27,6 +27,8 @@ import com.kanji.windows.ApplicationWindow;
 import javax.swing.*;
 
 public class RepeatingWordsController implements TimeSpentMonitor, ApplicationStateManager {
+
+	//TODO merge issue fix with master branch
 	private KanjiCharactersReader kanjiCharactersReader;
 	private ApplicationWindow parent;
 	private Set<Integer> problematicKanjisIds;
