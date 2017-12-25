@@ -11,15 +11,20 @@ import com.guimaker.enums.FillType;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
+import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.enums.SavingStatus;
+import com.kanji.context.ContextOwner;
+import com.kanji.context.WordTypeContext;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
+import com.kanji.panelsAndControllers.controllers.StartingController;
 import com.kanji.windows.ApplicationWindow;
 
-public class StartingPanel extends AbstractPanelWithHotkeysInfo {
+public class StartingPanel extends AbstractPanelWithHotkeysInfo implements
+		ContextOwner<WordTypeContext> {
 
 	private JTabbedPane tabs;
 	private WordsAndRepeatingInformationsPanel kanjiRepeatingPanel;
@@ -31,17 +36,20 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	private ApplicationWindow applicationWindow;
 	private ApplicationController applicationController;
 	private Map<String, WordsAndRepeatingInformationsPanel> listToTabLabel = new LinkedHashMap<>();
-
+	private WordTypeContext wordTypeContext;
+	private StartingController startingController;
 
 	public StartingPanel (ApplicationWindow a){
 		applicationController = a.getApplicationController();
 		kanjiRepeatingPanel = new WordsAndRepeatingInformationsPanel(applicationController.getKanjiList(),
-				applicationController.getKanjiRepeatingDates());
+				applicationController.getKanjiRepeatingDates(),TypeOfWordForRepeating.KANJIS);
 		japaneseWordsRepeatingPanel = new WordsAndRepeatingInformationsPanel(
 				applicationController.getJapaneseWords(),
-				applicationController.getJapaneseWordsRepeatingDates());
+				applicationController.getJapaneseWordsRepeatingDates(), TypeOfWordForRepeating.JAPANESE_WORDS);
 		applicationWindow = a;
 		tabs = new JTabbedPane();
+		wordTypeContext = new WordTypeContext();
+		startingController = new StartingController(this);
 	}
 
 	@Override
@@ -55,6 +63,10 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 				listToTabLabel.entrySet()){
 			tabs.addTab(listAndTabLabel.getKey(), listAndTabLabel.getValue().createPanel());
 		}
+
+		tabs.setSelectedIndex(0);
+		tabs.addChangeListener(startingController.createTabChangeListener());
+		wordTypeContext.setWordTypeForRepeating(TypeOfWordForRepeating.KANJIS);
 
 		List<AbstractButton> buttons = createButtons();
 		bottomPanel = new MainPanel(null);
@@ -84,11 +96,11 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 			switch (name) {
 			case ButtonsNames.LOAD_LIST:
 				keyEvent = KeyEvent.VK_D;
-				hotkeyDescription = HotkeysDescriptions.LOAD_KANJI_LIST;
+				hotkeyDescription = HotkeysDescriptions.LOAD_LISTS_FROM_TEXT_FILE;
 				action = new AbstractAction() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						applicationController.loadKanjiList();
+						applicationController.loadList(getContext());
 					}
 				};
 				break;
@@ -185,6 +197,18 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 
 	public MyList getActiveRepeatingList(){
 		return listToTabLabel.get(tabs.getTitleAt(tabs.getSelectedIndex())).getRepeatingList();
+	}
+
+	@Override
+	public WordTypeContext getContext(){
+		return wordTypeContext;
+	}
+
+	public void updateWordTypeContext(String newTabName){
+		WordsAndRepeatingInformationsPanel panel = listToTabLabel.get(newTabName);
+		if (panel!=null){
+			wordTypeContext.setWordTypeForRepeating(panel.getTypeOfWordForRepeating());
+		}
 	}
 
 }

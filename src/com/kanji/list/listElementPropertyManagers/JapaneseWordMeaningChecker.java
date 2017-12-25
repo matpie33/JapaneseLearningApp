@@ -25,12 +25,9 @@ public class JapaneseWordMeaningChecker extends WordSearchOptionsHolder implemen
 		return valueToConvert;
 	}
 
-	@Override
-	public boolean tryToReplacePropertyWithValueFromInput (JTextComponent input,
-			JapaneseWordInformation propertyHolder){
-		propertyHolder.setWordMeaning(input.getText());
-		return true; //TODO validate if needed
-
+	@Override public void setPropertyValue(JapaneseWordInformation japaneseWordInformation,
+			String propertyValue) {
+		japaneseWordInformation.setWordMeaning(propertyValue);
 	}
 
 }

@@ -18,19 +18,17 @@ public class KanjiIdChecker implements ListElementPropertyManager<Integer, Kanji
 
 	@Override
 	public Integer convertStringToProperty(String valueToConvert) {
-		return Integer.parseInt(valueToConvert);
+		boolean isValidNumber =isIdValidNumber(valueToConvert);
+		Integer convertedValue = null;
+		if (isValidNumber) {
+			convertedValue = Integer.parseInt(valueToConvert);
+		}
+		return convertedValue;
 	}
 
 	@Override
-	public boolean tryToReplacePropertyWithValueFromInput (JTextComponent input,
-			KanjiInformation propertyHolder){
-		boolean isValidNumber =isIdValidNumber(input.getText());
-		if (isValidNumber) {
-			int number = Integer.parseInt(input.getText());
-			propertyHolder.setKanjiID(number);
-		}
-		return isValidNumber;
-
+	public void setPropertyValue(KanjiInformation kanjiInformation, Integer propertyValue) {
+		kanjiInformation.setKanjiID(propertyValue);
 	}
 
 	private boolean isIdValidNumber(String number) {

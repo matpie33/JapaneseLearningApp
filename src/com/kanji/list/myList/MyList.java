@@ -17,6 +17,7 @@ public class MyList<Word extends ListElement> {
 	private ListWordsController<Word> listController;
 	private List<ListElementData<Word>> listElementData;
 	private ListElementInitializer<Word> wordInitializer;
+	private Class listElementClass;
 
 	public MyList(DialogWindow parentDialog, ApplicationController applicationController,
 			ListRowMaker<Word> listRowMaker, String title, boolean enableWordAdding,
@@ -28,12 +29,21 @@ public class MyList<Word extends ListElement> {
 		this.wordInitializer = wordInitializer;
 	}
 
+	public Class getListElementClass (){
+		if (listElementClass == null){
+			listElementClass = createWord().getClass();
+		}
+		return listElementClass;
+	}
+
 	public boolean addWord(Word word) {
 		return listController.add(word);
 	}
 
 	public Word createWord (){
-		return wordInitializer.initializeElement();
+		Word word = wordInitializer.initializeElement();
+		listElementClass = word.getClass();
+		return word;
 	}
 
 	public boolean addWordsList(List<Word> words) {

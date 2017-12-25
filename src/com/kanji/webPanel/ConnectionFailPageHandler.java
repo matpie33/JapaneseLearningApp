@@ -1,7 +1,6 @@
 package com.kanji.webPanel;
 
-import com.guimaker.panels.MainPanel;
-import com.kanji.kanjiContext.KanjiContext;
+import com.kanji.context.KanjiContext;
 
 import javax.swing.*;
 

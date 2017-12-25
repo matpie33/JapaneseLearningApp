@@ -21,11 +21,9 @@ import java.util.Map;
 
 public class InsertWordPanel<Word extends ListElement> extends AbstractPanelWithHotkeysInfo {
 
-	private JTextComponent insertWordTextComponent;
-	private JTextComponent insertNumberTextComponent;
 	private InsertWordController controller;
 	private MyList<Word> list;
-	private Map<JTextComponent, ListElementPropertyManager> textComponentToPropertyManager;
+	private Map<JComponent, ListElementPropertyManager> textComponentToPropertyManager;
 
 	public InsertWordPanel(MyList<Word> list,
 			ApplicationController applicationController) {
@@ -41,7 +39,7 @@ public class InsertWordPanel<Word extends ListElement> extends AbstractPanelWith
 		MainPanel addWordPanel = new MainPanel(null);
 
 		for (ListElementData listElementData: list.getListElementData()){
-			JTextComponent component;
+			JComponent component;
 			switch (listElementData.getListElementPropertyType()) {
 				case NUMERIC_INPUT:
 					component = CommonGuiElementsMaker.createKanjiIdInput();
@@ -52,6 +50,9 @@ public class InsertWordPanel<Word extends ListElement> extends AbstractPanelWith
 				case STRING_LONG_WORD:
 					component = CommonGuiElementsMaker.createKanjiWordInput("");
 					break;
+				case COMBOBOX_OPTION:
+					component = CommonGuiElementsMaker.createComboboxForPartOfSpeech();
+					break;
 				default:
 					throw new RuntimeException("Invalid element type in insert word panel");
 			}
@@ -61,7 +62,6 @@ public class InsertWordPanel<Word extends ListElement> extends AbstractPanelWith
 			addWordPanel.addRows(
 					SimpleRowBuilder.createRow(FillType.BOTH,
 							new JLabel(listElementData.getElementLabel()), component)
-							.fillHorizontallySomeElements(insertWordTextComponent)
 							.fillVertically(component));
 
 		}

@@ -7,8 +7,8 @@ import java.net.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.kanji.kanjiContext.KanjiContext;
-import com.kanji.kanjiContext.KanjiContextOwner;
+import com.kanji.context.KanjiContext;
+import com.kanji.context.ContextOwner;
 import com.kanji.list.listElements.KanjiInformation;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Titles;
@@ -27,7 +27,7 @@ import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
 
-public class ProblematicKanjisController implements ApplicationStateManager, KanjiContextOwner{
+public class ProblematicKanjisController implements ApplicationStateManager, ContextOwner <KanjiContext> {
 
 	private ProblematicKanjiPanel problematicKanjiPanel;
 	private KanjiCharactersReader kanjiCharactersReader;
@@ -214,7 +214,7 @@ public class ProblematicKanjisController implements ApplicationStateManager, Kan
 		cookieManager.put(URI.create(KANJI_KOOHI_LOGIN_PAGE), headers);
 	}
 
-	@Override public KanjiContext getKanjiContext() {
+	@Override public KanjiContext getContext() {
 		return kanjiContext;
 	}
 }

@@ -7,7 +7,7 @@ import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.kanji.kanjiContext.KanjiContext;
+import com.kanji.context.KanjiContext;
 import com.kanji.constants.strings.Prompts;
 
 import javax.swing.*;

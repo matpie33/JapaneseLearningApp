@@ -13,7 +13,7 @@ import com.kanji.model.KanjisAndRepeatingInfo;
 import com.kanji.list.myList.MyList;
 import javafx.util.Pair;
 
-public class CustomFileReader {
+public class KanjiListFileReader {
 	private File readedFile;
 	private final String WORD_TEXT = "Słowo to: ";
 	private final String NUMBER_TEXT = "Numer id to: ";

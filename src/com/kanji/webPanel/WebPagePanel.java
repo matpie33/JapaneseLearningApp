@@ -7,8 +7,9 @@ import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.kanji.kanjiContext.KanjiContextOwner;
+import com.kanji.context.ContextOwner;
 import com.kanji.constants.strings.Prompts;
+import com.kanji.context.KanjiContext;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -34,11 +35,11 @@ public class WebPagePanel {
 	private final String CONNECTION_FAIL_PANEL = "CONNECTION FAIL PANEL";
 	private JTextComponent messageComponent;
 	private JPanel connectionFailPanel;
-	private KanjiContextOwner kanjiContextOwner;
+	private ContextOwner<KanjiContext> contextOwner;
 
-	public WebPagePanel (KanjiContextOwner kanjiContextOwner,
+	public WebPagePanel (ContextOwner<KanjiContext> contextOwner,
 			ConnectionFailPageHandler connectionFailPageHandler){
-		this.kanjiContextOwner = kanjiContextOwner;
+		this.contextOwner = contextOwner;
 		initiateConnectionFailListener (connectionFailPageHandler);
 		initiateWebView();
 		initiatePanels();
@@ -51,7 +52,7 @@ public class WebPagePanel {
 			@Override
 			public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, final Worker.State newValue) {
 				if (newValue == Worker.State.FAILED) {
-					connectionFailPageHandler.modifyConnectionFailPage(kanjiContextOwner.getKanjiContext());
+					connectionFailPageHandler.modifyConnectionFailPage(contextOwner.getContext());
 					showPanel(CONNECTION_FAIL_PANEL);
 				}
 				if (newValue == Worker.State.SUCCEEDED){

@@ -18,5 +18,13 @@ public class ExceptionsMessages {
 	public static final String NO_INPUT_SUPPLIED = "Prosze cokolwiek wpisac!";
 	public static final String RANGE_START_MUST_BE_POSITIVE = "Początek zakresu musi być liczbą dodatnią.";
 	public static final String ILLEGAL_LIST_FILE_FORMAT = "Niepoprawny format pliku z listą.";
+	public static final String WORDS_IN_KANJI_LIST_NOT_GIVEN= "Nie podano listy słów "
+			+ "zapisanych za pomocą kanji.";
+	public static final String WORDS_IN_KANA_LIST_NOT_GIVEN = "Nie podano listy słów "
+			+ "zapisanych za pomocą hiragany/katakany.";
+	public static final String WORDS_MEANING_LIST_NOT_GIVEN = "Nie podano listy z tłumaczeniami "
+			+ "japońskich słów na polski";
+	public static final String INCORRECT_JAPANESE_WORDS_LISTS_SIZES = "Długości list słów zapisanych kaną, "
+			+ "kanji oraz przetłumaczonych na polski nie są jednakowe - a powinny.";
 
 }

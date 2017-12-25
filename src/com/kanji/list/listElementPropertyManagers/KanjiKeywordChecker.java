@@ -25,10 +25,10 @@ public class KanjiKeywordChecker extends WordSearchOptionsHolder implements
 	}
 
 	@Override
-	public boolean tryToReplacePropertyWithValueFromInput (JTextComponent input,
-			KanjiInformation propertyHolder) {
-		propertyHolder.setKanjiKeyword(input.getText());
-		return true; //TODO validate if needed
+	public void setPropertyValue(KanjiInformation kanjiInformation, String propertyValue) {
+		kanjiInformation.setKanjiKeyword(propertyValue);
 	}
+
+
 
 }

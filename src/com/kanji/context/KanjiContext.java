@@ -1,4 +1,4 @@
-package com.kanji.kanjiContext;
+package com.kanji.context;
 
 public class KanjiContext {
 

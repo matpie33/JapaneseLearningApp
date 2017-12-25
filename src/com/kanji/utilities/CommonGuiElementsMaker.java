@@ -1,6 +1,7 @@
 package com.kanji.utilities;
 
 import java.awt.Color;
+import java.util.Arrays;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -9,6 +10,7 @@ import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.TextAreaOptions;
 import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiMaker;
+import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.enums.SplitPaneOrientation;
 
 public class CommonGuiElementsMaker {
@@ -38,6 +40,14 @@ public class CommonGuiElementsMaker {
 		JSplitPane splitPane = new JSplitPane(splitPaneOrientation.getValue());
 		splitPane.setContinuousLayout(true);
 		return splitPane;
+	}
+
+	public static JComboBox<String> createComboboxForPartOfSpeech() {
+		JComboBox<String> comboBox = new JComboBox<>();
+		for (PartOfSpeech partOfSpeech: PartOfSpeech.values()){
+			comboBox.addItem(partOfSpeech.getPolishMeaning());
+		}
+		return comboBox;
 	}
 
 }

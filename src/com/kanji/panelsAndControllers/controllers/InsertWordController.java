@@ -29,14 +29,27 @@ public class InsertWordController<Word extends ListElement> {
 	}
 
 	private void validateAndAddWordIfValid(
-			Map<JTextComponent, ListElementPropertyManager> inputToPropertyManager) {
+			Map<JComponent, ListElementPropertyManager> inputToPropertyManager) {
 		Word word = list.createWord();
 		boolean allInputsValid = true;
-		for (Map.Entry<JTextComponent, ListElementPropertyManager> entry: inputToPropertyManager.entrySet()){
+		for (Map.Entry<JComponent, ListElementPropertyManager> entry: inputToPropertyManager.entrySet()){
 			ListElementPropertyManager listElementPropertyManager = entry.getValue();
-			JTextComponent textComponent = entry.getKey();
-			allInputsValid = listElementPropertyManager.tryToReplacePropertyWithValueFromInput(
-					textComponent, word);
+			JComponent component = entry.getKey();
+			JTextComponent textComponent = null;
+			if (component instanceof JTextComponent){
+				textComponent = (JTextComponent) component;
+			}
+			else if (component instanceof JComboBox){
+				JComboBox comboBox = (JComboBox) component;
+				textComponent = new JTextField();
+				Object selectedComboboxValue = comboBox.getSelectedItem();
+				if (selectedComboboxValue instanceof String){
+					textComponent.setText((String)selectedComboboxValue);
+				}
+
+			}
+			allInputsValid = listElementPropertyManager.tryToReplacePropertyWithValueFromTextInput(
+					textComponent.getText(), word);
 			if (!allInputsValid){
 				textComponent.selectAll();
 				textComponent.requestFocusInWindow();
@@ -49,14 +62,6 @@ public class InsertWordController<Word extends ListElement> {
 				applicationController.saveProject();
 			}
 		}
-	}
-
-	private boolean isIdValidNumber(String number) {
-		boolean valid = number.matches("\\d+");
-
-		if (!valid)
-			parentDialog.showMessageDialog(ExceptionsMessages.NUMBER_FORMAT_EXCEPTION);
-		return valid;
 	}
 
 	private boolean addWordToList(Word word) {
@@ -74,7 +79,7 @@ public class InsertWordController<Word extends ListElement> {
 	}
 
 	public AbstractAction createActionValidateAndAddWord (
-			Map<JTextComponent, ListElementPropertyManager> inputToPropertyManager){
+			Map<JComponent, ListElementPropertyManager> inputToPropertyManager){
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

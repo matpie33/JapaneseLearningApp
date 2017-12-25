@@ -1,7 +1,7 @@
 //package SearchingTests;
 //
 //import com.kanji.constants.strings.NumberValues;
-//import com.kanji.fileReading.CustomFileReader;
+//import com.kanji.fileReading.KanjiListFileReader;
 //import com.kanji.list.myList.MyList;
 //import com.kanji.list.myList.RowAsJLabel;
 //import com.kanji.list.myList.SearchCriteria;
@@ -21,7 +21,7 @@
 //	@Before
 //	public void initiateWordsList (){
 //		File file = new File ("./tests/Dummy list.txt");
-//		CustomFileReader r = new CustomFileReader();
+//		KanjiListFileReader r = new KanjiListFileReader();
 //		try {
 //			words = r.readFile(file);
 //

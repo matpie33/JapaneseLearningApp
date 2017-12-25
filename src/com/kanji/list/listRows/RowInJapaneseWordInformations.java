@@ -23,27 +23,36 @@ public class RowInJapaneseWordInformations implements ListRowMaker<JapaneseWordI
 	}
 
 	@Override
-	public MainPanel createListRow(JapaneseWordInformation kanji, CommonListElements commonListElements) {
+	public MainPanel createListRow(JapaneseWordInformation japaneseWord, CommonListElements commonListElements) {
 		MainPanel panel = new MainPanel(null);
 		JLabel wordInKanaLabel = GuiMaker.createLabel(new ComponentOptions()
 				.text(Labels.WORD_IN_KANA).foregroundColor(Color.WHITE));
-		String wordInKana = kanji.getWordInKana();
-		JTextComponent wordInKanaText = CommonGuiElementsMaker.createTextField(wordInKana);
+		String[] wordInKana = japaneseWord.getWritingsInKana();
+		JTextComponent wordInKanaText = CommonGuiElementsMaker.createTextField(
+				wordInKana[0]);
 
 		JLabel meaningLabel = GuiMaker.createLabel(
 				new ComponentOptions().text(Labels.WORD_MEANING).foregroundColor(BasicColors.OCEAN_BLUE));
-		String meaning = kanji.getWordMeaning();
+		String meaning = japaneseWord.getWordMeaning();
 		JTextComponent meaningText = CommonGuiElementsMaker.createTextField(meaning);
+		JLabel partOfSpeechLabel = GuiMaker.createLabel(new ComponentOptions()
+				.text(Labels.PART_OF_SPEECH).foregroundColor(Color.WHITE));
+
+		JLabel partOfSpeech = GuiMaker.createLabel(new ComponentOptions()
+				.text(japaneseWord.getPartOfSpeech().getPolishMeaning()).foregroundColor(Color.WHITE));
+
 
 		panel.addElementsInColumnStartingFromColumn(0,
 				commonListElements.getRowNumberLabel(),	meaningLabel, meaningText);
+		panel.addElementsInColumnStartingFromColumn(1, partOfSpeechLabel, partOfSpeech);
 		panel.addElementsInColumnStartingFromColumn(1,	wordInKanaLabel, wordInKanaText);
 
-		if (kanji.hasKanjiWriting()){
-			String wordInKanji = kanji.getWordInKanji();
+		if (japaneseWord.hasKanjiWriting()){
+			String[] wordInKanji = japaneseWord.getWritingsInKanji();
 			JLabel wordInKanjiLabel = GuiMaker.createLabel(
 					new ComponentOptions().text(Labels.WORD_IN_KANJI).foregroundColor(Color.WHITE));
-			JTextComponent wordInKanjiText = CommonGuiElementsMaker.createTextField(wordInKanji);
+			JTextComponent wordInKanjiText = CommonGuiElementsMaker
+					.createTextField(wordInKanji[0]);
 
 			panel.addElementsInColumnStartingFromColumn(1,	wordInKanjiLabel, wordInKanjiText);
 		}

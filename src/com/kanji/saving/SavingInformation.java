@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.kanji.constants.enums.ApplicationSaveableState;
+import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.KanjiInformation;
 import com.kanji.list.listElements.RepeatingInformation;
 
@@ -17,13 +18,19 @@ public class SavingInformation implements Serializable {
 	private ProblematicKanjisState problematicKanjisState;
 	private ApplicationSaveableState applicationSaveableState;
 	private List <String> kanjiKoohiCookiesHeaders;
+	private List <JapaneseWordInformation> japaneseWordInformations;
+	private List <RepeatingInformation> japaneseWordsRepeatingLists;
 
 
 	public SavingInformation(List<KanjiInformation> kanjiWords,
-			List<RepeatingInformation> repeatingList, Set<Integer> problematicKanjis) {
+			List<RepeatingInformation> repeatingList, Set<Integer> problematicKanjis,
+			List <JapaneseWordInformation> japaneseWordInformations, List <RepeatingInformation>
+			japaneseWordsRepeatingLists) {
 		this.kanjiWords = kanjiWords;
 		this.repeatingList = repeatingList;
 		this.problematicKanjis = problematicKanjis;
+		this.japaneseWordInformations = japaneseWordInformations;
+		this.japaneseWordsRepeatingLists = japaneseWordsRepeatingLists;
 	}
 
 	public List<KanjiInformation> getKanjiWords() {
@@ -72,6 +79,14 @@ public class SavingInformation implements Serializable {
 	public List<String> getKanjiKoohiCookiesHeaders(){
 		System.out.println(kanjiKoohiCookiesHeaders);
 		return kanjiKoohiCookiesHeaders;
+	}
+
+	public List <JapaneseWordInformation> getJapaneseWordInformations (){
+		return japaneseWordInformations;
+	}
+
+	public List <RepeatingInformation> getJapaneseWordsRepeatingInformations(){
+		return japaneseWordsRepeatingLists;
 	}
 
 }
