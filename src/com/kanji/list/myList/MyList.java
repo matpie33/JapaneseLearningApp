@@ -198,7 +198,7 @@ public class MyList<Word extends ListElement> {
 	}
 
 	public Word getWordInRow(int rowNumber1Based) {
-		return listController.getWordInRow(rowNumber1Based);
+		return listController.getWordInRow(rowNumber1Based-1);
 	}
 
 	public List<Word> getHighlightedWords(){
