@@ -21,7 +21,6 @@ public class SavingInformation implements Serializable {
 	private List <JapaneseWordInformation> japaneseWordInformations;
 	private List <RepeatingInformation> japaneseWordsRepeatingLists;
 
-
 	public SavingInformation(List<KanjiInformation> kanjiWords,
 			List<RepeatingInformation> repeatingList, Set<Integer> problematicKanjis,
 			List <JapaneseWordInformation> japaneseWordInformations, List <RepeatingInformation>
