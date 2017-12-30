@@ -18,6 +18,7 @@ public class MyList<Word extends ListElement> {
 	private List<ListElementData<Word>> listElementData;
 	private ListElementInitializer<Word> wordInitializer;
 	private Class listElementClass;
+	private String title;
 
 	public MyList(DialogWindow parentDialog, ApplicationController applicationController,
 			ListRowMaker<Word> listRowMaker, String title, boolean enableWordAdding,
@@ -27,6 +28,11 @@ public class MyList<Word extends ListElement> {
 		this.listElementData = listElementData;
 		listController = new ListWordsController<>(this, enableWordAdding, listRowMaker, title, applicationController);
 		this.wordInitializer = wordInitializer;
+		this.title = title;
+	}
+
+	public String getTitle(){
+		return title;
 	}
 
 	public Class getListElementClass (){

@@ -2,40 +2,58 @@ package com.kanji.panelsAndControllers.panels;
 
 import javax.swing.*;
 
+import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.options.ComponentOptions;
+import com.guimaker.options.ScrollPaneOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.strings.Prompts;
 
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 
 	private AbstractButton buttonClose;
 	private String message;
-	private JProgressBar progressBar;
+	private List<JProgressBar> progressBars;
+	private MainPanel progressBarsPanel;
 
 	public LoadingPanel(String message) {
 		this.message = message;
-		progressBar = new JProgressBar();
+		progressBars = new ArrayList<>();
 	}
 
 	@Override
 	public void createElements() {
 
 		//TODO add method in gui maker to enable connecting one row with another or create a separate row
-		JLabel loading = GuiMaker.createLabel(new ComponentOptions().text(Prompts.LOADING_PROMPT));
-
+		progressBarsPanel = new MainPanel(BasicColors.OCEAN_BLUE, false);
+		JScrollPane scrollPane = GuiMaker.createScrollPane(new ScrollPaneOptions()
+				.componentToWrap(progressBarsPanel.getPanel()).preferredSize(
+						new Dimension(350,200)
+				).opaque(false));
+		progressBarsPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER,
+				GuiMaker.createLabel(new ComponentOptions().text(message))));
+		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH,
+				scrollPane));
 		buttonClose = createButtonClose();
-		MainPanel loadingPanel = new MainPanel(null);
-		loadingPanel.addRows(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, loading).nextRow(FillType.HORIZONTAL, progressBar));
-		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH, loadingPanel.getPanel()));
 		setNavigationButtons(Anchor.CENTER, buttonClose);
 
 	}
 
-	public JProgressBar getProgressBar (){
+
+	public JProgressBar addProgressBar (String textLabel){
+		JLabel label = GuiMaker.createLabel(new ComponentOptions()
+				.text(textLabel));
+		JProgressBar progressBar = new JProgressBar();
+		progressBars.add(progressBar);
+		progressBarsPanel.addElementsInColumnStartingFromColumn(0,
+				label, progressBar);
 		return progressBar;
 	}
 

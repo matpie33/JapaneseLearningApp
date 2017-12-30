@@ -14,7 +14,9 @@ public class Titles {
 	public static final String OPTIONS_FOR_SHOWING_PROBLEMATIC_KANJIS = "Opcje wyświetlania kanji";
 	public static final String KANJI_DIALOG = "Kanji";
 	public static final String KANJI_LIST = "Lista kanji";
-	public static final String REPEATING_LIST = "Informacje o powtórkach";
+	public static final String JAPANESE_WORDS_LIST = "Lista słów";
+	public static final String KANJI_REPEATING_LIST = "Powtórki znaków kanji";
+	public static final String JAPANESE_REPEATING_LIST = "Powtórki słówek";
 	public static final String PROBLEMATIC_KANJIS = "Kanji do powtórki";
 	public static final String PROBLEMATIC_KANJIS_WINDOW = "Problematyczne kanji";
 

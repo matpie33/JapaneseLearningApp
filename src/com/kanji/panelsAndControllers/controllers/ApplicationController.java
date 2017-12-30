@@ -29,6 +29,7 @@ import com.kanji.list.listRows.RowInRepeatingList;
 import com.kanji.panelsAndControllers.panels.LoadingPanel;
 import com.kanji.range.SetOfRanges;
 import com.kanji.saving.ApplicationStateManager;
+import com.kanji.swingWorkers.LoadingProjectWorker;
 import com.kanji.utilities.JapaneseWordsFileReader;
 import com.kanji.utilities.KanjiListFileReader;
 import com.kanji.saving.LoadingAndSaving;
@@ -50,6 +51,7 @@ public class ApplicationController implements ApplicationStateManager {
 	private Map <ApplicationSaveableState, ApplicationStateManager> applicationStateToManagerMap;
 	private ProblematicKanjisController problematicKanjisController;
 	private JapaneseWordsFileReader japaneseWordsFileReader;
+	private SavingInformation savingInformation;
 
 
 	public ApplicationController(ApplicationWindow parent) {
@@ -91,7 +93,7 @@ public class ApplicationController implements ApplicationStateManager {
 
 	private void initializeJapaneseWordsList(){
 		japaneseWords = new MyList<>(parent, this, new RowInJapaneseWordInformations(parent),
-				Titles.KANJI_LIST, true,
+				Titles.JAPANESE_WORDS_LIST, true,
 				JapaneseWordInformation.getElementsTypesAndLabels(),
 				JapaneseWordInformation.getInitializer());
 		japaneseWords.addWord(new JapaneseWordInformation(PartOfSpeech.NOUN,
@@ -102,8 +104,8 @@ public class ApplicationController implements ApplicationStateManager {
 
 	private void initializeJapaneseRepeatingDates(){
 		japaneseWordsRepeatingDates = new MyList<>(parent,this,
-				new RowInRepeatingList(), Titles.REPEATING_LIST, false,
-				RepeatingInformation.getElementsTypesAndLabels(),
+				new RowInRepeatingList(), Titles.JAPANESE_REPEATING_LIST,
+				false,	RepeatingInformation.getElementsTypesAndLabels(),
 				RepeatingInformation.getInitializer());
 		japaneseWordsRepeatingDates.addWord(
 				new RepeatingInformation("abc", LocalDateTime.of(1993, 11, 13, 13, 25), true, "3 minuty"));
@@ -192,7 +194,6 @@ public class ApplicationController implements ApplicationStateManager {
 		if (!fileToSave.exists())
 			return;
 
-		SavingInformation savingInformation = null;
 		try {
 			savingInformation = loadingAndSaving.load(fileToSave);
 		}
@@ -219,89 +220,25 @@ public class ApplicationController implements ApplicationStateManager {
 		parent.updateTitle(fileToSave.toString());
 		parent.changeSaveStatus(SavingStatus.NO_CHANGES);
 
-		showLoadedKanjisInPanel(savingInformation);
-		showLoadedRepeatingInformations(savingInformation.getRepeatingList());
-
-		showLoadedJapaneseWordsInPanel(savingInformation);
-		showLoadedRepeatingInformations(savingInformation
-				.getJapaneseWordsRepeatingInformations());
-
+		LoadingProjectWorker loadingProjectWorker =
+				new LoadingProjectWorker(this,
+						parent.showProgressDialog());
+		loadingProjectWorker.load(japaneseWords,
+				savingInformation.getJapaneseWordInformations());
+		loadingProjectWorker.load(kanjiList,
+				savingInformation.getKanjiWords());
+		loadingProjectWorker.load(japaneseWordsRepeatingDates,
+				savingInformation.getJapaneseWordsRepeatingInformations());
+		loadingProjectWorker.load(kanjiRepeatingDates,
+				savingInformation.getRepeatingList());
 	}
 
-	private void showLoadedJapaneseWordsInPanel(SavingInformation savingInformation) {
-		//TODO make it generic, and remove the other method, try to avoid creating 4
-		// swing workers - use 1
-		final LoadingPanel loadingPanel = parent.showProgressDialog();
-		SwingWorker s = new SwingWorker<Void, Integer>() {
 
-			private JProgressBar progressBar = loadingPanel.getProgressBar();
-
-			@Override
-			public Void doInBackground() throws Exception {
-				japaneseWords.cleanWords();
-				List <JapaneseWordInformation> japaneseWords =
-						savingInformation.getJapaneseWordInformations();
-				progressBar.setMaximum(japaneseWords.size());
-				for (int i = 0; i < japaneseWords.size(); i++) {
-					ApplicationController.this.japaneseWords.addWord(japaneseWords.get(i));
-					//TODO create methods add list of words: it would not have update view in it
-					// and method addWord should use updateView
-					progressBar.setValue(i);
-				}
-
-				return null;
-			}
-
-
-			@Override
-			public void done() {
-				kanjiList.scrollToBottom();
-				parent.closeDialog();
-				if (savingInformation.hasStateToRestore()){
-					getStateManagerForHandlingState(savingInformation.
-							getApplicationSaveableState()).restoreState(savingInformation);
-				}
-			}
-		};
-		s.execute();
-	}
-
-	private void showLoadedKanjisInPanel(SavingInformation savingInformation) {
-		final LoadingPanel loadingPanel = parent.showProgressDialog();
-		SwingWorker s = new SwingWorker<Void, Integer>() {
-
-			private JProgressBar progressBar = loadingPanel.getProgressBar();
-
-			@Override
-			public Void doInBackground() throws Exception {
-				kanjiList.cleanWords();
-				List <KanjiInformation> kanjiWords = savingInformation.getKanjiWords();
-				progressBar.setMaximum(kanjiWords.size());
-				for (int i = 0; i < kanjiWords.size(); i++) {
-					kanjiList.addWord(kanjiWords.get(i));
-					//TODO create methods add list of words: it would not have update view in it
-					// and method addWord should use updateView
-					progressBar.setValue(i);
-				}
-
-				return null;
-			}
-
-
-			@Override
-			public void done() {
-				kanjiList.scrollToBottom();
-				parent.closeDialog();
-				if (savingInformation.hasStateToRestore()){
-					getStateManagerForHandlingState(savingInformation.
-							getApplicationSaveableState()).restoreState(savingInformation);
-				}
-			}
-		};
-		s.execute();
-	}
-
-	private ApplicationStateManager getStateManagerForHandlingState (ApplicationSaveableState state){
+	private ApplicationStateManager getStateManagerForHandlingState (
+			ApplicationSaveableState state){
+		if (state == null){
+			return this;
+		}
 		for (Map.Entry <ApplicationSaveableState, ApplicationStateManager> entry:
 				applicationStateToManagerMap.entrySet()){
 			if (entry.getKey().equals(state)){
@@ -311,32 +248,12 @@ public class ApplicationController implements ApplicationStateManager {
 		throw new IllegalArgumentException("No state manager found for given state: "+state);
 	}
 
-	private void showLoadedRepeatingInformationsOfJapaneseWords
-			(List<RepeatingInformation> mapOfRepeats) {
-		//TODO same as above - make generic, avoid creating too many swing workers
-		SwingWorker s = new SwingWorker<Void, Integer>() {
-			@Override
-			public Void doInBackground() throws Exception {
-				japaneseWordsRepeatingDates.cleanWords();
-				japaneseWordsRepeatingDates.addWordsList(mapOfRepeats);
-				japaneseWordsRepeatingDates.scrollToBottom();
-				return null;
-			}
-		};
-		s.execute();
-	}
-
-	private void showLoadedRepeatingInformations(List<RepeatingInformation> mapOfRepeats) {
-		SwingWorker s = new SwingWorker<Void, Integer>() {
-			@Override
-			public Void doInBackground() throws Exception {
-				kanjiRepeatingDates.cleanWords();
-				kanjiRepeatingDates.addWordsList(mapOfRepeats);
-				kanjiRepeatingDates.scrollToBottom();
-				return null;
-			}
-		};
-		s.execute();
+	public void finishedLoadingProject (){
+		parent.closeDialog();
+		if (savingInformation.hasStateToRestore()){
+			getStateManagerForHandlingState(savingInformation.
+					getApplicationSaveableState()).restoreState(savingInformation);
+		}
 	}
 
 	private void initializeKanjiList() {
@@ -356,7 +273,7 @@ public class ApplicationController implements ApplicationStateManager {
 
 	private void initializeKanjiRepeatingDates() {
 		kanjiRepeatingDates = new MyList<>(parent,this, new RowInRepeatingList(),
-				Titles.REPEATING_LIST, false,
+				Titles.KANJI_REPEATING_LIST, false,
 				RepeatingInformation.getElementsTypesAndLabels(),
 				RepeatingInformation.getInitializer());
 		kanjiRepeatingDates.addWord(
@@ -369,7 +286,6 @@ public class ApplicationController implements ApplicationStateManager {
 
 	private File openFile() {
 		JFileChooser fileChooser = createFileChooser();
-		String directory;
 
 		int chosenOption = fileChooser.showOpenDialog(parent.getContainer());
 		if (chosenOption == JFileChooser.CANCEL_OPTION)
@@ -527,11 +443,6 @@ public class ApplicationController implements ApplicationStateManager {
 	public void switchStateManager (ApplicationStateManager stateManager){
 		this.applicationStateManager = stateManager;
 		isClosingSafe = false;
-	}
-
-	public void clearStateManager (){
-		applicationStateManager = this;
-		isClosingSafe = true;
 	}
 
 }
