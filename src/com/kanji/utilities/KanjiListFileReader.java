@@ -37,7 +37,7 @@ public class KanjiListFileReader {
 	}
 
 	public void writeToFile(File f, MyList<KanjiInformation> listOfWords,
-			MyList <RepeatingInformation> repeats, Set <Integer> problematicKanjis)
+			MyList <RepeatingInformation> repeats, Set <KanjiInformation> problematicKanjis)
 			throws IOException {
 		BufferedWriter p = new BufferedWriter(
 				new OutputStreamWriter(new FileOutputStream(f), "UTF8"));
@@ -59,8 +59,8 @@ public class KanjiListFileReader {
 		}
 		p.write(PROBLEMATIC_KANJIS_HEADER);
 		p.newLine();
-		for (Integer i: problematicKanjis){
-			p.write(i.toString());
+		for (KanjiInformation i: problematicKanjis){
+			p.write(i.getKanjiID());
 			p.write("#");
 		}
 		p.close();

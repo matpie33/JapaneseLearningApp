@@ -4,10 +4,13 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.kanji.constants.enums.SplitPaneOrientation;
 import com.kanji.constants.strings.*;
+import com.kanji.list.listElements.ListElement;
 import com.kanji.utilities.CommonGuiElementsMaker;
 import com.kanji.webPanel.ConnectionFailKanjiOfflinePage;
 import com.kanji.webPanel.ConnectionFailMessagePage;
@@ -150,8 +153,19 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		return parentDialog;
 	}
 
-	public void addProblematicKanjis (Set<Integer> problematicKanjis){
-		controller.addProblematicKanjis(problematicKanjis);
+	public <Element extends ListElement> void addProblematicKanjis (
+			Set<Element> problematicKanjis){
+		controller.addProblematicKanjis(getProblematicKanjisIds(problematicKanjis));
+	}
+
+	private <Element extends ListElement> Set <Integer> getProblematicKanjisIds (
+			Set <Element> kanjiInformations){
+		//TODO temporary workaround
+		Set <Integer> problematicKanjisIds = new HashSet<>();
+		for (Element kanjiInformation: kanjiInformations){
+			problematicKanjisIds.add(((KanjiInformation)kanjiInformation).getKanjiID());
+		}
+		return problematicKanjisIds;
 	}
 
 }

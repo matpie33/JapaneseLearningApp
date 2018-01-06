@@ -13,16 +13,17 @@ public class SavingInformation implements Serializable {
 	private final static long serialVersionUID = -8017224611162128282L;
 	private List<KanjiInformation> kanjiWords;
 	private List<RepeatingInformation> repeatingList;
-	private Set<Integer> problematicKanjis;
-	private KanjiRepeatingState kanjiRepeatingState;
+	private Set<KanjiInformation> problematicKanjis;
+	private RepeatingState repeatingState;
 	private ProblematicKanjisState problematicKanjisState;
 	private ApplicationSaveableState applicationSaveableState;
 	private List <String> kanjiKoohiCookiesHeaders;
 	private List <JapaneseWordInformation> japaneseWordInformations;
 	private List <RepeatingInformation> japaneseWordsRepeatingLists;
 
+
 	public SavingInformation(List<KanjiInformation> kanjiWords,
-			List<RepeatingInformation> repeatingList, Set<Integer> problematicKanjis,
+			List<RepeatingInformation> repeatingList, Set<KanjiInformation> problematicKanjis,
 			List <JapaneseWordInformation> japaneseWordInformations, List <RepeatingInformation>
 			japaneseWordsRepeatingLists) {
 		this.kanjiWords = kanjiWords;
@@ -40,16 +41,16 @@ public class SavingInformation implements Serializable {
 		return repeatingList;
 	}
 
-	public Set<Integer> getProblematicKanjis() {
+	public Set<KanjiInformation> getProblematicKanjis() {
 		return problematicKanjis;
 	}
 
-	public KanjiRepeatingState getKanjiRepeatingState() {
-		return kanjiRepeatingState;
+	public RepeatingState getRepeatingState() {
+		return repeatingState;
 	}
 
-	public void setKanjiRepeatingState(KanjiRepeatingState state){
-		this.kanjiRepeatingState = state;
+	public void setRepeatingState(RepeatingState state){
+		this.repeatingState = state;
 		applicationSaveableState = ApplicationSaveableState.REPEATING_WORDS;
 	}
 

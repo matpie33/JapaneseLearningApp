@@ -11,6 +11,7 @@ import java.util.Set;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
+import com.kanji.list.listElements.KanjiInformation;
 import com.kanji.list.listElements.RepeatingInformation;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.Labels;
@@ -21,7 +22,6 @@ import com.kanji.range.SetOfRanges;
 
 public class LearningStartController {
 
-	private MyList<RepeatingInformation> repeatsList;
 	private SetOfRanges rangesToRepeat;
 	private int numberOfWords;
 	private int sumOfWords;
@@ -31,10 +31,9 @@ public class LearningStartController {
 	private int problematicLabelRow;
 	private ApplicationController applicationController;
 
-	public LearningStartController(MyList<RepeatingInformation> repeatList, int numberOfWords,
+	public LearningStartController(int numberOfWords,
 			ApplicationController applicationController, LearningStartPanel learningStartPanel) {
 		this.applicationController = applicationController;
-		this.repeatsList = repeatList;
 		this.numberOfWords = numberOfWords;
 		this.learningStartPanel = learningStartPanel;
 		rangesRows = new ArrayList<>();
@@ -62,9 +61,9 @@ public class LearningStartController {
 	}
 
 	private void addOrSubtractProblematicKanjisFromSum(int direction) {
-		Set<Integer> problematics = applicationController.getProblematicKanjis();
-		for (Integer i : problematics) {
-			if (!rangesToRepeat.isValueInsideThisSet(i)) {
+		Set<KanjiInformation> problematics = applicationController.getProblematicKanjis();
+		for (KanjiInformation i : problematics) {
+			if (!rangesToRepeat.isValueInsideThisSet(i.getKanjiID())) {
 				sumOfWords += direction;
 			}
 		}
@@ -272,7 +271,6 @@ public class LearningStartController {
 		repeatingInfo += ".";
 		applicationController.setRepeatingInformation(
 				new RepeatingInformation(repeatingInfo, LocalDateTime.now(), false));
-		repeatsList.scrollToBottom();
 	}
 
 	public void switchPanelAndSetWordsRangesToRepeat(boolean problematicCheckboxSelected) {

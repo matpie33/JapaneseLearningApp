@@ -16,6 +16,7 @@ import com.kanji.constants.strings.MenuTexts;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.enums.SavingStatus;
 import com.kanji.constants.strings.Titles;
+import com.kanji.list.listElements.ListElement;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.saving.ProblematicKanjisState;
 import com.kanji.list.myList.MyList;
@@ -129,8 +130,8 @@ public class ApplicationWindow extends DialogWindow {
 		startingPanel.addProblematicKanjisButton();
 	}
 
-	public void showLearningStartDialog(MyList list, int maximumNumber) {
-		createDialog(new LearningStartPanel(applicationController, maximumNumber, list),
+	public void showLearningStartDialog(int maximumNumber) {
+		createDialog(new LearningStartPanel(applicationController, maximumNumber),
 				Titles.LEARNING_START_DIALOG, false, Position.CENTER);
 
 	}
@@ -147,7 +148,8 @@ public class ApplicationWindow extends DialogWindow {
 				Position.LEFT_CORNER);
 	}
 
-	public void showProblematicKanjiDialog(Set<Integer> problematicKanjis) {
+	public <Element extends ListElement> void showProblematicKanjiDialog(
+			Set<Element> problematicKanjis) {
 		problematicKanjiPanel.addProblematicKanjis(problematicKanjis);
 		showProblematicKanjiDialog();
 	}

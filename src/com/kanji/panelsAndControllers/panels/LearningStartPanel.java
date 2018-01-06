@@ -48,9 +48,9 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 	private MainPanel rangesPanel;
 	private JTextComponent firstTextField;
 
-	public LearningStartPanel(ApplicationController applicationController, int numberOfWords,
-			MyList<RepeatingInformation> list) {
-		controller = new LearningStartController(list, numberOfWords, applicationController, this);
+	public LearningStartPanel(ApplicationController applicationController,
+			int numberOfWords) {
+		controller = new LearningStartController(numberOfWords, applicationController, this);
 	}
 
 	@Override

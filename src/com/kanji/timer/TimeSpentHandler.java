@@ -1,7 +1,5 @@
 package com.kanji.timer;
 
-import java.io.Serializable;
-
 public class TimeSpentHandler {
 
 	private Thread timerThread;
@@ -98,11 +96,11 @@ public class TimeSpentHandler {
 		hoursPassed = 0;
 	}
 
-	public TimeRepresentation getTimeForSerialization (){
-		return new TimeRepresentation(secondsPassed, minutesPassed, hoursPassed);
+	public TimeSpent getTimeForSerialization (){
+		return new TimeSpent(secondsPassed, minutesPassed, hoursPassed);
 	}
 
-	public void resumeTime (TimeRepresentation serializedTime){
+	public void resumeTime (TimeSpent serializedTime){
 		secondsPassed = serializedTime.getSecondsPassed();
 		minutesPassed = serializedTime.getMinutesPassed();
 		hoursPassed = serializedTime.getHoursPassed();
