@@ -3,6 +3,7 @@ package com.kanji.utilities;
 import com.kanji.constants.enums.WordSearchOptions;
 
 import java.text.Normalizer;
+import java.util.Set;
 
 public class WordSearching {
 
@@ -13,9 +14,18 @@ public class WordSearching {
 		return word;
 	}
 
+	public static boolean doesAnyOfTheWordsContainSearchedWord (Set<String> words,
+			String searched, WordSearchOptions options){
+		for (String word: words){
+			if (doesWordContainSearchedWord(word, searched, options)){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public static boolean doesWordContainSearchedWord(String word, String searched,
 			WordSearchOptions options) {
-		System.out.println(options);
 		word = removeDiacritics(word);
 		searched = removeDiacritics(searched);
 		switch (options) {

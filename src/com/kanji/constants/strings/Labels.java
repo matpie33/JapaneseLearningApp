@@ -29,5 +29,6 @@ public class Labels {
 	public static final String VERB_CONJUGATION_ICHIDAN = "Z końcówką -た";
 	public static final String VERB_CONJUGATION_GODAN = "Z końcówką -った";
 	public static final String TAKING_PARTICLE = "Łączy się z partykułą: ";
+	public static final String WRITING_WAYS_IN_JAPANESE = "Sposoby zapisu: ";
 
 }

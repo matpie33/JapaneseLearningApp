@@ -9,14 +9,14 @@ public class JapaneseWordKanaChecker extends WordSearchOptionsHolder implements
 
 	@Override
 	public void replaceValueOfProperty(String wordInKanji, JapaneseWordInformation wordInformation) {
-		wordInformation.setWritingsInKana(new String [] {wordInKanji});
+//		wordInformation.setWritingsInKana(new String [] {wordInKanji});
+		//TODO I have to know the previous value
 	}
 
 	@Override
-	public boolean isPropertyFound(String wordInKanji, JapaneseWordInformation wordInformation) {
-		return wordInformation != null && WordSearching.doesWordContainSearchedWord(
-				wordInformation.getWritingsInKana()[0], wordInKanji,
-				getWordSearchOptions());
+	public boolean isPropertyFound(String wordInKana, JapaneseWordInformation wordInformation) {
+		return wordInformation != null && WordSearching.doesAnyOfTheWordsContainSearchedWord(
+				wordInformation.getKanaWritings(), wordInKana, getWordSearchOptions());
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class JapaneseWordKanaChecker extends WordSearchOptionsHolder implements
 	@Override
 	public void setPropertyValue(JapaneseWordInformation japaneseWordInformation,
 			String propertyValue) {
-		japaneseWordInformation.setWritingsInKana(new String [] {propertyValue});
+//		japaneseWordInformation.setWritingsInKana(new String [] {propertyValue});
 	}
 
 }

@@ -47,13 +47,21 @@ public class RepeatingKanjiDisplayer implements RepeatingWordDisplayer<KanjiInfo
 		problematicKanjis.addAll(integers);
 	}
 
-	@Override public JPanel showWordFullInformation(KanjiInformation kanjiInformation) {
+	@Override public void showWordFullInformation(KanjiInformation kanjiInformation) {
 		wordTextArea.setText(kanjiCharactersReader.getKanjiById(
 				kanjiInformation.getKanjiID()));
+
+	}
+
+	@Override public void showRecognizingWordPanel() {
+
+	}
+
+	@Override public JPanel getFullInformationPanel() {
 		return fullWordInformationPanel.getPanel();
 	}
 
-	@Override public JPanel showRecognizingWordPanel() {
+	@Override public JPanel getRecognizingWordPanel() {
 		return recognizingWordPanel.getPanel();
 	}
 

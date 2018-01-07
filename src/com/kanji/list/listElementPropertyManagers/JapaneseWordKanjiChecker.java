@@ -9,13 +9,14 @@ public class JapaneseWordKanjiChecker extends WordSearchOptionsHolder implements
 
 	@Override
 	public void replaceValueOfProperty(String wordInKanji, JapaneseWordInformation wordInformation) {
-		wordInformation.setWritingsInKanji(new String[] {wordInKanji});
+//		wordInformation.setWritingsInKanji(new String[] {wordInKanji});
+		//TODO I have to know the previous value
 	}
 
 	@Override
 	public boolean isPropertyFound(String wordInKanji, JapaneseWordInformation wordInformation) {
-		return wordInformation != null && WordSearching.doesWordContainSearchedWord(
-				wordInformation.getWritingsInKanji()[0],wordInKanji, getWordSearchOptions());
+		return wordInformation != null && WordSearching.doesAnyOfTheWordsContainSearchedWord(
+				wordInformation.getKanjiWritings(), wordInKanji, getWordSearchOptions());
 	}
 
 	@Override
@@ -26,7 +27,8 @@ public class JapaneseWordKanjiChecker extends WordSearchOptionsHolder implements
 
 	@Override public void setPropertyValue(JapaneseWordInformation japaneseWordInformation,
 			String propertyValue) {
-		japaneseWordInformation.setWritingsInKanji(new String [] {propertyValue});
+//		japaneseWordInformation.setWritingsInKanji(new String [] {propertyValue});
+		//TODO is it same as replace method?
 	}
 
 }

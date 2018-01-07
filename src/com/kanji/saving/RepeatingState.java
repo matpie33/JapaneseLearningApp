@@ -12,7 +12,7 @@ public class RepeatingState <Element extends ListElement> implements Serializabl
 
 	private TimeSpent timeSpent;
 	private RepeatingInformation repeatingInformation;
-	private Set<Element> currentProblematicWords;
+	private Set <Element> currentProblematicWords;
 	private Set <Element> currentlyRepeatedWords;
 
 	public RepeatingState(TimeSpent timeSpent, RepeatingInformation repeatingInformation,

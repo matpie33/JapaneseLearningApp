@@ -8,46 +8,46 @@ import com.kanji.list.listElementPropertyManagers.*;
 import com.kanji.constants.strings.Labels;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class JapaneseWordInformation implements ListElement, Serializable {
 
-	private String[] writingsInKana;
-	private String[] writingsInKanji = new String [] {};
+	private Map<String, List <String>> kanjiToAlternativeKanaWritingMap;
 	private String wordMeaning;
 	private PartOfSpeech partOfSpeech;
 	private Set<AdditionalInformation> additionalInformations = new HashSet<>();
 
-	public JapaneseWordInformation (PartOfSpeech partOfSpeech, String[] writingsInKana,
+	public JapaneseWordInformation (PartOfSpeech partOfSpeech,
 			String wordMeaning){
 		this.partOfSpeech = partOfSpeech;
-		this.writingsInKana = writingsInKana;
 		this.wordMeaning = wordMeaning;
+		kanjiToAlternativeKanaWritingMap = new HashMap<>();
 	}
 
-	public JapaneseWordInformation (PartOfSpeech partOfSpeech, String[] writingsInKanji,
-			String[] writingsInKana, String wordMeaning){
-		this(partOfSpeech, writingsInKana, wordMeaning);
-		this.writingsInKanji = writingsInKanji;
+	public void addWritings (String kanjiWriting, String ... kanaWritingForThisKanji){
+		kanjiToAlternativeKanaWritingMap.put(kanjiWriting,
+				Arrays.asList(kanaWritingForThisKanji));
 	}
 
-	public String[] getWritingsInKana() {
-		return writingsInKana;
+	public void addWriting (String kanjiWriting, String kanaWriting){
+		addWritings(kanjiWriting, kanaWriting);
+	}
+
+	public Map <String, List<String>> getKanjiToKanaWritingMapping (){
+		return kanjiToAlternativeKanaWritingMap;
 	}
 
 	public String getWordMeaning() {
 		return wordMeaning;
 	}
 
-	public String[] getWritingsInKanji() {
-		return writingsInKanji;
-	}
-
 	public boolean hasKanjiWriting(){
-		return writingsInKanji.length != 0;
+		for (String kanjiWriting: kanjiToAlternativeKanaWritingMap.keySet()){
+			if (!kanjiWriting.isEmpty()){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public static List<ListElementData<JapaneseWordInformation>> getElementsTypesAndLabels() {
@@ -64,26 +64,6 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 		return listElementData;
 	}
 
-	public void setWritingsInKana(String[] writingsInKana) {
-		if (writingsInKana.length >1){
-			for (int i=1; i<writingsInKana.length; i++){
-				addAditionalInformation(AdditionalInformationTag.ALTERNATIVE_KANA_WRTING,
-						writingsInKana[i]);
-			}
-		}
-		this.writingsInKana = writingsInKana;
-	}
-
-	public void setWritingsInKanji(String[] writingsInKanji) {
-		if (writingsInKanji.length >1){
-			for (int i=1; i<writingsInKanji.length; i++){
-				addAditionalInformation(AdditionalInformationTag.ALTERNATIVE_KANJI_WRITING,
-						writingsInKanji[i]);
-			}
-		}
-		this.writingsInKanji = writingsInKanji;
-	}
-
 	public void setWordMeaning(String wordMeaning) {
 		this.wordMeaning = wordMeaning;
 	}
@@ -93,8 +73,7 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 	}
 
 	public static ListElementInitializer<JapaneseWordInformation> getInitializer (){
-		return () -> new JapaneseWordInformation(PartOfSpeech.NOUN,
-				new String [] {""}, "");
+		return () -> new JapaneseWordInformation(PartOfSpeech.NOUN,"");
 	}
 
 	public PartOfSpeech getPartOfSpeech() {
@@ -105,11 +84,36 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 		this.partOfSpeech = partOfSpeech;
 	}
 
+	public boolean hasAdditionalVerbConjugationInformation (){
+		return getVerbConjugationInformation().isEmpty() ? false: true;
+	}
+
+	public String getVerbConjugationInformation (){
+		for (AdditionalInformation additionalInformation: additionalInformations){
+			if (additionalInformation.getTag().equals(AdditionalInformationTag.VERB_CONJUGATION)){
+				return additionalInformation.getValue();
+			}
+		}
+		return "";
+	}
+
+	public Set <String> getKanaWritings(){
+		Set <String> kanaWritingsSet = new HashSet<>();
+		for (List<String> kanaWritings: kanjiToAlternativeKanaWritingMap.values()){
+			kanaWritingsSet.addAll(kanaWritings);
+		}
+		return kanaWritingsSet;
+	}
+
+	public Set <String> getKanjiWritings (){
+		return kanjiToAlternativeKanaWritingMap.keySet();
+	}
+
 	@Override public boolean isSameAs(ListElement element) {
 		if (element instanceof JapaneseWordInformation){
 			JapaneseWordInformation otherWord = (JapaneseWordInformation)element;
-			return otherWord.getWritingsInKana().equals(writingsInKana) && otherWord.getWritingsInKanji()
-					.equals(writingsInKanji);
+			return otherWord.getKanjiToKanaWritingMapping().equals(
+					kanjiToAlternativeKanaWritingMap);
 		}
 		return false;
 	}
@@ -118,18 +122,18 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 	public String toString (){
 		StringBuilder builder = new StringBuilder(20);
 		builder.append("\nKana");
-		if (writingsInKana.length == 1 && writingsInKana[0].isEmpty()){
-			return "";
-		}
-		for (String kana: writingsInKana){
-			builder.append(kana);
-			builder.append(" ");
-		}
-		builder.append("\nKanjis");
-		for (String kanji: writingsInKanji){
-			builder.append(kanji);
-			builder.append(" ");
-		}
+//		if (writingsInKana.length == 1 && writingsInKana[0].isEmpty()){
+//			return "";
+//		}
+//		for (String kana: writingsInKana){
+//			builder.append(kana);
+//			builder.append(" ");
+//		}
+//		builder.append("\nKanjis");
+//		for (String kanji: writingsInKanji){
+//			builder.append(kanji);
+//			builder.append(" ");
+//		}
 		builder.append("\nAdditionalInformations");
 		for (AdditionalInformation additionalInformation: additionalInformations){
 			builder.append(additionalInformation.getTag());

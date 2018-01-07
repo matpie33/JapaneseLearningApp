@@ -68,7 +68,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 		remainingLabel = new JLabel(repeatingWordsController.createRemainingKanjisPrompt());
 		AbstractButton returnButton = createReturnButton();
 		createRepeatingPanel();
-		setButtonsToLearning();
+		setButtonsToRecognizingState();
 		mainPanel.getPanel().repaint();
 		centerPanel.addRows(SimpleRowBuilder.createRow(FillType.NONE, Anchor.NORTH, titleLabel, time)
 				.nextRow(FillType.BOTH, repeatingPanel.getPanel()).setBorder(getDefaultBorder())
@@ -78,7 +78,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 				.useAllExtraVerticalSpace());
 	}
 
-	private void setButtonsToLearning() {
+	private void setButtonsToRecognizingState() {
 		notRecognizedWord.setEnabled(false);
 		showPreviousWord.setEnabled(repeatingWordsController.previousWordExists());
 	}
@@ -137,12 +137,12 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 				ButtonsNames.NOT_RECOGNIZED, HotkeysDescriptions.SET_KANJI_AS_PROBLEMATIC);
 	}
 
-	public void setElementsToLearningState() {
+	public void setElementsToRecognizingState() {
 		showKanjiOrRecognizeWord.setText(ButtonsNames.SHOW_KANJI);
-		setButtonsToLearning();
+		setButtonsToRecognizingState();
 	}
 
-	public void updateRemainingKanjis (String remainingKanjisPrompt){
+	public void updateRemainingKanjisText(String remainingKanjisPrompt){
 		remainingLabel.setText(remainingKanjisPrompt);
 	}
 

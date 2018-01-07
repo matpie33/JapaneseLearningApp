@@ -23,6 +23,7 @@ import com.kanji.list.myList.MyList;
 import com.kanji.list.listRows.RowInKanjiInformations;
 import com.kanji.list.listRows.RowInRepeatingList;
 import com.kanji.range.SetOfRanges;
+import com.kanji.repeating.RepeatingJapaneseWordsDisplayer;
 import com.kanji.repeating.RepeatingKanjiDisplayer;
 import com.kanji.repeating.RepeatingWordDisplayer;
 import com.kanji.saving.ApplicationStateManager;
@@ -50,6 +51,7 @@ public class ApplicationController implements ApplicationStateManager {
 	private JapaneseWordsFileReader japaneseWordsFileReader;
 	private SavingInformation savingInformation;
 	private RepeatingKanjiDisplayer kanjiWordDisplayer;
+	private RepeatingJapaneseWordsDisplayer repeatingJapaneseWordsDisplayer;
 
 
 	public ApplicationController(ApplicationWindow parent) {
@@ -60,6 +62,9 @@ public class ApplicationController implements ApplicationStateManager {
 		applicationStateToManagerMap = new HashMap<>();
 		loadingAndSaving = new LoadingAndSaving();
 		japaneseWordsFileReader = new JapaneseWordsFileReader();
+		repeatingJapaneseWordsDisplayer = new RepeatingJapaneseWordsDisplayer(
+				parent.getKanjiFont());
+		kanjiWordDisplayer = new RepeatingKanjiDisplayer(parent.getKanjiFont());
 
 	}
 
@@ -95,10 +100,22 @@ public class ApplicationController implements ApplicationStateManager {
 				Titles.JAPANESE_WORDS_LIST, true,
 				JapaneseWordInformation.getElementsTypesAndLabels(),
 				JapaneseWordInformation.getInitializer());
-		japaneseWords.addWord(new JapaneseWordInformation(PartOfSpeech.NOUN,
-				new String [] {"ねこ"}, "kot"));
-		japaneseWords.addWord(new JapaneseWordInformation(PartOfSpeech.NOUN,
-				new String [] {"犬"}, new String [] {"いぬ"}, "pies"));
+
+		JapaneseWordInformation cat = new JapaneseWordInformation(PartOfSpeech.NOUN,
+				"kot");
+		cat.addWriting("","ねこ");
+		japaneseWords.addWord(cat);
+		JapaneseWordInformation dog = new JapaneseWordInformation(PartOfSpeech.NOUN,
+				"pies");
+		dog.addWriting("犬","いぬ");
+		japaneseWords.addWord(dog);
+		JapaneseWordInformation verb = new JapaneseWordInformation(PartOfSpeech.VERB,
+				"jeść");
+		verb.addWriting("食べる", "たべる");
+		verb.addWritings("開ける", "あける", "さける");
+		verb.addAditionalInformation(AdditionalInformationTag.VERB_CONJUGATION,
+				Labels.VERB_CONJUGATION_GODAN);
+		japaneseWords.addWord(verb);
 	}
 
 	private void initializeJapaneseRepeatingDates(){
@@ -271,7 +288,7 @@ public class ApplicationController implements ApplicationStateManager {
 				Titles.KANJI_LIST, true,
 				KanjiInformation.getElementsTypesAndLabels(),
 				KanjiInformation.getInitializer());
-		kanjiWordDisplayer = new RepeatingKanjiDisplayer(parent.getKanjiFont());
+
 		for (int i = 1; i <= 15; i++) {
 			kanjiList.addWord(new KanjiInformation("Word no. " + i, i));
 		}
@@ -442,9 +459,10 @@ public class ApplicationController implements ApplicationStateManager {
 		if (listClass.equals(KanjiInformation.class)){
 			return kanjiWordDisplayer;
 		}
-		else {
-			return null; //TODO
+		else if (listClass.equals(JapaneseWordInformation.class)){
+			return repeatingJapaneseWordsDisplayer; //TODO
 		}
+		return null;
 	}
 
 	public void finishedRepeating(){

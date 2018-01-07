@@ -9,6 +9,7 @@ import com.kanji.list.listElements.JapaneseWordInformation;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class JapaneseWordsFileReader {
@@ -137,13 +138,40 @@ public class JapaneseWordsFileReader {
 		String [] alternativeKanaWritings = splitWordByComma(stringInKana);
 
 		japaneseWordInformation.setPartOfSpeech(partOfSpeech);
-		japaneseWordInformation.setWritingsInKana(
+		addWritings(
 				extractAndSetAlternativeWritingsAndConjugationType(
-						alternativeKanaWritings, japaneseWordInformation, partOfSpeech));
-		japaneseWordInformation.setWritingsInKanji(
+						alternativeKanaWritings, japaneseWordInformation, partOfSpeech),
+
 				extractAndSetAlternativeWritingsAndConjugationType(
-						alternativeKanjiWritings, japaneseWordInformation, partOfSpeech));
+						alternativeKanjiWritings, japaneseWordInformation, partOfSpeech),
+				japaneseWordInformation);
 		//TODO maybe we could do it as a one call
+	}
+
+	private void addWritings (String [] kanaWritings, String [] kanjiWritings,
+			JapaneseWordInformation japaneseWordInformation){
+		if (kanaWritings.length == kanjiWritings.length){
+			for (int i=0; i< kanaWritings.length; i++){
+				japaneseWordInformation.addWriting(kanjiWritings[i],
+						kanaWritings[i]);
+			}
+		}
+		else if (kanaWritings.length > kanjiWritings.length){
+			int difference = kanaWritings.length - kanjiWritings.length;
+			List <String> kanaWritingsForFirstKanjiWriting = new ArrayList<>();
+			for (int i=0; i<difference; i++){
+				kanaWritingsForFirstKanjiWriting.add(kanaWritings[i]);
+			}
+			japaneseWordInformation.addWritings(kanjiWritings[0],
+					kanaWritingsForFirstKanjiWriting.toArray(new String [] {}));
+			for (int i = 1; i< kanaWritings.length; i++){
+				japaneseWordInformation.addWriting(kanjiWritings[i],
+						kanaWritings[i+difference]);
+			}
+		}
+		else if (kanaWritings.length < kanjiWritings.length){
+			//TODO finish and retest
+		}
 	}
 
 	private String [] extractAndSetAlternativeWritingsAndConjugationType (String[] splittedWords,

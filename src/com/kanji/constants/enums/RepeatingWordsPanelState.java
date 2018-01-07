@@ -1,5 +1,5 @@
 package com.kanji.constants.enums;
 
 public enum RepeatingWordsPanelState {
-	WORD_IS_SHOWING, WORD_NOT_SHOWING
+	WORD_INFORMATION_SHOWING, RECOGNIZING_WORD
 }
