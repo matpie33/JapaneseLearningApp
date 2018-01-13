@@ -66,9 +66,11 @@ public class JapaneseWordsFileReader {
 				partOfSpeech = PartOfSpeech.NOUN;
 			}
 			else if (stringInKana.contains("+な") || stringInKanji.contains("+な") ||
+			meaning.contains(("+ な"))||
 					lastCharacterOf(stringInKanji) == '的'){
 				stringInKana = removeFromString(stringInKana, "+な");
 				stringInKanji = removeFromString(stringInKanji, "+な");
+				meaning = removeFromString(meaning, "+ な");
 				partOfSpeech = PartOfSpeech.NA_ADJECTIVE;
 			}
 			else if ((""+lastCharacterOfKanjiOrKanaIfKanjiIsEmpty(stringInKanji, stringInKana))
@@ -152,21 +154,21 @@ public class JapaneseWordsFileReader {
 			JapaneseWordInformation japaneseWordInformation){
 		if (kanaWritings.length == kanjiWritings.length){
 			for (int i=0; i< kanaWritings.length; i++){
-				japaneseWordInformation.addWriting(kanjiWritings[i],
-						kanaWritings[i]);
+				japaneseWordInformation.addWriting(kanaWritings[i],
+						kanjiWritings[i]);
 			}
 		}
-		else if (kanaWritings.length > kanjiWritings.length){
+		else if (kanjiWritings.length > kanaWritings.length){
 			int difference = kanaWritings.length - kanjiWritings.length;
-			List <String> kanaWritingsForFirstKanjiWriting = new ArrayList<>();
+			List <String> kanjiWritingsForKanaWriting = new ArrayList<>();
 			for (int i=0; i<difference; i++){
-				kanaWritingsForFirstKanjiWriting.add(kanaWritings[i]);
+				kanjiWritingsForKanaWriting.add(kanjiWritings[i]);
 			}
-			japaneseWordInformation.addWritings(kanjiWritings[0],
-					kanaWritingsForFirstKanjiWriting.toArray(new String [] {}));
+			japaneseWordInformation.addWritings(kanaWritings[0],
+					kanjiWritingsForKanaWriting.toArray(new String [] {}));
 			for (int i = 1; i< kanaWritings.length; i++){
-				japaneseWordInformation.addWriting(kanjiWritings[i],
-						kanaWritings[i+difference]);
+				japaneseWordInformation.addWriting(kanaWritings[i],
+						kanjiWritings[i+difference]);
 			}
 		}
 		else if (kanaWritings.length < kanjiWritings.length){

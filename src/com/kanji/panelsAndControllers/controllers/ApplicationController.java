@@ -103,16 +103,16 @@ public class ApplicationController implements ApplicationStateManager {
 
 		JapaneseWordInformation cat = new JapaneseWordInformation(PartOfSpeech.NOUN,
 				"kot");
-		cat.addWriting("","ねこ");
+		cat.addWriting("ねこ","");
 		japaneseWords.addWord(cat);
 		JapaneseWordInformation dog = new JapaneseWordInformation(PartOfSpeech.NOUN,
 				"pies");
-		dog.addWriting("犬","いぬ");
+		dog.addWriting("いぬ","犬");
 		japaneseWords.addWord(dog);
 		JapaneseWordInformation verb = new JapaneseWordInformation(PartOfSpeech.VERB,
-				"jeść");
-		verb.addWriting("食べる", "たべる");
-		verb.addWritings("開ける", "あける", "さける");
+				"otwierać");
+		verb.addWritings("あける", "開ける", " 空ける,  明ける");
+		verb.addWritings("ひらける", "開ける", " 空ける,  明ける");
 		verb.addAditionalInformation(AdditionalInformationTag.VERB_CONJUGATION,
 				Labels.VERB_CONJUGATION_GODAN);
 		japaneseWords.addWord(verb);

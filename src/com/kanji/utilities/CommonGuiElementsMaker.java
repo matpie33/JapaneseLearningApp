@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
+import com.guimaker.enums.FillType;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.TextAreaOptions;
 import com.guimaker.options.TextComponentOptions;
@@ -60,7 +61,7 @@ public class CommonGuiElementsMaker {
 			JapaneseWordInformation japaneseWordInformation){
 		List <JTextComponent> textComponents = new ArrayList<>();
 		for (Map.Entry<String, List<String>> writing:
-				japaneseWordInformation.getKanjiToKanaWritingMapping().entrySet()){
+				japaneseWordInformation.getKanaToKanjiWritingsMap().entrySet()){
 			List <String> writings = new ArrayList<>();
 			writings.add(writing.getKey());
 			writings.addAll(writing.getValue());
@@ -88,8 +89,8 @@ public class CommonGuiElementsMaker {
 				components = new JComponent[] {kanaAndKanjiTextfield};
 				columnNumber = firstColumnIndex+1;
 			}
-			panel.addElementsInColumnStartingFromColumn(columnNumber,
-					components);
+			panel.addElementsInColumnStartingFromColumn(Arrays.asList(components),
+					FillType.HORIZONTAL, columnNumber, components);
 			firstTextField = false;
 		}
 	}

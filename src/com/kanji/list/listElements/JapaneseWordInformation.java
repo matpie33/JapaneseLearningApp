@@ -24,16 +24,16 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 		kanjiToAlternativeKanaWritingMap = new HashMap<>();
 	}
 
-	public void addWritings (String kanjiWriting, String ... kanaWritingForThisKanji){
-		kanjiToAlternativeKanaWritingMap.put(kanjiWriting,
-				Arrays.asList(kanaWritingForThisKanji));
+	public void addWritings (String kanaWriting, String ... kanjiWritingsForThisKana){
+		kanjiToAlternativeKanaWritingMap.put(kanaWriting,
+				Arrays.asList(kanjiWritingsForThisKana));
 	}
 
-	public void addWriting (String kanjiWriting, String kanaWriting){
-		addWritings(kanjiWriting, kanaWriting);
+	public void addWriting (String kanaWriting, String kanjiWriting){
+		addWritings(kanaWriting, kanjiWriting);
 	}
 
-	public Map <String, List<String>> getKanjiToKanaWritingMapping (){
+	public Map <String, List<String>> getKanaToKanjiWritingsMap(){
 		return kanjiToAlternativeKanaWritingMap;
 	}
 
@@ -97,7 +97,7 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 		return "";
 	}
 
-	public Set <String> getKanaWritings(){
+	public Set <String> getKanjiWritings(){
 		Set <String> kanaWritingsSet = new HashSet<>();
 		for (List<String> kanaWritings: kanjiToAlternativeKanaWritingMap.values()){
 			kanaWritingsSet.addAll(kanaWritings);
@@ -105,14 +105,14 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 		return kanaWritingsSet;
 	}
 
-	public Set <String> getKanjiWritings (){
+	public Set <String> getKanaWritings(){
 		return kanjiToAlternativeKanaWritingMap.keySet();
 	}
 
 	@Override public boolean isSameAs(ListElement element) {
 		if (element instanceof JapaneseWordInformation){
 			JapaneseWordInformation otherWord = (JapaneseWordInformation)element;
-			return otherWord.getKanjiToKanaWritingMapping().equals(
+			return otherWord.getKanaToKanjiWritingsMap().equals(
 					kanjiToAlternativeKanaWritingMap);
 		}
 		return false;
