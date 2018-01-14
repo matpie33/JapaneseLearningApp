@@ -4,13 +4,12 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import com.kanji.constants.enums.SplitPaneOrientation;
 import com.kanji.constants.strings.*;
-import com.kanji.list.listElements.ListElement;
+import com.kanji.context.ContextOwner;
+import com.kanji.context.KanjiContext;
+import com.kanji.list.myList.MyList;
 import com.kanji.utilities.CommonGuiElementsMaker;
 import com.kanji.webPanel.ConnectionFailKanjiOfflinePage;
 import com.kanji.webPanel.ConnectionFailMessagePage;
@@ -27,52 +26,45 @@ import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.kanji.list.listElements.KanjiInformation;
-import com.kanji.panelsAndControllers.controllers.ProblematicKanjisController;
+import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.saving.ProblematicKanjisState;
-import com.kanji.list.myList.MyList;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
 import javafx.embed.swing.JFXPanel;
 
 public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
-	private ProblematicKanjisController controller;
-	private MainPanel wordsList;
+	private ProblematicWordsController controller;
 	private JFXPanel kanjiOnlineDisplayingPanel;
 	private JTextComponent kanjiTextPane;
-	private Font kanjiFont;
 	private MainPanel kanjiOfflineDisplayingPanel;
 	private Font messageFont;
 	private final String DICTIONARY_PL_EN_MAIN_PAGE = "https://pl.bab.la/slownik/polski-angielski/";
 	private WebPagePanel dictionaryWebPanel;
 	private WebPagePanel kanjiWebPanel;
+	private MyList wordsToReviewList;
 
-	public ProblematicKanjiPanel(Font kanjiFont, MyList <KanjiInformation> kanjiList,
-			ApplicationWindow parentDialog, ProblematicKanjisController controller) {
+	public ProblematicKanjiPanel(Font kanjiFont, ApplicationWindow parentDialog,
+			ProblematicWordsController controller,
+			ContextOwner <KanjiContext> kanjiContextContextOwner) {
 		this.parentDialog = parentDialog;
 		this.controller = controller;
 		kanjiOnlineDisplayingPanel = new JFXPanel();
-		this.kanjiFont = kanjiFont;
 		kanjiOfflineDisplayingPanel = new MainPanel(BasicColors.VERY_BLUE);
 		messageFont = new JLabel().getFont().deriveFont(15f);
-		dictionaryWebPanel = new WebPagePanel(controller, new ConnectionFailMessagePage());
-		kanjiWebPanel = new WebPagePanel(controller, new ConnectionFailKanjiOfflinePage(kanjiFont));
+		dictionaryWebPanel = new WebPagePanel(kanjiContextContextOwner, new ConnectionFailMessagePage());
+		kanjiWebPanel = new WebPagePanel(kanjiContextContextOwner, new ConnectionFailKanjiOfflinePage(kanjiFont));
 	}
 
-	public void showKanjiKoohiLoginPage (){
-		controller.showKanjiKoohiLoginPage();
+	public void initialize(){
 		dictionaryWebPanel.showPage(DICTIONARY_PL_EN_MAIN_PAGE);
+		wordsToReviewList = controller.getWordsToReviewList();
 	}
 
 	public void restoreState (ProblematicKanjisState problematicKanjisState){
-		controller.createProblematicKanjisList(problematicKanjisState.getReviewedKanjis(),
+		controller.createProblematicWordsList(problematicKanjisState.getReviewedKanjis(),
 				problematicKanjisState.getNotReviewKanjis());
 		controller.highlightReviewedWords(problematicKanjisState.getReviewedKanjis().size());
-	}
-
-	public ProblematicKanjisController getController() {
-		return controller;
 	}
 
 	@Override
@@ -96,22 +88,13 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiOfflineDisplayingPanel
 				.addRow(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, kanjiTextPane));
 
-		wordsList = new MainPanel(BasicColors.OCEAN_BLUE);
-		wordsList.setBorder(getDefaultBorder());
-		wordsList.addRows(SimpleRowBuilder.createRow(FillType.BOTH,
-				controller.getKanjiRepeatingList().getPanel()));
-
 		JSplitPane wordsAndDictionaryPane = CommonGuiElementsMaker.createSplitPane(
-				SplitPaneOrientation.VERTICAL);
-		wordsAndDictionaryPane.setLeftComponent(dictionaryWebPanel.getPanel());
-		wordsAndDictionaryPane.setRightComponent(wordsList.getPanel());
-		wordsAndDictionaryPane.setResizeWeight(0.7);
+				SplitPaneOrientation.VERTICAL, dictionaryWebPanel.getPanel(),
+				wordsToReviewList.getPanel(), 0.7);
 
 		JSplitPane mainSplitPane = CommonGuiElementsMaker.createSplitPane(
-				SplitPaneOrientation.HORIZONTAL);
-		mainSplitPane.setLeftComponent(wordsAndDictionaryPane);
-		mainSplitPane.setRightComponent(kanjiWebPanel.getPanel());
-		mainSplitPane.setResizeWeight(0.3);
+				SplitPaneOrientation.HORIZONTAL, wordsAndDictionaryPane,
+				kanjiWebPanel.getPanel(), 0.3);
 
 		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH,
 				mainSplitPane));
@@ -119,14 +102,14 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		setNavigationButtons(Anchor.CENTER, buttonClose);
 	}
 
-	@Override
-	protected MainPanel parentPanelForHotkeys (){
-		return wordsList;
-	}
+//	@Override
+//	protected MainPanel parentPanelForHotkeys (){
+//		return wordsToReviewList.getpa;
+//	}
 
 	private void configureParentDialog() {
 
-		addHotkey(KeyEvent.VK_SPACE, controller.createActionShowNextKanjiOrCloseDialog(),
+		addHotkey(KeyEvent.VK_SPACE, controller.createActionShowNextWordOrCloseDialog(),
 				((JDialog) parentDialog.getContainer()).getRootPane(),
 				HotkeysDescriptions.SHOW_NEXT_KANJI);
 
@@ -143,29 +126,9 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiWebPanel.showPage(url);
 	}
 
-	public void highlightRow(int rowNumber) {
-		controller.getKanjiRepeatingList().highlightRow(rowNumber);
-		//TODO move it to controller or keep kanji repeating list as member variable
-	}
-
 	@Override
 	public DialogWindow getDialog() {
 		return parentDialog;
-	}
-
-	public <Element extends ListElement> void addProblematicKanjis (
-			Set<Element> problematicKanjis){
-		controller.addProblematicKanjis(getProblematicKanjisIds(problematicKanjis));
-	}
-
-	private <Element extends ListElement> Set <Integer> getProblematicKanjisIds (
-			Set <Element> kanjiInformations){
-		//TODO temporary workaround
-		Set <Integer> problematicKanjisIds = new HashSet<>();
-		for (Element kanjiInformation: kanjiInformations){
-			problematicKanjisIds.add(((KanjiInformation)kanjiInformation).getKanjiID());
-		}
-		return problematicKanjisIds;
 	}
 
 }

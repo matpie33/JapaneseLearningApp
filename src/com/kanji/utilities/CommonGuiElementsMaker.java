@@ -43,9 +43,13 @@ public class CommonGuiElementsMaker {
 				.createLabel(new ComponentOptions().text(message).foregroundColor(Color.RED));
 	}
 
-	public static JSplitPane createSplitPane(SplitPaneOrientation splitPaneOrientation) {
+	public static JSplitPane createSplitPane(SplitPaneOrientation splitPaneOrientation,
+			JComponent leftOrUpperComponent, JComponent rightOrDownComponent, double splittingWeight) {
 		JSplitPane splitPane = new JSplitPane(splitPaneOrientation.getValue());
 		splitPane.setContinuousLayout(true);
+		splitPane.setLeftComponent(leftOrUpperComponent);
+		splitPane.setRightComponent(rightOrDownComponent);
+		splitPane.setResizeWeight(splittingWeight);
 		return splitPane;
 	}
 

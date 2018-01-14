@@ -16,16 +16,16 @@ import com.guimaker.panels.MainPanel;
 import com.kanji.list.listElements.KanjiInformation;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Labels;
-import com.kanji.panelsAndControllers.controllers.ProblematicKanjisController;
-import com.kanji.model.KanjiRow;
+import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
+import com.kanji.model.WordRow;
 import com.kanji.list.myList.ListRowMaker;
 import com.kanji.utilities.CommonListElements;
 
 public class RowInKanjiRepeatingList implements ListRowMaker<KanjiInformation> {
 
-	private ProblematicKanjisController controller;
+	private ProblematicWordsController controller;
 
-	public RowInKanjiRepeatingList(ProblematicKanjisController controller) {
+	public RowInKanjiRepeatingList(ProblematicWordsController controller) {
 		this.controller = controller;
 	}
 
@@ -43,7 +43,7 @@ public class RowInKanjiRepeatingList implements ListRowMaker<KanjiInformation> {
 				.foregroundColor(Color.WHITE));
 		int rowNumber = controller.getNumberOfRows();
 
-		JButton buttonGoToSource = createButtonGoToSource(rowNumber, row.getKanjiID());
+		JButton buttonGoToSource = createButtonGoToSource(rowNumber, row);
 		panel.addElementsInColumnStartingFromColumn(kanjiTextArea, 0,
 				commonListElements.getRowNumberLabel(), kanjiKeyword, kanjiTextArea);
 		panel.addElementsInColumnStartingFromColumn(1, kanjiId, id);
@@ -51,12 +51,12 @@ public class RowInKanjiRepeatingList implements ListRowMaker<KanjiInformation> {
 		return panel;
 	}
 
-	private JButton createButtonGoToSource(int rowNumber, int kanjiId) {
+	private JButton createButtonGoToSource(int rowNumber, KanjiInformation kanjiInformation) {
 		JButton button = new JButton(ButtonsNames.GO_TO_SOURCE);
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.goToSpecifiedResource(new KanjiRow(kanjiId, rowNumber));
+				controller.goToSpecifiedResource(new WordRow(kanjiInformation, rowNumber));
 			}
 		});
 		button.setFocusable(false);

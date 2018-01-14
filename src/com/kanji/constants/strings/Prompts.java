@@ -11,7 +11,7 @@ public class Prompts {
 	public static final String RANGE_SUM = "Łączna liczba kanji: ";
 	public static final String PROBLEMATIC_KANJI = "Problematycznych kanji: ";
 	public static final String REPEATING_DONE = "Koniec słów do powtórzenia.";
-	public static final String REMAINING_KANJI = "Pozostało:";
+	public static final String REMAINING_WORDS = "Pozostało:";
 	public static final String KANJI = "kanji.";
 	public static final String SAVING_STATUS = "Status zapisywania: ";
 	public static final String REPEATING_TIME = "Czas powtórek wyniósł: ";
@@ -24,9 +24,8 @@ public class Prompts {
 	public static final String KANJI_LOADING = "Trwa wczytywanie kanji...";
 	public static final String PROBLEMATIC_KANJIS_ADDED = "+ problematyczne";
 	public static final String PAUSE_ENABLED = "Włączono pauzę.";
-	public static final String NO_MORE_KANJIS = "Koniec kanji.";
+	public static final String NO_MORE_WORDS_TO_REVIEW = "Koniec słów do przejrzenia.";
 	public static final String SEARCH_OPTION_PROMPT = "Szukaj według: ";
-	public static final String LOADING_PROMPT = "Wczytywanie...";
 	public static final String EXIT_LEARNING = "Czy na pewno chcesz przerwać naukę?";
 	public static final String CLOSE_APPLICATION = "Czy na pewno chcesz zamknąć aplikację?";
 	public static final String UNFINISHED_REPEATING = "Wykryto powtórki, które zostały przerwane. Wznawiam powtarzanie.";

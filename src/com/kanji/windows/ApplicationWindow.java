@@ -18,21 +18,17 @@ import com.kanji.constants.enums.SavingStatus;
 import com.kanji.constants.strings.Titles;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
+import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
+import com.kanji.panelsAndControllers.panels.*;
 import com.kanji.saving.ProblematicKanjisState;
 import com.kanji.list.myList.MyList;
-import com.kanji.panelsAndControllers.panels.InsertWordPanel;
-import com.kanji.panelsAndControllers.panels.LearningStartPanel;
-import com.kanji.panelsAndControllers.panels.LoadingPanel;
-import com.kanji.panelsAndControllers.panels.ProblematicKanjiPanel;
-import com.kanji.panelsAndControllers.panels.SearchWordPanel;
-import com.kanji.panelsAndControllers.panels.StartingPanel;
 import com.kanji.timer.TimeSpentHandler;
 
 @SuppressWarnings("serial")
 public class ApplicationWindow extends DialogWindow {
 
 	private JPanel mainApplicationPanel;
-	private ProblematicKanjiPanel problematicKanjiPanel;
+	private ProblematicWordsController problematicWordsController;
 	private StartingPanel startingPanel;
 	private JFrame container;
 	private ApplicationController applicationController;
@@ -52,7 +48,7 @@ public class ApplicationWindow extends DialogWindow {
 		startingPanel = new StartingPanel(this);
 
 		applicationController.initializeApplicationStateManagers();
-		problematicKanjiPanel = applicationController.getProblematicKanjiPanel ();
+		problematicWordsController = applicationController.getProblematicWordsController();
 
 		mainApplicationPanel.add(startingPanel.createPanel(),
 				ApplicationPanels.STARTING_PANEL.getPanelName());
@@ -148,28 +144,33 @@ public class ApplicationWindow extends DialogWindow {
 				Position.LEFT_CORNER);
 	}
 
-	public <Element extends ListElement> void showProblematicKanjiDialog(
-			Set<Element> problematicKanjis) {
-		problematicKanjiPanel.addProblematicKanjis(problematicKanjis);
-		showProblematicKanjiDialog();
+	public <Element extends ListElement> void showProblematicWordsDialog(
+			Set<Element> problematicWords) {
+		problematicWordsController.addProblematicWords(problematicWords);
+		showProblematicWordsDialog();
 	}
+	//TODO why some dialogs like problematic and search word are in application window,
+	// and the others are in application controller?
 
-	public void showProblematicKanjiDialog() {
-		if (!problematicKanjiPanel.isDisplayable()){
-			showReadyPanel(problematicKanjiPanel.getDialog());
+	public void showProblematicWordsDialog() {
+
+
+		if (!problematicWordsController.isPanelInitialized()){
+			showReadyPanel(problematicWordsController.getDialog());
 		}
 		else{
-			problematicKanjiPanel.showKanjiKoohiLoginPage();
-			createDialog(problematicKanjiPanel, Titles.PROBLEMATIC_KANJIS_WINDOW,
+			problematicWordsController.initialize();
+			createDialog(problematicWordsController.getPanel(), Titles.PROBLEMATIC_KANJIS_WINDOW,
 					true, Position.CENTER);
 
 		}
-		applicationController.switchStateManager(problematicKanjiPanel.getController());
+		applicationController.switchStateManager(problematicWordsController);
 	}
 
-	public void showProblematicKanjiDialog(ProblematicKanjisState problematicKanjisState) {
-		problematicKanjiPanel.restoreState(problematicKanjisState);
-		showProblematicKanjiDialog();
+
+	public void showProblematicWordsDialog(ProblematicKanjisState problematicKanjisState) {
+		displayMessageAboutUnfinishedRepeating();
+		showProblematicWordsDialog();
 	}
 
 	public LoadingPanel showProgressDialog() {

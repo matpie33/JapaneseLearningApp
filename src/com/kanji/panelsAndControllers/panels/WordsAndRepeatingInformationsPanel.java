@@ -32,10 +32,8 @@ public class WordsAndRepeatingInformationsPanel extends AbstractPanelWithHotkeys
 
 	private void createSplitPane (MyList wordsList, MyList repeatingList){
 		listsSplitPane = CommonGuiElementsMaker.createSplitPane(
-				SplitPaneOrientation.HORIZONTAL);
-		listsSplitPane.setLeftComponent(wordsList.getPanel());
-		listsSplitPane.setRightComponent(repeatingList.getPanel());
-		listsSplitPane.setResizeWeight(0.5);
+				SplitPaneOrientation.HORIZONTAL,wordsList.getPanel(), repeatingList.getPanel(),
+				0.5);
 	}
 
 	public MyList getRepeatingList() {

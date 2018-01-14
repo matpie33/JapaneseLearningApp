@@ -14,7 +14,7 @@ import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.KanjiInformation;
 import com.kanji.list.listElements.RepeatingInformation;
 import com.kanji.list.listRows.RowInJapaneseWordInformations;
-import com.kanji.panelsAndControllers.panels.ProblematicKanjiPanel;
+import com.kanji.panelsAndControllers.panels.ProblematicJapaneseWordsPanel;
 import com.kanji.panelsAndControllers.panels.RepeatingWordsPanel;
 import com.kanji.constants.strings.*;
 import com.kanji.exception.DuplicatedWordException;
@@ -22,6 +22,8 @@ import com.kanji.model.KanjisAndRepeatingInfo;
 import com.kanji.list.myList.MyList;
 import com.kanji.list.listRows.RowInKanjiInformations;
 import com.kanji.list.listRows.RowInRepeatingList;
+import com.kanji.problematicWords.ProblematicKanjiDisplayer;
+import com.kanji.problematicWords.ProblematicWordsDisplayer;
 import com.kanji.range.SetOfRanges;
 import com.kanji.repeating.RepeatingJapaneseWordsDisplayer;
 import com.kanji.repeating.RepeatingKanjiDisplayer;
@@ -47,12 +49,13 @@ public class ApplicationController implements ApplicationStateManager {
 	private boolean isClosingSafe;
 	private ApplicationStateManager applicationStateManager;
 	private Map <ApplicationSaveableState, ApplicationStateManager> applicationStateToManagerMap;
-	private ProblematicKanjisController problematicKanjisController;
+	private ProblematicWordsController problematicWordsController;
 	private JapaneseWordsFileReader japaneseWordsFileReader;
 	private SavingInformation savingInformation;
 	private RepeatingKanjiDisplayer kanjiWordDisplayer;
 	private RepeatingJapaneseWordsDisplayer repeatingJapaneseWordsDisplayer;
-
+	private ProblematicKanjiDisplayer problematicKanjiDisplayer;
+	private ProblematicJapaneseWordsPanel problematicJapaneseWordsPanel;
 
 	public ApplicationController(ApplicationWindow parent) {
 		problematicKanjis = new HashSet<>();
@@ -64,12 +67,13 @@ public class ApplicationController implements ApplicationStateManager {
 		japaneseWordsFileReader = new JapaneseWordsFileReader();
 		repeatingJapaneseWordsDisplayer = new RepeatingJapaneseWordsDisplayer(
 				parent.getKanjiFont());
+
 		kanjiWordDisplayer = new RepeatingKanjiDisplayer(parent.getKanjiFont());
 
 	}
 
-	public ProblematicKanjiPanel getProblematicKanjiPanel (){
-		return problematicKanjisController.getProblematicKanjiPanel();
+	public ProblematicWordsController getProblematicWordsController(){
+		return problematicWordsController;
 	}
 
 	public RepeatingWordsPanel getRepeatingWordsPanel (){
@@ -77,13 +81,16 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	public void initializeApplicationStateManagers(){
-		problematicKanjisController = new ProblematicKanjisController(parent,
-				parent.getKanjiFont(), kanjiList);
+		problematicWordsController = new ProblematicWordsController(parent);
+		problematicKanjiDisplayer = new ProblematicKanjiDisplayer(parent,
+				problematicWordsController);
+		problematicJapaneseWordsPanel = new ProblematicJapaneseWordsPanel(
+				problematicWordsController);
 		this.repeatingWordsPanelController = new RepeatingWordsController(parent);
 		applicationStateToManagerMap.put(ApplicationSaveableState.REPEATING_WORDS,
 				repeatingWordsPanelController);
 		applicationStateToManagerMap.put(ApplicationSaveableState.REVIEWING_PROBLEMATIC_KANJIS,
-				problematicKanjisController);
+				problematicWordsController);
 	}
 
 	//TODO dependencies between classes are weird and should be reconsidered
@@ -205,7 +212,7 @@ public class ApplicationController implements ApplicationStateManager {
 		}
 	}
 
-	private Set <KanjiInformation> convertIdsToKanjiInformations (Set <Integer> ids){
+	public Set <KanjiInformation> convertIdsToKanjiInformations (Set <Integer> ids){
 		Set <KanjiInformation> kanjiInformations = new HashSet<>();
 		for (Integer i: ids){
 			kanjiInformations.add(getKanjiList()
@@ -234,7 +241,7 @@ public class ApplicationController implements ApplicationStateManager {
 			if (savingInformation.getKanjiKoohiCookiesHeaders() != null){
 				//TODO this should go to application controller's "restore
 				// state method along with filling the mylists"
-				problematicKanjisController.setCookies(savingInformation.getKanjiKoohiCookiesHeaders());
+				problematicKanjiDisplayer.setCookies(savingInformation.getKanjiKoohiCookiesHeaders());
 			}
 		}
 		catch (IOException e) {
@@ -348,6 +355,10 @@ public class ApplicationController implements ApplicationStateManager {
 	public void showLearningStartDialog() {
 		repeatingWordsPanelController.setWordDisplayer(
 				getWordDisplayerForCurrentWordList());
+		problematicWordsController.setProblematicWordsDisplayer(
+				getProblematicWordsDisplayerBasedOnActiveWordList(
+						parent.getStartingPanel().getActiveWordsList()
+				));
 		parent.showLearningStartDialog(parent.getStartingPanel().getActiveWordsList()
 				.getNumberOfWords());
 	}
@@ -460,7 +471,7 @@ public class ApplicationController implements ApplicationStateManager {
 			return kanjiWordDisplayer;
 		}
 		else if (listClass.equals(JapaneseWordInformation.class)){
-			return repeatingJapaneseWordsDisplayer; //TODO
+			return repeatingJapaneseWordsDisplayer;
 		}
 		return null;
 	}
@@ -478,7 +489,7 @@ public class ApplicationController implements ApplicationStateManager {
 		SavingInformation savingInformation = new SavingInformation(kanjiList.getWords(),
 				kanjiRepeatingDates.getWords(), getProblematicKanjis(),
 				japaneseWords.getWords(), japaneseWordsRepeatingDates.getWords());
-		List <String> kanjiKoohiCookiesHeaders = problematicKanjisController.getCookieHeaders();
+		List <String> kanjiKoohiCookiesHeaders = problematicKanjiDisplayer.getCookieHeaders();
 		if (!kanjiKoohiCookiesHeaders.isEmpty()){
 			savingInformation.setKanjiKoohiCookiesHeaders(kanjiKoohiCookiesHeaders);
 		}
@@ -493,6 +504,17 @@ public class ApplicationController implements ApplicationStateManager {
 	public void switchStateManager (ApplicationStateManager stateManager){
 		this.applicationStateManager = stateManager;
 		isClosingSafe = false;
+	}
+
+	public ProblematicWordsDisplayer getProblematicWordsDisplayerBasedOnActiveWordList(MyList activeWordList){
+		Class listElementsClass = activeWordList.getListElementClass();
+		if (listElementsClass.equals(KanjiInformation.class)){
+			return problematicKanjiDisplayer;
+		}
+		else if (listElementsClass.equals(JapaneseWordInformation.class)){
+			return null; //TODO;
+		}
+		return null;
 	}
 
 }

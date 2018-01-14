@@ -150,7 +150,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo implements
 				action = new AbstractAction() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						applicationWindow.showProblematicKanjiDialog();
+						applicationWindow.showProblematicWordsDialog();
 					}
 				};
 				break;
@@ -181,7 +181,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo implements
 		problematicKanjiButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				applicationWindow.showProblematicKanjiDialog();
+				applicationWindow.showProblematicWordsDialog();
 			}
 		});
 		return problematicKanjiButton;
