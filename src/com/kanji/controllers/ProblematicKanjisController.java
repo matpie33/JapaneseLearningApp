@@ -1,9 +1,7 @@
 package com.kanji.controllers;
 
-import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.io.File;
 import java.io.IOException;
 import java.net.*;
 import java.util.*;
@@ -26,9 +24,6 @@ import com.kanji.saving.ApplicationStateManager;
 import com.kanji.saving.SavingInformation;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Worker;
 
 import javax.swing.*;
 
@@ -63,7 +58,7 @@ public class ProblematicKanjisController implements ApplicationStateManager, Kan
 		kanjiContext = KanjiContext.emptyContext();
 	}
 
-	public void showKanjiKoohiLoginPage (){
+	public String getKanjiKoohiLoginPageUrl (){
 
 		String pageToRender = "";
 		if (isLoginDataRemembered()){
@@ -72,7 +67,7 @@ public class ProblematicKanjisController implements ApplicationStateManager, Kan
 		else{
 			pageToRender = KANJI_KOOHI_LOGIN_PAGE;
 		}
-		problematicKanjiPanel.showPageInKoohi(pageToRender);
+		return pageToRender;
 	}
 
 	private boolean isLoginDataRemembered (){
@@ -172,6 +167,9 @@ public class ProblematicKanjisController implements ApplicationStateManager, Kan
 		return new AbstractAction(){
 			@Override
 			public void actionPerformed(ActionEvent e){
+				if (!problematicKanjiPanel.isListPanelFocused()){
+					return;
+				}
 				if (hasMoreKanji())
 					goToNextResource();
 				else {

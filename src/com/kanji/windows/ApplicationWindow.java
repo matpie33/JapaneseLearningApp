@@ -135,6 +135,7 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void showLearningStartDialog(MyList list, int maximumNumber) {
+		problematicKanjiPanel.loadDictionaryAndKoohiPage();
 		createDialog(new LearningStartPanel(applicationController, maximumNumber, list),
 				Titles.LEARNING_START_DIALOG, false, Position.CENTER);
 
@@ -162,7 +163,6 @@ public class ApplicationWindow extends DialogWindow {
 			showReadyPanel(problematicKanjiPanel.getDialog());
 		}
 		else{
-			problematicKanjiPanel.showKanjiKoohiLoginPage();
 			createDialog(problematicKanjiPanel, Titles.PROBLEMATIC_KANJIS_WINDOW,
 					true, Position.CENTER);
 

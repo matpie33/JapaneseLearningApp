@@ -9,6 +9,7 @@ import java.util.Set;
 import com.kanji.enums.SplitPaneOrientation;
 import com.kanji.strings.*;
 import com.kanji.utilities.CommonGuiElementsMaker;
+import com.kanji.utilities.FocusableComponentMaker;
 import com.kanji.webPanel.ConnectionFailKanjiOfflinePage;
 import com.kanji.webPanel.ConnectionFailMessagePage;
 import com.kanji.webPanel.WebPagePanel;
@@ -31,7 +32,6 @@ import com.kanji.myList.MyList;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
 import javafx.embed.swing.JFXPanel;
-import javafx.scene.web.WebView;
 
 public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
@@ -58,9 +58,15 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiWebPanel = new WebPagePanel(controller, new ConnectionFailKanjiOfflinePage(kanjiFont));
 	}
 
-	public void showKanjiKoohiLoginPage (){
-		controller.showKanjiKoohiLoginPage();
-		dictionaryWebPanel.showPage(DICTIONARY_PL_EN_MAIN_PAGE);
+	public void loadDictionaryAndKoohiPage(){
+		showPageInKoohi(controller.getKanjiKoohiLoginPageUrl());
+		dictionaryWebPanel.showPageWithoutGrabbingFocus(DICTIONARY_PL_EN_MAIN_PAGE);
+	}
+
+	@Override
+	public void afterVisible (){
+		SwingUtilities.invokeLater(() -> wordsList.getPanel().requestFocusInWindow());
+
 	}
 
 	public void restoreState (ProblematicKanjisState problematicKanjisState){
@@ -98,6 +104,12 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		wordsList.setBorder(getDefaultBorder());
 		wordsList.addRows(SimpleRowBuilder.createRow(FillType.BOTH,
 				controller.getKanjiRepeatingList().getPanel()));
+
+		FocusableComponentMaker.makeFocusable(wordsList.getPanel());
+		FocusableComponentMaker.makeFocusable
+				(dictionaryWebPanel.getPanel());
+		FocusableComponentMaker.makeFocusable
+				(kanjiWebPanel.getPanel());
 
 		JSplitPane wordsAndDictionaryPane = CommonGuiElementsMaker.createSplitPane(
 				SplitPaneOrientation.VERTICAL);
@@ -137,8 +149,12 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		parentDialog.maximize();
 	}
 
+	public boolean isListPanelFocused(){
+		return wordsList.getPanel().hasFocus();
+	}
+
 	public void showPageInKoohi (String url){
-		kanjiWebPanel.showPage(url);
+		kanjiWebPanel.showPageWithoutGrabbingFocus(url);
 	}
 
 	public void highlightRow(int rowNumber) {
