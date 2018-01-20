@@ -12,6 +12,7 @@ public interface ProblematicWordsDisplayer<Element extends ListElement> {
 	public WordRow createWordRow (Element listElement, int rowNumber);
 	public void initialize ();
 	public AbstractPanelWithHotkeysInfo getPanel();
+	public boolean isListPanelFocused ();
 
 
 }

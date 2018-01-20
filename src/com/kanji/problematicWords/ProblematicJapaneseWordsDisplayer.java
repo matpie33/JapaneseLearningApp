@@ -66,4 +66,10 @@ public class ProblematicJapaneseWordsDisplayer
 	public void searchCurrentWordInDictionary(){
 		problematicJapaneseWordsPanel.searchWord(selectedWord);
 	}
+
+	@Override
+	public boolean isListPanelFocused (){
+		return wordsToReviewList.getPanel().hasFocus();
+	}
+
 }

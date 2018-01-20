@@ -10,6 +10,7 @@ import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.context.ContextOwner;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.context.KanjiContext;
+import com.kanji.utilities.FocusableComponentMaker;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -36,6 +37,7 @@ public class WebPagePanel {
 	private JTextComponent messageComponent;
 	private JPanel connectionFailPanel;
 	private ContextOwner<KanjiContext> contextOwner;
+	private boolean shouldGrabFocusOnReload;
 
 	public WebPagePanel (ContextOwner<KanjiContext> contextOwner,
 			ConnectionFailPageHandler connectionFailPageHandler){
@@ -43,6 +45,7 @@ public class WebPagePanel {
 		initiateConnectionFailListener (connectionFailPageHandler);
 		initiateWebView();
 		initiatePanels();
+		shouldGrabFocusOnReload = true;
 	}
 
 	private void initiateConnectionFailListener(ConnectionFailPageHandler connectionFailPageHandler){
@@ -54,9 +57,14 @@ public class WebPagePanel {
 				if (newValue == Worker.State.FAILED) {
 					connectionFailPageHandler.modifyConnectionFailPage(contextOwner.getContext());
 					showPanel(CONNECTION_FAIL_PANEL);
+					shouldGrabFocusOnReload = true;
 				}
 				if (newValue == Worker.State.SUCCEEDED){
 					showPanel(WEB_PAGE_PANEL);
+					if (shouldGrabFocusOnReload){
+						webPage.requestFocusInWindow();
+					}
+					shouldGrabFocusOnReload = true;
 				}
 				if (newValue == Worker.State.SCHEDULED){
 					showPanel(MESSAGE_PANEL);
@@ -85,6 +93,8 @@ public class WebPagePanel {
 			}
 		});
 		webPage = new JFXPanel();
+		FocusableComponentMaker.makeFocusable(
+				webPage);
 		switchingPanel = new JPanel (new CardLayout());
 		switchingPanel.add(MESSAGE_PANEL, messagePanel.getPanel());
 		switchingPanel.add(WEB_PAGE_PANEL, webPage);
@@ -121,5 +131,13 @@ public class WebPagePanel {
 			}
 		});
 	}
+
+
+	public void showPageWithoutGrabbingFocus (String url){
+		shouldGrabFocusOnReload = false;
+		displayLoadingMessage();
+		Platform.runLater(()->webView.getEngine().load(url));
+	}
+
 
 }

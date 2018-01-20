@@ -127,6 +127,7 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void showLearningStartDialog(int maximumNumber) {
+		problematicWordsController.initialize();
 		createDialog(new LearningStartPanel(applicationController, maximumNumber),
 				Titles.LEARNING_START_DIALOG, false, Position.CENTER);
 

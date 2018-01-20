@@ -361,7 +361,6 @@ public class ApplicationController implements ApplicationStateManager {
 				getProblematicWordsDisplayerBasedOnActiveWordList(
 						parent.getStartingPanel().getActiveWordsList()
 				));
-		problematicWordsController.initialize();
 		parent.showLearningStartDialog(parent.getStartingPanel().getActiveWordsList()
 				.getNumberOfWords());
 	}

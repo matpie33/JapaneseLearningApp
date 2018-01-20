@@ -11,6 +11,7 @@ import com.kanji.context.ContextOwner;
 import com.kanji.context.KanjiContext;
 import com.kanji.list.myList.MyList;
 import com.kanji.utilities.CommonGuiElementsMaker;
+import com.kanji.utilities.FocusableComponentMaker;
 import com.kanji.webPanel.ConnectionFailKanjiOfflinePage;
 import com.kanji.webPanel.ConnectionFailMessagePage;
 import com.kanji.webPanel.WebPagePanel;
@@ -57,7 +58,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public void initialize(){
-		dictionaryWebPanel.showPage(Urls.DICTIONARY_PL_EN_MAIN_PAGE);
+		dictionaryWebPanel.showPageWithoutGrabbingFocus(Urls.DICTIONARY_PL_EN_MAIN_PAGE);
 		wordsToReviewList = controller.getWordsToReviewList();
 	}
 
@@ -87,6 +88,13 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
 		kanjiOfflineDisplayingPanel
 				.addRow(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, kanjiTextPane));
+
+		FocusableComponentMaker.makeFocusable(wordsToReviewList.getPanel());
+		FocusableComponentMaker.makeFocusable
+				(dictionaryWebPanel.getPanel());
+		FocusableComponentMaker.makeFocusable
+				(kanjiWebPanel.getPanel());
+
 
 		JSplitPane wordsAndDictionaryPane = CommonGuiElementsMaker.createSplitPane(
 				SplitPaneOrientation.VERTICAL, dictionaryWebPanel.getPanel(),
@@ -123,12 +131,16 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public void showPageInKoohi (String url){
-		kanjiWebPanel.showPage(url);
+		kanjiWebPanel.showPageWithoutGrabbingFocus(url);
 	}
 
 	@Override
 	public DialogWindow getDialog() {
 		return parentDialog;
+	}
+
+	public boolean isListPanelFocused(){
+		return wordsToReviewList.getPanel().hasFocus();
 	}
 
 }

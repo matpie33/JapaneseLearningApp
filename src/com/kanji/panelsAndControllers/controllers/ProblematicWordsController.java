@@ -120,6 +120,9 @@ public class ProblematicWordsController<Element extends ListElement>
 		return new AbstractAction(){
 			@Override
 			public void actionPerformed(ActionEvent e){
+				if (!problematicWordsDisplayer.isListPanelFocused()){
+					return;
+				}
 				if (hasWordsToReview())
 					goToNextResource();
 				else {

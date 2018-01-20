@@ -88,6 +88,11 @@ public class ProblematicKanjiDisplayer implements ProblematicWordsDisplayer <Kan
 		return problematicKanjiPanel;
 	}
 
+	@Override
+	public boolean isListPanelFocused (){
+		return problematicKanjiPanel.isListPanelFocused();
+	}
+
 	private boolean isLoginDataRemembered (){
 		for (HttpCookie cookies: cookieManager.getCookieStore().getCookies()){
 			if (cookies.getName().equals("koohii")){
