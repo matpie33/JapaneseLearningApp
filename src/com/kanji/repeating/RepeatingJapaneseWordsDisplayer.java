@@ -63,8 +63,9 @@ public class RepeatingJapaneseWordsDisplayer implements
 		hintTypeIntValues = new HashMap<>();
 		hintTypeIntValues.put(1, japaneseWordInformation -> new HashSet<>(
 				Arrays.asList(japaneseWordInformation.getWordMeaning())));
-		hintTypeIntValues.put(2, JapaneseWordInformation::getKanjiWritings);
-		hintTypeIntValues.put(3, JapaneseWordInformation::getKanaWritings);
+		hintTypeIntValues.put(2, JapaneseWordInformation::getKanaWritings);
+		hintTypeIntValues.put(3, JapaneseWordInformation::getKanjiWritings);
+
 	}
 
 	private void initializeGuiElements (){

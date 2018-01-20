@@ -22,6 +22,7 @@ import com.kanji.model.KanjisAndRepeatingInfo;
 import com.kanji.list.myList.MyList;
 import com.kanji.list.listRows.RowInKanjiInformations;
 import com.kanji.list.listRows.RowInRepeatingList;
+import com.kanji.problematicWords.ProblematicJapaneseWordsDisplayer;
 import com.kanji.problematicWords.ProblematicKanjiDisplayer;
 import com.kanji.problematicWords.ProblematicWordsDisplayer;
 import com.kanji.range.SetOfRanges;
@@ -55,7 +56,7 @@ public class ApplicationController implements ApplicationStateManager {
 	private RepeatingKanjiDisplayer kanjiWordDisplayer;
 	private RepeatingJapaneseWordsDisplayer repeatingJapaneseWordsDisplayer;
 	private ProblematicKanjiDisplayer problematicKanjiDisplayer;
-	private ProblematicJapaneseWordsPanel problematicJapaneseWordsPanel;
+	private ProblematicJapaneseWordsDisplayer problematicJapaneseWordsDisplayer;
 
 	public ApplicationController(ApplicationWindow parent) {
 		problematicKanjis = new HashSet<>();
@@ -84,7 +85,7 @@ public class ApplicationController implements ApplicationStateManager {
 		problematicWordsController = new ProblematicWordsController(parent);
 		problematicKanjiDisplayer = new ProblematicKanjiDisplayer(parent,
 				problematicWordsController);
-		problematicJapaneseWordsPanel = new ProblematicJapaneseWordsPanel(
+		problematicJapaneseWordsDisplayer = new ProblematicJapaneseWordsDisplayer(parent,
 				problematicWordsController);
 		this.repeatingWordsPanelController = new RepeatingWordsController(parent);
 		applicationStateToManagerMap.put(ApplicationSaveableState.REPEATING_WORDS,
@@ -118,8 +119,8 @@ public class ApplicationController implements ApplicationStateManager {
 		japaneseWords.addWord(dog);
 		JapaneseWordInformation verb = new JapaneseWordInformation(PartOfSpeech.VERB,
 				"otwierać");
-		verb.addWritings("あける", "開ける", " 空ける,  明ける");
-		verb.addWritings("ひらける", "開ける", " 空ける,  明ける");
+		verb.addWritings("あける", "開ける", " 空ける",  "明ける");
+		verb.addWritings("ひらける", "開ける", " 空ける",  "明ける");
 		verb.addAditionalInformation(AdditionalInformationTag.VERB_CONJUGATION,
 				Labels.VERB_CONJUGATION_GODAN);
 		japaneseWords.addWord(verb);
@@ -353,12 +354,14 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	public void showLearningStartDialog() {
+
 		repeatingWordsPanelController.setWordDisplayer(
 				getWordDisplayerForCurrentWordList());
 		problematicWordsController.setProblematicWordsDisplayer(
 				getProblematicWordsDisplayerBasedOnActiveWordList(
 						parent.getStartingPanel().getActiveWordsList()
 				));
+		problematicWordsController.initialize();
 		parent.showLearningStartDialog(parent.getStartingPanel().getActiveWordsList()
 				.getNumberOfWords());
 	}
@@ -512,7 +515,7 @@ public class ApplicationController implements ApplicationStateManager {
 			return problematicKanjiDisplayer;
 		}
 		else if (listElementsClass.equals(JapaneseWordInformation.class)){
-			return null; //TODO;
+			return problematicJapaneseWordsDisplayer;
 		}
 		return null;
 	}

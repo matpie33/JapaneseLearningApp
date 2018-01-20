@@ -159,7 +159,6 @@ public class ApplicationWindow extends DialogWindow {
 			showReadyPanel(problematicWordsController.getDialog());
 		}
 		else{
-			problematicWordsController.initialize();
 			createDialog(problematicWordsController.getPanel(), Titles.PROBLEMATIC_KANJIS_WINDOW,
 					true, Position.CENTER);
 

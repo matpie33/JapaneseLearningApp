@@ -42,8 +42,9 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 	}
 
 	public boolean hasKanjiWriting(){
-		for (String kanjiWriting: kanjiToAlternativeKanaWritingMap.keySet()){
-			if (!kanjiWriting.isEmpty()){
+		for (List<String> kanjiWriting: kanjiToAlternativeKanaWritingMap.values()){
+			if (kanjiWriting.size()>1 || (kanjiWriting.size() == 1 &&
+				!kanjiWriting.get(0).isEmpty())){
 				return true;
 			}
 		}

@@ -39,7 +39,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	private JTextComponent kanjiTextPane;
 	private MainPanel kanjiOfflineDisplayingPanel;
 	private Font messageFont;
-	private final String DICTIONARY_PL_EN_MAIN_PAGE = "https://pl.bab.la/slownik/polski-angielski/";
+
 	private WebPagePanel dictionaryWebPanel;
 	private WebPagePanel kanjiWebPanel;
 	private MyList wordsToReviewList;
@@ -57,7 +57,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public void initialize(){
-		dictionaryWebPanel.showPage(DICTIONARY_PL_EN_MAIN_PAGE);
+		dictionaryWebPanel.showPage(Urls.DICTIONARY_PL_EN_MAIN_PAGE);
 		wordsToReviewList = controller.getWordsToReviewList();
 	}
 

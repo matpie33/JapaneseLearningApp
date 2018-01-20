@@ -30,6 +30,7 @@ public class ButtonsNames {
 
 	public static final String CONFIRM = "Tak";
 	public static final String REJECT = "Nie";
+	public static final String SEARCH_IN_DICTIONARY = "->";
 
 	public static final String[] BUTTONS_ON_MAIN_PAGE = { START, LOAD_PROJECT, LOAD_LIST, SAVE,
 			SAVE_LIST, SHOW_PROBLEMATIC_KANJIS };

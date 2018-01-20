@@ -26,8 +26,6 @@ import java.util.stream.Collectors;
 public class ProblematicKanjiDisplayer implements ProblematicWordsDisplayer <KanjiInformation>,
 		ContextOwner<KanjiContext> {
 
-	private ApplicationWindow applicationWindow;
-	private ProblematicWordsController<KanjiInformation> controller;
 	private ProblematicKanjiPanel problematicKanjiPanel;
 	private final String KANJI_KOOHI_LOGIN_PAGE = "https://kanji.koohii.com/account";
 	private final String KANJI_KOOHI_MAIN_PAGE = "https://kanji.koohii.com/study";
@@ -39,8 +37,6 @@ public class ProblematicKanjiDisplayer implements ProblematicWordsDisplayer <Kan
 
 	public ProblematicKanjiDisplayer (ApplicationWindow applicationWindow,
 			ProblematicWordsController<KanjiInformation> controller){
-		this.applicationWindow = applicationWindow;
-		this.controller = controller;
 		problematicKanjiPanel = new ProblematicKanjiPanel(applicationWindow.getKanjiFont(),
 				applicationWindow, controller, this);
 		cookieManager = new CookieManager();
