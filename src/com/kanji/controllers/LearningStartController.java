@@ -92,7 +92,7 @@ public class LearningStartController {
 	private void removeError(RangesRow rangesRow) {
 		int rowNumber = rangesRow.getTextFieldsRowNumber();
 		errors.remove(rowNumber);
-		learningStartPanel.removeRowFromPanel(rowNumber + 1);
+		learningStartPanel.removeRow(rowNumber + 1);
 		updateRowsNumbers(rowNumber, -1);
 	}
 

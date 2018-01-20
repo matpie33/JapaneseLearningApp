@@ -3,6 +3,8 @@ package com.kanji.myList;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -116,7 +118,10 @@ public class ListPanelMaker<Word> {
 				scrollBar.setValue(scrollBar.getMaximum());
 			}
 		});
+	}
 
+	public void scrollToTop (){
+		SwingUtilities.invokeLater(() -> parentScrollPane.getVerticalScrollBar().setValue(0));
 	}
 
 	public int removeRow(JComponent panel) {

@@ -149,4 +149,7 @@ public class ListWordsController<Word> {
 		return highlightedWords;
 	}
 
+	public void scrollToTop() {
+		rowCreator.scrollToTop();
+	}
 }

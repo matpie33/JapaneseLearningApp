@@ -97,6 +97,7 @@ public class ProblematicKanjisController implements ApplicationStateManager, Kan
 			kanjisToBrowse.add(new KanjiRow(kanjiInformation.getKanjiID(),
 					firstUnreviewedKanjiRowNumber+i));
 		}
+
 	}
 
 	public void highlightReviewedWords(int numberOfReviewedWords){
@@ -120,6 +121,7 @@ public class ProblematicKanjisController implements ApplicationStateManager, Kan
 			}
 
 		}
+		kanjiRepeatingList.scrollToTop();
 
 	}
 
@@ -197,6 +199,7 @@ public class ProblematicKanjisController implements ApplicationStateManager, Kan
 
 	@Override
 	public void restoreState(SavingInformation savingInformation){
+		problematicKanjiPanel.loadDictionaryAndKoohiPage();
 		applicationWindow.displayMessageAboutUnfinishedRepeating();
 		applicationWindow.showProblematicKanjiDialog(savingInformation.getProblematicKanjisState());
 	}

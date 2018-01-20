@@ -139,6 +139,10 @@ public class MyList<Word> {
 		listController.scrollToBottom();
 	}
 
+	public void scrollToTop (){
+		listController.scrollToTop();
+	}
+
 	public void cleanWords() {
 		listController.clear();
 	}

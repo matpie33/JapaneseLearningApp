@@ -198,10 +198,6 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 	}
 
-	public void removeRowFromPanel(int rowNumber) {
-		rangesPanel.removeRow(rowNumber);
-	}
-
 	public void updateSumOfWordsLabel(int sumOfWords) {
 		sumRangeField.setText(Prompts.RANGE_SUM + sumOfWords);
 	}
@@ -214,6 +210,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 	public void removeRow(int rowNumber) {
 		rangesPanel.removeRow(rowNumber);
+		getDialog().getContainer().getMostRecentFocusOwner().requestFocusInWindow();
 	}
 
 	private JButton createButtonAddRow(String text) {
