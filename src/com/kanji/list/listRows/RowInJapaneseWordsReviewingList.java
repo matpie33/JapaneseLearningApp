@@ -20,9 +20,7 @@ import com.kanji.utilities.CommonListElements;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -75,19 +73,15 @@ public class RowInJapaneseWordsReviewingList implements ListRowMaker<JapaneseWor
 			allWritings.addAll(japaneseWord.hasKanjiWriting() ? writings.getValue():
 					Arrays.asList("X"));
 			List<JComponent> writingTextFields = allWritings.stream().map(writing ->
-					GuiMaker.createTextField(new TextComponentOptions().text(writing).editable(false)))
+					GuiMaker.createTextField(new TextComponentOptions().text(writing)
+							.editable(false).focusable(false).fontSize(20f)))
 					.collect(Collectors.toList());
-			writingTextFields.forEach(tf->tf.addFocusListener(new FocusAdapter() {
-						@Override public void focusGained(FocusEvent e) {
-							problematicJapaneseWordsDisplayer.setSelectedWord();
-							tf.setBackground(Color.GRAY);
-							super.focusGained(e);
-						}
-						@Override public void focusLost(FocusEvent e) {
-							tf.setBackground(Color.WHITE);
-							super.focusGained(e);
-						}
-					})
+			writingTextFields.forEach(tf->tf.addMouseListener(new MouseAdapter() {
+					@Override public void mouseClicked(MouseEvent e) {
+						problematicJapaneseWordsDisplayer.setSelectedWord((JTextComponent)e.getSource());
+						super.mouseClicked(e);
+					}
+				})
 			);
 			JComponent[] components = new JComponent[writingTextFields.size() + 1];
 			for (int i = 0; i < writingTextFields.size(); i++) {

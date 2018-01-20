@@ -93,8 +93,6 @@ public class WebPagePanel {
 			}
 		});
 		webPage = new JFXPanel();
-		FocusableComponentMaker.makeFocusable(
-				webPage);
 		switchingPanel = new JPanel (new CardLayout());
 		switchingPanel.add(MESSAGE_PANEL, messagePanel.getPanel());
 		switchingPanel.add(WEB_PAGE_PANEL, webPage);
@@ -119,7 +117,11 @@ public class WebPagePanel {
 
 	}
 
-	public JPanel getPanel (){
+	public JFXPanel getWebPanel (){
+		return webPage;
+	}
+
+	public JPanel getSwitchingPanel(){
 		return switchingPanel;
 	}
 

@@ -11,6 +11,7 @@ import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.utilities.CommonGuiElementsMaker;
+import com.kanji.utilities.FocusableComponentMaker;
 import com.kanji.webPanel.ConnectionFailMessagePage;
 import com.kanji.webPanel.WebPagePanel;
 import com.kanji.windows.ApplicationWindow;
@@ -62,12 +63,18 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	}
 
 	@Override public void createElements() {
+
+		FocusableComponentMaker.makeFocusable(problematicWords.getPanel());
+		FocusableComponentMaker.makeFocusable(japaneseEnglishDictionaryPanel.getWebPanel());
+		FocusableComponentMaker.makeFocusable(englishDictionaryPanel.getWebPanel());
+		FocusableComponentMaker.makeFocusable(kanjiInformationPanel.getPanel());
+
 		JSplitPane wordAndKanjiInformationSplitPane = CommonGuiElementsMaker.createSplitPane(
 				SplitPaneOrientation.VERTICAL, problematicWords.getPanel(),
 				kanjiInformationPanel.getPanel(),0.5);
 		JSplitPane dictionariesSplitPane = CommonGuiElementsMaker.createSplitPane(
-				SplitPaneOrientation.VERTICAL, japaneseEnglishDictionaryPanel.getPanel(),
-				englishDictionaryPanel.getPanel(),0.5);
+				SplitPaneOrientation.VERTICAL, japaneseEnglishDictionaryPanel.getSwitchingPanel(),
+				englishDictionaryPanel.getSwitchingPanel(),0.5);
 
 		JSplitPane wordAndDictionariesSplitPane = CommonGuiElementsMaker.createSplitPane(
 				SplitPaneOrientation.HORIZONTAL, wordAndKanjiInformationSplitPane,
@@ -81,8 +88,5 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		return null; //TODO
 	}
 
-	public Component getFocusOwner(){
-		return getDialog().getContainer().getFocusOwner();
-	}
 
 }

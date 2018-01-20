@@ -78,9 +78,8 @@ public class ProblematicWordsController<Element extends ListElement>
 						word, wordsToReviewList.getNumberOfWords()-1
 				));
 			}
-
 		}
-
+		wordsToReviewList.scrollToTop();
 	}
 
 	private void goToNextResource() {
@@ -152,6 +151,7 @@ public class ProblematicWordsController<Element extends ListElement>
 	@Override
 	public void restoreState(SavingInformation savingInformation){
 		//TODO reimplement restoring state
+		problematicWordsDisplayer.initialize();
 		applicationWindow.showProblematicWordsDialog(savingInformation.getProblematicKanjisState());
 	}
 

@@ -31,6 +31,10 @@ public class MyList<Word extends ListElement> {
 		this.title = title;
 	}
 
+	public void scrollToTop(){
+		listController.scrollToTop();
+	}
+
 	public String getTitle(){
 		return title;
 	}

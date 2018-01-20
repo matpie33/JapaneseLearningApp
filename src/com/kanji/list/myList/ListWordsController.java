@@ -152,4 +152,8 @@ public class ListWordsController<Word extends ListElement> {
 		return highlightedWords;
 	}
 
+	public void scrollToTop (){
+		rowCreator.scrollToTop();
+	}
+
 }

@@ -22,7 +22,7 @@ public class ProblematicJapaneseWordsDisplayer
 
 	private MyList <JapaneseWordInformation> wordsToReviewList;
 	private ProblematicJapaneseWordsPanel problematicJapaneseWordsPanel;
-	private String selectedWord = "";
+	private JTextComponent selectedWord;
 
 	public ProblematicJapaneseWordsDisplayer(ApplicationWindow applicationWindow,
 			ProblematicWordsController controller) {
@@ -56,15 +56,28 @@ public class ProblematicJapaneseWordsDisplayer
 	}
 
 
-	public void setSelectedWord(){
-		Component focusedComponent = problematicJapaneseWordsPanel.getFocusOwner();
-		if (focusedComponent instanceof JTextComponent){
-			selectedWord = ((JTextComponent)focusedComponent).getText();
+	public void setSelectedWord(JTextComponent component){
+
+		if (selectedWord != null){
+			selectedWord.setBackground(Color.WHITE);
 		}
+		if (selectedWord == component){
+			selectedWord.setBackground(Color.WHITE);
+			selectedWord = null;
+			return;
+		}
+		selectedWord = component;
+		selectedWord.setBackground(Color.GRAY);
+
 	}
 
 	public void searchCurrentWordInDictionary(){
-		problematicJapaneseWordsPanel.searchWord(selectedWord);
+		if (selectedWord != null) {
+			problematicJapaneseWordsPanel.searchWord(selectedWord.getText());
+		}
+		else {
+			//TODO add message about not selected words
+		}
 	}
 
 	@Override

@@ -21,11 +21,11 @@ public class FocusableComponentMaker {
 	public static void makeFocusable(JComponent panelToWrap){
 		panelToWrap.setFocusable(true);
 		addFocusListener(panelToWrap);
+		addFocus(panelToWrap, panelToWrap);
 	}
 
 	private static Border createBorder (Color color){
-		return BorderFactory.createMatteBorder(
-				1, 5, 1, 1, color);
+		return BorderFactory.createLineBorder(color, 3);
 	}
 
 	private static void addFocusListener (JComponent panelToSetBackground){
@@ -41,9 +41,24 @@ public class FocusableComponentMaker {
 			}
 			@Override public void focusGained (FocusEvent e){
 				panelToSetBackground.requestFocusInWindow();
-				panelToSetBackground.setBorder(createBorder(Color.yellow));
+				panelToSetBackground.setBorder(createBorder(BasicColors.VERY_BLUE));
 			}
 		});
+	}
+
+	private static void addFocus (Container container, JComponent componentToFocus){
+		container.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+				componentToFocus.requestFocusInWindow();
+			}
+		});
+		for (Component component: container.getComponents()){
+			if (component instanceof Container){
+				addFocus((Container)component, componentToFocus);
+			}
+		}
+
 	}
 
 }

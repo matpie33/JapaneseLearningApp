@@ -90,19 +90,17 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 				.addRow(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, kanjiTextPane));
 
 		FocusableComponentMaker.makeFocusable(wordsToReviewList.getPanel());
-		FocusableComponentMaker.makeFocusable
-				(dictionaryWebPanel.getPanel());
-		FocusableComponentMaker.makeFocusable
-				(kanjiWebPanel.getPanel());
+		FocusableComponentMaker.makeFocusable(dictionaryWebPanel.getWebPanel());
+		FocusableComponentMaker.makeFocusable(kanjiWebPanel.getWebPanel());
 
 
 		JSplitPane wordsAndDictionaryPane = CommonGuiElementsMaker.createSplitPane(
-				SplitPaneOrientation.VERTICAL, dictionaryWebPanel.getPanel(),
+				SplitPaneOrientation.VERTICAL, dictionaryWebPanel.getSwitchingPanel(),
 				wordsToReviewList.getPanel(), 0.7);
 
 		JSplitPane mainSplitPane = CommonGuiElementsMaker.createSplitPane(
 				SplitPaneOrientation.HORIZONTAL, wordsAndDictionaryPane,
-				kanjiWebPanel.getPanel(), 0.3);
+				kanjiWebPanel.getSwitchingPanel(), 0.3);
 
 		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH,
 				mainSplitPane));

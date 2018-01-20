@@ -169,4 +169,8 @@ public class ListPanelMaker<Word extends ListElement> extends AbstractPanelWithH
 		rowsPanel.clear();
 	}
 
+	public void scrollToTop(){
+		SwingUtilities.invokeLater(() -> parentScrollPane.getVerticalScrollBar().setValue(0));
+	}
+
 }
