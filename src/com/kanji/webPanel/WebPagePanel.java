@@ -92,12 +92,14 @@ public class WebPagePanel {
 			}
 		});
 		webPage = new JFXPanel();
-		FocusableComponentMaker.makeFocusable(
-				webPage);
 		switchingPanel = new JPanel (new CardLayout());
 		switchingPanel.add(MESSAGE_PANEL, messagePanel.getPanel());
 		switchingPanel.add(WEB_PAGE_PANEL, webPage);
 		switchingPanel.add(CONNECTION_FAIL_PANEL, connectionFailPanel);
+	}
+
+	public JFXPanel getWebPagePanel (){
+		return webPage;
 	}
 
 	private void initiateWebView(){
@@ -124,7 +126,7 @@ public class WebPagePanel {
 
 	}
 
-	public JPanel getPanel (){
+	public JPanel getSwitchingPanel(){
 		return switchingPanel;
 	}
 
