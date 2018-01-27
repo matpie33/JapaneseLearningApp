@@ -159,18 +159,14 @@ public class ProblematicWordsController	implements ApplicationStateManager {
 
 	@Override
 	public void restoreState(SavingInformation savingInformation){
-		//TODO reimplement restoring state
-		Set <? extends ListElement> words;
-		if (savingInformation.containsProblematicKanji()){
-			words = applicationController.getProblematicKanjis();
-			applicationController.switchToList(KanjiInformation.class);
-		}
-		else if (savingInformation.containsProblematicJapaneseWords()){
-			words = applicationController.getProblematicJapaneseWords();
-			applicationController.switchToList(JapaneseWordInformation.class);
-		}
-		else {
-			throw new RuntimeException ("Should not happen");
+		if (savingInformation.containsProblematicJapaneseWords() ||
+				savingInformation.containsProblematicKanji()) {
+			Class wordType = savingInformation.getProblematicKanjisState().getReviewedKanjis()
+					.isEmpty() ?
+					savingInformation.getProblematicKanjisState().getNotReviewKanjis().get(0)
+							.getClass() :
+					savingInformation.getProblematicKanjisState().getReviewedKanjis().get(0).getClass();
+			applicationController.switchToList(wordType);
 		}
 		ProblematicWordsDisplayer displayer =applicationController
 				.getProblematicWordsDisplayerBasedOnActiveWordList();
