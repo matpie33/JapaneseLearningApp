@@ -45,7 +45,7 @@ public class ApplicationWindow extends DialogWindow {
 	public void initiate() {
 		applicationController = new ApplicationController(this);
 		applicationController.initializeListsElements();
-		startingPanel = new StartingPanel(this);
+		startingPanel = new StartingPanel(this, mainApplicationPanel);
 
 		applicationController.initializeApplicationStateManagers();
 		problematicWordsController = applicationController.getProblematicWordsController();
@@ -109,9 +109,11 @@ public class ApplicationWindow extends DialogWindow {
 		container.repaint();
 	}
 
-	public void updateProblematicKanjisAmount() {
+	public void updateProblematicWordsAmount() {
 		startingPanel
-				.updateProblematicKanjisAmount(applicationController.getProblematicKanjis().size());
+				.updateProblematicWordsAmount(
+						applicationController.getProblematicWordsAmountBasedOnCurrentTab(),
+						startingPanel.getActiveWordsList().getListElementClass());
 	}
 
 	public void updateTitle(String update) {
@@ -160,8 +162,11 @@ public class ApplicationWindow extends DialogWindow {
 			showReadyPanel(problematicWordsController.getDialog());
 		}
 		else{
+			problematicWordsController.initializeSpaceBarAction();
 			createDialog(problematicWordsController.getPanel(), Titles.PROBLEMATIC_KANJIS_WINDOW,
 					true, Position.CENTER);
+			problematicWordsController.initializeWindowListener();
+
 
 		}
 		applicationController.switchStateManager(problematicWordsController);

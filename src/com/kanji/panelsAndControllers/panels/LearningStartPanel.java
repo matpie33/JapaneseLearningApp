@@ -28,7 +28,6 @@ import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRow;
 import com.guimaker.row.SimpleRowBuilder;
-import com.kanji.list.listElements.RepeatingInformation;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Labels;
@@ -36,7 +35,6 @@ import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Titles;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.LearningStartController;
-import com.kanji.list.myList.MyList;
 import com.kanji.utilities.CommonGuiElementsMaker;
 
 public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
@@ -90,7 +88,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 	private JCheckBox createProblematicKanjiCheckbox() {
 		final JCheckBox problematicCheckbox = new JCheckBox(Labels.PROBLEMATIC_KANJI_OPTION);
-		if (controller.getProblematicKanjiNumber() == 0) {
+		if (controller.getProblematicWordsNumber() == 0) {
 			problematicCheckbox.setEnabled(false);
 		}
 		AbstractAction action2 = controller.createActionSelectProblematicCheckbox(problematicCheckbox);
@@ -222,7 +220,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 	private JTextComponent createProblematicRangeField(String text) {
 		JTextComponent sumRange = new JTextField(text);
 		sumRange.setEditable(false);
-		sumRange.setText(sumRange.getText() + controller.getProblematicKanjiNumber());
+		sumRange.setText(sumRange.getText() + controller.getProblematicWordsNumber());
 		return sumRange;
 	}
 

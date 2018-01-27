@@ -1,9 +1,15 @@
 package com.kanji.panelsAndControllers.controllers;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.*;
 
+import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Prompts;
+import com.kanji.list.listElements.JapaneseWordInformation;
+import com.kanji.list.listElements.KanjiInformation;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.model.WordRow;
 import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
@@ -17,17 +23,14 @@ import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
 
-public class ProblematicWordsController<Element extends ListElement>
-		implements ApplicationStateManager {
-	//TODO is there any advantage of making problematic kanjis controller generic with
-	//"element extends listelement"?
-	private List<WordRow<Element>> wordsToReview;
+public class ProblematicWordsController	implements ApplicationStateManager {
+	private List<WordRow> wordsToReview;
 	//TODO 2 variables with similar names -> maybe remove WordRow class and use map ->
 	// row number to list element
-	private MyList<Element> wordsToReviewList;
+	private MyList wordsToReviewList;
 	private ApplicationController applicationController;
 	private ApplicationWindow applicationWindow;
-	private ProblematicWordsDisplayer <Element> problematicWordsDisplayer;
+	private ProblematicWordsDisplayer problematicWordsDisplayer;
 
 	public ProblematicWordsController(ApplicationWindow applicationWindow) {
 		applicationController = applicationWindow.getApplicationController();
@@ -36,8 +39,10 @@ public class ProblematicWordsController<Element extends ListElement>
 	}
 
 	public void setProblematicWordsDisplayer (
-			ProblematicWordsDisplayer<Element> problematicWordsDisplayer){
+			ProblematicWordsDisplayer problematicWordsDisplayer){
 		this.problematicWordsDisplayer = problematicWordsDisplayer;
+		problematicWordsDisplayer.getPanel().setMaximize(true);
+		getPanel().getDialog().maximize();
 		wordsToReviewList = problematicWordsDisplayer.getWordsToReviewList();
 	}
 
@@ -45,8 +50,8 @@ public class ProblematicWordsController<Element extends ListElement>
 		problematicWordsDisplayer.initialize();
 	}
 
-	public void createProblematicWordsList(List <Element> reviewedWords,
-			List <Element> notReviewedWords){
+	public <Element extends ListElement> void createProblematicWordsList(
+			List <Element> reviewedWords, List <Element> notReviewedWords){
 		for (int i=0; i< reviewedWords.size(); i++){
 			Element reviewedElement = reviewedWords.get(i);
 			wordsToReviewList.addWord(reviewedElement);
@@ -67,19 +72,23 @@ public class ProblematicWordsController<Element extends ListElement>
 		}
 	}
 
-	public void addProblematicWords(Set<Element> problematicWords){
+	public <Element extends ListElement> void addProblematicWords(Set<Element> problematicWords){
 		if (wordsToReview.isEmpty()){
 			wordsToReviewList.cleanWords();
 		}
 		for (Element word: problematicWords){
-			boolean addedToList = wordsToReviewList.addWord(word);
-			if (addedToList){
-				wordsToReview.add(problematicWordsDisplayer.createWordRow(
-						word, wordsToReviewList.getNumberOfWords()-1
-				));
-			}
+			addWord(word);
 		}
 		wordsToReviewList.scrollToTop();
+	}
+
+	private void addWord (ListElement word){
+		boolean addedToList = wordsToReviewList.addWord(word);
+		if (addedToList){
+			wordsToReview.add(problematicWordsDisplayer.createWordRow(
+					word, wordsToReviewList.getNumberOfWords()-1
+			));
+		}
 	}
 
 	private void goToNextResource() {
@@ -136,7 +145,7 @@ public class ProblematicWordsController<Element extends ListElement>
 		return wordsToReviewList.getNumberOfWords();
 	}
 
-	public MyList <Element> getWordsToReviewList(){
+	public MyList getWordsToReviewList(){
 		return wordsToReviewList;
 	}
 
@@ -151,8 +160,40 @@ public class ProblematicWordsController<Element extends ListElement>
 	@Override
 	public void restoreState(SavingInformation savingInformation){
 		//TODO reimplement restoring state
+		Set <? extends ListElement> words;
+		if (savingInformation.containsProblematicKanji()){
+			words = applicationController.getProblematicKanjis();
+			applicationController.switchToList(KanjiInformation.class);
+		}
+		else if (savingInformation.containsProblematicJapaneseWords()){
+			words = applicationController.getProblematicJapaneseWords();
+			applicationController.switchToList(JapaneseWordInformation.class);
+		}
+		else {
+			throw new RuntimeException ("Should not happen");
+		}
+		ProblematicWordsDisplayer displayer =applicationController
+				.getProblematicWordsDisplayerBasedOnActiveWordList();
+		setProblematicWordsDisplayer(displayer);
 		problematicWordsDisplayer.initialize();
+		addProblematicWordsHighlightReviewed(
+				savingInformation.getProblematicKanjisState().getReviewedKanjis(),
+				savingInformation.getProblematicKanjisState().getNotReviewKanjis());
 		applicationWindow.showProblematicWordsDialog(savingInformation.getProblematicKanjisState());
+	}
+
+	private void addProblematicWordsHighlightReviewed (List<? extends ListElement> reviewedWords,
+			List <? extends ListElement> notReviewedWords){
+		int i = 0;
+		for (ListElement listElement: reviewedWords){
+			wordsToReviewList.addWord(listElement);
+			wordsToReviewList.highlightRow(i);
+			i++;
+		}
+		for (ListElement listElement: notReviewedWords){
+			addWord(listElement);
+		}
+
 	}
 
 	public boolean isPanelInitialized (){
@@ -165,6 +206,23 @@ public class ProblematicWordsController<Element extends ListElement>
 
 	public AbstractPanelWithHotkeysInfo getPanel (){
 		return problematicWordsDisplayer.getPanel();
+	}
+
+	public void initializeSpaceBarAction(){
+
+		getPanel().addHotkey(KeyEvent.VK_SPACE, createActionShowNextWordOrCloseDialog(),
+				getPanel().getPanel(),
+				HotkeysDescriptions.SHOW_NEXT_KANJI);
+
+	}
+
+	public void initializeWindowListener (){
+		getPanel().getDialog().getContainer().addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				closeDialogAndManageState(getPanel().getDialog());
+			}
+		});
 	}
 
 }

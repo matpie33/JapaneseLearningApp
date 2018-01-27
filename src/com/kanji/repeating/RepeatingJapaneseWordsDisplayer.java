@@ -30,8 +30,8 @@ public class RepeatingJapaneseWordsDisplayer implements
 	private MainPanel fullWordInformationPanel;
 	private MainPanel recognizingWordPanel;
 	private KanjiCharactersReader kanjiCharactersReader;
-	private Set<JapaneseWordInformation> currentProblematicKanjis;
-	private Set<JapaneseWordInformation> problematicKanjis;
+	private Set<JapaneseWordInformation> currentProblematicWords;
+	private Set<JapaneseWordInformation> problematicJapaneseWords;
 	private JTextComponent partOfSpeechText;
 	private JLabel partOfSpeechLabel;
 	private JComboBox <String> partOfSpeechCombobox;
@@ -49,8 +49,8 @@ public class RepeatingJapaneseWordsDisplayer implements
 		recognizingWordPanel.getPanel().setPreferredSize(wordPanelsSize);
 		fullWordInformationPanel.getPanel().setPreferredSize(wordPanelsSize);
 
-		problematicKanjis = new HashSet<>();
-		currentProblematicKanjis = new HashSet<>();
+		problematicJapaneseWords = new HashSet<>();
+		currentProblematicWords = new HashSet<>();
 		initializeHintTypeValues();
 		initializeGuiElements();
 		recognizingWordPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE,
@@ -113,13 +113,14 @@ public class RepeatingJapaneseWordsDisplayer implements
 		partOfSpeechCombobox.setSelectedIndex(0);
 	}
 
-	@Override public void markWordAsProblematic(JapaneseWordInformation kanjiInformation) {
-		currentProblematicKanjis.add(kanjiInformation);
+	@Override public void markWordAsProblematic(JapaneseWordInformation wordInformation) {
+		problematicJapaneseWords.add(wordInformation);
+		currentProblematicWords.add(wordInformation);
 	}
 
-	@Override public void removeWordFromProblematic(JapaneseWordInformation kanjiInformation) {
-		problematicKanjis.remove(kanjiInformation);
-		currentProblematicKanjis.remove(kanjiInformation);
+	@Override public void removeWordFromProblematic(JapaneseWordInformation wordInformation) {
+		problematicJapaneseWords.remove(wordInformation);
+		currentProblematicWords.remove(wordInformation);
 	}
 
 	@Override
@@ -142,30 +143,29 @@ public class RepeatingJapaneseWordsDisplayer implements
 
 
 	@Override public Set<JapaneseWordInformation> getProblematicWords() {
-		return currentProblematicKanjis;
+		return currentProblematicWords;
 	}
 
 	@Override
 	public RepeatingState getRepeatingState (TimeSpent timeSpent,
 			RepeatingInformation repeatingInformation, Set <JapaneseWordInformation> words){
 		RepeatingState <JapaneseWordInformation> kanjiRepeatingState =
-				new RepeatingState<>(timeSpent, repeatingInformation,
-						currentProblematicKanjis,
+				new RepeatingState<>(timeSpent, repeatingInformation, currentProblematicWords,
 						words);
 		return kanjiRepeatingState;
 	}
 
 	@Override public boolean hasProblematicWords() {
-		return !currentProblematicKanjis.isEmpty();
-	}
-
-	@Override public void addProblematicWords(Set<JapaneseWordInformation> kanjiInformations) {
-
+		return !currentProblematicWords.isEmpty();
 	}
 
 	@Override
 	public void clearRepeatingData(){
-		currentProblematicKanjis.clear();
+		currentProblematicWords.clear();
+	}
+
+	@Override public void setAllProblematicWords(Set<JapaneseWordInformation> problematicWords) {
+		problematicJapaneseWords = problematicWords;
 	}
 
 }

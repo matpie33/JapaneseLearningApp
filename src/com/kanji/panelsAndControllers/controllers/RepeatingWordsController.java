@@ -37,8 +37,10 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 	private RepeatingWordsPanel panel;
 	private List <ListElement> wordsLeftToRepeat;
 	private RepeatingWordDisplayer wordDisplayer;
+	private ApplicationWindow applicationWindow;
 
 	public RepeatingWordsController(ApplicationWindow parent) {
+		applicationWindow = parent;
 		this.parent = parent;
 		timeSpentHandler = new TimeSpentHandler(this);
 		parent.setTimeSpentHandler(timeSpentHandler);
@@ -85,6 +87,9 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 	}
 
 	void startRepeating() {
+		wordDisplayer.setAllProblematicWords(
+				applicationWindow.getApplicationController()
+						.getProblematicWordsBasedOnCurrentTab());
 		previousWord = wordsList.createWord();
 		currentWord = wordsList.createWord();
 		panel.addWordInformationPanelCards(wordDisplayer.getRecognizingWordPanel(),
@@ -98,8 +103,6 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 		for (ListElement keyword: repeatingState.getCurrentlyRepeatedWords()){
 			wordsLeftToRepeat.add(keyword);
 		}
-		wordDisplayer.addProblematicWords(repeatingState
-				.getCurrentProblematicWords());
 		repeatInfo = repeatingState.getRepeatingInformation();
 		repeatInfo.setRepeatingDate(LocalDateTime.now());
 		timeSpentHandler.resumeTime(repeatingState.getTimeSpent());
@@ -136,7 +139,7 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 		repeatInfo.setTimeSpentOnRepeating(timeSpentHandler.getTimePassed());
 
 		parent.getApplicationController().addWordToRepeatingList(repeatInfo);
-		setProblematicWordsToController();
+		applicationWindow.updateProblematicWordsAmount();
 		parent.showPanel(ApplicationPanels.STARTING_PANEL);
 
 		parent.scrollToBottom();
@@ -153,14 +156,6 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 		parent.getApplicationController().saveProject();
 	}
 
-
-	private void setProblematicWordsToController (){
-		if (wordDisplayer.getClass().equals(RepeatingKanjiDisplayer.class)){
-			parent.getApplicationController().setProblematicKanjis(
-					wordDisplayer.getProblematicWords());
-		}
-	}
-
 	private String createFinishMessage() {
 		String message = Prompts.REPEATING_DONE;
 		message += Prompts.REPEATING_TIME;
@@ -173,8 +168,6 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 		wordDisplayer.clearRepeatingData();
 		this.wordsLeftToRepeat = new ArrayList<>();
 		wordsList = parent.getApplicationController().getActiveWordsList();
-		wordDisplayer.addProblematicWords(
-				parent.getApplicationController().getProblematicKanjis());
 	}
 
 	void setRepeatingInformation(RepeatingInformation info) {

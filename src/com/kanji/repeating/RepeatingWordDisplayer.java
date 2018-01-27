@@ -24,7 +24,6 @@ public interface RepeatingWordDisplayer <Word extends ListElement> {
 	public RepeatingState getRepeatingState (TimeSpent timeSpent,
 			RepeatingInformation repeatingInformation, Set <Word> words);
 	public boolean hasProblematicWords ();
-	public void addProblematicWords (Set <Word> words);
 	public void clearRepeatingData();
-
+	public void setAllProblematicWords (Set <Word> problematicWords);
 }

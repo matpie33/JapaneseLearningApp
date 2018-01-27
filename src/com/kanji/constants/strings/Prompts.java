@@ -10,6 +10,7 @@ public class Prompts {
 			+ "Zewnetrzne numery slowek rowniez beda uwzglednione.";
 	public static final String RANGE_SUM = "Łączna liczba kanji: ";
 	public static final String PROBLEMATIC_KANJI = "Problematycznych kanji: ";
+	public static final String PROBLEMATIC_WORDS = "Problematycznych słów: ";
 	public static final String REPEATING_DONE = "Koniec słów do powtórzenia.";
 	public static final String REMAINING_WORDS = "Pozostało:";
 	public static final String KANJI = "kanji.";

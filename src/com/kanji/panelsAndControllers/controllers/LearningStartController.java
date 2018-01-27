@@ -16,7 +16,6 @@ import com.kanji.list.listElements.RepeatingInformation;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.Labels;
 import com.kanji.model.RangesRow;
-import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.panels.LearningStartPanel;
 import com.kanji.range.SetOfRanges;
 
@@ -69,8 +68,8 @@ public class LearningStartController {
 		}
 	}
 
-	public int getProblematicKanjiNumber() {
-		return applicationController.getProblematicKanjis().size();
+	public int getProblematicWordsNumber() {
+		return applicationController.getProblematicWordsAmountBasedOnCurrentTab();
 	}
 
 	public void addRow(int rowNumber, JTextComponent from, JTextComponent to) {

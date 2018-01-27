@@ -85,15 +85,6 @@ public class DialogWindow {
 		createDialog(new MessagePanel(message), Titles.MESSAGE_DIALOG, true, Position.CENTER);
 	}
 
-	private void makeTheChildFollowThisDialog() {
-		container.addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentMoved(ComponentEvent e) {
-				setChildNextToParent(container, childWindow.getContainer());
-			}
-		});
-	}
-
 	public void createDialog(AbstractPanelWithHotkeysInfo panelCreator, String title, boolean modal,
 			Position position) {
 		if (!isDialogOfSameType(panelCreator) || childWindowIsClosed()) {
@@ -103,6 +94,9 @@ public class DialogWindow {
 			childWindow.setPosition(position);
 			JPanel panel = panelCreator.createPanel();
 			childWindow.setPanel(panel);
+			if (panelCreator.isMaximized()){
+				childWindow.maximize();
+			}
 			childWindow.showYourself(panelCreator, title, modal);
 			childWindow.getContainer().setMinimumSize(childWindow.getContainer().getSize());
 			panelCreator.afterVisible();
@@ -114,7 +108,6 @@ public class DialogWindow {
 	}
 
 	public void showReadyPanel(DialogWindow childWindow) {
-		this.childWindow = childWindow;
 		childWindow.getContainer().setVisible(true);
 	}
 

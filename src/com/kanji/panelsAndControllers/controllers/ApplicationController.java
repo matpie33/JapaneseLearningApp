@@ -12,9 +12,9 @@ import com.kanji.context.WordTypeContext;
 import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.KanjiInformation;
+import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listElements.RepeatingInformation;
 import com.kanji.list.listRows.RowInJapaneseWordInformations;
-import com.kanji.panelsAndControllers.panels.ProblematicJapaneseWordsPanel;
 import com.kanji.panelsAndControllers.panels.RepeatingWordsPanel;
 import com.kanji.constants.strings.*;
 import com.kanji.exception.DuplicatedWordException;
@@ -47,6 +47,7 @@ public class ApplicationController implements ApplicationStateManager {
 	private MyList<JapaneseWordInformation> japaneseWords;
 	private LoadingAndSaving loadingAndSaving;
 	private Set<KanjiInformation> problematicKanjis;
+	private Set<JapaneseWordInformation> problematicJapaneseWords;
 	private boolean isClosingSafe;
 	private ApplicationStateManager applicationStateManager;
 	private Map <ApplicationSaveableState, ApplicationStateManager> applicationStateToManagerMap;
@@ -60,6 +61,7 @@ public class ApplicationController implements ApplicationStateManager {
 
 	public ApplicationController(ApplicationWindow parent) {
 		problematicKanjis = new HashSet<>();
+		problematicJapaneseWords = new HashSet<>();
 		this.parent = parent;
 		isClosingSafe = true;
 		applicationStateManager = this;
@@ -68,7 +70,6 @@ public class ApplicationController implements ApplicationStateManager {
 		japaneseWordsFileReader = new JapaneseWordsFileReader();
 		repeatingJapaneseWordsDisplayer = new RepeatingJapaneseWordsDisplayer(
 				parent.getKanjiFont());
-
 		kanjiWordDisplayer = new RepeatingKanjiDisplayer(parent.getKanjiFont());
 
 	}
@@ -123,6 +124,10 @@ public class ApplicationController implements ApplicationStateManager {
 		verb.addWritings("ひらける", "開ける", " 空ける",  "明ける");
 		verb.addAditionalInformation(AdditionalInformationTag.VERB_CONJUGATION,
 				Labels.VERB_CONJUGATION_GODAN);
+		JapaneseWordInformation japaneseWordInformation =
+				new JapaneseWordInformation(PartOfSpeech.NOUN, "Test");
+		japaneseWordInformation.addWriting("bb", "cc");
+		japaneseWords.addWord(japaneseWordInformation);
 		japaneseWords.addWord(verb);
 	}
 
@@ -202,7 +207,7 @@ public class ApplicationController implements ApplicationStateManager {
 		List <KanjiInformation> kanjiInformations = words.getKanjiInformations();
 		List <RepeatingInformation> repeatingInformations = words.getRepeatingInformations();
 		Set <Integer> problematicKanjis = words.getProblematicKanjis();
-		setProblematicKanjis(convertIdsToKanjiInformations(problematicKanjis));
+		setProblematicWordsAndUpdateInformation(convertIdsToKanjiInformations(problematicKanjis));
 		kanjiList.cleanWords();
 		kanjiRepeatingDates.cleanWords();
 		for (KanjiInformation kanjiInformation: kanjiInformations){
@@ -251,7 +256,8 @@ public class ApplicationController implements ApplicationStateManager {
 		}
 
 		kanjiList.cleanWords();
-		setProblematicKanjis(savingInformation.getProblematicKanjis());
+		setProblematicWordsAndUpdateInformation(savingInformation.getProblematicKanjis());
+		setProblematicWordsAndUpdateInformation(savingInformation.getProblematicJapaneseWords());
 		parent.updateTitle(fileToSave.toString());
 		parent.changeSaveStatus(SavingStatus.NO_CHANGES);
 
@@ -274,13 +280,7 @@ public class ApplicationController implements ApplicationStateManager {
 		if (state == null){
 			return this;
 		}
-		for (Map.Entry <ApplicationSaveableState, ApplicationStateManager> entry:
-				applicationStateToManagerMap.entrySet()){
-			if (entry.getKey().equals(state)){
-				return entry.getValue();
-			}
-		}
-		throw new IllegalArgumentException("No state manager found for given state: "+state);
+		return applicationStateToManagerMap.get(state);
 	}
 
 	public void finishedLoadingProject (){
@@ -358,9 +358,7 @@ public class ApplicationController implements ApplicationStateManager {
 		repeatingWordsPanelController.setWordDisplayer(
 				getWordDisplayerForCurrentWordList());
 		problematicWordsController.setProblematicWordsDisplayer(
-				getProblematicWordsDisplayerBasedOnActiveWordList(
-						parent.getStartingPanel().getActiveWordsList()
-				));
+				getProblematicWordsDisplayerBasedOnActiveWordList());
 		parent.showLearningStartDialog(parent.getStartingPanel().getActiveWordsList()
 				.getNumberOfWords());
 	}
@@ -435,18 +433,52 @@ public class ApplicationController implements ApplicationStateManager {
 
 	}
 
-	public void setProblematicKanjis(Set<KanjiInformation> problematicKanjiList) {
-		problematicKanjis = problematicKanjiList;
-		parent.updateProblematicKanjisAmount();
+	public <Word extends ListElement> void setProblematicWordsAndUpdateInformation(Set<Word> problematicWords) {
+		if (problematicWords.isEmpty()){
+			return;
+		}
+		Class wordClass = problematicWords.iterator().next().getClass();
+		if (wordClass.equals(KanjiInformation.class)) {
+			problematicKanjis.addAll((Set<KanjiInformation>)problematicWords);
+			//TODO ugly solution
+		}
+		else if (wordClass.equals(JapaneseWordInformation.class)){
+			problematicJapaneseWords.addAll((Set<JapaneseWordInformation>)problematicWords);
+		}
+		else{
+			throw new IllegalArgumentException("Invalid active words class name: "+wordClass);
+		}
+		if (wordClass.equals(getActiveWordsList().getListElementClass())){
+			parent.updateProblematicWordsAmount();
+		}
+
 	}
 
 	public Set<KanjiInformation> getProblematicKanjis() {
 		return problematicKanjis;
 	}
 
+	public Set <? extends ListElement> getProblematicWordsBasedOnCurrentTab(){
+		Class activeWordsElementClass = getActiveWordsList().getListElementClass();
+		if (activeWordsElementClass.equals(KanjiInformation.class)){
+			return problematicKanjis;
+		}
+		else if (activeWordsElementClass.equals(JapaneseWordInformation.class)){
+			return problematicJapaneseWords;
+		}
+		else {
+			throw new IllegalArgumentException("Invalid active words class"+activeWordsElementClass);
+		}
+	}
+
+	public int getProblematicWordsAmountBasedOnCurrentTab(){
+		return getProblematicWordsBasedOnCurrentTab().size();
+	}
+
 	public void addWordToRepeatingList(RepeatingInformation word) {
-		kanjiRepeatingDates.addWord(word);
-		kanjiRepeatingDates.scrollToBottom();
+		MyList<RepeatingInformation> repeatingList = parent.getStartingPanel().getActiveRepeatingList();
+		repeatingList.addWord(word);
+		repeatingList.scrollToBottom();
 	}
 
 	public void setRepeatingInformation(RepeatingInformation info) {
@@ -454,8 +486,8 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	public void initiateWordsLists(SetOfRanges ranges, boolean withProblematic) {
-		repeatingWordsPanelController.initiateWordsLists(ranges,
-				problematicKanjis, withProblematic);
+ 		repeatingWordsPanelController.initiateWordsLists(ranges,
+				getProblematicWordsBasedOnCurrentTab(), withProblematic);
 	}
 
 	public void startRepeating() {
@@ -483,13 +515,17 @@ public class ApplicationController implements ApplicationStateManager {
 		applicationStateManager = this;
 	}
 
+	public Set <JapaneseWordInformation> getProblematicJapaneseWords(){
+		return problematicJapaneseWords;
+	}
+
 	public boolean isClosingSafe (){
 		return isClosingSafe;
 	}
 
 	@Override public SavingInformation getApplicationState() {
 		SavingInformation savingInformation = new SavingInformation(kanjiList.getWords(),
-				kanjiRepeatingDates.getWords(), getProblematicKanjis(),
+				kanjiRepeatingDates.getWords(), getProblematicKanjis(), getProblematicJapaneseWords(),
 				japaneseWords.getWords(), japaneseWordsRepeatingDates.getWords());
 		List <String> kanjiKoohiCookiesHeaders = problematicKanjiDisplayer.getCookieHeaders();
 		if (!kanjiKoohiCookiesHeaders.isEmpty()){
@@ -508,7 +544,8 @@ public class ApplicationController implements ApplicationStateManager {
 		isClosingSafe = false;
 	}
 
-	public ProblematicWordsDisplayer getProblematicWordsDisplayerBasedOnActiveWordList(MyList activeWordList){
+	public ProblematicWordsDisplayer getProblematicWordsDisplayerBasedOnActiveWordList(){
+		MyList activeWordList = parent.getStartingPanel().getActiveWordsList();
 		Class listElementsClass = activeWordList.getListElementClass();
 		if (listElementsClass.equals(KanjiInformation.class)){
 			return problematicKanjiDisplayer;
@@ -517,6 +554,10 @@ public class ApplicationController implements ApplicationStateManager {
 			return problematicJapaneseWordsDisplayer;
 		}
 		return null;
+	}
+
+	public void switchToList (Class listType){
+		parent.getStartingPanel().switchToList(listType);
 	}
 
 }

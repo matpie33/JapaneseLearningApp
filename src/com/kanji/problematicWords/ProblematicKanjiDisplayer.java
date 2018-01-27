@@ -36,7 +36,7 @@ public class ProblematicKanjiDisplayer implements ProblematicWordsDisplayer <Kan
 	private MyList <KanjiInformation> wordsToReviewList;
 
 	public ProblematicKanjiDisplayer (ApplicationWindow applicationWindow,
-			ProblematicWordsController<KanjiInformation> controller){
+			ProblematicWordsController controller){
 		problematicKanjiPanel = new ProblematicKanjiPanel(applicationWindow.getKanjiFont(),
 				applicationWindow, controller, this);
 		cookieManager = new CookieManager();

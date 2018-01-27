@@ -53,6 +53,11 @@ public class RepeatingKanjiDisplayer implements RepeatingWordDisplayer<KanjiInfo
 
 	}
 
+	@Override
+	public void setAllProblematicWords (Set <KanjiInformation> problematicWords){
+		problematicKanjis = problematicWords;
+	}
+
 	@Override public void showRecognizingWordPanel() {
 
 	}
@@ -66,6 +71,7 @@ public class RepeatingKanjiDisplayer implements RepeatingWordDisplayer<KanjiInfo
 	}
 
 	@Override public void markWordAsProblematic(KanjiInformation kanjiInformation) {
+		problematicKanjis.add(kanjiInformation);
 		currentProblematicKanjis.add(kanjiInformation);
 	}
 
@@ -95,10 +101,6 @@ public class RepeatingKanjiDisplayer implements RepeatingWordDisplayer<KanjiInfo
 
 	@Override public boolean hasProblematicWords() {
 		return !currentProblematicKanjis.isEmpty();
-	}
-
-	@Override public void addProblematicWords(Set<KanjiInformation> kanjiInformations) {
-
 	}
 
 	@Override

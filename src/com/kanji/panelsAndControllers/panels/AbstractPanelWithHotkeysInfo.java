@@ -40,13 +40,23 @@ public abstract class AbstractPanelWithHotkeysInfo {
     private Anchor buttonsAnchor = Anchor.EAST;
     private Border defaultBorder = BorderFactory.createBevelBorder(BevelBorder.LOWERED);
     private Map<HotkeyWrapper, AbstractAction> hotkeysMapping = new HashMap<>();
+    private boolean isMaximized;
 
     public AbstractPanelWithHotkeysInfo() {
         mainPanel = new MainPanel(BasicColors.OCEAN_BLUE);
         mainPanel.setRowColor(BasicColors.VERY_LIGHT_BLUE);
         mainPanel.setBorder(defaultBorder);
         createHotkeysPanel();
+        isMaximized = false;
     }
+
+    public void setMaximize(boolean maximized){
+    	isMaximized = maximized;
+	}
+
+	public boolean isMaximized (){
+    	return isMaximized;
+	}
 
     protected Border getDefaultBorder(){
     	return defaultBorder;
@@ -102,17 +112,17 @@ public abstract class AbstractPanelWithHotkeysInfo {
     	return mainPanel;
 	}
 
-    void addHotkeysInformation(int keyEvent, String hotkeyDescription) {
+    public void addHotkeysInformation(int keyEvent, String hotkeyDescription) {
         HotkeyWrapper wrapper = new HotkeyWrapper(KeyModifiers.NONE, keyEvent);
         addHotkeyInformation(hotkeyDescription, wrapper);
     }
 
-    void addHotkey(int keyEvent, AbstractAction action, JComponent component,
+	public void addHotkey(int keyEvent, AbstractAction action, JComponent component,
                           String hotkeyDescription) {
         addHotkey(KeyModifiers.NONE, keyEvent, action, component, hotkeyDescription);
     }
 
-    private void addHotkey(KeyModifiers keyModifier, int keyEvent, AbstractAction action,
+	public void addHotkey(KeyModifiers keyModifier, int keyEvent, AbstractAction action,
                           JComponent component, String hotkeyDescription) {
         HotkeyWrapper wrapper = new HotkeyWrapper(keyModifier, keyEvent);
         if (hotkeysMapping.containsKey(wrapper)){
@@ -148,8 +158,17 @@ public abstract class AbstractPanelWithHotkeysInfo {
 
     private String createInformationAboutHotkey(HotkeyWrapper hotkey, String description) {
         return (hotkey.hasKeyModifier() ? InputEvent.getModifiersExText(hotkey.getKeyMask()) + " + "
-                : "") + KeyEvent.getKeyText(hotkey.getKeyEvent()) + " : " + description;
+                : "") + translateKeyText(KeyEvent.getKeyText(hotkey.getKeyEvent())) + " : " + description;
     }
+
+    private String translateKeyText (String text){
+    	if (text.equalsIgnoreCase("period")){
+    		return "kropka";
+		}
+		else{
+    		return text;
+		}
+	}
 
     public void setParentDialog(DialogWindow parent) {
         parentDialog = parent;

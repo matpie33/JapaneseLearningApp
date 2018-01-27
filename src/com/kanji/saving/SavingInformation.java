@@ -13,7 +13,8 @@ public class SavingInformation implements Serializable {
 	private final static long serialVersionUID = -8017224611162128282L;
 	private List<KanjiInformation> kanjiWords;
 	private List<RepeatingInformation> repeatingList;
-	private Set<KanjiInformation> problematicKanjis;
+	private Set <KanjiInformation> problematicKanjis;
+	private Set <JapaneseWordInformation> problematicJapaneseWords;
 	private RepeatingState repeatingState;
 	private ProblematicKanjisState problematicKanjisState;
 	private ApplicationSaveableState applicationSaveableState;
@@ -24,13 +25,23 @@ public class SavingInformation implements Serializable {
 
 	public SavingInformation(List<KanjiInformation> kanjiWords,
 			List<RepeatingInformation> repeatingList, Set<KanjiInformation> problematicKanjis,
+			Set<JapaneseWordInformation> problematicJapaneseWords,
 			List <JapaneseWordInformation> japaneseWordInformations, List <RepeatingInformation>
 			japaneseWordsRepeatingLists) {
 		this.kanjiWords = kanjiWords;
 		this.repeatingList = repeatingList;
 		this.problematicKanjis = problematicKanjis;
+		this.problematicJapaneseWords = problematicJapaneseWords;
 		this.japaneseWordInformations = japaneseWordInformations;
 		this.japaneseWordsRepeatingLists = japaneseWordsRepeatingLists;
+	}
+
+	public boolean containsProblematicKanji(){
+		return !problematicKanjis.isEmpty();
+	}
+
+	public boolean containsProblematicJapaneseWords (){
+		return !problematicJapaneseWords.isEmpty();
 	}
 
 	public List<KanjiInformation> getKanjiWords() {
@@ -89,4 +100,7 @@ public class SavingInformation implements Serializable {
 		return japaneseWordsRepeatingLists;
 	}
 
+	public Set<JapaneseWordInformation> getProblematicJapaneseWords() {
+		return problematicJapaneseWords;
+	}
 }

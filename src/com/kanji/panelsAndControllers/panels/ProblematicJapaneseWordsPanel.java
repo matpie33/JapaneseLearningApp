@@ -1,5 +1,6 @@
 package com.kanji.panelsAndControllers.panels;
 
+import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
@@ -36,15 +37,15 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		parentDialog = parent;
 		this.problematicWordsController = problematicWordsController;
 		kanjiInformationPanel = new MainPanel(null);
-	}
-
-	public void initialize (){
-		problematicWords = problematicWordsController.getWordsToReviewList();
 		englishDictionaryPanel = new WebPagePanel(this,
 				new ConnectionFailMessagePage());
 
 		japaneseEnglishDictionaryPanel = new WebPagePanel(this,
 				new ConnectionFailMessagePage());
+	}
+
+	public void initialize (){
+		problematicWords = problematicWordsController.getWordsToReviewList();
 		japaneseEnglishDictionaryPanel.showPage(TANGORIN_URL);
 		englishDictionaryPanel.showPage(Urls.DICTIONARY_PL_EN_MAIN_PAGE);
 	}
@@ -56,10 +57,6 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	@Override
 	public void setParentDialog (DialogWindow parentDialog){
 		super.setParentDialog(parentDialog);
-		parentDialog.maximize();
-		addHotkey(KeyEvent.VK_SPACE, problematicWordsController.createActionShowNextWordOrCloseDialog(),
-				((JDialog) parentDialog.getContainer()).getRootPane(),
-				HotkeysDescriptions.SHOW_NEXT_KANJI);
 	}
 
 	@Override public void createElements() {
@@ -81,7 +78,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 				dictionariesSplitPane,0.1);
 
 		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH, wordAndDictionariesSplitPane));
-
+		setNavigationButtons(Anchor.WEST, createButtonClose());
 	}
 
 	@Override public Object getContext() {

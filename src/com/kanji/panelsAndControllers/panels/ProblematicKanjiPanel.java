@@ -62,12 +62,6 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		wordsToReviewList = controller.getWordsToReviewList();
 	}
 
-	public void restoreState (ProblematicKanjisState problematicKanjisState){
-		controller.createProblematicWordsList(problematicKanjisState.getReviewedKanjis(),
-				problematicKanjisState.getNotReviewKanjis());
-		controller.highlightReviewedWords(problematicKanjisState.getReviewedKanjis().size());
-	}
-
 	@Override
 	public void setParentDialog(DialogWindow dialog) {
 		super.setParentDialog(dialog);
@@ -105,7 +99,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH,
 				mainSplitPane));
 
-		setNavigationButtons(Anchor.CENTER, buttonClose);
+		setNavigationButtons(Anchor.WEST, buttonClose);
 	}
 
 //	@Override
@@ -115,17 +109,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
 	private void configureParentDialog() {
 
-		addHotkey(KeyEvent.VK_SPACE, controller.createActionShowNextWordOrCloseDialog(),
-				((JDialog) parentDialog.getContainer()).getRootPane(),
-				HotkeysDescriptions.SHOW_NEXT_KANJI);
 
-		parentDialog.getContainer().addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosed(WindowEvent e) {
-				controller.closeDialogAndManageState(parentDialog);
-			}
-		});
-		parentDialog.maximize();
 	}
 
 	public void showPageInKoohi (String url){
