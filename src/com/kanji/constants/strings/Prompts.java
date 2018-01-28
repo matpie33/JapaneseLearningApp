@@ -32,5 +32,7 @@ public class Prompts {
 	public static final String UNFINISHED_REPEATING = "Wykryto powtórki, które zostały przerwane. Wznawiam powtarzanie.";
 	public static final String CONNECTION_ERROR = "Problem z połączeniem internetowym.";
 	public static final String LOADING_PAGE = "Wczytuję stronę, proszę czekać ...";
+	public static final String KANJI_TEXT = "Kanji";
+	public static final String KANA_TEXT = "Kana";
 
 }

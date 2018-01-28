@@ -3,6 +3,11 @@ package com.kanji.panelsAndControllers.panels;
 import com.guimaker.enums.FillType;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
+import com.kanji.constants.enums.ListElementPropertyType;
+import com.kanji.constants.strings.Labels;
+import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
+import com.kanji.list.listElementPropertyManagers.KanjiKeywordChecker;
+import com.kanji.list.listElements.KanjiInformation;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listElements.ListElementData;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
@@ -16,16 +21,18 @@ import com.kanji.utilities.CommonGuiElementsMaker;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class InsertWordPanel<Word extends ListElement> extends AbstractPanelWithHotkeysInfo {
+public class InsertKanjiPanel<Word extends ListElement> extends AbstractPanelWithHotkeysInfo {
 
 	private InsertWordController controller;
 	private MyList<Word> list;
 	private Map<JComponent, ListElementPropertyManager> textComponentToPropertyManager;
 
-	public InsertWordPanel(MyList<Word> list,
+	public InsertKanjiPanel(MyList<Word> list,
 			ApplicationController applicationController) {
 		controller = new InsertWordController(list, applicationController);
 		this.list = list;
@@ -38,7 +45,15 @@ public class InsertWordPanel<Word extends ListElement> extends AbstractPanelWith
 		controller.setParentDialog(parentDialog);
 		MainPanel addWordPanel = new MainPanel(null);
 
-		for (ListElementData listElementData: list.getListElementData()){
+		List<ListElementData<KanjiInformation>> listElements = new ArrayList<>();
+		listElements.add(new ListElementData<>(
+				Labels.KANJI_KEYWORD_LABEL, new KanjiKeywordChecker(),
+				ListElementPropertyType.STRING_LONG_WORD, Labels.COMBOBOX_OPTION_SEARCH_BY_KEYWORD));
+		listElements.add(new ListElementData<>(Labels.KANJI_ID_LABEL, new KanjiIdChecker(),
+				ListElementPropertyType.NUMERIC_INPUT, Labels.COMBOBOX_OPTION_SEARCH_BY_KANJI_ID));
+
+		boolean firstElement = true;
+		for (ListElementData listElementData: listElements){
 			JComponent component;
 			switch (listElementData.getListElementPropertyType()) {
 				case NUMERIC_INPUT:
@@ -63,6 +78,10 @@ public class InsertWordPanel<Word extends ListElement> extends AbstractPanelWith
 					SimpleRowBuilder.createRow(FillType.BOTH,
 							new JLabel(listElementData.getElementLabel()), component)
 							.fillVertically(component));
+			if (firstElement){
+				firstElement = false;
+				SwingUtilities.invokeLater(()->component.requestFocusInWindow());
+			}
 
 		}
 

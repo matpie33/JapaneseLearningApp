@@ -1,6 +1,10 @@
 package com.kanji.utilities;
 
 import java.awt.Color;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +30,39 @@ public class CommonGuiElementsMaker {
 		return GuiMaker.createTextArea(
 				new TextAreaOptions().text(defaultContent).rowsAndColumns(3, 15)
 						.moveToNextComponentWhenTabbed(true));
+	}
+
+	public static JTextComponent createShortInput(String defaultContent) {
+		return GuiMaker.createTextField(
+				new TextComponentOptions().text(defaultContent)
+						.rowsAndColumns(1, 6)
+						);
+	}
+
+	public static JTextComponent createShortInputWithPrompt(String prompt) {
+		JTextComponent textComponent =  GuiMaker.createTextField(
+				new TextComponentOptions().text(prompt)
+						.rowsAndColumns(1, 6)
+						.foregroundColor(Color.GRAY)
+		);
+		textComponent.addFocusListener(new FocusAdapter() {
+			@Override public void focusGained(FocusEvent e) {
+				if (((JTextComponent)e.getSource()).getText().equals(prompt)) {
+					((JTextComponent) e.getSource()).setText("");
+					((JTextComponent) e.getSource()).setForeground(Color.BLACK);
+				}
+				super.focusGained(e);
+			}
+
+			@Override public void focusLost(FocusEvent e) {
+				if (((JTextComponent)e.getSource()).getText().isEmpty()){
+					((JTextComponent)e.getSource()).setText(prompt);
+					((JTextComponent) e.getSource()).setForeground(Color.GRAY);
+				}
+				super.focusLost(e);
+			}
+		});
+		return textComponent;
 	}
 
 	public static JTextComponent createTextField(String defaultContent) {
