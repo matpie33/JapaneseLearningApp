@@ -26,5 +26,6 @@ public class ExceptionsMessages {
 			+ "japońskich słów na polski";
 	public static final String INCORRECT_JAPANESE_WORDS_LISTS_SIZES = "Długości list słów zapisanych kaną, "
 			+ "kanji oraz przetłumaczonych na polski nie są jednakowe - a powinny.";
+	public static final String INCORRECT_TEXT_INPUT = "Nieprawidłowa wartość pola tekstowego: ";
 
 }

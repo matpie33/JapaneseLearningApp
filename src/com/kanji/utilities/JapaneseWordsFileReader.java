@@ -9,7 +9,6 @@ import com.kanji.list.listElements.JapaneseWordInformation;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class JapaneseWordsFileReader {
@@ -84,7 +83,7 @@ public class JapaneseWordsFileReader {
 				// '' imieslow czasownikowy''
 				partOfSpeech = PartOfSpeech.I_ADJECTIVE;
 			}
-			else if (isKanji(lastCharacterOf(stringInKanji))){
+			else if (StringUtilities.characterIsKanji(lastCharacterOf(stringInKanji))){
 				partOfSpeech = PartOfSpeech.NOUN;
 			}
 			else{
@@ -185,7 +184,7 @@ public class JapaneseWordsFileReader {
 		String wordToCompare = splittedWords [0];
 		alternativeWritings.add(wordToCompare);
 		char lastCharacterOfWordToCompare = lastCharacterOf(wordToCompare);
-		boolean isLastCharacterKanji = isKanji(lastCharacterOfWordToCompare);
+		boolean isLastCharacterKanji = StringUtilities.characterIsKanji(lastCharacterOfWordToCompare);
 		boolean foundVerbConjugationType = false;
 		for (int i=1; i<splittedWords.length; i++){
 			String nextWord = splittedWords [i];
@@ -244,10 +243,6 @@ public class JapaneseWordsFileReader {
 		return word.isEmpty() ? '0': word.charAt(word.length()-1);
 	}
 
-	private boolean isKanji (char character){
-		return Character.UnicodeBlock.of(character) == Character.UnicodeBlock.
-				CJK_UNIFIED_IDEOGRAPHS;
-	}
 
 	private void checkForErrors () throws IncorrectJapaneseWordsListInputException {
 		String message = "";

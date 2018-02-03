@@ -4,7 +4,6 @@ import com.kanji.constants.enums.WordSearchOptions;
 
 public class WordSearchOptionsHolder {
 
-
 	private WordSearchOptions options;
 
 	public WordSearchOptionsHolder() {

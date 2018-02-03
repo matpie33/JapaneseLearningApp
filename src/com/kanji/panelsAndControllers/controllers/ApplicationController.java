@@ -58,6 +58,7 @@ public class ApplicationController implements ApplicationStateManager {
 	private RepeatingJapaneseWordsDisplayer repeatingJapaneseWordsDisplayer;
 	private ProblematicKanjiDisplayer problematicKanjiDisplayer;
 	private ProblematicJapaneseWordsDisplayer problematicJapaneseWordsDisplayer;
+	private RowInJapaneseWordInformations rowInJapaneseWordInformations;
 
 	public ApplicationController(ApplicationWindow parent) {
 		problematicKanjis = new HashSet<>();
@@ -105,7 +106,8 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	private void initializeJapaneseWordsList(){
-		japaneseWords = new MyList<>(parent, this, new RowInJapaneseWordInformations(parent),
+		rowInJapaneseWordInformations = new RowInJapaneseWordInformations();
+		japaneseWords = new MyList<>(parent, this, rowInJapaneseWordInformations,
 				Titles.JAPANESE_WORDS_LIST, true,
 				JapaneseWordInformation.getElementsTypesAndLabels(),
 				JapaneseWordInformation.getInitializer());
@@ -346,7 +348,8 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	public void showInsertWordDialog() {
-		parent.showInsertDialog(parent.getStartingPanel().getActiveWordsList());
+		parent.showInsertDialog(rowInJapaneseWordInformations,
+				parent.getStartingPanel().getActiveWordsList());
 	}
 
 	public void showSearchWordDialog() {

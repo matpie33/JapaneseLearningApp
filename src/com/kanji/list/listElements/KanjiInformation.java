@@ -73,7 +73,10 @@ public class KanjiInformation implements Serializable, ListElement {
 	//TODO it's probably beter to override equals and hashcode and use set instead of lists
 	@Override public boolean isSameAs(ListElement element) {
 		if (element instanceof KanjiInformation){
-			return ((KanjiInformation)element).getKanjiID() == id;
+			return ((KanjiInformation)element).getKanjiID() == id ||
+					((KanjiInformation)element).getKanjiKeyword().equals(
+							keyword
+					);
 		}
 		return false;
 	}

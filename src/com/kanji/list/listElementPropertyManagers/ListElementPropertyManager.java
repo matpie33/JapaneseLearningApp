@@ -6,19 +6,20 @@ import javax.swing.text.JTextComponent;
 
 public interface ListElementPropertyManager<PropertyType, PropertyHolder extends ListElement> {
 
+	public String getInvalidPropertyReason ();
+
 	public boolean isPropertyFound(PropertyType property, PropertyHolder propertyHolder);
 
-	public void replaceValueOfProperty(PropertyType newValue, PropertyHolder propertyHolder);
+	public PropertyType convertTextInputToProperty(JTextComponent textInput);
 
-	public PropertyType convertStringToProperty(String valueToConvert);
+	public void setProperty(PropertyHolder propertyHolder, PropertyType propertyValue);
 
-	public void setPropertyValue (PropertyHolder propertyHolder, PropertyType propertyValue);
-
-	public default boolean tryToReplacePropertyWithValueFromTextInput (String input,
+	public default boolean tryToReplacePropertyWithValueFromTextInput (JTextComponent input,
 			PropertyHolder propertyHolder){
-		PropertyType propertyValue = convertStringToProperty(input);
+		PropertyType propertyValue = convertTextInputToProperty(input);
 		if (propertyValue != null){
-			setPropertyValue(propertyHolder, propertyValue);
+			//TODO add property = replace value of property -> 1 method redundant
+			setProperty(propertyHolder, propertyValue);
 		}
 		return propertyValue != null;
 	}

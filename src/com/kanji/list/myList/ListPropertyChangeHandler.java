@@ -16,8 +16,10 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	private Property propertyBeingModified;
 	private ListElementPropertyManager<Property, PropertyHolder> listElementPropertyManager;
 	private String propertyDefinedExceptionMessage;
+	private PropertyHolder propertyHolder;
 
-	public ListPropertyChangeHandler(MyList<PropertyHolder> list,
+	public ListPropertyChangeHandler(PropertyHolder propertyHolder,
+			MyList<PropertyHolder> list,
 			ApplicationWindow applicationWindow,
 			ListElementPropertyManager<Property, PropertyHolder> listElementPropertyManager,
 			String propertyDefinedExceptionMessage) {
@@ -25,22 +27,27 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 		this.applicationWindow = applicationWindow;
 		this.listElementPropertyManager = listElementPropertyManager;
 		this.propertyDefinedExceptionMessage = propertyDefinedExceptionMessage;
+		this.propertyHolder = propertyHolder;
 	}
 
 	public void focusGained(FocusEvent e) {
 		JTextComponent textElement = (JTextComponent) e.getSource();
-		propertyBeingModified = listElementPropertyManager.convertStringToProperty(textElement.getText());
+		propertyBeingModified = listElementPropertyManager.convertTextInputToProperty(textElement);
 	}
 
 	public void focusLost(FocusEvent e) {
 		JTextComponent elem = (JTextComponent) e.getSource();
-
-		Property propertyNewValue = listElementPropertyManager.convertStringToProperty(elem.getText());
+		Property propertyNewValue = listElementPropertyManager.convertTextInputToProperty(elem);
 
 		if (propertyBeingModified.equals(propertyNewValue)) {
 			return;
 		}
-		if (list.isPropertyDefined(listElementPropertyManager, propertyNewValue)) {
+		listElementPropertyManager.setProperty(propertyHolder,
+				propertyNewValue);
+		//TODO add method revert in property manager - and keep previously changed value
+		//from method replace value of property - use it if word is already defined
+		// could be default -> it will be same for all
+		if (list.isWordDefined(propertyHolder)){
 			applicationWindow.showMessageDialog(
 					String.format(propertyDefinedExceptionMessage, propertyNewValue));
 			elem.setText(propertyBeingModified.toString());
@@ -48,9 +55,8 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 			elem.selectAll();
 			return;
 		}
-		list.replaceProperty(listElementPropertyManager, propertyBeingModified,
-				propertyNewValue);
 		propertyBeingModified = null;
+		list.save();
 	}
 
 }

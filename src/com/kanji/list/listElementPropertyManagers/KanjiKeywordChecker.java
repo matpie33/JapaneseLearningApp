@@ -8,9 +8,8 @@ import javax.swing.text.JTextComponent;
 public class KanjiKeywordChecker extends WordSearchOptionsHolder implements
 		ListElementPropertyManager<String, KanjiInformation> {
 
-	@Override
-	public void replaceValueOfProperty(String keyWord, KanjiInformation kanjiWord) {
-		kanjiWord.setKanjiKeyword(keyWord);
+	@Override public String getInvalidPropertyReason() {
+		return "tekst powinien zawierać tylko łacińskie znaki";
 	}
 
 	@Override
@@ -20,12 +19,13 @@ public class KanjiKeywordChecker extends WordSearchOptionsHolder implements
 	}
 
 	@Override
-	public String convertStringToProperty(String valueToConvert) {
-		return valueToConvert;
+	public String convertTextInputToProperty(JTextComponent valueToConvert) {
+
+		return valueToConvert.getText();
 	}
 
 	@Override
-	public void setPropertyValue(KanjiInformation kanjiInformation, String propertyValue) {
+	public void setProperty(KanjiInformation kanjiInformation, String propertyValue) {
 		kanjiInformation.setKanjiKeyword(propertyValue);
 	}
 

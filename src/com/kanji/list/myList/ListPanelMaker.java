@@ -68,7 +68,7 @@ public class ListPanelMaker<Word extends ListElement> extends AbstractPanelWithH
 	}
 
 	public String createTextForRowNumber(int rowNumber) {
-		return "" + rowNumber + ".";
+		return "" + rowNumber + ". ";
 	}
 
 	public void setTitle(String title) {

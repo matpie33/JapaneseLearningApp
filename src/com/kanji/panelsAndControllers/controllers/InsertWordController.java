@@ -29,30 +29,17 @@ public class InsertWordController<Word extends ListElement> {
 	}
 
 	private void validateAndAddWordIfValid(
-			Map<JComponent, ListElementPropertyManager> inputToPropertyManager) {
+			Map<JTextComponent, ListElementPropertyManager> inputToPropertyManager) {
 		Word word = list.createWord();
 		boolean allInputsValid = true;
-		for (Map.Entry<JComponent, ListElementPropertyManager> entry: inputToPropertyManager.entrySet()){
+		for (Map.Entry<JTextComponent, ListElementPropertyManager> entry: inputToPropertyManager.entrySet()){
 			ListElementPropertyManager listElementPropertyManager = entry.getValue();
-			JComponent component = entry.getKey();
-			JTextComponent textComponent = null;
-			if (component instanceof JTextComponent){
-				textComponent = (JTextComponent) component;
-			}
-			else if (component instanceof JComboBox){
-				JComboBox comboBox = (JComboBox) component;
-				textComponent = new JTextField();
-				Object selectedComboboxValue = comboBox.getSelectedItem();
-				if (selectedComboboxValue instanceof String){
-					textComponent.setText((String)selectedComboboxValue);
-				}
-
-			}
+			JTextComponent component = entry.getKey();
 			allInputsValid = listElementPropertyManager.tryToReplacePropertyWithValueFromTextInput(
-					textComponent.getText(), word);
+					component, word);
 			if (!allInputsValid){
-				textComponent.selectAll();
-				textComponent.requestFocusInWindow();
+				component.selectAll();
+				component.requestFocusInWindow();
 				break;
 			}
 		}
@@ -79,7 +66,7 @@ public class InsertWordController<Word extends ListElement> {
 	}
 
 	public AbstractAction createActionValidateAndAddWord (
-			Map<JComponent, ListElementPropertyManager> inputToPropertyManager){
+			Map<JTextComponent, ListElementPropertyManager> inputToPropertyManager){
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

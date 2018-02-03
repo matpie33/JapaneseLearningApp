@@ -3,8 +3,6 @@ package com.kanji.utilities;
 import java.awt.Color;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -107,7 +105,7 @@ public class CommonGuiElementsMaker {
 			writings.add(writing.getKey());
 			writings.addAll(writing.getValue());
 			JTextComponent kanjiAndKanaWritings = CommonGuiElementsMaker.createTextField(
-					StringConcatenator.concatenateStrings(writings));
+					StringUtilities.concatenateStrings(writings));
 			textComponents.add(kanjiAndKanaWritings);
 		}
 		return textComponents;

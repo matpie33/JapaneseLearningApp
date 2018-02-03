@@ -56,11 +56,7 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 		listElementData.add(new ListElementData<>(Labels.WORD_MEANING,
 				new JapaneseWordMeaningChecker(), ListElementPropertyType.STRING_SHORT_WORD, Labels.COMBOBOX_OPTION_SEARCH_BY_WORD_MEANING));
 		listElementData.add(new ListElementData<>(Labels.WORD_IN_KANA,
-				new JapaneseWordKanaChecker(), ListElementPropertyType.STRING_SHORT_WORD, Labels.COMBOBOX_OPTION_SEARCH_BY_KANA));
-		listElementData.add(new ListElementData<>(Labels.WORD_IN_KANJI,
-				new JapaneseWordKanjiChecker(), ListElementPropertyType.STRING_SHORT_WORD, Labels.COMBOBOX_OPTION_SEARCH_BY_KANJI));
-		listElementData.add(new ListElementData<>(Labels.PART_OF_SPEECH,
-				new NotChecker(), ListElementPropertyType.COMBOBOX_OPTION, Labels.COMBOBOX_OPTION_SEARCH_BY_PART_OF_SPEECH));
+				new JapaneseWordWritingsChecker(null /*TODO*/), ListElementPropertyType.STRING_SHORT_WORD, Labels.COMBOBOX_OPTION_SEARCH_BY_KANA));
 
 		return listElementData;
 	}
@@ -113,8 +109,9 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 	@Override public boolean isSameAs(ListElement element) {
 		if (element instanceof JapaneseWordInformation){
 			JapaneseWordInformation otherWord = (JapaneseWordInformation)element;
-			return otherWord.getKanaToKanjiWritingsMap().equals(
-					kanjiToAlternativeKanaWritingMap);
+			return otherWord.getKanaToKanjiWritingsMap().values().containsAll(
+					getKanaToKanjiWritingsMap().values()) ||
+							otherWord.getWordMeaning().equals(getWordMeaning());
 		}
 		return false;
 	}

@@ -194,25 +194,6 @@ public class MyList<Word extends ListElement> {
 		return listController.getWords();
 	}
 
-	public ListWordsController<Word> getListController() {
-		return listController;
-	}
-
-	public <Property> void replaceProperty(ListElementPropertyManager<Property, Word> propertyChecker,
-			Property oldValue, Property newValue) {
-		Word kanjiToChange = findRowBasedOnPropertyStartingFromBeginningOfList(propertyChecker,
-				oldValue, SearchingDirection.FORWARD);
-		propertyChecker.replaceValueOfProperty(newValue, kanjiToChange);
-		listController.getWords();
-		save();
-	}
-
-	public <Property> boolean isPropertyDefined(ListElementPropertyManager<Property, Word> listElementPropertyManager,
-			Property propertyToCheck) {
-		return listController.isPropertyDefined(listElementPropertyManager, propertyToCheck);
-		//TODO remove this method
-	}
-
 	public boolean isWordDefined (Word word){
 		return listController.isWordDefined(word);
 	}

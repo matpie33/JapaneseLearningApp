@@ -1,6 +1,7 @@
 package com.kanji.main;
 
 import com.kanji.utilities.OldToNewestVersionConverter;
+import com.kanji.utilities.StringUtilities;
 import com.kanji.windows.ApplicationWindow;
 
 import java.io.File;

@@ -15,7 +15,7 @@ import com.kanji.saving.RepeatingState;
 import com.kanji.timer.TimeSpent;
 import com.kanji.utilities.CommonGuiElementsMaker;
 import com.kanji.utilities.KanjiCharactersReader;
-import com.kanji.utilities.StringConcatenator;
+import com.kanji.utilities.StringUtilities;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -136,7 +136,7 @@ public class RepeatingJapaneseWordsDisplayer implements
 		int randomNumber = random.nextInt(possibilitiesAmount)+1;
 		Function <JapaneseWordInformation, Set <String>> hintGetter
 				= hintTypeIntValues.get(randomNumber);
-		return StringConcatenator.concatenateStrings(new ArrayList<>(
+		return StringUtilities.concatenateStrings(new ArrayList<>(
 				(hintGetter.apply(kanjiInformation))));
 	}
 

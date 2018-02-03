@@ -19,6 +19,7 @@ import com.kanji.constants.strings.Titles;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.KanjiInformation;
 import com.kanji.list.listElements.ListElement;
+import com.kanji.list.listRows.RowInJapaneseWordInformations;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.panelsAndControllers.panels.*;
@@ -139,13 +140,13 @@ public class ApplicationWindow extends DialogWindow {
 
 	// TODO dialogs should either be jframe or modal in order for alt tab to
 	// switch focus to the right window
-	public void showInsertDialog(MyList list) {
+	public void showInsertDialog(RowInJapaneseWordInformations rowInJapaneseWordInformation, MyList list) {
 		AbstractPanelWithHotkeysInfo panel;
 		if (list.getListElementClass().equals(KanjiInformation.class)){
-			panel = new InsertKanjiPanel(list, getApplicationController());
+			panel = new InsertKanjiPanel( list, getApplicationController());
 		}
 		else if (list.getListElementClass().equals(JapaneseWordInformation.class)){
-			panel = new InsertJapaneseWordPanel<>(list, getApplicationController());
+			panel = new InsertJapaneseWordPanel(rowInJapaneseWordInformation, list, getApplicationController());
 		}
 		else {
 			throw new RuntimeException("Unknown list word");

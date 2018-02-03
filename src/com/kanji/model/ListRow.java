@@ -1,7 +1,8 @@
 package com.kanji.model;
 
-import javax.swing.JComponent;
-import javax.swing.JLabel;
+import com.guimaker.panels.MainPanel;
+
+import javax.swing.*;
 
 public class ListRow<Word> {
 

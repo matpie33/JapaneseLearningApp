@@ -9,9 +9,8 @@ public class JapaneseWordMeaningChecker extends WordSearchOptionsHolder implemen
 		ListElementPropertyManager<String, JapaneseWordInformation> {
 	//TODO I hate to create a class which is veeery similar to each other for every word element
 
-	@Override
-	public void replaceValueOfProperty(String wordInKanji, JapaneseWordInformation wordInformation) {
-		wordInformation.setWordMeaning(wordInKanji);
+	@Override public String getInvalidPropertyReason() {
+		return "TODO validacja";
 	}
 
 	@Override
@@ -21,11 +20,12 @@ public class JapaneseWordMeaningChecker extends WordSearchOptionsHolder implemen
 	}
 
 	@Override
-	public String convertStringToProperty(String valueToConvert) {
-		return valueToConvert;
+	public String convertTextInputToProperty(JTextComponent valueToConvert) {
+
+		return valueToConvert.getText();
 	}
 
-	@Override public void setPropertyValue(JapaneseWordInformation japaneseWordInformation,
+	@Override public void setProperty(JapaneseWordInformation japaneseWordInformation,
 			String propertyValue) {
 		japaneseWordInformation.setWordMeaning(propertyValue);
 	}
