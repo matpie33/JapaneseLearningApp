@@ -14,12 +14,11 @@ import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
-import com.kanji.panelsAndControllers.controllers.InsertWordController;
+import com.kanji.panelsAndControllers.controllers.InsertKanjiController;
 import com.kanji.list.myList.MyList;
 import com.kanji.utilities.CommonGuiElementsMaker;
 
 import javax.swing.*;
-import javax.swing.text.JTextComponent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,13 +27,13 @@ import java.util.Map;
 
 public class InsertKanjiPanel<Word extends ListElement> extends AbstractPanelWithHotkeysInfo {
 
-	private InsertWordController controller;
+	private InsertKanjiController controller;
 	private MyList<Word> list;
 	private Map<JComponent, ListElementPropertyManager> textComponentToPropertyManager;
 
 	public InsertKanjiPanel(MyList<Word> list,
 			ApplicationController applicationController) {
-		controller = new InsertWordController(list, applicationController);
+		controller = new InsertKanjiController(list, applicationController);
 		this.list = list;
 		textComponentToPropertyManager = new HashMap<>();
 	}

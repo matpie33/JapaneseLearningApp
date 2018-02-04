@@ -59,7 +59,9 @@ public class RowInJapaneseWordsReviewingList implements ListRowMaker<JapaneseWor
 		MainPanel writingsPanel = new MainPanel (BasicColors.OCEAN_BLUE, true);
 		List <String> headers = new ArrayList<>();
 		headers.add("Kana");
-		headers.add("Kanji");
+		if (japaneseWord.hasKanjiWriting()){
+			headers.add("Kanji");
+		}
 		List <JComponent> labels = headers.stream().map(header -> GuiMaker.createLabel(
 				new ComponentOptions().text(header))).collect(Collectors.toList());
 		writingsPanel.addElementsInColumnStartingFromColumn(0,
@@ -70,8 +72,9 @@ public class RowInJapaneseWordsReviewingList implements ListRowMaker<JapaneseWor
 
 			List<String> allWritings = new ArrayList<>();
 			allWritings.add(writings.getKey());
-			allWritings.addAll(japaneseWord.hasKanjiWriting() ? writings.getValue():
-					Arrays.asList("X"));
+			if (!writings.getValue().isEmpty()){
+				allWritings.addAll(writings.getValue());
+			}
 			List<JComponent> writingTextFields = allWritings.stream().map(writing ->
 					GuiMaker.createTextField(new TextComponentOptions().text(writing)
 							.editable(false).focusable(false).fontSize(20f)))

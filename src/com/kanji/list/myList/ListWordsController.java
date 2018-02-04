@@ -103,10 +103,7 @@ public class ListWordsController<Word extends ListElement> {
 
 	public boolean isWordDefined (Word word){
 		for (ListRow<Word> listRow : wordsList) {
-			if (listRow.getWord() == word){
-				continue;
-			}
-			else if (listRow.getWord().isSameAs(word)){
+			if (listRow.getWord().isSameAs(word)){
 				return true;
 			}
 		}

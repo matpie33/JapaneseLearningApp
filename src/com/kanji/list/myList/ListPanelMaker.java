@@ -1,8 +1,6 @@
 package com.kanji.list.myList;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -57,7 +55,7 @@ public class ListPanelMaker<Word extends ListElement> extends AbstractPanelWithH
 
 	public ListRow<Word> addRow(Word word) {
 		JLabel rowNumberLabel = new JLabel(createTextForRowNumber(rowsPanel.getNumberOfRows()+1));
-		JButton remove = new JButton("-");
+		JButton remove = new JButton(ButtonsNames.REMOVE_ROW);
 		remove.addActionListener(listWordsController.createDeleteRowAction(word));
 		CommonListElements commonListElements = new CommonListElements(remove, rowNumberLabel);
 		rowNumberLabel.setForeground(BasicColors.OCEAN_BLUE);

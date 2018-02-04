@@ -4,24 +4,17 @@ import com.guimaker.enums.FillType;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.ListPanelViewMode;
-import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
-import com.kanji.list.listElementPropertyManagers.*;
 import com.kanji.list.listElements.JapaneseWordInformation;
-import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listRows.RowInJapaneseWordInformations;
 import com.kanji.list.listRows.panelCreators.JapaneseWordPanelCreator;
 import com.kanji.list.myList.MyList;
-import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.InsertJapaneseWordController;
-import com.kanji.panelsAndControllers.controllers.InsertWordController;
+import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
-import javax.swing.text.JTextComponent;
 import java.awt.event.KeyEvent;
-import java.util.HashMap;
-import java.util.Map;
 
 public class InsertJapaneseWordPanel extends AbstractPanelWithHotkeysInfo {
 
@@ -29,9 +22,10 @@ public class InsertJapaneseWordPanel extends AbstractPanelWithHotkeysInfo {
 	private JapaneseWordPanelCreator japaneseWordPanelCreator;
 
 	public InsertJapaneseWordPanel(RowInJapaneseWordInformations row,
-			MyList<JapaneseWordInformation> list, ApplicationController applicationController) {
-		controller = new InsertJapaneseWordController(row, list, applicationController);
-		japaneseWordPanelCreator = new JapaneseWordPanelCreator();
+			MyList<JapaneseWordInformation> list, ApplicationWindow applicationWindow) {
+		controller = new InsertJapaneseWordController(row, list,
+				applicationWindow.getApplicationController());
+		japaneseWordPanelCreator = new JapaneseWordPanelCreator(applicationWindow);
 	}
 
 	@Override
@@ -39,8 +33,8 @@ public class InsertJapaneseWordPanel extends AbstractPanelWithHotkeysInfo {
 
 		controller.setParentDialog(parentDialog);
 
-		MainPanel addWordPanel = japaneseWordPanelCreator.createPanelForEditing(
-				"", new HashMap<>(), PartOfSpeech.NOUN, ListPanelViewMode.EDIT,
+		MainPanel addWordPanel = japaneseWordPanelCreator.createPanelInGivenMode(
+				JapaneseWordInformation.getInitializer().initializeElement(), ListPanelViewMode.ADD,
 				null
 		);
 

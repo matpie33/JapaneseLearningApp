@@ -20,7 +20,7 @@ public class ButtonsNames {
 	public static final String SAVE = "Zapisz projekt";
 	public static final String SAVE_LIST = "Zapisz listę";
 	public static final String FIND_PREVIOUS = "Poprzedni";
-	public static final String REMOVE_ROW = "Usuń wiersz";
+	public static final String REMOVE_ROW = "Usuń";
 	public static final String SHOW_KANJI = "Pokaż kanji";
 	public static final String RECOGNIZED_WORD = "Znam";
 	public static final String PREVIOUS_WORD = "Pokaż poprzednie";

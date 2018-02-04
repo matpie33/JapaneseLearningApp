@@ -10,7 +10,8 @@ public class ExceptionsMessages {
 			+ "Należy poprawić.";
 	public static final String NUMBER_FORMAT_EXCEPTION = "Niepoprawnie wpisana liczba.";
 	public static final String ID_ALREADY_DEFINED_EXCEPTION = "Id o wartości %d juz istnieje.";
-	public static final String WORD_ALREADY_DEFINED_EXCEPTION = "Takie slowo juz istnieje.";
+	public static final String KANJI_KEYWORD_ALREADY_DEFINED_EXCEPTION = ""
+			+ "Kanji o słowie kluczowym \"%s\" już istnieje.";
 	public static final String WORD_ALREADY_HIGHLIGHTED_EXCEPTION = "To slowo jest juz zaznaczone."
 			+ "Nie znaleziono innych pozycji.";
 	public static final String RANGE_TO_VALUE_LESS_THAN_RANGE_FROM_VALUE = "Górna wartość zakresu jest mniejsza lub równa dolnej wartości.";
@@ -26,6 +27,12 @@ public class ExceptionsMessages {
 			+ "japońskich słów na polski";
 	public static final String INCORRECT_JAPANESE_WORDS_LISTS_SIZES = "Długości list słów zapisanych kaną, "
 			+ "kanji oraz przetłumaczonych na polski nie są jednakowe - a powinny.";
-	public static final String INCORRECT_TEXT_INPUT = "Nieprawidłowa wartość pola tekstowego: ";
+	public static final String JAPANESE_WORD_WRITINGS_ALREADY_DEFINED
+			= "Słowo z zapisem \"%s\" już istnieje.";
+	public static final String KANA_WRITING_INCORRECT
+			= "Niepoprawny zapis kaną: %s. Powinien zawierać tylko hiraganę lub katakanę.";
+	public static final String KANJI_WRITING_INCORRECT
+			= "Niepoprawny zapis kanji: %s. Powinien zawierać tylko hiraganę lub katakanę "
+			+ "i co najmniej jeden znak kanji.";
 
 }

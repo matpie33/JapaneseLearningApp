@@ -12,13 +12,13 @@ import com.kanji.windows.DialogWindow;
 import java.awt.event.ActionEvent;
 import java.util.Map;
 
-public class InsertWordController<Word extends ListElement> {
+public class InsertKanjiController<Word extends ListElement> {
 
 	private MyList<Word> list;
 	private DialogWindow parentDialog;
 	private ApplicationController applicationController;
 
-	public InsertWordController(MyList<Word> list,
+	public InsertKanjiController(MyList<Word> list,
 			ApplicationController applicationController) {
 		this.list = list;
 		this.applicationController = applicationController;
@@ -60,7 +60,7 @@ public class InsertWordController<Word extends ListElement> {
 
 		}
 		else {
-			parentDialog.showMessageDialog(ExceptionsMessages.WORD_ALREADY_DEFINED_EXCEPTION);
+			parentDialog.showMessageDialog(ExceptionsMessages.KANJI_KEYWORD_ALREADY_DEFINED_EXCEPTION);
 		}
 		return addedWord;
 	}

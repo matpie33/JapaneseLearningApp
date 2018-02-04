@@ -146,7 +146,8 @@ public class ApplicationWindow extends DialogWindow {
 			panel = new InsertKanjiPanel( list, getApplicationController());
 		}
 		else if (list.getListElementClass().equals(JapaneseWordInformation.class)){
-			panel = new InsertJapaneseWordPanel(rowInJapaneseWordInformation, list, getApplicationController());
+			panel = new InsertJapaneseWordPanel(rowInJapaneseWordInformation, list,
+					this);
 		}
 		else {
 			throw new RuntimeException("Unknown list word");

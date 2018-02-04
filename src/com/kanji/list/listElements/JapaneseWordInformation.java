@@ -29,10 +29,6 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 				Arrays.asList(kanjiWritingsForThisKana));
 	}
 
-	public void addWriting (String kanaWriting, String kanjiWriting){
-		addWritings(kanaWriting, kanjiWriting);
-	}
-
 	public Map <String, List<String>> getKanaToKanjiWritingsMap(){
 		return kanjiToAlternativeKanaWritingMap;
 	}
@@ -109,9 +105,17 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 	@Override public boolean isSameAs(ListElement element) {
 		if (element instanceof JapaneseWordInformation){
 			JapaneseWordInformation otherWord = (JapaneseWordInformation)element;
-			return otherWord.getKanaToKanjiWritingsMap().values().containsAll(
-					getKanaToKanjiWritingsMap().values()) ||
-							otherWord.getWordMeaning().equals(getWordMeaning());
+			//TODO get all japanese word checkers and loop through their
+			// is property found; if some of them returns true return true
+			for (Map.Entry<String, List<String>> kanaToKanjis:
+					getKanaToKanjiWritingsMap().entrySet()){
+				if (!otherWord.getKanaToKanjiWritingsMap().containsKey(
+						kanaToKanjis.getKey()) || !otherWord.getKanaToKanjiWritingsMap()
+					.get(kanaToKanjis.getKey()).containsAll(kanaToKanjis.getValue())){
+					return false;
+				}
+			}
+			return true;
 		}
 		return false;
 	}
@@ -145,5 +149,7 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 
 		return builder.toString();
 	}
+
+
 
 }

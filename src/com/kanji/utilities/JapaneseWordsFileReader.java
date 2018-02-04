@@ -153,7 +153,7 @@ public class JapaneseWordsFileReader {
 			JapaneseWordInformation japaneseWordInformation){
 		if (kanaWritings.length == kanjiWritings.length){
 			for (int i=0; i< kanaWritings.length; i++){
-				japaneseWordInformation.addWriting(kanaWritings[i],
+				japaneseWordInformation.addWritings(kanaWritings[i],
 						kanjiWritings[i]);
 			}
 		}
@@ -166,7 +166,7 @@ public class JapaneseWordsFileReader {
 			japaneseWordInformation.addWritings(kanaWritings[0],
 					kanjiWritingsForKanaWriting.toArray(new String [] {}));
 			for (int i = 1; i< kanaWritings.length; i++){
-				japaneseWordInformation.addWriting(kanaWritings[i],
+				japaneseWordInformation.addWritings(kanaWritings[i],
 						kanjiWritings[i+difference]);
 			}
 		}

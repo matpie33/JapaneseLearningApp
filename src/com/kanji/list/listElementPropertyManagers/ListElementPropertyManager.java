@@ -18,10 +18,14 @@ public interface ListElementPropertyManager<PropertyType, PropertyHolder extends
 			PropertyHolder propertyHolder){
 		PropertyType propertyValue = convertTextInputToProperty(input);
 		if (propertyValue != null){
-			//TODO add property = replace value of property -> 1 method redundant
 			setProperty(propertyHolder, propertyValue);
 		}
 		return propertyValue != null;
+	}
+
+	public default void replaceProperty (PropertyHolder propertyHolder,
+			PropertyType oldValue, PropertyType newValue){
+		setProperty(propertyHolder, newValue);
 	}
 
 }

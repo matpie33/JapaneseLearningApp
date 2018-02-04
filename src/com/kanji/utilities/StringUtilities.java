@@ -28,6 +28,7 @@ public class StringUtilities {
 	}
 
 	public static boolean wordIsInKana (String word){
+		word = word.trim();
 		for (char c: word.toCharArray()){
 			if (!characterIsKana(c)){
 				return false;
@@ -38,6 +39,7 @@ public class StringUtilities {
 
 	public static boolean wordIsInKanji (String word){
 		boolean anyKanji = false;
+		word = word.trim();
 		for (char c: word.toCharArray()){
 			if (characterIsKanji(c)){
 				anyKanji = true;

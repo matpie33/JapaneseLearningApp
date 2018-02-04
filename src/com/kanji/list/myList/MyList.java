@@ -142,6 +142,16 @@ public class MyList<Word extends ListElement> {
 		return listController.getWordInRow(rowNumber);
 	}
 
+	public <Property> boolean doesWordWithPropertyExist (Property property,
+			ListElementPropertyManager<Property, Word> propertyManager){
+		for (Word word: getWords()){
+			if (propertyManager.isPropertyFound(property, word)){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private Word getHighlightedWord() {
 		int highlightedRow = listController.getHighlightedRowNumber();
 		if (highlightedRow < 0) {

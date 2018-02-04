@@ -53,15 +53,15 @@ public class InsertJapaneseWordController {
 			//TODO this part is common with insert word controller, try to use 1 and create
 			// an interface for setting properties done in below loop
 			if (!allInputsValid){
-				parentDialog.showMessageDialog(ExceptionsMessages.INCORRECT_TEXT_INPUT+
-					textWithPropertyManager.getValue().getInvalidPropertyReason() + ".");
+				parentDialog.showMessageDialog(
+					textWithPropertyManager.getValue().getInvalidPropertyReason());
 				textComponent.selectAll();
 				textComponent.requestFocusInWindow();
 				break;
 			}
 		}
 		JapaneseWordWritingsChecker writingsChecker = new JapaneseWordWritingsChecker(
-				rowInJapaneseWordInformation);
+				rowInJapaneseWordInformation.getJapaneseWordPanelCreator());
 		for (Map.Entry<JTextComponent, List <JTextComponent>> entry:
 				kanaToKanjiWritings.entrySet()){
 			JTextComponent kanaText = entry.getKey();
@@ -70,7 +70,7 @@ public class InsertJapaneseWordController {
 			allTextFields.addAll(kanjiTexts);
 			allTextFields.add(kanaText);
 			KanaAndKanjiTextFields kanaAndKanjiTextFields = new KanaAndKanjiTextFields(
-					kanaText, kanjiTexts);
+					kanaText, kanjiTexts, "", false);
 			writingsChecker.setProperty(japaneseWordInformation, kanaAndKanjiTextFields);
 
 		}
@@ -95,7 +95,7 @@ public class InsertJapaneseWordController {
 
 		}
 		else {
-			parentDialog.showMessageDialog(ExceptionsMessages.WORD_ALREADY_DEFINED_EXCEPTION);
+			parentDialog.showMessageDialog(ExceptionsMessages.KANJI_KEYWORD_ALREADY_DEFINED_EXCEPTION);
 		}
 		return addedWord;
 	}

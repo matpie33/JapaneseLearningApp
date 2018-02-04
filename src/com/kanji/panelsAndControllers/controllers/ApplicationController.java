@@ -106,7 +106,7 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	private void initializeJapaneseWordsList(){
-		rowInJapaneseWordInformations = new RowInJapaneseWordInformations();
+		rowInJapaneseWordInformations = new RowInJapaneseWordInformations(parent);
 		japaneseWords = new MyList<>(parent, this, rowInJapaneseWordInformations,
 				Titles.JAPANESE_WORDS_LIST, true,
 				JapaneseWordInformation.getElementsTypesAndLabels(),
@@ -114,11 +114,11 @@ public class ApplicationController implements ApplicationStateManager {
 
 		JapaneseWordInformation cat = new JapaneseWordInformation(PartOfSpeech.NOUN,
 				"kot");
-		cat.addWriting("ねこ","");
+		cat.addWritings("ねこ");
 		japaneseWords.addWord(cat);
 		JapaneseWordInformation dog = new JapaneseWordInformation(PartOfSpeech.NOUN,
 				"obowiązek");
-		dog.addWriting("ぎむ","義務");
+		dog.addWritings("ぎむ","義務");
 		japaneseWords.addWord(dog);
 		JapaneseWordInformation verb = new JapaneseWordInformation(PartOfSpeech.VERB,
 				"otwierać");
@@ -128,7 +128,7 @@ public class ApplicationController implements ApplicationStateManager {
 				Labels.VERB_CONJUGATION_GODAN);
 		JapaneseWordInformation japaneseWordInformation =
 				new JapaneseWordInformation(PartOfSpeech.NOUN, "Test");
-		japaneseWordInformation.addWriting("bb", "cc");
+		japaneseWordInformation.addWritings("らけ", "務");
 		japaneseWords.addWord(japaneseWordInformation);
 		japaneseWords.addWord(verb);
 	}

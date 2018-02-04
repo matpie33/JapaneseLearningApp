@@ -199,7 +199,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
         AbstractAction dispose = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                parentDialog.getContainer().dispose();
+				parentDialog.getContainer().dispose();
             }
         };
         return createButtonWithHotkey(KeyEvent.VK_ESCAPE, dispose, ButtonsNames.CLOSE_WINDOW,
