@@ -2,20 +2,17 @@ package com.kanji.list.listElementPropertyManagers;
 
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElements.JapaneseWordInformation;
-import com.kanji.list.listRows.RowInJapaneseWordInformations;
 import com.kanji.list.listRows.panelCreators.JapaneseWordPanelCreator;
-import com.kanji.model.KanaAndKanjiTextFields;
+import com.kanji.model.KanaAndKanjiStrings;
 import com.kanji.utilities.StringUtilities;
-import com.kanji.utilities.WordSearching;
 
 import javax.swing.text.JTextComponent;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder implements
-		ListElementPropertyManager<KanaAndKanjiTextFields, JapaneseWordInformation> {
+		ListElementPropertyManager<KanaAndKanjiStrings, JapaneseWordInformation> {
 	//TODO I hate to create a class which is veeery similar to each other for every word element
 	private JapaneseWordPanelCreator japaneseWordPanelCreator;
 	private String errorDetails = "";
@@ -25,27 +22,19 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder impleme
 		this.japaneseWordPanelCreator = japaneseWordPanelCreator;
 	}
 
-	private List <String> convertKanjiTextFieldsToTheirStringValues (
-			List <JTextComponent> kanjiTextFields){
-		List<String> kanjiWritings = kanjiTextFields.stream()
-				.map(JTextComponent::getText).filter(s-> !s.isEmpty()).collect(Collectors.toList());
-		return kanjiWritings;
-	}
 
 	@Override public String getInvalidPropertyReason() {
-
-				return errorDetails;
+			return errorDetails;
 	}
 
 	@Override
-	public boolean isPropertyFound(KanaAndKanjiTextFields kanaAndKanjiTextFields,
+	public boolean isPropertyFound(KanaAndKanjiStrings kanaAndKanjiStrings,
 			JapaneseWordInformation wordInformation) {
-		if (kanaAndKanjiTextFields.getModifiedTextFieldValue().isEmpty()){
+		if (kanaAndKanjiStrings.getModifiedValue().isEmpty()){
 			return false;
 		}
-		List <String> kanjiWritings = convertKanjiTextFieldsToTheirStringValues(
-				kanaAndKanjiTextFields.getKanjiTextFields());
-		String kanaWriting = kanaAndKanjiTextFields.getKanaTextField().getText();
+		List <String> kanjiWritings = kanaAndKanjiStrings.getKanji();
+		String kanaWriting = kanaAndKanjiStrings.getKana();
 
 		for (Map.Entry<String, List<String>> kanaToKanjis:
 				wordInformation.getKanaToKanjiWritingsMap().entrySet()){
@@ -59,7 +48,7 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder impleme
 	}
 
 	@Override
-	public KanaAndKanjiTextFields convertTextInputToProperty(JTextComponent valueToConvert) {
+	public KanaAndKanjiStrings convertTextInputToProperty(JTextComponent valueToConvert) {
 		errorDetails = "";
 		for (Map.Entry<JTextComponent, List <JTextComponent>>
 				kanaToKanjiWritingsTextFields: japaneseWordPanelCreator
@@ -101,8 +90,8 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder impleme
 				return null;
 			}
 			if (foundTextField){
-				return new KanaAndKanjiTextFields(kanaToKanjiWritingsTextFields.getKey(),
-						kanaToKanjiWritingsTextFields.getValue(),
+				return new KanaAndKanjiStrings(kanaToKanjiWritingsTextFields
+						.getKey(), kanaToKanjiWritingsTextFields.getValue(),
 						valueToConvert.getText(), kanaModified);
 			}
 
@@ -113,30 +102,29 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder impleme
 
 	@Override
 	public void setProperty(JapaneseWordInformation japaneseWordInformation,
-			KanaAndKanjiTextFields kanaAndKanjiTextFields) {
-		List <String> kanjiWritings = convertKanjiTextFieldsToTheirStringValues(
-				kanaAndKanjiTextFields.getKanjiTextFields());
-		String kanaWriting = kanaAndKanjiTextFields.getKanaTextField().getText();
+			KanaAndKanjiStrings kanaAndKanjiStrings) {
+		List <String> kanjiWritings =
+				kanaAndKanjiStrings.getKanji();
+		String kanaWriting = kanaAndKanjiStrings.getKana();
 		japaneseWordInformation.addWritings(kanaWriting, kanjiWritings.toArray(
 				new String [] {}));
 	}
 
 	@Override
 	public void replaceProperty (JapaneseWordInformation propertyHolder,
-			KanaAndKanjiTextFields oldValue, KanaAndKanjiTextFields newValue){
-				if (oldValue.getModifiedTextFieldValue().equals(
-						newValue.getModifiedTextFieldValue())){
+			KanaAndKanjiStrings oldValue, KanaAndKanjiStrings newValue){
+				if (oldValue.getModifiedValue().equals(
+						newValue.getModifiedValue())){
 					return;
 				}
-				List <String> newKanjiWritings = convertKanjiTextFieldsToTheirStringValues
-						(newValue.getKanjiTextFields());
+				List <String> newKanjiWritings =newValue.getKanji();
 				if (newValue.isKanaModified()){
 					propertyHolder.getKanaToKanjiWritingsMap().remove(
-							oldValue.getModifiedTextFieldValue()
+							oldValue.getModifiedValue()
 					);
 				}
 				propertyHolder.getKanaToKanjiWritingsMap().put(newValue
-					.getKanaTextField().getText(), newKanjiWritings);
+					.getKana(), newKanjiWritings);
 	}
 
 }

@@ -6,6 +6,7 @@ import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.list.listElementAdditionalInformations.AdditionalInformation;
 import com.kanji.list.listElementPropertyManagers.*;
 import com.kanji.constants.strings.Labels;
+import com.kanji.model.KanaAndKanjiStrings;
 
 import java.io.Serializable;
 import java.util.*;
@@ -99,21 +100,28 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 	}
 
 	public Set <String> getKanaWritings(){
+		System.out.println(this);
 		return kanjiToAlternativeKanaWritingMap.keySet();
 	}
 
 	@Override public boolean isSameAs(ListElement element) {
 		if (element instanceof JapaneseWordInformation){
 			JapaneseWordInformation otherWord = (JapaneseWordInformation)element;
-			//TODO get all japanese word checkers and loop through their
-			// is property found; if some of them returns true return true
+			JapaneseWordWritingsChecker writingsChecker = new
+					JapaneseWordWritingsChecker(null);
+			//TODO avoid passing null to japanese writings checker
 			for (Map.Entry<String, List<String>> kanaToKanjis:
 					getKanaToKanjiWritingsMap().entrySet()){
-				if (!otherWord.getKanaToKanjiWritingsMap().containsKey(
-						kanaToKanjis.getKey()) || !otherWord.getKanaToKanjiWritingsMap()
-					.get(kanaToKanjis.getKey()).containsAll(kanaToKanjis.getValue())){
+				KanaAndKanjiStrings kanaAndKanjiStrings = new KanaAndKanjiStrings(
+						kanaToKanjis.getKey(), kanaToKanjis.getValue(), "", false
+				);
+				if (!writingsChecker.isPropertyFound(kanaAndKanjiStrings, otherWord)){
 					return false;
 				}
+			}
+			JapaneseWordMeaningChecker meaningChecker = new JapaneseWordMeaningChecker();
+			if (!meaningChecker.isPropertyFound(getWordMeaning(), otherWord)){
+				return false;
 			}
 			return true;
 		}
@@ -123,19 +131,8 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 	@Override
 	public String toString (){
 		StringBuilder builder = new StringBuilder(20);
-		builder.append("\nKana");
-//		if (writingsInKana.length == 1 && writingsInKana[0].isEmpty()){
-//			return "";
-//		}
-//		for (String kana: writingsInKana){
-//			builder.append(kana);
-//			builder.append(" ");
-//		}
-//		builder.append("\nKanjis");
-//		for (String kanji: writingsInKanji){
-//			builder.append(kanji);
-//			builder.append(" ");
-//		}
+		builder.append("\nKana to kanji");
+		builder.append(getKanaToKanjiWritingsMap());
 		builder.append("\nAdditionalInformations");
 		for (AdditionalInformation additionalInformation: additionalInformations){
 			builder.append(additionalInformation.getTag());

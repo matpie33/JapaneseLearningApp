@@ -7,7 +7,7 @@ import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listRows.RowInJapaneseWordInformations;
 import com.kanji.list.myList.MyList;
-import com.kanji.model.KanaAndKanjiTextFields;
+import com.kanji.model.KanaAndKanjiStrings;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class InsertJapaneseWordController {
 
@@ -69,9 +70,10 @@ public class InsertJapaneseWordController {
 			List <JTextComponent> allTextFields = new ArrayList<>();
 			allTextFields.addAll(kanjiTexts);
 			allTextFields.add(kanaText);
-			KanaAndKanjiTextFields kanaAndKanjiTextFields = new KanaAndKanjiTextFields(
+			KanaAndKanjiStrings kanaAndKanjiStrings =
+					new KanaAndKanjiStrings(
 					kanaText, kanjiTexts, "", false);
-			writingsChecker.setProperty(japaneseWordInformation, kanaAndKanjiTextFields);
+			writingsChecker.setProperty(japaneseWordInformation, kanaAndKanjiStrings);
 
 		}
 		if (allInputsValid){

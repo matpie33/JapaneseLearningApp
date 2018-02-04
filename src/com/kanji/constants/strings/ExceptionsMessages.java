@@ -29,6 +29,8 @@ public class ExceptionsMessages {
 			+ "kanji oraz przetłumaczonych na polski nie są jednakowe - a powinny.";
 	public static final String JAPANESE_WORD_WRITINGS_ALREADY_DEFINED
 			= "Słowo z zapisem \"%s\" już istnieje.";
+	public static final String JAPANESE_WORD_MEANING_ALREADY_DEFINED
+			= "Słowo o znaczeniu \"%s\" już istnieje.";
 	public static final String KANA_WRITING_INCORRECT
 			= "Niepoprawny zapis kaną: %s. Powinien zawierać tylko hiraganę lub katakanę.";
 	public static final String KANJI_WRITING_INCORRECT

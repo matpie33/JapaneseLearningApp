@@ -70,7 +70,7 @@ public class JapaneseWordPanelCreator {
 		wordMeaningText.addFocusListener(new ListPropertyChangeHandler<>(japaneseWord,
 				applicationWindow.getApplicationController().getJapaneseWords(),
 				applicationWindow, new JapaneseWordMeaningChecker(),
-				ExceptionsMessages.KANJI_KEYWORD_ALREADY_DEFINED_EXCEPTION));
+				ExceptionsMessages.JAPANESE_WORD_MEANING_ALREADY_DEFINED));
 		propertyManagersOfTextFields.put(wordMeaningText, new JapaneseWordMeaningChecker());
 		JLabel wordMeaningLabel = GuiMaker.createLabel(new ComponentOptions()
 				.text(Labels.WORD_MEANING));
