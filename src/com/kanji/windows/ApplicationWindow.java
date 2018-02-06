@@ -1,5 +1,23 @@
 package com.kanji.windows;
 
+import com.guimaker.colors.BasicColors;
+import com.kanji.constants.enums.ApplicationPanels;
+import com.kanji.constants.enums.SavingStatus;
+import com.kanji.constants.strings.MenuTexts;
+import com.kanji.constants.strings.Prompts;
+import com.kanji.constants.strings.Titles;
+import com.kanji.list.listElements.JapaneseWordInformation;
+import com.kanji.list.listElements.KanjiInformation;
+import com.kanji.list.listElements.ListElement;
+import com.kanji.list.listRows.RowInJapaneseWordInformations;
+import com.kanji.list.myList.MyList;
+import com.kanji.panelsAndControllers.controllers.ApplicationController;
+import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
+import com.kanji.panelsAndControllers.panels.*;
+import com.kanji.saving.ProblematicKanjisState;
+import com.kanji.timer.TimeSpentHandler;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,27 +26,7 @@ import java.awt.event.WindowEvent;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.swing.*;
-
-import com.guimaker.colors.BasicColors;
-import com.kanji.constants.enums.ApplicationPanels;
-import com.kanji.constants.strings.MenuTexts;
-import com.kanji.constants.strings.Prompts;
-import com.kanji.constants.enums.SavingStatus;
-import com.kanji.constants.strings.Titles;
-import com.kanji.list.listElements.JapaneseWordInformation;
-import com.kanji.list.listElements.KanjiInformation;
-import com.kanji.list.listElements.ListElement;
-import com.kanji.list.listRows.RowInJapaneseWordInformations;
-import com.kanji.panelsAndControllers.controllers.ApplicationController;
-import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
-import com.kanji.panelsAndControllers.panels.*;
-import com.kanji.saving.ProblematicKanjisState;
-import com.kanji.list.myList.MyList;
-import com.kanji.timer.TimeSpentHandler;
-
-@SuppressWarnings("serial")
-public class ApplicationWindow extends DialogWindow {
+@SuppressWarnings("serial") public class ApplicationWindow extends DialogWindow {
 
 	private JPanel mainApplicationPanel;
 	private ProblematicWordsController problematicWordsController;
@@ -53,8 +51,8 @@ public class ApplicationWindow extends DialogWindow {
 		applicationController.initializeApplicationStateManagers();
 		problematicWordsController = applicationController.getProblematicWordsController();
 
-		mainApplicationPanel.add(startingPanel.createPanel(),
-				ApplicationPanels.STARTING_PANEL.getPanelName());
+		mainApplicationPanel
+				.add(startingPanel.createPanel(), ApplicationPanels.STARTING_PANEL.getPanelName());
 		mainApplicationPanel.add(applicationController.getRepeatingWordsPanel().createPanel(),
 				ApplicationPanels.REPEATING_PANEL.getPanelName());
 
@@ -82,20 +80,19 @@ public class ApplicationWindow extends DialogWindow {
 		container.addWindowListener(createClosingAdapter());
 	}
 
-
-	private WindowAdapter createClosingAdapter (){
+	private WindowAdapter createClosingAdapter() {
 		return new WindowAdapter() {
 			@Override public void windowClosing(WindowEvent e) {
 				stopTimeMeasuring();
 				boolean shouldClose = applicationController.isClosingSafe();
-				if (!shouldClose){
+				if (!shouldClose) {
 					shouldClose = showConfirmDialog(Prompts.CLOSE_APPLICATION);
 				}
-				if (shouldClose){
+				if (shouldClose) {
 					applicationController.saveProject();
 					System.exit(0);
 				}
-				else{
+				else {
 					resumeTimeMeasuring();
 				}
 			}
@@ -103,8 +100,8 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void showPanel(ApplicationPanels panel) {
-		((CardLayout) mainApplicationPanel.getLayout()).show(mainApplicationPanel,
-				panel.getPanelName());
+		((CardLayout) mainApplicationPanel.getLayout())
+				.show(mainApplicationPanel, panel.getPanelName());
 	}
 
 	public void changeSaveStatus(SavingStatus savingStatus) {
@@ -113,10 +110,9 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void updateProblematicWordsAmount() {
-		startingPanel
-				.updateProblematicWordsAmount(
-						applicationController.getProblematicWordsAmountBasedOnCurrentTab(),
-						startingPanel.getActiveWordsList().getListElementClass());
+		startingPanel.updateProblematicWordsAmount(
+				applicationController.getProblematicWordsAmountBasedOnCurrentTab(),
+				startingPanel.getActiveWordsList().getListElementClass());
 	}
 
 	public void updateTitle(String update) {
@@ -140,20 +136,19 @@ public class ApplicationWindow extends DialogWindow {
 
 	// TODO dialogs should either be jframe or modal in order for alt tab to
 	// switch focus to the right window
-	public void showInsertDialog(RowInJapaneseWordInformations rowInJapaneseWordInformation, MyList list) {
+	public void showInsertDialog(RowInJapaneseWordInformations rowInJapaneseWordInformation,
+			MyList list) {
 		AbstractPanelWithHotkeysInfo panel;
-		if (list.getListElementClass().equals(KanjiInformation.class)){
-			panel = new InsertKanjiPanel( list, getApplicationController());
+		if (list.getListElementClass().equals(KanjiInformation.class)) {
+			panel = new InsertKanjiPanel(list, getApplicationController());
 		}
-		else if (list.getListElementClass().equals(JapaneseWordInformation.class)){
-			panel = new InsertJapaneseWordPanel(rowInJapaneseWordInformation, list,
-					this);
+		else if (list.getListElementClass().equals(JapaneseWordInformation.class)) {
+			panel = new InsertJapaneseWordPanel(rowInJapaneseWordInformation, list, this);
 		}
 		else {
 			throw new RuntimeException("Unknown list word");
 		}
-		createDialog(panel, Titles.INSERT_WORD_DIALOG,
-				false, Position.LEFT_CORNER);
+		createDialog(panel, Titles.INSERT_WORD_DIALOG, false, Position.LEFT_CORNER);
 	}
 
 	public void showSearchWordDialog(MyList list) {
@@ -171,21 +166,18 @@ public class ApplicationWindow extends DialogWindow {
 
 	public void showProblematicWordsDialog() {
 
-
-		if (!problematicWordsController.isPanelInitialized()){
+		if (!problematicWordsController.isPanelInitialized()) {
 			showReadyPanel(problematicWordsController.getDialog());
 		}
-		else{
+		else {
 			problematicWordsController.initializeSpaceBarAction();
 			createDialog(problematicWordsController.getPanel(), Titles.PROBLEMATIC_KANJIS_WINDOW,
 					true, Position.CENTER);
 			problematicWordsController.initializeWindowListener();
 
-
 		}
 		applicationController.switchStateManager(problematicWordsController);
 	}
-
 
 	public void showProblematicWordsDialog(ProblematicKanjisState problematicKanjisState) {
 		displayMessageAboutUnfinishedRepeating();
@@ -214,8 +206,7 @@ public class ApplicationWindow extends DialogWindow {
 		JMenuItem item = new JMenuItem(MenuTexts.MENU_OPEN);
 
 		item.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
+			@Override public void actionPerformed(ActionEvent e) {
 				applicationController.openKanjiProject();
 			}
 		});
@@ -224,23 +215,23 @@ public class ApplicationWindow extends DialogWindow {
 		return menuBar;
 	}
 
-	public StartingPanel getStartingPanel (){
+	public StartingPanel getStartingPanel() {
 		return startingPanel;
 	}
 
-	public void setTimeSpentHandler(TimeSpentHandler timeSpentHandler){
+	public void setTimeSpentHandler(TimeSpentHandler timeSpentHandler) {
 		this.timeSpentHandler = Optional.of(timeSpentHandler);
 	}
 
-	public void stopTimeMeasuring(){
+	public void stopTimeMeasuring() {
 		timeSpentHandler.ifPresent(TimeSpentHandler::stopTimer);
 	}
 
-	public void resumeTimeMeasuring(){
+	public void resumeTimeMeasuring() {
 		timeSpentHandler.ifPresent(TimeSpentHandler::startTimer);
 	}
 
-	public void displayMessageAboutUnfinishedRepeating (){
+	public void displayMessageAboutUnfinishedRepeating() {
 		showMessageDialog(Prompts.UNFINISHED_REPEATING);
 	}
 

@@ -57,8 +57,9 @@ public class TimeSpentHandler {
 		String hoursSuffix = adjustSuffixForHours();
 		String minutesSuffix = adjustSuffixForMinutes();
 		String secondsSuffix = adjustSuffixForSeconds();
-		return hoursPassed > 0 ? hoursSuffix + ", "
-				: "" + (minutesPassed > 0 ? minutesSuffix + ", " : "") + secondsSuffix + ".";
+		return hoursPassed > 0 ?
+				hoursSuffix + ", " :
+				"" + (minutesPassed > 0 ? minutesSuffix + ", " : "") + secondsSuffix + ".";
 	}
 
 	private String adjustSuffixForHours() {
@@ -81,9 +82,8 @@ public class TimeSpentHandler {
 		else if (timeValue == 1) {
 			return "a";
 		}
-		else if ((moduloRemainder >= 5 && moduloRemainder <= 9) || moduloRemainder == 0
-				|| (timeValue >= 11 && timeValue <= 14)
-				|| (moduloRemainder == 1 && timeValue >= 20)) {
+		else if ((moduloRemainder >= 5 && moduloRemainder <= 9) || moduloRemainder == 0 || (
+				timeValue >= 11 && timeValue <= 14) || (moduloRemainder == 1 && timeValue >= 20)) {
 			return "";
 		}
 		return "Nie wylapany if.";
@@ -96,15 +96,14 @@ public class TimeSpentHandler {
 		hoursPassed = 0;
 	}
 
-	public TimeSpent getTimeForSerialization (){
+	public TimeSpent getTimeForSerialization() {
 		return new TimeSpent(secondsPassed, minutesPassed, hoursPassed);
 	}
 
-	public void resumeTime (TimeSpent serializedTime){
+	public void resumeTime(TimeSpent serializedTime) {
 		secondsPassed = serializedTime.getSecondsPassed();
 		minutesPassed = serializedTime.getMinutesPassed();
 		hoursPassed = serializedTime.getHoursPassed();
 	}
-
 
 }

@@ -1,23 +1,14 @@
 package com.kanji.panelsAndControllers.panels;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.util.*;
-
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import com.guimaker.enums.FillType;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
+import com.kanji.constants.enums.SavingStatus;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Prompts;
-import com.kanji.constants.enums.SavingStatus;
 import com.kanji.context.ContextOwner;
 import com.kanji.context.WordTypeContext;
 import com.kanji.list.listElements.JapaneseWordInformation;
@@ -28,8 +19,19 @@ import com.kanji.panelsAndControllers.controllers.StartingController;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
 
-public class StartingPanel extends AbstractPanelWithHotkeysInfo implements
-		ContextOwner<WordTypeContext> {
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+public class StartingPanel extends AbstractPanelWithHotkeysInfo
+		implements ContextOwner<WordTypeContext> {
 
 	private JTabbedPane tabs;
 	private WordsAndRepeatingInformationsPanel kanjiRepeatingPanel;
@@ -45,35 +47,35 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo implements
 	private ApplicationWindow applicationWindow;
 	private JPanel mainApplicationPanel;
 
-	public StartingPanel (ApplicationWindow a, JPanel mainApplicationPanel){
+	public StartingPanel(ApplicationWindow a, JPanel mainApplicationPanel) {
 		applicationWindow = a;
 		this.mainApplicationPanel = mainApplicationPanel;
 		applicationController = a.getApplicationController();
-		kanjiRepeatingPanel = new WordsAndRepeatingInformationsPanel(applicationController.getKanjiList(),
-				applicationController.getKanjiRepeatingDates(),TypeOfWordForRepeating.KANJIS);
+		kanjiRepeatingPanel = new WordsAndRepeatingInformationsPanel(
+				applicationController.getKanjiList(),
+				applicationController.getKanjiRepeatingDates(), TypeOfWordForRepeating.KANJIS);
 		japaneseWordsRepeatingPanel = new WordsAndRepeatingInformationsPanel(
 				applicationController.getJapaneseWords(),
-				applicationController.getJapaneseWordsRepeatingDates(), TypeOfWordForRepeating.JAPANESE_WORDS);
+				applicationController.getJapaneseWordsRepeatingDates(),
+				TypeOfWordForRepeating.JAPANESE_WORDS);
 		tabs = new JTabbedPane();
 		wordTypeContext = new WordTypeContext();
 		startingController = new StartingController(this);
 	}
 
-	@Override
-	public void setParentDialog (DialogWindow dialog){
+	@Override public void setParentDialog(DialogWindow dialog) {
 		super.setParentDialog(dialog);
 
 	}
 
-	@Override
-	public void createElements() {
+	@Override public void createElements() {
 		createInformationsPanel();
 
 		listToTabLabel.put("Powtórki kanji", kanjiRepeatingPanel);
 		listToTabLabel.put("Powtórki słówek", japaneseWordsRepeatingPanel);
 
-		for (Map.Entry<String, WordsAndRepeatingInformationsPanel> listAndTabLabel:
-				listToTabLabel.entrySet()){
+		for (Map.Entry<String, WordsAndRepeatingInformationsPanel> listAndTabLabel : listToTabLabel
+				.entrySet()) {
 			tabs.addTab(listAndTabLabel.getKey(), listAndTabLabel.getValue().createPanel());
 		}
 		tabs.addChangeListener(new ChangeListener() {
@@ -84,16 +86,15 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo implements
 
 		addHotkey(KeyModifiers.SHIFT, KeyEvent.VK_PERIOD, new AbstractAction() {
 			@Override public void actionPerformed(ActionEvent e) {
-				if (tabs.getSelectedIndex() == tabs.getTabCount() - 1){
+				if (tabs.getSelectedIndex() == tabs.getTabCount() - 1) {
 					tabs.setSelectedIndex(0);
 				}
-				else{
-					tabs.setSelectedIndex(tabs.getSelectedIndex()+1);
+				else {
+					tabs.setSelectedIndex(tabs.getSelectedIndex() + 1);
 				}
 
 			}
 		}, mainApplicationPanel, HotkeysDescriptions.SWITCH_WORD_TAB);
-
 
 		tabs.setSelectedIndex(0);
 		tabs.addChangeListener(startingController.createTabChangeListener());
@@ -101,19 +102,20 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo implements
 
 		List<AbstractButton> buttons = createButtons();
 		bottomPanel = new MainPanel(null);
-		bottomPanel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL, buttons.toArray(new JButton[] {}))
-				.setNotOpaque().disableBorder().nextRow(saveInfo, problematicKanjis));
+		bottomPanel.addRows(
+				SimpleRowBuilder.createRow(FillType.HORIZONTAL, buttons.toArray(new JButton[] {}))
+						.setNotOpaque().disableBorder().nextRow(saveInfo, problematicKanjis));
 
 		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, tabs));
 		addHotkeysPanelHere();
 		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL, bottomPanel.getPanel()));
 	}
 
-	public void switchToList (Class listType){
-		if (listType.equals(KanjiInformation.class)){
+	public void switchToList(Class listType) {
+		if (listType.equals(KanjiInformation.class)) {
 			tabs.setSelectedIndex(0);
 		}
-		else if (listType.equals(JapaneseWordInformation.class)){
+		else if (listType.equals(JapaneseWordInformation.class)) {
 			tabs.setSelectedIndex(1);
 			//TODO use enum instead of class checking, and tab index to enum and use it instead of
 			// listToLabel map
@@ -126,14 +128,15 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo implements
 
 	public void updateProblematicWordsAmount(int problematicKanjisNumber, Class activeWordsClass) {
 		String prefix;
-		if (activeWordsClass.equals(KanjiInformation.class)){
+		if (activeWordsClass.equals(KanjiInformation.class)) {
 			prefix = Prompts.PROBLEMATIC_KANJI;
 		}
-		else if (activeWordsClass.equals(JapaneseWordInformation.class)){
+		else if (activeWordsClass.equals(JapaneseWordInformation.class)) {
 			prefix = Prompts.PROBLEMATIC_WORDS;
 		}
-		else{
-			throw new IllegalArgumentException("Unknown active words class name: "+activeWordsClass);
+		else {
+			throw new IllegalArgumentException(
+					"Unknown active words class name: " + activeWordsClass);
 		}
 		problematicKanjis.setText(prefix + problematicKanjisNumber);
 	}
@@ -150,8 +153,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo implements
 				keyEvent = KeyEvent.VK_D;
 				hotkeyDescription = HotkeysDescriptions.LOAD_LISTS_FROM_TEXT_FILE;
 				action = new AbstractAction() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
+					@Override public void actionPerformed(ActionEvent e) {
 						applicationController.loadList(getContext());
 					}
 				};
@@ -160,8 +162,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo implements
 				hotkeyDescription = HotkeysDescriptions.OPEN_LOAD_KANJI_DIALOG;
 				keyEvent = KeyEvent.VK_Q;
 				action = new AbstractAction() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
+					@Override public void actionPerformed(ActionEvent e) {
 						applicationController.openKanjiProject();
 					}
 				};
@@ -170,8 +171,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo implements
 				hotkeyDescription = HotkeysDescriptions.OPEN_START_LEARNING_DIALOG;
 				keyEvent = KeyEvent.VK_R;
 				action = new AbstractAction() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
+					@Override public void actionPerformed(ActionEvent e) {
 						applicationController.showLearningStartDialog();
 					}
 				};
@@ -180,8 +180,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo implements
 				hotkeyDescription = HotkeysDescriptions.SAVE_PROJECT;
 				keyEvent = KeyEvent.VK_S;
 				action = new AbstractAction() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
+					@Override public void actionPerformed(ActionEvent e) {
 						applicationController.showSaveDialog();
 					}
 				};
@@ -190,8 +189,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo implements
 				hotkeyDescription = HotkeysDescriptions.EXPORT_LIST;
 				keyEvent = KeyEvent.VK_T;
 				action = new AbstractAction() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
+					@Override public void actionPerformed(ActionEvent e) {
 						applicationController.saveList();
 					}
 				};
@@ -200,8 +198,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo implements
 				hotkeyDescription = HotkeysDescriptions.REVIEW_PROBLEMATIC_KANJIS;
 				keyEvent = KeyEvent.VK_P;
 				action = new AbstractAction() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
+					@Override public void actionPerformed(ActionEvent e) {
 						applicationWindow.showProblematicWordsDialog();
 					}
 				};
@@ -209,9 +206,9 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo implements
 			default:
 				throw new RuntimeException("Unsupported button name: " + name);
 			}
-			AbstractButton button = createButtonWithHotkey(KeyModifiers.CONTROL, keyEvent, action, name,
-					hotkeyDescription);
-			if (name.equals(ButtonsNames.SHOW_PROBLEMATIC_KANJIS)){
+			AbstractButton button = createButtonWithHotkey(KeyModifiers.CONTROL, keyEvent, action,
+					name, hotkeyDescription);
+			if (name.equals(ButtonsNames.SHOW_PROBLEMATIC_KANJIS)) {
 				showProblematicKanjis = button;
 				showProblematicKanjis.setEnabled(false);
 			}
@@ -232,8 +229,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo implements
 	private JButton createShowProblematicKanjiButton() {
 		JButton problematicKanjiButton = new JButton(ButtonsNames.SHOW_PROBLEMATIC_KANJIS);
 		problematicKanjiButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
+			@Override public void actionPerformed(ActionEvent e) {
 				applicationWindow.showProblematicWordsDialog();
 			}
 		});
@@ -244,22 +240,21 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo implements
 		showProblematicKanjis.setEnabled(true);
 	}
 
-	public MyList getActiveWordsList(){
+	public MyList getActiveWordsList() {
 		return listToTabLabel.get(tabs.getTitleAt(tabs.getSelectedIndex())).getWordsList();
 	}
 
-	public MyList getActiveRepeatingList(){
+	public MyList getActiveRepeatingList() {
 		return listToTabLabel.get(tabs.getTitleAt(tabs.getSelectedIndex())).getRepeatingList();
 	}
 
-	@Override
-	public WordTypeContext getContext(){
+	@Override public WordTypeContext getContext() {
 		return wordTypeContext;
 	}
 
-	public void updateWordTypeContext(String newTabName){
+	public void updateWordTypeContext(String newTabName) {
 		WordsAndRepeatingInformationsPanel panel = listToTabLabel.get(newTabName);
-		if (panel!=null){
+		if (panel != null) {
 			wordTypeContext.setWordTypeForRepeating(panel.getTypeOfWordForRepeating());
 		}
 	}

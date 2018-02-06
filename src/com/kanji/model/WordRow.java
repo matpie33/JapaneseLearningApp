@@ -1,6 +1,5 @@
 package com.kanji.model;
 
-import com.kanji.list.listElements.KanjiInformation;
 import com.kanji.list.listElements.ListElement;
 
 import java.util.Objects;
@@ -18,8 +17,7 @@ public class WordRow<Element extends ListElement> {
 		return rowNumber;
 	}
 
-	@Override
-	public boolean equals(Object o) {
+	@Override public boolean equals(Object o) {
 		if (o instanceof WordRow == false) {
 			return false;
 		}
@@ -27,8 +25,7 @@ public class WordRow<Element extends ListElement> {
 		return row.getListElement().equals(listElement);
 	}
 
-	@Override
-	public int hashCode() {
+	@Override public int hashCode() {
 		return Objects.hash(listElement);
 	}
 

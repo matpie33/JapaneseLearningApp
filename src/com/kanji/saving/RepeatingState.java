@@ -5,15 +5,14 @@ import com.kanji.list.listElements.RepeatingInformation;
 import com.kanji.timer.TimeSpent;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 
-public class RepeatingState <Element extends ListElement> implements Serializable {
+public class RepeatingState<Element extends ListElement> implements Serializable {
 
 	private TimeSpent timeSpent;
 	private RepeatingInformation repeatingInformation;
-	private Set <Element> currentProblematicWords;
-	private Set <Element> currentlyRepeatedWords;
+	private Set<Element> currentProblematicWords;
+	private Set<Element> currentlyRepeatedWords;
 
 	public RepeatingState(TimeSpent timeSpent, RepeatingInformation repeatingInformation,
 			Set<Element> currentProblematicWords, Set<Element> currentlyRepeatedWords) {

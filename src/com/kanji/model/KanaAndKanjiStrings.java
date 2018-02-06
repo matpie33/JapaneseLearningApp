@@ -11,8 +11,7 @@ public class KanaAndKanjiStrings {
 	private String modifiedValue;
 	private boolean kanaModified;
 
-	public KanaAndKanjiStrings(String kana,
-			List<String> kanji, String modifiedValue,
+	public KanaAndKanjiStrings(String kana, List<String> kanji, String modifiedValue,
 			boolean kanaModified) {
 		this.kana = kana;
 		this.kanji = kanji;
@@ -20,9 +19,8 @@ public class KanaAndKanjiStrings {
 		this.kanaModified = kanaModified;
 	}
 
-	public KanaAndKanjiStrings(JTextComponent kana,
-			List<JTextComponent> kanji, String modifiedValue,
-			boolean kanaModified) {
+	public KanaAndKanjiStrings(JTextComponent kana, List<JTextComponent> kanji,
+			String modifiedValue, boolean kanaModified) {
 		this.kana = kana.getText();
 		this.kanji = convertKanjiTextfieldsToStrings(kanji);
 		this.modifiedValue = modifiedValue;
@@ -37,8 +35,7 @@ public class KanaAndKanjiStrings {
 		return kanji;
 	}
 
-	@Override
-	public String toString (){
+	@Override public String toString() {
 		return modifiedValue;
 	}
 
@@ -50,24 +47,20 @@ public class KanaAndKanjiStrings {
 		return modifiedValue;
 	}
 
-	@Override
-	public int hashCode(){
+	@Override public int hashCode() {
 		return Objects.hash(getModifiedValue());
 	}
 
-	@Override
-	public boolean equals (Object other){
-		if (!other.getClass().equals(getClass())){
+	@Override public boolean equals(Object other) {
+		if (!other.getClass().equals(getClass())) {
 			return false;
 		}
 		KanaAndKanjiStrings otherKana = (KanaAndKanjiStrings) other;
 		return otherKana.getModifiedValue().equals(getModifiedValue());
 	}
 
-	public List <String> convertKanjiTextfieldsToStrings (
-			List <JTextComponent> kanjiTextFields){
-		return kanjiTextFields.stream().map(JTextComponent::getText)
-				.collect(Collectors.toList());
+	public List<String> convertKanjiTextfieldsToStrings(List<JTextComponent> kanjiTextFields) {
+		return kanjiTextFields.stream().map(JTextComponent::getText).collect(Collectors.toList());
 	}
 
 }

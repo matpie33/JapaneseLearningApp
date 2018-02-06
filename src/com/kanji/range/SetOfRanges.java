@@ -61,8 +61,7 @@ public class SetOfRanges {
 		return isModified;
 	}
 
-	@Override
-	public String toString() {
+	@Override public String toString() {
 		String msg = "";
 		for (int i = 0; i < ranges.size(); i++) {
 			Range r = ranges.get(i);

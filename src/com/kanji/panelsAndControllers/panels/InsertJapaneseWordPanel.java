@@ -28,35 +28,29 @@ public class InsertJapaneseWordPanel extends AbstractPanelWithHotkeysInfo {
 		japaneseWordPanelCreator = new JapaneseWordPanelCreator(applicationWindow);
 	}
 
-	@Override
-	public void createElements() {
+	@Override public void createElements() {
 
 		controller.setParentDialog(parentDialog);
 
 		MainPanel addWordPanel = japaneseWordPanelCreator.createPanelInGivenMode(
 				JapaneseWordInformation.getInitializer().initializeElement(), ListPanelViewMode.ADD,
-				null
-		);
+				null);
 
 		AbstractButton cancel = createButtonClose();
 		AbstractButton approve = createButtonValidate(ButtonsNames.ADD_WORD);
 
-		mainPanel.addRows(
-				SimpleRowBuilder.createRow(FillType.BOTH, addWordPanel.getPanel()).useAllExtraVerticalSpace());
+		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH, addWordPanel.getPanel())
+				.useAllExtraVerticalSpace());
 		setNavigationButtons(cancel, approve);
 
 	}
 
 	private AbstractButton createButtonValidate(String text) {
-		return createButtonWithHotkey(KeyEvent.VK_ENTER,
-				controller.createActionValidateAndAddWord(
-						japaneseWordPanelCreator.getKanaToKanjiWritingsTextComponents(),
-						japaneseWordPanelCreator.getPropertyManagersOfTextFields(),
-						japaneseWordPanelCreator.getPartOfSpeechCombobox()),
-				text, HotkeysDescriptions.ADD_WORD);
+		return createButtonWithHotkey(KeyEvent.VK_ENTER, controller.createActionValidateAndAddWord(
+				japaneseWordPanelCreator.getKanaToKanjiWritingsTextComponents(),
+				japaneseWordPanelCreator.getPropertyManagersOfTextFields(),
+				japaneseWordPanelCreator.getPartOfSpeechCombobox()), text,
+				HotkeysDescriptions.ADD_WORD);
 	}
-
-
-
 
 }

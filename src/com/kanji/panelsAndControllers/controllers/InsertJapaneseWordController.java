@@ -16,7 +16,6 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class InsertJapaneseWordController {
 
@@ -26,7 +25,7 @@ public class InsertJapaneseWordController {
 	private RowInJapaneseWordInformations rowInJapaneseWordInformation;
 
 	public InsertJapaneseWordController(RowInJapaneseWordInformations rowInJapaneseWordInformation,
-			MyList<JapaneseWordInformation> list,	ApplicationController applicationController) {
+			MyList<JapaneseWordInformation> list, ApplicationController applicationController) {
 		this.rowInJapaneseWordInformation = rowInJapaneseWordInformation;
 		this.list = list;
 		this.applicationController = applicationController;
@@ -40,22 +39,21 @@ public class InsertJapaneseWordController {
 			Map<JTextComponent, List<JTextComponent>> kanaToKanjiWritings,
 			Map<JTextComponent, ListElementPropertyManager<?, JapaneseWordInformation>> textsWithPropertyManagers,
 			JComboBox partOfSpeech) {
-		JapaneseWordInformation japaneseWordInformation =
-				JapaneseWordInformation.getInitializer().initializeElement();
+		JapaneseWordInformation japaneseWordInformation = JapaneseWordInformation.getInitializer()
+				.initializeElement();
 		boolean allInputsValid = true;
 
-
-		for (Map.Entry<JTextComponent, ListElementPropertyManager<?, JapaneseWordInformation>>
-				textWithPropertyManager: textsWithPropertyManagers.entrySet()){
+		for (Map.Entry<JTextComponent, ListElementPropertyManager<?, JapaneseWordInformation>> textWithPropertyManager : textsWithPropertyManagers
+				.entrySet()) {
 			JTextComponent textComponent = textWithPropertyManager.getKey();
 			allInputsValid = textWithPropertyManager.getValue()
 					.tryToReplacePropertyWithValueFromTextInput(textComponent,
-					japaneseWordInformation);
+							japaneseWordInformation);
 			//TODO this part is common with insert word controller, try to use 1 and create
 			// an interface for setting properties done in below loop
-			if (!allInputsValid){
+			if (!allInputsValid) {
 				parentDialog.showMessageDialog(
-					textWithPropertyManager.getValue().getInvalidPropertyReason());
+						textWithPropertyManager.getValue().getInvalidPropertyReason());
 				textComponent.selectAll();
 				textComponent.requestFocusInWindow();
 				break;
@@ -63,26 +61,24 @@ public class InsertJapaneseWordController {
 		}
 		JapaneseWordWritingsChecker writingsChecker = new JapaneseWordWritingsChecker(
 				rowInJapaneseWordInformation.getJapaneseWordPanelCreator());
-		for (Map.Entry<JTextComponent, List <JTextComponent>> entry:
-				kanaToKanjiWritings.entrySet()){
+		for (Map.Entry<JTextComponent, List<JTextComponent>> entry : kanaToKanjiWritings
+				.entrySet()) {
 			JTextComponent kanaText = entry.getKey();
-			List <JTextComponent> kanjiTexts = entry.getValue();
-			List <JTextComponent> allTextFields = new ArrayList<>();
+			List<JTextComponent> kanjiTexts = entry.getValue();
+			List<JTextComponent> allTextFields = new ArrayList<>();
 			allTextFields.addAll(kanjiTexts);
 			allTextFields.add(kanaText);
-			KanaAndKanjiStrings kanaAndKanjiStrings =
-					new KanaAndKanjiStrings(
-					kanaText, kanjiTexts, "", false);
+			KanaAndKanjiStrings kanaAndKanjiStrings = new KanaAndKanjiStrings(kanaText, kanjiTexts,
+					"", false);
 			writingsChecker.setProperty(japaneseWordInformation, kanaAndKanjiStrings);
 
 		}
-		if (allInputsValid){
-			PartOfSpeech partOfSpeechObject = PartOfSpeech.getPartOfSpeachByPolishMeaning(
-					(String)partOfSpeech.getSelectedItem()
-			);
+		if (allInputsValid) {
+			PartOfSpeech partOfSpeechObject = PartOfSpeech
+					.getPartOfSpeachByPolishMeaning((String) partOfSpeech.getSelectedItem());
 			japaneseWordInformation.setPartOfSpeech(partOfSpeechObject);
 			boolean isItNewWord = addWordToList(japaneseWordInformation);
-			if (isItNewWord){
+			if (isItNewWord) {
 				applicationController.saveProject();
 			}
 		}
@@ -94,10 +90,10 @@ public class InsertJapaneseWordController {
 			list.addWord(word);
 			list.scrollToBottom();
 
-
 		}
 		else {
-			parentDialog.showMessageDialog(ExceptionsMessages.KANJI_KEYWORD_ALREADY_DEFINED_EXCEPTION);
+			parentDialog
+					.showMessageDialog(ExceptionsMessages.KANJI_KEYWORD_ALREADY_DEFINED_EXCEPTION);
 		}
 		return addedWord;
 	}
@@ -107,8 +103,7 @@ public class InsertJapaneseWordController {
 			Map<JTextComponent, ListElementPropertyManager<?, JapaneseWordInformation>> textsWithPropertyManagers,
 			JComboBox partOfSpeech) {
 		return new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
+			@Override public void actionPerformed(ActionEvent e) {
 				validateAndAddWordIfValid(kanaToKanjiWritings, textsWithPropertyManagers,
 						partOfSpeech);
 			}

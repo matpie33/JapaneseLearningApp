@@ -1,12 +1,5 @@
 package com.kanji.list.myList;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-
-import javax.swing.*;
-import javax.swing.border.Border;
-
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
@@ -15,13 +8,19 @@ import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
-import com.kanji.panelsAndControllers.controllers.ApplicationController;
-import com.kanji.list.listElements.ListElement;
-import com.kanji.model.ListRow;
-import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
+import com.kanji.list.listElements.ListElement;
+import com.kanji.model.ListRow;
+import com.kanji.panelsAndControllers.controllers.ApplicationController;
+import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.utilities.CommonListElements;
+
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 public class ListPanelMaker<Word extends ListElement> extends AbstractPanelWithHotkeysInfo {
 
@@ -37,12 +36,13 @@ public class ListPanelMaker<Word extends ListElement> extends AbstractPanelWithH
 	private MainPanel listPanel;
 	private boolean enableWordAdding;
 
-	public ListPanelMaker(MyList list, boolean enableWordAdding, ApplicationController applicationController, ListRowMaker<Word> listRow,
+	public ListPanelMaker(MyList list, boolean enableWordAdding,
+			ApplicationController applicationController, ListRowMaker<Word> listRow,
 			ListWordsController<Word> controller) {
 		this.applicationController = applicationController;
 		listWordsController = controller;
 		highlightedRowNumber = -1;
-		this. enableWordAdding = enableWordAdding;
+		this.enableWordAdding = enableWordAdding;
 
 		rowsPanel = new MainPanel(null, true);
 		listPanel = new MainPanel(null);
@@ -54,13 +54,14 @@ public class ListPanelMaker<Word extends ListElement> extends AbstractPanelWithH
 	}
 
 	public ListRow<Word> addRow(Word word) {
-		JLabel rowNumberLabel = new JLabel(createTextForRowNumber(rowsPanel.getNumberOfRows()+1));
+		JLabel rowNumberLabel = new JLabel(createTextForRowNumber(rowsPanel.getNumberOfRows() + 1));
 		JButton remove = new JButton(ButtonsNames.REMOVE_ROW);
 		remove.addActionListener(listWordsController.createDeleteRowAction(word));
 		CommonListElements commonListElements = new CommonListElements(remove, rowNumberLabel);
 		rowNumberLabel.setForeground(BasicColors.OCEAN_BLUE);
-		JComponent row = rowsPanel.addRow(SimpleRowBuilder.createRow(FillType.HORIZONTAL,
-				Anchor.NORTH, listRow.createListRow(word, commonListElements).getPanel()));
+		JComponent row = rowsPanel.addRow(SimpleRowBuilder
+				.createRow(FillType.HORIZONTAL, Anchor.NORTH,
+						listRow.createListRow(word, commonListElements).getPanel()));
 		rowsPanel.updateView();
 		return new ListRow<Word>(word, row, rowNumberLabel);
 	}
@@ -73,31 +74,30 @@ public class ListPanelMaker<Word extends ListElement> extends AbstractPanelWithH
 		titleLabel.setText(title);
 	}
 
-	@Override
-	public void createElements() {
+	@Override public void createElements() {
 		listPanel.addRows(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, titleLabel)
 				.nextRow(FillType.BOTH, parentScrollPane));
 		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, listPanel.getPanel()));
-		setNavigationButtons(enableWordAdding?
-				new AbstractButton[] {createButtonAddWord(), createButtonFindWord()}:
-				new AbstractButton[] {createButtonFindWord()});
+		setNavigationButtons(enableWordAdding ?
+				new AbstractButton[] { createButtonAddWord(), createButtonFindWord() } :
+				new AbstractButton[] { createButtonFindWord() });
 	}
 
 	private void createDefaultScrollPane() {
 		Border raisedBevel = BorderFactory.createMatteBorder(3, 3, 0, 0, BasicColors.LIGHT_BLUE);
-		parentScrollPane = GuiMaker.createScrollPane(new ScrollPaneOptions()
-				.componentToWrap(rowsPanel.getPanel()).backgroundColor(BasicColors.VERY_BLUE)
-				.border(raisedBevel).preferredSize(scrollPanesSize));
+		parentScrollPane = GuiMaker.createScrollPane(
+				new ScrollPaneOptions().componentToWrap(rowsPanel.getPanel())
+						.backgroundColor(BasicColors.VERY_BLUE).border(raisedBevel)
+						.preferredSize(scrollPanesSize));
 
 	}
 
-	private AbstractButton createButtonAddWord (){
+	private AbstractButton createButtonAddWord() {
 		String name = ButtonsNames.ADD;
 		String hotkeyDescription = HotkeysDescriptions.ADD_WORD;
 		int keyEvent = KeyEvent.VK_I;
 		AbstractAction action = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
+			@Override public void actionPerformed(ActionEvent e) {
 				applicationController.showInsertWordDialog();
 			}
 		};
@@ -107,7 +107,7 @@ public class ListPanelMaker<Word extends ListElement> extends AbstractPanelWithH
 
 	}
 
-	private AbstractButton createButtonFindWord () {
+	private AbstractButton createButtonFindWord() {
 		String name = ButtonsNames.SEARCH;
 		//TODO differentiate between my list - kanji vs repeating list vs problematic kanjis?
 		String hotkeyDescription = HotkeysDescriptions.OPEN_SEARCH_WORD_DIALOG;
@@ -147,8 +147,7 @@ public class ListPanelMaker<Word extends ListElement> extends AbstractPanelWithH
 	public void scrollToBottom() {
 
 		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
+			@Override public void run() {
 				// TODO swing utilities
 				JScrollBar scrollBar = parentScrollPane.getVerticalScrollBar();
 				scrollBar.setValue(scrollBar.getMaximum());
@@ -167,7 +166,7 @@ public class ListPanelMaker<Word extends ListElement> extends AbstractPanelWithH
 		rowsPanel.clear();
 	}
 
-	public void scrollToTop(){
+	public void scrollToTop() {
 		SwingUtilities.invokeLater(() -> parentScrollPane.getVerticalScrollBar().setValue(0));
 	}
 

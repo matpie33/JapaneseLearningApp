@@ -14,15 +14,13 @@ public class ConfirmPanel extends MessagePanel {
 		super(message);
 	}
 
-	@Override
-	public void createElements() {
+	@Override public void createElements() {
 		//TODO there's not really anything to extend in message panel, and there's issue
 		// with button close - we cannot override the hotkey information
 		super.createElements();
 		AbstractButton yesButton = createButtonConfirm();
 		buttonClose.addActionListener(new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
+			@Override public void actionPerformed(ActionEvent e) {
 				parentDialog.setAccepted(false);
 			}
 		});
@@ -32,8 +30,7 @@ public class ConfirmPanel extends MessagePanel {
 
 	private AbstractButton createButtonConfirm() {
 		AbstractAction action = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
+			@Override public void actionPerformed(ActionEvent e) {
 				parentDialog.getContainer().dispose();
 				parentDialog.setAccepted(true);
 			}
@@ -41,6 +38,5 @@ public class ConfirmPanel extends MessagePanel {
 		return createButtonWithHotkey(KeyEvent.VK_ENTER, action, ButtonsNames.CONFIRM,
 				HotkeysDescriptions.CONFIRM_ACTION);
 	}
-
 
 }

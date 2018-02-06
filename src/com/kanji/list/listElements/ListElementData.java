@@ -10,8 +10,9 @@ public class ListElementData<Element extends ListElement> {
 	private ListElementPropertyType listElementPropertyType;
 	private String comboboxLabel;
 
-	public ListElementData (String elementLabel, ListElementPropertyManager<?, Element> listElementPropertyManager,
-			ListElementPropertyType listElementPropertyType, String comboboxLabel){
+	public ListElementData(String elementLabel,
+			ListElementPropertyManager<?, Element> listElementPropertyManager,
+			ListElementPropertyType listElementPropertyType, String comboboxLabel) {
 		this.elementLabel = elementLabel;
 		this.listElementPropertyManager = listElementPropertyManager;
 		this.listElementPropertyType = listElementPropertyType;

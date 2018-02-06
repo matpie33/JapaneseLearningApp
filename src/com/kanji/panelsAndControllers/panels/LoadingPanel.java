@@ -1,7 +1,5 @@
 package com.kanji.panelsAndControllers.panels;
 
-import javax.swing.*;
-
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
@@ -10,8 +8,8 @@ import com.guimaker.options.ScrollPaneOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.kanji.constants.strings.Prompts;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,32 +26,26 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 		progressBars = new ArrayList<>();
 	}
 
-	@Override
-	public void createElements() {
+	@Override public void createElements() {
 
 		//TODO add method in gui maker to enable connecting one row with another or create a separate row
 		progressBarsPanel = new MainPanel(BasicColors.OCEAN_BLUE, false);
-		JScrollPane scrollPane = GuiMaker.createScrollPane(new ScrollPaneOptions()
-				.componentToWrap(progressBarsPanel.getPanel()).preferredSize(
-						new Dimension(350,200)
-				).opaque(false));
+		JScrollPane scrollPane = GuiMaker.createScrollPane(
+				new ScrollPaneOptions().componentToWrap(progressBarsPanel.getPanel())
+						.preferredSize(new Dimension(350, 200)).opaque(false));
 		progressBarsPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER,
 				GuiMaker.createLabel(new ComponentOptions().text(message))));
-		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH,
-				scrollPane));
+		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, scrollPane));
 		buttonClose = createButtonClose();
 		setNavigationButtons(Anchor.CENTER, buttonClose);
 
 	}
 
-
-	public JProgressBar addProgressBar (String textLabel){
-		JLabel label = GuiMaker.createLabel(new ComponentOptions()
-				.text(textLabel));
+	public JProgressBar addProgressBar(String textLabel) {
+		JLabel label = GuiMaker.createLabel(new ComponentOptions().text(textLabel));
 		JProgressBar progressBar = new JProgressBar();
 		progressBars.add(progressBar);
-		progressBarsPanel.addElementsInColumnStartingFromColumn(0,
-				label, progressBar);
+		progressBarsPanel.addElementsInColumnStartingFromColumn(0, label, progressBar);
 		return progressBar;
 	}
 

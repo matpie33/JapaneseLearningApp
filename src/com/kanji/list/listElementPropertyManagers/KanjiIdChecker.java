@@ -10,15 +10,13 @@ public class KanjiIdChecker implements ListElementPropertyManager<Integer, Kanji
 		return "tekst powinien zawierać tylko cyfry";
 	}
 
-	@Override
-	public boolean isPropertyFound(Integer property, KanjiInformation kanjiInformation) {
+	@Override public boolean isPropertyFound(Integer property, KanjiInformation kanjiInformation) {
 		return kanjiInformation.getKanjiID() == property;
 	}
 
-	@Override
-	public Integer validateInputAndConvertToProperty(JTextComponent textComponent) {
+	@Override public Integer validateInputAndConvertToProperty(JTextComponent textComponent) {
 		String valueToConvert = textComponent.getText();
-		boolean isValidNumber =isIdValidNumber(valueToConvert);
+		boolean isValidNumber = isIdValidNumber(valueToConvert);
 		Integer convertedValue = null;
 		if (isValidNumber) {
 			convertedValue = Integer.parseInt(valueToConvert);
@@ -26,8 +24,7 @@ public class KanjiIdChecker implements ListElementPropertyManager<Integer, Kanji
 		return convertedValue;
 	}
 
-	@Override
-	public void setProperty(KanjiInformation kanjiInformation, Integer propertyValue) {
+	@Override public void setProperty(KanjiInformation kanjiInformation, Integer propertyValue) {
 		kanjiInformation.setKanjiID(propertyValue);
 	}
 

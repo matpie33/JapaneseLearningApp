@@ -1,18 +1,16 @@
 package com.kanji.list.myList;
 
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.*;
-
+import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.KanjiInformation;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listElements.RepeatingInformation;
-import com.kanji.constants.strings.Prompts;
-import com.kanji.panelsAndControllers.controllers.ApplicationController;
-import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.model.ListRow;
+import com.kanji.panelsAndControllers.controllers.ApplicationController;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ListWordsController<Word extends ListElement> {
 	private static final long serialVersionUID = -3144332338336535803L;
@@ -20,11 +18,13 @@ public class ListWordsController<Word extends ListElement> {
 	private ListPanelMaker<Word> rowCreator;
 	private ApplicationController applicationController;
 
-	public ListWordsController(MyList list, boolean enableWordAdding, ListRowMaker<Word> listRowMaker,
-			String title, ApplicationController applicationController) {
+	public ListWordsController(MyList list, boolean enableWordAdding,
+			ListRowMaker<Word> listRowMaker, String title,
+			ApplicationController applicationController) {
 		this.applicationController = applicationController;
 		wordsList = new ArrayList<>();
-		rowCreator = new ListPanelMaker<>(list, enableWordAdding, applicationController, listRowMaker, this);
+		rowCreator = new ListPanelMaker<>(list, enableWordAdding, applicationController,
+				listRowMaker, this);
 		rowCreator.createPanel();
 		this.rowCreator.setTitle(title);
 	}
@@ -36,7 +36,6 @@ public class ListWordsController<Word extends ListElement> {
 		}
 		return false;
 	}
-
 
 	public void remove(Word word) {
 		ListRow<Word> listRow = findListRowContainingWord(word);
@@ -101,9 +100,9 @@ public class ListWordsController<Word extends ListElement> {
 		rowCreator.clear();
 	}
 
-	public boolean isWordDefined (Word word){
+	public boolean isWordDefined(Word word) {
 		for (ListRow<Word> listRow : wordsList) {
-			if (listRow.getWord().isSameAs(word)){
+			if (listRow.getWord().isSameAs(word)) {
 				return true;
 			}
 		}
@@ -112,8 +111,7 @@ public class ListWordsController<Word extends ListElement> {
 
 	public AbstractAction createDeleteRowAction(Word word) {
 		return new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
+			@Override public void actionPerformed(ActionEvent e) {
 				String rowSpecificPrompt = "";
 				if (word instanceof KanjiInformation) {
 					rowSpecificPrompt = Prompts.KANJI_ROW;
@@ -132,17 +130,17 @@ public class ListWordsController<Word extends ListElement> {
 		};
 	}
 
-	public List<Word> getWordsByHighlight (boolean highlighted){
-		List <Word> highlightedWords = new ArrayList<>();
-		for (ListRow<Word> word: wordsList){
-			if (word.isHighlighted() == highlighted){
+	public List<Word> getWordsByHighlight(boolean highlighted) {
+		List<Word> highlightedWords = new ArrayList<>();
+		for (ListRow<Word> word : wordsList) {
+			if (word.isHighlighted() == highlighted) {
 				highlightedWords.add(word.getWord());
 			}
 		}
 		return highlightedWords;
 	}
 
-	public void scrollToTop (){
+	public void scrollToTop() {
 		rowCreator.scrollToTop();
 	}
 

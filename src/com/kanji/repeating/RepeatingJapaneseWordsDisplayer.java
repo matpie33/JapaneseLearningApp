@@ -23,10 +23,10 @@ import java.awt.*;
 import java.util.*;
 import java.util.function.Function;
 
-public class RepeatingJapaneseWordsDisplayer implements
-		RepeatingWordDisplayer<JapaneseWordInformation> {
+public class RepeatingJapaneseWordsDisplayer
+		implements RepeatingWordDisplayer<JapaneseWordInformation> {
 
-	private final Dimension wordPanelsSize = new Dimension (300, 200);
+	private final Dimension wordPanelsSize = new Dimension(300, 200);
 	private MainPanel fullWordInformationPanel;
 	private MainPanel recognizingWordPanel;
 	private KanjiCharactersReader kanjiCharactersReader;
@@ -34,17 +34,17 @@ public class RepeatingJapaneseWordsDisplayer implements
 	private Set<JapaneseWordInformation> problematicJapaneseWords;
 	private JTextComponent partOfSpeechText;
 	private JLabel partOfSpeechLabel;
-	private JComboBox <String> partOfSpeechCombobox;
+	private JComboBox<String> partOfSpeechCombobox;
 	private JLabel verbConjugationLabel;
-	private JComboBox <String> verbConjugationCombobox;
+	private JComboBox<String> verbConjugationCombobox;
 	private JTextComponent verbConjugationText;
 	private Map<Integer, Function<JapaneseWordInformation, Set<String>>> hintTypeIntValues;
 
-	public RepeatingJapaneseWordsDisplayer(Font kanjiFont){
+	public RepeatingJapaneseWordsDisplayer(Font kanjiFont) {
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		kanjiCharactersReader.loadKanjisIfNeeded();
 		//TODO kanjis can be loaded just once in the "get instance" method
-		fullWordInformationPanel = new MainPanel (null, true);
+		fullWordInformationPanel = new MainPanel(null, true);
 		recognizingWordPanel = new MainPanel(null, true);
 		recognizingWordPanel.getPanel().setPreferredSize(wordPanelsSize);
 		fullWordInformationPanel.getPanel().setPreferredSize(wordPanelsSize);
@@ -53,13 +53,12 @@ public class RepeatingJapaneseWordsDisplayer implements
 		currentProblematicWords = new HashSet<>();
 		initializeHintTypeValues();
 		initializeGuiElements();
-		recognizingWordPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE,
-				partOfSpeechLabel, partOfSpeechCombobox));
-
+		recognizingWordPanel.addRow(SimpleRowBuilder
+				.createRow(FillType.NONE, partOfSpeechLabel, partOfSpeechCombobox));
 
 	}
 
-	private void initializeHintTypeValues (){
+	private void initializeHintTypeValues() {
 		hintTypeIntValues = new HashMap<>();
 		hintTypeIntValues.put(1, japaneseWordInformation -> new HashSet<>(
 				Arrays.asList(japaneseWordInformation.getWordMeaning())));
@@ -68,19 +67,20 @@ public class RepeatingJapaneseWordsDisplayer implements
 
 	}
 
-	private void initializeGuiElements (){
+	private void initializeGuiElements() {
 		partOfSpeechCombobox = new JComboBox<>();
 		partOfSpeechCombobox.setFocusable(false);
-		Arrays.stream(PartOfSpeech.values()).forEach(partOfSpeech ->
-			partOfSpeechCombobox.addItem(partOfSpeech.getPolishMeaning()));
+		Arrays.stream(PartOfSpeech.values()).forEach(
+				partOfSpeech -> partOfSpeechCombobox.addItem(partOfSpeech.getPolishMeaning()));
 		verbConjugationCombobox = new JComboBox<>();
 		verbConjugationCombobox.setFocusable(false);
-		Arrays.stream(VerbConjugationType.values()).forEach(verbConjugationType ->
-				verbConjugationCombobox.addItem(verbConjugationType.getDisplayedText()));
-		partOfSpeechLabel = GuiMaker.createLabel(new ComponentOptions().text(
-				Labels.PART_OF_SPEECH));
-		verbConjugationLabel = GuiMaker.createLabel(new ComponentOptions().text(
-				Labels.VERB_CONJUGATION));
+		Arrays.stream(VerbConjugationType.values()).forEach(
+				verbConjugationType -> verbConjugationCombobox
+						.addItem(verbConjugationType.getDisplayedText()));
+		partOfSpeechLabel = GuiMaker
+				.createLabel(new ComponentOptions().text(Labels.PART_OF_SPEECH));
+		verbConjugationLabel = GuiMaker
+				.createLabel(new ComponentOptions().text(Labels.VERB_CONJUGATION));
 		partOfSpeechText = GuiMaker.createTextArea(new TextAreaOptions().editable(false));
 		verbConjugationText = GuiMaker.createTextArea(new TextAreaOptions().editable(false));
 	}
@@ -88,16 +88,18 @@ public class RepeatingJapaneseWordsDisplayer implements
 	@Override public void showWordFullInformation(JapaneseWordInformation kanjiInformation) {
 		fullWordInformationPanel.clear();
 		partOfSpeechText.setText(kanjiInformation.getPartOfSpeech().getPolishMeaning());
-		fullWordInformationPanel.addElementsInColumnStartingFromColumn(partOfSpeechText,
-				0, FillType.HORIZONTAL, partOfSpeechLabel, partOfSpeechText);
-		if (kanjiInformation.hasAdditionalVerbConjugationInformation()){
-			fullWordInformationPanel.addElementsInColumnStartingFromColumn(verbConjugationText,
-					0, FillType.HORIZONTAL, verbConjugationLabel, verbConjugationText);
+		fullWordInformationPanel
+				.addElementsInColumnStartingFromColumn(partOfSpeechText, 0, FillType.HORIZONTAL,
+						partOfSpeechLabel, partOfSpeechText);
+		if (kanjiInformation.hasAdditionalVerbConjugationInformation()) {
+			fullWordInformationPanel.addElementsInColumnStartingFromColumn(verbConjugationText, 0,
+					FillType.HORIZONTAL, verbConjugationLabel, verbConjugationText);
 			verbConjugationText.setText(kanjiInformation.getVerbConjugationInformation());
 		}
 
-		CommonGuiElementsMaker.addKanaAndKanjiWritingsToPanel(kanjiInformation,
-				fullWordInformationPanel, 0, Color.BLACK);
+		CommonGuiElementsMaker
+				.addKanaAndKanjiWritingsToPanel(kanjiInformation, fullWordInformationPanel, 0,
+						Color.BLACK);
 
 	}
 
@@ -123,35 +125,30 @@ public class RepeatingJapaneseWordsDisplayer implements
 		currentProblematicWords.remove(wordInformation);
 	}
 
-	@Override
-	public String getWordHint (JapaneseWordInformation kanjiInformation){
+	@Override public String getWordHint(JapaneseWordInformation kanjiInformation) {
 		int possibilitiesAmount;
-		if (kanjiInformation.hasKanjiWriting()){
+		if (kanjiInformation.hasKanjiWriting()) {
 			possibilitiesAmount = 3;
 		}
-		else{
+		else {
 			possibilitiesAmount = 2;
 		}
 		Random random = new Random();
-		int randomNumber = random.nextInt(possibilitiesAmount)+1;
-		Function <JapaneseWordInformation, Set <String>> hintGetter
-				= hintTypeIntValues.get(randomNumber);
-		return StringUtilities.concatenateStrings(new ArrayList<>(
-				(hintGetter.apply(kanjiInformation))));
+		int randomNumber = random.nextInt(possibilitiesAmount) + 1;
+		Function<JapaneseWordInformation, Set<String>> hintGetter = hintTypeIntValues
+				.get(randomNumber);
+		return StringUtilities
+				.concatenateStrings(new ArrayList<>((hintGetter.apply(kanjiInformation))));
 	}
-
-
 
 	@Override public Set<JapaneseWordInformation> getProblematicWords() {
 		return currentProblematicWords;
 	}
 
-	@Override
-	public RepeatingState getRepeatingState (TimeSpent timeSpent,
-			RepeatingInformation repeatingInformation, Set <JapaneseWordInformation> words){
-		RepeatingState <JapaneseWordInformation> kanjiRepeatingState =
-				new RepeatingState<>(timeSpent, repeatingInformation, currentProblematicWords,
-						words);
+	@Override public RepeatingState getRepeatingState(TimeSpent timeSpent,
+			RepeatingInformation repeatingInformation, Set<JapaneseWordInformation> words) {
+		RepeatingState<JapaneseWordInformation> kanjiRepeatingState = new RepeatingState<>(
+				timeSpent, repeatingInformation, currentProblematicWords, words);
 		return kanjiRepeatingState;
 	}
 
@@ -159,8 +156,7 @@ public class RepeatingJapaneseWordsDisplayer implements
 		return !currentProblematicWords.isEmpty();
 	}
 
-	@Override
-	public void clearRepeatingData(){
+	@Override public void clearRepeatingData() {
 		currentProblematicWords.clear();
 	}
 

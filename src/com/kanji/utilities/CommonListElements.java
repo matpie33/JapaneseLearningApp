@@ -1,7 +1,6 @@
 package com.kanji.utilities;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
+import javax.swing.*;
 
 public class CommonListElements {
 

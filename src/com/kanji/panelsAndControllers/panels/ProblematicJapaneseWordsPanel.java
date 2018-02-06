@@ -5,7 +5,6 @@ import com.guimaker.enums.FillType;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.SplitPaneOrientation;
-import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Urls;
 import com.kanji.context.ContextOwner;
 import com.kanji.list.listElements.JapaneseWordInformation;
@@ -19,11 +18,9 @@ import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.KeyEvent;
 
 public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
-			implements ContextOwner {
+		implements ContextOwner {
 
 	private ProblematicWordsController problematicWordsController;
 	private MyList<JapaneseWordInformation> problematicWords;
@@ -37,25 +34,22 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		parentDialog = parent;
 		this.problematicWordsController = problematicWordsController;
 		kanjiInformationPanel = new MainPanel(null);
-		englishDictionaryPanel = new WebPagePanel(this,
-				new ConnectionFailMessagePage());
+		englishDictionaryPanel = new WebPagePanel(this, new ConnectionFailMessagePage());
 
-		japaneseEnglishDictionaryPanel = new WebPagePanel(this,
-				new ConnectionFailMessagePage());
+		japaneseEnglishDictionaryPanel = new WebPagePanel(this, new ConnectionFailMessagePage());
 	}
 
-	public void initialize (){
+	public void initialize() {
 		problematicWords = problematicWordsController.getWordsToReviewList();
 		japaneseEnglishDictionaryPanel.showPage(TANGORIN_URL);
 		englishDictionaryPanel.showPage(Urls.DICTIONARY_PL_EN_MAIN_PAGE);
 	}
 
-	public void searchWord (String word){
-		japaneseEnglishDictionaryPanel.showPage(TANGORIN_URL+"/general/"+word);
+	public void searchWord(String word) {
+		japaneseEnglishDictionaryPanel.showPage(TANGORIN_URL + "/general/" + word);
 	}
 
-	@Override
-	public void setParentDialog (DialogWindow parentDialog){
+	@Override public void setParentDialog(DialogWindow parentDialog) {
 		super.setParentDialog(parentDialog);
 	}
 
@@ -66,16 +60,17 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		FocusableComponentMaker.makeFocusable(englishDictionaryPanel.getWebPanel());
 		FocusableComponentMaker.makeFocusable(kanjiInformationPanel.getPanel());
 
-		JSplitPane wordAndKanjiInformationSplitPane = CommonGuiElementsMaker.createSplitPane(
-				SplitPaneOrientation.VERTICAL, problematicWords.getPanel(),
-				kanjiInformationPanel.getPanel(),0.5);
-		JSplitPane dictionariesSplitPane = CommonGuiElementsMaker.createSplitPane(
-				SplitPaneOrientation.VERTICAL, japaneseEnglishDictionaryPanel.getSwitchingPanel(),
-				englishDictionaryPanel.getSwitchingPanel(),0.5);
+		JSplitPane wordAndKanjiInformationSplitPane = CommonGuiElementsMaker
+				.createSplitPane(SplitPaneOrientation.VERTICAL, problematicWords.getPanel(),
+						kanjiInformationPanel.getPanel(), 0.5);
+		JSplitPane dictionariesSplitPane = CommonGuiElementsMaker
+				.createSplitPane(SplitPaneOrientation.VERTICAL,
+						japaneseEnglishDictionaryPanel.getSwitchingPanel(),
+						englishDictionaryPanel.getSwitchingPanel(), 0.5);
 
-		JSplitPane wordAndDictionariesSplitPane = CommonGuiElementsMaker.createSplitPane(
-				SplitPaneOrientation.HORIZONTAL, wordAndKanjiInformationSplitPane,
-				dictionariesSplitPane,0.1);
+		JSplitPane wordAndDictionariesSplitPane = CommonGuiElementsMaker
+				.createSplitPane(SplitPaneOrientation.HORIZONTAL, wordAndKanjiInformationSplitPane,
+						dictionariesSplitPane, 0.1);
 
 		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH, wordAndDictionariesSplitPane));
 		setNavigationButtons(Anchor.WEST, createButtonClose());
@@ -84,6 +79,5 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	@Override public Object getContext() {
 		return null; //TODO
 	}
-
 
 }

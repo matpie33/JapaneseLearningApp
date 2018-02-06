@@ -11,11 +11,11 @@ public class ProblematicKanjisState implements Serializable {
 
 	private static final long serialVersionUID = -1667110131673682347L;
 	private Map<KanjiInformation, Boolean> problematicKanjis;
-	private List <? extends ListElement> repeatedWords;
-	private List <? extends ListElement> notRepeatedWords;
+	private List<? extends ListElement> repeatedWords;
+	private List<? extends ListElement> notRepeatedWords;
 
-	public ProblematicKanjisState(List <? extends ListElement> repeatedWords,
-			List <? extends ListElement> notRepeatedWords){
+	public ProblematicKanjisState(List<? extends ListElement> repeatedWords,
+			List<? extends ListElement> notRepeatedWords) {
 		this.repeatedWords = repeatedWords;
 		this.notRepeatedWords = notRepeatedWords;
 	}

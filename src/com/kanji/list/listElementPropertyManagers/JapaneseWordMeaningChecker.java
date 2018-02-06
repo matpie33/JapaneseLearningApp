@@ -5,8 +5,8 @@ import com.kanji.utilities.WordSearching;
 
 import javax.swing.text.JTextComponent;
 
-public class JapaneseWordMeaningChecker extends WordSearchOptionsHolder implements
-		ListElementPropertyManager<String, JapaneseWordInformation> {
+public class JapaneseWordMeaningChecker extends WordSearchOptionsHolder
+		implements ListElementPropertyManager<String, JapaneseWordInformation> {
 	//TODO I hate to create a class which is veeery similar to each other for every word element
 
 	@Override public String getInvalidPropertyReason() {
@@ -15,18 +15,18 @@ public class JapaneseWordMeaningChecker extends WordSearchOptionsHolder implemen
 
 	@Override
 	public boolean isPropertyFound(String wordInKanji, JapaneseWordInformation wordInformation) {
-		return wordInformation != null && WordSearching.doesWordContainSearchedWord(
-				wordInformation.getWordMeaning(), wordInKanji, getWordSearchOptions());
+		return wordInformation != null && WordSearching
+				.doesWordContainSearchedWord(wordInformation.getWordMeaning(), wordInKanji,
+						getWordSearchOptions());
 	}
 
-	@Override
-	public String validateInputAndConvertToProperty(JTextComponent valueToConvert) {
+	@Override public String validateInputAndConvertToProperty(JTextComponent valueToConvert) {
 
 		return valueToConvert.getText();
 	}
 
-	@Override public void setProperty(JapaneseWordInformation japaneseWordInformation,
-			String propertyValue) {
+	@Override
+	public void setProperty(JapaneseWordInformation japaneseWordInformation, String propertyValue) {
 		japaneseWordInformation.setWordMeaning(propertyValue);
 	}
 

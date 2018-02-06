@@ -7,10 +7,6 @@ import com.kanji.list.myList.ListRowMaker;
 import com.kanji.utilities.CommonListElements;
 import com.kanji.windows.ApplicationWindow;
 
-import javax.swing.text.JTextComponent;
-import java.util.List;
-import java.util.Map;
-
 public class RowInJapaneseWordInformations implements ListRowMaker<JapaneseWordInformation> {
 	private JapaneseWordPanelCreator japaneseWordPanelCreator;
 	private ApplicationWindow applicationWindow;
@@ -19,14 +15,14 @@ public class RowInJapaneseWordInformations implements ListRowMaker<JapaneseWordI
 		japaneseWordPanelCreator = new JapaneseWordPanelCreator(applicationWindow);
 	}
 
-	@Override
-	public MainPanel createListRow(JapaneseWordInformation japaneseWord, CommonListElements commonListElements) {
-		MainPanel panel = japaneseWordPanelCreator.createPanelInViewMode(
-				japaneseWord, commonListElements, this);
+	@Override public MainPanel createListRow(JapaneseWordInformation japaneseWord,
+			CommonListElements commonListElements) {
+		MainPanel panel = japaneseWordPanelCreator
+				.createPanelInViewMode(japaneseWord, commonListElements, this);
 		return panel;
 	}
 
 	public JapaneseWordPanelCreator getJapaneseWordPanelCreator() {
-		 return japaneseWordPanelCreator;
+		return japaneseWordPanelCreator;
 	}
 }

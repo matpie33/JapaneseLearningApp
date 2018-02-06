@@ -1,7 +1,5 @@
 package com.kanji.model;
 
-import com.guimaker.panels.MainPanel;
-
 import javax.swing.*;
 
 public class ListRow<Word> {
@@ -40,6 +38,5 @@ public class ListRow<Word> {
 	public void setHighlighted(boolean highlighted) {
 		this.highlighted = highlighted;
 	}
-
 
 }

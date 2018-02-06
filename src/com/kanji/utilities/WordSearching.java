@@ -14,10 +14,10 @@ public class WordSearching {
 		return word;
 	}
 
-	public static boolean doesAnyOfTheWordsContainSearchedWord (Set<String> words,
-			String searched, WordSearchOptions options){
-		for (String word: words){
-			if (doesWordContainSearchedWord(word, searched, options)){
+	public static boolean doesAnyOfTheWordsContainSearchedWord(Set<String> words, String searched,
+			WordSearchOptions options) {
+		for (String word : words) {
+			if (doesWordContainSearchedWord(word, searched, options)) {
 				return true;
 			}
 		}
@@ -46,7 +46,8 @@ public class WordSearching {
 		return phrase.equalsIgnoreCase(searched);
 	}
 
-	private static boolean doesPhraseContainSearchedCharacterChain(String phrase, String characterChain) {
+	private static boolean doesPhraseContainSearchedCharacterChain(String phrase,
+			String characterChain) {
 		return phrase.toLowerCase().contains(characterChain.toLowerCase());
 	}
 

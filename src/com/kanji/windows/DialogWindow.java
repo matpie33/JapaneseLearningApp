@@ -1,15 +1,12 @@
 package com.kanji.windows;
 
-import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-
-import javax.swing.*;
-
 import com.kanji.constants.strings.Titles;
 import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.panelsAndControllers.panels.ConfirmPanel;
 import com.kanji.panelsAndControllers.panels.MessagePanel;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class DialogWindow {
 
@@ -94,7 +91,7 @@ public class DialogWindow {
 			childWindow.setPosition(position);
 			JPanel panel = panelCreator.createPanel();
 			childWindow.setPanel(panel);
-			if (panelCreator.isMaximized()){
+			if (panelCreator.isMaximized()) {
 				childWindow.maximize();
 			}
 			childWindow.showYourself(panelCreator, title, modal);
@@ -140,7 +137,7 @@ public class DialogWindow {
 		return parentWindow;
 	}
 
-	public void maximize (){
+	public void maximize() {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override public void run() {
 				container.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().

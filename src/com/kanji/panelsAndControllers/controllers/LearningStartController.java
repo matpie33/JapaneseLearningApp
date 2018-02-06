@@ -1,23 +1,18 @@
 package com.kanji.panelsAndControllers.controllers;
 
-import java.awt.event.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.swing.*;
-import javax.swing.text.JTextComponent;
-
-import com.kanji.list.listElements.KanjiInformation;
-import com.kanji.list.listElements.RepeatingInformation;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.Labels;
+import com.kanji.list.listElements.KanjiInformation;
+import com.kanji.list.listElements.RepeatingInformation;
 import com.kanji.model.RangesRow;
 import com.kanji.panelsAndControllers.panels.LearningStartPanel;
 import com.kanji.range.SetOfRanges;
+
+import javax.swing.*;
+import javax.swing.text.JTextComponent;
+import java.awt.event.*;
+import java.time.LocalDateTime;
+import java.util.*;
 
 public class LearningStartController {
 
@@ -30,8 +25,8 @@ public class LearningStartController {
 	private int problematicLabelRow;
 	private ApplicationController applicationController;
 
-	public LearningStartController(int numberOfWords,
-			ApplicationController applicationController, LearningStartPanel learningStartPanel) {
+	public LearningStartController(int numberOfWords, ApplicationController applicationController,
+			LearningStartPanel learningStartPanel) {
 		this.applicationController = applicationController;
 		this.numberOfWords = numberOfWords;
 		this.learningStartPanel = learningStartPanel;
@@ -101,7 +96,8 @@ public class LearningStartController {
 		updateRowsNumbers(rowNumber, 1);
 	}
 
-	private RangesRow findRowWithTextFields(JTextComponent textFieldFrom, JTextComponent textFieldTo) {
+	private RangesRow findRowWithTextFields(JTextComponent textFieldFrom,
+			JTextComponent textFieldTo) {
 		for (RangesRow row : rangesRows) {
 			if (row.gotTextFields(textFieldFrom, textFieldTo)) {
 				return row;
@@ -295,7 +291,7 @@ public class LearningStartController {
 	private String concatenateErrors() {
 		String concatenated = "";
 		for (Map.Entry<Integer, String> error : errors.entrySet()) {
-			concatenated += "Błąd w wierszu " + (error.getKey()+1) + ": " + error.getValue();
+			concatenated += "Błąd w wierszu " + (error.getKey() + 1) + ": " + error.getValue();
 			concatenated += "\n\n";
 		}
 		return concatenated;
@@ -326,7 +322,7 @@ public class LearningStartController {
 		}
 	}
 
-	public ItemListener createListenerAddProblematicKanjis (JCheckBox problematicKanjiCheckbox){
+	public ItemListener createListenerAddProblematicKanjis(JCheckBox problematicKanjiCheckbox) {
 		return new ItemListener() {
 			@Override public void itemStateChanged(ItemEvent e) {
 				updateNumberOfSelectedKanjiAfterCheckboxToggle(
@@ -336,25 +332,23 @@ public class LearningStartController {
 		};
 	}
 
-	public KeyAdapter createListenerForKeyTyped (JCheckBox problematicCheckbox, JTextComponent from,
-			JTextComponent to){
+	public KeyAdapter createListenerForKeyTyped(JCheckBox problematicCheckbox, JTextComponent from,
+			JTextComponent to) {
 		return new KeyAdapter() {
 
-			@Override
-			public void keyTyped(KeyEvent e) {
+			@Override public void keyTyped(KeyEvent e) {
 				handleKeyTyped(e, problematicCheckbox.isSelected());
 			}
 
-			@Override
-			public void keyReleased(KeyEvent e) {
+			@Override public void keyReleased(KeyEvent e) {
 				handleKeyReleased(e, to, from, problematicCheckbox.isSelected());
 			}
 
 		};
 	}
 
-	public AbstractAction createActionDeleteRow (JCheckBox problematicCheckbox,
-			JTextComponent from, JTextComponent to) {
+	public AbstractAction createActionDeleteRow(JCheckBox problematicCheckbox, JTextComponent from,
+			JTextComponent to) {
 		return new AbstractAction() {
 			@Override public void actionPerformed(ActionEvent e) {
 				removeRangeRow(from, to, problematicCheckbox.isSelected());
@@ -362,28 +356,25 @@ public class LearningStartController {
 		};
 	}
 
-	public AbstractAction createActionAddRow (){
+	public AbstractAction createActionAddRow() {
 		return new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
+			@Override public void actionPerformed(ActionEvent e) {
 				learningStartPanel.addRowToRangesPanel();
 			}
 		};
 	}
 
-	public AbstractAction createActionStartLearning (JCheckBox problematicCheckbox){
+	public AbstractAction createActionStartLearning(JCheckBox problematicCheckbox) {
 		return new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
+			@Override public void actionPerformed(ActionEvent e) {
 				showErrorsOrStart(problematicCheckbox.isSelected());
 			}
 		};
 	}
 
-	public AbstractAction createActionSelectProblematicCheckbox (JCheckBox problematicCheckbox){
+	public AbstractAction createActionSelectProblematicCheckbox(JCheckBox problematicCheckbox) {
 		return new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
+			@Override public void actionPerformed(ActionEvent e) {
 				if (problematicCheckbox.isEnabled()) {
 					problematicCheckbox.setSelected(!problematicCheckbox.isSelected());
 				}

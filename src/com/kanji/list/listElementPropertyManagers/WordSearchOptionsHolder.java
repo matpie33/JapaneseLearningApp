@@ -14,11 +14,11 @@ public class WordSearchOptionsHolder {
 		this.options = options;
 	}
 
-	public WordSearchOptions getWordSearchOptions (){
+	public WordSearchOptions getWordSearchOptions() {
 		return options;
 	}
 
-	public void setWordSearchOptions (WordSearchOptions options){
+	public void setWordSearchOptions(WordSearchOptions options) {
 		this.options = options;
 	}
 

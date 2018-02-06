@@ -13,11 +13,13 @@ public class RepeatingInformation implements Serializable, ListElement {
 	private boolean wasRepeated;
 	private String timeSpentOnRepeating;
 
-	public RepeatingInformation(String repeatingRange, LocalDateTime repeatingDate, boolean wasRepeated) {
-		this(repeatingRange,repeatingDate,wasRepeated, "nie wiadomo");
+	public RepeatingInformation(String repeatingRange, LocalDateTime repeatingDate,
+			boolean wasRepeated) {
+		this(repeatingRange, repeatingDate, wasRepeated, "nie wiadomo");
 	}
 
-	public RepeatingInformation(String repeatingRange, LocalDateTime repeatingDate, boolean wasRepeated, String timeSpentOnRepeating) {
+	public RepeatingInformation(String repeatingRange, LocalDateTime repeatingDate,
+			boolean wasRepeated, String timeSpentOnRepeating) {
 		this.repeatingRange = repeatingRange;
 		this.repeatingDate = repeatingDate;
 		this.wasRepeated = wasRepeated;
@@ -56,22 +58,22 @@ public class RepeatingInformation implements Serializable, ListElement {
 		this.wasRepeated = wasRepeated;
 	}
 
-	@Override
-	public String toString() {
-		return "date:" + repeatingDate + "range" + repeatingRange + " timeSpent" +timeSpentOnRepeating;
+	@Override public String toString() {
+		return "date:" + repeatingDate + "range" + repeatingRange + " timeSpent"
+				+ timeSpentOnRepeating;
 	}
 
 	public static List<ListElementData<RepeatingInformation>> getElementsTypesAndLabels() {
 		return new ArrayList<>();
 	}
 
-	public static ListElementInitializer<RepeatingInformation> getInitializer (){
+	public static ListElementInitializer<RepeatingInformation> getInitializer() {
 		return () -> new RepeatingInformation("", null, false);
 	}
 
 	@Override public boolean isSameAs(ListElement element) {
-		if (element instanceof RepeatingInformation){
-			RepeatingInformation otherWord = (RepeatingInformation)element;
+		if (element instanceof RepeatingInformation) {
+			RepeatingInformation otherWord = (RepeatingInformation) element;
 			return otherWord.getRepeatingDate().isEqual(repeatingDate);
 		}
 		return false;

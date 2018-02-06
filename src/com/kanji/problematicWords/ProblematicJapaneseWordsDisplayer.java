@@ -2,10 +2,7 @@ package com.kanji.problematicWords;
 
 import com.kanji.constants.strings.Titles;
 import com.kanji.list.listElements.JapaneseWordInformation;
-import com.kanji.list.listElements.KanjiInformation;
-import com.kanji.list.listRows.RowInJapaneseWordInformations;
 import com.kanji.list.listRows.RowInJapaneseWordsReviewingList;
-import com.kanji.list.listRows.RowInKanjiRepeatingList;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.WordRow;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
@@ -13,14 +10,13 @@ import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.panelsAndControllers.panels.ProblematicJapaneseWordsPanel;
 import com.kanji.windows.ApplicationWindow;
 
-import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 
 public class ProblematicJapaneseWordsDisplayer
-		implements ProblematicWordsDisplayer <JapaneseWordInformation> {
+		implements ProblematicWordsDisplayer<JapaneseWordInformation> {
 
-	private MyList <JapaneseWordInformation> wordsToReviewList;
+	private MyList<JapaneseWordInformation> wordsToReviewList;
 	private ProblematicJapaneseWordsPanel problematicJapaneseWordsPanel;
 	private JTextComponent selectedWord;
 
@@ -28,9 +24,8 @@ public class ProblematicJapaneseWordsDisplayer
 			ProblematicWordsController controller) {
 		problematicJapaneseWordsPanel = new ProblematicJapaneseWordsPanel(controller,
 				applicationWindow);
-		this.wordsToReviewList = new MyList<>(applicationWindow,null,
-				new RowInJapaneseWordsReviewingList(this),
-				Titles.PROBLEMATIC_KANJIS, false,
+		this.wordsToReviewList = new MyList<>(applicationWindow, null,
+				new RowInJapaneseWordsReviewingList(this), Titles.PROBLEMATIC_KANJIS, false,
 				JapaneseWordInformation.getElementsTypesAndLabels(),
 				JapaneseWordInformation.getInitializer());
 
@@ -44,7 +39,7 @@ public class ProblematicJapaneseWordsDisplayer
 	}
 
 	@Override public WordRow createWordRow(JapaneseWordInformation listElement, int rowNumber) {
-		return new WordRow(listElement,rowNumber);
+		return new WordRow(listElement, rowNumber);
 	}
 
 	@Override public void initialize() {
@@ -55,13 +50,12 @@ public class ProblematicJapaneseWordsDisplayer
 		return problematicJapaneseWordsPanel;
 	}
 
+	public void setSelectedWord(JTextComponent component) {
 
-	public void setSelectedWord(JTextComponent component){
-
-		if (selectedWord != null){
+		if (selectedWord != null) {
 			selectedWord.setBackground(Color.WHITE);
 		}
-		if (selectedWord == component){
+		if (selectedWord == component) {
 			selectedWord.setBackground(Color.WHITE);
 			selectedWord = null;
 			return;
@@ -71,7 +65,7 @@ public class ProblematicJapaneseWordsDisplayer
 
 	}
 
-	public void searchCurrentWordInDictionary(){
+	public void searchCurrentWordInDictionary() {
 		if (selectedWord != null) {
 			problematicJapaneseWordsPanel.searchWord(selectedWord.getText());
 		}
@@ -80,8 +74,7 @@ public class ProblematicJapaneseWordsDisplayer
 		}
 	}
 
-	@Override
-	public boolean isListPanelFocused (){
+	@Override public boolean isListPanelFocused() {
 		return wordsToReviewList.getPanel().hasFocus();
 	}
 

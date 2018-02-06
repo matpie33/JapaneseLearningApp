@@ -8,22 +8,23 @@ import java.util.Set;
 
 public class KanjisAndRepeatingInfo {
 
-	private List <KanjiInformation> kanjiInformations;
-	private List <RepeatingInformation> repeatingInformations;
+	private List<KanjiInformation> kanjiInformations;
+	private List<RepeatingInformation> repeatingInformations;
 	private Set<Integer> problematicKanjis;
 
-	public KanjisAndRepeatingInfo (List <KanjiInformation> kanjiInformations, List <RepeatingInformation> repeatingInformations, Set<Integer> problematicKanjis){
+	public KanjisAndRepeatingInfo(List<KanjiInformation> kanjiInformations,
+			List<RepeatingInformation> repeatingInformations, Set<Integer> problematicKanjis) {
 		this.kanjiInformations = kanjiInformations;
 		this.repeatingInformations = repeatingInformations;
 		this.problematicKanjis = problematicKanjis;
 
 	}
 
-	public List <KanjiInformation> getKanjiInformations (){
+	public List<KanjiInformation> getKanjiInformations() {
 		return kanjiInformations;
 	}
 
-	public List <RepeatingInformation> getRepeatingInformations (){
+	public List<RepeatingInformation> getRepeatingInformations() {
 		return repeatingInformations;
 	}
 

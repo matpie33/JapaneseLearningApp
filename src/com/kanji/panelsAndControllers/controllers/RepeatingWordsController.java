@@ -1,28 +1,26 @@
 package com.kanji.panelsAndControllers.controllers;
 
-import java.awt.event.ActionEvent;
-import java.time.LocalDateTime;
-import java.util.*;
-
+import com.kanji.constants.enums.ApplicationPanels;
+import com.kanji.constants.enums.RepeatingWordsPanelState;
+import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listElements.RepeatingInformation;
-import com.kanji.constants.enums.ApplicationPanels;
-import com.kanji.constants.strings.Prompts;
-import com.kanji.repeating.RepeatingKanjiDisplayer;
-import com.kanji.repeating.RepeatingWordDisplayer;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.panels.RepeatingWordsPanel;
 import com.kanji.range.Range;
 import com.kanji.range.SetOfRanges;
+import com.kanji.repeating.RepeatingWordDisplayer;
 import com.kanji.saving.ApplicationStateManager;
 import com.kanji.saving.RepeatingState;
+import com.kanji.saving.SavingInformation;
 import com.kanji.timer.TimeSpentHandler;
 import com.kanji.timer.TimeSpentMonitor;
-import com.kanji.constants.enums.RepeatingWordsPanelState;
-import com.kanji.saving.SavingInformation;
 import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.time.LocalDateTime;
+import java.util.*;
 
 public class RepeatingWordsController implements TimeSpentMonitor, ApplicationStateManager {
 
@@ -35,7 +33,7 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 	private TimeSpentHandler timeSpentHandler;
 	private RepeatingInformation repeatInfo;
 	private RepeatingWordsPanel panel;
-	private List <ListElement> wordsLeftToRepeat;
+	private List<ListElement> wordsLeftToRepeat;
 	private RepeatingWordDisplayer wordDisplayer;
 	private ApplicationWindow applicationWindow;
 
@@ -49,18 +47,16 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 		wordsLeftToRepeat = new ArrayList<>();
 	}
 
-	public void setWordDisplayer (RepeatingWordDisplayer wordDisplayer){
+	public void setWordDisplayer(RepeatingWordDisplayer wordDisplayer) {
 		this.wordDisplayer = wordDisplayer;
 	}
 
-	public RepeatingWordsPanel getRepeatingWordsPanel (){
+	public RepeatingWordsPanel getRepeatingWordsPanel() {
 		return panel;
 	}
 
-
 	public String createRemainingWordsPrompt() {
-		return Prompts.REMAINING_WORDS + " " + this.wordsLeftToRepeat.size() + " "
-				+ Prompts.KANJI;
+		return Prompts.REMAINING_WORDS + " " + this.wordsLeftToRepeat.size() + " " + Prompts.KANJI;
 	}
 
 	private void addSelectedWordsToList(SetOfRanges rangesOfRowNumbers) {
@@ -73,13 +69,12 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 		}
 	}
 
-	private ListElement getWordElementByRowNumber(int rowNumber1Based){
+	private ListElement getWordElementByRowNumber(int rowNumber1Based) {
 		return wordsList.getWordInRow(rowNumber1Based);
 	}
 
-	private <Word extends ListElement> void addProblematicWordToList(
-			Set <Word> words) {
-		for (ListElement word: words) {
+	private <Word extends ListElement> void addProblematicWordToList(Set<Word> words) {
+		for (ListElement word : words) {
 			if (!this.wordsLeftToRepeat.contains(word)) {
 				this.wordsLeftToRepeat.add(word);
 			}
@@ -87,9 +82,8 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 	}
 
 	void startRepeating() {
-		wordDisplayer.setAllProblematicWords(
-				applicationWindow.getApplicationController()
-						.getProblematicWordsBasedOnCurrentTab());
+		wordDisplayer.setAllProblematicWords(applicationWindow.getApplicationController()
+				.getProblematicWordsBasedOnCurrentTab());
 		previousWord = wordsList.createWord();
 		currentWord = wordsList.createWord();
 		panel.addWordInformationPanelCards(wordDisplayer.getRecognizingWordPanel(),
@@ -99,8 +93,8 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 		showNextWord();
 	}
 
-	void resumeUnfinishedRepeating (RepeatingState <ListElement> repeatingState){
-		for (ListElement keyword: repeatingState.getCurrentlyRepeatedWords()){
+	void resumeUnfinishedRepeating(RepeatingState<ListElement> repeatingState) {
+		for (ListElement keyword : repeatingState.getCurrentlyRepeatedWords()) {
 			wordsLeftToRepeat.add(keyword);
 		}
 		repeatInfo = repeatingState.getRepeatingInformation();
@@ -145,11 +139,11 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 		parent.scrollToBottom();
 
 		parent.showMessageDialog(createFinishMessage());
-		if (wordDisplayer.hasProblematicWords()){
+		if (wordDisplayer.hasProblematicWords()) {
 			parent.getApplicationController().saveProject();
 			parent.showProblematicWordsDialog(wordDisplayer.getProblematicWords());
 		}
-		else{
+		else {
 			parent.getApplicationController().finishedRepeating();
 		}
 
@@ -199,12 +193,12 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 		resumeLearning();
 	}
 
-	private void stopLearning(){
+	private void stopLearning() {
 		paused = true;
 		timeSpentHandler.stopTimer();
 	}
 
-	private void resumeLearning (){
+	private void resumeLearning() {
 		paused = false;
 		timeSpentHandler.startTimer();
 	}
@@ -218,7 +212,7 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 		showNextWord();
 	}
 
-	private void showNextWord(){
+	private void showNextWord() {
 		panel.setElementsToRecognizingState();
 		repeatingWordsPanelState = RepeatingWordsPanelState.RECOGNIZING_WORD;
 	}
@@ -242,7 +236,7 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 
 	private void pressedButtonReturn() {
 		boolean accepted = parent.showConfirmDialog(Prompts.EXIT_LEARNING);
-		if (!accepted){
+		if (!accepted) {
 			return;
 		}
 		parent.showPanel(ApplicationPanels.STARTING_PANEL);
@@ -254,8 +248,8 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 		return previousWord != null;
 	}
 
-	<Word extends ListElement> void initiateWordsLists(SetOfRanges ranges,
-			Set <Word> words, boolean withProblematic) {
+	<Word extends ListElement> void initiateWordsLists(SetOfRanges ranges, Set<Word> words,
+			boolean withProblematic) {
 		reset();
 		if (!ranges.isEmpty()) {
 			addSelectedWordsToList(ranges);
@@ -265,10 +259,9 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 		}
 	}
 
-	public AbstractAction createActionGoToPreviousWord (){
+	public AbstractAction createActionGoToPreviousWord() {
 		return new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
+			@Override public void actionPerformed(ActionEvent e) {
 				goToPreviousWord();
 				panel.toggleGoToPreviousWordButton();
 				repeatingWordsPanelState = RepeatingWordsPanelState.WORD_INFORMATION_SHOWING;
@@ -276,7 +269,7 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 		};
 	}
 
-	public AbstractAction createActionPause(){
+	public AbstractAction createActionPause() {
 		return new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				pauseAndResume();
@@ -287,11 +280,11 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 	public AbstractAction createShowFullInformationOrMarkWordAsRecognizedAction() {
 		return new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
-				if (repeatingWordsPanelState == RepeatingWordsPanelState.WORD_INFORMATION_SHOWING){
+				if (repeatingWordsPanelState == RepeatingWordsPanelState.WORD_INFORMATION_SHOWING) {
 					markWordAsRecognizedAndGoToNext();
 					showRecognizingPanel();
 				}
-				else{
+				else {
 					wordDisplayer.showWordFullInformation(currentWord);
 					panel.setButtonsToRecognizing();
 					panel.showCardWithFullInformationAboutWord();
@@ -304,13 +297,13 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 	public AbstractAction createNotRecognizedWordAction() {
 		return new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
-			markWordAsNotRecognizedAndGoToNext();
-			showRecognizingPanel();
+				markWordAsNotRecognizedAndGoToNext();
+				showRecognizingPanel();
 			}
 		};
 	}
 
-	private void showRecognizingPanel (){
+	private void showRecognizingPanel() {
 		panel.showCardForRecognizingWord();
 		wordDisplayer.showRecognizingWordPanel();
 	}
@@ -326,28 +319,24 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 	@Override public SavingInformation getApplicationState() {
 		SavingInformation savingInformation = parent.getApplicationController()
 				.getApplicationState();
-		RepeatingState repeatingState = wordDisplayer.getRepeatingState(
-				timeSpentHandler.getTimeForSerialization(), repeatInfo,
-				convertWordsListToSet());
+		RepeatingState repeatingState = wordDisplayer
+				.getRepeatingState(timeSpentHandler.getTimeForSerialization(), repeatInfo,
+						convertWordsListToSet());
 		savingInformation.setRepeatingState(repeatingState);
 		return savingInformation;
 	}
 
-	private Set <ListElement> convertWordsListToSet (){
-		Set <ListElement> wordsSet = new HashSet<>();
-		for (ListElement word:wordsLeftToRepeat){
+	private Set<ListElement> convertWordsListToSet() {
+		Set<ListElement> wordsSet = new HashSet<>();
+		for (ListElement word : wordsLeftToRepeat) {
 			wordsSet.add(word);
 		}
 		return wordsSet;
 	}
 
-
-
-	@Override
-	public void restoreState(SavingInformation savingInformation){
+	@Override public void restoreState(SavingInformation savingInformation) {
 		reset();
-		resumeUnfinishedRepeating(
-				savingInformation.getRepeatingState());
+		resumeUnfinishedRepeating(savingInformation.getRepeatingState());
 		parent.displayMessageAboutUnfinishedRepeating();
 		parent.getApplicationController().startRepeating();
 	}

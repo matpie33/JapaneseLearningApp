@@ -5,7 +5,7 @@ public class KanjiContext {
 	private String kanjiCharacter;
 	private int kanjiId;
 
-	public KanjiContext(String kanjiCharacter, int kanjiId){
+	public KanjiContext(String kanjiCharacter, int kanjiId) {
 		this.kanjiCharacter = kanjiCharacter;
 		this.kanjiId = kanjiId;
 	}
@@ -18,11 +18,11 @@ public class KanjiContext {
 		return kanjiId;
 	}
 
-	public static KanjiContext emptyContext (){
+	public static KanjiContext emptyContext() {
 		return new KanjiContext("", 0);
 	}
 
-	public boolean isEmpty (){
+	public boolean isEmpty() {
 		return kanjiCharacter.isEmpty() && kanjiId == 0;
 	}
 

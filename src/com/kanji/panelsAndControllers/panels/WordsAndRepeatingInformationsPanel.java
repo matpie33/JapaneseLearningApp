@@ -24,16 +24,15 @@ public class WordsAndRepeatingInformationsPanel extends AbstractPanelWithHotkeys
 		this.typeOfWordForRepeating = typeOfWordForRepeating;
 	}
 
-	@Override
-	public void createElements() {
+	@Override public void createElements() {
 		createSplitPane(wordsList, repeatingList);
 		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH, listsSplitPane));
 	}
 
-	private void createSplitPane (MyList wordsList, MyList repeatingList){
-		listsSplitPane = CommonGuiElementsMaker.createSplitPane(
-				SplitPaneOrientation.HORIZONTAL,wordsList.getPanel(), repeatingList.getPanel(),
-				0.5);
+	private void createSplitPane(MyList wordsList, MyList repeatingList) {
+		listsSplitPane = CommonGuiElementsMaker
+				.createSplitPane(SplitPaneOrientation.HORIZONTAL, wordsList.getPanel(),
+						repeatingList.getPanel(), 0.5);
 	}
 
 	public MyList getRepeatingList() {

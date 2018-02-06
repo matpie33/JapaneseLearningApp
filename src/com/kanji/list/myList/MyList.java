@@ -1,16 +1,17 @@
 package com.kanji.list.myList;
 
-import java.util.List;
-
-import javax.swing.*;
-
-import com.kanji.list.listElements.*;
+import com.kanji.constants.enums.SearchingDirection;
 import com.kanji.constants.strings.ExceptionsMessages;
+import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
+import com.kanji.list.listElements.ListElement;
+import com.kanji.list.listElements.ListElementData;
+import com.kanji.list.listElements.ListElementInitializer;
 import com.kanji.model.WordInMyListExistence;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
-import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
-import com.kanji.constants.enums.SearchingDirection;
 import com.kanji.windows.DialogWindow;
+
+import javax.swing.*;
+import java.util.List;
 
 public class MyList<Word extends ListElement> {
 	private DialogWindow parent;
@@ -27,21 +28,22 @@ public class MyList<Word extends ListElement> {
 		this.applicationController = applicationController;
 		this.parent = parentDialog;
 		this.listElementData = listElementData;
-		listController = new ListWordsController<>(this, enableWordAdding, listRowMaker, title, applicationController);
+		listController = new ListWordsController<>(this, enableWordAdding, listRowMaker, title,
+				applicationController);
 		this.wordInitializer = wordInitializer;
 		this.title = title;
 	}
 
-	public void scrollToTop(){
+	public void scrollToTop() {
 		listController.scrollToTop();
 	}
 
-	public String getTitle(){
+	public String getTitle() {
 		return title;
 	}
 
-	public Class getListElementClass (){
-		if (listElementClass == null){
+	public Class getListElementClass() {
+		if (listElementClass == null) {
 			listElementClass = createWord().getClass();
 		}
 		return listElementClass;
@@ -51,7 +53,7 @@ public class MyList<Word extends ListElement> {
 		return listController.add(word);
 	}
 
-	public Word createWord (){
+	public Word createWord() {
 		Word word = wordInitializer.initializeElement();
 		listElementClass = word.getClass();
 		return word;
@@ -70,8 +72,8 @@ public class MyList<Word extends ListElement> {
 	}
 
 	public <Property> void findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(
-			ListElementPropertyManager<Property, Word> propertyChecker, Property searchedPropertyValue,
-			SearchingDirection searchDirection) {
+			ListElementPropertyManager<Property, Word> propertyChecker,
+			Property searchedPropertyValue, SearchingDirection searchDirection) {
 		int rowNumber = findRowNumberBasedOnPropertyStartingFromHighlightedWord(propertyChecker,
 				searchedPropertyValue, searchDirection);
 		if (rowNumber < 0) {
@@ -82,24 +84,31 @@ public class MyList<Word extends ListElement> {
 	}
 
 	public <Property> Word findRowBasedOnPropertyStartingFromHighlightedWord(
-			ListElementPropertyManager<Property, Word> propertyChecker, Property searchedPropertyValue,
-			SearchingDirection searchDirection) {
+			ListElementPropertyManager<Property, Word> propertyChecker,
+			Property searchedPropertyValue, SearchingDirection searchDirection) {
 		int rowNumber = findRowNumberBasedOnPropertyStartingFromHighlightedWord(propertyChecker,
 				searchedPropertyValue, searchDirection);
 		return listController.getWordInRow(rowNumber);
 	}
 
 	private <Property> int findRowNumberBasedOnProperty(
-			ListElementPropertyManager<Property, Word> propertyChecker, Property searchedPropertyValue,
-			SearchingDirection searchDirection, boolean checkHighlightedWordToo) {
+			ListElementPropertyManager<Property, Word> propertyChecker,
+			Property searchedPropertyValue, SearchingDirection searchDirection,
+			boolean checkHighlightedWordToo) {
 
 		int lastRowToSearch = 0;
 		int incrementValue = searchDirection.getIncrementationValue();
 		if (!checkHighlightedWordToo) {
-			lastRowToSearch = listController.getHighlightedRowNumber() >= 0? listController.getHighlightedRowNumber(): 0 ;
+			lastRowToSearch = listController.getHighlightedRowNumber() >= 0 ?
+					listController.getHighlightedRowNumber() :
+					0;
 		}
 
-		int rowNumber = checkHighlightedWordToo? 0: listController.getHighlightedRowNumber() >= 0 ? lastRowToSearch + incrementValue: 0;
+		int rowNumber = checkHighlightedWordToo ?
+				0 :
+				listController.getHighlightedRowNumber() >= 0 ?
+						lastRowToSearch + incrementValue :
+						0;
 		boolean shouldContinueSearching;
 		do {
 			if (isRowNumberOutOfRange(rowNumber)) {
@@ -112,45 +121,46 @@ public class MyList<Word extends ListElement> {
 				}
 			}
 			rowNumber += incrementValue;
-			shouldContinueSearching = checkHighlightedWordToo? rowNumber<listController.getNumberOfWords(): rowNumber != lastRowToSearch;
+			shouldContinueSearching = checkHighlightedWordToo ?
+					rowNumber < listController.getNumberOfWords() :
+					rowNumber != lastRowToSearch;
 		}
 		while (shouldContinueSearching);
 
 		Word highlightedWord = getHighlightedWord();
-		if (!checkHighlightedWordToo && highlightedWord != null
-				&& propertyChecker.isPropertyFound(searchedPropertyValue, highlightedWord)) {
+		if (!checkHighlightedWordToo && highlightedWord != null && propertyChecker
+				.isPropertyFound(searchedPropertyValue, highlightedWord)) {
 			parent.showMessageDialog(ExceptionsMessages.WORD_ALREADY_HIGHLIGHTED_EXCEPTION);
 			return listController.getHighlightedRowNumber();
 		}
-		else{
+		else {
 			parent.showMessageDialog(ExceptionsMessages.WORD_NOT_FOUND_EXCEPTION);
 			return -1;
 		}
 	}
 
 	public <Property> int findRowNumberBasedOnPropertyStartingFromHighlightedWord(
-			ListElementPropertyManager<Property, Word> propertyChecker, Property searchedPropertyValue,
-			SearchingDirection searchDirection) {
+			ListElementPropertyManager<Property, Word> propertyChecker,
+			Property searchedPropertyValue, SearchingDirection searchDirection) {
 		return findRowNumberBasedOnProperty(propertyChecker, searchedPropertyValue, searchDirection,
-				 false);
+				false);
 	}
 
 	public <Property> Word findRowBasedOnPropertyStartingFromBeginningOfList(
-			ListElementPropertyManager<Property, Word> propertyChecker, Property searchedPropertyValue,
-			SearchingDirection searchDirection) {
+			ListElementPropertyManager<Property, Word> propertyChecker,
+			Property searchedPropertyValue, SearchingDirection searchDirection) {
 		int rowNumber = findRowNumberBasedOnProperty(propertyChecker, searchedPropertyValue,
 				searchDirection, true);
 		return listController.getWordInRow(rowNumber);
 	}
 
-	public <Property> WordInMyListExistence<Word> doesWordWithPropertyExist (Property property,
-			ListElementPropertyManager<Property, Word> propertyManager,
-			Word wordToExclude){
-		for (Word word: getWords()){
-			if (word.equals(wordToExclude)){
+	public <Property> WordInMyListExistence<Word> doesWordWithPropertyExist(Property property,
+			ListElementPropertyManager<Property, Word> propertyManager, Word wordToExclude) {
+		for (Word word : getWords()) {
+			if (word.equals(wordToExclude)) {
 				continue;
 			}
-			if (propertyManager.isPropertyFound(property, word)){
+			if (propertyManager.isPropertyFound(property, word)) {
 				return new WordInMyListExistence<Word>(true, word);
 			}
 		}
@@ -201,7 +211,7 @@ public class MyList<Word extends ListElement> {
 		return listController.getNumberOfWords();
 	}
 
-	public boolean areAllWordsHighlighted (){
+	public boolean areAllWordsHighlighted() {
 		return listController.getWordsByHighlight(true).size() == getNumberOfWords();
 	}
 
@@ -209,29 +219,28 @@ public class MyList<Word extends ListElement> {
 		return listController.getWords();
 	}
 
-	public int get1BasedRowNumberOfWord(Word word){
+	public int get1BasedRowNumberOfWord(Word word) {
 		return getWords().indexOf(word) + 1;
 	}
 
-	public boolean isWordDefined (Word word){
+	public boolean isWordDefined(Word word) {
 		return listController.isWordDefined(word);
 	}
 
 	public Word getWordInRow(int rowNumber1Based) {
-		return listController.getWordInRow(rowNumber1Based-1);
+		return listController.getWordInRow(rowNumber1Based - 1);
 	}
 
-	public List<Word> getHighlightedWords(){
+	public List<Word> getHighlightedWords() {
 		return listController.getWordsByHighlight(true);
 	}
 
-	public List<Word> getNotHighlightedWords(){
+	public List<Word> getNotHighlightedWords() {
 		return listController.getWordsByHighlight(false);
 	}
 
-	public List <ListElementData<Word>> getListElementData (){
+	public List<ListElementData<Word>> getListElementData() {
 		return listElementData;
 	}
-
 
 }

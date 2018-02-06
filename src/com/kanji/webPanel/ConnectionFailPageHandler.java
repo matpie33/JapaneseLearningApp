@@ -6,6 +6,7 @@ import javax.swing.*;
 
 public interface ConnectionFailPageHandler {
 
-	public JPanel getConnectionFailPage ();
-	public void modifyConnectionFailPage (KanjiContext context);
+	public JPanel getConnectionFailPage();
+
+	public void modifyConnectionFailPage(KanjiContext context);
 }

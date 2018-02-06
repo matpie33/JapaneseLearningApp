@@ -10,11 +10,11 @@ public class StartingController {
 
 	private StartingPanel startingPanel;
 
-	public StartingController (StartingPanel panel){
+	public StartingController(StartingPanel panel) {
 		startingPanel = panel;
 	}
 
-	public ChangeListener createTabChangeListener (){
+	public ChangeListener createTabChangeListener() {
 		return new ChangeListener() {
 			@Override public void stateChanged(ChangeEvent e) {
 				JTabbedPane source = (JTabbedPane) e.getSource();
