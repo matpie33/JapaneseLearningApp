@@ -16,7 +16,7 @@ public class KanjiIdChecker implements ListElementPropertyManager<Integer, Kanji
 	}
 
 	@Override
-	public Integer convertTextInputToProperty(JTextComponent textComponent) {
+	public Integer validateInputAndConvertToProperty(JTextComponent textComponent) {
 		String valueToConvert = textComponent.getText();
 		boolean isValidNumber =isIdValidNumber(valueToConvert);
 		Integer convertedValue = null;

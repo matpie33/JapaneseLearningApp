@@ -10,13 +10,13 @@ public interface ListElementPropertyManager<PropertyType, PropertyHolder extends
 
 	public boolean isPropertyFound(PropertyType property, PropertyHolder propertyHolder);
 
-	public PropertyType convertTextInputToProperty(JTextComponent textInput);
+	public PropertyType validateInputAndConvertToProperty(JTextComponent textInput);
 
 	public void setProperty(PropertyHolder propertyHolder, PropertyType propertyValue);
 
 	public default boolean tryToReplacePropertyWithValueFromTextInput (JTextComponent input,
 			PropertyHolder propertyHolder){
-		PropertyType propertyValue = convertTextInputToProperty(input);
+		PropertyType propertyValue = validateInputAndConvertToProperty(input);
 		if (propertyValue != null){
 			setProperty(propertyHolder, propertyValue);
 		}

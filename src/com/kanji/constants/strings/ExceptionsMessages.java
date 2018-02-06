@@ -9,7 +9,8 @@ public class ExceptionsMessages {
 	public static final String DUPLICATED_ID_EXCEPTION = "Na liście występuje wielokrotnie pewne id. "
 			+ "Należy poprawić.";
 	public static final String NUMBER_FORMAT_EXCEPTION = "Niepoprawnie wpisana liczba.";
-	public static final String ID_ALREADY_DEFINED_EXCEPTION = "Id o wartości %d juz istnieje.";
+	public static final String ID_ALREADY_DEFINED_EXCEPTION = "Id o wartości %d juz istnieje"
+			+ "w wierszu %d.";
 	public static final String KANJI_KEYWORD_ALREADY_DEFINED_EXCEPTION = ""
 			+ "Kanji o słowie kluczowym \"%s\" już istnieje.";
 	public static final String WORD_ALREADY_HIGHLIGHTED_EXCEPTION = "To slowo jest juz zaznaczone."
@@ -28,7 +29,7 @@ public class ExceptionsMessages {
 	public static final String INCORRECT_JAPANESE_WORDS_LISTS_SIZES = "Długości list słów zapisanych kaną, "
 			+ "kanji oraz przetłumaczonych na polski nie są jednakowe - a powinny.";
 	public static final String JAPANESE_WORD_WRITINGS_ALREADY_DEFINED
-			= "Słowo z zapisem \"%s\" już istnieje.";
+			= "Słowo z takimi %s zapisami kana/kanji już istnieje i ma numer %d";
 	public static final String JAPANESE_WORD_MEANING_ALREADY_DEFINED
 			= "Słowo o znaczeniu \"%s\" już istnieje.";
 	public static final String KANA_WRITING_INCORRECT
@@ -36,5 +37,7 @@ public class ExceptionsMessages {
 	public static final String KANJI_WRITING_INCORRECT
 			= "Niepoprawny zapis kanji: %s. Powinien zawierać tylko hiraganę lub katakanę "
 			+ "i co najmniej jeden znak kanji.";
+	public static final String DUPLICATED_KANJI_WRITING_WITHIN_ROW
+			= "Taki zapis kanji już istnieje w danym wierszu dla danego zapisu kaną.";
 
 }

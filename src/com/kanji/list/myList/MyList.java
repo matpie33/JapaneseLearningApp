@@ -6,6 +6,7 @@ import javax.swing.*;
 
 import com.kanji.list.listElements.*;
 import com.kanji.constants.strings.ExceptionsMessages;
+import com.kanji.model.WordInMyListExistence;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.constants.enums.SearchingDirection;
@@ -142,14 +143,18 @@ public class MyList<Word extends ListElement> {
 		return listController.getWordInRow(rowNumber);
 	}
 
-	public <Property> boolean doesWordWithPropertyExist (Property property,
-			ListElementPropertyManager<Property, Word> propertyManager){
+	public <Property> WordInMyListExistence<Word> doesWordWithPropertyExist (Property property,
+			ListElementPropertyManager<Property, Word> propertyManager,
+			Word wordToExclude){
 		for (Word word: getWords()){
+			if (word.equals(wordToExclude)){
+				continue;
+			}
 			if (propertyManager.isPropertyFound(property, word)){
-				return true;
+				return new WordInMyListExistence<Word>(true, word);
 			}
 		}
-		return false;
+		return new WordInMyListExistence<Word>(false, null);
 	}
 
 	private Word getHighlightedWord() {
@@ -202,6 +207,10 @@ public class MyList<Word extends ListElement> {
 
 	public List<Word> getWords() {
 		return listController.getWords();
+	}
+
+	public int get1BasedRowNumberOfWord(Word word){
+		return getWords().indexOf(word) + 1;
 	}
 
 	public boolean isWordDefined (Word word){

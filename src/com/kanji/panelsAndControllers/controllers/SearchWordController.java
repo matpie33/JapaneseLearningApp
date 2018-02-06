@@ -48,7 +48,7 @@ public class SearchWordController <Word extends ListElement> {
 				list.findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(
 						textInputAndPropertyManagerForListElement.getListElementPropertyManager(),
 						textInputAndPropertyManagerForListElement.getListElementPropertyManager().
-								convertTextInputToProperty(
+								validateInputAndConvertToProperty(
 										textInputAndPropertyManagerForListElement.getTextComponent()),
 						searchingDirection);
 			}

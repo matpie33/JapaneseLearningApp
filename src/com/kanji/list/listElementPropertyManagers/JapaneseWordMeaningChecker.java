@@ -20,7 +20,7 @@ public class JapaneseWordMeaningChecker extends WordSearchOptionsHolder implemen
 	}
 
 	@Override
-	public String convertTextInputToProperty(JTextComponent valueToConvert) {
+	public String validateInputAndConvertToProperty(JTextComponent valueToConvert) {
 
 		return valueToConvert.getText();
 	}

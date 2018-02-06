@@ -7,8 +7,10 @@ import com.kanji.model.KanaAndKanjiStrings;
 import com.kanji.utilities.StringUtilities;
 
 import javax.swing.text.JTextComponent;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder implements
@@ -38,9 +40,10 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder impleme
 
 		for (Map.Entry<String, List<String>> kanaToKanjis:
 				wordInformation.getKanaToKanjiWritingsMap().entrySet()){
-			if (kanaToKanjis.getKey().equals(kanaWriting) && !
-					kanjiWritings.isEmpty() &&
-					kanaToKanjis.getValue().containsAll(kanjiWritings)){
+			if (kanaToKanjis.getKey().equals(kanaWriting) &&
+					!kanjiWritings.isEmpty() && (
+					kanaToKanjis.getValue().containsAll(kanjiWritings)
+					|| kanjiWritings.containsAll(kanaToKanjis.getValue()))){
 				return true;
 			}
 		}
@@ -48,7 +51,8 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder impleme
 	}
 
 	@Override
-	public KanaAndKanjiStrings convertTextInputToProperty(JTextComponent valueToConvert) {
+	public KanaAndKanjiStrings validateInputAndConvertToProperty(
+			JTextComponent valueToConvert) {
 		errorDetails = "";
 		for (Map.Entry<JTextComponent, List <JTextComponent>>
 				kanaToKanjiWritingsTextFields: japaneseWordPanelCreator
@@ -84,10 +88,15 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder impleme
 			if (!foundTextField){
 				continue;
 			}
-
-
 			if (invalidInput){
 				return null;
+			}
+			Set<String> duplicateCheck = new HashSet<>();
+			for (JTextComponent textComponent: kanaToKanjiWritingsTextFields.getValue()){
+				if (!duplicateCheck.add(textComponent.getText())){
+					errorDetails = ExceptionsMessages.DUPLICATED_KANJI_WRITING_WITHIN_ROW;
+					return null;
+				}
 			}
 			if (foundTextField){
 				return new KanaAndKanjiStrings(kanaToKanjiWritingsTextFields
