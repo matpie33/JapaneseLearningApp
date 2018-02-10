@@ -23,6 +23,7 @@ public class ProblematicJapaneseWordsDisplayer
 	public ProblematicJapaneseWordsDisplayer(
 			ApplicationWindow applicationWindow,
 			ProblematicWordsController controller) {
+
 		problematicJapaneseWordsPanel = new ProblematicJapaneseWordsPanel(
 				controller, applicationWindow);
 		this.wordsToReviewList = new MyList<>(applicationWindow, null,
@@ -30,6 +31,7 @@ public class ProblematicJapaneseWordsDisplayer
 				Titles.PROBLEMATIC_KANJIS, false,
 				JapaneseWordInformation.getElementsTypesAndLabels(),
 				JapaneseWordInformation.getInitializer());
+		controller.setProblematicWordsDisplayer(this);
 
 	}
 

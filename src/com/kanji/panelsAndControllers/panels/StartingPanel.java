@@ -25,10 +25,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class StartingPanel extends AbstractPanelWithHotkeysInfo
 		implements ContextOwner<WordTypeContext> {
@@ -203,7 +200,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 				keyEvent = KeyEvent.VK_P;
 				action = new AbstractAction() {
 					@Override public void actionPerformed(ActionEvent e) {
-						applicationWindow.showProblematicWordsDialog();
+						applicationWindow.showProblematicWordsDialogForCurrentList();
 					}
 				};
 				break;
@@ -236,7 +233,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 				ButtonsNames.SHOW_PROBLEMATIC_KANJIS);
 		problematicKanjiButton.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
-				applicationWindow.showProblematicWordsDialog();
+				applicationWindow.showProblematicWordsDialog(new HashSet<>());
 			}
 		});
 		return problematicKanjiButton;

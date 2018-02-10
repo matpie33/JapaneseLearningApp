@@ -18,7 +18,6 @@ import com.kanji.model.KanjisAndRepeatingInfo;
 import com.kanji.panelsAndControllers.panels.RepeatingWordsPanel;
 import com.kanji.problematicWords.ProblematicJapaneseWordsDisplayer;
 import com.kanji.problematicWords.ProblematicKanjiDisplayer;
-import com.kanji.problematicWords.ProblematicWordsDisplayer;
 import com.kanji.range.SetOfRanges;
 import com.kanji.repeating.RepeatingJapaneseWordsDisplayer;
 import com.kanji.repeating.RepeatingKanjiDisplayer;
@@ -51,7 +50,8 @@ public class ApplicationController implements ApplicationStateManager {
 	private boolean isClosingSafe;
 	private ApplicationStateManager applicationStateManager;
 	private Map<ApplicationSaveableState, ApplicationStateManager> applicationStateToManagerMap;
-	private ProblematicWordsController problematicWordsController;
+	private ProblematicWordsController<KanjiInformation> problematicKanjisController;
+	private ProblematicWordsController<JapaneseWordInformation> problematicJapaneseWordsController;
 	private JapaneseWordsFileReader japaneseWordsFileReader;
 	private SavingInformation savingInformation;
 	private RepeatingKanjiDisplayer kanjiWordDisplayer;
@@ -75,8 +75,8 @@ public class ApplicationController implements ApplicationStateManager {
 
 	}
 
-	public ProblematicWordsController getProblematicWordsController() {
-		return problematicWordsController;
+	public ProblematicWordsController getProblematicKanjisController() {
+		return problematicKanjisController;
 	}
 
 	public RepeatingWordsPanel getRepeatingWordsPanel() {
@@ -84,11 +84,15 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	public void initializeApplicationStateManagers() {
-		problematicWordsController = new ProblematicWordsController(parent);
+		problematicKanjisController = new ProblematicWordsController<>(parent);
+		problematicJapaneseWordsController = new ProblematicWordsController<>(
+				parent);
 		problematicKanjiDisplayer = new ProblematicKanjiDisplayer(parent,
-				problematicWordsController);
+				problematicKanjisController);
 		problematicJapaneseWordsDisplayer = new ProblematicJapaneseWordsDisplayer(
-				parent, problematicWordsController);
+				parent, problematicJapaneseWordsController);
+		problematicKanjisController.initialize();
+		problematicJapaneseWordsController.initialize();
 		this.repeatingWordsPanelController = new RepeatingWordsController(
 				parent);
 		applicationStateToManagerMap
@@ -96,7 +100,10 @@ public class ApplicationController implements ApplicationStateManager {
 						repeatingWordsPanelController);
 		applicationStateToManagerMap
 				.put(ApplicationSaveableState.REVIEWING_PROBLEMATIC_KANJIS,
-						problematicWordsController);
+						problematicKanjisController);
+		applicationStateToManagerMap
+				.put(ApplicationSaveableState.REVIEWING_PROBLEMATIC_JAPANESE_WORDS,
+						problematicJapaneseWordsController);
 	}
 
 	//TODO dependencies between classes are weird and should be reconsidered
@@ -376,8 +383,6 @@ public class ApplicationController implements ApplicationStateManager {
 
 		repeatingWordsPanelController
 				.setWordDisplayer(getWordDisplayerForCurrentWordList());
-		problematicWordsController.setProblematicWordsDisplayer(
-				getProblematicWordsDisplayerBasedOnActiveWordList());
 		parent.showLearningStartDialog(
 				parent.getStartingPanel().getActiveWordsList()
 						.getNumberOfWords());
@@ -577,14 +582,19 @@ public class ApplicationController implements ApplicationStateManager {
 		isClosingSafe = false;
 	}
 
-	public ProblematicWordsDisplayer getProblematicWordsDisplayerBasedOnActiveWordList() {
+	public ProblematicWordsController getProblematicWordsControllerBasedOnActiveWordList() {
 		MyList activeWordList = parent.getStartingPanel().getActiveWordsList();
 		Class listElementsClass = activeWordList.getListElementClass();
-		if (listElementsClass.equals(KanjiInformation.class)) {
-			return problematicKanjiDisplayer;
+		return getProblematicWordsControllerBasedOnWordType(listElementsClass);
+	}
+
+	public ProblematicWordsController getProblematicWordsControllerBasedOnWordType(
+			Class wordType) {
+		if (wordType.equals(KanjiInformation.class)) {
+			return problematicKanjisController;
 		}
-		else if (listElementsClass.equals(JapaneseWordInformation.class)) {
-			return problematicJapaneseWordsDisplayer;
+		else if (wordType.equals(JapaneseWordInformation.class)) {
+			return problematicJapaneseWordsController;
 		}
 		return null;
 	}

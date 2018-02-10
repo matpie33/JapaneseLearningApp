@@ -1,30 +1,28 @@
 package com.kanji.saving;
 
-import com.kanji.list.listElements.KanjiInformation;
 import com.kanji.list.listElements.ListElement;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
-public class ProblematicKanjisState implements Serializable {
+public class ProblematicKanjisState<Element extends ListElement>
+		implements Serializable {
 
 	private static final long serialVersionUID = -1667110131673682347L;
-	private Map<KanjiInformation, Boolean> problematicKanjis;
-	private List<? extends ListElement> repeatedWords;
-	private List<? extends ListElement> notRepeatedWords;
+	private List<Element> repeatedWords;
+	private List<Element> notRepeatedWords;
 
-	public ProblematicKanjisState(List<? extends ListElement> repeatedWords,
-			List<? extends ListElement> notRepeatedWords) {
+	public ProblematicKanjisState(List<Element> repeatedWords,
+			List<Element> notRepeatedWords) {
 		this.repeatedWords = repeatedWords;
 		this.notRepeatedWords = notRepeatedWords;
 	}
 
-	public List<? extends ListElement> getReviewedKanjis() {
+	public List<? extends ListElement> getReviewedWords() {
 		return repeatedWords;
 	}
 
-	public List<? extends ListElement> getNotReviewKanjis() {
+	public List<? extends ListElement> getNotReviewedWords() {
 		return notRepeatedWords;
 	}
 }

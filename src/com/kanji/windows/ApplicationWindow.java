@@ -30,7 +30,7 @@ import java.util.Set;
 		extends DialogWindow {
 
 	private JPanel mainApplicationPanel;
-	private ProblematicWordsController problematicWordsController;
+	private ProblematicWordsController activeProblematicWordsController;
 	private StartingPanel startingPanel;
 	private JFrame container;
 	private ApplicationController applicationController;
@@ -50,8 +50,6 @@ import java.util.Set;
 		startingPanel = new StartingPanel(this, mainApplicationPanel);
 
 		applicationController.initializeApplicationStateManagers();
-		problematicWordsController = applicationController
-				.getProblematicWordsController();
 
 		mainApplicationPanel.add(startingPanel.createPanel(),
 				ApplicationPanels.STARTING_PANEL.getPanelName());
@@ -131,7 +129,7 @@ import java.util.Set;
 	}
 
 	public void showLearningStartDialog(int maximumNumber) {
-		problematicWordsController.initialize();
+
 		createDialog(
 				new LearningStartPanel(applicationController, maximumNumber),
 				Titles.LEARNING_START_DIALOG, false, Position.CENTER);
@@ -164,33 +162,47 @@ import java.util.Set;
 				false, Position.LEFT_CORNER);
 	}
 
-	public <Element extends ListElement> void showProblematicWordsDialog(
-			Set<Element> problematicWords) {
-		problematicWordsController.addProblematicWords(problematicWords);
-		showProblematicWordsDialog();
-	}
 	//TODO why some dialogs like problematic and search word are in application window,
 	// and the others are in application controller?
 
-	public void showProblematicWordsDialog() {
-
-		if (!problematicWordsController.isPanelInitialized()) {
-			showReadyPanel(problematicWordsController.getDialog());
-		}
-		else {
-			problematicWordsController.initializeSpaceBarAction();
-			createDialog(problematicWordsController.getPanel(),
-					Titles.PROBLEMATIC_KANJIS_WINDOW, true, Position.CENTER);
-			problematicWordsController.initializeWindowListener();
-
-		}
-		applicationController.switchStateManager(problematicWordsController);
+	public void showProblematicWordsDialogForCurrentList() {
+		activeProblematicWordsController = applicationController
+				.getProblematicWordsControllerBasedOnActiveWordList();
+		showProblematicWordsDialog();
 	}
 
-	public void showProblematicWordsDialog(
-			ProblematicKanjisState problematicKanjisState) {
-		displayMessageAboutUnfinishedRepeating();
+	public <Element extends ListElement> void showProblematicWordsDialog(
+			Set<Element> problematicWords) {
+		activeProblematicWordsController = applicationController
+				.getProblematicWordsControllerBasedOnActiveWordList();
+		activeProblematicWordsController.addProblematicWords(problematicWords);
 		showProblematicWordsDialog();
+	}
+
+	public <Element extends ListElement> void showProblematicWordsDialog(
+			ProblematicKanjisState<Element> problematicWordsState) {
+		displayMessageAboutUnfinishedRepeating();
+		activeProblematicWordsController = applicationController
+				.getProblematicWordsControllerBasedOnActiveWordList();
+		activeProblematicWordsController.addProblematicWordsHighlightReviewed(
+				problematicWordsState.getReviewedWords(),
+				problematicWordsState.getNotReviewedWords());
+		showProblematicWordsDialog();
+	}
+
+	public void showProblematicWordsDialog() {
+		if (activeProblematicWordsController.isDialogHidden()) {
+			showReadyPanel(activeProblematicWordsController.getDialog());
+		}
+		else {
+			activeProblematicWordsController.initializeSpaceBarAction();
+			createDialog(activeProblematicWordsController.getPanel(),
+					Titles.PROBLEMATIC_KANJIS_WINDOW, true, Position.CENTER);
+			activeProblematicWordsController.initializeWindowListener();
+
+		}
+		applicationController
+				.switchStateManager(activeProblematicWordsController);
 	}
 
 	public LoadingPanel showProgressDialog() {

@@ -38,6 +38,7 @@ public class ProblematicKanjiDisplayer
 
 	public ProblematicKanjiDisplayer(ApplicationWindow applicationWindow,
 			ProblematicWordsController controller) {
+
 		problematicKanjiPanel = new ProblematicKanjiPanel(
 				applicationWindow.getKanjiFont(), applicationWindow, controller,
 				this);
@@ -51,6 +52,7 @@ public class ProblematicKanjiDisplayer
 				Titles.PROBLEMATIC_KANJIS, false,
 				KanjiInformation.getElementsTypesAndLabels(),
 				KanjiInformation.getInitializer());
+		controller.setProblematicWordsDisplayer(this);
 	}
 
 	@Override public MyList<KanjiInformation> getWordsToReviewList() {
