@@ -31,19 +31,16 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 	@Override
 	public boolean isPropertyFound(KanaAndKanjiStrings kanaAndKanjiStrings,
 			JapaneseWordInformation wordInformation) {
-		if (kanaAndKanjiStrings.getModifiedValue().isEmpty()) {
-			return false;
-		}
 		List<String> kanjiWritings = kanaAndKanjiStrings.getKanji();
 		String kanaWriting = kanaAndKanjiStrings.getKana();
 
 		for (Map.Entry<String, List<String>> kanaToKanjis : wordInformation
 				.getKanaToKanjiWritingsMap().entrySet()) {
-			if (kanaToKanjis.getKey().equals(kanaWriting) && !kanjiWritings
-					.isEmpty() && (
+			if (kanaToKanjis.getKey().equals(kanaWriting) && (kanjiWritings
+					.isEmpty() && kanaToKanjis.getValue().isEmpty()) || (!kanjiWritings.isEmpty() && (
 					kanaToKanjis.getValue().containsAll(kanjiWritings)
 							|| kanjiWritings
-							.containsAll(kanaToKanjis.getValue()))) {
+							.containsAll(kanaToKanjis.getValue())))) {
 				return true;
 			}
 		}

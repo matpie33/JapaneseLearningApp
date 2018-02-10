@@ -72,13 +72,6 @@ public class JapaneseWordPanelCreator {
 								.getJapaneseWords(), applicationWindow,
 						new JapaneseWordMeaningChecker(),
 						ExceptionsMessages.JAPANESE_WORD_MEANING_ALREADY_DEFINED));
-		wordMeaningText.addFocusListener(new FocusAdapter() {
-			@Override public void focusGained(FocusEvent e) {
-				System.out
-						.println(wordMeaningText.getInputContext().getLocale());
-				super.focusGained(e);
-			}
-		});
 		propertyManagersOfTextFields
 				.put(wordMeaningText, new JapaneseWordMeaningChecker());
 		JLabel wordMeaningLabel = GuiMaker
