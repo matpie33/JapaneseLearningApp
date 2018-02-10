@@ -26,14 +26,15 @@ public class RowInRepeatingList implements ListRowMaker<RepeatingInformation> {
 		String time = rep.getTimeSpentOnRepeating();
 		LocalDateTime date1 = rep.getRepeatingDate();
 
-		JLabel repeatedWords = GuiMaker.createLabel(
-				new ComponentOptions().text(Prompts.REPEATING_WORDS_RANGE + word)
-						.foregroundColor(labelsColor));
+		JLabel repeatedWords = GuiMaker.createLabel(new ComponentOptions()
+				.text(Prompts.REPEATING_WORDS_RANGE + word)
+				.foregroundColor(labelsColor));
 
-		DateTimeFormatter sdf = DateTimeFormatter.ofPattern("dd MMMM yyyy / HH:mm");
-		JLabel date = GuiMaker.createLabel(
-				new ComponentOptions().text(Prompts.REPEATING_DATE + sdf.format(date1))
-						.foregroundColor(labelsColor));
+		DateTimeFormatter sdf = DateTimeFormatter
+				.ofPattern("dd MMMM yyyy / HH:mm");
+		JLabel date = GuiMaker.createLabel(new ComponentOptions()
+				.text(Prompts.REPEATING_DATE + sdf.format(date1))
+				.foregroundColor(labelsColor));
 
 		date.setForeground(BasicColors.OCEAN_BLUE);
 		JLabel timeSpent = null;
@@ -47,9 +48,10 @@ public class RowInRepeatingList implements ListRowMaker<RepeatingInformation> {
 		JButton delete = commonListElements.getButtonDelete();
 
 		MainPanel panel = new MainPanel(null);
-		panel.addRows(SimpleRowBuilder
-				.createRow(FillType.HORIZONTAL, commonListElements.getRowNumberLabel(), date)
-				.nextRow(repeatedWords).nextRow(timeSpent).nextRow(FillType.NONE, delete));
+		panel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL,
+				commonListElements.getRowNumberLabel(), date)
+				.nextRow(repeatedWords).nextRow(timeSpent)
+				.nextRow(FillType.NONE, delete));
 		return panel;
 
 	}

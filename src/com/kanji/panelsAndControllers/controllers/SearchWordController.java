@@ -30,7 +30,8 @@ public class SearchWordController<Word extends ListElement> {
 		};
 	}
 
-	public AbstractAction createActionSwitchSearchCriteria(WordSearchOptions options) {
+	public AbstractAction createActionSwitchSearchCriteria(
+			WordSearchOptions options) {
 		return new AbstractAction() {
 			@Override public void actionPerformed(ActionEvent e) {
 				searchWordPanel.setSearchOptions(options);
@@ -38,17 +39,21 @@ public class SearchWordController<Word extends ListElement> {
 		};
 	}
 
-	public AbstractAction createActionFindWord(SearchingDirection searchingDirection) {
+	public AbstractAction createActionFindWord(
+			SearchingDirection searchingDirection) {
 		return new AbstractAction() {
 			@Override public void actionPerformed(ActionEvent e) {
 				TextInputAndPropertyManagerForListElement textInputAndPropertyManagerForListElement = searchWordPanel
 						.getTextInputAndPropertyManager();
 				list.findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(
-						textInputAndPropertyManagerForListElement.getListElementPropertyManager(),
-						textInputAndPropertyManagerForListElement.getListElementPropertyManager().
+						textInputAndPropertyManagerForListElement
+								.getListElementPropertyManager(),
+						textInputAndPropertyManagerForListElement
+								.getListElementPropertyManager().
 								validateInputAndConvertToProperty(
 										textInputAndPropertyManagerForListElement
-												.getTextComponent()), searchingDirection);
+												.getTextComponent()),
+						searchingDirection);
 			}
 		};
 	}

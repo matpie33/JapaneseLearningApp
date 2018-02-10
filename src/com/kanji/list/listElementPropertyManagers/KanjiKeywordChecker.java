@@ -12,19 +12,21 @@ public class KanjiKeywordChecker extends WordSearchOptionsHolder
 		return "tekst powinien zawierać tylko łacińskie znaki";
 	}
 
-	@Override
-	public boolean isPropertyFound(String kanjiKeyWord, KanjiInformation kanjiInformation) {
+	@Override public boolean isPropertyFound(String kanjiKeyWord,
+			KanjiInformation kanjiInformation) {
 		return kanjiInformation != null && WordSearching
-				.doesWordContainSearchedWord(kanjiInformation.getKanjiKeyword(), kanjiKeyWord,
-						getWordSearchOptions());
+				.doesWordContainSearchedWord(kanjiInformation.getKanjiKeyword(),
+						kanjiKeyWord, getWordSearchOptions());
 	}
 
-	@Override public String validateInputAndConvertToProperty(JTextComponent valueToConvert) {
+	@Override public String validateInputAndConvertToProperty(
+			JTextComponent valueToConvert) {
 
 		return valueToConvert.getText();
 	}
 
-	@Override public void setProperty(KanjiInformation kanjiInformation, String propertyValue) {
+	@Override public void setProperty(KanjiInformation kanjiInformation,
+			String propertyValue) {
 		kanjiInformation.setKanjiKeyword(propertyValue);
 	}
 

@@ -23,7 +23,8 @@ public class OldToNewestVersionConverter {
 				"com.kanji.constants.enums.ApplicationSaveableState");
 	}
 
-	public static void convertPreviousToNewestFile(File file) throws IOException {
+	public static void convertPreviousToNewestFile(File file)
+			throws IOException {
 		Files.copy(file.toPath(), Paths.get(file.getPath() + "1"));
 		byte[] content = new byte[(int) file.length()];
 
@@ -35,7 +36,8 @@ public class OldToNewestVersionConverter {
 		byte[] result = new byte[content.length + calculateBytesDifference()];
 
 		int numberOfElementsInResult = 0;
-		for (Map.Entry<String, String> replacementEntry : replacements.entrySet()) {
+		for (Map.Entry<String, String> replacementEntry : replacements
+				.entrySet()) {
 			byte[] toReplace = replacementEntry.getKey().getBytes();
 			int index = indexOf(content, toReplace);
 			if (index > -1) {
@@ -48,7 +50,8 @@ public class OldToNewestVersionConverter {
 		}
 
 		int copyStartIndex = 0;
-		for (Map.Entry<Integer, Map.Entry<String, String>> entry : indexAndReplacement.entrySet()) {
+		for (Map.Entry<Integer, Map.Entry<String, String>> entry : indexAndReplacement
+				.entrySet()) {
 			Map.Entry<String, String> replacementEntry = entry.getValue();
 			byte[] toReplace = replacementEntry.getKey().getBytes();
 			String replacement = replacementEntry.getValue();
@@ -57,15 +60,17 @@ public class OldToNewestVersionConverter {
 			char length = (char) replacementLength;
 			replacement = length + replacement;
 			byte[] replacementBytes = replacement.getBytes();
-			System.arraycopy(content, copyStartIndex, result, numberOfElementsInResult /*sure?*/,
+			System.arraycopy(content, copyStartIndex, result,
+					numberOfElementsInResult /*sure?*/,
 					index - 1 - copyStartIndex);
 			numberOfElementsInResult += index - 1 - copyStartIndex;
 			copyStartIndex = index - 1 + toReplace.length + 1;
-			System.arraycopy(replacementBytes, 0, result, numberOfElementsInResult,
-					replacement.length());
+			System.arraycopy(replacementBytes, 0, result,
+					numberOfElementsInResult, replacement.length());
 			numberOfElementsInResult += replacement.length();
 		}
-		System.arraycopy(content, copyStartIndex, result, numberOfElementsInResult /*sure?*/,
+		System.arraycopy(content, copyStartIndex, result,
+				numberOfElementsInResult /*sure?*/,
 				content.length - copyStartIndex);
 		FileOutputStream out = new FileOutputStream(file);
 		out.write(result);

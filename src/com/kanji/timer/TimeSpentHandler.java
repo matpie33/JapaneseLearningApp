@@ -59,7 +59,8 @@ public class TimeSpentHandler {
 		String secondsSuffix = adjustSuffixForSeconds();
 		return hoursPassed > 0 ?
 				hoursSuffix + ", " :
-				"" + (minutesPassed > 0 ? minutesSuffix + ", " : "") + secondsSuffix + ".";
+				"" + (minutesPassed > 0 ? minutesSuffix + ", " : "")
+						+ secondsSuffix + ".";
 	}
 
 	private String adjustSuffixForHours() {
@@ -76,14 +77,16 @@ public class TimeSpentHandler {
 
 	private String adjustSuffix(int timeValue) {
 		int moduloRemainder = timeValue % 10;
-		if (moduloRemainder > 1 && moduloRemainder < 5 && (timeValue < 10 || timeValue > 20)) {
+		if (moduloRemainder > 1 && moduloRemainder < 5 && (timeValue < 10
+				|| timeValue > 20)) {
 			return "y";
 		}
 		else if (timeValue == 1) {
 			return "a";
 		}
-		else if ((moduloRemainder >= 5 && moduloRemainder <= 9) || moduloRemainder == 0 || (
-				timeValue >= 11 && timeValue <= 14) || (moduloRemainder == 1 && timeValue >= 20)) {
+		else if ((moduloRemainder >= 5 && moduloRemainder <= 9)
+				|| moduloRemainder == 0 || (timeValue >= 11 && timeValue <= 14)
+				|| (moduloRemainder == 1 && timeValue >= 20)) {
 			return "";
 		}
 		return "Nie wylapany if.";

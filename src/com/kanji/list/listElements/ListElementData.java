@@ -12,7 +12,8 @@ public class ListElementData<Element extends ListElement> {
 
 	public ListElementData(String elementLabel,
 			ListElementPropertyManager<?, Element> listElementPropertyManager,
-			ListElementPropertyType listElementPropertyType, String comboboxLabel) {
+			ListElementPropertyType listElementPropertyType,
+			String comboboxLabel) {
 		this.elementLabel = elementLabel;
 		this.listElementPropertyManager = listElementPropertyManager;
 		this.listElementPropertyType = listElementPropertyType;

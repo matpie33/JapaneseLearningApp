@@ -23,7 +23,8 @@ public class SavingInformation implements Serializable {
 	private List<RepeatingInformation> japaneseWordsRepeatingLists;
 
 	public SavingInformation(List<KanjiInformation> kanjiWords,
-			List<RepeatingInformation> repeatingList, Set<KanjiInformation> problematicKanjis,
+			List<RepeatingInformation> repeatingList,
+			Set<KanjiInformation> problematicKanjis,
 			Set<JapaneseWordInformation> problematicJapaneseWords,
 			List<JapaneseWordInformation> japaneseWordInformations,
 			List<RepeatingInformation> japaneseWordsRepeatingLists) {
@@ -68,7 +69,8 @@ public class SavingInformation implements Serializable {
 		return problematicKanjisState;
 	}
 
-	public void setProblematicKanjisState(ProblematicKanjisState problematicKanjisState) {
+	public void setProblematicKanjisState(
+			ProblematicKanjisState problematicKanjisState) {
 		this.problematicKanjisState = problematicKanjisState;
 		applicationSaveableState = ApplicationSaveableState.REVIEWING_PROBLEMATIC_KANJIS;
 	}
@@ -81,7 +83,8 @@ public class SavingInformation implements Serializable {
 		return applicationSaveableState != null;
 	}
 
-	public void setKanjiKoohiCookiesHeaders(List<String> kanjiKoohiCookiesHeaders) {
+	public void setKanjiKoohiCookiesHeaders(
+			List<String> kanjiKoohiCookiesHeaders) {
 		this.kanjiKoohiCookiesHeaders = kanjiKoohiCookiesHeaders;
 	}
 

@@ -3,7 +3,8 @@ package com.kanji.constants.enums;
 import javax.swing.*;
 
 public enum SplitPaneOrientation {
-	VERTICAL(JSplitPane.VERTICAL_SPLIT), HORIZONTAL(JSplitPane.HORIZONTAL_SPLIT);
+	VERTICAL(JSplitPane.VERTICAL_SPLIT), HORIZONTAL(
+			JSplitPane.HORIZONTAL_SPLIT);
 
 	private int value;
 

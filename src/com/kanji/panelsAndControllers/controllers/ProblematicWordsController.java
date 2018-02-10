@@ -37,7 +37,8 @@ public class ProblematicWordsController implements ApplicationStateManager {
 		wordsToReview = new ArrayList<>();
 	}
 
-	public void setProblematicWordsDisplayer(ProblematicWordsDisplayer problematicWordsDisplayer) {
+	public void setProblematicWordsDisplayer(
+			ProblematicWordsDisplayer problematicWordsDisplayer) {
 		this.problematicWordsDisplayer = problematicWordsDisplayer;
 		problematicWordsDisplayer.getPanel().setMaximize(true);
 		getPanel().getDialog().maximize();
@@ -60,7 +61,8 @@ public class ProblematicWordsController implements ApplicationStateManager {
 			Element notReviewedElement = notReviewedWords.get(i);
 			wordsToReviewList.addWord(notReviewedElement);
 			wordsToReview.add(problematicWordsDisplayer
-					.createWordRow(notReviewedElement, firstUnreviewedWordRowNumber + i));
+					.createWordRow(notReviewedElement,
+							firstUnreviewedWordRowNumber + i));
 		}
 	}
 
@@ -70,7 +72,8 @@ public class ProblematicWordsController implements ApplicationStateManager {
 		}
 	}
 
-	public <Element extends ListElement> void addProblematicWords(Set<Element> problematicWords) {
+	public <Element extends ListElement> void addProblematicWords(
+			Set<Element> problematicWords) {
 		if (wordsToReview.isEmpty()) {
 			wordsToReviewList.cleanWords();
 		}
@@ -83,8 +86,8 @@ public class ProblematicWordsController implements ApplicationStateManager {
 	private void addWord(ListElement word) {
 		boolean addedToList = wordsToReviewList.addWord(word);
 		if (addedToList) {
-			wordsToReview.add(problematicWordsDisplayer
-					.createWordRow(word, wordsToReviewList.getNumberOfWords() - 1));
+			wordsToReview.add(problematicWordsDisplayer.createWordRow(word,
+					wordsToReviewList.getNumberOfWords() - 1));
 		}
 	}
 
@@ -148,20 +151,21 @@ public class ProblematicWordsController implements ApplicationStateManager {
 		ProblematicKanjisState information = new ProblematicKanjisState(
 				wordsToReviewList.getHighlightedWords(),
 				wordsToReviewList.getNotHighlightedWords());
-		SavingInformation savingInformation = applicationController.getApplicationState();
+		SavingInformation savingInformation = applicationController
+				.getApplicationState();
 		savingInformation.setProblematicKanjisState(information);
 		return savingInformation;
 	}
 
 	@Override public void restoreState(SavingInformation savingInformation) {
-		if (savingInformation.containsProblematicJapaneseWords() || savingInformation
-				.containsProblematicKanji()) {
-			Class wordType = savingInformation.getProblematicKanjisState().getReviewedKanjis()
-					.isEmpty() ?
-					savingInformation.getProblematicKanjisState().getNotReviewKanjis().get(0)
-							.getClass() :
-					savingInformation.getProblematicKanjisState().getReviewedKanjis().get(0)
-							.getClass();
+		if (savingInformation.containsProblematicJapaneseWords()
+				|| savingInformation.containsProblematicKanji()) {
+			Class wordType = savingInformation.getProblematicKanjisState()
+					.getReviewedKanjis().isEmpty() ?
+					savingInformation.getProblematicKanjisState()
+							.getNotReviewKanjis().get(0).getClass() :
+					savingInformation.getProblematicKanjisState()
+							.getReviewedKanjis().get(0).getClass();
 			applicationController.switchToList(wordType);
 		}
 		ProblematicWordsDisplayer displayer = applicationController
@@ -169,12 +173,16 @@ public class ProblematicWordsController implements ApplicationStateManager {
 		setProblematicWordsDisplayer(displayer);
 		problematicWordsDisplayer.initialize();
 		addProblematicWordsHighlightReviewed(
-				savingInformation.getProblematicKanjisState().getReviewedKanjis(),
-				savingInformation.getProblematicKanjisState().getNotReviewKanjis());
-		applicationWindow.showProblematicWordsDialog(savingInformation.getProblematicKanjisState());
+				savingInformation.getProblematicKanjisState()
+						.getReviewedKanjis(),
+				savingInformation.getProblematicKanjisState()
+						.getNotReviewKanjis());
+		applicationWindow.showProblematicWordsDialog(
+				savingInformation.getProblematicKanjisState());
 	}
 
-	private void addProblematicWordsHighlightReviewed(List<? extends ListElement> reviewedWords,
+	private void addProblematicWordsHighlightReviewed(
+			List<? extends ListElement> reviewedWords,
 			List<? extends ListElement> notReviewedWords) {
 		int i = 0;
 		for (ListElement listElement : reviewedWords) {
@@ -202,17 +210,19 @@ public class ProblematicWordsController implements ApplicationStateManager {
 
 	public void initializeSpaceBarAction() {
 
-		getPanel().addHotkey(KeyEvent.VK_SPACE, createActionShowNextWordOrCloseDialog(),
-				getPanel().getPanel(), HotkeysDescriptions.SHOW_NEXT_KANJI);
+		getPanel().addHotkey(KeyEvent.VK_SPACE,
+				createActionShowNextWordOrCloseDialog(), getPanel().getPanel(),
+				HotkeysDescriptions.SHOW_NEXT_KANJI);
 
 	}
 
 	public void initializeWindowListener() {
-		getPanel().getDialog().getContainer().addWindowListener(new WindowAdapter() {
-			@Override public void windowClosed(WindowEvent e) {
-				closeDialogAndManageState(getPanel().getDialog());
-			}
-		});
+		getPanel().getDialog().getContainer()
+				.addWindowListener(new WindowAdapter() {
+					@Override public void windowClosed(WindowEvent e) {
+						closeDialogAndManageState(getPanel().getDialog());
+					}
+				});
 	}
 
 }

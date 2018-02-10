@@ -21,9 +21,11 @@ public class ConnectionFailMessagePage implements ConnectionFailPageHandler {
 	public ConnectionFailMessagePage() {
 		messagePanel = new MainPanel(null);
 		messageComponent = GuiMaker.createTextPane(new TextPaneOptions().
-				text(Prompts.LOADING_PAGE).fontSize(20).textAlignment(TextAlignment.CENTERED));
+				text(Prompts.LOADING_PAGE).fontSize(20)
+				.textAlignment(TextAlignment.CENTERED));
 		messagePanel.addRow(SimpleRowBuilder
-				.createRow(FillType.HORIZONTAL, Anchor.CENTER, messageComponent));
+				.createRow(FillType.HORIZONTAL, Anchor.CENTER,
+						messageComponent));
 		messageComponent.setText(Prompts.CONNECTION_ERROR);
 	}
 

@@ -10,7 +10,8 @@ public class WordTypeContext {
 		return wordTypeForRepeating;
 	}
 
-	public void setWordTypeForRepeating(TypeOfWordForRepeating wordTypeForRepeating) {
+	public void setWordTypeForRepeating(
+			TypeOfWordForRepeating wordTypeForRepeating) {
 		this.wordTypeForRepeating = wordTypeForRepeating;
 	}
 

@@ -31,7 +31,8 @@ public class CommonGuiElementsMaker {
 
 	public static JTextComponent createShortInput(String defaultContent) {
 		return GuiMaker.createTextField(
-				new TextComponentOptions().text(defaultContent).rowsAndColumns(1, 6));
+				new TextComponentOptions().text(defaultContent)
+						.rowsAndColumns(1, 6));
 	}
 
 	public static JTextComponent createShortInputWithPrompt(String prompt) {
@@ -60,7 +61,8 @@ public class CommonGuiElementsMaker {
 
 	public static JTextComponent createTextField(String defaultContent) {
 		return GuiMaker.createTextField(
-				new TextComponentOptions().text(defaultContent).rowsAndColumns(1, 15));
+				new TextComponentOptions().text(defaultContent)
+						.rowsAndColumns(1, 15));
 	}
 
 	public static JTextComponent createKanjiIdInput() {
@@ -70,11 +72,12 @@ public class CommonGuiElementsMaker {
 	}
 
 	public static JLabel createErrorLabel(String message) {
-		return GuiMaker
-				.createLabel(new ComponentOptions().text(message).foregroundColor(Color.RED));
+		return GuiMaker.createLabel(new ComponentOptions().text(message)
+				.foregroundColor(Color.RED));
 	}
 
-	public static JSplitPane createSplitPane(SplitPaneOrientation splitPaneOrientation,
+	public static JSplitPane createSplitPane(
+			SplitPaneOrientation splitPaneOrientation,
 			JComponent leftOrUpperComponent, JComponent rightOrDownComponent,
 			double splittingWeight) {
 		JSplitPane splitPane = new JSplitPane(splitPaneOrientation.getValue());
@@ -102,15 +105,16 @@ public class CommonGuiElementsMaker {
 			writings.add(writing.getKey());
 			writings.addAll(writing.getValue());
 			JTextComponent kanjiAndKanaWritings = CommonGuiElementsMaker
-					.createTextField(StringUtilities.concatenateStrings(writings));
+					.createTextField(
+							StringUtilities.concatenateStrings(writings));
 			textComponents.add(kanjiAndKanaWritings);
 		}
 		return textComponents;
 	}
 
 	public static void addKanaAndKanjiWritingsToPanel(
-			JapaneseWordInformation japaneseWordInformation, MainPanel panel, int firstColumnIndex,
-			Color labelColor) {
+			JapaneseWordInformation japaneseWordInformation, MainPanel panel,
+			int firstColumnIndex, Color labelColor) {
 		List<JTextComponent> kanaAndKanjiTextfields = convertJapaneseWordWritingsToTextComponent(
 				japaneseWordInformation);
 		JLabel writingsLabel = GuiMaker.createLabel(
@@ -121,15 +125,17 @@ public class CommonGuiElementsMaker {
 			JComponent[] components;
 			int columnNumber;
 			if (firstTextField) {
-				components = new JComponent[] { writingsLabel, kanaAndKanjiTextfield };
+				components = new JComponent[] { writingsLabel,
+						kanaAndKanjiTextfield };
 				columnNumber = firstColumnIndex;
 			}
 			else {
 				components = new JComponent[] { kanaAndKanjiTextfield };
 				columnNumber = firstColumnIndex + 1;
 			}
-			panel.addElementsInColumnStartingFromColumn(Arrays.asList(components),
-					FillType.HORIZONTAL, columnNumber, components);
+			panel.addElementsInColumnStartingFromColumn(
+					Arrays.asList(components), FillType.HORIZONTAL,
+					columnNumber, components);
 			firstTextField = false;
 		}
 	}

@@ -52,10 +52,12 @@ public class WebPagePanel {
 		connectionFailPanel = connectionFailPageHandler.getConnectionFailPage();
 		Platform.setImplicitExit(false);
 		connectionChange = new ChangeListener<Worker.State>() {
-			@Override public void changed(ObservableValue<? extends Worker.State> observable,
+			@Override public void changed(
+					ObservableValue<? extends Worker.State> observable,
 					Worker.State oldValue, final Worker.State newValue) {
 				if (newValue == Worker.State.FAILED) {
-					connectionFailPageHandler.modifyConnectionFailPage(contextOwner.getContext());
+					connectionFailPageHandler.modifyConnectionFailPage(
+							contextOwner.getContext());
 					showPanel(CONNECTION_FAIL_PANEL);
 					shouldGrabFocusOnReload = true;
 				}
@@ -80,16 +82,18 @@ public class WebPagePanel {
 	private void initiatePanels() {
 		messagePanel = new MainPanel(null);
 		messageComponent = GuiMaker.createTextPane(new TextPaneOptions().
-				text(Prompts.LOADING_PAGE).fontSize(20).textAlignment(TextAlignment.CENTERED)
-				.editable(false));
+				text(Prompts.LOADING_PAGE).fontSize(20)
+				.textAlignment(TextAlignment.CENTERED).editable(false));
 		messageComponent.setText(Prompts.LOADING_PAGE);
 		messagePanel.addRow(SimpleRowBuilder
-				.createRow(FillType.HORIZONTAL, Anchor.CENTER, messageComponent));
+				.createRow(FillType.HORIZONTAL, Anchor.CENTER,
+						messageComponent));
 
 		Platform.runLater(new Runnable() {
 			@Override public void run() {
 				StackPane pane = new StackPane(webView);
-				webView.getEngine().getLoadWorker().stateProperty().addListener(connectionChange);
+				webView.getEngine().getLoadWorker().stateProperty()
+						.addListener(connectionChange);
 				webPage.setScene(new Scene(pane));
 			}
 		});

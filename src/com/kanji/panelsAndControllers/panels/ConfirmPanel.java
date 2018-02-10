@@ -35,8 +35,8 @@ public class ConfirmPanel extends MessagePanel {
 				parentDialog.setAccepted(true);
 			}
 		};
-		return createButtonWithHotkey(KeyEvent.VK_ENTER, action, ButtonsNames.CONFIRM,
-				HotkeysDescriptions.CONFIRM_ACTION);
+		return createButtonWithHotkey(KeyEvent.VK_ENTER, action,
+				ButtonsNames.CONFIRM, HotkeysDescriptions.CONFIRM_ACTION);
 	}
 
 }

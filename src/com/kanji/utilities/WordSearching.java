@@ -14,8 +14,8 @@ public class WordSearching {
 		return word;
 	}
 
-	public static boolean doesAnyOfTheWordsContainSearchedWord(Set<String> words, String searched,
-			WordSearchOptions options) {
+	public static boolean doesAnyOfTheWordsContainSearchedWord(
+			Set<String> words, String searched, WordSearchOptions options) {
 		for (String word : words) {
 			if (doesWordContainSearchedWord(word, searched, options)) {
 				return true;
@@ -24,8 +24,8 @@ public class WordSearching {
 		return false;
 	}
 
-	public static boolean doesWordContainSearchedWord(String word, String searched,
-			WordSearchOptions options) {
+	public static boolean doesWordContainSearchedWord(String word,
+			String searched, WordSearchOptions options) {
 		word = removeDiacritics(word);
 		searched = removeDiacritics(searched);
 		switch (options) {
@@ -38,16 +38,19 @@ public class WordSearching {
 		}
 	}
 
-	private static boolean doesPhraseContainSearchedWords(String phrase, String searched) {
-		return phrase.toLowerCase().matches(".*\\b" + searched.toLowerCase() + "\\b.*");
+	private static boolean doesPhraseContainSearchedWords(String phrase,
+			String searched) {
+		return phrase.toLowerCase()
+				.matches(".*\\b" + searched.toLowerCase() + "\\b.*");
 	}
 
-	private static boolean doesPhraseEqualToSearchedWords(String phrase, String searched) {
+	private static boolean doesPhraseEqualToSearchedWords(String phrase,
+			String searched) {
 		return phrase.equalsIgnoreCase(searched);
 	}
 
-	private static boolean doesPhraseContainSearchedCharacterChain(String phrase,
-			String characterChain) {
+	private static boolean doesPhraseContainSearchedCharacterChain(
+			String phrase, String characterChain) {
 		return phrase.toLowerCase().contains(characterChain.toLowerCase());
 	}
 

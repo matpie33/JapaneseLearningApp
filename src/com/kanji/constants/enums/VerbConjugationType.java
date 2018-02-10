@@ -4,7 +4,8 @@ import com.kanji.constants.strings.Labels;
 
 public enum VerbConjugationType {
 
-	ICHIDAN(Labels.VERB_CONJUGATION_ICHIDAN), GODAN(Labels.VERB_CONJUGATION_GODAN);
+	ICHIDAN(Labels.VERB_CONJUGATION_ICHIDAN), GODAN(
+			Labels.VERB_CONJUGATION_GODAN);
 
 	private String displayedText;
 

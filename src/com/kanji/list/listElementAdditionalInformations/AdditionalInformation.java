@@ -28,7 +28,8 @@ public class AdditionalInformation implements Serializable {
 			return false;
 		}
 		AdditionalInformation otherObject = (AdditionalInformation) o;
-		return tag.equals(otherObject.getTag()) && value.equals(otherObject.getValue());
+		return tag.equals(otherObject.getTag()) && value
+				.equals(otherObject.getValue());
 	}
 
 	@Override public int hashCode() {

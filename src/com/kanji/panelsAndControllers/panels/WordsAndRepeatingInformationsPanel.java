@@ -9,14 +9,16 @@ import com.kanji.utilities.CommonGuiElementsMaker;
 
 import javax.swing.*;
 
-public class WordsAndRepeatingInformationsPanel extends AbstractPanelWithHotkeysInfo {
+public class WordsAndRepeatingInformationsPanel
+		extends AbstractPanelWithHotkeysInfo {
 
 	private JSplitPane listsSplitPane;
 	private MyList wordsList;
 	private MyList repeatingList;
 	private TypeOfWordForRepeating typeOfWordForRepeating;
 
-	public WordsAndRepeatingInformationsPanel(MyList wordsList, MyList repeatingList,
+	public WordsAndRepeatingInformationsPanel(MyList wordsList,
+			MyList repeatingList,
 			TypeOfWordForRepeating typeOfWordForRepeating) {
 		createSplitPane(wordsList, repeatingList);
 		this.wordsList = wordsList;
@@ -26,13 +28,14 @@ public class WordsAndRepeatingInformationsPanel extends AbstractPanelWithHotkeys
 
 	@Override public void createElements() {
 		createSplitPane(wordsList, repeatingList);
-		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH, listsSplitPane));
+		mainPanel.addRows(
+				SimpleRowBuilder.createRow(FillType.BOTH, listsSplitPane));
 	}
 
 	private void createSplitPane(MyList wordsList, MyList repeatingList) {
 		listsSplitPane = CommonGuiElementsMaker
-				.createSplitPane(SplitPaneOrientation.HORIZONTAL, wordsList.getPanel(),
-						repeatingList.getPanel(), 0.5);
+				.createSplitPane(SplitPaneOrientation.HORIZONTAL,
+						wordsList.getPanel(), repeatingList.getPanel(), 0.5);
 	}
 
 	public MyList getRepeatingList() {

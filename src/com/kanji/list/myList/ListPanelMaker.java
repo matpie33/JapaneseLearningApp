@@ -22,7 +22,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-public class ListPanelMaker<Word extends ListElement> extends AbstractPanelWithHotkeysInfo {
+public class ListPanelMaker<Word extends ListElement>
+		extends AbstractPanelWithHotkeysInfo {
 
 	private ListWordsController<Word> listWordsController;
 	private MainPanel rowsPanel;
@@ -31,14 +32,15 @@ public class ListPanelMaker<Word extends ListElement> extends AbstractPanelWithH
 	private final Dimension scrollPanesSize = new Dimension(350, 200);
 	private JLabel titleLabel;
 	private ListRowMaker<Word> listRow;
-	private Border rowBorder = BorderFactory.createMatteBorder(0, 0, 2, 0, BasicColors.LIGHT_BLUE);
+	private Border rowBorder = BorderFactory
+			.createMatteBorder(0, 0, 2, 0, BasicColors.LIGHT_BLUE);
 	private ApplicationController applicationController;
 	private MainPanel listPanel;
 	private boolean enableWordAdding;
 
 	public ListPanelMaker(MyList list, boolean enableWordAdding,
-			ApplicationController applicationController, ListRowMaker<Word> listRow,
-			ListWordsController<Word> controller) {
+			ApplicationController applicationController,
+			ListRowMaker<Word> listRow, ListWordsController<Word> controller) {
 		this.applicationController = applicationController;
 		listWordsController = controller;
 		highlightedRowNumber = -1;
@@ -54,14 +56,18 @@ public class ListPanelMaker<Word extends ListElement> extends AbstractPanelWithH
 	}
 
 	public ListRow<Word> addRow(Word word) {
-		JLabel rowNumberLabel = new JLabel(createTextForRowNumber(rowsPanel.getNumberOfRows() + 1));
+		JLabel rowNumberLabel = new JLabel(
+				createTextForRowNumber(rowsPanel.getNumberOfRows() + 1));
 		JButton remove = new JButton(ButtonsNames.REMOVE_ROW);
-		remove.addActionListener(listWordsController.createDeleteRowAction(word));
-		CommonListElements commonListElements = new CommonListElements(remove, rowNumberLabel);
+		remove.addActionListener(
+				listWordsController.createDeleteRowAction(word));
+		CommonListElements commonListElements = new CommonListElements(remove,
+				rowNumberLabel);
 		rowNumberLabel.setForeground(BasicColors.OCEAN_BLUE);
 		JComponent row = rowsPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.HORIZONTAL, Anchor.NORTH,
-						listRow.createListRow(word, commonListElements).getPanel()));
+						listRow.createListRow(word, commonListElements)
+								.getPanel()));
 		rowsPanel.updateView();
 		return new ListRow<Word>(word, row, rowNumberLabel);
 	}
@@ -75,20 +81,24 @@ public class ListPanelMaker<Word extends ListElement> extends AbstractPanelWithH
 	}
 
 	@Override public void createElements() {
-		listPanel.addRows(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, titleLabel)
+		listPanel.addRows(SimpleRowBuilder
+				.createRow(FillType.NONE, Anchor.CENTER, titleLabel)
 				.nextRow(FillType.BOTH, parentScrollPane));
-		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, listPanel.getPanel()));
+		mainPanel.addRow(SimpleRowBuilder
+				.createRow(FillType.BOTH, listPanel.getPanel()));
 		setNavigationButtons(enableWordAdding ?
-				new AbstractButton[] { createButtonAddWord(), createButtonFindWord() } :
+				new AbstractButton[] { createButtonAddWord(),
+						createButtonFindWord() } :
 				new AbstractButton[] { createButtonFindWord() });
 	}
 
 	private void createDefaultScrollPane() {
-		Border raisedBevel = BorderFactory.createMatteBorder(3, 3, 0, 0, BasicColors.LIGHT_BLUE);
+		Border raisedBevel = BorderFactory
+				.createMatteBorder(3, 3, 0, 0, BasicColors.LIGHT_BLUE);
 		parentScrollPane = GuiMaker.createScrollPane(
 				new ScrollPaneOptions().componentToWrap(rowsPanel.getPanel())
-						.backgroundColor(BasicColors.VERY_BLUE).border(raisedBevel)
-						.preferredSize(scrollPanesSize));
+						.backgroundColor(BasicColors.VERY_BLUE)
+						.border(raisedBevel).preferredSize(scrollPanesSize));
 
 	}
 
@@ -102,8 +112,8 @@ public class ListPanelMaker<Word extends ListElement> extends AbstractPanelWithH
 			}
 		};
 		//TODO add in my list a parameter with hotkeys mapping for add/search panels
-		return createButtonWithHotkey(KeyModifiers.CONTROL, keyEvent, action, name,
-				hotkeyDescription);
+		return createButtonWithHotkey(KeyModifiers.CONTROL, keyEvent, action,
+				name, hotkeyDescription);
 
 	}
 
@@ -117,11 +127,12 @@ public class ListPanelMaker<Word extends ListElement> extends AbstractPanelWithH
 				applicationController.showSearchWordDialog();
 			}
 		};
-		return createButtonWithHotkey(KeyModifiers.CONTROL, keyEvent, action, name,
-				hotkeyDescription);
+		return createButtonWithHotkey(KeyModifiers.CONTROL, keyEvent, action,
+				name, hotkeyDescription);
 	}
 
-	public void highlightRowAndScroll(int rowNumber, boolean clearLastHighlightedWord) {
+	public void highlightRowAndScroll(int rowNumber,
+			boolean clearLastHighlightedWord) {
 		if (highlightedRowNumber >= 0 && clearLastHighlightedWord) {
 			rowsPanel.clearPanelColor(highlightedRowNumber);
 		}
@@ -167,7 +178,8 @@ public class ListPanelMaker<Word extends ListElement> extends AbstractPanelWithH
 	}
 
 	public void scrollToTop() {
-		SwingUtilities.invokeLater(() -> parentScrollPane.getVerticalScrollBar().setValue(0));
+		SwingUtilities.invokeLater(
+				() -> parentScrollPane.getVerticalScrollBar().setValue(0));
 	}
 
 }

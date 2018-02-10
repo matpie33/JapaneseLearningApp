@@ -26,7 +26,8 @@ import java.awt.event.WindowEvent;
 import java.util.Optional;
 import java.util.Set;
 
-@SuppressWarnings("serial") public class ApplicationWindow extends DialogWindow {
+@SuppressWarnings("serial") public class ApplicationWindow
+		extends DialogWindow {
 
 	private JPanel mainApplicationPanel;
 	private ProblematicWordsController problematicWordsController;
@@ -49,11 +50,13 @@ import java.util.Set;
 		startingPanel = new StartingPanel(this, mainApplicationPanel);
 
 		applicationController.initializeApplicationStateManagers();
-		problematicWordsController = applicationController.getProblematicWordsController();
+		problematicWordsController = applicationController
+				.getProblematicWordsController();
 
-		mainApplicationPanel
-				.add(startingPanel.createPanel(), ApplicationPanels.STARTING_PANEL.getPanelName());
-		mainApplicationPanel.add(applicationController.getRepeatingWordsPanel().createPanel(),
+		mainApplicationPanel.add(startingPanel.createPanel(),
+				ApplicationPanels.STARTING_PANEL.getPanelName());
+		mainApplicationPanel.add(applicationController.getRepeatingWordsPanel()
+						.createPanel(),
 				ApplicationPanels.REPEATING_PANEL.getPanelName());
 
 		setWindowProperties();
@@ -110,8 +113,8 @@ import java.util.Set;
 	}
 
 	public void updateProblematicWordsAmount() {
-		startingPanel.updateProblematicWordsAmount(
-				applicationController.getProblematicWordsAmountBasedOnCurrentTab(),
+		startingPanel.updateProblematicWordsAmount(applicationController
+						.getProblematicWordsAmountBasedOnCurrentTab(),
 				startingPanel.getActiveWordsList().getListElementClass());
 	}
 
@@ -129,31 +132,36 @@ import java.util.Set;
 
 	public void showLearningStartDialog(int maximumNumber) {
 		problematicWordsController.initialize();
-		createDialog(new LearningStartPanel(applicationController, maximumNumber),
+		createDialog(
+				new LearningStartPanel(applicationController, maximumNumber),
 				Titles.LEARNING_START_DIALOG, false, Position.CENTER);
 
 	}
 
 	// TODO dialogs should either be jframe or modal in order for alt tab to
 	// switch focus to the right window
-	public void showInsertDialog(RowInJapaneseWordInformations rowInJapaneseWordInformation,
+	public void showInsertDialog(
+			RowInJapaneseWordInformations rowInJapaneseWordInformation,
 			MyList list) {
 		AbstractPanelWithHotkeysInfo panel;
 		if (list.getListElementClass().equals(KanjiInformation.class)) {
 			panel = new InsertKanjiPanel(list, getApplicationController());
 		}
-		else if (list.getListElementClass().equals(JapaneseWordInformation.class)) {
-			panel = new InsertJapaneseWordPanel(rowInJapaneseWordInformation, list, this);
+		else if (list.getListElementClass()
+				.equals(JapaneseWordInformation.class)) {
+			panel = new InsertJapaneseWordPanel(rowInJapaneseWordInformation,
+					list, this);
 		}
 		else {
 			throw new RuntimeException("Unknown list word");
 		}
-		createDialog(panel, Titles.INSERT_WORD_DIALOG, false, Position.LEFT_CORNER);
+		createDialog(panel, Titles.INSERT_WORD_DIALOG, false,
+				Position.LEFT_CORNER);
 	}
 
 	public void showSearchWordDialog(MyList list) {
-		createDialog(new SearchWordPanel(list), Titles.WORD_SEARCH_DIALOG, false,
-				Position.LEFT_CORNER);
+		createDialog(new SearchWordPanel(list), Titles.WORD_SEARCH_DIALOG,
+				false, Position.LEFT_CORNER);
 	}
 
 	public <Element extends ListElement> void showProblematicWordsDialog(
@@ -171,15 +179,16 @@ import java.util.Set;
 		}
 		else {
 			problematicWordsController.initializeSpaceBarAction();
-			createDialog(problematicWordsController.getPanel(), Titles.PROBLEMATIC_KANJIS_WINDOW,
-					true, Position.CENTER);
+			createDialog(problematicWordsController.getPanel(),
+					Titles.PROBLEMATIC_KANJIS_WINDOW, true, Position.CENTER);
 			problematicWordsController.initializeWindowListener();
 
 		}
 		applicationController.switchStateManager(problematicWordsController);
 	}
 
-	public void showProblematicWordsDialog(ProblematicKanjisState problematicKanjisState) {
+	public void showProblematicWordsDialog(
+			ProblematicKanjisState problematicKanjisState) {
 		displayMessageAboutUnfinishedRepeating();
 		showProblematicWordsDialog();
 	}

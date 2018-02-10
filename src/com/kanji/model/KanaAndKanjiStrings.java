@@ -11,8 +11,8 @@ public class KanaAndKanjiStrings {
 	private String modifiedValue;
 	private boolean kanaModified;
 
-	public KanaAndKanjiStrings(String kana, List<String> kanji, String modifiedValue,
-			boolean kanaModified) {
+	public KanaAndKanjiStrings(String kana, List<String> kanji,
+			String modifiedValue, boolean kanaModified) {
 		this.kana = kana;
 		this.kanji = kanji;
 		this.modifiedValue = modifiedValue;
@@ -59,8 +59,10 @@ public class KanaAndKanjiStrings {
 		return otherKana.getModifiedValue().equals(getModifiedValue());
 	}
 
-	public List<String> convertKanjiTextfieldsToStrings(List<JTextComponent> kanjiTextFields) {
-		return kanjiTextFields.stream().map(JTextComponent::getText).collect(Collectors.toList());
+	public List<String> convertKanjiTextfieldsToStrings(
+			List<JTextComponent> kanjiTextFields) {
+		return kanjiTextFields.stream().map(JTextComponent::getText)
+				.collect(Collectors.toList());
 	}
 
 }

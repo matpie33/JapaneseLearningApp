@@ -11,7 +11,8 @@ public class TextInputAndPropertyManagerForListElement {
 	private ListElementPropertyManager listElementPropertyManager;
 
 	public TextInputAndPropertyManagerForListElement(String comboboxLabel,
-			JTextComponent textComponent, ListElementPropertyManager listElementPropertyManager) {
+			JTextComponent textComponent,
+			ListElementPropertyManager listElementPropertyManager) {
 		this.comboboxLabel = comboboxLabel;
 		this.textComponent = textComponent;
 		this.listElementPropertyManager = listElementPropertyManager;

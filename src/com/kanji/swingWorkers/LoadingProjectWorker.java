@@ -22,10 +22,12 @@ public class LoadingProjectWorker {
 		this.loadingPanel = loadingPanel;
 	}
 
-	public <Element extends ListElement> void load(MyList<Element> list, List<Element> elements) {
+	public <Element extends ListElement> void load(MyList<Element> list,
+			List<Element> elements) {
 		SwingWorker s = new SwingWorker<Void, Integer>() {
 
-			private JProgressBar progressBar = loadingPanel.addProgressBar(list.getTitle());
+			private JProgressBar progressBar = loadingPanel
+					.addProgressBar(list.getTitle());
 
 			@Override public Void doInBackground() throws Exception {
 				list.cleanWords();

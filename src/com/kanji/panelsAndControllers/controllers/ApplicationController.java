@@ -87,13 +87,16 @@ public class ApplicationController implements ApplicationStateManager {
 		problematicWordsController = new ProblematicWordsController(parent);
 		problematicKanjiDisplayer = new ProblematicKanjiDisplayer(parent,
 				problematicWordsController);
-		problematicJapaneseWordsDisplayer = new ProblematicJapaneseWordsDisplayer(parent,
-				problematicWordsController);
-		this.repeatingWordsPanelController = new RepeatingWordsController(parent);
+		problematicJapaneseWordsDisplayer = new ProblematicJapaneseWordsDisplayer(
+				parent, problematicWordsController);
+		this.repeatingWordsPanelController = new RepeatingWordsController(
+				parent);
 		applicationStateToManagerMap
-				.put(ApplicationSaveableState.REPEATING_WORDS, repeatingWordsPanelController);
-		applicationStateToManagerMap.put(ApplicationSaveableState.REVIEWING_PROBLEMATIC_KANJIS,
-				problematicWordsController);
+				.put(ApplicationSaveableState.REPEATING_WORDS,
+						repeatingWordsPanelController);
+		applicationStateToManagerMap
+				.put(ApplicationSaveableState.REVIEWING_PROBLEMATIC_KANJIS,
+						problematicWordsController);
 	}
 
 	//TODO dependencies between classes are weird and should be reconsidered
@@ -106,22 +109,27 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	private void initializeJapaneseWordsList() {
-		rowInJapaneseWordInformations = new RowInJapaneseWordInformations(parent);
-		japaneseWords = new MyList<>(parent, this, rowInJapaneseWordInformations,
-				Titles.JAPANESE_WORDS_LIST, true,
+		rowInJapaneseWordInformations = new RowInJapaneseWordInformations(
+				parent);
+		japaneseWords = new MyList<>(parent, this,
+				rowInJapaneseWordInformations, Titles.JAPANESE_WORDS_LIST, true,
 				JapaneseWordInformation.getElementsTypesAndLabels(),
 				JapaneseWordInformation.getInitializer());
 
-		JapaneseWordInformation cat = new JapaneseWordInformation(PartOfSpeech.NOUN, "kot");
+		JapaneseWordInformation cat = new JapaneseWordInformation(
+				PartOfSpeech.NOUN, "kot");
 		cat.addWritings("ねこ");
 		japaneseWords.addWord(cat);
-		JapaneseWordInformation dog = new JapaneseWordInformation(PartOfSpeech.NOUN, "pies");
+		JapaneseWordInformation dog = new JapaneseWordInformation(
+				PartOfSpeech.NOUN, "pies");
 		dog.addWritings("いぬ", "犬");
-		JapaneseWordInformation dog2 = new JapaneseWordInformation(PartOfSpeech.NOUN, "pies");
+		JapaneseWordInformation dog2 = new JapaneseWordInformation(
+				PartOfSpeech.NOUN, "pies");
 		dog2.addWritings("いぬ", "犬", "猫", "花");
 		japaneseWords.addWord(dog);
 		japaneseWords.addWord(dog2);
-		JapaneseWordInformation verb = new JapaneseWordInformation(PartOfSpeech.VERB, "otwierać");
+		JapaneseWordInformation verb = new JapaneseWordInformation(
+				PartOfSpeech.VERB, "otwierać");
 		verb.addWritings("あける", "開ける", " 空ける", "明ける");
 		verb.addWritings("ひらける", "開ける", " 空ける", "明ける");
 		verb.addAditionalInformation(AdditionalInformationTag.VERB_CONJUGATION,
@@ -134,19 +142,16 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	private void initializeJapaneseRepeatingDates() {
-		japaneseWordsRepeatingDates = new MyList<>(parent, this, new RowInRepeatingList(),
-				Titles.JAPANESE_REPEATING_LIST, false,
+		japaneseWordsRepeatingDates = new MyList<>(parent, this,
+				new RowInRepeatingList(), Titles.JAPANESE_REPEATING_LIST, false,
 				RepeatingInformation.getElementsTypesAndLabels(),
 				RepeatingInformation.getInitializer());
-		japaneseWordsRepeatingDates.addWord(
-				new RepeatingInformation("abc", LocalDateTime.of(1993, 11, 13, 13, 25), true,
-						"3 minuty"));
-		japaneseWordsRepeatingDates.addWord(
-				new RepeatingInformation("abc", LocalDateTime.of(2005, 1, 1, 11, 11), true,
-						"4 minuty"));
-		japaneseWordsRepeatingDates.addWord(
-				new RepeatingInformation("abc", LocalDateTime.of(2000, 12, 31, 10, 0), true,
-						"5 minut"));
+		japaneseWordsRepeatingDates.addWord(new RepeatingInformation("abc",
+				LocalDateTime.of(1993, 11, 13, 13, 25), true, "3 minuty"));
+		japaneseWordsRepeatingDates.addWord(new RepeatingInformation("abc",
+				LocalDateTime.of(2005, 1, 1, 11, 11), true, "4 minuty"));
+		japaneseWordsRepeatingDates.addWord(new RepeatingInformation("abc",
+				LocalDateTime.of(2000, 12, 31, 10, 0), true, "5 minut"));
 	}
 
 	private JFileChooser createFileChooser() {
@@ -211,9 +216,11 @@ public class ApplicationController implements ApplicationStateManager {
 		KanjiListFileReader fileReader = new KanjiListFileReader();
 		KanjisAndRepeatingInfo words = fileReader.readFile(file);
 		List<KanjiInformation> kanjiInformations = words.getKanjiInformations();
-		List<RepeatingInformation> repeatingInformations = words.getRepeatingInformations();
+		List<RepeatingInformation> repeatingInformations = words
+				.getRepeatingInformations();
 		Set<Integer> problematicKanjis = words.getProblematicKanjis();
-		setProblematicWordsAndUpdateInformation(convertIdsToKanjiInformations(problematicKanjis));
+		setProblematicWordsAndUpdateInformation(
+				convertIdsToKanjiInformations(problematicKanjis));
 		kanjiList.cleanWords();
 		kanjiRepeatingDates.cleanWords();
 		for (KanjiInformation kanjiInformation : kanjiInformations) {
@@ -224,11 +231,13 @@ public class ApplicationController implements ApplicationStateManager {
 		}
 	}
 
-	public Set<KanjiInformation> convertIdsToKanjiInformations(Set<Integer> ids) {
+	public Set<KanjiInformation> convertIdsToKanjiInformations(
+			Set<Integer> ids) {
 		Set<KanjiInformation> kanjiInformations = new HashSet<>();
 		for (Integer i : ids) {
 			kanjiInformations.add(getKanjiList()
-					.findRowBasedOnPropertyStartingFromBeginningOfList(new KanjiIdChecker(), i,
+					.findRowBasedOnPropertyStartingFromBeginningOfList(
+							new KanjiIdChecker(), i,
 							SearchingDirection.FORWARD));
 		}
 		return kanjiInformations;
@@ -252,8 +261,8 @@ public class ApplicationController implements ApplicationStateManager {
 			if (savingInformation.getKanjiKoohiCookiesHeaders() != null) {
 				//TODO this should go to application controller's "restore
 				// state method along with filling the mylists"
-				problematicKanjiDisplayer
-						.setCookies(savingInformation.getKanjiKoohiCookiesHeaders());
+				problematicKanjiDisplayer.setCookies(
+						savingInformation.getKanjiKoohiCookiesHeaders());
 			}
 		}
 		catch (IOException e) {
@@ -262,18 +271,22 @@ public class ApplicationController implements ApplicationStateManager {
 		}
 
 		kanjiList.cleanWords();
-		setProblematicWordsAndUpdateInformation(savingInformation.getProblematicKanjis());
-		setProblematicWordsAndUpdateInformation(savingInformation.getProblematicJapaneseWords());
+		setProblematicWordsAndUpdateInformation(
+				savingInformation.getProblematicKanjis());
+		setProblematicWordsAndUpdateInformation(
+				savingInformation.getProblematicJapaneseWords());
 		parent.updateTitle(fileToSave.toString());
 		parent.changeSaveStatus(SavingStatus.NO_CHANGES);
 
-		LoadingProjectWorker loadingProjectWorker = new LoadingProjectWorker(this,
-				parent.showProgressDialog());
-		loadingProjectWorker.load(japaneseWords, savingInformation.getJapaneseWordInformations());
+		LoadingProjectWorker loadingProjectWorker = new LoadingProjectWorker(
+				this, parent.showProgressDialog());
+		loadingProjectWorker.load(japaneseWords,
+				savingInformation.getJapaneseWordInformations());
 		loadingProjectWorker.load(kanjiList, savingInformation.getKanjiWords());
 		loadingProjectWorker.load(japaneseWordsRepeatingDates,
 				savingInformation.getJapaneseWordsRepeatingInformations());
-		loadingProjectWorker.load(kanjiRepeatingDates, savingInformation.getRepeatingList());
+		loadingProjectWorker.load(kanjiRepeatingDates,
+				savingInformation.getRepeatingList());
 	}
 
 	private ApplicationStateManager getStateManagerForHandlingState(
@@ -288,13 +301,15 @@ public class ApplicationController implements ApplicationStateManager {
 		parent.closeDialog();
 		if (savingInformation.hasStateToRestore()) {
 			getStateManagerForHandlingState(savingInformation.
-					getApplicationSaveableState()).restoreState(savingInformation);
+					getApplicationSaveableState())
+					.restoreState(savingInformation);
 		}
 	}
 
 	private void initializeKanjiList() {
-		kanjiList = new MyList<>(parent, this, new RowInKanjiInformations(parent),
-				Titles.KANJI_LIST, true, KanjiInformation.getElementsTypesAndLabels(),
+		kanjiList = new MyList<>(parent, this,
+				new RowInKanjiInformations(parent), Titles.KANJI_LIST, true,
+				KanjiInformation.getElementsTypesAndLabels(),
 				KanjiInformation.getInitializer());
 
 		for (int i = 1; i <= 15; i++) {
@@ -304,23 +319,21 @@ public class ApplicationController implements ApplicationStateManager {
 				"Firstly a trivial correction: the integer ALIGN_JUSTIF"
 						+ " should read ALIGN_JUSTIFIED Secondly, I have tried several variations of getting "
 						+ "justified text in JTextPane including the solution given above and using a menuitem "
-						+ "with alignment action such as: menu.add(new , i, i);", 11));
+						+ "with alignment action such as: menu.add(new , i, i);",
+				11));
 	}
 
 	private void initializeKanjiRepeatingDates() {
-		kanjiRepeatingDates = new MyList<>(parent, this, new RowInRepeatingList(),
-				Titles.KANJI_REPEATING_LIST, false,
+		kanjiRepeatingDates = new MyList<>(parent, this,
+				new RowInRepeatingList(), Titles.KANJI_REPEATING_LIST, false,
 				RepeatingInformation.getElementsTypesAndLabels(),
 				RepeatingInformation.getInitializer());
-		kanjiRepeatingDates.addWord(
-				new RepeatingInformation("abc", LocalDateTime.of(1993, 11, 13, 13, 25), true,
-						"3 minuty"));
-		kanjiRepeatingDates.addWord(
-				new RepeatingInformation("abc", LocalDateTime.of(2005, 1, 1, 11, 11), true,
-						"4 minuty"));
-		kanjiRepeatingDates.addWord(
-				new RepeatingInformation("abc", LocalDateTime.of(2000, 12, 31, 10, 0), true,
-						"5 minut"));
+		kanjiRepeatingDates.addWord(new RepeatingInformation("abc",
+				LocalDateTime.of(1993, 11, 13, 13, 25), true, "3 minuty"));
+		kanjiRepeatingDates.addWord(new RepeatingInformation("abc",
+				LocalDateTime.of(2005, 1, 1, 11, 11), true, "4 minuty"));
+		kanjiRepeatingDates.addWord(new RepeatingInformation("abc",
+				LocalDateTime.of(2000, 12, 31, 10, 0), true, "5 minut"));
 	}
 
 	private File openFile() {
@@ -341,7 +354,8 @@ public class ApplicationController implements ApplicationStateManager {
 		else {
 			directory = "Testy do kanji";
 		}
-		return new File(fileChooser.getCurrentDirectory() + File.separator + directory);
+		return new File(
+				fileChooser.getCurrentDirectory() + File.separator + directory);
 	}
 
 	public boolean showConfirmDialog(String message) {
@@ -354,16 +368,19 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	public void showSearchWordDialog() {
-		parent.showSearchWordDialog(parent.getStartingPanel().getActiveWordsList());
+		parent.showSearchWordDialog(
+				parent.getStartingPanel().getActiveWordsList());
 	}
 
 	public void showLearningStartDialog() {
 
-		repeatingWordsPanelController.setWordDisplayer(getWordDisplayerForCurrentWordList());
-		problematicWordsController
-				.setProblematicWordsDisplayer(getProblematicWordsDisplayerBasedOnActiveWordList());
+		repeatingWordsPanelController
+				.setWordDisplayer(getWordDisplayerForCurrentWordList());
+		problematicWordsController.setProblematicWordsDisplayer(
+				getProblematicWordsDisplayerBasedOnActiveWordList());
 		parent.showLearningStartDialog(
-				parent.getStartingPanel().getActiveWordsList().getNumberOfWords());
+				parent.getStartingPanel().getActiveWordsList()
+						.getNumberOfWords());
 	}
 
 	public MyList<JapaneseWordInformation> getJapaneseWords() {
@@ -391,7 +408,8 @@ public class ApplicationController implements ApplicationStateManager {
 			return;
 		}
 		parent.changeSaveStatus(SavingStatus.SAVING);
-		SavingInformation savingInformation = applicationStateManager.getApplicationState();
+		SavingInformation savingInformation = applicationStateManager
+				.getApplicationState();
 
 		try {
 			loadingAndSaving.save(savingInformation);
@@ -415,7 +433,8 @@ public class ApplicationController implements ApplicationStateManager {
 		f = new File(f.toString() + ".txt");
 		KanjiListFileReader reader = new KanjiListFileReader();
 		try {
-			reader.writeToFile(f, kanjiList, kanjiRepeatingDates, getProblematicKanjis());
+			reader.writeToFile(f, kanjiList, kanjiRepeatingDates,
+					getProblematicKanjis());
 		}
 		catch (IOException e) {
 			parent.showMessageDialog(e.getMessage());
@@ -447,10 +466,12 @@ public class ApplicationController implements ApplicationStateManager {
 			//TODO ugly solution
 		}
 		else if (wordClass.equals(JapaneseWordInformation.class)) {
-			problematicJapaneseWords.addAll((Set<JapaneseWordInformation>) problematicWords);
+			problematicJapaneseWords
+					.addAll((Set<JapaneseWordInformation>) problematicWords);
 		}
 		else {
-			throw new IllegalArgumentException("Invalid active words class name: " + wordClass);
+			throw new IllegalArgumentException(
+					"Invalid active words class name: " + wordClass);
 		}
 		if (wordClass.equals(getActiveWordsList().getListElementClass())) {
 			parent.updateProblematicWordsAmount();
@@ -463,11 +484,13 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	public Set<? extends ListElement> getProblematicWordsBasedOnCurrentTab() {
-		Class activeWordsElementClass = getActiveWordsList().getListElementClass();
+		Class activeWordsElementClass = getActiveWordsList()
+				.getListElementClass();
 		if (activeWordsElementClass.equals(KanjiInformation.class)) {
 			return problematicKanjis;
 		}
-		else if (activeWordsElementClass.equals(JapaneseWordInformation.class)) {
+		else if (activeWordsElementClass
+				.equals(JapaneseWordInformation.class)) {
 			return problematicJapaneseWords;
 		}
 		else {
@@ -491,10 +514,10 @@ public class ApplicationController implements ApplicationStateManager {
 		repeatingWordsPanelController.setRepeatingInformation(info);
 	}
 
-	public void initiateWordsLists(SetOfRanges ranges, boolean withProblematic) {
-		repeatingWordsPanelController
-				.initiateWordsLists(ranges, getProblematicWordsBasedOnCurrentTab(),
-						withProblematic);
+	public void initiateWordsLists(SetOfRanges ranges,
+			boolean withProblematic) {
+		repeatingWordsPanelController.initiateWordsLists(ranges,
+				getProblematicWordsBasedOnCurrentTab(), withProblematic);
 	}
 
 	public void startRepeating() {
@@ -531,13 +554,16 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	@Override public SavingInformation getApplicationState() {
-		SavingInformation savingInformation = new SavingInformation(kanjiList.getWords(),
-				kanjiRepeatingDates.getWords(), getProblematicKanjis(),
-				getProblematicJapaneseWords(), japaneseWords.getWords(),
+		SavingInformation savingInformation = new SavingInformation(
+				kanjiList.getWords(), kanjiRepeatingDates.getWords(),
+				getProblematicKanjis(), getProblematicJapaneseWords(),
+				japaneseWords.getWords(),
 				japaneseWordsRepeatingDates.getWords());
-		List<String> kanjiKoohiCookiesHeaders = problematicKanjiDisplayer.getCookieHeaders();
+		List<String> kanjiKoohiCookiesHeaders = problematicKanjiDisplayer
+				.getCookieHeaders();
 		if (!kanjiKoohiCookiesHeaders.isEmpty()) {
-			savingInformation.setKanjiKoohiCookiesHeaders(kanjiKoohiCookiesHeaders);
+			savingInformation
+					.setKanjiKoohiCookiesHeaders(kanjiKoohiCookiesHeaders);
 		}
 		return savingInformation;
 	}

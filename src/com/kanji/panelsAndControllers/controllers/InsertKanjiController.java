@@ -17,7 +17,8 @@ public class InsertKanjiController<Word extends ListElement> {
 	private DialogWindow parentDialog;
 	private ApplicationController applicationController;
 
-	public InsertKanjiController(MyList<Word> list, ApplicationController applicationController) {
+	public InsertKanjiController(MyList<Word> list,
+			ApplicationController applicationController) {
 		this.list = list;
 		this.applicationController = applicationController;
 	}
@@ -32,10 +33,12 @@ public class InsertKanjiController<Word extends ListElement> {
 		boolean allInputsValid = true;
 		for (Map.Entry<JTextComponent, ListElementPropertyManager> entry : inputToPropertyManager
 				.entrySet()) {
-			ListElementPropertyManager listElementPropertyManager = entry.getValue();
+			ListElementPropertyManager listElementPropertyManager = entry
+					.getValue();
 			JTextComponent component = entry.getKey();
 			allInputsValid = listElementPropertyManager
-					.tryToReplacePropertyWithValueFromTextInput(component, word);
+					.tryToReplacePropertyWithValueFromTextInput(component,
+							word);
 			if (!allInputsValid) {
 				component.selectAll();
 				component.requestFocusInWindow();
@@ -58,8 +61,8 @@ public class InsertKanjiController<Word extends ListElement> {
 
 		}
 		else {
-			parentDialog
-					.showMessageDialog(ExceptionsMessages.KANJI_KEYWORD_ALREADY_DEFINED_EXCEPTION);
+			parentDialog.showMessageDialog(
+					ExceptionsMessages.KANJI_KEYWORD_ALREADY_DEFINED_EXCEPTION);
 		}
 		return addedWord;
 	}

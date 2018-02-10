@@ -7,15 +7,18 @@ import com.kanji.list.myList.ListRowMaker;
 import com.kanji.utilities.CommonListElements;
 import com.kanji.windows.ApplicationWindow;
 
-public class RowInJapaneseWordInformations implements ListRowMaker<JapaneseWordInformation> {
+public class RowInJapaneseWordInformations
+		implements ListRowMaker<JapaneseWordInformation> {
 	private JapaneseWordPanelCreator japaneseWordPanelCreator;
 	private ApplicationWindow applicationWindow;
 
 	public RowInJapaneseWordInformations(ApplicationWindow applicationWindow) {
-		japaneseWordPanelCreator = new JapaneseWordPanelCreator(applicationWindow);
+		japaneseWordPanelCreator = new JapaneseWordPanelCreator(
+				applicationWindow);
 	}
 
-	@Override public MainPanel createListRow(JapaneseWordInformation japaneseWord,
+	@Override
+	public MainPanel createListRow(JapaneseWordInformation japaneseWord,
 			CommonListElements commonListElements) {
 		MainPanel panel = japaneseWordPanelCreator
 				.createPanelInViewMode(japaneseWord, commonListElements, this);

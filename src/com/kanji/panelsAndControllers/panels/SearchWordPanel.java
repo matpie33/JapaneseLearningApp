@@ -29,7 +29,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SearchWordPanel<Word extends ListElement> extends AbstractPanelWithHotkeysInfo {
+public class SearchWordPanel<Word extends ListElement>
+		extends AbstractPanelWithHotkeysInfo {
 
 	private MyList<Word> list;
 	private CardLayout cardLayout;
@@ -63,12 +64,13 @@ public class SearchWordPanel<Word extends ListElement> extends AbstractPanelWith
 		MainPanel searchPanel = new MainPanel(null);
 
 		searchPanel.addRows(SimpleRowBuilder
-				.createRow(FillType.NONE, Anchor.WEST, searchOptionPrompt, comboBox));
-		searchPanel.addRows(
-				SimpleRowBuilder.createRow(FillType.HORIZONTAL, Anchor.NORTHWEST, searchingPanel)
-						.useAllExtraVerticalSpace());
-		mainPanel.addRows(
-				SimpleRowBuilder.createRow(FillType.BOTH, Anchor.WEST, searchPanel.getPanel()));
+				.createRow(FillType.NONE, Anchor.WEST, searchOptionPrompt,
+						comboBox));
+		searchPanel.addRows(SimpleRowBuilder
+				.createRow(FillType.HORIZONTAL, Anchor.NORTHWEST,
+						searchingPanel).useAllExtraVerticalSpace());
+		mainPanel.addRows(SimpleRowBuilder
+				.createRow(FillType.BOTH, Anchor.WEST, searchPanel.getPanel()));
 
 		// TODO fix in gui maker: if putting rows as highest
 		// as
@@ -88,17 +90,22 @@ public class SearchWordPanel<Word extends ListElement> extends AbstractPanelWith
 
 			switch (elementData.getListElementPropertyType()) {
 			case STRING_LONG_WORD:
-				textInputForElementType = CommonGuiElementsMaker.createKanjiWordInput("");
-				panelForElementType = createSearchByWordPanel(textInputForElementType).getPanel();
+				textInputForElementType = CommonGuiElementsMaker
+						.createKanjiWordInput("");
+				panelForElementType = createSearchByWordPanel(
+						textInputForElementType).getPanel();
 				break;
 			case NUMERIC_INPUT:
-				textInputForElementType = CommonGuiElementsMaker.createKanjiIdInput();
-				panelForElementType = createSearchByNumericInputPanel(textInputForElementType)
-						.getPanel();
+				textInputForElementType = CommonGuiElementsMaker
+						.createKanjiIdInput();
+				panelForElementType = createSearchByNumericInputPanel(
+						textInputForElementType).getPanel();
 				break;
 			case STRING_SHORT_WORD:
-				textInputForElementType = CommonGuiElementsMaker.createTextField("");
-				panelForElementType = createSearchByWordPanel(textInputForElementType).getPanel();
+				textInputForElementType = CommonGuiElementsMaker
+						.createTextField("");
+				panelForElementType = createSearchByWordPanel(
+						textInputForElementType).getPanel();
 				break;
 
 			default:
@@ -106,33 +113,38 @@ public class SearchWordPanel<Word extends ListElement> extends AbstractPanelWith
 			}
 			listOfInputsAndPropertyManagersForListElementType
 					.add(new TextInputAndPropertyManagerForListElement(
-							elementData.getComboboxLabel(), textInputForElementType,
+							elementData.getComboboxLabel(),
+							textInputForElementType,
 							elementData.getListElementPropertyManager()));
-			searchingPanel.add(elementData.getComboboxLabel(), panelForElementType);
+			searchingPanel
+					.add(elementData.getComboboxLabel(), panelForElementType);
 		}
 	}
 
-	private MainPanel createSearchByNumericInputPanel(JTextComponent inputField) {
+	private MainPanel createSearchByNumericInputPanel(
+			JTextComponent inputField) {
 		MainPanel kanjiIdSearchPanel = new MainPanel(null, true);
 		kanjiIdSearchPanel.addRows(SimpleRowBuilder
-				.createRow(FillType.NONE, Anchor.NORTHWEST, new JLabel(Labels.KANJI_ID_LABEL),
-						inputField));
+				.createRow(FillType.NONE, Anchor.NORTHWEST,
+						new JLabel(Labels.KANJI_ID_LABEL), inputField));
 		return kanjiIdSearchPanel;
 	}
 
 	private MainPanel createSearchByWordPanel(JTextComponent inputField) {
 		JLabel prompt = new JLabel(Prompts.SEARCH_DIALOG);
-		List<JRadioButton> radioButtons = Arrays.asList(WordSearchOptions.values()).stream().
-				map(option -> createRadioButtonForSearchingOption(option))
-				.collect(Collectors.toList());
+		List<JRadioButton> radioButtons = Arrays
+				.asList(WordSearchOptions.values()).stream().
+						map(option -> createRadioButtonForSearchingOption(
+								option)).collect(Collectors.toList());
 		radioButtons.get(0).setSelected(true);
 		addRadioButtonsToGroup(radioButtons);
 		MainPanel keywordSearchPanel = new MainPanel(null);
-		keywordSearchPanel.addRows(
-				SimpleRowBuilder.createRow(FillType.HORIZONTAL, prompt, inputField)
-						.fillHorizontallySomeElements(inputField));
+		keywordSearchPanel.addRows(SimpleRowBuilder
+				.createRow(FillType.HORIZONTAL, prompt, inputField)
+				.fillHorizontallySomeElements(inputField));
 		radioButtons.stream().forEach(radioButton -> keywordSearchPanel
-				.addRow(SimpleRowBuilder.createRow(FillType.HORIZONTAL, radioButton)));
+				.addRow(SimpleRowBuilder
+						.createRow(FillType.HORIZONTAL, radioButton)));
 		return keywordSearchPanel;
 	}
 
@@ -140,7 +152,8 @@ public class SearchWordPanel<Word extends ListElement> extends AbstractPanelWith
 		JComboBox<String> comboBox = new JComboBox<>();
 		comboboxLabels.stream().forEach(comboBox::addItem);
 
-		comboBox.addActionListener(searchWordController.createActionSwitchSearchingByOption());
+		comboBox.addActionListener(
+				searchWordController.createActionSwitchSearchingByOption());
 		comboBox.setSelectedIndex(0);
 		return comboBox;
 	}
@@ -149,15 +162,18 @@ public class SearchWordPanel<Word extends ListElement> extends AbstractPanelWith
 		this.selectedComboboxLabel = selectedComboboxLabel;
 		cardLayout.show(searchingPanel, selectedComboboxLabel);
 		SwingUtilities.invokeLater(
-				() -> getTextInputAndPropertyManager().getTextComponent().requestFocusInWindow());
+				() -> getTextInputAndPropertyManager().getTextComponent()
+						.requestFocusInWindow());
 
 	}
 
-	private JRadioButton createRadioButtonForSearchingOption(WordSearchOptions searchOption) {
-		JRadioButton searchOptionRadioButton = new JRadioButton(searchOption.getPanelLabel());
+	private JRadioButton createRadioButtonForSearchingOption(
+			WordSearchOptions searchOption) {
+		JRadioButton searchOptionRadioButton = new JRadioButton(
+				searchOption.getPanelLabel());
 		searchOptionRadioButton.setFocusable(false);
-		searchOptionRadioButton.addActionListener(
-				searchWordController.createActionSwitchSearchCriteria(searchOption));
+		searchOptionRadioButton.addActionListener(searchWordController
+				.createActionSwitchSearchCriteria(searchOption));
 		return searchOptionRadioButton;
 	}
 
@@ -169,19 +185,22 @@ public class SearchWordPanel<Word extends ListElement> extends AbstractPanelWith
 
 	private AbstractButton createButtonFindPrevious() {
 		return createButtonWithHotkey(KeyModifiers.SHIFT, KeyEvent.VK_ENTER,
-				searchWordController.createActionFindWord(SearchingDirection.BACKWARD),
-				ButtonsNames.FIND_PREVIOUS, HotkeysDescriptions.SEARCH_PREVIOUS_KANJI);
+				searchWordController
+						.createActionFindWord(SearchingDirection.BACKWARD),
+				ButtonsNames.FIND_PREVIOUS,
+				HotkeysDescriptions.SEARCH_PREVIOUS_KANJI);
 	}
 
 	private AbstractButton createButtonFindNext() {
-		return createButtonWithHotkey(KeyEvent.VK_ENTER,
-				searchWordController.createActionFindWord(SearchingDirection.FORWARD),
+		return createButtonWithHotkey(KeyEvent.VK_ENTER, searchWordController
+						.createActionFindWord(SearchingDirection.FORWARD),
 				ButtonsNames.FIND_NEXT, HotkeysDescriptions.SEARCH_NEXT_KANJI);
 	}
 
 	public TextInputAndPropertyManagerForListElement getTextInputAndPropertyManager() {
 		for (TextInputAndPropertyManagerForListElement textAndProperty : listOfInputsAndPropertyManagersForListElementType) {
-			if (textAndProperty.getComboboxLabel().equals(selectedComboboxLabel)) {
+			if (textAndProperty.getComboboxLabel()
+					.equals(selectedComboboxLabel)) {
 				return textAndProperty;
 			}
 		}

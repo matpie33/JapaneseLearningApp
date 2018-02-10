@@ -54,32 +54,37 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	public void addWordInformationPanelCards(JPanel panelForRecognizingWord,
 			JPanel wordFullInformationPanel) {
 		wordInformationPanel.removeAll();
-		wordInformationPanel.add(RECOGNIZING_WORD_PANEL_NAME, panelForRecognizingWord);
-		wordInformationPanel.add(WORD_FULL_INFORMATION_PANEL_NAME, wordFullInformationPanel);
+		wordInformationPanel
+				.add(RECOGNIZING_WORD_PANEL_NAME, panelForRecognizingWord);
+		wordInformationPanel.add(WORD_FULL_INFORMATION_PANEL_NAME,
+				wordFullInformationPanel);
 	}
 
 	@Override public void createElements() {
 		JLabel titleLabel = new JLabel(Titles.REPEATING_WORDS_DIALOG);
 		time = new JLabel();
-		remainingLabel = new JLabel(repeatingWordsController.createRemainingWordsPrompt());
+		remainingLabel = new JLabel(
+				repeatingWordsController.createRemainingWordsPrompt());
 		AbstractButton returnButton = createReturnButton();
 		createRepeatingPanel();
 		setButtonsToRecognizingState();
 		mainPanel.getPanel().repaint();
-		centerPanel.addRows(
-				SimpleRowBuilder.createRow(FillType.NONE, Anchor.NORTH, titleLabel, time)
-						.nextRow(FillType.BOTH, repeatingPanel.getPanel())
-						.setBorder(getDefaultBorder())
-						.nextRow(FillType.NONE, Anchor.CENTER, remainingLabel, returnButton));
+		centerPanel.addRows(SimpleRowBuilder
+				.createRow(FillType.NONE, Anchor.NORTH, titleLabel, time)
+				.nextRow(FillType.BOTH, repeatingPanel.getPanel())
+				.setBorder(getDefaultBorder())
+				.nextRow(FillType.NONE, Anchor.CENTER, remainingLabel,
+						returnButton));
 		//TODO in gui maker enable me to put some element in some anchor so that remaining label can be positioned vertically center
-		mainPanel.addRows(
-				SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, centerPanel.getPanel())
-						.useAllExtraVerticalSpace());
+		mainPanel.addRows(SimpleRowBuilder
+				.createRow(FillType.NONE, Anchor.CENTER, centerPanel.getPanel())
+				.useAllExtraVerticalSpace());
 	}
 
 	private void setButtonsToRecognizingState() {
 		notRecognizedWord.setEnabled(false);
-		showPreviousWord.setEnabled(repeatingWordsController.previousWordExists());
+		showPreviousWord
+				.setEnabled(repeatingWordsController.previousWordExists());
 	}
 
 	private void createRepeatingPanel() {
@@ -92,43 +97,49 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private void addElementsToRepeatingPanel() {
-		AbstractButton[] navigationButtons = new AbstractButton[] { this.pauseOrResume,
-				showKanjiOrRecognizeWord, notRecognizedWord, this.showPreviousWord };
+		AbstractButton[] navigationButtons = new AbstractButton[] {
+				this.pauseOrResume, showKanjiOrRecognizeWord, notRecognizedWord,
+				this.showPreviousWord };
 		repeatingPanel.addRows(
-				SimpleRowBuilder.createRow(FillType.BOTH, wordTextArea).setColor(BasicColors.GREY)
-						.nextRow(FillType.NONE, Anchor.CENTER, wordInformationPanel)
-						.nextRow(FillType.HORIZONTAL, navigationButtons).fillHorizontallyEqually()
-						.disableBorder());
+				SimpleRowBuilder.createRow(FillType.BOTH, wordTextArea)
+						.setColor(BasicColors.GREY)
+						.nextRow(FillType.NONE, Anchor.CENTER,
+								wordInformationPanel)
+						.nextRow(FillType.HORIZONTAL, navigationButtons)
+						.fillHorizontallyEqually().disableBorder());
 	}
 
 	private void createGoToPreviousWordButton() {
 		showPreviousWord = createButtonWithHotkey(KeyEvent.VK_G,
-				repeatingWordsController.createActionGoToPreviousWord(), ButtonsNames.PREVIOUS_WORD,
+				repeatingWordsController.createActionGoToPreviousWord(),
+				ButtonsNames.PREVIOUS_WORD,
 				HotkeysDescriptions.SHOW_PREVIOUS_KANJI);
 		showPreviousWord.setFocusable(false);
 	}
 
 	private void createWordDescriptionTextArea() {
 		wordTextArea = GuiMaker.createTextPane(
-				new TextPaneOptions().textAlignment(TextAlignment.CENTERED).text("")
-						.enabled(false));
+				new TextPaneOptions().textAlignment(TextAlignment.CENTERED)
+						.text("").enabled(false));
 	}
 
 	public void setButtonsToRecognizing() {
 		showKanjiOrRecognizeWord.setText(ButtonsNames.RECOGNIZED_WORD);
 		notRecognizedWord.setEnabled(true);
-		showPreviousWord.setEnabled(repeatingWordsController.previousWordExists());
+		showPreviousWord
+				.setEnabled(repeatingWordsController.previousWordExists());
 	}
 
 	private void createPauseOrResumeButton() {
 		pauseOrResume = createButtonWithHotkey(KeyEvent.VK_P,
-				repeatingWordsController.createActionPause(), ButtonsNames.PAUSE,
-				HotkeysDescriptions.PAUSE);
+				repeatingWordsController.createActionPause(),
+				ButtonsNames.PAUSE, HotkeysDescriptions.PAUSE);
 	}
 
 	private void createRecognizedWordButton() {
 		showKanjiOrRecognizeWord = createButtonWithHotkey(KeyEvent.VK_SPACE,
-				repeatingWordsController.createShowFullInformationOrMarkWordAsRecognizedAction(),
+				repeatingWordsController
+						.createShowFullInformationOrMarkWordAsRecognizedAction(),
 				ButtonsNames.SHOW_KANJI,
 				HotkeysDescriptions.SHOW_KANJI_OR_SET_KANJI_AS_KNOWN_KANJI);
 	}
@@ -136,7 +147,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private void createNotRecognizedWordButton() {
 		notRecognizedWord = createButtonWithHotkey(KeyEvent.VK_A,
 				repeatingWordsController.createNotRecognizedWordAction(),
-				ButtonsNames.NOT_RECOGNIZED, HotkeysDescriptions.SET_KANJI_AS_PROBLEMATIC);
+				ButtonsNames.NOT_RECOGNIZED,
+				HotkeysDescriptions.SET_KANJI_AS_PROBLEMATIC);
 	}
 
 	public void setElementsToRecognizingState() {
@@ -150,8 +162,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
 	private AbstractButton createReturnButton() {
 		return createButtonWithHotkey(KeyModifiers.ALT, KeyEvent.VK_H,
-				repeatingWordsController.createActionExit(), ButtonsNames.GO_BACK,
-				HotkeysDescriptions.RETURN_FROM_LEARNING);
+				repeatingWordsController.createActionExit(),
+				ButtonsNames.GO_BACK, HotkeysDescriptions.RETURN_FROM_LEARNING);
 	}
 
 	public void updateTime(String timePassed) {
@@ -171,7 +183,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private void showPanel(String name) {
-		((CardLayout) wordInformationPanel.getLayout()).show(wordInformationPanel, name);
+		((CardLayout) wordInformationPanel.getLayout())
+				.show(wordInformationPanel, name);
 	}
 
 	public void toggleGoToPreviousWordButton() {

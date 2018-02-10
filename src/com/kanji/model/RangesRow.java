@@ -12,7 +12,8 @@ public class RangesRow {
 	private int rowNumber;
 	private Range range;
 
-	public RangesRow(JTextComponent textFieldFrom, JTextComponent textFieldTo, int rowNumber) {
+	public RangesRow(JTextComponent textFieldFrom, JTextComponent textFieldTo,
+			int rowNumber) {
 		this.textFieldFrom = textFieldFrom;
 		this.textFieldTo = textFieldTo;
 		error = "";
@@ -56,8 +57,10 @@ public class RangesRow {
 
 	}
 
-	public boolean gotTextFields(JTextComponent textFieldFrom, JTextComponent textFieldTo) {
-		return this.textFieldFrom == textFieldFrom && this.textFieldTo == textFieldTo;
+	public boolean gotTextFields(JTextComponent textFieldFrom,
+			JTextComponent textFieldTo) {
+		return this.textFieldFrom == textFieldFrom
+				&& this.textFieldTo == textFieldTo;
 	}
 
 	public int getTextFieldsRowNumber() {
@@ -73,8 +76,8 @@ public class RangesRow {
 	}
 
 	@Override public String toString() {
-		return "error: " + error + " row number " + rowNumber + " start" + range.getRangeStart()
-				+ " end " + range.getRangeEnd();
+		return "error: " + error + " row number " + rowNumber + " start" + range
+				.getRangeStart() + " end " + range.getRangeEnd();
 	}
 
 	public Range getRange() {

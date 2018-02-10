@@ -13,7 +13,8 @@ public class KanjisAndRepeatingInfo {
 	private Set<Integer> problematicKanjis;
 
 	public KanjisAndRepeatingInfo(List<KanjiInformation> kanjiInformations,
-			List<RepeatingInformation> repeatingInformations, Set<Integer> problematicKanjis) {
+			List<RepeatingInformation> repeatingInformations,
+			Set<Integer> problematicKanjis) {
 		this.kanjiInformations = kanjiInformations;
 		this.repeatingInformations = repeatingInformations;
 		this.problematicKanjis = problematicKanjis;

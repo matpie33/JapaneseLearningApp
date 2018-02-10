@@ -30,7 +30,8 @@ public class LoadingAndSaving {
 		fout.close();
 
 		if (savingInformation instanceof SavingInformation == false) {
-			throw new Exception("Incompatible information loaded compared to saving informations");
+			throw new Exception(
+					"Incompatible information loaded compared to saving informations");
 		}
 
 		return (SavingInformation) savingInformation;

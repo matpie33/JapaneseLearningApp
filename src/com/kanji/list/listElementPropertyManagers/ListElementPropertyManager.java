@@ -8,14 +8,17 @@ public interface ListElementPropertyManager<PropertyType, PropertyHolder extends
 
 	public String getInvalidPropertyReason();
 
-	public boolean isPropertyFound(PropertyType property, PropertyHolder propertyHolder);
+	public boolean isPropertyFound(PropertyType property,
+			PropertyHolder propertyHolder);
 
-	public PropertyType validateInputAndConvertToProperty(JTextComponent textInput);
+	public PropertyType validateInputAndConvertToProperty(
+			JTextComponent textInput);
 
-	public void setProperty(PropertyHolder propertyHolder, PropertyType propertyValue);
+	public void setProperty(PropertyHolder propertyHolder,
+			PropertyType propertyValue);
 
-	public default boolean tryToReplacePropertyWithValueFromTextInput(JTextComponent input,
-			PropertyHolder propertyHolder) {
+	public default boolean tryToReplacePropertyWithValueFromTextInput(
+			JTextComponent input, PropertyHolder propertyHolder) {
 		PropertyType propertyValue = validateInputAndConvertToProperty(input);
 		if (propertyValue != null) {
 			setProperty(propertyHolder, propertyValue);
@@ -23,8 +26,8 @@ public interface ListElementPropertyManager<PropertyType, PropertyHolder extends
 		return propertyValue != null;
 	}
 
-	public default void replaceProperty(PropertyHolder propertyHolder, PropertyType oldValue,
-			PropertyType newValue) {
+	public default void replaceProperty(PropertyHolder propertyHolder,
+			PropertyType oldValue, PropertyType newValue) {
 		setProperty(propertyHolder, newValue);
 	}
 

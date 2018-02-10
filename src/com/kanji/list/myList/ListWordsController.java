@@ -23,8 +23,8 @@ public class ListWordsController<Word extends ListElement> {
 			ApplicationController applicationController) {
 		this.applicationController = applicationController;
 		wordsList = new ArrayList<>();
-		rowCreator = new ListPanelMaker<>(list, enableWordAdding, applicationController,
-				listRowMaker, this);
+		rowCreator = new ListPanelMaker<>(list, enableWordAdding,
+				applicationController, listRowMaker, this);
 		rowCreator.createPanel();
 		this.rowCreator.setTitle(title);
 	}
@@ -78,7 +78,8 @@ public class ListWordsController<Word extends ListElement> {
 		return wordsList.get(rowNumber1Based).getWord();
 	}
 
-	public void highlightRowAndScroll(int rowNumber, boolean clearLastHighlightedWord) {
+	public void highlightRowAndScroll(int rowNumber,
+			boolean clearLastHighlightedWord) {
 		wordsList.get(rowNumber).setHighlighted(true);
 		rowCreator.highlightRowAndScroll(rowNumber, clearLastHighlightedWord);
 	}
@@ -121,7 +122,8 @@ public class ListWordsController<Word extends ListElement> {
 				}
 
 				if (!applicationController.showConfirmDialog(
-						String.format(Prompts.DELETE_ELEMENT, rowSpecificPrompt))) {
+						String.format(Prompts.DELETE_ELEMENT,
+								rowSpecificPrompt))) {
 					return;
 				}
 				remove(word);

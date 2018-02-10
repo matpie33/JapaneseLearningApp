@@ -31,10 +31,12 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 		//TODO add method in gui maker to enable connecting one row with another or create a separate row
 		progressBarsPanel = new MainPanel(BasicColors.OCEAN_BLUE, false);
 		JScrollPane scrollPane = GuiMaker.createScrollPane(
-				new ScrollPaneOptions().componentToWrap(progressBarsPanel.getPanel())
+				new ScrollPaneOptions()
+						.componentToWrap(progressBarsPanel.getPanel())
 						.preferredSize(new Dimension(350, 200)).opaque(false));
-		progressBarsPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER,
-				GuiMaker.createLabel(new ComponentOptions().text(message))));
+		progressBarsPanel.addRow(SimpleRowBuilder
+				.createRow(FillType.NONE, Anchor.CENTER, GuiMaker.createLabel(
+						new ComponentOptions().text(message))));
 		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, scrollPane));
 		buttonClose = createButtonClose();
 		setNavigationButtons(Anchor.CENTER, buttonClose);
@@ -42,10 +44,12 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public JProgressBar addProgressBar(String textLabel) {
-		JLabel label = GuiMaker.createLabel(new ComponentOptions().text(textLabel));
+		JLabel label = GuiMaker
+				.createLabel(new ComponentOptions().text(textLabel));
 		JProgressBar progressBar = new JProgressBar();
 		progressBars.add(progressBar);
-		progressBarsPanel.addElementsInColumnStartingFromColumn(0, label, progressBar);
+		progressBarsPanel
+				.addElementsInColumnStartingFromColumn(0, label, progressBar);
 		return progressBar;
 	}
 

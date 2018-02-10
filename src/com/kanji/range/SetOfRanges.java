@@ -27,14 +27,16 @@ public class SetOfRanges {
 			if (rangeFromSet.isValueInsideRange(newRange.rangeStart)) {
 				ranges.remove(rangeFromSet);
 				i--;
-				newRange = new Range(rangeFromSet.rangeStart, newRange.rangeEnd);
+				newRange = new Range(rangeFromSet.rangeStart,
+						newRange.rangeEnd);
 				isModified = true;
 
 			}
 			else if (rangeFromSet.isValueInsideRange(newRange.rangeEnd)) {
 				ranges.remove(rangeFromSet);
 				i--;
-				newRange = new Range(newRange.rangeStart, rangeFromSet.rangeEnd);
+				newRange = new Range(newRange.rangeStart,
+						rangeFromSet.rangeEnd);
 				isModified = true;
 
 			}
@@ -47,13 +49,15 @@ public class SetOfRanges {
 				ranges.remove(rangeFromSet);
 				i--;
 				isModified = true;
-				newRange = new Range(newRange.rangeStart, rangeFromSet.rangeEnd);
+				newRange = new Range(newRange.rangeStart,
+						rangeFromSet.rangeEnd);
 			}
 			else if (rangeFromSet.isFollowedBy(newRange)) {
 				ranges.remove(rangeFromSet);
 				i--;
 				isModified = true;
-				newRange = new Range(rangeFromSet.rangeStart, newRange.rangeEnd);
+				newRange = new Range(rangeFromSet.rangeStart,
+						newRange.rangeEnd);
 
 			}
 		}

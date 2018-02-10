@@ -21,8 +21,8 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	private PropertyHolder propertyHolder;
 	private String defaultValue = "";
 
-	public ListPropertyChangeHandler(PropertyHolder propertyHolder, MyList<PropertyHolder> list,
-			ApplicationWindow applicationWindow,
+	public ListPropertyChangeHandler(PropertyHolder propertyHolder,
+			MyList<PropertyHolder> list, ApplicationWindow applicationWindow,
 			ListElementPropertyManager<Property, PropertyHolder> listElementPropertyManager,
 			String propertyDefinedExceptionMessage) {
 		this.list = list;
@@ -32,12 +32,12 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 		this.propertyHolder = propertyHolder;
 	}
 
-	public ListPropertyChangeHandler(PropertyHolder propertyHolder, MyList<PropertyHolder> list,
-			ApplicationWindow applicationWindow,
+	public ListPropertyChangeHandler(PropertyHolder propertyHolder,
+			MyList<PropertyHolder> list, ApplicationWindow applicationWindow,
 			ListElementPropertyManager<Property, PropertyHolder> listElementPropertyManager,
 			String propertyDefinedExceptionMessage, String defaultValue) {
-		this(propertyHolder, list, applicationWindow, listElementPropertyManager,
-				propertyDefinedExceptionMessage);
+		this(propertyHolder, list, applicationWindow,
+				listElementPropertyManager, propertyDefinedExceptionMessage);
 		this.defaultValue = defaultValue;
 	}
 
@@ -56,33 +56,36 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 		if (propertyNewValue == null && !elem.getText().equals(defaultValue)) {
 			String modifiedProperty = propertyBeingModified.toString();
 			elem.setForeground(Color.RED);
-			applicationWindow
-					.showMessageDialog(listElementPropertyManager.getInvalidPropertyReason());
+			applicationWindow.showMessageDialog(
+					listElementPropertyManager.getInvalidPropertyReason());
 			elem.setText(modifiedProperty);
 			elem.selectAll();
 			elem.requestFocusInWindow();
 			return;
 		}
 
-		if (propertyNewValue == null || propertyBeingModified.equals(propertyNewValue)) {
+		if (propertyNewValue == null || propertyBeingModified
+				.equals(propertyNewValue)) {
 			return;
 		}
 		WordInMyListExistence<PropertyHolder> wordInMyListExistence = list
-				.doesWordWithPropertyExist(propertyNewValue, listElementPropertyManager,
-						propertyHolder);
+				.doesWordWithPropertyExist(propertyNewValue,
+						listElementPropertyManager, propertyHolder);
 		if (wordInMyListExistence.exists()) {
 			elem.requestFocusInWindow();
 			elem.setText(propertyBeingModified.toString());
 			elem.selectAll();
 			applicationWindow.showMessageDialog(
-					String.format(propertyDefinedExceptionMessage, propertyNewValue,
-							list.get1BasedRowNumberOfWord(wordInMyListExistence.getWord())));
+					String.format(propertyDefinedExceptionMessage,
+							propertyNewValue, list.get1BasedRowNumberOfWord(
+									wordInMyListExistence.getWord())));
 
 			return;
 		}
 		else {
 			listElementPropertyManager
-					.replaceProperty(propertyHolder, propertyBeingModified, propertyNewValue);
+					.replaceProperty(propertyHolder, propertyBeingModified,
+							propertyNewValue);
 			propertyBeingModified = null;
 			list.save();
 		}

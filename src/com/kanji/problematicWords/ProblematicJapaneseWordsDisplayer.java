@@ -20,12 +20,14 @@ public class ProblematicJapaneseWordsDisplayer
 	private ProblematicJapaneseWordsPanel problematicJapaneseWordsPanel;
 	private JTextComponent selectedWord;
 
-	public ProblematicJapaneseWordsDisplayer(ApplicationWindow applicationWindow,
+	public ProblematicJapaneseWordsDisplayer(
+			ApplicationWindow applicationWindow,
 			ProblematicWordsController controller) {
-		problematicJapaneseWordsPanel = new ProblematicJapaneseWordsPanel(controller,
-				applicationWindow);
+		problematicJapaneseWordsPanel = new ProblematicJapaneseWordsPanel(
+				controller, applicationWindow);
 		this.wordsToReviewList = new MyList<>(applicationWindow, null,
-				new RowInJapaneseWordsReviewingList(this), Titles.PROBLEMATIC_KANJIS, false,
+				new RowInJapaneseWordsReviewingList(this),
+				Titles.PROBLEMATIC_KANJIS, false,
 				JapaneseWordInformation.getElementsTypesAndLabels(),
 				JapaneseWordInformation.getInitializer());
 
@@ -38,7 +40,8 @@ public class ProblematicJapaneseWordsDisplayer
 	@Override public void browseWord(WordRow<JapaneseWordInformation> wordRow) {
 	}
 
-	@Override public WordRow createWordRow(JapaneseWordInformation listElement, int rowNumber) {
+	@Override public WordRow createWordRow(JapaneseWordInformation listElement,
+			int rowNumber) {
 		return new WordRow(listElement, rowNumber);
 	}
 

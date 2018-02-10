@@ -18,7 +18,8 @@ public class StartingController {
 		return new ChangeListener() {
 			@Override public void stateChanged(ChangeEvent e) {
 				JTabbedPane source = (JTabbedPane) e.getSource();
-				startingPanel.updateWordTypeContext(source.getTitleAt(source.getSelectedIndex()));
+				startingPanel.updateWordTypeContext(
+						source.getTitleAt(source.getSelectedIndex()));
 			}
 		};
 	}

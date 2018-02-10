@@ -41,8 +41,8 @@ public class DialogWindow {
 		mainPanel = panel;
 	}
 
-	public void showYourself(AbstractPanelWithHotkeysInfo panelCreator, String title,
-			boolean modal) {
+	public void showYourself(AbstractPanelWithHotkeysInfo panelCreator,
+			String title, boolean modal) {
 		container.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		container.setContentPane(mainPanel);
 		container.pack();
@@ -72,18 +72,21 @@ public class DialogWindow {
 		}
 	}
 
-	protected void setChildNextToParent(Window parentContainer, Window childContainer) {
+	protected void setChildNextToParent(Window parentContainer,
+			Window childContainer) {
 		Point parentLocation = parentContainer.getLocationOnScreen();
 		Dimension parentSize = parentContainer.getSize();
-		childContainer.setLocation(parentLocation.x + parentSize.width, parentLocation.y);
+		childContainer.setLocation(parentLocation.x + parentSize.width,
+				parentLocation.y);
 	}
 
 	public void showMessageDialog(String message) {
-		createDialog(new MessagePanel(message), Titles.MESSAGE_DIALOG, true, Position.CENTER);
+		createDialog(new MessagePanel(message), Titles.MESSAGE_DIALOG, true,
+				Position.CENTER);
 	}
 
-	public void createDialog(AbstractPanelWithHotkeysInfo panelCreator, String title, boolean modal,
-			Position position) {
+	public void createDialog(AbstractPanelWithHotkeysInfo panelCreator,
+			String title, boolean modal, Position position) {
 		if (!isDialogOfSameType(panelCreator) || childWindowIsClosed()) {
 			panelType = panelCreator;
 			childWindow = new DialogWindow(this);
@@ -95,12 +98,14 @@ public class DialogWindow {
 				childWindow.maximize();
 			}
 			childWindow.showYourself(panelCreator, title, modal);
-			childWindow.getContainer().setMinimumSize(childWindow.getContainer().getSize());
+			childWindow.getContainer()
+					.setMinimumSize(childWindow.getContainer().getSize());
 			panelCreator.afterVisible();
 		}
 	}
 
-	public boolean isDialogOfSameType(AbstractPanelWithHotkeysInfo panelTypeToCompare) {
+	public boolean isDialogOfSameType(
+			AbstractPanelWithHotkeysInfo panelTypeToCompare) {
 		return panelTypeToCompare.getClass().isInstance(panelType);
 	}
 
@@ -113,7 +118,8 @@ public class DialogWindow {
 	}
 
 	public boolean showConfirmDialog(String message) {
-		createDialog(new ConfirmPanel(message), Titles.CONFIRM_DIALOG, true, Position.CENTER);
+		createDialog(new ConfirmPanel(message), Titles.CONFIRM_DIALOG, true,
+				Position.CENTER);
 		return isAccepted();
 	}
 
@@ -140,8 +146,9 @@ public class DialogWindow {
 	public void maximize() {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override public void run() {
-				container.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().
-						getMaximumWindowBounds());
+				container.setBounds(
+						GraphicsEnvironment.getLocalGraphicsEnvironment().
+								getMaximumWindowBounds());
 			}
 		});
 

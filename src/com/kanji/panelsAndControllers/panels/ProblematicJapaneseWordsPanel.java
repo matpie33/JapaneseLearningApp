@@ -29,14 +29,17 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	private WebPagePanel japaneseEnglishDictionaryPanel;
 	private static final String TANGORIN_URL = "http://tangorin.com/";
 
-	public ProblematicJapaneseWordsPanel(ProblematicWordsController problematicWordsController,
+	public ProblematicJapaneseWordsPanel(
+			ProblematicWordsController problematicWordsController,
 			ApplicationWindow parent) {
 		parentDialog = parent;
 		this.problematicWordsController = problematicWordsController;
 		kanjiInformationPanel = new MainPanel(null);
-		englishDictionaryPanel = new WebPagePanel(this, new ConnectionFailMessagePage());
+		englishDictionaryPanel = new WebPagePanel(this,
+				new ConnectionFailMessagePage());
 
-		japaneseEnglishDictionaryPanel = new WebPagePanel(this, new ConnectionFailMessagePage());
+		japaneseEnglishDictionaryPanel = new WebPagePanel(this,
+				new ConnectionFailMessagePage());
 	}
 
 	public void initialize() {
@@ -46,7 +49,8 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	}
 
 	public void searchWord(String word) {
-		japaneseEnglishDictionaryPanel.showPage(TANGORIN_URL + "/general/" + word);
+		japaneseEnglishDictionaryPanel
+				.showPage(TANGORIN_URL + "/general/" + word);
 	}
 
 	@Override public void setParentDialog(DialogWindow parentDialog) {
@@ -56,12 +60,15 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	@Override public void createElements() {
 
 		FocusableComponentMaker.makeFocusable(problematicWords.getPanel());
-		FocusableComponentMaker.makeFocusable(japaneseEnglishDictionaryPanel.getWebPanel());
-		FocusableComponentMaker.makeFocusable(englishDictionaryPanel.getWebPanel());
+		FocusableComponentMaker
+				.makeFocusable(japaneseEnglishDictionaryPanel.getWebPanel());
+		FocusableComponentMaker
+				.makeFocusable(englishDictionaryPanel.getWebPanel());
 		FocusableComponentMaker.makeFocusable(kanjiInformationPanel.getPanel());
 
 		JSplitPane wordAndKanjiInformationSplitPane = CommonGuiElementsMaker
-				.createSplitPane(SplitPaneOrientation.VERTICAL, problematicWords.getPanel(),
+				.createSplitPane(SplitPaneOrientation.VERTICAL,
+						problematicWords.getPanel(),
 						kanjiInformationPanel.getPanel(), 0.5);
 		JSplitPane dictionariesSplitPane = CommonGuiElementsMaker
 				.createSplitPane(SplitPaneOrientation.VERTICAL,
@@ -69,10 +76,12 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 						englishDictionaryPanel.getSwitchingPanel(), 0.5);
 
 		JSplitPane wordAndDictionariesSplitPane = CommonGuiElementsMaker
-				.createSplitPane(SplitPaneOrientation.HORIZONTAL, wordAndKanjiInformationSplitPane,
-						dictionariesSplitPane, 0.1);
+				.createSplitPane(SplitPaneOrientation.HORIZONTAL,
+						wordAndKanjiInformationSplitPane, dictionariesSplitPane,
+						0.1);
 
-		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH, wordAndDictionariesSplitPane));
+		mainPanel.addRows(SimpleRowBuilder
+				.createRow(FillType.BOTH, wordAndDictionariesSplitPane));
 		setNavigationButtons(Anchor.WEST, createButtonClose());
 	}
 

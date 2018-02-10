@@ -57,12 +57,13 @@ public class KanjiInformation implements Serializable, ListElement {
 
 	public static List<ListElementData<KanjiInformation>> getElementsTypesAndLabels() {
 		List<ListElementData<KanjiInformation>> listElementData = new ArrayList<>();
-		listElementData
-				.add(new ListElementData<>(Labels.KANJI_KEYWORD_LABEL, new KanjiKeywordChecker(),
-						ListElementPropertyType.STRING_LONG_WORD,
-						Labels.COMBOBOX_OPTION_SEARCH_BY_KEYWORD));
-		listElementData.add(new ListElementData<>(Labels.KANJI_ID_LABEL, new KanjiIdChecker(),
-				ListElementPropertyType.NUMERIC_INPUT, Labels.COMBOBOX_OPTION_SEARCH_BY_KANJI_ID));
+		listElementData.add(new ListElementData<>(Labels.KANJI_KEYWORD_LABEL,
+				new KanjiKeywordChecker(),
+				ListElementPropertyType.STRING_LONG_WORD,
+				Labels.COMBOBOX_OPTION_SEARCH_BY_KEYWORD));
+		listElementData.add(new ListElementData<>(Labels.KANJI_ID_LABEL,
+				new KanjiIdChecker(), ListElementPropertyType.NUMERIC_INPUT,
+				Labels.COMBOBOX_OPTION_SEARCH_BY_KANJI_ID));
 		return listElementData;
 	}
 
@@ -73,8 +74,9 @@ public class KanjiInformation implements Serializable, ListElement {
 	//TODO it's probably beter to override equals and hashcode and use set instead of lists
 	@Override public boolean isSameAs(ListElement element) {
 		if (element instanceof KanjiInformation) {
-			return ((KanjiInformation) element).getKanjiID() == id || ((KanjiInformation) element)
-					.getKanjiKeyword().equals(keyword);
+			return ((KanjiInformation) element).getKanjiID() == id
+					|| ((KanjiInformation) element).getKanjiKeyword()
+					.equals(keyword);
 		}
 		return false;
 	}

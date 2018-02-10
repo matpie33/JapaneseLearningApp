@@ -15,7 +15,8 @@ import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 
-public class ConnectionFailKanjiOfflinePage implements ConnectionFailPageHandler {
+public class ConnectionFailKanjiOfflinePage
+		implements ConnectionFailPageHandler {
 
 	private MainPanel mainPanel;
 	private JTextComponent kanjiTextPane;
@@ -23,11 +24,13 @@ public class ConnectionFailKanjiOfflinePage implements ConnectionFailPageHandler
 	private final float messageFontSize = 30f;
 
 	public ConnectionFailKanjiOfflinePage(Font kanjiFont) {
-		kanjiTextPane = GuiMaker.createTextPane(new TextPaneOptions().border(null).editable(false)
-				.textAlignment(TextAlignment.CENTERED).text(""));
+		kanjiTextPane = GuiMaker.createTextPane(
+				new TextPaneOptions().border(null).editable(false)
+						.textAlignment(TextAlignment.CENTERED).text(""));
 		kanjiTextPane.setFont(kanjiFont.deriveFont(kanjiFontSize));
 		mainPanel = new MainPanel(BasicColors.VERY_BLUE);
-		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, kanjiTextPane));
+		mainPanel.addRow(SimpleRowBuilder
+				.createRow(FillType.NONE, Anchor.CENTER, kanjiTextPane));
 	}
 
 	@Override public JPanel getConnectionFailPage() {

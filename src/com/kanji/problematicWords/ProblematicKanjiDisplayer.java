@@ -24,7 +24,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ProblematicKanjiDisplayer
-		implements ProblematicWordsDisplayer<KanjiInformation>, ContextOwner<KanjiContext> {
+		implements ProblematicWordsDisplayer<KanjiInformation>,
+		ContextOwner<KanjiContext> {
 
 	private ProblematicKanjiPanel problematicKanjiPanel;
 	private final String KANJI_KOOHI_LOGIN_PAGE = "https://kanji.koohii.com/account";
@@ -37,16 +38,19 @@ public class ProblematicKanjiDisplayer
 
 	public ProblematicKanjiDisplayer(ApplicationWindow applicationWindow,
 			ProblematicWordsController controller) {
-		problematicKanjiPanel = new ProblematicKanjiPanel(applicationWindow.getKanjiFont(),
-				applicationWindow, controller, this);
+		problematicKanjiPanel = new ProblematicKanjiPanel(
+				applicationWindow.getKanjiFont(), applicationWindow, controller,
+				this);
 		cookieManager = new CookieManager();
 		CookieHandler.setDefault(cookieManager);
 		kanjiContext = KanjiContext.emptyContext();
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		kanjiCharactersReader.loadKanjisIfNeeded();
 		wordsToReviewList = new MyList<>(applicationWindow, null,
-				new RowInKanjiRepeatingList(controller), Titles.PROBLEMATIC_KANJIS, false,
-				KanjiInformation.getElementsTypesAndLabels(), KanjiInformation.getInitializer());
+				new RowInKanjiRepeatingList(controller),
+				Titles.PROBLEMATIC_KANJIS, false,
+				KanjiInformation.getElementsTypesAndLabels(),
+				KanjiInformation.getInitializer());
 	}
 
 	@Override public MyList<KanjiInformation> getWordsToReviewList() {
@@ -57,12 +61,13 @@ public class ProblematicKanjiDisplayer
 		String uriText = KANJI_KOOHI_REVIEW_BASE_PAGE;
 		uriText += wordRow.getListElement().getKanjiID();
 		problematicKanjiPanel.showPageInKoohi(uriText);
-		kanjiContext = new KanjiContext(
-				kanjiCharactersReader.getKanjiById(wordRow.getListElement().getKanjiID()),
+		kanjiContext = new KanjiContext(kanjiCharactersReader
+				.getKanjiById(wordRow.getListElement().getKanjiID()),
 				wordRow.getListElement().getKanjiID());
 	}
 
-	@Override public WordRow createWordRow(KanjiInformation listElement, int rowNumber) {
+	@Override
+	public WordRow createWordRow(KanjiInformation listElement, int rowNumber) {
 		return new WordRow(listElement, rowNumber);
 	}
 
@@ -100,8 +105,8 @@ public class ProblematicKanjiDisplayer
 	}
 
 	public List<String> getCookieHeaders() {
-		return cookieManager.getCookieStore().getCookies().stream().map(cookie -> cookie.toString())
-				.collect(Collectors.toList());
+		return cookieManager.getCookieStore().getCookies().stream()
+				.map(cookie -> cookie.toString()).collect(Collectors.toList());
 	}
 
 	public void setCookies(List<String> cookiesHeaders) throws IOException {

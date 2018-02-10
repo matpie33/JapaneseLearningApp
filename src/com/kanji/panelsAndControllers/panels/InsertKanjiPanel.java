@@ -25,13 +25,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class InsertKanjiPanel<Word extends ListElement> extends AbstractPanelWithHotkeysInfo {
+public class InsertKanjiPanel<Word extends ListElement>
+		extends AbstractPanelWithHotkeysInfo {
 
 	private InsertKanjiController controller;
 	private MyList<Word> list;
 	private Map<JComponent, ListElementPropertyManager> textComponentToPropertyManager;
 
-	public InsertKanjiPanel(MyList<Word> list, ApplicationController applicationController) {
+	public InsertKanjiPanel(MyList<Word> list,
+			ApplicationController applicationController) {
 		controller = new InsertKanjiController(list, applicationController);
 		this.list = list;
 		textComponentToPropertyManager = new HashMap<>();
@@ -43,12 +45,13 @@ public class InsertKanjiPanel<Word extends ListElement> extends AbstractPanelWit
 		MainPanel addWordPanel = new MainPanel(null);
 
 		List<ListElementData<KanjiInformation>> listElements = new ArrayList<>();
-		listElements
-				.add(new ListElementData<>(Labels.KANJI_KEYWORD_LABEL, new KanjiKeywordChecker(),
-						ListElementPropertyType.STRING_LONG_WORD,
-						Labels.COMBOBOX_OPTION_SEARCH_BY_KEYWORD));
-		listElements.add(new ListElementData<>(Labels.KANJI_ID_LABEL, new KanjiIdChecker(),
-				ListElementPropertyType.NUMERIC_INPUT, Labels.COMBOBOX_OPTION_SEARCH_BY_KANJI_ID));
+		listElements.add(new ListElementData<>(Labels.KANJI_KEYWORD_LABEL,
+				new KanjiKeywordChecker(),
+				ListElementPropertyType.STRING_LONG_WORD,
+				Labels.COMBOBOX_OPTION_SEARCH_BY_KEYWORD));
+		listElements.add(new ListElementData<>(Labels.KANJI_ID_LABEL,
+				new KanjiIdChecker(), ListElementPropertyType.NUMERIC_INPUT,
+				Labels.COMBOBOX_OPTION_SEARCH_BY_KANJI_ID));
 
 		boolean firstElement = true;
 		for (ListElementData listElementData : listElements) {
@@ -64,21 +67,25 @@ public class InsertKanjiPanel<Word extends ListElement> extends AbstractPanelWit
 				component = CommonGuiElementsMaker.createKanjiWordInput("");
 				break;
 			case COMBOBOX_OPTION:
-				component = CommonGuiElementsMaker.createComboboxForPartOfSpeech();
+				component = CommonGuiElementsMaker
+						.createComboboxForPartOfSpeech();
 				break;
 			default:
-				throw new RuntimeException("Invalid element type in insert word panel");
+				throw new RuntimeException(
+						"Invalid element type in insert word panel");
 			}
 			ListElementPropertyManager listElementPropertyManager = listElementData
 					.getListElementPropertyManager();
-			textComponentToPropertyManager.put(component, listElementPropertyManager);
+			textComponentToPropertyManager
+					.put(component, listElementPropertyManager);
 
-			addWordPanel.addRows(SimpleRowBuilder
-					.createRow(FillType.BOTH, new JLabel(listElementData.getElementLabel()),
-							component).fillVertically(component));
+			addWordPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH,
+					new JLabel(listElementData.getElementLabel()), component)
+					.fillVertically(component));
 			if (firstElement) {
 				firstElement = false;
-				SwingUtilities.invokeLater(() -> component.requestFocusInWindow());
+				SwingUtilities
+						.invokeLater(() -> component.requestFocusInWindow());
 			}
 
 		}
@@ -86,16 +93,17 @@ public class InsertKanjiPanel<Word extends ListElement> extends AbstractPanelWit
 		AbstractButton cancel = createButtonClose();
 		AbstractButton approve = createButtonValidate(ButtonsNames.ADD_WORD);
 
-		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH, addWordPanel.getPanel())
+		mainPanel.addRows(SimpleRowBuilder
+				.createRow(FillType.BOTH, addWordPanel.getPanel())
 				.useAllExtraVerticalSpace());
 		setNavigationButtons(cancel, approve);
 
 	}
 
 	private AbstractButton createButtonValidate(String text) {
-		return createButtonWithHotkey(KeyEvent.VK_ENTER,
-				controller.createActionValidateAndAddWord(textComponentToPropertyManager), text,
-				HotkeysDescriptions.ADD_WORD);
+		return createButtonWithHotkey(KeyEvent.VK_ENTER, controller
+						.createActionValidateAndAddWord(textComponentToPropertyManager),
+				text, HotkeysDescriptions.ADD_WORD);
 	}
 
 }

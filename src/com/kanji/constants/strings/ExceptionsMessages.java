@@ -6,7 +6,8 @@ public class ExceptionsMessages {
 			"Nie znaleziono podanego słowa. Być może zaznaczono złą opcję, "
 					+ "a może jest błąd we wpisanym słowie.";
 	public static final String DUPLICATED_WORD_EXCEPTION =
-			"Pewne słowo występuje wielokrotnie " + "na liście słów. Należy poprawić.";
+			"Pewne słowo występuje wielokrotnie "
+					+ "na liście słów. Należy poprawić.";
 	public static final String DUPLICATED_ID_EXCEPTION =
 			"Na liście występuje wielokrotnie pewne id. " + "Należy poprawić.";
 	public static final String NUMBER_FORMAT_EXCEPTION = "Niepoprawnie wpisana liczba.";
@@ -24,7 +25,8 @@ public class ExceptionsMessages {
 	public static final String WORDS_IN_KANJI_LIST_NOT_GIVEN =
 			"Nie podano listy słów " + "zapisanych za pomocą kanji.";
 	public static final String WORDS_IN_KANA_LIST_NOT_GIVEN =
-			"Nie podano listy słów " + "zapisanych za pomocą hiragany/katakany.";
+			"Nie podano listy słów "
+					+ "zapisanych za pomocą hiragany/katakany.";
 	public static final String WORDS_MEANING_LIST_NOT_GIVEN =
 			"Nie podano listy z tłumaczeniami " + "japońskich słów na polski";
 	public static final String INCORRECT_JAPANESE_WORDS_LISTS_SIZES =

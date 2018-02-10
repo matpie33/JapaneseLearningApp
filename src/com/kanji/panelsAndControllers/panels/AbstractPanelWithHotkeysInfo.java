@@ -32,7 +32,8 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	private int hotkeysPanelIndex;
 	private AbstractButton[] navigationButtons;
 	private Anchor buttonsAnchor = Anchor.EAST;
-	private Border defaultBorder = BorderFactory.createBevelBorder(BevelBorder.LOWERED);
+	private Border defaultBorder = BorderFactory
+			.createBevelBorder(BevelBorder.LOWERED);
 	private Map<HotkeyWrapper, AbstractAction> hotkeysMapping = new HashMap<>();
 	private boolean isMaximized;
 
@@ -74,7 +75,8 @@ public abstract class AbstractPanelWithHotkeysInfo {
 		hotkeysPanelIndex = -1;
 		JLabel title = new JLabel(Titles.HOTKEYS);
 		title.setForeground(BasicColors.VERY_BLUE);
-		hotkeysPanel.addRows(SimpleRowBuilder.createRow(FillType.NONE, Anchor.WEST, title));
+		hotkeysPanel.addRows(
+				SimpleRowBuilder.createRow(FillType.NONE, Anchor.WEST, title));
 	}
 
 	private void addHotkeysPanel() {
@@ -82,7 +84,8 @@ public abstract class AbstractPanelWithHotkeysInfo {
 			return;
 		}
 		SimpleRow row = SimpleRowBuilder
-				.createRow(FillType.HORIZONTAL, Anchor.SOUTH, hotkeysPanel.getPanel());
+				.createRow(FillType.HORIZONTAL, Anchor.SOUTH,
+						hotkeysPanel.getPanel());
 		MainPanel panelForHotkeys = parentPanelForHotkeys();
 
 		if (hotkeysPanelIndex == -1) {
@@ -92,15 +95,18 @@ public abstract class AbstractPanelWithHotkeysInfo {
 			panelForHotkeys.insertRow(hotkeysPanelIndex, row);
 		}
 		if (navigationButtons != null)
-			panelForHotkeys.addRows( // TODO fix in gui maker: if putting rows as
-					// highest
-					// as
-					// possible, then west
-					// should be as highest as possible, but now I need
-					// to
-					// use northwest
-					SimpleRowBuilder.createRow(FillType.NONE, buttonsAnchor, navigationButtons)
-							.disableBorder().setNotOpaque());
+			panelForHotkeys
+					.addRows( // TODO fix in gui maker: if putting rows as
+							// highest
+							// as
+							// possible, then west
+							// should be as highest as possible, but now I need
+							// to
+							// use northwest
+							SimpleRowBuilder
+									.createRow(FillType.NONE, buttonsAnchor,
+											navigationButtons).disableBorder()
+									.setNotOpaque());
 
 	}
 
@@ -113,51 +119,63 @@ public abstract class AbstractPanelWithHotkeysInfo {
 		addHotkeyInformation(hotkeyDescription, wrapper);
 	}
 
-	public void addHotkey(int keyEvent, AbstractAction action, JComponent component,
-			String hotkeyDescription) {
-		addHotkey(KeyModifiers.NONE, keyEvent, action, component, hotkeyDescription);
+	public void addHotkey(int keyEvent, AbstractAction action,
+			JComponent component, String hotkeyDescription) {
+		addHotkey(KeyModifiers.NONE, keyEvent, action, component,
+				hotkeyDescription);
 	}
 
-	public void addHotkey(KeyModifiers keyModifier, int keyEvent, AbstractAction action,
-			JComponent component, String hotkeyDescription) {
+	public void addHotkey(KeyModifiers keyModifier, int keyEvent,
+			AbstractAction action, JComponent component,
+			String hotkeyDescription) {
 		HotkeyWrapper wrapper = new HotkeyWrapper(keyModifier, keyEvent);
 		if (hotkeysMapping.containsKey(wrapper)) {
 			throw new IllegalArgumentException(
 					"Multiple actions binded to the same key: " + KeyEvent
-							.getKeyText(wrapper.getKeyEvent()) + " in the class: " + this);
+							.getKeyText(wrapper.getKeyEvent())
+							+ " in the class: " + this);
 		}
 		hotkeysMapping.put(wrapper, action);
-		CommonActionsMaker.addHotkey(keyEvent, wrapper.getKeyMask(), action, component);
+		CommonActionsMaker
+				.addHotkey(keyEvent, wrapper.getKeyMask(), action, component);
 		addHotkeyInformation(hotkeyDescription, wrapper);
 	}
 
-	public AbstractButton createButtonWithHotkey(int keyEvent, AbstractAction action,
-			String buttonLabel, String hotkeyDescription) {
-		return createButtonWithHotkey(KeyModifiers.NONE, keyEvent, action, buttonLabel,
-				hotkeyDescription);
+	public AbstractButton createButtonWithHotkey(int keyEvent,
+			AbstractAction action, String buttonLabel,
+			String hotkeyDescription) {
+		return createButtonWithHotkey(KeyModifiers.NONE, keyEvent, action,
+				buttonLabel, hotkeyDescription);
 	}
 
-	public AbstractButton createButtonWithHotkey(KeyModifiers keyModifier, int keyEvent,
-			AbstractAction action, String buttonLabel, String hotkeyDescription) {
+	public AbstractButton createButtonWithHotkey(KeyModifiers keyModifier,
+			int keyEvent, AbstractAction action, String buttonLabel,
+			String hotkeyDescription) {
 		AbstractButton button = GuiMaker
-				.createButtonlikeComponent(ComponentType.BUTTON, buttonLabel, action);
+				.createButtonlikeComponent(ComponentType.BUTTON, buttonLabel,
+						action);
 		addHotkey(keyModifier, keyEvent, action, button, hotkeyDescription);
 		button.setFocusable(false);
 		return button;
 	}
 
-	private void addHotkeyInformation(String hotkeyDescription, HotkeyWrapper hotkey) {
+	private void addHotkeyInformation(String hotkeyDescription,
+			HotkeyWrapper hotkey) {
 		if (hotkeyDescription.isEmpty()) {
 			return;
 		}
-		JLabel hotkeyInfo = new JLabel(createInformationAboutHotkey(hotkey, hotkeyDescription));
-		hotkeysPanel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL, hotkeyInfo));
+		JLabel hotkeyInfo = new JLabel(
+				createInformationAboutHotkey(hotkey, hotkeyDescription));
+		hotkeysPanel.addRows(
+				SimpleRowBuilder.createRow(FillType.HORIZONTAL, hotkeyInfo));
 	}
 
-	private String createInformationAboutHotkey(HotkeyWrapper hotkey, String description) {
+	private String createInformationAboutHotkey(HotkeyWrapper hotkey,
+			String description) {
 		return (hotkey.hasKeyModifier() ?
 				InputEvent.getModifiersExText(hotkey.getKeyMask()) + " + " :
-				"") + translateKeyText(KeyEvent.getKeyText(hotkey.getKeyEvent())) + " : "
+				"") + translateKeyText(
+				KeyEvent.getKeyText(hotkey.getKeyEvent())) + " : "
 				+ description;
 	}
 
@@ -200,8 +218,8 @@ public abstract class AbstractPanelWithHotkeysInfo {
 				parentDialog.getContainer().dispose();
 			}
 		};
-		return createButtonWithHotkey(KeyEvent.VK_ESCAPE, dispose, ButtonsNames.CLOSE_WINDOW,
-				HotkeysDescriptions.CLOSE_WINDOW);
+		return createButtonWithHotkey(KeyEvent.VK_ESCAPE, dispose,
+				ButtonsNames.CLOSE_WINDOW, HotkeysDescriptions.CLOSE_WINDOW);
 	}
 
 	public JPanel getPanel() {

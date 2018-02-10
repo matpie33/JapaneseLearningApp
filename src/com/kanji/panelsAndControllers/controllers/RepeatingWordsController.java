@@ -22,7 +22,8 @@ import java.awt.event.ActionEvent;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class RepeatingWordsController implements TimeSpentMonitor, ApplicationStateManager {
+public class RepeatingWordsController
+		implements TimeSpentMonitor, ApplicationStateManager {
 
 	private ApplicationWindow parent;
 	private ListElement currentWord;
@@ -56,13 +57,15 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 	}
 
 	public String createRemainingWordsPrompt() {
-		return Prompts.REMAINING_WORDS + " " + this.wordsLeftToRepeat.size() + " " + Prompts.KANJI;
+		return Prompts.REMAINING_WORDS + " " + this.wordsLeftToRepeat.size()
+				+ " " + Prompts.KANJI;
 	}
 
 	private void addSelectedWordsToList(SetOfRanges rangesOfRowNumbers) {
 		for (Range range : rangesOfRowNumbers.getRangesAsList()) {
 			if (!range.isEmpty()) {
-				for (int i = range.getRangeStart(); i <= range.getRangeEnd(); i++) {
+				for (int i = range.getRangeStart();
+					 i <= range.getRangeEnd(); i++) {
 					wordsLeftToRepeat.add(getWordElementByRowNumber(i));
 				}
 			}
@@ -73,7 +76,8 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 		return wordsList.getWordInRow(rowNumber1Based);
 	}
 
-	private <Word extends ListElement> void addProblematicWordToList(Set<Word> words) {
+	private <Word extends ListElement> void addProblematicWordToList(
+			Set<Word> words) {
 		for (ListElement word : words) {
 			if (!this.wordsLeftToRepeat.contains(word)) {
 				this.wordsLeftToRepeat.add(word);
@@ -82,11 +86,13 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 	}
 
 	void startRepeating() {
-		wordDisplayer.setAllProblematicWords(applicationWindow.getApplicationController()
-				.getProblematicWordsBasedOnCurrentTab());
+		wordDisplayer.setAllProblematicWords(
+				applicationWindow.getApplicationController()
+						.getProblematicWordsBasedOnCurrentTab());
 		previousWord = wordsList.createWord();
 		currentWord = wordsList.createWord();
-		panel.addWordInformationPanelCards(wordDisplayer.getRecognizingWordPanel(),
+		panel.addWordInformationPanelCards(
+				wordDisplayer.getRecognizingWordPanel(),
 				wordDisplayer.getFullInformationPanel());
 		timeSpentHandler.startTimer();
 		removePreviousWordAndPickNextOrFinishRepeating();
@@ -141,7 +147,8 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 		parent.showMessageDialog(createFinishMessage());
 		if (wordDisplayer.hasProblematicWords()) {
 			parent.getApplicationController().saveProject();
-			parent.showProblematicWordsDialog(wordDisplayer.getProblematicWords());
+			parent.showProblematicWordsDialog(
+					wordDisplayer.getProblematicWords());
 		}
 		else {
 			parent.getApplicationController().finishedRepeating();
@@ -248,8 +255,8 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 		return previousWord != null;
 	}
 
-	<Word extends ListElement> void initiateWordsLists(SetOfRanges ranges, Set<Word> words,
-			boolean withProblematic) {
+	<Word extends ListElement> void initiateWordsLists(SetOfRanges ranges,
+			Set<Word> words, boolean withProblematic) {
 		reset();
 		if (!ranges.isEmpty()) {
 			addSelectedWordsToList(ranges);
@@ -280,7 +287,8 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 	public AbstractAction createShowFullInformationOrMarkWordAsRecognizedAction() {
 		return new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
-				if (repeatingWordsPanelState == RepeatingWordsPanelState.WORD_INFORMATION_SHOWING) {
+				if (repeatingWordsPanelState
+						== RepeatingWordsPanelState.WORD_INFORMATION_SHOWING) {
 					markWordAsRecognizedAndGoToNext();
 					showRecognizingPanel();
 				}
@@ -320,8 +328,8 @@ public class RepeatingWordsController implements TimeSpentMonitor, ApplicationSt
 		SavingInformation savingInformation = parent.getApplicationController()
 				.getApplicationState();
 		RepeatingState repeatingState = wordDisplayer
-				.getRepeatingState(timeSpentHandler.getTimeForSerialization(), repeatInfo,
-						convertWordsListToSet());
+				.getRepeatingState(timeSpentHandler.getTimeForSerialization(),
+						repeatInfo, convertWordsListToSet());
 		savingInformation.setRepeatingState(repeatingState);
 		return savingInformation;
 	}

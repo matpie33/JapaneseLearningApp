@@ -18,7 +18,8 @@ import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class RepeatingKanjiDisplayer implements RepeatingWordDisplayer<KanjiInformation> {
+public class RepeatingKanjiDisplayer
+		implements RepeatingWordDisplayer<KanjiInformation> {
 
 	private MainPanel fullWordInformationPanel;
 	private MainPanel recognizingWordPanel;
@@ -31,11 +32,12 @@ public class RepeatingKanjiDisplayer implements RepeatingWordDisplayer<KanjiInfo
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		kanjiCharactersReader.loadKanjisIfNeeded();
 		wordTextArea = GuiMaker.createTextPane(
-				new TextPaneOptions().textAlignment(TextAlignment.JUSTIFIED).text("").enabled(false)
-						.opaque(false));
+				new TextPaneOptions().textAlignment(TextAlignment.JUSTIFIED)
+						.text("").enabled(false).opaque(false));
 		wordTextArea.setFont(kanjiFont);
 		fullWordInformationPanel = new MainPanel(null);
-		fullWordInformationPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, wordTextArea));
+		fullWordInformationPanel.addRow(SimpleRowBuilder
+				.createRow(FillType.BOTH, wordTextArea));
 		recognizingWordPanel = new MainPanel(null);
 		problematicKanjis = new HashSet<>();
 		currentProblematicKanjis = new HashSet<>();
@@ -45,12 +47,15 @@ public class RepeatingKanjiDisplayer implements RepeatingWordDisplayer<KanjiInfo
 		problematicKanjis.addAll(integers);
 	}
 
-	@Override public void showWordFullInformation(KanjiInformation kanjiInformation) {
-		wordTextArea.setText(kanjiCharactersReader.getKanjiById(kanjiInformation.getKanjiID()));
+	@Override
+	public void showWordFullInformation(KanjiInformation kanjiInformation) {
+		wordTextArea.setText(kanjiCharactersReader
+				.getKanjiById(kanjiInformation.getKanjiID()));
 
 	}
 
-	@Override public void setAllProblematicWords(Set<KanjiInformation> problematicWords) {
+	@Override
+	public void setAllProblematicWords(Set<KanjiInformation> problematicWords) {
 		problematicKanjis = problematicWords;
 	}
 
@@ -66,12 +71,14 @@ public class RepeatingKanjiDisplayer implements RepeatingWordDisplayer<KanjiInfo
 		return recognizingWordPanel.getPanel();
 	}
 
-	@Override public void markWordAsProblematic(KanjiInformation kanjiInformation) {
+	@Override
+	public void markWordAsProblematic(KanjiInformation kanjiInformation) {
 		problematicKanjis.add(kanjiInformation);
 		currentProblematicKanjis.add(kanjiInformation);
 	}
 
-	@Override public void removeWordFromProblematic(KanjiInformation kanjiInformation) {
+	@Override
+	public void removeWordFromProblematic(KanjiInformation kanjiInformation) {
 		problematicKanjis.remove(kanjiInformation);
 		currentProblematicKanjis.remove(kanjiInformation);
 	}
@@ -85,9 +92,11 @@ public class RepeatingKanjiDisplayer implements RepeatingWordDisplayer<KanjiInfo
 	}
 
 	@Override public RepeatingState getRepeatingState(TimeSpent timeSpent,
-			RepeatingInformation repeatingInformation, Set<KanjiInformation> words) {
-		RepeatingState<KanjiInformation> kanjiRepeatingState = new RepeatingState<>(timeSpent,
-				repeatingInformation, currentProblematicKanjis, words);
+			RepeatingInformation repeatingInformation,
+			Set<KanjiInformation> words) {
+		RepeatingState<KanjiInformation> kanjiRepeatingState = new RepeatingState<>(
+				timeSpent, repeatingInformation, currentProblematicKanjis,
+				words);
 		return kanjiRepeatingState;
 	}
 

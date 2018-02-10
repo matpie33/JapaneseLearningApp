@@ -13,20 +13,22 @@ public class JapaneseWordMeaningChecker extends WordSearchOptionsHolder
 		return "TODO validacja";
 	}
 
-	@Override
-	public boolean isPropertyFound(String wordInKanji, JapaneseWordInformation wordInformation) {
+	@Override public boolean isPropertyFound(String wordInKanji,
+			JapaneseWordInformation wordInformation) {
 		return wordInformation != null && WordSearching
-				.doesWordContainSearchedWord(wordInformation.getWordMeaning(), wordInKanji,
-						getWordSearchOptions());
+				.doesWordContainSearchedWord(wordInformation.getWordMeaning(),
+						wordInKanji, getWordSearchOptions());
 	}
 
-	@Override public String validateInputAndConvertToProperty(JTextComponent valueToConvert) {
+	@Override public String validateInputAndConvertToProperty(
+			JTextComponent valueToConvert) {
 
 		return valueToConvert.getText();
 	}
 
 	@Override
-	public void setProperty(JapaneseWordInformation japaneseWordInformation, String propertyValue) {
+	public void setProperty(JapaneseWordInformation japaneseWordInformation,
+			String propertyValue) {
 		japaneseWordInformation.setWordMeaning(propertyValue);
 	}
 

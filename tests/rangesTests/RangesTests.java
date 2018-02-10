@@ -23,8 +23,8 @@ public class RangesTests {
 		Range firstRange = new Range(30, 100);
 		Range followingRange = new Range(101, 200);
 
-		assertEquals("(30,100) and (101,200) should be merged to (30,200)", true,
-				firstRange.isFollowedBy(followingRange));
+		assertEquals("(30,100) and (101,200) should be merged to (30,200)",
+				true, firstRange.isFollowedBy(followingRange));
 	}
 
 }

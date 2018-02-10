@@ -13,13 +13,14 @@ public class RepeatingInformation implements Serializable, ListElement {
 	private boolean wasRepeated;
 	private String timeSpentOnRepeating;
 
-	public RepeatingInformation(String repeatingRange, LocalDateTime repeatingDate,
-			boolean wasRepeated) {
+	public RepeatingInformation(String repeatingRange,
+			LocalDateTime repeatingDate, boolean wasRepeated) {
 		this(repeatingRange, repeatingDate, wasRepeated, "nie wiadomo");
 	}
 
-	public RepeatingInformation(String repeatingRange, LocalDateTime repeatingDate,
-			boolean wasRepeated, String timeSpentOnRepeating) {
+	public RepeatingInformation(String repeatingRange,
+			LocalDateTime repeatingDate, boolean wasRepeated,
+			String timeSpentOnRepeating) {
 		this.repeatingRange = repeatingRange;
 		this.repeatingDate = repeatingDate;
 		this.wasRepeated = wasRepeated;

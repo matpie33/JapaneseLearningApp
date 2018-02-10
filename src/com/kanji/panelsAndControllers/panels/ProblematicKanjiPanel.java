@@ -55,7 +55,8 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public void initialize() {
-		dictionaryWebPanel.showPageWithoutGrabbingFocus(Urls.DICTIONARY_PL_EN_MAIN_PAGE);
+		dictionaryWebPanel
+				.showPageWithoutGrabbingFocus(Urls.DICTIONARY_PL_EN_MAIN_PAGE);
 		wordsToReviewList = controller.getWordsToReviewList();
 	}
 
@@ -66,8 +67,10 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
 	@Override public void createElements() {
 
-		kanjiTextPane = GuiMaker.createTextPane(new TextPaneOptions().border(null).editable(false)
-				.textAlignment(TextAlignment.CENTERED).text("").border(getDefaultBorder()));
+		kanjiTextPane = GuiMaker.createTextPane(
+				new TextPaneOptions().border(null).editable(false)
+						.textAlignment(TextAlignment.CENTERED).text("")
+						.border(getDefaultBorder()));
 		kanjiTextPane.setText(Prompts.NO_KANJI_TO_DISPLAY);
 		kanjiTextPane.setFont(messageFont);
 
@@ -75,8 +78,8 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiOnlineDisplayingPanel.setBorder(getDefaultBorder());
 		kanjiOnlineDisplayingPanel.setBackground(Color.white);
 
-		kanjiOfflineDisplayingPanel
-				.addRow(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, kanjiTextPane));
+		kanjiOfflineDisplayingPanel.addRow(SimpleRowBuilder
+				.createRow(FillType.NONE, Anchor.CENTER, kanjiTextPane));
 
 		FocusableComponentMaker.makeFocusable(wordsToReviewList.getPanel());
 		FocusableComponentMaker.makeFocusable(dictionaryWebPanel.getWebPanel());
@@ -84,13 +87,16 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
 		JSplitPane wordsAndDictionaryPane = CommonGuiElementsMaker
 				.createSplitPane(SplitPaneOrientation.VERTICAL,
-						dictionaryWebPanel.getSwitchingPanel(), wordsToReviewList.getPanel(), 0.7);
+						dictionaryWebPanel.getSwitchingPanel(),
+						wordsToReviewList.getPanel(), 0.7);
 
 		JSplitPane mainSplitPane = CommonGuiElementsMaker
-				.createSplitPane(SplitPaneOrientation.HORIZONTAL, wordsAndDictionaryPane,
+				.createSplitPane(SplitPaneOrientation.HORIZONTAL,
+						wordsAndDictionaryPane,
 						kanjiWebPanel.getSwitchingPanel(), 0.3);
 
-		mainPanel.addRows(SimpleRowBuilder.createRow(FillType.BOTH, mainSplitPane));
+		mainPanel.addRows(
+				SimpleRowBuilder.createRow(FillType.BOTH, mainSplitPane));
 
 		setNavigationButtons(Anchor.WEST, buttonClose);
 	}

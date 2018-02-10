@@ -23,7 +23,8 @@ public class StringUtilities {
 
 	public static boolean characterIsKana(char character) {
 		return Character.UnicodeBlock.of(character) == Character.UnicodeBlock.
-				HIRAGANA || Character.UnicodeBlock.of(character) == Character.UnicodeBlock.KATAKANA;
+				HIRAGANA || Character.UnicodeBlock.of(character)
+				== Character.UnicodeBlock.KATAKANA;
 	}
 
 	public static boolean wordIsInKana(String word) {

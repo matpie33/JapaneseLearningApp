@@ -27,34 +27,40 @@ public class RowInKanjiRepeatingList implements ListRowMaker<KanjiInformation> {
 		this.controller = controller;
 	}
 
-	@Override
-	public MainPanel createListRow(KanjiInformation row, CommonListElements commonListElements) {
+	@Override public MainPanel createListRow(KanjiInformation row,
+			CommonListElements commonListElements) {
 		MainPanel panel = new MainPanel(null);
 		JLabel id = new JLabel("" + row.getKanjiID());
 		id.setForeground(Color.white);
 		JTextComponent kanjiTextArea = GuiMaker.createTextArea(
-				new TextAreaOptions().editable(false).opaque(true).rowsAndColumns(3, 5));
+				new TextAreaOptions().editable(false).opaque(true)
+						.rowsAndColumns(3, 5));
 		kanjiTextArea.setText(row.getKanjiKeyword());
 		JLabel kanjiKeyword = GuiMaker.createLabel(
 				new ComponentOptions().text(Labels.KANJI_KEYWORD_LABEL)
 						.foregroundColor(BasicColors.OCEAN_BLUE));
 		JLabel kanjiId = GuiMaker.createLabel(
-				new ComponentOptions().text(Labels.KANJI_ID_LABEL).foregroundColor(Color.WHITE));
+				new ComponentOptions().text(Labels.KANJI_ID_LABEL)
+						.foregroundColor(Color.WHITE));
 		int rowNumber = controller.getNumberOfRows();
 
 		JButton buttonGoToSource = createButtonGoToSource(rowNumber, row);
 		panel.addElementsInColumnStartingFromColumn(kanjiTextArea, 0,
-				commonListElements.getRowNumberLabel(), kanjiKeyword, kanjiTextArea);
+				commonListElements.getRowNumberLabel(), kanjiKeyword,
+				kanjiTextArea);
 		panel.addElementsInColumnStartingFromColumn(1, kanjiId, id);
-		panel.addElementsInColumnStartingFromColumn(buttonGoToSource, 1, buttonGoToSource);
+		panel.addElementsInColumnStartingFromColumn(buttonGoToSource, 1,
+				buttonGoToSource);
 		return panel;
 	}
 
-	private JButton createButtonGoToSource(int rowNumber, KanjiInformation kanjiInformation) {
+	private JButton createButtonGoToSource(int rowNumber,
+			KanjiInformation kanjiInformation) {
 		JButton button = new JButton(ButtonsNames.GO_TO_SOURCE);
 		button.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
-				controller.goToSpecifiedResource(new WordRow(kanjiInformation, rowNumber));
+				controller.goToSpecifiedResource(
+						new WordRow(kanjiInformation, rowNumber));
 			}
 		});
 		button.setFocusable(false);

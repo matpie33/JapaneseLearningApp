@@ -22,14 +22,17 @@ public class MyList<Word extends ListElement> {
 	private Class listElementClass;
 	private String title;
 
-	public MyList(DialogWindow parentDialog, ApplicationController applicationController,
-			ListRowMaker<Word> listRowMaker, String title, boolean enableWordAdding,
-			List<ListElementData<Word>> listElementData, ListElementInitializer wordInitializer) {
+	public MyList(DialogWindow parentDialog,
+			ApplicationController applicationController,
+			ListRowMaker<Word> listRowMaker, String title,
+			boolean enableWordAdding,
+			List<ListElementData<Word>> listElementData,
+			ListElementInitializer wordInitializer) {
 		this.applicationController = applicationController;
 		this.parent = parentDialog;
 		this.listElementData = listElementData;
-		listController = new ListWordsController<>(this, enableWordAdding, listRowMaker, title,
-				applicationController);
+		listController = new ListWordsController<>(this, enableWordAdding,
+				listRowMaker, title, applicationController);
 		this.wordInitializer = wordInitializer;
 		this.title = title;
 	}
@@ -73,9 +76,10 @@ public class MyList<Word extends ListElement> {
 
 	public <Property> void findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(
 			ListElementPropertyManager<Property, Word> propertyChecker,
-			Property searchedPropertyValue, SearchingDirection searchDirection) {
-		int rowNumber = findRowNumberBasedOnPropertyStartingFromHighlightedWord(propertyChecker,
-				searchedPropertyValue, searchDirection);
+			Property searchedPropertyValue,
+			SearchingDirection searchDirection) {
+		int rowNumber = findRowNumberBasedOnPropertyStartingFromHighlightedWord(
+				propertyChecker, searchedPropertyValue, searchDirection);
 		if (rowNumber < 0) {
 			return;
 		}
@@ -85,9 +89,10 @@ public class MyList<Word extends ListElement> {
 
 	public <Property> Word findRowBasedOnPropertyStartingFromHighlightedWord(
 			ListElementPropertyManager<Property, Word> propertyChecker,
-			Property searchedPropertyValue, SearchingDirection searchDirection) {
-		int rowNumber = findRowNumberBasedOnPropertyStartingFromHighlightedWord(propertyChecker,
-				searchedPropertyValue, searchDirection);
+			Property searchedPropertyValue,
+			SearchingDirection searchDirection) {
+		int rowNumber = findRowNumberBasedOnPropertyStartingFromHighlightedWord(
+				propertyChecker, searchedPropertyValue, searchDirection);
 		return listController.getWordInRow(rowNumber);
 	}
 
@@ -116,7 +121,8 @@ public class MyList<Word extends ListElement> {
 			}
 			else {
 				Word word = listController.getWordInRow(rowNumber);
-				if (propertyChecker.isPropertyFound(searchedPropertyValue, word)) {
+				if (propertyChecker
+						.isPropertyFound(searchedPropertyValue, word)) {
 					return rowNumber;
 				}
 			}
@@ -128,34 +134,41 @@ public class MyList<Word extends ListElement> {
 		while (shouldContinueSearching);
 
 		Word highlightedWord = getHighlightedWord();
-		if (!checkHighlightedWordToo && highlightedWord != null && propertyChecker
+		if (!checkHighlightedWordToo && highlightedWord != null
+				&& propertyChecker
 				.isPropertyFound(searchedPropertyValue, highlightedWord)) {
-			parent.showMessageDialog(ExceptionsMessages.WORD_ALREADY_HIGHLIGHTED_EXCEPTION);
+			parent.showMessageDialog(
+					ExceptionsMessages.WORD_ALREADY_HIGHLIGHTED_EXCEPTION);
 			return listController.getHighlightedRowNumber();
 		}
 		else {
-			parent.showMessageDialog(ExceptionsMessages.WORD_NOT_FOUND_EXCEPTION);
+			parent.showMessageDialog(
+					ExceptionsMessages.WORD_NOT_FOUND_EXCEPTION);
 			return -1;
 		}
 	}
 
 	public <Property> int findRowNumberBasedOnPropertyStartingFromHighlightedWord(
 			ListElementPropertyManager<Property, Word> propertyChecker,
-			Property searchedPropertyValue, SearchingDirection searchDirection) {
-		return findRowNumberBasedOnProperty(propertyChecker, searchedPropertyValue, searchDirection,
-				false);
+			Property searchedPropertyValue,
+			SearchingDirection searchDirection) {
+		return findRowNumberBasedOnProperty(propertyChecker,
+				searchedPropertyValue, searchDirection, false);
 	}
 
 	public <Property> Word findRowBasedOnPropertyStartingFromBeginningOfList(
 			ListElementPropertyManager<Property, Word> propertyChecker,
-			Property searchedPropertyValue, SearchingDirection searchDirection) {
-		int rowNumber = findRowNumberBasedOnProperty(propertyChecker, searchedPropertyValue,
-				searchDirection, true);
+			Property searchedPropertyValue,
+			SearchingDirection searchDirection) {
+		int rowNumber = findRowNumberBasedOnProperty(propertyChecker,
+				searchedPropertyValue, searchDirection, true);
 		return listController.getWordInRow(rowNumber);
 	}
 
-	public <Property> WordInMyListExistence<Word> doesWordWithPropertyExist(Property property,
-			ListElementPropertyManager<Property, Word> propertyManager, Word wordToExclude) {
+	public <Property> WordInMyListExistence<Word> doesWordWithPropertyExist(
+			Property property,
+			ListElementPropertyManager<Property, Word> propertyManager,
+			Word wordToExclude) {
 		for (Word word : getWords()) {
 			if (word.equals(wordToExclude)) {
 				continue;
@@ -177,7 +190,8 @@ public class MyList<Word extends ListElement> {
 	}
 
 	private boolean isRowNumberOutOfRange(int rowNumber) {
-		return (rowNumber < 0) || (rowNumber > listController.getNumberOfWords() - 1);
+		return (rowNumber < 0) || (rowNumber
+				> listController.getNumberOfWords() - 1);
 	}
 
 	private int setRowNumberToTheOtherEndOfList(int rowNumber) {
@@ -212,7 +226,8 @@ public class MyList<Word extends ListElement> {
 	}
 
 	public boolean areAllWordsHighlighted() {
-		return listController.getWordsByHighlight(true).size() == getNumberOfWords();
+		return listController.getWordsByHighlight(true).size()
+				== getNumberOfWords();
 	}
 
 	public List<Word> getWords() {
