@@ -8,6 +8,7 @@ import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listRows.RowInJapaneseWordInformations;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.KanaAndKanjiStrings;
+import com.kanji.model.WordInMyListExistence;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
@@ -51,6 +52,9 @@ public class InsertJapaneseWordController {
 			allInputsValid = textWithPropertyManager.getValue()
 					.tryToReplacePropertyWithValueFromTextInput(textComponent,
 							japaneseWordInformation);
+			//TODO use "is property defined" here too, so that we can know, what
+			//exactly was duplicated
+
 			//TODO this part is common with insert word controller, try to use 1 and create
 			// an interface for setting properties done in below loop
 			if (!allInputsValid) {
@@ -59,8 +63,9 @@ public class InsertJapaneseWordController {
 								.getInvalidPropertyReason());
 				textComponent.selectAll();
 				textComponent.requestFocusInWindow();
-				break;
+				return;
 			}
+
 		}
 		JapaneseWordWritingsChecker writingsChecker = new JapaneseWordWritingsChecker(
 				rowInJapaneseWordInformation.getJapaneseWordPanelCreator());
@@ -85,22 +90,26 @@ public class InsertJapaneseWordController {
 			boolean isItNewWord = addWordToList(japaneseWordInformation);
 			if (isItNewWord) {
 				applicationController.saveProject();
+				System.out.println("save");
 			}
 		}
 	}
 
 	private boolean addWordToList(JapaneseWordInformation word) {
-		boolean addedWord = !list.isWordDefined(word);
-		if (addedWord) {
+		WordInMyListExistence<JapaneseWordInformation> doesWordExistInMyList = list
+				.isWordDefined(word);
+		if (!doesWordExistInMyList.exists()) {
 			list.addWord(word);
 			list.scrollToBottom();
 
 		}
 		else {
 			parentDialog.showMessageDialog(
-					ExceptionsMessages.KANJI_KEYWORD_ALREADY_DEFINED_EXCEPTION);
+					String.format(ExceptionsMessages.WORD_ALREADY_EXISTS,
+							list.get1BasedRowNumberOfWord(
+									doesWordExistInMyList.getWord())));
 		}
-		return addedWord;
+		return !doesWordExistInMyList.exists();
 	}
 
 	public AbstractAction createActionValidateAndAddWord(

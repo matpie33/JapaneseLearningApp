@@ -1,5 +1,6 @@
 package com.kanji.list.listElementPropertyManagers;
 
+import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.utilities.WordSearching;
 
@@ -17,7 +18,7 @@ public class JapaneseWordMeaningChecker extends WordSearchOptionsHolder
 			JapaneseWordInformation wordInformation) {
 		return wordInformation != null && WordSearching
 				.doesWordContainSearchedWord(wordInformation.getWordMeaning(),
-						wordInKanji, getWordSearchOptions());
+						wordInKanji, WordSearchOptions.BY_FULL_EXPRESSION);
 	}
 
 	@Override public String validateInputAndConvertToProperty(

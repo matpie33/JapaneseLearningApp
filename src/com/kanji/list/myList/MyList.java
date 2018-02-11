@@ -238,7 +238,7 @@ public class MyList<Word extends ListElement> {
 		return getWords().indexOf(word) + 1;
 	}
 
-	public boolean isWordDefined(Word word) {
+	public WordInMyListExistence<Word> isWordDefined(Word word) {
 		return listController.isWordDefined(word);
 	}
 

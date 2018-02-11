@@ -5,6 +5,7 @@ import com.kanji.list.listElements.KanjiInformation;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listElements.RepeatingInformation;
 import com.kanji.model.ListRow;
+import com.kanji.model.WordInMyListExistence;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 
 import javax.swing.*;
@@ -30,7 +31,7 @@ public class ListWordsController<Word extends ListElement> {
 	}
 
 	public boolean add(Word r) {
-		if (!isWordDefined(r)) {
+		if (!isWordDefined(r).exists()) {
 			wordsList.add(rowCreator.addRow(r));
 			return true;
 		}
@@ -101,13 +102,13 @@ public class ListWordsController<Word extends ListElement> {
 		rowCreator.clear();
 	}
 
-	public boolean isWordDefined(Word word) {
+	public WordInMyListExistence<Word> isWordDefined(Word word) {
 		for (ListRow<Word> listRow : wordsList) {
 			if (listRow.getWord().isSameAs(word)) {
-				return true;
+				return new WordInMyListExistence<>(true, listRow.getWord());
 			}
 		}
-		return false;
+		return new WordInMyListExistence<>(false, null);
 	}
 
 	public AbstractAction createDeleteRowAction(Word word) {

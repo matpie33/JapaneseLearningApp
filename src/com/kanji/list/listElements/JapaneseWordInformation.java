@@ -125,16 +125,16 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 				KanaAndKanjiStrings kanaAndKanjiStrings = new KanaAndKanjiStrings(
 						kanaToKanjis.getKey(), kanaToKanjis.getValue(), "",
 						false);
-				if (!writingsChecker
+				if (writingsChecker
 						.isPropertyFound(kanaAndKanjiStrings, otherWord)) {
-					return false;
+					return true;
 				}
 			}
 			JapaneseWordMeaningChecker meaningChecker = new JapaneseWordMeaningChecker();
-			if (!meaningChecker.isPropertyFound(getWordMeaning(), otherWord)) {
-				return false;
+			if (meaningChecker.isPropertyFound(getWordMeaning(), otherWord)) {
+				return true;
 			}
-			return true;
+			return false;
 		}
 		return false;
 	}

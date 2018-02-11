@@ -4,6 +4,7 @@ import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.myList.MyList;
+import com.kanji.model.WordInMyListExistence;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
@@ -54,17 +55,20 @@ public class InsertKanjiController<Word extends ListElement> {
 	}
 
 	private boolean addWordToList(Word word) {
-		boolean addedWord = !list.isWordDefined(word);
-		if (addedWord) {
+		WordInMyListExistence<Word> wordExistenceInList = list
+				.isWordDefined(word);
+		if (!wordExistenceInList.exists()) {
 			list.addWord(word);
 			list.scrollToBottom();
 
 		}
 		else {
 			parentDialog.showMessageDialog(
-					ExceptionsMessages.KANJI_KEYWORD_ALREADY_DEFINED_EXCEPTION);
+					String.format(ExceptionsMessages.WORD_ALREADY_EXISTS,
+							list.get1BasedRowNumberOfWord(
+									wordExistenceInList.getWord())));
 		}
-		return addedWord;
+		return !wordExistenceInList.exists();
 	}
 
 	public AbstractAction createActionValidateAndAddWord(
