@@ -59,7 +59,7 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 				Labels.COMBOBOX_OPTION_SEARCH_BY_WORD_MEANING));
 		listElementData.add(new ListElementData<>(Labels.WORD_IN_KANA,
 				new JapaneseWordWritingsChecker(null /*TODO*/),
-				ListElementPropertyType.STRING_SHORT_WORD,
+				ListElementPropertyType.KANA_KANJI_WRITINGS,
 				Labels.COMBOBOX_OPTION_SEARCH_BY_KANA));
 
 		return listElementData;
@@ -120,15 +120,17 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 			JapaneseWordWritingsChecker writingsChecker = new JapaneseWordWritingsChecker(
 					null);
 			//TODO avoid passing null to japanese writings checker
+			List<KanaAndKanjiStrings> kanaAndKanjiStrings = new ArrayList<>();
 			for (Map.Entry<String, List<String>> kanaToKanjis : getKanaToKanjiWritingsMap()
 					.entrySet()) {
-				KanaAndKanjiStrings kanaAndKanjiStrings = new KanaAndKanjiStrings(
-						kanaToKanjis.getKey(), kanaToKanjis.getValue(), "",
-						false);
-				if (writingsChecker
-						.isPropertyFound(kanaAndKanjiStrings, otherWord)) {
-					return true;
-				}
+				kanaAndKanjiStrings
+						.add(new KanaAndKanjiStrings(kanaToKanjis.getKey(),
+								kanaToKanjis.getValue(), "", false));
+
+			}
+			if (writingsChecker
+					.isPropertyFound(kanaAndKanjiStrings, otherWord)) {
+				return true;
 			}
 			JapaneseWordMeaningChecker meaningChecker = new JapaneseWordMeaningChecker();
 			if (meaningChecker.isPropertyFound(getWordMeaning(), otherWord)) {

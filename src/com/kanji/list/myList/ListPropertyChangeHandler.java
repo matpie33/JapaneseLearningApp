@@ -58,7 +58,7 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 			elem.setForeground(Color.RED);
 			applicationWindow.showMessageDialog(
 					listElementPropertyManager.getInvalidPropertyReason());
-			elem.setText(modifiedProperty);
+			elem.setText(modifiedProperty.replace("[", "").replace("]", ""));
 			elem.selectAll();
 			elem.requestFocusInWindow();
 			return;
@@ -73,7 +73,8 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 						listElementPropertyManager, propertyHolder);
 		if (wordInMyListExistence.exists()) {
 			elem.requestFocusInWindow();
-			elem.setText(propertyBeingModified.toString());
+			elem.setText(propertyBeingModified.toString().replace("[", "")
+					.replace("]", ""));
 			elem.selectAll();
 			applicationWindow.showMessageDialog(
 					String.format(propertyDefinedExceptionMessage,

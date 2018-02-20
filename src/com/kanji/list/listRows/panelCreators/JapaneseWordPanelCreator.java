@@ -156,7 +156,7 @@ public class JapaneseWordPanelCreator {
 
 	}
 
-	private void addKanaAndKanjiWritingRow(
+	public void addKanaAndKanjiWritingRow(
 			JapaneseWordInformation japaneseWordInformation,
 			MainPanel rootPanel,
 			Map.Entry<String, List<String>> kanaAndKanjiWritingsValues,
@@ -184,56 +184,16 @@ public class JapaneseWordPanelCreator {
 						.add(CommonGuiElementsMaker.createShortInput(kanji));
 			}
 		}
-		//TODO figure out how to switch back to pl, currently it switches to en on
-		//focus lost
-		kanaWritingText.addFocusListener(new FocusAdapter() {
-			boolean already = false;
-
-			@Override public void focusGained(FocusEvent e) {
-				if (already) {
-					return;
-				}
-				kanaWritingText.getInputContext()
-						.selectInputMethod(Locale.JAPAN);
-				kanaWritingText.getInputContext().setCharacterSubsets(
-						new Character.Subset[] {
-								Character.UnicodeBlock.HIRAGANA });
-				super.focusGained(e);
-			}
-
-			@Override public void focusLost(FocusEvent e) {
-				super.focusLost(e);
-				if (!already) {
-					kanaWritingText.getInputContext()
-							.selectInputMethod(Locale.getDefault());
-				}
-				System.out
-						.println(kanaWritingText.getInputContext().getLocale());
-
-				already = true;
-			}
-		});
 
 		propertyManagersOfTextFields
 				.put(kanaWritingText, japaneseWordWritingsChecker);
-		for (JTextComponent kanjiTextComponent : kanjiTextComponents) {
-			propertyManagersOfTextFields
-					.put(kanjiTextComponent, japaneseWordWritingsChecker);
-		}
-		if (listPanelViewMode.equals(ListPanelViewMode.VIEW_AND_EDIT)) {
-			Stream.concat(kanjiTextComponents.stream(),
-					Stream.of(kanaWritingText)).forEach(
-					textComponent -> textComponent.addFocusListener(
-							new ListPropertyChangeHandler<>(
-									japaneseWordInformation,
-									applicationWindow.getApplicationController()
-											.getJapaneseWords(),
-									applicationWindow,
-									japaneseWordWritingsChecker,
-									ExceptionsMessages.
-											JAPANESE_WORD_WRITINGS_ALREADY_DEFINED,
-									Prompts.KANJI_TEXT)));
-		}
+		Stream.concat(kanjiTextComponents.stream(),
+				Stream.of(kanaWritingText)).forEach(textComponent -> {
+			addFocusLostInputValidation(textComponent,
+					japaneseWordInformation);
+			addListenerSwitchToJapaneseKeyboardOnFocus(textComponent);
+		});
+
 		List<JTextComponent> kanjiWritingsComponents = new ArrayList<>();
 		//TODO duplicated variable kanjiwritings components
 		kanjiWritingsComponents.addAll(kanjiTextComponents);
@@ -271,6 +231,39 @@ public class JapaneseWordPanelCreator {
 				kanaAndKanjiWritings.getPanel());
 	}
 
+	private void addFocusLostInputValidation(JTextComponent textComponent,
+			JapaneseWordInformation japaneseWordInformation) {
+		textComponent.addFocusListener(
+				new ListPropertyChangeHandler<>(japaneseWordInformation,
+						applicationWindow.getApplicationController()
+								.getJapaneseWords(), applicationWindow,
+						japaneseWordWritingsChecker, ExceptionsMessages.
+						JAPANESE_WORD_WRITINGS_ALREADY_DEFINED,
+						Prompts.KANJI_TEXT));
+	}
+
+	private void addListenerSwitchToJapaneseKeyboardOnFocus(
+			JTextComponent textComponent) {
+		//TODO figure out how to switch back to pl, currently it switches to en on
+		//focus lost
+		textComponent.addFocusListener(new FocusAdapter() {
+
+			@Override public void focusGained(FocusEvent e) {
+				textComponent.getInputContext().selectInputMethod(Locale.JAPAN);
+				textComponent.getInputContext().setCharacterSubsets(
+						new Character.Subset[] {
+								Character.UnicodeBlock.HIRAGANA });
+				super.focusGained(e);
+			}
+
+			@Override public void focusLost(FocusEvent e) {
+				super.focusLost(e);
+				textComponent.getInputContext()
+						.selectInputMethod(Locale.getDefault());
+			}
+		});
+	}
+
 	private AbstractButton createButtonAddKanjiWriting(
 			JapaneseWordInformation japaneseWordInformation,
 			JTextComponent kanaWritingText, MainPanel panel,
@@ -282,18 +275,11 @@ public class JapaneseWordPanelCreator {
 			@Override public void actionPerformed(ActionEvent e) {
 				JTextComponent kanjiTextComponent = CommonGuiElementsMaker
 						.createShortInputWithPrompt(Prompts.KANJI_TEXT);
-				propertyManagersOfTextFields
-						.put(kanjiTextComponent, japaneseWordWritingsChecker);
 				kanaToKanjiWritingsTextComponents.get(kanaWritingText)
 						.add(kanjiTextComponent);
-				kanjiTextComponent.addFocusListener(
-						new ListPropertyChangeHandler<>(japaneseWordInformation,
-								applicationWindow.getApplicationController()
-										.getJapaneseWords(), applicationWindow,
-								japaneseWordWritingsChecker, ExceptionsMessages.
-								JAPANESE_WORD_WRITINGS_ALREADY_DEFINED,
-								Prompts.KANJI_TEXT));
-
+				addFocusLostInputValidation(kanjiTextComponent,
+						japaneseWordInformation);
+				addListenerSwitchToJapaneseKeyboardOnFocus(kanjiTextComponent);
 				panel.insertElementBeforeOtherElement(button,
 						kanjiTextComponent);
 				if (viewMode.equals(ListPanelViewMode.ADD)) {

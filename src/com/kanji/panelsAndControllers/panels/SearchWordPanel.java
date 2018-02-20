@@ -5,20 +5,25 @@ import com.guimaker.enums.FillType;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
+import com.kanji.constants.enums.ListPanelViewMode;
 import com.kanji.constants.enums.SearchingDirection;
 import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.Prompts;
+import com.kanji.list.listElementPropertyManagers.JapaneseWordWritingsChecker;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElementPropertyManagers.WordSearchOptionsHolder;
+import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listElements.ListElementData;
+import com.kanji.list.listRows.panelCreators.JapaneseWordPanelCreator;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.TextInputAndPropertyManagerForListElement;
 import com.kanji.panelsAndControllers.controllers.SearchWordController;
 import com.kanji.utilities.CommonGuiElementsMaker;
+import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -39,12 +44,15 @@ public class SearchWordPanel<Word extends ListElement>
 	private String selectedComboboxLabel;
 	private List<String> comboboxLabels;
 	private List<TextInputAndPropertyManagerForListElement> listOfInputsAndPropertyManagersForListElementType;
+	private ApplicationWindow applicationWindow;
 
-	public SearchWordPanel(MyList<Word> list) {
+	public SearchWordPanel(ApplicationWindow applicationWindow,
+			MyList<Word> list) {
 		searchWordController = new SearchWordController<>(this, list);
 		this.list = list;
 		listOfInputsAndPropertyManagersForListElementType = new ArrayList<>();
 		comboboxLabels = new ArrayList<>();
+		this.applicationWindow = applicationWindow;
 	}
 
 	@Override public void createElements() {
@@ -91,7 +99,7 @@ public class SearchWordPanel<Word extends ListElement>
 			switch (elementData.getListElementPropertyType()) {
 			case STRING_LONG_WORD:
 				textInputForElementType = CommonGuiElementsMaker
-						.createKanjiWordInput("");
+						.createShortInput("");
 				panelForElementType = createSearchByWordPanel(
 						textInputForElementType).getPanel();
 				break;
@@ -106,6 +114,17 @@ public class SearchWordPanel<Word extends ListElement>
 						.createTextField("");
 				panelForElementType = createSearchByWordPanel(
 						textInputForElementType).getPanel();
+				break;
+			case KANA_KANJI_WRITINGS:
+				JapaneseWordPanelCreator japaneseWordPanelCreator = new JapaneseWordPanelCreator(
+						applicationWindow);
+				panelForElementType = createSearchByKanaAndKanjiWritingsPanel(
+						japaneseWordPanelCreator,
+						(JapaneseWordWritingsChecker) elementData
+								.getListElementPropertyManager()).getPanel();
+				textInputForElementType = japaneseWordPanelCreator
+						.getKanaToKanjiWritingsTextComponents().keySet()
+						.iterator().next();
 				break;
 
 			default:
@@ -128,6 +147,20 @@ public class SearchWordPanel<Word extends ListElement>
 				.createRow(FillType.NONE, Anchor.NORTHWEST,
 						new JLabel(Labels.KANJI_ID_LABEL), inputField));
 		return kanjiIdSearchPanel;
+	}
+
+	private MainPanel createSearchByKanaAndKanjiWritingsPanel(
+			JapaneseWordPanelCreator japaneseWordPanelCreator,
+			JapaneseWordWritingsChecker writingsChecker) {
+
+		MainPanel panel = new MainPanel(null, true);
+
+		japaneseWordPanelCreator.addKanaAndKanjiWritingRow(
+				JapaneseWordInformation.getInitializer().initializeElement(),
+				panel, null, ListPanelViewMode.ADD);
+
+		writingsChecker.setJapaneseWordPanelCreator(japaneseWordPanelCreator);
+		return panel;
 	}
 
 	private MainPanel createSearchByWordPanel(JTextComponent inputField) {

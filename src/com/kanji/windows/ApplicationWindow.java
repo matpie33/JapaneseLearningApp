@@ -158,7 +158,7 @@ import java.util.Set;
 	}
 
 	public void showSearchWordDialog(MyList list) {
-		createDialog(new SearchWordPanel(list), Titles.WORD_SEARCH_DIALOG,
+		createDialog(new SearchWordPanel(this, list), Titles.WORD_SEARCH_DIALOG,
 				false, Position.LEFT_CORNER);
 	}
 

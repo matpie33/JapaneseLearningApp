@@ -15,6 +15,7 @@ import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -78,8 +79,8 @@ public class InsertJapaneseWordController {
 			allTextFields.add(kanaText);
 			KanaAndKanjiStrings kanaAndKanjiStrings = new KanaAndKanjiStrings(
 					kanaText, kanjiTexts, "", false);
-			writingsChecker
-					.setProperty(japaneseWordInformation, kanaAndKanjiStrings);
+			writingsChecker.setProperty(japaneseWordInformation, Arrays.asList(
+					new KanaAndKanjiStrings[] { kanaAndKanjiStrings }));
 
 		}
 		if (allInputsValid) {
@@ -90,7 +91,6 @@ public class InsertJapaneseWordController {
 			boolean isItNewWord = addWordToList(japaneseWordInformation);
 			if (isItNewWord) {
 				applicationController.saveProject();
-				System.out.println("save");
 			}
 		}
 	}

@@ -1,63 +1,92 @@
 package com.kanji.list.listElementPropertyManagers;
 
 import com.kanji.constants.strings.ExceptionsMessages;
+import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listRows.panelCreators.JapaneseWordPanelCreator;
 import com.kanji.model.KanaAndKanjiStrings;
 import com.kanji.utilities.StringUtilities;
 
 import javax.swing.text.JTextComponent;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 		implements
-		ListElementPropertyManager<KanaAndKanjiStrings, JapaneseWordInformation> {
+		ListElementPropertyManager<List<KanaAndKanjiStrings>, JapaneseWordInformation> {
 	//TODO I hate to create a class which is veeery similar to each other for every word element
 	private JapaneseWordPanelCreator japaneseWordPanelCreator;
 	private String errorDetails = "";
+	private static final String DEFAULT_KANJI_INPUT = Prompts.KANJI_TEXT;
 
 	public JapaneseWordWritingsChecker(
 			JapaneseWordPanelCreator japaneseWordPanelCreator) {
 		this.japaneseWordPanelCreator = japaneseWordPanelCreator;
 	}
 
+	public void setJapaneseWordPanelCreator(JapaneseWordPanelCreator creator) {
+		this.japaneseWordPanelCreator = creator;
+	}
+
 	@Override public String getInvalidPropertyReason() {
 		return errorDetails;
 	}
 
-	@Override
-	public boolean isPropertyFound(KanaAndKanjiStrings kanaAndKanjiStrings,
+	@Override public boolean isPropertyFound(
+			List<KanaAndKanjiStrings> kanaAndKanjiStrings,
 			JapaneseWordInformation wordInformation) {
-		List<String> kanjiWritings = kanaAndKanjiStrings.getKanji();
-		String kanaWriting = kanaAndKanjiStrings.getKana();
 
-		for (Map.Entry<String, List<String>> kanaToKanjis : wordInformation
-				.getKanaToKanjiWritingsMap().entrySet()) {
-			if (kanaToKanjis.getKey().equals(kanaWriting) && (kanjiWritings
-					.isEmpty() && kanaToKanjis.getValue().isEmpty()) || (!kanjiWritings.isEmpty() && (
-					kanaToKanjis.getValue().containsAll(kanjiWritings)
-							|| kanjiWritings
-							.containsAll(kanaToKanjis.getValue())))) {
-				return true;
+		for (KanaAndKanjiStrings kanaAndKanjiStrings1 : kanaAndKanjiStrings) {
+			boolean japaneseWordContainsTheseWritings = false;
+			for (Map.Entry<String, List<String>> kanaToKanjis : wordInformation
+					.getKanaToKanjiWritingsMap().entrySet()) {
+				List<String> kanjiWritings = kanaAndKanjiStrings1.getKanji();
+				String kanaWriting = kanaAndKanjiStrings1.getKana();
+				if (kanaWritingsAreEqualAndKanjiWritingsContainAllOtherKanjiWritings(
+						kanaWriting, kanaToKanjis.getKey(), kanjiWritings,
+						kanaToKanjis.getValue())) {
+					japaneseWordContainsTheseWritings = true;
+					break;
+				}
+			}
+			if (!japaneseWordContainsTheseWritings) {
+				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 
-	@Override public KanaAndKanjiStrings validateInputAndConvertToProperty(
+	private boolean kanaWritingsAreEqualAndKanjiWritingsContainAllOtherKanjiWritings(
+			String kanaWriting1, String kanaWriting2,
+			List<String> kanjiWritings1, List<String> kanjiWritings2) {
+		//TODO handle case with default values = is empty
+		if (!kanaWriting1.isEmpty() && kanjiWritings1.isEmpty()) {
+			return kanaWriting1.equals(kanaWriting2);
+		}
+		else if (kanaWriting1.isEmpty() && !kanjiWritings1.isEmpty()) {
+			return !kanjiWritings2.isEmpty() && kanjiWritings1
+					.containsAll(kanjiWritings2);
+		}
+		else if (!kanaWriting1.isEmpty() && !kanjiWritings1.isEmpty()) {
+			return kanaWriting1.equals(kanaWriting2) && !kanjiWritings2
+					.isEmpty() && kanjiWritings1.containsAll(kanjiWritings2);
+		}
+		else
+			return false;
+
+	}
+
+	@Override
+	public List<KanaAndKanjiStrings> validateInputAndConvertToProperty(
 			JTextComponent valueToConvert) {
 		errorDetails = "";
 		for (Map.Entry<JTextComponent, List<JTextComponent>> kanaToKanjiWritingsTextFields : japaneseWordPanelCreator
 				.getKanaToKanjiWritingsTextComponents().entrySet()) {
 			boolean kanaModified = false;
-			boolean foundTextField = false;
 			boolean invalidInput = false;
+			boolean foundTextfield = false;
 			if (kanaToKanjiWritingsTextFields.getKey().equals(valueToConvert)) {
 				kanaModified = true;
-				foundTextField = true;
+				foundTextfield = true;
 				String kanaText = valueToConvert.getText();
 				if (!StringUtilities.wordIsInKana(kanaText)) {
 					errorDetails += String
@@ -69,18 +98,15 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 			else if (kanaToKanjiWritingsTextFields.getValue()
 					.contains(valueToConvert)) {
 				kanaModified = false;
-				foundTextField = true;
+				foundTextfield = true;
 				String kanjiText = valueToConvert.getText();
-				if (!kanjiText.isEmpty() && !StringUtilities
+				if (!isKanjiInputEmpty(kanjiText) && !StringUtilities
 						.wordIsInKanji(kanjiText)) {
 					errorDetails += String
 							.format(ExceptionsMessages.KANJI_WRITING_INCORRECT,
 									kanjiText);
 					invalidInput = true;
 				}
-			}
-			if (!foundTextField) {
-				continue;
 			}
 			if (invalidInput) {
 				return null;
@@ -93,30 +119,48 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 					return null;
 				}
 			}
-			if (foundTextField) {
-				return new KanaAndKanjiStrings(
+			if (foundTextfield) {
+				return Arrays.asList(new KanaAndKanjiStrings(
 						kanaToKanjiWritingsTextFields.getKey(),
 						kanaToKanjiWritingsTextFields.getValue(),
-						valueToConvert.getText(), kanaModified);
+						valueToConvert.getText(), kanaModified));
 			}
-
 		}
+
 		return null;
 	}
-	//TODO add validation
+
+	private boolean isKanjiInputEmpty(String kanjiInput) {
+		return kanjiInput.isEmpty() || kanjiInput.equals(DEFAULT_KANJI_INPUT);
+	}
 
 	@Override
 	public void setProperty(JapaneseWordInformation japaneseWordInformation,
-			KanaAndKanjiStrings kanaAndKanjiStrings) {
-		List<String> kanjiWritings = kanaAndKanjiStrings.getKanji();
-		String kanaWriting = kanaAndKanjiStrings.getKana();
-		japaneseWordInformation.addWritings(kanaWriting,
-				kanjiWritings.toArray(new String[] {}));
+			List<KanaAndKanjiStrings> kanaAndKanjiStringsList) {
+		for (KanaAndKanjiStrings kanjiStringsForGivenKana : kanaAndKanjiStringsList) {
+			List<String> kanjiWritings = kanjiStringsForGivenKana.getKanji();
+			for (String s : kanjiWritings) {
+				if (isKanjiInputEmpty(s)) {
+					kanjiWritings.remove(s);
+				}
+			}
+			String kanaWriting = kanjiStringsForGivenKana.getKana();
+			japaneseWordInformation.addWritings(kanaWriting,
+					kanjiWritings.toArray(new String[] {}));
+		}
+
 	}
 
 	@Override
 	public void replaceProperty(JapaneseWordInformation propertyHolder,
-			KanaAndKanjiStrings oldValue, KanaAndKanjiStrings newValue) {
+			List<KanaAndKanjiStrings> oldValueList,
+			List<KanaAndKanjiStrings> newValueList) {
+		if (oldValueList.size() > 1 || newValueList.size() > 1) {
+			throw new IllegalArgumentException(
+					"Only 1 value can be changed at a time");
+		}
+		KanaAndKanjiStrings oldValue = oldValueList.get(0);
+		KanaAndKanjiStrings newValue = newValueList.get(0);
 		if (oldValue.getModifiedValue().equals(newValue.getModifiedValue())) {
 			return;
 		}

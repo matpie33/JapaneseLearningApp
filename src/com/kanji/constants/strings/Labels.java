@@ -12,7 +12,7 @@ public class Labels {
 
 	public static final String COMBOBOX_OPTION_SEARCH_BY_KEYWORD = "slowa kluczowego";
 	public static final String COMBOBOX_OPTION_SEARCH_BY_KANJI_ID = "id kanji";
-	public static final String COMBOBOX_OPTION_SEARCH_BY_KANA = "zapisu kaną";
+	public static final String COMBOBOX_OPTION_SEARCH_BY_KANA = "zapisów kaną/kanji";
 	public static final String COMBOBOX_OPTION_SEARCH_BY_KANJI = "zapisu kanji";
 	public static final String COMBOBOX_OPTION_SEARCH_BY_WORD_MEANING = "znaczenia";
 	public static final String COMBOBOX_OPTION_SEARCH_BY_PART_OF_SPEECH = "części mowy";

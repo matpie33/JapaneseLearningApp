@@ -1,5 +1,7 @@
 package com.kanji.model;
 
+import com.kanji.constants.strings.Prompts;
+
 import javax.swing.text.JTextComponent;
 import java.util.List;
 import java.util.Objects;
@@ -10,9 +12,11 @@ public class KanaAndKanjiStrings {
 	private List<String> kanji;
 	private String modifiedValue;
 	private boolean kanaModified;
+	private final static String DEFAULT_VALUE = Prompts.KANJI_TEXT;
 
 	public KanaAndKanjiStrings(String kana, List<String> kanji,
 			String modifiedValue, boolean kanaModified) {
+		removeDefaultValues(kanji);
 		this.kana = kana;
 		this.kanji = kanji;
 		this.modifiedValue = modifiedValue;
@@ -21,10 +25,17 @@ public class KanaAndKanjiStrings {
 
 	public KanaAndKanjiStrings(JTextComponent kana, List<JTextComponent> kanji,
 			String modifiedValue, boolean kanaModified) {
-		this.kana = kana.getText();
-		this.kanji = convertKanjiTextfieldsToStrings(kanji);
-		this.modifiedValue = modifiedValue;
-		this.kanaModified = kanaModified;
+		this(kana.getText(), convertKanjiTextfieldsToStrings(kanji),
+				modifiedValue, kanaModified);
+	}
+
+	private void removeDefaultValues(List<String> kanjis) {
+		for (int i = 0; i < kanjis.size(); i++) {
+			String kanji = kanjis.get(i);
+			if (kanji.equals(DEFAULT_VALUE)) {
+				kanjis.remove(i);
+			}
+		}
 	}
 
 	public String getKana() {
@@ -59,7 +70,7 @@ public class KanaAndKanjiStrings {
 		return otherKana.getModifiedValue().equals(getModifiedValue());
 	}
 
-	public List<String> convertKanjiTextfieldsToStrings(
+	public static List<String> convertKanjiTextfieldsToStrings(
 			List<JTextComponent> kanjiTextFields) {
 		return kanjiTextFields.stream().map(JTextComponent::getText)
 				.collect(Collectors.toList());
