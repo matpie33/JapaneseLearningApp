@@ -14,7 +14,7 @@ public class RowInJapaneseWordInformations
 
 	public RowInJapaneseWordInformations(ApplicationWindow applicationWindow) {
 		japaneseWordPanelCreator = new JapaneseWordPanelCreator(
-				applicationWindow);
+				applicationWindow, true);
 	}
 
 	@Override

@@ -16,11 +16,14 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 	//TODO I hate to create a class which is veeery similar to each other for every word element
 	private JapaneseWordPanelCreator japaneseWordPanelCreator;
 	private String errorDetails = "";
+	private boolean isKanaRequired;
 	private static final String DEFAULT_KANJI_INPUT = Prompts.KANJI_TEXT;
 
 	public JapaneseWordWritingsChecker(
-			JapaneseWordPanelCreator japaneseWordPanelCreator) {
+			JapaneseWordPanelCreator japaneseWordPanelCreator,
+			boolean isKanaRequired) {
 		this.japaneseWordPanelCreator = japaneseWordPanelCreator;
+		this.isKanaRequired = isKanaRequired;
 	}
 
 	public void setJapaneseWordPanelCreator(JapaneseWordPanelCreator creator) {
@@ -55,20 +58,34 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 		return true;
 	}
 
+	private boolean isKanaWritingEmpty(String kanaWriting) {
+		return kanaWriting.isEmpty() || kanaWriting.equals(Prompts.KANA_TEXT);
+	}
+
+	private boolean areKanjiWritingsEmpty(List<String> kanjiWritings) {
+		return kanjiWritings.isEmpty() || (kanjiWritings.size() == 1
+				&& kanjiWritings.get(0).equals(Prompts.KANJI_TEXT));
+	}
+
 	private boolean kanaWritingsAreEqualAndKanjiWritingsContainAllOtherKanjiWritings(
 			String kanaWriting1, String kanaWriting2,
 			List<String> kanjiWritings1, List<String> kanjiWritings2) {
-		//TODO handle case with default values = is empty
-		if (!kanaWriting1.isEmpty() && kanjiWritings1.isEmpty()) {
+		//TODO move the logic checking if textfield is empty (default value or no value) to one place and use it everywhere, now its scattered
+		if (!isKanaWritingEmpty(kanaWriting1) && areKanjiWritingsEmpty(
+				kanjiWritings1)) {
 			return kanaWriting1.equals(kanaWriting2);
 		}
-		else if (kanaWriting1.isEmpty() && !kanjiWritings1.isEmpty()) {
-			return !kanjiWritings2.isEmpty() && kanjiWritings1
-					.containsAll(kanjiWritings2);
+		else if (isKanaWritingEmpty(kanaWriting1) && !areKanjiWritingsEmpty(
+				kanjiWritings1)) {
+			return !kanjiWritings2.isEmpty() && (
+					kanjiWritings1.containsAll(kanjiWritings2) || kanjiWritings2
+							.containsAll(kanjiWritings1));
 		}
-		else if (!kanaWriting1.isEmpty() && !kanjiWritings1.isEmpty()) {
+		else if (!isKanaWritingEmpty(kanaWriting1) && !areKanjiWritingsEmpty(
+				kanjiWritings1)) {
 			return kanaWriting1.equals(kanaWriting2) && !kanjiWritings2
-					.isEmpty() && kanjiWritings1.containsAll(kanjiWritings2);
+					.isEmpty() && (kanjiWritings1.containsAll(kanjiWritings2)
+					|| kanjiWritings2.containsAll(kanjiWritings1));
 		}
 		else
 			return false;
@@ -88,7 +105,8 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 				kanaModified = true;
 				foundTextfield = true;
 				String kanaText = valueToConvert.getText();
-				if (!StringUtilities.wordIsInKana(kanaText)) {
+
+				if (isKanaRequired && !StringUtilities.wordIsInKana(kanaText)) {
 					errorDetails += String
 							.format(ExceptionsMessages.KANA_WRITING_INCORRECT,
 									kanaText);

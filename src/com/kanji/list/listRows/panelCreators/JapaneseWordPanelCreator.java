@@ -41,16 +41,17 @@ public class JapaneseWordPanelCreator {
 	private ApplicationWindow applicationWindow;
 	private JapaneseWordWritingsChecker japaneseWordWritingsChecker;
 
-	public JapaneseWordPanelCreator(ApplicationWindow applicationWindow) {
+	public JapaneseWordPanelCreator(ApplicationWindow applicationWindow,
+			boolean isKanaRequired) {
 		this.applicationWindow = applicationWindow;
+		japaneseWordWritingsChecker = new JapaneseWordWritingsChecker(this,
+				isKanaRequired);
 	}
 
 	public MainPanel createPanelInGivenMode(
 			JapaneseWordInformation japaneseWord,
 			ListPanelViewMode listPanelViewMode,
 			CommonListElements listElements) {
-
-		japaneseWordWritingsChecker = new JapaneseWordWritingsChecker(this);
 		MainPanel addWordPanel = new MainPanel(null);
 		//TODO separate it into create elements, and add to panel, do the inserts to maps in 1 place
 
@@ -60,7 +61,7 @@ public class JapaneseWordPanelCreator {
 				ListElementPropertyType.STRING_SHORT_WORD,
 				Labels.COMBOBOX_OPTION_SEARCH_BY_WORD_MEANING));
 		listElementData.add(new ListElementData<>(Labels.WORD_IN_KANA,
-				new JapaneseWordWritingsChecker(null),
+				new JapaneseWordWritingsChecker(null, true),
 				ListElementPropertyType.STRING_SHORT_WORD,
 				Labels.COMBOBOX_OPTION_SEARCH_BY_KANA));
 
@@ -71,7 +72,8 @@ public class JapaneseWordPanelCreator {
 						applicationWindow.getApplicationController()
 								.getJapaneseWords(), applicationWindow,
 						new JapaneseWordMeaningChecker(),
-						ExceptionsMessages.JAPANESE_WORD_MEANING_ALREADY_DEFINED));
+						ExceptionsMessages.JAPANESE_WORD_MEANING_ALREADY_DEFINED,
+						true));
 		propertyManagersOfTextFields
 				.put(wordMeaningText, new JapaneseWordMeaningChecker());
 		JLabel wordMeaningLabel = GuiMaker
@@ -116,14 +118,17 @@ public class JapaneseWordPanelCreator {
 				.addElementsInColumnStartingFromColumn(partOfSpeechCombobox, 1,
 						partOfSpeechLabel, partOfSpeechCombobox);
 
+		boolean kanaRequired = true;
 		AbstractButton addKanaAndKanjiWritingsButton = createButtonAddKanaAndKanjiWritings(
-				japaneseWord, addWordPanel, null, listPanelViewMode);
+				japaneseWord, addWordPanel, null, listPanelViewMode,
+				kanaRequired);
+
 		addWordPanel.addElementsInColumnStartingFromColumn(1,
 				addKanaAndKanjiWritingsButton);
 
 		if (listPanelViewMode.equals(ListPanelViewMode.ADD)) {
 			addKanaAndKanjiWritingRow(japaneseWord, addWordPanel, null,
-					listPanelViewMode);
+					listPanelViewMode, kanaRequired);
 		}
 		else {
 			addWordPanel.addElementsInColumnStartingFromColumn(1,
@@ -132,7 +137,8 @@ public class JapaneseWordPanelCreator {
 				for (Map.Entry<String, List<String>> kanaToKanjiWritings : japaneseWord
 						.getKanaToKanjiWritingsMap().entrySet()) {
 					addKanaAndKanjiWritingRow(japaneseWord, addWordPanel,
-							kanaToKanjiWritings, listPanelViewMode);
+							kanaToKanjiWritings, listPanelViewMode,
+							kanaRequired);
 				}
 
 			}
@@ -160,7 +166,7 @@ public class JapaneseWordPanelCreator {
 			JapaneseWordInformation japaneseWordInformation,
 			MainPanel rootPanel,
 			Map.Entry<String, List<String>> kanaAndKanjiWritingsValues,
-			ListPanelViewMode listPanelViewMode) {
+			ListPanelViewMode listPanelViewMode, boolean kanaRequired) {
 		JLabel kanaWritingLabel = GuiMaker
 				.createLabel(new ComponentOptions().text(Labels.WORD_IN_KANA));
 		if (listPanelViewMode.equals(ListPanelViewMode.VIEW_AND_EDIT)) {
@@ -187,12 +193,12 @@ public class JapaneseWordPanelCreator {
 
 		propertyManagersOfTextFields
 				.put(kanaWritingText, japaneseWordWritingsChecker);
-		Stream.concat(kanjiTextComponents.stream(),
-				Stream.of(kanaWritingText)).forEach(textComponent -> {
-			addFocusLostInputValidation(textComponent,
-					japaneseWordInformation);
-			addListenerSwitchToJapaneseKeyboardOnFocus(textComponent);
-		});
+		Stream.concat(kanjiTextComponents.stream(), Stream.of(kanaWritingText))
+				.forEach(textComponent -> {
+					addListenerSwitchToJapaneseKeyboardOnFocus(textComponent);
+				});
+		addFocusLostInputValidation(kanaWritingText, japaneseWordInformation,
+				kanaRequired, Prompts.KANA_TEXT);
 
 		List<JTextComponent> kanjiWritingsComponents = new ArrayList<>();
 		//TODO duplicated variable kanjiwritings components
@@ -208,7 +214,7 @@ public class JapaneseWordPanelCreator {
 
 		AbstractButton addKanjiWritingButton = createButtonAddKanjiWriting(
 				japaneseWordInformation, kanaWritingText, rootPanel,
-				listPanelViewMode);
+				listPanelViewMode, kanaRequired);
 		AbstractButton removeKanaAndKanjiWritingsButton = createButtonRemoveKanaAndKanjiWritings(
 				rootPanel, rootPanel.getNumberOfRows() - 2, kanaWritingText,
 				listPanelViewMode, japaneseWordInformation);
@@ -232,14 +238,15 @@ public class JapaneseWordPanelCreator {
 	}
 
 	private void addFocusLostInputValidation(JTextComponent textComponent,
-			JapaneseWordInformation japaneseWordInformation) {
+			JapaneseWordInformation japaneseWordInformation,
+			boolean kanaRequired, String defaultValue) {
 		textComponent.addFocusListener(
 				new ListPropertyChangeHandler<>(japaneseWordInformation,
 						applicationWindow.getApplicationController()
 								.getJapaneseWords(), applicationWindow,
 						japaneseWordWritingsChecker, ExceptionsMessages.
-						JAPANESE_WORD_WRITINGS_ALREADY_DEFINED,
-						Prompts.KANJI_TEXT));
+						JAPANESE_WORD_WRITINGS_ALREADY_DEFINED, defaultValue,
+						kanaRequired));
 	}
 
 	private void addListenerSwitchToJapaneseKeyboardOnFocus(
@@ -267,7 +274,7 @@ public class JapaneseWordPanelCreator {
 	private AbstractButton createButtonAddKanjiWriting(
 			JapaneseWordInformation japaneseWordInformation,
 			JTextComponent kanaWritingText, MainPanel panel,
-			ListPanelViewMode viewMode) {
+			ListPanelViewMode viewMode, boolean kanaRequired) {
 		AbstractButton button = GuiMaker
 				.createButtonlikeComponent(ComponentType.BUTTON,
 						ButtonsNames.ADD_KANJI_WRITING, null);
@@ -278,7 +285,8 @@ public class JapaneseWordPanelCreator {
 				kanaToKanjiWritingsTextComponents.get(kanaWritingText)
 						.add(kanjiTextComponent);
 				addFocusLostInputValidation(kanjiTextComponent,
-						japaneseWordInformation);
+						japaneseWordInformation, kanaRequired,
+						Prompts.KANJI_TEXT);
 				addListenerSwitchToJapaneseKeyboardOnFocus(kanjiTextComponent);
 				panel.insertElementBeforeOtherElement(button,
 						kanjiTextComponent);
@@ -323,7 +331,7 @@ public class JapaneseWordPanelCreator {
 	private AbstractButton createButtonAddKanaAndKanjiWritings(
 			JapaneseWordInformation japaneseWordInformation, MainPanel panel,
 			Map.Entry<String, List<String>> kanaAndKanjiWritingsValues,
-			ListPanelViewMode listPanelViewMode) {
+			ListPanelViewMode listPanelViewMode, boolean kanaRequired) {
 		AbstractButton button = GuiMaker
 				.createButtonlikeComponent(ComponentType.BUTTON,
 						ButtonsNames.ADD_KANA_AND_KANJI_WRITINGS,
@@ -333,7 +341,7 @@ public class JapaneseWordPanelCreator {
 								addKanaAndKanjiWritingRow(
 										japaneseWordInformation, panel,
 										kanaAndKanjiWritingsValues,
-										listPanelViewMode);
+										listPanelViewMode, kanaRequired);
 								if (listPanelViewMode
 										.equals(ListPanelViewMode.ADD)) {
 									Window w = SwingUtilities.

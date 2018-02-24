@@ -20,24 +20,26 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	private String propertyDefinedExceptionMessage;
 	private PropertyHolder propertyHolder;
 	private String defaultValue = "";
+	private boolean isRequiredField;
 
 	public ListPropertyChangeHandler(PropertyHolder propertyHolder,
 			MyList<PropertyHolder> list, ApplicationWindow applicationWindow,
 			ListElementPropertyManager<Property, PropertyHolder> listElementPropertyManager,
-			String propertyDefinedExceptionMessage) {
+			String propertyDefinedExceptionMessage, boolean isRequiredField) {
 		this.list = list;
 		this.applicationWindow = applicationWindow;
 		this.listElementPropertyManager = listElementPropertyManager;
 		this.propertyDefinedExceptionMessage = propertyDefinedExceptionMessage;
 		this.propertyHolder = propertyHolder;
+		this.isRequiredField = isRequiredField;
 	}
 
 	public ListPropertyChangeHandler(PropertyHolder propertyHolder,
 			MyList<PropertyHolder> list, ApplicationWindow applicationWindow,
 			ListElementPropertyManager<Property, PropertyHolder> listElementPropertyManager,
-			String propertyDefinedExceptionMessage, String defaultValue) {
+			String propertyDefinedExceptionMessage, String defaultValue, boolean isRequiredField) {
 		this(propertyHolder, list, applicationWindow,
-				listElementPropertyManager, propertyDefinedExceptionMessage);
+				listElementPropertyManager, propertyDefinedExceptionMessage, isRequiredField);
 		this.defaultValue = defaultValue;
 	}
 
@@ -49,8 +51,15 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 				.validateInputAndConvertToProperty(textElement);
 	}
 
+	private boolean isTextFieldEmpty (JTextComponent textComponent){
+		return textComponent.getText().isEmpty() || textComponent.getText().equals(defaultValue);
+	}
+
 	public void focusLost(FocusEvent e) {
 		JTextComponent elem = (JTextComponent) e.getSource();
+		if (!isRequiredField && isTextFieldEmpty(elem)){
+			return;
+		}
 		Property propertyNewValue = listElementPropertyManager
 				.validateInputAndConvertToProperty(elem);
 		if (propertyNewValue == null && !elem.getText().equals(defaultValue)) {

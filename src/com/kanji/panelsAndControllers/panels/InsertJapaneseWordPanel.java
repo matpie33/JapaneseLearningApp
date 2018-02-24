@@ -27,7 +27,7 @@ public class InsertJapaneseWordPanel extends AbstractPanelWithHotkeysInfo {
 		controller = new InsertJapaneseWordController(row, list,
 				applicationWindow.getApplicationController());
 		japaneseWordPanelCreator = new JapaneseWordPanelCreator(
-				applicationWindow);
+				applicationWindow, true);
 	}
 
 	@Override public void createElements() {

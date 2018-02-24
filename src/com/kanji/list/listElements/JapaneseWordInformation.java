@@ -58,7 +58,7 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 				ListElementPropertyType.STRING_SHORT_WORD,
 				Labels.COMBOBOX_OPTION_SEARCH_BY_WORD_MEANING));
 		listElementData.add(new ListElementData<>(Labels.WORD_IN_KANA,
-				new JapaneseWordWritingsChecker(null /*TODO*/),
+				new JapaneseWordWritingsChecker(null /*TODO*/, false),
 				ListElementPropertyType.KANA_KANJI_WRITINGS,
 				Labels.COMBOBOX_OPTION_SEARCH_BY_KANA));
 
@@ -118,7 +118,7 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 		if (element instanceof JapaneseWordInformation) {
 			JapaneseWordInformation otherWord = (JapaneseWordInformation) element;
 			JapaneseWordWritingsChecker writingsChecker = new JapaneseWordWritingsChecker(
-					null);
+					null, true);
 			//TODO avoid passing null to japanese writings checker
 			List<KanaAndKanjiStrings> kanaAndKanjiStrings = new ArrayList<>();
 			for (Map.Entry<String, List<String>> kanaToKanjis : getKanaToKanjiWritingsMap()

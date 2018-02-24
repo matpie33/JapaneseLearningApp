@@ -42,13 +42,13 @@ public class RowInKanjiInformations implements ListRowMaker<KanjiInformation> {
 		wordTextArea.addFocusListener(new ListPropertyChangeHandler<>(kanji,
 				applicationWindow.getApplicationController().getKanjiList(),
 				applicationWindow, new KanjiKeywordChecker(),
-				ExceptionsMessages.KANJI_KEYWORD_ALREADY_DEFINED_EXCEPTION));
+				ExceptionsMessages.KANJI_KEYWORD_ALREADY_DEFINED_EXCEPTION, true));
 		JTextComponent idTextArea = CommonGuiElementsMaker.createKanjiIdInput();
 		idTextArea.setText(Integer.toString(ID));
 		idTextArea.addFocusListener(new ListPropertyChangeHandler<>(kanji,
 				applicationWindow.getApplicationController().getKanjiList(),
 				applicationWindow, new KanjiIdChecker(),
-				ExceptionsMessages.ID_ALREADY_DEFINED_EXCEPTION));
+				ExceptionsMessages.ID_ALREADY_DEFINED_EXCEPTION, true));
 		JButton remove = commonListElements.getButtonDelete();
 		panel.addElementsInColumnStartingFromColumn(wordTextArea, 0,
 				commonListElements.getRowNumberLabel(), kanjiKeyword,

@@ -69,7 +69,7 @@ public class InsertJapaneseWordController {
 
 		}
 		JapaneseWordWritingsChecker writingsChecker = new JapaneseWordWritingsChecker(
-				rowInJapaneseWordInformation.getJapaneseWordPanelCreator());
+				rowInJapaneseWordInformation.getJapaneseWordPanelCreator(), true);
 		for (Map.Entry<JTextComponent, List<JTextComponent>> entry : kanaToKanjiWritings
 				.entrySet()) {
 			JTextComponent kanaText = entry.getKey();

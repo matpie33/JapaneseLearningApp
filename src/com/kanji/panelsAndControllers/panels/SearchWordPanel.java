@@ -117,7 +117,7 @@ public class SearchWordPanel<Word extends ListElement>
 				break;
 			case KANA_KANJI_WRITINGS:
 				JapaneseWordPanelCreator japaneseWordPanelCreator = new JapaneseWordPanelCreator(
-						applicationWindow);
+						applicationWindow, false);
 				panelForElementType = createSearchByKanaAndKanjiWritingsPanel(
 						japaneseWordPanelCreator,
 						(JapaneseWordWritingsChecker) elementData
@@ -157,7 +157,7 @@ public class SearchWordPanel<Word extends ListElement>
 
 		japaneseWordPanelCreator.addKanaAndKanjiWritingRow(
 				JapaneseWordInformation.getInitializer().initializeElement(),
-				panel, null, ListPanelViewMode.ADD);
+				panel, null, ListPanelViewMode.ADD, false);
 
 		writingsChecker.setJapaneseWordPanelCreator(japaneseWordPanelCreator);
 		return panel;
