@@ -18,6 +18,7 @@ import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.HttpCookie;
 import java.net.URI;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,14 +107,19 @@ public class ProblematicKanjiDisplayer
 		return false;
 	}
 
-	public List<String> getCookieHeaders() {
-		return cookieManager.getCookieStore().getCookies().stream()
-				.map(cookie -> cookie.toString()).collect(Collectors.toList());
+	public String getKanjiKoohiCookieHeader() {
+		List<HttpCookie> cookies = cookieManager.getCookieStore().getCookies();
+		for (HttpCookie cookie : cookies) {
+			if (cookie.getName().equalsIgnoreCase("koohii")) {
+				return cookie.toString();
+			}
+		}
+		return "";
 	}
 
-	public void setCookies(List<String> cookiesHeaders) throws IOException {
+	public void setCookies(String cookieHeader) throws IOException {
 		Map<String, List<String>> headers = new LinkedHashMap<>();
-		headers.put("Set-Cookie", cookiesHeaders);
+		headers.put("Set-Cookie", Arrays.asList(cookieHeader));
 		cookieManager.put(URI.create(KANJI_KOOHI_LOGIN_PAGE), headers);
 	}
 

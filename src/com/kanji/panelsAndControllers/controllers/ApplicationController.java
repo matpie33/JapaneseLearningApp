@@ -265,11 +265,11 @@ public class ApplicationController implements ApplicationStateManager {
 		}
 		loadingAndSaving.setFileToSave(fileToSave);
 		try {
-			if (savingInformation.getKanjiKoohiCookiesHeaders() != null) {
+			if (savingInformation.getKanjiKoohiiCookiesHeaders() != null) {
 				//TODO this should go to application controller's "restore
 				// state method along with filling the mylists"
 				problematicKanjiDisplayer.setCookies(
-						savingInformation.getKanjiKoohiCookiesHeaders());
+						savingInformation.getKanjiKoohiiCookiesHeaders());
 			}
 		}
 		catch (IOException e) {
@@ -564,11 +564,11 @@ public class ApplicationController implements ApplicationStateManager {
 				getProblematicKanjis(), getProblematicJapaneseWords(),
 				japaneseWords.getWords(),
 				japaneseWordsRepeatingDates.getWords());
-		List<String> kanjiKoohiCookiesHeaders = problematicKanjiDisplayer
-				.getCookieHeaders();
+		String kanjiKoohiCookiesHeaders = problematicKanjiDisplayer
+				.getKanjiKoohiCookieHeader();
 		if (!kanjiKoohiCookiesHeaders.isEmpty()) {
 			savingInformation
-					.setKanjiKoohiCookiesHeaders(kanjiKoohiCookiesHeaders);
+					.setKanjiKoohiiCookiesHeaders(kanjiKoohiCookiesHeaders);
 		}
 		return savingInformation;
 	}
