@@ -23,6 +23,7 @@ import com.kanji.list.myList.ListPropertyChangeHandler;
 import com.kanji.utilities.CommonGuiElementsMaker;
 import com.kanji.utilities.CommonListElements;
 import com.kanji.windows.ApplicationWindow;
+import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -40,12 +41,14 @@ public class JapaneseWordPanelCreator {
 	private Map<JTextComponent, ListElementPropertyManager<?, JapaneseWordInformation>> propertyManagersOfTextFields = new HashMap<>();
 	private ApplicationWindow applicationWindow;
 	private JapaneseWordWritingsChecker japaneseWordWritingsChecker;
+	private DialogWindow parentDialog;
 
 	public JapaneseWordPanelCreator(ApplicationWindow applicationWindow,
-			boolean isKanaRequired) {
+			boolean isKanaRequired, DialogWindow parentDialog) {
 		this.applicationWindow = applicationWindow;
 		japaneseWordWritingsChecker = new JapaneseWordWritingsChecker(this,
 				isKanaRequired);
+		this.parentDialog = parentDialog;
 	}
 
 	public MainPanel createPanelInGivenMode(
@@ -70,7 +73,7 @@ public class JapaneseWordPanelCreator {
 		wordMeaningText.addFocusListener(
 				new ListPropertyChangeHandler<>(japaneseWord,
 						applicationWindow.getApplicationController()
-								.getJapaneseWords(), applicationWindow,
+								.getJapaneseWords(), parentDialog,
 						new JapaneseWordMeaningChecker(),
 						ExceptionsMessages.JAPANESE_WORD_MEANING_ALREADY_DEFINED,
 						true));
@@ -253,7 +256,7 @@ public class JapaneseWordPanelCreator {
 		textComponent.addFocusListener(
 				new ListPropertyChangeHandler<>(japaneseWordInformation,
 						applicationWindow.getApplicationController()
-								.getJapaneseWords(), applicationWindow,
+								.getJapaneseWords(), parentDialog,
 						japaneseWordWritingsChecker, ExceptionsMessages.
 						JAPANESE_WORD_WRITINGS_ALREADY_DEFINED, defaultValue,
 						kanaRequired));

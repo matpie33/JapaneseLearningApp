@@ -20,18 +20,21 @@ public class InsertJapaneseWordPanel extends AbstractPanelWithHotkeysInfo {
 
 	private InsertJapaneseWordController controller;
 	private JapaneseWordPanelCreator japaneseWordPanelCreator;
+	private ApplicationWindow applicationWindow;
 
 	public InsertJapaneseWordPanel(RowInJapaneseWordInformations row,
 			MyList<JapaneseWordInformation> list,
 			ApplicationWindow applicationWindow) {
 		controller = new InsertJapaneseWordController(row, list,
 				applicationWindow.getApplicationController());
-		japaneseWordPanelCreator = new JapaneseWordPanelCreator(
-				applicationWindow, true);
+		this.applicationWindow = applicationWindow;
+
 	}
 
 	@Override public void createElements() {
 
+		japaneseWordPanelCreator = new JapaneseWordPanelCreator(
+				applicationWindow, true, parentDialog);
 		controller.setParentDialog(parentDialog);
 
 		MainPanel addWordPanel = japaneseWordPanelCreator

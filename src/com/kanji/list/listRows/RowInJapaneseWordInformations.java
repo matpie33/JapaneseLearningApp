@@ -10,11 +10,10 @@ import com.kanji.windows.ApplicationWindow;
 public class RowInJapaneseWordInformations
 		implements ListRowMaker<JapaneseWordInformation> {
 	private JapaneseWordPanelCreator japaneseWordPanelCreator;
-	private ApplicationWindow applicationWindow;
 
 	public RowInJapaneseWordInformations(ApplicationWindow applicationWindow) {
 		japaneseWordPanelCreator = new JapaneseWordPanelCreator(
-				applicationWindow, true);
+				applicationWindow, true, applicationWindow);
 	}
 
 	@Override

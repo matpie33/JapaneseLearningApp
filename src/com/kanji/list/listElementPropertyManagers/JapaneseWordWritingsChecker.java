@@ -68,24 +68,27 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 	}
 
 	private boolean kanaWritingsAreEqualAndKanjiWritingsContainAllOtherKanjiWritings(
-			String kanaWriting1, String kanaWriting2,
-			List<String> kanjiWritings1, List<String> kanjiWritings2) {
+			String searchedKana, String existingWordKana,
+			List<String> searchedKanji, List<String> existingKanjiWritings) {
 		//TODO move the logic checking if textfield is empty (default value or no value) to one place and use it everywhere, now its scattered
-		if (!isKanaWritingEmpty(kanaWriting1) && areKanjiWritingsEmpty(
-				kanjiWritings1)) {
-			return kanaWriting1.equals(kanaWriting2);
+		if (!isKanaWritingEmpty(searchedKana) && !isKanaWritingEmpty(
+				existingWordKana)) {
+			return searchedKana.equals(existingWordKana);
 		}
-		else if (isKanaWritingEmpty(kanaWriting1) && !areKanjiWritingsEmpty(
-				kanjiWritings1)) {
-			return !kanjiWritings2.isEmpty() && (
-					kanjiWritings1.containsAll(kanjiWritings2) || kanjiWritings2
-							.containsAll(kanjiWritings1));
+		else if (isKanaWritingEmpty(searchedKana) && !areKanjiWritingsEmpty(
+				searchedKanji)) {
+			return !existingKanjiWritings.isEmpty() && (
+					searchedKanji.containsAll(existingKanjiWritings)
+							|| existingKanjiWritings
+							.containsAll(searchedKanji));
 		}
-		else if (!isKanaWritingEmpty(kanaWriting1) && !areKanjiWritingsEmpty(
-				kanjiWritings1)) {
-			return kanaWriting1.equals(kanaWriting2) && !kanjiWritings2
-					.isEmpty() && (kanjiWritings1.containsAll(kanjiWritings2)
-					|| kanjiWritings2.containsAll(kanjiWritings1));
+		else if (!isKanaWritingEmpty(searchedKana) && !areKanjiWritingsEmpty(
+				searchedKanji)) {
+			return searchedKana.equals(existingWordKana) && !existingKanjiWritings
+					.isEmpty() && (
+					searchedKanji.containsAll(existingKanjiWritings)
+							|| existingKanjiWritings
+							.containsAll(searchedKanji));
 		}
 		else
 			return false;

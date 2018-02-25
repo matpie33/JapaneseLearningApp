@@ -4,6 +4,7 @@ import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.model.WordInMyListExistence;
 import com.kanji.windows.ApplicationWindow;
+import com.kanji.windows.DialogWindow;
 
 import javax.swing.text.JTextComponent;
 import java.awt.*;
@@ -14,7 +15,7 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 		implements FocusListener {
 
 	private MyList<PropertyHolder> list;
-	private ApplicationWindow applicationWindow;
+	private DialogWindow dialogWindow;
 	private Property propertyBeingModified;
 	private ListElementPropertyManager<Property, PropertyHolder> listElementPropertyManager;
 	private String propertyDefinedExceptionMessage;
@@ -23,11 +24,11 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	private boolean isRequiredField;
 
 	public ListPropertyChangeHandler(PropertyHolder propertyHolder,
-			MyList<PropertyHolder> list, ApplicationWindow applicationWindow,
+			MyList<PropertyHolder> list, DialogWindow dialogWindow,
 			ListElementPropertyManager<Property, PropertyHolder> listElementPropertyManager,
 			String propertyDefinedExceptionMessage, boolean isRequiredField) {
 		this.list = list;
-		this.applicationWindow = applicationWindow;
+		this.dialogWindow = dialogWindow;
 		this.listElementPropertyManager = listElementPropertyManager;
 		this.propertyDefinedExceptionMessage = propertyDefinedExceptionMessage;
 		this.propertyHolder = propertyHolder;
@@ -35,11 +36,11 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	}
 
 	public ListPropertyChangeHandler(PropertyHolder propertyHolder,
-			MyList<PropertyHolder> list, ApplicationWindow applicationWindow,
+			MyList<PropertyHolder> list, DialogWindow dialogWindow,
 			ListElementPropertyManager<Property, PropertyHolder> listElementPropertyManager,
 			String propertyDefinedExceptionMessage, String defaultValue,
 			boolean isRequiredField) {
-		this(propertyHolder, list, applicationWindow,
+		this(propertyHolder, list, dialogWindow,
 				listElementPropertyManager, propertyDefinedExceptionMessage,
 				isRequiredField);
 		this.defaultValue = defaultValue;
@@ -68,7 +69,7 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 		if (propertyNewValue == null && !elem.getText().equals(defaultValue)) {
 			String modifiedProperty = propertyBeingModified.toString();
 			elem.setForeground(Color.RED);
-			applicationWindow.showMessageDialog(
+			dialogWindow.showMessageDialog(
 					listElementPropertyManager.getInvalidPropertyReason());
 			elem.setText(modifiedProperty.replace("[", "").replace("]", ""));
 			elem.selectAll();
@@ -88,7 +89,7 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 			elem.setText(propertyBeingModified.toString().replace("[", "")
 					.replace("]", ""));
 			elem.selectAll();
-			applicationWindow.showMessageDialog(
+			dialogWindow.showMessageDialog(
 					String.format(propertyDefinedExceptionMessage,
 							propertyNewValue, list.get1BasedRowNumberOfWord(
 									wordInMyListExistence.getWord())));
