@@ -56,17 +56,11 @@ public class JapaneseWordsFileReader {
 			if (stringInKanji.contains("-")) {
 				stringInKanji = stringInKanji.replace("-", "");
 			}
-			PartOfSpeech partOfSpeech;
-			if (stringInKana.contains("+する") || stringInKanji.contains("+する")
-					|| (stringInKana.contains("rzeczownik") && !stringInKana
-					.contains("rzeczownik +")) || stringInKana.contains("+の")) {
-				stringInKana = removeFromString(stringInKana, "+する",
-						"rzeczownik");
-				stringInKanji = removeFromString(stringInKanji, "+する",
-						"rzeczownik");
-				partOfSpeech = PartOfSpeech.NOUN;
-			}
-			else if (stringInKana.contains("+な") || stringInKanji.contains("+な")
+			//TODO refactor - use regexes (separator + particle) where separator
+			// is (+ , 、) and particle is (と、する、に）etc
+			PartOfSpeech partOfSpeech = null;
+
+			if (stringInKana.contains("+な") || stringInKanji.contains("+な")
 					|| meaning.contains(("+ な"))
 					|| lastCharacterOf(stringInKanji) == '的') {
 				stringInKana = removeFromString(stringInKana, "+な");
@@ -74,8 +68,27 @@ public class JapaneseWordsFileReader {
 				meaning = removeFromString(meaning, "+ な");
 				partOfSpeech = PartOfSpeech.NA_ADJECTIVE;
 			}
+			if (stringInKana.contains("+する") || stringInKana.contains("、する")
+					|| stringInKanji.contains("+する") || stringInKanji
+					.contains("、する") || (stringInKana.contains("rzeczownik")
+					&& !stringInKana.contains("rzeczownik +")) || stringInKana
+					.contains("+の")) {
+				stringInKana = removeFromString(stringInKana, "+する",
+						"rzeczownik");
+				stringInKanji = removeFromString(stringInKanji, "+する",
+						"rzeczownik");
+				stringInKana = removeFromString(stringInKana, "、する",
+						"rzeczownik");
+				stringInKanji = removeFromString(stringInKanji, "、する",
+						"rzeczownik");
+				if (partOfSpeech == null) {
+					partOfSpeech = PartOfSpeech.NOUN;
+				}
+
+			}
 			else if (("" + lastCharacterOfKanjiOrKanaIfKanjiIsEmpty(
-					stringInKanji, stringInKana)).matches(VERB_ENDINGS)
+					stringInKanji.split("、|,")[0],
+					stringInKana.split("、|,")[0])).matches(VERB_ENDINGS)
 					|| getLast2CharactersOfWord(stringInKana).equals("ない")) {
 				partOfSpeech = PartOfSpeech.VERB;
 			}
@@ -93,11 +106,12 @@ public class JapaneseWordsFileReader {
 			else {
 				partOfSpeech = PartOfSpeech.EXPRESSION;
 			}
+
 			setAlternativeWritings(japaneseWordInformation, stringInKanji,
 					stringInKana, partOfSpeech);
 			japaneseWordInformation.setWordMeaning(meaning);
+
 			list.add(japaneseWordInformation);
-			System.out.print(japaneseWordInformation);
 		}
 		return list;
 	}
@@ -175,8 +189,13 @@ public class JapaneseWordsFileReader {
 						kanjiWritings[i + difference]);
 			}
 		}
-		else if (kanaWritings.length < kanjiWritings.length) {
-			//TODO finish and retest
+		else if (kanjiWritings.length < kanaWritings.length) {
+			if (kanjiWritings.length > 1) {
+				throw new IllegalStateException("Should not happen");
+			}
+			for (String s : kanaWritings) {
+				japaneseWordInformation.addWritings(s, kanjiWritings[0]);
+			}
 		}
 	}
 
@@ -196,6 +215,9 @@ public class JapaneseWordsFileReader {
 		boolean foundVerbConjugationType = false;
 		for (int i = 1; i < splittedWords.length; i++) {
 			String nextWord = splittedWords[i];
+			if (nextWord.equals("な")) {
+				continue;
+			}
 			char lastCharacterOfNextWord = lastCharacterOf(nextWord);
 			if (partOfSpeech.equals(PartOfSpeech.VERB) && !isLastCharacterKanji
 					&& lastCharacterOfNextWord

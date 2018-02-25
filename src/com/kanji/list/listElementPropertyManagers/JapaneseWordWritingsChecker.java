@@ -71,11 +71,7 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 			String searchedKana, String existingWordKana,
 			List<String> searchedKanji, List<String> existingKanjiWritings) {
 		//TODO move the logic checking if textfield is empty (default value or no value) to one place and use it everywhere, now its scattered
-		if (!isKanaWritingEmpty(searchedKana) && !isKanaWritingEmpty(
-				existingWordKana)) {
-			return searchedKana.equals(existingWordKana);
-		}
-		else if (isKanaWritingEmpty(searchedKana) && !areKanjiWritingsEmpty(
+		if (isKanaWritingEmpty(searchedKana) && !areKanjiWritingsEmpty(
 				searchedKanji)) {
 			return !existingKanjiWritings.isEmpty() && (
 					searchedKanji.containsAll(existingKanjiWritings)
