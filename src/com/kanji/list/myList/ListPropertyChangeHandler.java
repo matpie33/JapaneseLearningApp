@@ -37,9 +37,11 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	public ListPropertyChangeHandler(PropertyHolder propertyHolder,
 			MyList<PropertyHolder> list, ApplicationWindow applicationWindow,
 			ListElementPropertyManager<Property, PropertyHolder> listElementPropertyManager,
-			String propertyDefinedExceptionMessage, String defaultValue, boolean isRequiredField) {
+			String propertyDefinedExceptionMessage, String defaultValue,
+			boolean isRequiredField) {
 		this(propertyHolder, list, applicationWindow,
-				listElementPropertyManager, propertyDefinedExceptionMessage, isRequiredField);
+				listElementPropertyManager, propertyDefinedExceptionMessage,
+				isRequiredField);
 		this.defaultValue = defaultValue;
 	}
 
@@ -51,13 +53,14 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 				.validateInputAndConvertToProperty(textElement);
 	}
 
-	private boolean isTextFieldEmpty (JTextComponent textComponent){
-		return textComponent.getText().isEmpty() || textComponent.getText().equals(defaultValue);
+	private boolean isTextFieldEmpty(JTextComponent textComponent) {
+		return textComponent.getText().isEmpty() || textComponent.getText()
+				.equals(defaultValue);
 	}
 
 	public void focusLost(FocusEvent e) {
 		JTextComponent elem = (JTextComponent) e.getSource();
-		if (!isRequiredField && isTextFieldEmpty(elem)){
+		if (!isRequiredField && isTextFieldEmpty(elem)) {
 			return;
 		}
 		Property propertyNewValue = listElementPropertyManager
