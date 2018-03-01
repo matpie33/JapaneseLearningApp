@@ -248,6 +248,7 @@ public class JapaneseWordPanelCreator {
 
 		rootPanel.addElementsInColumnStartingFromColumn(1,
 				addKanaAndKanjiWritingsButton);
+		SwingUtilities.invokeLater(()->kanaWritingText.requestFocusInWindow());
 	}
 
 	private void addFocusLostInputValidation(JTextComponent textComponent,

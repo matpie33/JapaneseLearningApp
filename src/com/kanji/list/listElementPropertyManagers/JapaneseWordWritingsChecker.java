@@ -16,14 +16,14 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 	//TODO I hate to create a class which is veeery similar to each other for every word element
 	private JapaneseWordPanelCreator japaneseWordPanelCreator;
 	private String errorDetails = "";
-	private boolean isKanaRequired;
+	private boolean addingWord; //TODO rename in other places too (from kanaRequired)
 	private static final String DEFAULT_KANJI_INPUT = Prompts.KANJI_TEXT;
 
 	public JapaneseWordWritingsChecker(
 			JapaneseWordPanelCreator japaneseWordPanelCreator,
-			boolean isKanaRequired) {
+			boolean addingWord) {
 		this.japaneseWordPanelCreator = japaneseWordPanelCreator;
-		this.isKanaRequired = isKanaRequired;
+		this.addingWord = addingWord;
 	}
 
 	public void setJapaneseWordPanelCreator(JapaneseWordPanelCreator creator) {
@@ -71,7 +71,12 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 			String searchedKana, String existingWordKana,
 			List<String> searchedKanji, List<String> existingKanjiWritings) {
 		//TODO move the logic checking if textfield is empty (default value or no value) to one place and use it everywhere, now its scattered
-		if (isKanaWritingEmpty(searchedKana) && !areKanjiWritingsEmpty(
+
+		if (!addingWord && searchedKana.equals(existingWordKana)
+				&& areKanjiWritingsEmpty(searchedKanji)) {
+			return true;
+		}
+		else if (isKanaWritingEmpty(searchedKana) && !areKanjiWritingsEmpty(
 				searchedKanji)) {
 			return !existingKanjiWritings.isEmpty() && (
 					searchedKanji.containsAll(existingKanjiWritings)
@@ -80,8 +85,8 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 		}
 		else if (!isKanaWritingEmpty(searchedKana) && !areKanjiWritingsEmpty(
 				searchedKanji)) {
-			return searchedKana.equals(existingWordKana) && !existingKanjiWritings
-					.isEmpty() && (
+			return searchedKana.equals(existingWordKana)
+					&& !existingKanjiWritings.isEmpty() && (
 					searchedKanji.containsAll(existingKanjiWritings)
 							|| existingKanjiWritings
 							.containsAll(searchedKanji));
@@ -105,7 +110,7 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 				foundTextfield = true;
 				String kanaText = valueToConvert.getText();
 
-				if (isKanaRequired && !StringUtilities.wordIsInKana(kanaText)) {
+				if (addingWord && !StringUtilities.wordIsInKana(kanaText)) {
 					errorDetails += String
 							.format(ExceptionsMessages.KANA_WRITING_INCORRECT,
 									kanaText);

@@ -19,5 +19,6 @@ public class Titles {
 	public static final String JAPANESE_REPEATING_LIST = "Powtórki słówek";
 	public static final String PROBLEMATIC_KANJIS = "Kanji do powtórki";
 	public static final String PROBLEMATIC_KANJIS_WINDOW = "Problematyczne kanji";
+	public static final String DUPLICATED_WORDS_PANEL = "Duplicated words panel";
 
 }

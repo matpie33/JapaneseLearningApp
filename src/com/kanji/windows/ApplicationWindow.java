@@ -11,6 +11,7 @@ import com.kanji.list.listElements.KanjiInformation;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listRows.RowInJapaneseWordInformations;
 import com.kanji.list.myList.MyList;
+import com.kanji.model.DuplicatedJapaneseWordInformation;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.panelsAndControllers.panels.*;
@@ -23,6 +24,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -203,6 +205,14 @@ import java.util.Set;
 		}
 		applicationController
 				.switchStateManager(activeProblematicWordsController);
+	}
+
+	public void showDuplicatedJapaneseWordsDialog(
+			List<DuplicatedJapaneseWordInformation> duplicatedJapaneseWordInformationList) {
+		DuplicatedImportedJapaneseWordsPanel dup = new DuplicatedImportedJapaneseWordsPanel(
+				this, duplicatedJapaneseWordInformationList);
+		createDialog(dup, Titles.DUPLICATED_WORDS_PANEL, false,
+				Position.CENTER);
 	}
 
 	public LoadingPanel showProgressDialog() {

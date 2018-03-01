@@ -190,11 +190,16 @@ public class ApplicationController implements ApplicationStateManager {
 			return;
 		}
 		try {
-			List<JapaneseWordInformation> japaneseWords = japaneseWordsFileReader
-					.readFiles(fileChooser.getSelectedFiles());
-			for (JapaneseWordInformation japaneseWordInformation : japaneseWords) {
+			japaneseWordsFileReader.readFiles(fileChooser.getSelectedFiles());
+			this.japaneseWords.cleanWords();
+
+			for (JapaneseWordInformation japaneseWordInformation : japaneseWordsFileReader
+					.getNewWords()) {
 				this.japaneseWords.addWord(japaneseWordInformation);
 			}
+
+			parent.showDuplicatedJapaneseWordsDialog(
+					japaneseWordsFileReader.getDuplicatedWords());
 
 		}
 		catch (Exception e) {

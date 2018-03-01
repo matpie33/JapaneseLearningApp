@@ -6,6 +6,8 @@ import com.kanji.constants.enums.VerbConjugationType;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.exception.IncorrectJapaneseWordsListInputException;
 import com.kanji.list.listElements.JapaneseWordInformation;
+import com.kanji.list.listElements.ListElement;
+import com.kanji.model.DuplicatedJapaneseWordInformation;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -26,18 +28,20 @@ public class JapaneseWordsFileReader {
 	private List<String> meaningsList = new ArrayList<>();
 	private List<String> repeatingRangesList = new ArrayList<>();
 
-	public List<JapaneseWordInformation> readFiles(File[] files)
+	private List<JapaneseWordInformation> newWords = new ArrayList<>();
+	private List<DuplicatedJapaneseWordInformation> duplicatedWords = new ArrayList<>();
+
+	public void readFiles(File[] files)
 			throws IOException, IncorrectJapaneseWordsListInputException {
 		for (File file : files) {
 			readFile(file);
 		}
 		checkForErrors();
-		return changeStringsToJapaneseWordInformation();
+		changeStringsToJapaneseWordInformation();
 
 	}
 
-	private List<JapaneseWordInformation> changeStringsToJapaneseWordInformation() {
-		List<JapaneseWordInformation> list = new ArrayList<>();
+	private void changeStringsToJapaneseWordInformation() {
 		for (int i = 0; i < wordsInKanaList.size(); i++) {
 			JapaneseWordInformation japaneseWordInformation = JapaneseWordInformation
 					.getInitializer().initializeElement();
@@ -111,9 +115,27 @@ public class JapaneseWordsFileReader {
 					stringInKana, partOfSpeech);
 			japaneseWordInformation.setWordMeaning(meaning);
 
-			list.add(japaneseWordInformation);
+			int potentialDuplicateIndex = searchForElementInList(newWords,
+					japaneseWordInformation);
+			if (potentialDuplicateIndex != -1) {
+				duplicatedWords.add(new DuplicatedJapaneseWordInformation(
+						japaneseWordInformation, potentialDuplicateIndex));
+			}
+			else {
+				newWords.add(japaneseWordInformation);
+			}
+
 		}
-		return list;
+	}
+
+	private int searchForElementInList(List<? extends ListElement> list,
+			ListElement o) {
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i).isSameAs(o)) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	private String checkIfWordTakesParticles(String wordRepresentation,
@@ -337,6 +359,14 @@ public class JapaneseWordsFileReader {
 		}
 		in.close();
 
+	}
+
+	public List<JapaneseWordInformation> getNewWords() {
+		return newWords;
+	}
+
+	public List<DuplicatedJapaneseWordInformation> getDuplicatedWords() {
+		return duplicatedWords;
 	}
 
 }
