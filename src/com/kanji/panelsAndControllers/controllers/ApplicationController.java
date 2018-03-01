@@ -231,8 +231,7 @@ public class ApplicationController implements ApplicationStateManager {
 		List<RepeatingInformation> repeatingInformations = words
 				.getRepeatingInformations();
 		Set<Integer> problematicKanjis = words.getProblematicKanjis();
-		setProblematicWordsAndUpdateInformation(
-				convertIdsToKanjiInformations(problematicKanjis));
+
 		kanjiList.cleanWords();
 		kanjiRepeatingDates.cleanWords();
 		for (KanjiInformation kanjiInformation : kanjiInformations) {
@@ -241,6 +240,8 @@ public class ApplicationController implements ApplicationStateManager {
 		for (RepeatingInformation repeatingInformation : repeatingInformations) {
 			kanjiRepeatingDates.addWord(repeatingInformation);
 		}
+		setProblematicWordsAndUpdateInformation(
+				convertIdsToKanjiInformations(problematicKanjis));
 	}
 
 	public Set<KanjiInformation> convertIdsToKanjiInformations(
