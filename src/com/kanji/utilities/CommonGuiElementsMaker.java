@@ -2,6 +2,7 @@ package com.kanji.utilities;
 
 import com.guimaker.enums.FillType;
 import com.guimaker.options.ComponentOptions;
+import com.guimaker.options.ScrollPaneOptions;
 import com.guimaker.options.TextAreaOptions;
 import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiMaker;
@@ -107,6 +108,8 @@ public class CommonGuiElementsMaker {
 			JTextComponent kanjiAndKanaWritings = CommonGuiElementsMaker
 					.createTextField(
 							StringUtilities.concatenateStrings(writings));
+			kanjiAndKanaWritings
+					.setFont(kanjiAndKanaWritings.getFont().deriveFont(30f));
 			textComponents.add(kanjiAndKanaWritings);
 		}
 		return textComponents;
@@ -121,6 +124,8 @@ public class CommonGuiElementsMaker {
 				new ComponentOptions().text(Labels.WRITING_WAYS_IN_JAPANESE)
 						.foregroundColor(labelColor));
 		boolean firstTextField = true;
+		MainPanel panelWrapping = new MainPanel(null);
+
 		for (JTextComponent kanaAndKanjiTextfield : kanaAndKanjiTextfields) {
 			JComponent[] components;
 			int columnNumber;
@@ -133,11 +138,16 @@ public class CommonGuiElementsMaker {
 				components = new JComponent[] { kanaAndKanjiTextfield };
 				columnNumber = firstColumnIndex + 1;
 			}
-			panel.addElementsInColumnStartingFromColumn(
+			panelWrapping.addElementsInColumnStartingFromColumn(
 					Arrays.asList(components), FillType.HORIZONTAL,
 					columnNumber, components);
 			firstTextField = false;
 		}
+		JScrollPane scrollPane = GuiMaker.createScrollPane(
+				new ScrollPaneOptions()
+						.componentToWrap(panelWrapping.getPanel()));
+		panel.addElementsInColumnStartingFromColumn(scrollPane, 1,
+				FillType.BOTH, scrollPane);
 	}
 
 }

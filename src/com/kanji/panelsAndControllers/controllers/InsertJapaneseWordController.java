@@ -2,6 +2,7 @@ package com.kanji.panelsAndControllers.controllers;
 
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.strings.ExceptionsMessages;
+import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordWritingsChecker;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.JapaneseWordInformation;
@@ -69,7 +70,8 @@ public class InsertJapaneseWordController {
 
 		}
 		JapaneseWordWritingsChecker writingsChecker = new JapaneseWordWritingsChecker(
-				rowInJapaneseWordInformation.getJapaneseWordPanelCreator(), true);
+				rowInJapaneseWordInformation.getJapaneseWordPanelCreator(),
+				true);
 		for (Map.Entry<JTextComponent, List<JTextComponent>> entry : kanaToKanjiWritings
 				.entrySet()) {
 			JTextComponent kanaText = entry.getKey();
@@ -90,7 +92,31 @@ public class InsertJapaneseWordController {
 			japaneseWordInformation.setPartOfSpeech(partOfSpeechObject);
 			boolean isItNewWord = addWordToList(japaneseWordInformation);
 			if (isItNewWord) {
+				clearTextfieldsAndFocusFirstOne(textsWithPropertyManagers,
+						kanaToKanjiWritings);
+
 				applicationController.saveProject();
+			}
+		}
+	}
+
+	private void clearTextfieldsAndFocusFirstOne(
+			Map<JTextComponent, ListElementPropertyManager<?, JapaneseWordInformation>> textsWithPropertyManagers,
+			Map<JTextComponent, List<JTextComponent>> kanaToKanjiWritings) {
+		//TODO seems not the best idea, try to use one map
+		for (Map.Entry<JTextComponent, ListElementPropertyManager<?, JapaneseWordInformation>> propertyManagerEntry : textsWithPropertyManagers
+				.entrySet()) {
+			propertyManagerEntry.getKey().setText("");
+			if (propertyManagerEntry.getValue().getClass()
+					.equals(JapaneseWordMeaningChecker.class)) {
+				SwingUtilities.invokeLater(() -> propertyManagerEntry.getKey()
+						.requestFocusInWindow());
+			}
+		}
+		for (Map.Entry<JTextComponent, List<JTextComponent>> kanaToKanjiMap : kanaToKanjiWritings
+				.entrySet()) {
+			for (JTextComponent textComponent : kanaToKanjiMap.getValue()) {
+				textComponent.setText("");
 			}
 		}
 	}
@@ -101,7 +127,7 @@ public class InsertJapaneseWordController {
 		if (!doesWordExistInMyList.exists()) {
 			list.addWord(word);
 			list.scrollToBottom();
-
+			//TODO remove from this method show message - it should just add word and return boolean
 		}
 		else {
 			parentDialog.showMessageDialog(
