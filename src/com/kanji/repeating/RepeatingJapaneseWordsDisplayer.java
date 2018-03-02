@@ -94,10 +94,18 @@ public class RepeatingJapaneseWordsDisplayer
 		fullWordInformationPanel.clear();
 		partOfSpeechText
 				.setText(kanjiInformation.getPartOfSpeech().getPolishMeaning());
+		JLabel meaning = GuiMaker.createLabel(new ComponentOptions());
+		meaning.setText(Labels.WORD_MEANING);
+		JTextComponent meaningText = CommonGuiElementsMaker
+				.createTextField(kanjiInformation.getWordMeaning());
+		fullWordInformationPanel
+				.addElementsInColumnStartingFromColumn(meaningText, 0,
+						FillType.HORIZONTAL, meaning, meaningText);
 		fullWordInformationPanel
 				.addElementsInColumnStartingFromColumn(partOfSpeechText, 0,
 						FillType.HORIZONTAL, partOfSpeechLabel,
 						partOfSpeechText);
+
 		if (kanjiInformation.hasAdditionalVerbConjugationInformation()) {
 			fullWordInformationPanel
 					.addElementsInColumnStartingFromColumn(verbConjugationText,
