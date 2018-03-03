@@ -29,8 +29,7 @@ import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -155,7 +154,7 @@ public class SearchWordPanel<Word extends ListElement>
 
 		MainPanel panel = new MainPanel(null, true);
 
-		japaneseWordPanelCreator.addKanaAndKanjiWritingRow(
+		japaneseWordPanelCreator.createAndAddKanaAndKanjiRowGuiElements(
 				JapaneseWordInformation.getInitializer().initializeElement(),
 				panel, null, ListPanelViewMode.ADD, false);
 
