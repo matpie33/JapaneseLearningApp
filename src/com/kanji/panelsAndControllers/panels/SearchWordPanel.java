@@ -28,8 +28,10 @@ import com.kanji.windows.ApplicationWindow;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,6 +69,7 @@ public class SearchWordPanel<Word extends ListElement>
 
 		createPanelForElementType();
 		JComboBox<String> comboBox = createCombobox();
+		addHotkeyForSwitchingComboboxValue(comboBox);
 
 		MainPanel searchPanel = new MainPanel(null);
 
@@ -87,6 +90,23 @@ public class SearchWordPanel<Word extends ListElement>
 		// use northwest
 		setNavigationButtons(cancel, previous, next);
 
+	}
+
+	private void addHotkeyForSwitchingComboboxValue(JComboBox comboBox) {
+		AbstractAction action = new AbstractAction() {
+			@Override public void actionPerformed(ActionEvent e) {
+				if (comboBox.getSelectedIndex() < comboBox.getItemCount() - 1) {
+					comboBox.setSelectedIndex(comboBox.getSelectedIndex() + 1);
+				}
+				else {
+					comboBox.setSelectedIndex(0);
+				}
+
+			}
+		};
+		addHotkey(KeyModifiers.CONTROL, KeyEvent.VK_SPACE, action,
+				mainPanel.getPanel(),
+				HotkeysDescriptions.SWITCH_SEARCH_CRITERIA);
 	}
 
 	private void createPanelForElementType() {

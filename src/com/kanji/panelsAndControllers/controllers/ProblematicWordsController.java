@@ -153,6 +153,7 @@ public class ProblematicWordsController<Element extends ListElement>
 		ProblematicKanjisState<Element> information = new ProblematicKanjisState<>(
 				wordsToReviewList.getHighlightedWords(),
 				wordsToReviewList.getNotHighlightedWords());
+
 		SavingInformation savingInformation = applicationController
 				.getApplicationState();
 		savingInformation.setProblematicKanjisState(information,
@@ -160,6 +161,7 @@ public class ProblematicWordsController<Element extends ListElement>
 						.equals(KanjiInformation.class) ?
 						ApplicationSaveableState.REVIEWING_PROBLEMATIC_KANJIS :
 						ApplicationSaveableState.REVIEWING_PROBLEMATIC_JAPANESE_WORDS);
+
 		return savingInformation;
 	}
 

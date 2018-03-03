@@ -61,6 +61,15 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 		startingController = new StartingController(this);
 	}
 
+	public JSplitPane getSplitPaneFor (Class listClass){
+		if (listClass.equals(KanjiInformation.class)){
+			return kanjiRepeatingPanel.getListsSplitPane();
+		}
+		else{
+			return japaneseWordsRepeatingPanel.getListsSplitPane();
+		}
+	}
+
 	@Override public void setParentDialog(DialogWindow dialog) {
 		super.setParentDialog(dialog);
 

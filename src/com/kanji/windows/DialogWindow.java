@@ -1,6 +1,7 @@
 package com.kanji.windows;
 
 import com.kanji.constants.strings.Titles;
+import com.kanji.customPositioning.CustomPositioner;
 import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.panelsAndControllers.panels.ConfirmPanel;
 import com.kanji.panelsAndControllers.panels.MessagePanel;
@@ -11,6 +12,7 @@ import java.awt.*;
 public class DialogWindow {
 
 	protected DialogWindow childWindow;
+	protected CustomPositioner customPositioner;
 	private JPanel mainPanel;
 	private DialogWindow parentWindow;
 	private boolean isAccepted;
@@ -18,8 +20,12 @@ public class DialogWindow {
 	private JDialog container;
 	private AbstractPanelWithHotkeysInfo panelType;
 
+	public void setCustomPositioner(CustomPositioner customPositioner) {
+		this.customPositioner = customPositioner;
+	}
+
 	public enum Position {
-		CENTER, LEFT_CORNER, NEXT_TO_PARENT
+		CENTER, LEFT_CORNER, CUSTOM, NEXT_TO_PARENT
 	}
 
 	public DialogWindow(DialogWindow parent) {
@@ -69,6 +75,8 @@ public class DialogWindow {
 			// container.setLocation(parentLocation.x + parentSize.width,
 			// parentLocation.y);
 			break;
+		case CUSTOM:
+			container.setLocation(customPositioner.getPosition());
 		}
 	}
 
@@ -90,6 +98,9 @@ public class DialogWindow {
 		if (!isDialogOfSameType(panelCreator) || childWindowIsClosed()) {
 			panelType = panelCreator;
 			childWindow = new DialogWindow(this);
+			if (position.equals(Position.CUSTOM)) {
+				childWindow.setCustomPositioner(customPositioner);
+			}
 			panelCreator.setParentDialog(childWindow);
 			childWindow.setPosition(position);
 			JPanel panel = panelCreator.createPanel();

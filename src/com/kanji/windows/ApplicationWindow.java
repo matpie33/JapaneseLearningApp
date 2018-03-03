@@ -6,6 +6,7 @@ import com.kanji.constants.enums.SavingStatus;
 import com.kanji.constants.strings.MenuTexts;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Titles;
+import com.kanji.customPositioning.PositionerOnMyList;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.KanjiInformation;
 import com.kanji.list.listElements.ListElement;
@@ -143,6 +144,8 @@ import java.util.Set;
 	public void showInsertDialog(
 			RowInJapaneseWordInformations rowInJapaneseWordInformation,
 			MyList list) {
+		customPositioner = new PositionerOnMyList(
+				getStartingPanel().getSplitPaneFor(list.getListElementClass()));
 		AbstractPanelWithHotkeysInfo panel;
 		if (list.getListElementClass().equals(KanjiInformation.class)) {
 			panel = new InsertKanjiPanel(list, getApplicationController());
@@ -156,12 +159,14 @@ import java.util.Set;
 			throw new RuntimeException("Unknown list word");
 		}
 		createDialog(panel, Titles.INSERT_WORD_DIALOG, false,
-				Position.LEFT_CORNER);
+				Position.CUSTOM);
 	}
 
 	public void showSearchWordDialog(MyList list) {
+		customPositioner = new PositionerOnMyList(
+				getStartingPanel().getSplitPaneFor(list.getListElementClass()));
 		createDialog(new SearchWordPanel(this, list), Titles.WORD_SEARCH_DIALOG,
-				false, Position.LEFT_CORNER);
+				false, Position.CUSTOM);
 	}
 
 	//TODO why some dialogs like problematic and search word are in application window,

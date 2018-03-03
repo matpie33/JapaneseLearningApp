@@ -26,6 +26,10 @@ public class WordsAndRepeatingInformationsPanel
 		this.typeOfWordForRepeating = typeOfWordForRepeating;
 	}
 
+	public JSplitPane getListsSplitPane() {
+		return listsSplitPane;
+	}
+
 	@Override public void createElements() {
 		createSplitPane(wordsList, repeatingList);
 		mainPanel.addRows(
