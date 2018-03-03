@@ -7,7 +7,6 @@ import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.ListPanelViewMode;
-import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.Labels;
@@ -26,7 +25,9 @@ import com.kanji.windows.DialogWindow;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Stream;
@@ -39,7 +40,7 @@ public class JapaneseWordPanelCreator {
 	private JapaneseWordWritingsChecker japaneseWordWritingsChecker;
 	private DialogWindow parentDialog;
 
-	private JComboBox partOfSpeechCombobox;
+	private JTextComponent partOfSpeechCombobox;
 	private JTextComponent wordMeaningText;
 	private JLabel wordMeaningLabel;
 	private JLabel partOfSpeechLabel;
@@ -71,9 +72,7 @@ public class JapaneseWordPanelCreator {
 		partOfSpeechLabel = GuiMaker.createLabel(
 				new ComponentOptions().text(Labels.PART_OF_SPEECH));
 
-		partOfSpeechCombobox = CommonGuiElementsMaker
-				.createComboboxForPartOfSpeech();
-		partOfSpeechCombobox.setSelectedItem(
+		partOfSpeechCombobox = CommonGuiElementsMaker.createTextField(
 				japaneseWord.getPartOfSpeech().getPolishMeaning());
 		if (listPanelViewMode.equals(ListPanelViewMode.VIEW_AND_EDIT)) {
 			wordMeaningLabel.setForeground(Color.WHITE);
@@ -81,15 +80,15 @@ public class JapaneseWordPanelCreator {
 			listElements.getRowNumberLabel().setForeground(Color.WHITE);
 		}
 
-		if (listPanelViewMode.equals(ListPanelViewMode.VIEW_AND_EDIT)) {
-			partOfSpeechCombobox.addItemListener(new ItemListener() {
-				@Override public void itemStateChanged(ItemEvent e) {
-					String newValue = (String) e.getItem();
-					japaneseWord.setPartOfSpeech(PartOfSpeech
-							.getPartOfSpeachByPolishMeaning(newValue));
-				}
-			});
-		}
+//		if (listPanelViewMode.equals(ListPanelViewMode.VIEW_AND_EDIT)) {
+		//			partOfSpeechCombobox.addItemListener(new ItemListener() {
+		//				@Override public void itemStateChanged(ItemEvent e) {
+		//					String newValue = (String) e.getItem();
+		//					japaneseWord.setPartOfSpeech(PartOfSpeech
+		//							.getPartOfSpeachByPolishMeaning(newValue));
+		//				}
+		//			});
+		//		}
 		if (listPanelViewMode.equals(ListPanelViewMode.ADD)) {
 			createKanaAndKanjiRowGuiElements(japaneseWord, addWordPanel, null,
 					listPanelViewMode, kanaRequired);
@@ -242,7 +241,7 @@ public class JapaneseWordPanelCreator {
 					.put(kanaWritingText, japaneseWordWritingsChecker);
 			kanaToKanjiWritingsTextComponents
 					.put(kanaWritingText, kanjiTextComponents);
-			
+
 			MainPanel kanaAndKanjiWritings = new MainPanel(null);
 			kanaAndKanjiWritings.setSkipInsetsForExtremeEdges(true);
 			List<JComponent> elementsInRow = new ArrayList<>();
@@ -399,7 +398,7 @@ public class JapaneseWordPanelCreator {
 		return kanaToKanjiWritingsTextComponents;
 	}
 
-	public JComboBox getPartOfSpeechCombobox() {
+	public JTextComponent getPartOfSpeechCombobox() {
 		return partOfSpeechCombobox;
 	}
 

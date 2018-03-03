@@ -43,7 +43,7 @@ public class InsertJapaneseWordController {
 	private void validateAndAddWordIfValid(
 			Map<JTextComponent, List<JTextComponent>> kanaToKanjiWritings,
 			Map<JTextComponent, ListElementPropertyManager<?, JapaneseWordInformation>> textsWithPropertyManagers,
-			JComboBox partOfSpeech) {
+			JTextComponent partOfSpeech) {
 		JapaneseWordInformation japaneseWordInformation = JapaneseWordInformation
 				.getInitializer().initializeElement();
 		boolean allInputsValid = true;
@@ -88,7 +88,7 @@ public class InsertJapaneseWordController {
 		if (allInputsValid) {
 			PartOfSpeech partOfSpeechObject = PartOfSpeech
 					.getPartOfSpeachByPolishMeaning(
-							(String) partOfSpeech.getSelectedItem());
+							(String) partOfSpeech.getText());
 			japaneseWordInformation.setPartOfSpeech(partOfSpeechObject);
 			boolean isItNewWord = addWordToList(japaneseWordInformation);
 			if (isItNewWord) {
@@ -141,7 +141,7 @@ public class InsertJapaneseWordController {
 	public AbstractAction createActionValidateAndAddWord(
 			Map<JTextComponent, List<JTextComponent>> kanaToKanjiWritings,
 			Map<JTextComponent, ListElementPropertyManager<?, JapaneseWordInformation>> textsWithPropertyManagers,
-			JComboBox partOfSpeech) {
+			JTextComponent partOfSpeech) {
 		return new AbstractAction() {
 			@Override public void actionPerformed(ActionEvent e) {
 				validateAndAddWordIfValid(kanaToKanjiWritings,
