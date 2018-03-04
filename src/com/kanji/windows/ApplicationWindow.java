@@ -61,6 +61,7 @@ import java.util.Set;
 				ApplicationPanels.REPEATING_PANEL.getPanelName());
 
 		setWindowProperties();
+
 	}
 
 	public static Font getKanjiFont() {
@@ -82,6 +83,8 @@ import java.util.Set;
 		container.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		container.setVisible(true);
 		container.addWindowListener(createClosingAdapter());
+		container.setExtendedState(
+				container.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 	}
 
 	private WindowAdapter createClosingAdapter() {

@@ -4,6 +4,7 @@ import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.ComponentType;
 import com.guimaker.enums.FillType;
+import com.guimaker.panels.ExpandablePanel;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRow;
@@ -27,7 +28,7 @@ import java.util.Map;
 
 public abstract class AbstractPanelWithHotkeysInfo {
 	protected MainPanel mainPanel;
-	private MainPanel hotkeysPanel;
+	private ExpandablePanel hotkeysPanel;
 	DialogWindow parentDialog;
 	private int hotkeysPanelIndex;
 	private AbstractButton[] navigationButtons;
@@ -71,12 +72,9 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	}
 
 	private void createHotkeysPanel() {
-		hotkeysPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
+		hotkeysPanel = new ExpandablePanel(BasicColors.VERY_LIGHT_BLUE,
+				Titles.HOTKEYS);
 		hotkeysPanelIndex = -1;
-		JLabel title = new JLabel(Titles.HOTKEYS);
-		title.setForeground(BasicColors.VERY_BLUE);
-		hotkeysPanel.addRows(
-				SimpleRowBuilder.createRow(FillType.NONE, Anchor.WEST, title));
 	}
 
 	private void addHotkeysPanel() {
@@ -166,7 +164,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 		}
 		JLabel hotkeyInfo = new JLabel(
 				createInformationAboutHotkey(hotkey, hotkeyDescription));
-		hotkeysPanel.addRows(
+		hotkeysPanel.createRow(
 				SimpleRowBuilder.createRow(FillType.HORIZONTAL, hotkeyInfo));
 	}
 
