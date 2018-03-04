@@ -39,10 +39,12 @@ public class RowInKanjiInformations implements ListRowMaker<KanjiInformation> {
 		int ID = kanji.getKanjiID();
 		JTextComponent wordTextArea = CommonGuiElementsMaker
 				.createKanjiWordInput(text);
+
 		wordTextArea.addFocusListener(new ListPropertyChangeHandler<>(kanji,
 				applicationWindow.getApplicationController().getKanjiList(),
 				applicationWindow, new KanjiKeywordChecker(),
-				ExceptionsMessages.KANJI_KEYWORD_ALREADY_DEFINED_EXCEPTION, true));
+				ExceptionsMessages.KANJI_KEYWORD_ALREADY_DEFINED_EXCEPTION,
+				true));
 		JTextComponent idTextArea = CommonGuiElementsMaker.createKanjiIdInput();
 		idTextArea.setText(Integer.toString(ID));
 		idTextArea.addFocusListener(new ListPropertyChangeHandler<>(kanji,
@@ -54,7 +56,7 @@ public class RowInKanjiInformations implements ListRowMaker<KanjiInformation> {
 				commonListElements.getRowNumberLabel(), kanjiKeyword,
 				wordTextArea);
 		panel.addElementsInColumnStartingFromColumn(1, kanjiId, idTextArea);
-		panel.addElementsInColumnStartingFromColumn(remove, 1, remove);
+		panel.addElementsInColumnStartingFromColumn(1, remove);
 
 		return panel;
 

@@ -38,7 +38,7 @@ import java.util.Set;
 	private JFrame container;
 	private ApplicationController applicationController;
 	private Optional<TimeSpentHandler> timeSpentHandler;
-	private static Font kanjiFont = new Font("MS Mincho", Font.BOLD, 100);
+	private static Font kanjiFont = new Font("MS Mincho", Font.PLAIN, 100);
 
 	public ApplicationWindow() {
 		super(null);

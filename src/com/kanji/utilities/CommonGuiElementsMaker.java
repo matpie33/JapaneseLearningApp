@@ -12,6 +12,7 @@ import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.enums.SplitPaneOrientation;
 import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElements.JapaneseWordInformation;
+import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -19,7 +20,6 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +27,7 @@ public class CommonGuiElementsMaker {
 
 	public static JTextComponent createKanjiWordInput(String defaultContent) {
 		return GuiMaker.createTextArea(
-				new TextAreaOptions().text(defaultContent).rowsAndColumns(3, 15)
+				new TextAreaOptions().text(defaultContent).rowsAndColumns(2, 5)
 						.moveToNextComponentWhenTabbed(true));
 	}
 
@@ -109,8 +109,9 @@ public class CommonGuiElementsMaker {
 			JTextComponent kanjiAndKanaWritings = CommonGuiElementsMaker
 					.createTextField(
 							StringUtilities.concatenateStrings(writings));
+			kanjiAndKanaWritings.setFont(ApplicationWindow.getKanjiFont());
 			kanjiAndKanaWritings
-					.setFont(kanjiAndKanaWritings.getFont().deriveFont(30f));
+					.setFont(kanjiAndKanaWritings.getFont().deriveFont(40f));
 			textComponents.add(kanjiAndKanaWritings);
 		}
 		return textComponents;
@@ -123,7 +124,7 @@ public class CommonGuiElementsMaker {
 				japaneseWordInformation);
 		JLabel writingsLabel = GuiMaker.createLabel(
 				new ComponentOptions().text(Labels.WRITING_WAYS_IN_JAPANESE)
-						.foregroundColor(labelColor));
+						.foregroundColor(labelColor).fontSize(20f));
 		boolean firstTextField = true;
 		MainPanel panelWrapping = new MainPanel(null);
 
@@ -140,8 +141,8 @@ public class CommonGuiElementsMaker {
 				columnNumber = firstColumnIndex + 1;
 			}
 			panelWrapping.addElementsInColumnStartingFromColumn(
-					Arrays.asList(components), FillType.HORIZONTAL,
-					columnNumber, components);
+					kanaAndKanjiTextfield, columnNumber, FillType.HORIZONTAL,
+					components);
 			firstTextField = false;
 		}
 		JScrollPane scrollPane = GuiMaker.createScrollPane(

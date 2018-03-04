@@ -93,7 +93,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		JSplitPane mainSplitPane = CommonGuiElementsMaker
 				.createSplitPane(SplitPaneOrientation.HORIZONTAL,
 						wordsAndDictionaryPane,
-						kanjiWebPanel.getSwitchingPanel(), 0.3);
+						kanjiWebPanel.getSwitchingPanel(), 0.2);
 
 		mainPanel.addRows(
 				SimpleRowBuilder.createRow(FillType.BOTH, mainSplitPane));

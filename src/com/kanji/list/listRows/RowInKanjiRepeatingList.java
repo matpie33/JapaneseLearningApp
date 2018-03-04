@@ -34,7 +34,7 @@ public class RowInKanjiRepeatingList implements ListRowMaker<KanjiInformation> {
 		id.setForeground(Color.white);
 		JTextComponent kanjiTextArea = GuiMaker.createTextArea(
 				new TextAreaOptions().editable(false).opaque(true)
-						.rowsAndColumns(3, 5));
+						.rowsAndColumns(2, 5));
 		kanjiTextArea.setText(row.getKanjiKeyword());
 		JLabel kanjiKeyword = GuiMaker.createLabel(
 				new ComponentOptions().text(Labels.KANJI_KEYWORD_LABEL)
