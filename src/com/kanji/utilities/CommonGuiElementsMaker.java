@@ -1,5 +1,6 @@
 package com.kanji.utilities;
 
+import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.FillType;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.ScrollPaneOptions;
@@ -145,7 +146,10 @@ public class CommonGuiElementsMaker {
 		}
 		JScrollPane scrollPane = GuiMaker.createScrollPane(
 				new ScrollPaneOptions()
-						.componentToWrap(panelWrapping.getPanel()));
+						.componentToWrap(panelWrapping.getPanel())
+						.backgroundColor(BasicColors.OCEAN_BLUE)
+						.border(BorderFactory
+								.createLineBorder(BasicColors.NAVY_BLUE)));
 		panel.addElementsInColumnStartingFromColumn(scrollPane, 1,
 				FillType.BOTH, scrollPane);
 	}

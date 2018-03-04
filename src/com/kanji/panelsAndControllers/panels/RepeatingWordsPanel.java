@@ -26,7 +26,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private AbstractButton showKanjiOrRecognizeWord;
 	private AbstractButton notRecognizedWord;
 	private MainPanel repeatingPanel;
-	private final Color repeatingBackgroundColor = Color.white;
+	private final Color repeatingBackgroundColor = BasicColors.VERY_BLUE;
 	private AbstractButton showPreviousWord;
 	private JLabel time;
 	private MainPanel centerPanel;
@@ -103,7 +103,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 				this.showPreviousWord };
 		repeatingPanel.addRows(
 				SimpleRowBuilder.createRow(FillType.HORIZONTAL, wordTextArea)
-						.setColor(BasicColors.GREY)
+						.setColor(BasicColors.VERY_LIGHT_BLUE)
 						.nextRow(FillType.BOTH, Anchor.CENTER,
 								wordInformationPanel)
 						.nextRow(FillType.NONE, navigationButtons)
