@@ -18,7 +18,7 @@ public class JapaneseWordMeaningChecker extends WordSearchOptionsHolder
 			JapaneseWordInformation wordInformation) {
 		return wordInformation != null && WordSearching
 				.doesWordContainSearchedWord(wordInformation.getWordMeaning(),
-						wordInKanji, WordSearchOptions.BY_FULL_EXPRESSION);
+						wordInKanji, getWordSearchOptions());
 	}
 
 	@Override public String validateInputAndConvertToProperty(

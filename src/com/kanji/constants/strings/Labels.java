@@ -16,9 +16,9 @@ public class Labels {
 	public static final String COMBOBOX_OPTION_SEARCH_BY_KANJI = "zapisu kanji";
 	public static final String COMBOBOX_OPTION_SEARCH_BY_WORD_MEANING = "znaczenia";
 	public static final String COMBOBOX_OPTION_SEARCH_BY_PART_OF_SPEECH = "części mowy";
-	public static final String WORD_SEARCH_WORD_FRAGMENT = "Szukaj wszystkich pozycji zawierających dany fragment";
-	public static final String WORD_SEARCH_ONLY_FULL_WORDS_OPTION = "Szukaj pozycji, które zawierają dane słowo i być może coś więcej.";
-	public static final String WORD_SEARCH_PERFECT_MATCH_OPTION = "Szukaj pozycji zawierających dokładnie to co wpisałem.";
+	public static final String WORD_SEARCH_WORD_FRAGMENT = "Szukaj ciągu znaków.";
+	public static final String WORD_SEARCH_ONLY_FULL_WORDS_OPTION = "Szukaj całych słów.";
+	public static final String WORD_SEARCH_PERFECT_MATCH_OPTION = "Szukaj pełnego wyrażenia.";
 	public static final String PROBLEMATIC_KANJI_OPTION = "Problematyczne";
 	public static final String TIME_LABEL = "Czas: ";
 

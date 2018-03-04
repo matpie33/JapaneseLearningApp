@@ -1,5 +1,7 @@
 package com.kanji.repeating;
 
+import com.guimaker.colors.BasicColors;
+import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.TextAlignment;
 import com.guimaker.options.TextPaneOptions;
@@ -33,11 +35,13 @@ public class RepeatingKanjiDisplayer
 		kanjiCharactersReader.loadKanjisIfNeeded();
 		wordTextArea = GuiMaker.createTextPane(
 				new TextPaneOptions().textAlignment(TextAlignment.JUSTIFIED)
-						.text("").enabled(false).opaque(false));
+						.text("").enabled(false).backgroundColor(Color.WHITE)
+						.border(BorderFactory
+								.createLineBorder(BasicColors.NAVY_BLUE)));
 		wordTextArea.setFont(kanjiFont);
 		fullWordInformationPanel = new MainPanel(null);
 		fullWordInformationPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.BOTH, wordTextArea));
+				.createRow(FillType.NONE, Anchor.CENTER, wordTextArea));
 		recognizingWordPanel = new MainPanel(null);
 		problematicKanjis = new HashSet<>();
 		currentProblematicKanjis = new HashSet<>();

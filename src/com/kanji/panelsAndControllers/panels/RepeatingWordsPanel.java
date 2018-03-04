@@ -14,6 +14,7 @@ import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.Titles;
 import com.kanji.panelsAndControllers.controllers.RepeatingWordsController;
+import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -77,7 +78,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 						returnButton));
 		//TODO in gui maker enable me to put some element in some anchor so that remaining label can be positioned vertically center
 		mainPanel.addRows(SimpleRowBuilder
-				.createRow(FillType.NONE, Anchor.CENTER, centerPanel.getPanel())
+				.createRow(FillType.BOTH, Anchor.CENTER, centerPanel.getPanel())
 				.useAllExtraVerticalSpace());
 	}
 
@@ -101,11 +102,11 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 				this.pauseOrResume, showKanjiOrRecognizeWord, notRecognizedWord,
 				this.showPreviousWord };
 		repeatingPanel.addRows(
-				SimpleRowBuilder.createRow(FillType.BOTH, wordTextArea)
+				SimpleRowBuilder.createRow(FillType.HORIZONTAL, wordTextArea)
 						.setColor(BasicColors.GREY)
-						.nextRow(FillType.NONE, Anchor.CENTER,
+						.nextRow(FillType.BOTH, Anchor.CENTER,
 								wordInformationPanel)
-						.nextRow(FillType.HORIZONTAL, navigationButtons)
+						.nextRow(FillType.NONE, navigationButtons)
 						.fillHorizontallyEqually().disableBorder());
 	}
 
@@ -120,7 +121,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private void createWordDescriptionTextArea() {
 		wordTextArea = GuiMaker.createTextPane(
 				new TextPaneOptions().textAlignment(TextAlignment.CENTERED)
-						.text("").enabled(false));
+						.text("").enabled(false).fontSize(30f));
 	}
 
 	public void setButtonsToRecognizing() {

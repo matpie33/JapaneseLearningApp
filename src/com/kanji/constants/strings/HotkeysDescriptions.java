@@ -26,6 +26,6 @@ public class HotkeysDescriptions {
 	public static final String LOAD_LISTS_FROM_TEXT_FILE = "Wczytuje listę słowek i powtórek z pliku tekstowego";
 	public static final String RETURN_FROM_LEARNING = "Przerywa naukę.";
 	public static final String SWITCH_WORD_TAB = "Przechodzi do kolejnej zakładki.";
-	public static final String SWITCH_SEARCH_CRITERIA = "Zmienia kryteria wyszukiwania.";
+	public static final String SWITCH_SEARCH_CRITERIA = "Przełącza kryteria wyszukiwania.";
 
 }

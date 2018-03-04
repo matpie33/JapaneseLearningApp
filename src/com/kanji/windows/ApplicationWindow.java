@@ -38,7 +38,7 @@ import java.util.Set;
 	private JFrame container;
 	private ApplicationController applicationController;
 	private Optional<TimeSpentHandler> timeSpentHandler;
-	private Font kanjiFont = new Font("Times new roman", Font.BOLD, 100);
+	private static Font kanjiFont = new Font("MS Mincho", Font.BOLD, 100);
 
 	public ApplicationWindow() {
 		super(null);
@@ -63,7 +63,7 @@ import java.util.Set;
 		setWindowProperties();
 	}
 
-	public Font getKanjiFont() {
+	public static Font getKanjiFont() {
 		return kanjiFont;
 	}
 
@@ -158,8 +158,7 @@ import java.util.Set;
 		else {
 			throw new RuntimeException("Unknown list word");
 		}
-		createDialog(panel, Titles.INSERT_WORD_DIALOG, false,
-				Position.CUSTOM);
+		createDialog(panel, Titles.INSERT_WORD_DIALOG, false, Position.CUSTOM);
 	}
 
 	public void showSearchWordDialog(MyList list) {
