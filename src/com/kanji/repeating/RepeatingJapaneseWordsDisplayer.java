@@ -6,6 +6,7 @@ import com.guimaker.options.TextAreaOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
+import com.guimaker.utilities.ElementCopier;
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.enums.VerbConjugationType;
 import com.kanji.constants.strings.Labels;
@@ -47,14 +48,16 @@ public class RepeatingJapaneseWordsDisplayer
 		fullWordInformationPanel = new MainPanel(null, true);
 		recognizingWordPanel = new MainPanel(null, true);
 		recognizingWordPanel.getPanel().setPreferredSize(wordPanelsSize);
+		partOfSpeechLabel = GuiMaker.createLabel(
+				new ComponentOptions().text(Labels.PART_OF_SPEECH));
 		fullWordInformationPanel.getPanel().setPreferredSize(wordPanelsSize);
-
 		problematicJapaneseWords = new HashSet<>();
 		currentProblematicWords = new HashSet<>();
 		initializeHintTypeValues();
 		initializeGuiElements();
 		recognizingWordPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.NONE, partOfSpeechLabel,
+				.createRow(FillType.NONE, ElementCopier.copyLabel(
+						partOfSpeechLabel),
 						partOfSpeechCombobox));
 
 	}
@@ -79,8 +82,7 @@ public class RepeatingJapaneseWordsDisplayer
 		Arrays.stream(VerbConjugationType.values()).forEach(
 				verbConjugationType -> verbConjugationCombobox
 						.addItem(verbConjugationType.getDisplayedText()));
-		partOfSpeechLabel = GuiMaker.createLabel(
-				new ComponentOptions().text(Labels.PART_OF_SPEECH));
+
 		verbConjugationLabel = GuiMaker.createLabel(
 				new ComponentOptions().text(Labels.VERB_CONJUGATION));
 		partOfSpeechText = GuiMaker
