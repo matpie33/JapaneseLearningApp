@@ -75,7 +75,7 @@ public class ProblematicKanjiDisplayer
 	}
 
 	@Override public KanjiContext getContext() {
-		return null;
+		return kanjiContext;
 	}
 
 	@Override public void initialize() {

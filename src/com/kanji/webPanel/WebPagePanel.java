@@ -1,12 +1,15 @@
 package com.kanji.webPanel;
 
 import com.guimaker.enums.Anchor;
+import com.guimaker.enums.ComponentType;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.TextAlignment;
 import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
+import com.guimaker.utilities.ElementCopier;
+import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.context.ContextOwner;
 import com.kanji.context.KanjiContext;
@@ -22,6 +25,7 @@ import javafx.scene.web.WebView;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 public class WebPagePanel {
 
@@ -37,10 +41,18 @@ public class WebPagePanel {
 	private JPanel connectionFailPanel;
 	private ContextOwner<KanjiContext> contextOwner;
 	private boolean shouldGrabFocusOnReload;
+	private AbstractButton reloadButton;
+	private String currentlyLoadingPage;
 
+	//TODO it's too coupled to kanji context, should be more generic
 	public WebPagePanel(ContextOwner<KanjiContext> contextOwner,
 			ConnectionFailPageHandler connectionFailPageHandler) {
 		this.contextOwner = contextOwner;
+		createButtonReload();
+		if (connectionFailPageHandler == null) {
+			connectionFailPageHandler = new ConnectionFailMessagePage(
+					ElementCopier.copyButton(reloadButton));
+		}
 		initiateConnectionFailListener(connectionFailPageHandler);
 		initiateWebView();
 		initiatePanels();
@@ -84,10 +96,12 @@ public class WebPagePanel {
 		messageComponent = GuiMaker.createTextPane(new TextPaneOptions().
 				text(Prompts.LOADING_PAGE).fontSize(20)
 				.textAlignment(TextAlignment.CENTERED).editable(false));
+
 		messageComponent.setText(Prompts.LOADING_PAGE);
 		messagePanel.addRow(SimpleRowBuilder
-				.createRow(FillType.HORIZONTAL, Anchor.CENTER,
-						messageComponent));
+				.createRow(FillType.HORIZONTAL, messageComponent));
+		messagePanel.addRow(SimpleRowBuilder
+				.createRow(FillType.NONE, Anchor.CENTER, reloadButton));
 
 		Platform.runLater(new Runnable() {
 			@Override public void run() {
@@ -104,6 +118,16 @@ public class WebPagePanel {
 		switchingPanel.add(CONNECTION_FAIL_PANEL, connectionFailPanel);
 	}
 
+	private void createButtonReload() {
+		reloadButton = GuiMaker.createButtonlikeComponent(ComponentType.BUTTON,
+				ButtonsNames.RELOAD_PAGE, new AbstractAction() {
+					@Override public void actionPerformed(ActionEvent e) {
+						showPage(currentlyLoadingPage);
+					}
+				});
+
+	}
+
 	private void initiateWebView() {
 		Platform.runLater(new Runnable() {
 			@Override public void run() {
@@ -113,6 +137,7 @@ public class WebPagePanel {
 	}
 
 	public void showPage(String url) {
+		currentlyLoadingPage = url;
 		displayLoadingMessage();
 		Platform.runLater(() -> webView.getEngine().load(url));
 	}
@@ -141,8 +166,7 @@ public class WebPagePanel {
 
 	public void showPageWithoutGrabbingFocus(String url) {
 		shouldGrabFocusOnReload = false;
-		displayLoadingMessage();
-		Platform.runLater(() -> webView.getEngine().load(url));
+		showPage(url);
 	}
 
 }

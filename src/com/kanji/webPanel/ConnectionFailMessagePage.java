@@ -17,23 +17,29 @@ public class ConnectionFailMessagePage implements ConnectionFailPageHandler {
 
 	private MainPanel messagePanel;
 	private JTextComponent messageComponent;
+	private AbstractButton buttonReload;
 
-	public ConnectionFailMessagePage() {
+	public ConnectionFailMessagePage(AbstractButton buttonReload) {
+		this.buttonReload = buttonReload;
 		messagePanel = new MainPanel(null);
 		messageComponent = GuiMaker.createTextPane(new TextPaneOptions().
-				text(Prompts.LOADING_PAGE).fontSize(20)
-				.textAlignment(TextAlignment.CENTERED));
+				text(Prompts.CONNECTION_ERROR).fontSize(20)
+				.textAlignment(TextAlignment.CENTERED).editable(false));
 		messagePanel.addRow(SimpleRowBuilder
-				.createRow(FillType.HORIZONTAL, Anchor.CENTER,
-						messageComponent));
-		messageComponent.setText(Prompts.CONNECTION_ERROR);
+				.createRow(FillType.HORIZONTAL, messageComponent));
+		messagePanel.addRow(SimpleRowBuilder
+				.createRow(FillType.NONE, Anchor.CENTER, buttonReload));
+
+		System.out.println("button rel: " + buttonReload);
 	}
 
 	@Override public JPanel getConnectionFailPage() {
 		return messagePanel.getPanel();
+
 	}
 
 	@Override public void modifyConnectionFailPage(KanjiContext context) {
+		//TODO bad idea to require kanji context
 		return;
 	}
 }

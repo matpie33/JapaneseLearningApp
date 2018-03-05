@@ -36,10 +36,10 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		this.problematicWordsController = problematicWordsController;
 		kanjiInformationPanel = new MainPanel(null);
 		englishDictionaryPanel = new WebPagePanel(this,
-				new ConnectionFailMessagePage());
+				null);
 
 		japaneseEnglishDictionaryPanel = new WebPagePanel(this,
-				new ConnectionFailMessagePage());
+				null);
 	}
 
 	public void initialize() {
@@ -86,7 +86,8 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	}
 
 	@Override public Object getContext() {
-		return null; //TODO
+		return null; //TODO this should not be needed
+					// TODO - its wrong that web panel requires kanji context owner
 	}
 
 }

@@ -49,7 +49,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiOfflineDisplayingPanel = new MainPanel(BasicColors.VERY_BLUE);
 		messageFont = new JLabel().getFont().deriveFont(15f);
 		dictionaryWebPanel = new WebPagePanel(kanjiContextContextOwner,
-				new ConnectionFailMessagePage());
+				null);
 		kanjiWebPanel = new WebPagePanel(kanjiContextContextOwner,
 				new ConnectionFailKanjiOfflinePage(kanjiFont));
 	}
