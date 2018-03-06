@@ -285,8 +285,7 @@ public class JapaneseWordPanelCreator {
 
 	private void addListenerSwitchToJapaneseKeyboardOnFocus(
 			JTextComponent textComponent) {
-		//TODO figure out how to switch back to pl, currently it switches to en on
-		//focus lost
+		
 		textComponent.addFocusListener(new FocusAdapter() {
 
 			@Override public void focusGained(FocusEvent e) {
