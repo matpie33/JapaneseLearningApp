@@ -9,6 +9,7 @@ import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Labels;
+import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.myList.ListRowMaker;
 import com.kanji.problematicWords.ProblematicJapaneseWordsDisplayer;
@@ -64,9 +65,9 @@ public class RowInJapaneseWordsReviewingList
 
 		MainPanel writingsPanel = new MainPanel(BasicColors.OCEAN_BLUE, true);
 		List<String> headers = new ArrayList<>();
-		headers.add("Kana");
+		headers.add(Prompts.KANA_TEXT);
 		if (japaneseWord.hasKanjiWriting()) {
-			headers.add("Kanji");
+			headers.add(Prompts.KANJI_TEXT);
 		}
 		List<JComponent> labels = headers.stream().map(header -> GuiMaker
 				.createLabel(new ComponentOptions().text(header)))
@@ -86,7 +87,8 @@ public class RowInJapaneseWordsReviewingList
 					.map(writing -> GuiMaker.createTextField(
 							new TextComponentOptions().text(writing)
 									.editable(false).focusable(false)
-									.fontSize(20f)))
+									.fontSize(30f)))
+					//TODO specify the japanese font size in one place and use it consistently
 					.collect(Collectors.toList());
 			writingTextFields
 					.forEach(tf -> tf.addMouseListener(new MouseAdapter() {
@@ -103,12 +105,10 @@ public class RowInJapaneseWordsReviewingList
 			}
 			components[writingTextFields.size()] = createButtonSearchWord();
 			writingsPanel
-					.addElementsInColumnStartingFromColumn(writingTextFields,
-							FillType.HORIZONTAL, 0, components);
+					.addElementsInColumnStartingFromColumn(0, components);
 		}
-		JScrollPane jScrollPane = new JScrollPane(writingsPanel.getPanel());
-		panel.addElementsInColumnStartingFromColumn(2, jScrollPane);
-		jScrollPane.setPreferredSize(new Dimension(200, 150));
+		panel.addElementsInColumnStartingFromColumn(writingsPanel.getPanel(),2,
+				FillType.HORIZONTAL,  writingsPanel.getPanel());
 		//TODO temporary workaround - investigate
 
 		return panel;

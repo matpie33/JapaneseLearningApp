@@ -145,6 +145,7 @@ public class JapaneseWordPanelCreator {
 		}
 		Stream.concat(kanjiTextComponents.stream(), Stream.of(kanaWritingText))
 				.forEach(textComponent -> {
+					textComponent.setFont(textComponent.getFont().deriveFont(30f));
 					addListenerSwitchToJapaneseKeyboardOnFocus(textComponent);
 				});
 		if (withValidation) {
@@ -254,7 +255,8 @@ public class JapaneseWordPanelCreator {
 							elementsInRow.toArray(new JComponent[] {})));
 			rootPanel.removeLastRow();
 
-			rootPanel.addElementsInColumnStartingFromColumn(1, kanaWritingLabel,
+			rootPanel.addElementsInColumnStartingFromColumn(
+					kanaAndKanjiWritings.getPanel(), 1, kanaWritingLabel,
 					kanaAndKanjiWritings.getPanel());
 
 			rootPanel.addElementsInColumnStartingFromColumn(1,
@@ -285,7 +287,6 @@ public class JapaneseWordPanelCreator {
 
 	private void addListenerSwitchToJapaneseKeyboardOnFocus(
 			JTextComponent textComponent) {
-		
 		textComponent.addFocusListener(new FocusAdapter() {
 
 			@Override public void focusGained(FocusEvent e) {
