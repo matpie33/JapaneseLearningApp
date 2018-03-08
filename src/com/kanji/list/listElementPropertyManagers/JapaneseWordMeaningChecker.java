@@ -10,6 +10,10 @@ public class JapaneseWordMeaningChecker extends WordSearchOptionsHolder
 		implements ListElementPropertyManager<String, JapaneseWordInformation> {
 	//TODO I hate to create a class which is veeery similar to each other for every word element
 
+	public JapaneseWordMeaningChecker (){
+		super(WordSearchOptions.BY_FULL_EXPRESSION);
+	}
+
 	@Override public String getInvalidPropertyReason() {
 		return "TODO validacja";
 	}

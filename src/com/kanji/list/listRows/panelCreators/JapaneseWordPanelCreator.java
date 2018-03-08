@@ -85,6 +85,7 @@ public class JapaneseWordPanelCreator {
 					String newValue = (String) e.getItem();
 					japaneseWord.setPartOfSpeech(PartOfSpeech
 							.getPartOfSpeachByPolishMeaning(newValue));
+					//TODO auto save when editing part of speech
 				}
 			});
 		}
@@ -145,12 +146,19 @@ public class JapaneseWordPanelCreator {
 		}
 		Stream.concat(kanjiTextComponents.stream(), Stream.of(kanaWritingText))
 				.forEach(textComponent -> {
-					textComponent.setFont(textComponent.getFont().deriveFont(30f));
+					textComponent
+							.setFont(textComponent.getFont().deriveFont(30f));
 					addListenerSwitchToJapaneseKeyboardOnFocus(textComponent);
+					if (listPanelViewMode
+							.equals(ListPanelViewMode.VIEW_AND_EDIT)) {
+						addPropertyChangeHandler(textComponent,
+								japaneseWordInformation, true,
+								Prompts.KANJI_TEXT);
+					}
 				});
 		if (withValidation) {
-			addFocusLostInputValidation(kanaWritingText,
-					japaneseWordInformation, true, Prompts.KANA_TEXT);
+			addPropertyChangeHandler(kanaWritingText, japaneseWordInformation,
+					true, Prompts.KANA_TEXT);
 		}
 		AbstractButton addKanjiWritingButton = createButtonAddKanjiWriting(
 				japaneseWordInformation, kanaWritingText, rootPanel,
@@ -273,7 +281,7 @@ public class JapaneseWordPanelCreator {
 
 	}
 
-	private void addFocusLostInputValidation(JTextComponent textComponent,
+	private void addPropertyChangeHandler(JTextComponent textComponent,
 			JapaneseWordInformation japaneseWordInformation,
 			boolean kanaRequired, String defaultValue) {
 		textComponent.addFocusListener(
@@ -319,7 +327,7 @@ public class JapaneseWordPanelCreator {
 				kanaToKanjiWritingsTextComponents.get(kanaWritingText)
 						.add(kanjiTextComponent);
 				if (withValidation) {
-					addFocusLostInputValidation(kanjiTextComponent,
+					addPropertyChangeHandler(kanjiTextComponent,
 							japaneseWordInformation, true, Prompts.KANJI_TEXT);
 				}
 
