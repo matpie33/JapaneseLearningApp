@@ -8,6 +8,7 @@ import com.kanji.panelsAndControllers.panels.MessagePanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Locale;
 
 public class DialogWindow {
 
@@ -40,6 +41,7 @@ public class DialogWindow {
 			container = new JDialog();
 		}
 		container.setAutoRequestFocus(true);
+		container.getInputContext().selectInputMethod(Locale.getDefault());
 		parentWindow = parent;
 	}
 
@@ -96,8 +98,12 @@ public class DialogWindow {
 	public void createDialog(AbstractPanelWithHotkeysInfo panelCreator,
 			String title, boolean modal, Position position) {
 		if (!isDialogOfSameType(panelCreator) || childWindowIsClosed()) {
+			if (!getContainer().isVisible()){
+				return;
+			}
 			panelType = panelCreator;
 			childWindow = new DialogWindow(this);
+
 			if (position.equals(Position.CUSTOM)) {
 				childWindow.setCustomPositioner(customPositioner);
 			}
