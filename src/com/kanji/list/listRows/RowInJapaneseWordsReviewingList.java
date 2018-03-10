@@ -109,7 +109,6 @@ public class RowInJapaneseWordsReviewingList
 		}
 		panel.addElementsInColumnStartingFromColumn(writingsPanel.getPanel(),2,
 				FillType.HORIZONTAL,  writingsPanel.getPanel());
-		//TODO temporary workaround - investigate
 
 		return panel;
 	}

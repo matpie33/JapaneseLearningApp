@@ -32,6 +32,7 @@ public class ProblematicKanjiDisplayer
 	private final String KANJI_KOOHI_LOGIN_PAGE = "https://kanji.koohii.com/account";
 	private final String KANJI_KOOHI_MAIN_PAGE = "https://kanji.koohii.com/study";
 	private final String KANJI_KOOHI_REVIEW_BASE_PAGE = "http://kanji.koohii.com/study/kanji/";
+	//TODO duplicated urls in problematic japanese words panel
 	private CookieManager cookieManager;
 	private KanjiContext kanjiContext;
 	private KanjiCharactersReader kanjiCharactersReader;

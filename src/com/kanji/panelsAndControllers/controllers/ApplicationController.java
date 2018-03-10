@@ -125,15 +125,11 @@ public class ApplicationController implements ApplicationStateManager {
 
 		JapaneseWordInformation cat = new JapaneseWordInformation(
 				PartOfSpeech.NOUN, "kot");
-		cat.addWritings("ねこ");
+		cat.addWritings("ねこ", "櫻");
 		japaneseWords.addWord(cat);
-		JapaneseWordInformation dog = new JapaneseWordInformation(
-				PartOfSpeech.NOUN, "pies");
-		dog.addWritings("いぬ", "犬");
 		JapaneseWordInformation dog2 = new JapaneseWordInformation(
 				PartOfSpeech.NOUN, "pies");
-		dog2.addWritings("いぬ", "犬", "猫", "花");
-		japaneseWords.addWord(dog);
+		dog2.addWritings("いぬ", "二", "三", "四");
 		japaneseWords.addWord(dog2);
 		JapaneseWordInformation verb = new JapaneseWordInformation(
 				PartOfSpeech.VERB, "otwierać");
@@ -251,7 +247,7 @@ public class ApplicationController implements ApplicationStateManager {
 			kanjiInformations.add(getKanjiList()
 					.findRowBasedOnPropertyStartingFromBeginningOfList(
 							new KanjiIdChecker(), i,
-							SearchingDirection.FORWARD));
+							SearchingDirection.FORWARD, true));
 		}
 		return kanjiInformations;
 	}

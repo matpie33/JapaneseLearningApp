@@ -93,13 +93,16 @@ public class MyList<Word extends ListElement> {
 			SearchingDirection searchDirection) {
 		int rowNumber = findRowNumberBasedOnPropertyStartingFromHighlightedWord(
 				propertyChecker, searchedPropertyValue, searchDirection);
-		return listController.getWordInRow(rowNumber);
+		if (rowNumber != -1) {
+			listController.getWordInRow(rowNumber);
+		}
+		return null;
 	}
 
 	private <Property> int findRowNumberBasedOnProperty(
 			ListElementPropertyManager<Property, Word> propertyChecker,
 			Property searchedPropertyValue, SearchingDirection searchDirection,
-			boolean checkHighlightedWordToo) {
+			boolean checkHighlightedWordToo, boolean displayMessage) {
 
 		int lastRowToSearch = 0;
 		int incrementValue = searchDirection.getIncrementationValue();
@@ -137,13 +140,20 @@ public class MyList<Word extends ListElement> {
 		if (!checkHighlightedWordToo && highlightedWord != null
 				&& propertyChecker
 				.isPropertyFound(searchedPropertyValue, highlightedWord)) {
-			parent.showMessageDialog(
-					ExceptionsMessages.WORD_ALREADY_HIGHLIGHTED_EXCEPTION);
+			if (displayMessage){
+				parent.showMessageDialog(
+						ExceptionsMessages.WORD_ALREADY_HIGHLIGHTED_EXCEPTION);
+			}
+
+			//TODO do not hardcode the message here - sometimes I don't want to display it
 			return listController.getHighlightedRowNumber();
 		}
 		else {
-			parent.showMessageDialog(
-					ExceptionsMessages.WORD_NOT_FOUND_EXCEPTION);
+			if (displayMessage){
+				parent.showMessageDialog(
+						ExceptionsMessages.WORD_NOT_FOUND_EXCEPTION);
+			}
+
 			return -1;
 		}
 	}
@@ -153,16 +163,22 @@ public class MyList<Word extends ListElement> {
 			Property searchedPropertyValue,
 			SearchingDirection searchDirection) {
 		return findRowNumberBasedOnProperty(propertyChecker,
-				searchedPropertyValue, searchDirection, false);
+				searchedPropertyValue, searchDirection, false, true);
 	}
 
 	public <Property> Word findRowBasedOnPropertyStartingFromBeginningOfList(
 			ListElementPropertyManager<Property, Word> propertyChecker,
-			Property searchedPropertyValue,
-			SearchingDirection searchDirection) {
+			Property searchedPropertyValue, SearchingDirection searchDirection,
+			boolean displayMessage) {
 		int rowNumber = findRowNumberBasedOnProperty(propertyChecker,
-				searchedPropertyValue, searchDirection, true);
-		return listController.getWordInRow(rowNumber);
+				searchedPropertyValue, searchDirection, true, displayMessage);
+		if (rowNumber != -1) {
+			return listController.getWordInRow(rowNumber);
+		}
+		else {
+			return null;
+		}
+
 	}
 
 	public <Property> WordInMyListExistence<Word> doesWordWithPropertyExist(

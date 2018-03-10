@@ -36,6 +36,7 @@ public class ButtonsNames {
 	public static final String REMOVE_KANA_AND_KANJI_WRITINGS = "Usun wiersz";
 	public static final String GO_TO_ROW = "Idz do wiersza";
 	public static final String RELOAD_PAGE = "Odswież";
+	public static final String SHOW_KANJI_STORIES = "Przejdź do";
 
 	public static final String[] BUTTONS_ON_MAIN_PAGE = { START, LOAD_PROJECT,
 			LOAD_LIST, SAVE, SAVE_LIST, SHOW_PROBLEMATIC_KANJIS };

@@ -62,7 +62,6 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
 	@Override public void setParentDialog(DialogWindow dialog) {
 		super.setParentDialog(dialog);
-		configureParentDialog();
 	}
 
 	@Override public void createElements() {
@@ -99,15 +98,6 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 				SimpleRowBuilder.createRow(FillType.BOTH, mainSplitPane));
 
 		setNavigationButtons(Anchor.WEST, buttonClose);
-	}
-
-	//	@Override
-	//	protected MainPanel parentPanelForHotkeys (){
-	//		return wordsToReviewList.getpa;
-	//	}
-
-	private void configureParentDialog() {
-
 	}
 
 	public void showPageInKoohi(String url) {
