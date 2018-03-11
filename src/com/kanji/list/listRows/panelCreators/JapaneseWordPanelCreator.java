@@ -8,6 +8,7 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.ListPanelViewMode;
 import com.kanji.constants.enums.PartOfSpeech;
+import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.Labels;
@@ -59,11 +60,18 @@ public class JapaneseWordPanelCreator {
 			MainPanel addWordPanel) {
 		wordMeaningText = CommonGuiElementsMaker
 				.createShortInput(japaneseWord.getWordMeaning());
+		WordSearchOptions meaningSearchOptions;
+		if (listPanelViewMode.equals(ListPanelViewMode.ADD)){
+			meaningSearchOptions = WordSearchOptions.BY_FULL_EXPRESSION;
+		}
+		else{
+			meaningSearchOptions = WordSearchOptions.BY_WORD_FRAGMENT;
+		}
 		wordMeaningText.addFocusListener(
 				new ListPropertyChangeHandler<>(japaneseWord,
 						applicationWindow.getApplicationController()
 								.getJapaneseWords(), parentDialog,
-						new JapaneseWordMeaningChecker(),
+						new JapaneseWordMeaningChecker(meaningSearchOptions),
 						ExceptionsMessages.JAPANESE_WORD_MEANING_ALREADY_DEFINED,
 						true));
 		wordMeaningLabel = GuiMaker
@@ -149,17 +157,19 @@ public class JapaneseWordPanelCreator {
 					textComponent
 							.setFont(textComponent.getFont().deriveFont(30f));
 					addListenerSwitchToJapaneseKeyboardOnFocus(textComponent);
-					if (listPanelViewMode
-							.equals(ListPanelViewMode.VIEW_AND_EDIT)) {
-						addPropertyChangeHandler(textComponent,
-								japaneseWordInformation, true,
-								Prompts.KANJI_TEXT);
+					String defaultValue;
+					if (textComponent.equals(kanaWritingText)){
+						defaultValue = Prompts.KANA_TEXT;
 					}
+					else{
+						defaultValue = Prompts.KANJI_TEXT;
+					}
+					if (withValidation){
+						addPropertyChangeHandler(textComponent,
+								japaneseWordInformation, true, defaultValue);
+					}
+
 				});
-		if (withValidation) {
-			addPropertyChangeHandler(kanaWritingText, japaneseWordInformation,
-					true, Prompts.KANA_TEXT);
-		}
 		AbstractButton addKanjiWritingButton = createButtonAddKanjiWriting(
 				japaneseWordInformation, kanaWritingText, rootPanel,
 				listPanelViewMode, withValidation);
@@ -189,10 +199,17 @@ public class JapaneseWordPanelCreator {
 		MainPanel addWordPanel = new MainPanel(null);
 		createElements(japaneseWord, listPanelViewMode, listElements, true,
 				addWordPanel);
+		WordSearchOptions meaningSearchOptions;
+		if (listPanelViewMode.equals(ListPanelViewMode.ADD)){
+			meaningSearchOptions = WordSearchOptions.BY_FULL_EXPRESSION;
+		} //TODO duplicated code
+		else{
+			meaningSearchOptions = WordSearchOptions.BY_WORD_FRAGMENT;
+		}
 
 		propertyManagersOfTextFields
-				.put(wordMeaningText, new JapaneseWordMeaningChecker());
-
+				.put(wordMeaningText, new JapaneseWordMeaningChecker(meaningSearchOptions));
+		//TODO now we do double validation - after focus lost and after clicking add word
 		List<JComponent> firstRow = new ArrayList<>();
 		if (listPanelViewMode.equals(ListPanelViewMode.VIEW_AND_EDIT)) {
 			firstRow.add(listElements.getRowNumberLabel());
@@ -324,6 +341,7 @@ public class JapaneseWordPanelCreator {
 			@Override public void actionPerformed(ActionEvent e) {
 				JTextComponent kanjiTextComponent = CommonGuiElementsMaker
 						.createShortInputWithPrompt(Prompts.KANJI_TEXT);
+				kanjiTextComponent.setFont(kanjiTextComponent.getFont().deriveFont(30f));
 				kanaToKanjiWritingsTextComponents.get(kanaWritingText)
 						.add(kanjiTextComponent);
 				if (withValidation) {

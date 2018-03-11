@@ -3,7 +3,6 @@ package com.kanji.list.myList;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.model.WordInMyListExistence;
-import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.text.JTextComponent;
@@ -40,9 +39,8 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 			ListElementPropertyManager<Property, PropertyHolder> listElementPropertyManager,
 			String propertyDefinedExceptionMessage, String defaultValue,
 			boolean isRequiredField) {
-		this(propertyHolder, list, dialogWindow,
-				listElementPropertyManager, propertyDefinedExceptionMessage,
-				isRequiredField);
+		this(propertyHolder, list, dialogWindow, listElementPropertyManager,
+				propertyDefinedExceptionMessage, isRequiredField);
 		this.defaultValue = defaultValue;
 	}
 
@@ -89,6 +87,8 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 			elem.setText(propertyBeingModified.toString().replace("[", "")
 					.replace("]", ""));
 			elem.selectAll();
+			list.highlightRow(list.get1BasedRowNumberOfWord(
+					wordInMyListExistence.getWord()) - 1, true);
 			dialogWindow.showMessageDialog(
 					String.format(propertyDefinedExceptionMessage,
 							propertyNewValue, list.get1BasedRowNumberOfWord(

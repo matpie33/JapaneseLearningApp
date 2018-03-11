@@ -71,7 +71,11 @@ public class MyList<Word extends ListElement> {
 	}
 
 	public void highlightRow(int rowNumber) {
-		listController.highlightRowAndScroll(rowNumber, false);
+		highlightRow(rowNumber, false);
+	}
+
+	public void highlightRow(int rowNumber, boolean clearLastHighlightedWord) {
+		listController.highlightRowAndScroll(rowNumber, clearLastHighlightedWord);
 	}
 
 	public <Property> void findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(

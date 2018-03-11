@@ -1,5 +1,6 @@
 package com.kanji.list.listElementPropertyManagers;
 
+import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWordInformation;
@@ -72,27 +73,39 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 			List<String> searchedKanji, List<String> existingKanjiWritings) {
 		//TODO move the logic checking if textfield is empty (default value or no value) to one place and use it everywhere, now its scattered
 
-		if (!addingWord && searchedKana.equals(existingWordKana)
-				&& areKanjiWritingsEmpty(searchedKanji)) {
-			return true;
+		if (isKanaWritingEmpty(searchedKana)) {
+			return areKanjisSame(searchedKanji, existingKanjiWritings);
 		}
-		else if (isKanaWritingEmpty(searchedKana) && !areKanjiWritingsEmpty(
-				searchedKanji)) {
-			return !existingKanjiWritings.isEmpty() && (
-					searchedKanji.containsAll(existingKanjiWritings)
-							|| existingKanjiWritings
-							.containsAll(searchedKanji));
+		else {
+			if (searchedKana.equals(existingWordKana)) {
+				return areKanjisSame(searchedKanji, existingKanjiWritings);
+			}
+			else {
+				return false;
+			}
 		}
-		else if (!isKanaWritingEmpty(searchedKana) && !areKanjiWritingsEmpty(
-				searchedKanji)) {
-			return searchedKana.equals(existingWordKana)
-					&& !existingKanjiWritings.isEmpty() && (
-					searchedKanji.containsAll(existingKanjiWritings)
-							|| existingKanjiWritings
-							.containsAll(searchedKanji));
+
+	}
+
+	private boolean areKanjisSame(List<String> searchedKanji,
+			List<String> existingKanjiWritings) {
+		if (addingWord){
+			if (areKanjiWritingsEmpty(searchedKanji)){
+				return areKanjiWritingsEmpty(existingKanjiWritings);
+			}
+			else{
+				return existingKanjiWritings.containsAll(searchedKanji) ||
+						searchedKanji.containsAll(existingKanjiWritings);
+			}
 		}
-		else
-			return false;
+		else{
+			if (areKanjiWritingsEmpty(searchedKanji)){
+				return true;
+			}
+			else{
+				return existingKanjiWritings.containsAll(searchedKanji);
+			}
+		}
 
 	}
 

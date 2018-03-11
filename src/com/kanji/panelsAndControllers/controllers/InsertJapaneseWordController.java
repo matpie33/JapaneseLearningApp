@@ -2,6 +2,7 @@ package com.kanji.panelsAndControllers.controllers;
 
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.strings.ExceptionsMessages;
+import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordWritingsChecker;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
@@ -116,7 +117,7 @@ public class InsertJapaneseWordController {
 		for (Map.Entry<JTextComponent, List<JTextComponent>> kanaToKanjiMap : kanaToKanjiWritings
 				.entrySet()) {
 			for (JTextComponent textComponent : kanaToKanjiMap.getValue()) {
-				textComponent.setText("");
+				textComponent.setText(Prompts.KANJI_TEXT);
 			}
 		}
 	}
@@ -130,6 +131,8 @@ public class InsertJapaneseWordController {
 			//TODO remove from this method show message - it should just add word and return boolean
 		}
 		else {
+			list.highlightRow(list
+					.get1BasedRowNumberOfWord(doesWordExistInMyList.getWord()) - 1, true);
 			parentDialog.showMessageDialog(
 					String.format(ExceptionsMessages.WORD_ALREADY_EXISTS,
 							list.get1BasedRowNumberOfWord(

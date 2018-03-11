@@ -3,6 +3,7 @@ package com.kanji.list.listElements;
 import com.kanji.constants.enums.AdditionalInformationTag;
 import com.kanji.constants.enums.ListElementPropertyType;
 import com.kanji.constants.enums.PartOfSpeech;
+import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElementAdditionalInformations.AdditionalInformation;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
@@ -54,7 +55,7 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 	public static List<ListElementData<JapaneseWordInformation>> getElementsTypesAndLabels() {
 		List<ListElementData<JapaneseWordInformation>> listElementData = new ArrayList<>();
 		listElementData.add(new ListElementData<>(Labels.WORD_MEANING,
-				new JapaneseWordMeaningChecker(),
+				new JapaneseWordMeaningChecker(WordSearchOptions.BY_WORD_FRAGMENT),
 				ListElementPropertyType.STRING_SHORT_WORD,
 				Labels.COMBOBOX_OPTION_SEARCH_BY_WORD_MEANING));
 		listElementData.add(new ListElementData<>(Labels.WORD_IN_KANA,
@@ -121,7 +122,7 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 					null, true);
 			//TODO avoid passing null to japanese writings checker
 			List<KanaAndKanjiStrings> kanaAndKanjiStrings = new ArrayList<>();
-			for (Map.Entry<String, List<String>> kanaToKanjis : getKanaToKanjiWritingsMap()
+			for (Map.Entry<String, List<String>> kanaToKanjis : otherWord.getKanaToKanjiWritingsMap()
 					.entrySet()) {
 				kanaAndKanjiStrings
 						.add(new KanaAndKanjiStrings(kanaToKanjis.getKey(),
@@ -129,11 +130,11 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 
 			}
 			if (writingsChecker
-					.isPropertyFound(kanaAndKanjiStrings, otherWord)) {
+					.isPropertyFound(kanaAndKanjiStrings, this)) {
 				return true;
 			}
-			JapaneseWordMeaningChecker meaningChecker = new JapaneseWordMeaningChecker();
-			if (meaningChecker.isPropertyFound(getWordMeaning(), otherWord)) {
+			JapaneseWordMeaningChecker meaningChecker = new JapaneseWordMeaningChecker(WordSearchOptions.BY_FULL_EXPRESSION);
+			if (meaningChecker.isPropertyFound(otherWord.getWordMeaning(), this)) {
 				return true;
 			}
 			return false;
