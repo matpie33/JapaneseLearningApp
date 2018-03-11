@@ -91,8 +91,8 @@ public class ApplicationController implements ApplicationStateManager {
 				problematicKanjisController);
 		problematicJapaneseWordsDisplayer = new ProblematicJapaneseWordsDisplayer(
 				parent, problematicJapaneseWordsController);
-		problematicKanjisController.initialize();
-		problematicJapaneseWordsController.initialize();
+
+
 		this.repeatingWordsPanelController = new RepeatingWordsController(
 				parent);
 		applicationStateToManagerMap
@@ -528,6 +528,13 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	public void startRepeating() {
+		Class activeWordsList = getActiveWordsList().getListElementClass();
+		if (activeWordsList.equals(KanjiInformation.class)){
+			problematicKanjisController.initialize();
+		}
+		else{
+			problematicJapaneseWordsController.initialize();
+		}
 		parent.showPanel(ApplicationPanels.REPEATING_PANEL);
 		isClosingSafe = false;
 		kanjiWordDisplayer.addProblematicKanjis(getProblematicKanjis());

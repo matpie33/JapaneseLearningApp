@@ -33,10 +33,10 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	private WebPagePanel englishDictionaryPanel;
 	private WebPagePanel japaneseEnglishDictionaryPanel;
 	private WebPagePanel kanjiKoohiWebPanel;
-	private static final String TANGORIN_URL = "http://tangorin.com/";
+	private static final String TANGORIN_URL = "http://www.tangorin.com/";
 	private final String KANJI_KOOHI_LOGIN_PAGE = "https://kanji.koohii.com/account";
 	private final String KANJI_KOOHI_MAIN_PAGE = "https://kanji.koohii.com/study";
-	private final String KANJI_KOOHI_REVIEW_BASE_PAGE = "http://kanji.koohii.com/study/kanji/";
+	private final String KANJI_KOOHI_REVIEW_BASE_PAGE = "https://kanji.koohii.com/study/kanji/";
 
 	public ProblematicJapaneseWordsPanel(
 			ProblematicWordsController problematicWordsController,
