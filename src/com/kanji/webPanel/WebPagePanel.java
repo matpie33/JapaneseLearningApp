@@ -54,7 +54,6 @@ public class WebPagePanel {
 					ElementCopier.copyButton(reloadButton));
 		}
 		initiateConnectionFailListener(connectionFailPageHandler);
-		initiateWebView();
 		initiatePanels();
 		shouldGrabFocusOnReload = true;
 	}
@@ -97,7 +96,6 @@ public class WebPagePanel {
 				text(Prompts.LOADING_PAGE).fontSize(20)
 				.textAlignment(TextAlignment.CENTERED).editable(false));
 
-		messageComponent.setText(Prompts.LOADING_PAGE);
 		messagePanel.addRow(SimpleRowBuilder
 				.createRow(FillType.HORIZONTAL, messageComponent));
 		messagePanel.addRow(SimpleRowBuilder
@@ -105,17 +103,21 @@ public class WebPagePanel {
 
 		Platform.runLater(new Runnable() {
 			@Override public void run() {
+				webView = new WebView();
 				StackPane pane = new StackPane(webView);
 				webView.getEngine().getLoadWorker().stateProperty()
 						.addListener(connectionChange);
+				webPage = new JFXPanel();
 				webPage.setScene(new Scene(pane));
+
+				switchingPanel = new JPanel(new CardLayout());
+				switchingPanel.add(MESSAGE_PANEL, messagePanel.getPanel());
+				switchingPanel.add(WEB_PAGE_PANEL, webPage);
+				switchingPanel.add(CONNECTION_FAIL_PANEL, connectionFailPanel);
 			}
 		});
-		webPage = new JFXPanel();
-		switchingPanel = new JPanel(new CardLayout());
-		switchingPanel.add(MESSAGE_PANEL, messagePanel.getPanel());
-		switchingPanel.add(WEB_PAGE_PANEL, webPage);
-		switchingPanel.add(CONNECTION_FAIL_PANEL, connectionFailPanel);
+
+
 	}
 
 	private void createButtonReload() {
@@ -128,23 +130,9 @@ public class WebPagePanel {
 
 	}
 
-	private void initiateWebView() {
-		Platform.runLater(new Runnable() {
-			@Override public void run() {
-				webView = new WebView();
-			}
-		});
-	}
-
 	public void showPage(String url) {
 		currentlyLoadingPage = url;
-		displayLoadingMessage();
 		Platform.runLater(() -> webView.getEngine().load(url));
-	}
-
-	private void displayLoadingMessage() {
-		showPanel(MESSAGE_PANEL);
-
 	}
 
 	public JFXPanel getWebPanel() {
@@ -153,15 +141,6 @@ public class WebPagePanel {
 
 	public JPanel getSwitchingPanel() {
 		return switchingPanel;
-	}
-
-	public void showInTextPane(String text) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override public void run() {
-				messageComponent.setText(text);
-				showPanel(MESSAGE_PANEL);
-			}
-		});
 	}
 
 	public void showPageWithoutGrabbingFocus(String url) {
