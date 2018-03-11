@@ -266,6 +266,7 @@ public class ApplicationController implements ApplicationStateManager {
 			return;
 		}
 		loadingAndSaving.setFileToSave(fileToSave);
+		rowInJapaneseWordInformations.getJapaneseWordPanelCreator().clear();
 		try {
 			if (savingInformation.getKanjiKoohiiCookiesHeaders() != null) {
 				//TODO this should go to application controller's "restore
@@ -280,6 +281,9 @@ public class ApplicationController implements ApplicationStateManager {
 		}
 
 		kanjiList.cleanWords();
+		japaneseWords.cleanWords();
+		japaneseWordsRepeatingDates.cleanWords();
+		kanjiRepeatingDates.cleanWords();
 		setProblematicWordsAndUpdateInformation(
 				savingInformation.getProblematicKanjis());
 		setProblematicWordsAndUpdateInformation(

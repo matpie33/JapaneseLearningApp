@@ -158,15 +158,18 @@ public class JapaneseWordPanelCreator {
 							.setFont(textComponent.getFont().deriveFont(30f));
 					addListenerSwitchToJapaneseKeyboardOnFocus(textComponent);
 					String defaultValue;
+					boolean isRequired;
 					if (textComponent.equals(kanaWritingText)){
 						defaultValue = Prompts.KANA_TEXT;
+						isRequired = true;
 					}
 					else{
 						defaultValue = Prompts.KANJI_TEXT;
+						isRequired = false;
 					}
 					if (withValidation){
 						addPropertyChangeHandler(textComponent,
-								japaneseWordInformation, true, defaultValue);
+								japaneseWordInformation, isRequired, defaultValue);
 					}
 
 				});
@@ -433,6 +436,11 @@ public class JapaneseWordPanelCreator {
 
 	public Map<JTextComponent, ListElementPropertyManager<?, JapaneseWordInformation>> getPropertyManagersOfTextFields() {
 		return propertyManagersOfTextFields;
+	}
+
+	public void clear (){
+		propertyManagersOfTextFields.clear();
+		kanaAndKanjiInputRows.clear();
 	}
 
 }

@@ -175,6 +175,7 @@ public class ProblematicWordsController<Element extends ListElement>
 					savingInformation.getProblematicKanjisState()
 							.getReviewedWords().get(0).getClass();
 			applicationController.switchToList(wordType);
+			initialize();
 		}
 		applicationWindow.showProblematicWordsDialog(
 				savingInformation.getProblematicKanjisState());
