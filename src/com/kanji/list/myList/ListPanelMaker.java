@@ -40,12 +40,11 @@ public class ListPanelMaker<Word extends ListElement>
 	private ApplicationController applicationController;
 	private MainPanel listPanel;
 	private boolean enableWordAdding;
-	private final int MAXIMUM_WORDS_TO_SHOW = 100;
 	private AbstractButton buttonLoadNextWords;
 	private AbstractButton buttonLoadPreviousWords;
 	private LoadNextWordsHandler loadNextWordsHandler;
 
-	public ListPanelMaker(MyList list, boolean enableWordAdding,
+	public ListPanelMaker(boolean enableWordAdding,
 			ApplicationController applicationController,
 			ListRowMaker<Word> listRow, ListWordsController<Word> controller) {
 		this.applicationController = applicationController;
@@ -242,6 +241,7 @@ public class ListPanelMaker<Word extends ListElement>
 
 	public void clear() {
 		rowsPanel.clear();
+		createAndAddButtonsShowNextAndPrevious();
 	}
 
 	public void scrollToTop() {

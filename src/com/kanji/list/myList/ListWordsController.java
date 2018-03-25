@@ -21,11 +21,11 @@ public class ListWordsController<Word extends ListElement> {
 	private Map<Integer, ListRow<Word>> visibleWordsToRowNumberMap = new LinkedHashMap<>();
 	private int lastRowVisible;
 
-	public ListWordsController(MyList list, boolean enableWordAdding,
+	public ListWordsController(boolean enableWordAdding,
 			ListRowMaker<Word> listRowMaker, String title,
 			ApplicationController applicationController) {
 		this.applicationController = applicationController;
-		rowCreator = new ListPanelMaker<>(list, enableWordAdding,
+		rowCreator = new ListPanelMaker<>(enableWordAdding,
 				applicationController, listRowMaker, this);
 		rowCreator.createPanel();
 		this.rowCreator.setTitle(title);
@@ -135,7 +135,8 @@ public class ListWordsController<Word extends ListElement> {
 
 	public AbstractAction createDeleteRowAction(Word word) {
 		return new AbstractAction() {
-			@Override public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				String rowSpecificPrompt = "";
 				if (word instanceof KanjiInformation) {
 					rowSpecificPrompt = Prompts.KANJI_ROW;
@@ -175,7 +176,8 @@ public class ListWordsController<Word extends ListElement> {
 				(double) getMaximumWordsToShow() / (double) 2;
 
 		while (i < numberOfElementsToAdd && loadWordsHandler
-				.shouldContinue(lastRowVisible, allWordsToRowNumberMap.size())) {
+				.shouldContinue(lastRowVisible,
+						allWordsToRowNumberMap.size())) {
 			loadWordsHandler.addWord();
 			i++;
 		}
@@ -199,4 +201,15 @@ public class ListWordsController<Word extends ListElement> {
 		lastRowVisible++;
 	}
 
+	public void showWordsStartingFromRow(int firstRowToLoad) {
+		rowCreator.clear();
+		lastRowVisible = Math.max(firstRowToLoad - 1, 0);
+		LoadNextWordsHandler loadNextWordsHandler = rowCreator
+				.getLoadNextWordsHandler();
+		for (int i = 0; i < getMaximumWordsToShow() && loadNextWordsHandler
+				.shouldContinue(lastRowVisible,
+						allWordsToRowNumberMap.size()); i++) {
+			showNextWord(loadNextWordsHandler);
+		}
+	}
 }

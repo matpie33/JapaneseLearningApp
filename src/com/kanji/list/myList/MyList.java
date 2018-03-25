@@ -31,7 +31,7 @@ public class MyList<Word extends ListElement> {
 		this.applicationController = applicationController;
 		this.parent = parentDialog;
 		this.listElementData = listElementData;
-		listController = new ListWordsController<>(this, enableWordAdding,
+		listController = new ListWordsController<>(enableWordAdding,
 				listRowMaker, title, applicationController);
 		this.wordInitializer = wordInitializer;
 		this.title = title;
@@ -278,4 +278,11 @@ public class MyList<Word extends ListElement> {
 		return listElementData;
 	}
 
+	public int getMaximumDisplayedWords() {
+		return listController.getMaximumWordsToShow();
+	}
+
+	public void showWordsStartingFromRow(int firstRowToLoad) {
+		listController.showWordsStartingFromRow(firstRowToLoad);
+	}
 }

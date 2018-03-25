@@ -292,7 +292,7 @@ public class ApplicationController implements ApplicationStateManager {
 		parent.changeSaveStatus(SavingStatus.NO_CHANGES);
 
 		LoadingProjectWorker loadingProjectWorker = new LoadingProjectWorker(
-				this, parent.showProgressDialog());
+				parent, parent.showProgressDialog());
 		loadingProjectWorker.load(japaneseWords,
 				savingInformation.getJapaneseWordInformations());
 		loadingProjectWorker.load(kanjiList, savingInformation.getKanjiWords());
