@@ -15,10 +15,15 @@ import java.util.*;
 
 public class JapaneseWordInformation implements ListElement, Serializable {
 
+	private static final long serialVersionUID = 7723326146436941154L;
 	private Map<String, List<String>> kanjiToAlternativeKanaWritingMap;
 	private String wordMeaning;
 	private PartOfSpeech partOfSpeech;
 	private Set<AdditionalInformation> additionalInformations = new HashSet<>();
+	private static JapaneseWordMeaningChecker meaningChecker = new JapaneseWordMeaningChecker(
+			WordSearchOptions.BY_FULL_EXPRESSION);
+	private static JapaneseWordWritingsChecker writingsChecker = new JapaneseWordWritingsChecker(
+			null, true);
 
 	public JapaneseWordInformation(PartOfSpeech partOfSpeech,
 			String wordMeaning) {
@@ -55,7 +60,8 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 	public static List<ListElementData<JapaneseWordInformation>> getElementsTypesAndLabels() {
 		List<ListElementData<JapaneseWordInformation>> listElementData = new ArrayList<>();
 		listElementData.add(new ListElementData<>(Labels.WORD_MEANING,
-				new JapaneseWordMeaningChecker(WordSearchOptions.BY_WORD_FRAGMENT),
+				new JapaneseWordMeaningChecker(
+						WordSearchOptions.BY_WORD_FRAGMENT),
 				ListElementPropertyType.STRING_SHORT_WORD,
 				Labels.COMBOBOX_OPTION_SEARCH_BY_WORD_MEANING));
 		listElementData.add(new ListElementData<>(Labels.WORD_IN_KANA,
@@ -118,23 +124,21 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 	@Override public boolean isSameAs(ListElement element) {
 		if (element instanceof JapaneseWordInformation) {
 			JapaneseWordInformation otherWord = (JapaneseWordInformation) element;
-			JapaneseWordWritingsChecker writingsChecker = new JapaneseWordWritingsChecker(
-					null, true);
+
 			//TODO avoid passing null to japanese writings checker
 			List<KanaAndKanjiStrings> kanaAndKanjiStrings = new ArrayList<>();
-			for (Map.Entry<String, List<String>> kanaToKanjis : otherWord.getKanaToKanjiWritingsMap()
-					.entrySet()) {
+			for (Map.Entry<String, List<String>> kanaToKanjis : otherWord
+					.getKanaToKanjiWritingsMap().entrySet()) {
 				kanaAndKanjiStrings
 						.add(new KanaAndKanjiStrings(kanaToKanjis.getKey(),
 								kanaToKanjis.getValue(), "", false));
 
 			}
-			if (writingsChecker
-					.isPropertyFound(kanaAndKanjiStrings, this)) {
+			if (writingsChecker.isPropertyFound(kanaAndKanjiStrings, this)) {
 				return true;
 			}
-			JapaneseWordMeaningChecker meaningChecker = new JapaneseWordMeaningChecker(WordSearchOptions.BY_FULL_EXPRESSION);
-			if (meaningChecker.isPropertyFound(otherWord.getWordMeaning(), this)) {
+			if (meaningChecker
+					.isPropertyFound(otherWord.getWordMeaning(), this)) {
 				return true;
 			}
 			return false;

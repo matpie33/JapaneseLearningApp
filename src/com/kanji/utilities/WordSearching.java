@@ -3,16 +3,43 @@ package com.kanji.utilities;
 import com.kanji.constants.enums.WordSearchOptions;
 
 import java.text.Normalizer;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public class WordSearching {
 
+	private static Map<Character, Character> polishDiacriticsMap;
+
+	static {
+		polishDiacriticsMap = new HashMap<>();
+		polishDiacriticsMap.put('ą', 'a');
+		polishDiacriticsMap.put('ć', 'c');
+		polishDiacriticsMap.put('ż', 'z');
+		polishDiacriticsMap.put('ź', 'z');
+		polishDiacriticsMap.put('ł', 'l');
+		polishDiacriticsMap.put('ó', 'o');
+		polishDiacriticsMap.put('ń', 'n');
+		polishDiacriticsMap.put('ś', 's');
+		polishDiacriticsMap.put('Ą', 'A');
+		polishDiacriticsMap.put('Ć', 'C');
+		polishDiacriticsMap.put('Ż', 'Z');
+		polishDiacriticsMap.put('Ź', 'Z');
+		polishDiacriticsMap.put('Ł', 'L');
+		polishDiacriticsMap.put('Ó', 'O');
+		polishDiacriticsMap.put('Ń', 'N');
+		polishDiacriticsMap.put('Ś', 'S');
+	}
+
 	private static String removeDiacritics(String word) {
-		word = Normalizer.normalize(word, Normalizer.Form.NFD)
-				.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-		word = word.replace("ł", "l").replace("Ł", "L");
+		for (Map.Entry<Character, Character> letterAndReplacement : polishDiacriticsMap
+				.entrySet()) {
+			word = word.replace(letterAndReplacement.getKey(), letterAndReplacement.getValue());
+		}
 		return word;
 	}
+
+
 
 	public static boolean doesAnyOfTheWordsContainSearchedWord(
 			Set<String> words, String searched, WordSearchOptions options) {

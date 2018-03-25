@@ -325,7 +325,7 @@ public class ApplicationController implements ApplicationStateManager {
 				KanjiInformation.getElementsTypesAndLabels(),
 				KanjiInformation.getInitializer());
 
-		for (int i = 1; i <= 15; i++) {
+		for (int i = 1; i <= 510	; i++) {
 			kanjiList.addWord(new KanjiInformation("Word no. " + i, i));
 		}
 		kanjiList.addWord(new KanjiInformation(

@@ -11,7 +11,6 @@ public class ButtonsNames {
 	public static final String ADD_ROW = "Dodaj wiersz";
 	public static final String NOT_RECOGNIZED = "Nie pamietam";
 	public static final String GO_BACK = "Powrót";
-	public static final String MAXIMIZE = "Maksymalizuj";
 	// Buttons
 	public static final String START = "Rozpocznij";
 	public static final String SEARCH = "Znajdź słówko";
@@ -37,6 +36,8 @@ public class ButtonsNames {
 	public static final String GO_TO_ROW = "Idz do wiersza";
 	public static final String RELOAD_PAGE = "Odswież";
 	public static final String SHOW_KANJI_STORIES = "Przejdź do";
+	public static final String SHOW_NEXT_WORDS_ON_LIST = "Pokaż kolejne słowa";
+	public static final String SHOW_PREVIOUS_WORDS_ON_LIST = "Pokaż poprzednie słowa";
 
 	public static final String[] BUTTONS_ON_MAIN_PAGE = { START, LOAD_PROJECT,
 			LOAD_LIST, SAVE, SAVE_LIST, SHOW_PROBLEMATIC_KANJIS };
