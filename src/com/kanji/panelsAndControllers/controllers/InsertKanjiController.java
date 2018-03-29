@@ -74,7 +74,8 @@ public class InsertKanjiController<Word extends ListElement> {
 	public AbstractAction createActionValidateAndAddWord(
 			Map<JTextComponent, ListElementPropertyManager> inputToPropertyManager) {
 		return new AbstractAction() {
-			@Override public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				validateAndAddWordIfValid(inputToPropertyManager);
 			}
 		};

@@ -75,7 +75,8 @@ public class MyList<Word extends ListElement> {
 	}
 
 	public void highlightRow(int rowNumber, boolean clearLastHighlightedWord) {
-		listController.highlightRowAndScroll(rowNumber, clearLastHighlightedWord);
+		listController
+				.highlightRowAndScroll(rowNumber, clearLastHighlightedWord);
 	}
 
 	public <Property> void findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(
@@ -144,7 +145,7 @@ public class MyList<Word extends ListElement> {
 		if (!checkHighlightedWordToo && highlightedWord != null
 				&& propertyChecker
 				.isPropertyFound(searchedPropertyValue, highlightedWord)) {
-			if (displayMessage){
+			if (displayMessage) {
 				parent.showMessageDialog(
 						ExceptionsMessages.WORD_ALREADY_HIGHLIGHTED_EXCEPTION);
 			}
@@ -153,7 +154,7 @@ public class MyList<Word extends ListElement> {
 			return listController.getHighlightedRowNumber();
 		}
 		else {
-			if (displayMessage){
+			if (displayMessage) {
 				parent.showMessageDialog(
 						ExceptionsMessages.WORD_NOT_FOUND_EXCEPTION);
 			}

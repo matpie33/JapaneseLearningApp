@@ -114,7 +114,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		JSplitPane wordAndDictionariesSplitPane = CommonGuiElementsMaker
 				.createSplitPane(SplitPaneOrientation.HORIZONTAL,
 						wordAndKanjiInformationSplitPane, dictionariesWithKoohiPageSplitPane,
-						0.1);
+						0.4);
 
 		mainPanel.addRows(SimpleRowBuilder
 				.createRow(FillType.BOTH, wordAndDictionariesSplitPane));

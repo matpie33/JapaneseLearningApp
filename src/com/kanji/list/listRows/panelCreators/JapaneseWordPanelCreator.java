@@ -232,6 +232,9 @@ public class JapaneseWordPanelCreator {
 		addWordPanel.addElementsInColumnStartingFromColumn(1, new JLabel());
 		//TODO dummy label that gets removed in "add kana and kanji row" method
 		addKanaAndKanjiWritingRow(addWordPanel);
+		addWordPanel
+				.addElementsInColumnStartingFromColumn(1,
+						listElements.getButtonDelete());
 
 		SwingUtilities
 				.invokeLater(() -> wordMeaningText.requestFocusInWindow());

@@ -4,13 +4,21 @@ import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.KanjiInformation;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listElements.RepeatingInformation;
+import com.kanji.list.loadAdditionalWordsHandling.FoundWordInsideVisibleRangePlusMaximumWordsStrategy;
+import com.kanji.list.loadAdditionalWordsHandling.FoundWordInsideVisibleRangeStrategy;
+import com.kanji.list.loadAdditionalWordsHandling.FoundWordOutsideRangeStrategy;
+import com.kanji.list.loadAdditionalWordsHandling.LoadWordsForFoundWord;
 import com.kanji.model.ListRow;
 import com.kanji.model.WordInMyListExistence;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
+import com.kanji.range.Range;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ListWordsController<Word extends ListElement> {
 	private static final long serialVersionUID = -3144332338336535803L;
@@ -18,8 +26,9 @@ public class ListWordsController<Word extends ListElement> {
 	private ListPanelMaker<Word> rowCreator;
 	private ApplicationController applicationController;
 	private final int MAXIMUM_WORDS_TO_SHOW = 200;
-	private Map<Integer, ListRow<Word>> visibleWordsToRowNumberMap = new LinkedHashMap<>();
 	private int lastRowVisible;
+	private final List<LoadWordsForFoundWord> strategiesForFoundWord = new ArrayList<>();
+	private ListRow<Word> currentlyHighlightedWord;
 
 	public ListWordsController(boolean enableWordAdding,
 			ListRowMaker<Word> listRowMaker, String title,
@@ -29,6 +38,19 @@ public class ListWordsController<Word extends ListElement> {
 				applicationController, listRowMaker, this);
 		rowCreator.createPanel();
 		this.rowCreator.setTitle(title);
+		initializeFoundWordStrategies();
+	}
+
+	private void initializeFoundWordStrategies() {
+		strategiesForFoundWord.add(new FoundWordInsideVisibleRangeStrategy());
+		strategiesForFoundWord
+				.add(new FoundWordInsideVisibleRangePlusMaximumWordsStrategy(
+						MAXIMUM_WORDS_TO_SHOW, this,
+						rowCreator.getLoadPreviousWordsHandler(),
+						rowCreator.getLoadNextWordsHandler()));
+		strategiesForFoundWord
+				.add(new FoundWordOutsideRangeStrategy(MAXIMUM_WORDS_TO_SHOW,
+						this));
 	}
 
 	public int getMaximumWordsToShow() {
@@ -44,9 +66,7 @@ public class ListWordsController<Word extends ListElement> {
 							rowCreator.getLoadNextWordsHandler());
 			allWordsToRowNumberMap.put(allWordsToRowNumberMap.size(), newWord);
 			if (canNewWordBeDisplayed) {
-				visibleWordsToRowNumberMap
-						.put(visibleWordsToRowNumberMap.size(), newWord);
-				lastRowVisible = allWordsToRowNumberMap.size();
+				lastRowVisible = allWordsToRowNumberMap.size() - 1;
 			}
 
 			return true;
@@ -55,7 +75,7 @@ public class ListWordsController<Word extends ListElement> {
 	}
 
 	private boolean canNewWordBeDisplayed() {
-		return visibleWordsToRowNumberMap.size() <= MAXIMUM_WORDS_TO_SHOW;
+		return rowCreator.getNumberOfListRows() < MAXIMUM_WORDS_TO_SHOW;
 	}
 
 	public void remove(Word word) {
@@ -63,7 +83,6 @@ public class ListWordsController<Word extends ListElement> {
 		int rowNumber = rowCreator.removeRow(listRow.getPanel());
 		updateRowNumbers(rowNumber);
 		allWordsToRowNumberMap.remove(listRow);
-		ListRow<Word> rowRemoved = visibleWordsToRowNumberMap.remove(rowNumber);
 	}
 
 	private void updateRowNumbers(int startingIndex) {
@@ -102,15 +121,38 @@ public class ListWordsController<Word extends ListElement> {
 
 	public void highlightRowAndScroll(int rowNumber,
 			boolean clearLastHighlightedWord) {
-		allWordsToRowNumberMap.get(rowNumber).setHighlighted(true);
-		rowCreator.highlightRowAndScroll(rowNumber, clearLastHighlightedWord);
+		loadWordsIfNecessary(rowNumber);
+		ListRow foundWord = allWordsToRowNumberMap.get(rowNumber);
+		foundWord.setHighlighted(true);
+		if (clearLastHighlightedWord && currentlyHighlightedWord != null) {
+			rowCreator.clearHighlightedRow(currentlyHighlightedWord.getPanel());
+		}
+		rowCreator.highlightRowAndScroll(foundWord.getPanel());
+		currentlyHighlightedWord = foundWord;
 	}
 
-	public int getHighlightedRowNumber() {
-		return rowCreator.getHighlightedRowNumber();
+	private void loadWordsIfNecessary(int foundWordRowNumber) {
+		for (LoadWordsForFoundWord strategyForFoundWord : strategiesForFoundWord) {
+			if (strategyForFoundWord.isApplicable(foundWordRowNumber,
+					new Range(getFirstVisibleRowNumber(), lastRowVisible))) {
+				strategyForFoundWord.execute();
+				break;
+			}
+		}
+	}
+
+	public Integer getHighlightedRowNumber() {
+		return currentlyHighlightedWord != null ?
+				allWordsToRowNumberMap.entrySet().stream()
+						.filter(e -> e.getValue()
+								.equals(currentlyHighlightedWord))
+						.map(e -> e.getKey()).findFirst()
+						.orElseThrow(IllegalArgumentException::new) :
+				-1;
 	}
 
 	public void scrollToBottom() {
+		loadWordsIfNecessary(allWordsToRowNumberMap.size() - 1);
 		rowCreator.scrollToBottom();
 	}
 
@@ -120,7 +162,6 @@ public class ListWordsController<Word extends ListElement> {
 
 	public void clear() {
 		allWordsToRowNumberMap.clear();
-		visibleWordsToRowNumberMap.clear();
 		rowCreator.clear();
 	}
 
@@ -174,7 +215,12 @@ public class ListWordsController<Word extends ListElement> {
 		int i = 0;
 		double numberOfElementsToAdd =
 				(double) getMaximumWordsToShow() / (double) 2;
+		return addSuccessiveWords(loadWordsHandler, numberOfElementsToAdd);
+	}
 
+	public int addSuccessiveWords(LoadWordsHandler loadWordsHandler,
+			double numberOfElementsToAdd) {
+		int i = 0;
 		while (i < numberOfElementsToAdd && loadWordsHandler
 				.shouldContinue(lastRowVisible,
 						allWordsToRowNumberMap.size())) {
@@ -184,32 +230,48 @@ public class ListWordsController<Word extends ListElement> {
 		return i;
 	}
 
+	private int getFirstVisibleRowNumber() {
+		return lastRowVisible - MAXIMUM_WORDS_TO_SHOW;
+	}
+
 	public void showPreviousWord(LoadPreviousWordsHandler loadPreviousWords) {
 		//TODO lots of magic numbers
-		int rowNumber = lastRowVisible - MAXIMUM_WORDS_TO_SHOW - 2;
-		rowCreator.addRow(allWordsToRowNumberMap.get(rowNumber).getWord(),
-				rowNumber + 1, true, loadPreviousWords);
 		lastRowVisible--;
+		int rowNumber = getFirstVisibleRowNumber();
+		ListRow addedWord = rowCreator
+				.addRow(allWordsToRowNumberMap.get(rowNumber).getWord(),
+						rowNumber + 1, true, loadPreviousWords);
+		allWordsToRowNumberMap.put(rowNumber, addedWord);
+
 	}
 
 	public void showNextWord(LoadNextWordsHandler loadNextWords) {
-		int rowNumber = lastRowVisible;
-		ListRow visibleRow = rowCreator
-				.addRow(allWordsToRowNumberMap.get(rowNumber).getWord(),
-						rowNumber + 1, true, loadNextWords);
-		allWordsToRowNumberMap.put(rowNumber, visibleRow);
 		lastRowVisible++;
+		ListRow visibleRow = rowCreator
+				.addRow(allWordsToRowNumberMap.get(lastRowVisible).getWord(),
+						lastRowVisible + 1, true, loadNextWords);
+		allWordsToRowNumberMap.put(lastRowVisible, visibleRow);
 	}
 
 	public void showWordsStartingFromRow(int firstRowToLoad) {
 		rowCreator.clear();
-		lastRowVisible = Math.max(firstRowToLoad - 1, 0);
+		lastRowVisible = Math.max(firstRowToLoad - getMaximumWordsToShow(), -1);
 		LoadNextWordsHandler loadNextWordsHandler = rowCreator
 				.getLoadNextWordsHandler();
 		for (int i = 0; i < getMaximumWordsToShow() && loadNextWordsHandler
 				.shouldContinue(lastRowVisible,
-						allWordsToRowNumberMap.size()); i++) {
+						allWordsToRowNumberMap.size() - 1); i++) {
 			showNextWord(loadNextWordsHandler);
 		}
 	}
+
+	public void clearVisibleRows() {
+		rowCreator.removeWordsFromRangeInclusive(
+				new Range(1, rowCreator.getNumberOfListRows()));
+	}
+
+	public void removeRowsFromRangeInclusive(Range range) {
+		rowCreator.removeWordsFromRangeInclusive(range);
+	}
+
 }

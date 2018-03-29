@@ -30,7 +30,6 @@ public class ListPanelMaker<Word extends ListElement>
 
 	private ListWordsController<Word> listWordsController;
 	private MainPanel rowsPanel;
-	private int highlightedRowNumber;
 	private JScrollPane parentScrollPane;
 	private final Dimension scrollPanesSize = new Dimension(350, 200);
 	private JLabel titleLabel;
@@ -43,13 +42,13 @@ public class ListPanelMaker<Word extends ListElement>
 	private AbstractButton buttonLoadNextWords;
 	private AbstractButton buttonLoadPreviousWords;
 	private LoadNextWordsHandler loadNextWordsHandler;
+	private LoadPreviousWordsHandler loadPreviousWordsHandler;
 
 	public ListPanelMaker(boolean enableWordAdding,
 			ApplicationController applicationController,
 			ListRowMaker<Word> listRow, ListWordsController<Word> controller) {
 		this.applicationController = applicationController;
 		listWordsController = controller;
-		highlightedRowNumber = -1;
 		this.enableWordAdding = enableWordAdding;
 
 		rowsPanel = new MainPanel(null, true);
@@ -66,6 +65,10 @@ public class ListPanelMaker<Word extends ListElement>
 		return loadNextWordsHandler;
 	}
 
+	public LoadPreviousWordsHandler getLoadPreviousWordsHandler() {
+		return loadPreviousWordsHandler;
+	}
+
 	private void createAndAddButtonsShowNextAndPrevious() {
 		buttonLoadNextWords = createAndAddButtonLoadWords(
 				ButtonsNames.SHOW_NEXT_WORDS_ON_LIST);
@@ -73,12 +76,12 @@ public class ListPanelMaker<Word extends ListElement>
 				ButtonsNames.SHOW_PREVIOUS_WORDS_ON_LIST);
 		loadNextWordsHandler = new LoadNextWordsHandler(listWordsController,
 				rowsPanel);
+		loadPreviousWordsHandler = new LoadPreviousWordsHandler(
+				listWordsController, rowsPanel);
 		buttonLoadNextWords.addActionListener(
 				createButtonShowNextOrPreviousWords(loadNextWordsHandler));
 		buttonLoadPreviousWords.addActionListener(
-				createButtonShowNextOrPreviousWords(
-						new LoadPreviousWordsHandler(rowsPanel,
-								listWordsController)));
+				createButtonShowNextOrPreviousWords(loadPreviousWordsHandler));
 		rowsPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.HORIZONTAL, buttonLoadPreviousWords));
 		rowsPanel.addRow(SimpleRowBuilder
@@ -121,7 +124,7 @@ public class ListPanelMaker<Word extends ListElement>
 				int numberOfAddedWords = listWordsController
 						.addNextHalfOfMaximumWords(loadWordsHandler);
 				if (numberOfAddedWords > 0) {
-					removeWordsFromRange(loadWordsHandler
+					removeWordsFromRangeInclusive(loadWordsHandler
 							.getRangeOfWordsToRemove(numberOfAddedWords));
 				}
 				rowsPanel.updateView();
@@ -161,8 +164,9 @@ public class ListPanelMaker<Word extends ListElement>
 
 	}
 
-	private void removeWordsFromRange(Range range) {
-		rowsPanel.removeRows(range.getRangeStart(), range.getRangeEnd());
+	public void removeWordsFromRangeInclusive(Range range) {
+		rowsPanel.removeRowsInclusive(range.getRangeStart(),
+				range.getRangeEnd());
 	}
 
 	private AbstractButton createButtonAddWord() {
@@ -196,13 +200,13 @@ public class ListPanelMaker<Word extends ListElement>
 				name, hotkeyDescription);
 	}
 
-	public void highlightRowAndScroll(int rowNumber,
-			boolean clearLastHighlightedWord) {
-		if (highlightedRowNumber >= 0 && clearLastHighlightedWord) {
-			rowsPanel.clearPanelColor(highlightedRowNumber);
-		}
+	public void clearHighlightedRow(JComponent row) {
+		rowsPanel.clearPanelColor(row);
+	}
+
+	public void highlightRowAndScroll(JComponent row) {
+		int rowNumber = rowsPanel.getIndexOfPanel(row);
 		changePanelColor(rowNumber, Color.red);
-		highlightedRowNumber = rowNumber;
 		scrollTo(rowsPanel.getRows().get(rowNumber));
 		this.rowsPanel.getPanel().repaint();
 	}
@@ -212,12 +216,11 @@ public class ListPanelMaker<Word extends ListElement>
 	}
 
 	public void scrollTo(JComponent panel) {
-		int r = panel.getY();
-		this.parentScrollPane.getViewport().setViewPosition(new Point(0, r));
-	}
-
-	public int getHighlightedRowNumber() {
-		return highlightedRowNumber;
+		SwingUtilities.invokeLater(() -> {
+			int r = panel.getY();
+			this.parentScrollPane.getViewport()
+					.setViewPosition(new Point(0, r));
+		});
 	}
 
 	public void scrollToBottom() {
@@ -249,8 +252,8 @@ public class ListPanelMaker<Word extends ListElement>
 				() -> parentScrollPane.getVerticalScrollBar().setValue(0));
 	}
 
-	public int getNumberOfRows() {
-		return rowsPanel.getNumberOfRows();
+	public int getNumberOfListRows() {
+		return rowsPanel.getNumberOfRows() - 2;
 	}
 
 }
