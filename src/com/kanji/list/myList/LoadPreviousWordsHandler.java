@@ -36,7 +36,19 @@ public class LoadPreviousWordsHandler implements LoadWordsHandler {
 	@Override
 	public boolean shouldContinue(int lastRowVisible,
 			int allWordsToRowNumbersMapSize) {
-		return lastRowVisible - listWordsController.getMaximumWordsToShow() - 2
-				>= 0;
+		return listWordsController.getFirstVisibleRowNumber() >= 0;
+	}
+
+	@Override
+	public void enableOrDisableLoadWordsButtons(
+			AbstractButton buttonLoadNextWords,
+			AbstractButton buttonLoadPreviousWords,
+			boolean hasMoreWordsToShow) {
+		if (!hasMoreWordsToShow) {
+			buttonLoadPreviousWords.setEnabled(false);
+		}
+		else if (!buttonLoadNextWords.isEnabled()) {
+			buttonLoadNextWords.setEnabled(true);
+		}
 	}
 }

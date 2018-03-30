@@ -1,6 +1,7 @@
 package com.kanji.list.myList;
 
 import com.kanji.constants.strings.Prompts;
+import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.KanjiInformation;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listElements.RepeatingInformation;
@@ -80,15 +81,20 @@ public class ListWordsController<Word extends ListElement> {
 
 	public void remove(Word word) {
 		ListRow<Word> listRow = findListRowContainingWord(word);
-		int rowNumber = rowCreator.removeRow(listRow.getPanel());
-		updateRowNumbers(rowNumber);
-		allWordsToRowNumberMap.remove(listRow);
+		int panelRowNumber = rowCreator.removeRow(listRow.getPanel());
+		int listRowNumber = panelRowNumber - 1;
+		allWordsToRowNumberMap.remove(listRowNumber);
+		updateRowNumbers(listRowNumber);
+
 	}
 
 	private void updateRowNumbers(int startingIndex) {
-		for (int i = startingIndex; i < allWordsToRowNumberMap.size(); i++) {
-			JLabel label = allWordsToRowNumberMap.get(i).getIndexLabel();
+		for (int i = startingIndex + 1;
+			 i < allWordsToRowNumberMap.size(); i++) {
+			ListRow<Word> listRow = allWordsToRowNumberMap.get(i);
+			JLabel label = listRow.getIndexLabel();
 			label.setText(rowCreator.createTextForRowNumber(i));
+			allWordsToRowNumberMap.put(i-1, listRow);
 		}
 
 	}
@@ -163,6 +169,7 @@ public class ListWordsController<Word extends ListElement> {
 	public void clear() {
 		allWordsToRowNumberMap.clear();
 		rowCreator.clear();
+		lastRowVisible = 0;
 	}
 
 	public WordInMyListExistence<Word> isWordDefined(Word word) {
@@ -230,8 +237,8 @@ public class ListWordsController<Word extends ListElement> {
 		return i;
 	}
 
-	private int getFirstVisibleRowNumber() {
-		return lastRowVisible - MAXIMUM_WORDS_TO_SHOW;
+	public int getFirstVisibleRowNumber() {
+		return lastRowVisible - (MAXIMUM_WORDS_TO_SHOW - 1);
 	}
 
 	public void showPreviousWord(LoadPreviousWordsHandler loadPreviousWords) {

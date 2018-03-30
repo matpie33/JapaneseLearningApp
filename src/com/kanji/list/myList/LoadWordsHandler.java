@@ -14,4 +14,8 @@ public interface LoadWordsHandler {
 
 	public boolean shouldContinue(int lastRowVisible,
 			int allWordsToRowNumberMapSize);
+
+	public void enableOrDisableLoadWordsButtons(
+			AbstractButton buttonLoadNextWords,
+			AbstractButton buttonLoadPreviousWords, boolean hasMoreWordsToShow);
 }

@@ -92,7 +92,6 @@ public class ApplicationController implements ApplicationStateManager {
 		problematicJapaneseWordsDisplayer = new ProblematicJapaneseWordsDisplayer(
 				parent, problematicJapaneseWordsController);
 
-
 		this.repeatingWordsPanelController = new RepeatingWordsController(
 				parent);
 		applicationStateToManagerMap
@@ -246,8 +245,8 @@ public class ApplicationController implements ApplicationStateManager {
 		for (Integer i : ids) {
 			kanjiInformations.add(getKanjiList()
 					.findRowBasedOnPropertyStartingFromBeginningOfList(
-							new KanjiIdChecker(), i,
-							SearchingDirection.FORWARD, true));
+							new KanjiIdChecker(), i, SearchingDirection.FORWARD,
+							true));
 		}
 		return kanjiInformations;
 	}
@@ -325,7 +324,7 @@ public class ApplicationController implements ApplicationStateManager {
 				KanjiInformation.getElementsTypesAndLabels(),
 				KanjiInformation.getInitializer());
 
-		for (int i = 1; i <= 510	; i++) {
+		for (int i = 1; i <= 510; i++) {
 			kanjiList.addWord(new KanjiInformation("Word no. " + i, i));
 		}
 		kanjiList.addWord(new KanjiInformation(
@@ -533,10 +532,10 @@ public class ApplicationController implements ApplicationStateManager {
 
 	public void startRepeating() {
 		Class activeWordsList = getActiveWordsList().getListElementClass();
-		if (activeWordsList.equals(KanjiInformation.class)){
+		if (activeWordsList.equals(KanjiInformation.class)) {
 			problematicKanjisController.initialize();
 		}
-		else{
+		else {
 			problematicJapaneseWordsController.initialize();
 		}
 		parent.showPanel(ApplicationPanels.REPEATING_PANEL);
@@ -571,7 +570,8 @@ public class ApplicationController implements ApplicationStateManager {
 		return isClosingSafe;
 	}
 
-	@Override public SavingInformation getApplicationState() {
+	@Override
+	public SavingInformation getApplicationState() {
 		SavingInformation savingInformation = new SavingInformation(
 				kanjiList.getWords(), kanjiRepeatingDates.getWords(),
 				getProblematicKanjis(), getProblematicJapaneseWords(),
@@ -586,7 +586,8 @@ public class ApplicationController implements ApplicationStateManager {
 		return savingInformation;
 	}
 
-	@Override public void restoreState(SavingInformation savingInformation) {
+	@Override
+	public void restoreState(SavingInformation savingInformation) {
 		applicationStateManager.restoreState(savingInformation);
 	}
 

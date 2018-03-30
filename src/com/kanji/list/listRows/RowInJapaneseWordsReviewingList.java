@@ -57,7 +57,7 @@ public class RowInJapaneseWordsReviewingList
 				.text(japaneseWord.getPartOfSpeech().getPolishMeaning())
 				.foregroundColor(Color.WHITE));
 
-		panel.addElementsInColumnStartingFromColumn(0,
+		panel.addElementsInColumnStartingFromColumn(meaningText,0,
 				commonListElements.getRowNumberLabel(), meaningLabel,
 				meaningText);
 		panel.addElementsInColumnStartingFromColumn(1, partOfSpeechLabel,

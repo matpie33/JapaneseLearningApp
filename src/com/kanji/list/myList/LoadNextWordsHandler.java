@@ -16,20 +16,36 @@ public class LoadNextWordsHandler implements LoadWordsHandler {
 		this.rowsPanel = rowsPanel;
 	}
 
-	@Override public void addWord() {
+	@Override
+	public void addWord() {
 		listWordsController.showNextWord(this);
 	}
 
-	@Override public Range getRangeOfWordsToRemove(int numberOfAddedWords) {
+	@Override
+	public Range getRangeOfWordsToRemove(int numberOfAddedWords) {
 		return new Range(1, numberOfAddedWords);
 	}
 
-	@Override public JComponent showWord(SimpleRow simpleRow) {
+	@Override
+	public JComponent showWord(SimpleRow simpleRow) {
 		return rowsPanel.insertRow(rowsPanel.getNumberOfRows() - 1, simpleRow);
 	}
 
-	@Override public boolean shouldContinue(int lastRowVisible,
+	@Override
+	public boolean shouldContinue(int lastRowVisible,
 			int allWordsToRowNumberMapSize) {
 		return lastRowVisible < allWordsToRowNumberMapSize;
+	}
+
+	@Override
+	public void enableOrDisableLoadWordsButtons(
+			AbstractButton buttonLoadNextWords,
+			AbstractButton buttonLoadPreviousWords, boolean hasMoreWordsToShow) {
+		if (!hasMoreWordsToShow){
+			buttonLoadNextWords.setEnabled(false);
+		}
+		else if (!buttonLoadPreviousWords.isEnabled()){
+			buttonLoadPreviousWords.setEnabled(true);
+		}
 	}
 }

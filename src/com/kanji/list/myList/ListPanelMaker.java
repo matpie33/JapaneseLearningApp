@@ -89,9 +89,11 @@ public class ListPanelMaker<Word extends ListElement>
 	}
 
 	private AbstractButton createAndAddButtonLoadWords(String buttonName) {
-		return GuiMaker
+		AbstractButton button = GuiMaker
 				.createButtonlikeComponent(ComponentType.BUTTON, buttonName,
 						null);
+		button.setEnabled(false);
+		return button;
 	}
 
 	public ListRow<Word> addRow(Word word, int rowNumber,
@@ -111,6 +113,9 @@ public class ListPanelMaker<Word extends ListElement>
 									.getPanel());
 			row = loadWordsHandler.showWord(simpleRow);
 		}
+		else if (!buttonLoadNextWords.isEnabled()) {
+			buttonLoadNextWords.setEnabled(true);
+		}
 		rowsPanel.updateView();
 		return new ListRow<>(word, row, rowNumberLabel);
 	}
@@ -127,6 +132,12 @@ public class ListPanelMaker<Word extends ListElement>
 					removeWordsFromRangeInclusive(loadWordsHandler
 							.getRangeOfWordsToRemove(numberOfAddedWords));
 				}
+				boolean hasMoreWordsToShow =
+						numberOfAddedWords == listWordsController
+								.getMaximumWordsToShow()/2;
+				loadWordsHandler
+						.enableOrDisableLoadWordsButtons(buttonLoadNextWords,
+								buttonLoadPreviousWords, hasMoreWordsToShow);
 				rowsPanel.updateView();
 			}
 		};

@@ -61,10 +61,10 @@ public class JapaneseWordPanelCreator {
 		wordMeaningText = CommonGuiElementsMaker
 				.createShortInput(japaneseWord.getWordMeaning());
 		WordSearchOptions meaningSearchOptions;
-		if (listPanelViewMode.equals(ListPanelViewMode.ADD)){
+		if (listPanelViewMode.equals(ListPanelViewMode.ADD)) {
 			meaningSearchOptions = WordSearchOptions.BY_FULL_EXPRESSION;
 		}
-		else{
+		else {
 			meaningSearchOptions = WordSearchOptions.BY_WORD_FRAGMENT;
 		}
 		wordMeaningText.addFocusListener(
@@ -86,14 +86,20 @@ public class JapaneseWordPanelCreator {
 			partOfSpeechLabel.setForeground(Color.WHITE);
 			listElements.getRowNumberLabel().setForeground(Color.WHITE);
 		}
+		partOfSpeechCombobox.setSelectedItem(
+				japaneseWord.getPartOfSpeech().getPolishMeaning());
 
 		if (listPanelViewMode.equals(ListPanelViewMode.VIEW_AND_EDIT)) {
 			partOfSpeechCombobox.addItemListener(new ItemListener() {
-				@Override public void itemStateChanged(ItemEvent e) {
+				@Override
+				public void itemStateChanged(ItemEvent e) {
+					if (e.getStateChange() != ItemEvent.SELECTED) {
+						return;
+					}
 					String newValue = (String) e.getItem();
 					japaneseWord.setPartOfSpeech(PartOfSpeech
 							.getPartOfSpeachByPolishMeaning(newValue));
-					//TODO auto save when editing part of speech
+					applicationWindow.getApplicationController().saveProject();
 				}
 			});
 		}
@@ -159,17 +165,18 @@ public class JapaneseWordPanelCreator {
 					addListenerSwitchToJapaneseKeyboardOnFocus(textComponent);
 					String defaultValue;
 					boolean isRequired;
-					if (textComponent.equals(kanaWritingText)){
+					if (textComponent.equals(kanaWritingText)) {
 						defaultValue = Prompts.KANA_TEXT;
 						isRequired = true;
 					}
-					else{
+					else {
 						defaultValue = Prompts.KANJI_TEXT;
 						isRequired = false;
 					}
-					if (withValidation){
+					if (withValidation) {
 						addPropertyChangeHandler(textComponent,
-								japaneseWordInformation, isRequired, defaultValue);
+								japaneseWordInformation, isRequired,
+								defaultValue);
 					}
 
 				});
@@ -203,15 +210,15 @@ public class JapaneseWordPanelCreator {
 		createElements(japaneseWord, listPanelViewMode, listElements, true,
 				addWordPanel);
 		WordSearchOptions meaningSearchOptions;
-		if (listPanelViewMode.equals(ListPanelViewMode.ADD)){
+		if (listPanelViewMode.equals(ListPanelViewMode.ADD)) {
 			meaningSearchOptions = WordSearchOptions.BY_FULL_EXPRESSION;
 		} //TODO duplicated code
-		else{
+		else {
 			meaningSearchOptions = WordSearchOptions.BY_WORD_FRAGMENT;
 		}
 
-		propertyManagersOfTextFields
-				.put(wordMeaningText, new JapaneseWordMeaningChecker(meaningSearchOptions));
+		propertyManagersOfTextFields.put(wordMeaningText,
+				new JapaneseWordMeaningChecker(meaningSearchOptions));
 		//TODO now we do double validation - after focus lost and after clicking add word
 		List<JComponent> firstRow = new ArrayList<>();
 		if (listPanelViewMode.equals(ListPanelViewMode.VIEW_AND_EDIT)) {
@@ -232,9 +239,8 @@ public class JapaneseWordPanelCreator {
 		addWordPanel.addElementsInColumnStartingFromColumn(1, new JLabel());
 		//TODO dummy label that gets removed in "add kana and kanji row" method
 		addKanaAndKanjiWritingRow(addWordPanel);
-		addWordPanel
-				.addElementsInColumnStartingFromColumn(1,
-						listElements.getButtonDelete());
+		addWordPanel.addElementsInColumnStartingFromColumn(1,
+				listElements.getButtonDelete());
 
 		SwingUtilities
 				.invokeLater(() -> wordMeaningText.requestFocusInWindow());
@@ -320,7 +326,8 @@ public class JapaneseWordPanelCreator {
 			JTextComponent textComponent) {
 		textComponent.addFocusListener(new FocusAdapter() {
 
-			@Override public void focusGained(FocusEvent e) {
+			@Override
+			public void focusGained(FocusEvent e) {
 				textComponent.getInputContext().selectInputMethod(Locale.JAPAN);
 				textComponent.getInputContext().setCharacterSubsets(
 						new Character.Subset[] {
@@ -328,7 +335,8 @@ public class JapaneseWordPanelCreator {
 				super.focusGained(e);
 			}
 
-			@Override public void focusLost(FocusEvent e) {
+			@Override
+			public void focusLost(FocusEvent e) {
 				super.focusLost(e);
 				textComponent.getInputContext()
 						.selectInputMethod(Locale.getDefault());
@@ -344,10 +352,12 @@ public class JapaneseWordPanelCreator {
 				.createButtonlikeComponent(ComponentType.BUTTON,
 						ButtonsNames.ADD_KANJI_WRITING, null);
 		button.addActionListener(new AbstractAction() {
-			@Override public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				JTextComponent kanjiTextComponent = CommonGuiElementsMaker
 						.createShortInputWithPrompt(Prompts.KANJI_TEXT);
-				kanjiTextComponent.setFont(kanjiTextComponent.getFont().deriveFont(30f));
+				kanjiTextComponent
+						.setFont(kanjiTextComponent.getFont().deriveFont(30f));
 				kanaToKanjiWritingsTextComponents.get(kanaWritingText)
 						.add(kanjiTextComponent);
 				if (withValidation) {
@@ -441,7 +451,7 @@ public class JapaneseWordPanelCreator {
 		return propertyManagersOfTextFields;
 	}
 
-	public void clear (){
+	public void clear() {
 		propertyManagersOfTextFields.clear();
 		kanaAndKanjiInputRows.clear();
 	}
