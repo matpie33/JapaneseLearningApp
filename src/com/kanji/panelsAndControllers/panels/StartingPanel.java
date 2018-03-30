@@ -61,21 +61,23 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 		startingController = new StartingController(this);
 	}
 
-	public JSplitPane getSplitPaneFor (Class listClass){
-		if (listClass.equals(KanjiInformation.class)){
+	public JSplitPane getSplitPaneFor(Class listClass) {
+		if (listClass.equals(KanjiInformation.class)) {
 			return kanjiRepeatingPanel.getListsSplitPane();
 		}
-		else{
+		else {
 			return japaneseWordsRepeatingPanel.getListsSplitPane();
 		}
 	}
 
-	@Override public void setParentDialog(DialogWindow dialog) {
+	@Override
+	public void setParentDialog(DialogWindow dialog) {
 		super.setParentDialog(dialog);
 
 	}
 
-	@Override public void createElements() {
+	@Override
+	public void createElements() {
 		createInformationsPanel();
 
 		listToTabLabel.put("Powtórki kanji", kanjiRepeatingPanel);
@@ -87,13 +89,15 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 					listAndTabLabel.getValue().createPanel());
 		}
 		tabs.addChangeListener(new ChangeListener() {
-			@Override public void stateChanged(ChangeEvent e) {
+			@Override
+			public void stateChanged(ChangeEvent e) {
 				applicationWindow.updateProblematicWordsAmount();
 			}
 		});
 
 		addHotkey(KeyModifiers.SHIFT, KeyEvent.VK_PERIOD, new AbstractAction() {
-			@Override public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				if (tabs.getSelectedIndex() == tabs.getTabCount() - 1) {
 					tabs.setSelectedIndex(0);
 				}
@@ -163,7 +167,8 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 				keyEvent = KeyEvent.VK_D;
 				hotkeyDescription = HotkeysDescriptions.LOAD_LISTS_FROM_TEXT_FILE;
 				action = new AbstractAction() {
-					@Override public void actionPerformed(ActionEvent e) {
+					@Override
+					public void actionPerformed(ActionEvent e) {
 						applicationController.loadList(getContext());
 					}
 				};
@@ -172,7 +177,8 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 				hotkeyDescription = HotkeysDescriptions.OPEN_LOAD_KANJI_DIALOG;
 				keyEvent = KeyEvent.VK_Q;
 				action = new AbstractAction() {
-					@Override public void actionPerformed(ActionEvent e) {
+					@Override
+					public void actionPerformed(ActionEvent e) {
 						applicationController.openKanjiProject();
 					}
 				};
@@ -181,7 +187,8 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 				hotkeyDescription = HotkeysDescriptions.OPEN_START_LEARNING_DIALOG;
 				keyEvent = KeyEvent.VK_R;
 				action = new AbstractAction() {
-					@Override public void actionPerformed(ActionEvent e) {
+					@Override
+					public void actionPerformed(ActionEvent e) {
 						applicationController.showLearningStartDialog();
 					}
 				};
@@ -190,7 +197,8 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 				hotkeyDescription = HotkeysDescriptions.SAVE_PROJECT;
 				keyEvent = KeyEvent.VK_S;
 				action = new AbstractAction() {
-					@Override public void actionPerformed(ActionEvent e) {
+					@Override
+					public void actionPerformed(ActionEvent e) {
 						applicationController.showSaveDialog();
 					}
 				};
@@ -199,7 +207,8 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 				hotkeyDescription = HotkeysDescriptions.EXPORT_LIST;
 				keyEvent = KeyEvent.VK_T;
 				action = new AbstractAction() {
-					@Override public void actionPerformed(ActionEvent e) {
+					@Override
+					public void actionPerformed(ActionEvent e) {
 						applicationController.saveList();
 					}
 				};
@@ -208,8 +217,10 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 				hotkeyDescription = HotkeysDescriptions.REVIEW_PROBLEMATIC_KANJIS;
 				keyEvent = KeyEvent.VK_P;
 				action = new AbstractAction() {
-					@Override public void actionPerformed(ActionEvent e) {
-						applicationWindow.showProblematicWordsDialogForCurrentList();
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						applicationWindow
+								.showProblematicWordsDialogForCurrentList();
 					}
 				};
 				break;
@@ -241,7 +252,8 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 		JButton problematicKanjiButton = new JButton(
 				ButtonsNames.SHOW_PROBLEMATIC_KANJIS);
 		problematicKanjiButton.addActionListener(new ActionListener() {
-			@Override public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				applicationWindow.showProblematicWordsDialog(new HashSet<>());
 			}
 		});
@@ -262,7 +274,8 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 				.getRepeatingList();
 	}
 
-	@Override public WordTypeContext getContext() {
+	@Override
+	public WordTypeContext getContext() {
 		return wordTypeContext;
 	}
 

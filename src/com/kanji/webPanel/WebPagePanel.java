@@ -63,7 +63,8 @@ public class WebPagePanel {
 		connectionFailPanel = connectionFailPageHandler.getConnectionFailPage();
 		Platform.setImplicitExit(false);
 		connectionChange = new ChangeListener<Worker.State>() {
-			@Override public void changed(
+			@Override
+			public void changed(
 					ObservableValue<? extends Worker.State> observable,
 					Worker.State oldValue, final Worker.State newValue) {
 				if (newValue == Worker.State.FAILED) {
@@ -102,7 +103,8 @@ public class WebPagePanel {
 				.createRow(FillType.NONE, Anchor.CENTER, reloadButton));
 
 		Platform.runLater(new Runnable() {
-			@Override public void run() {
+			@Override
+			public void run() {
 				webView = new WebView();
 				StackPane pane = new StackPane(webView);
 				webView.getEngine().getLoadWorker().stateProperty()
@@ -117,13 +119,13 @@ public class WebPagePanel {
 			}
 		});
 
-
 	}
 
 	private void createButtonReload() {
 		reloadButton = GuiMaker.createButtonlikeComponent(ComponentType.BUTTON,
 				ButtonsNames.RELOAD_PAGE, new AbstractAction() {
-					@Override public void actionPerformed(ActionEvent e) {
+					@Override
+					public void actionPerformed(ActionEvent e) {
 						showPage(currentlyLoadingPage);
 					}
 				});

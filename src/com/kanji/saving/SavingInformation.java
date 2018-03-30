@@ -91,8 +91,7 @@ public class SavingInformation implements Serializable {
 		return applicationSaveableState != null;
 	}
 
-	public void setKanjiKoohiiCookiesHeaders(
-			String kanjiKoohiCookiesHeaders) {
+	public void setKanjiKoohiiCookiesHeaders(String kanjiKoohiCookiesHeaders) {
 		this.kanjiKoohiCookiesHeaders = kanjiKoohiCookiesHeaders;
 	}
 

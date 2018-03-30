@@ -268,7 +268,8 @@ public class RepeatingWordsController
 
 	public AbstractAction createActionGoToPreviousWord() {
 		return new AbstractAction() {
-			@Override public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				goToPreviousWord();
 				panel.toggleGoToPreviousWordButton();
 				repeatingWordsPanelState = RepeatingWordsPanelState.WORD_INFORMATION_SHOWING;
@@ -324,7 +325,8 @@ public class RepeatingWordsController
 		};
 	}
 
-	@Override public SavingInformation getApplicationState() {
+	@Override
+	public SavingInformation getApplicationState() {
 		SavingInformation savingInformation = parent.getApplicationController()
 				.getApplicationState();
 		RepeatingState repeatingState = wordDisplayer
@@ -342,7 +344,8 @@ public class RepeatingWordsController
 		return wordsSet;
 	}
 
-	@Override public void restoreState(SavingInformation savingInformation) {
+	@Override
+	public void restoreState(SavingInformation savingInformation) {
 		reset();
 		resumeUnfinishedRepeating(savingInformation.getRepeatingState());
 		parent.displayMessageAboutUnfinishedRepeating();

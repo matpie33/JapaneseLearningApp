@@ -31,7 +31,8 @@ public class InsertJapaneseWordPanel extends AbstractPanelWithHotkeysInfo {
 
 	}
 
-	@Override public void createElements() {
+	@Override
+	public void createElements() {
 
 		japaneseWordPanelCreator = new JapaneseWordPanelCreator(
 				applicationWindow, true, parentDialog);

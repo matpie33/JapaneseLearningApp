@@ -127,7 +127,8 @@ public class ProblematicWordsController<Element extends ListElement>
 
 	public AbstractAction createActionShowNextWordOrCloseDialog() {
 		return new AbstractAction() {
-			@Override public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				if (!problematicWordsDisplayer.isListPanelFocused()) {
 					return;
 				}
@@ -149,7 +150,8 @@ public class ProblematicWordsController<Element extends ListElement>
 		return wordsToReviewList;
 	}
 
-	@Override public SavingInformation getApplicationState() {
+	@Override
+	public SavingInformation getApplicationState() {
 		ProblematicKanjisState<Element> information = new ProblematicKanjisState<>(
 				wordsToReviewList.getHighlightedWords(),
 				wordsToReviewList.getNotHighlightedWords());
@@ -165,7 +167,8 @@ public class ProblematicWordsController<Element extends ListElement>
 		return savingInformation;
 	}
 
-	@Override public void restoreState(SavingInformation savingInformation) {
+	@Override
+	public void restoreState(SavingInformation savingInformation) {
 		if (savingInformation.containsProblematicJapaneseWords()
 				|| savingInformation.containsProblematicKanji()) {
 			Class wordType = savingInformation.getProblematicKanjisState()
@@ -223,7 +226,8 @@ public class ProblematicWordsController<Element extends ListElement>
 	public void initializeWindowListener() {
 		getPanel().getDialog().getContainer()
 				.addWindowListener(new WindowAdapter() {
-					@Override public void windowClosed(WindowEvent e) {
+					@Override
+					public void windowClosed(WindowEvent e) {
 						closeDialogAndManageState(getPanel().getDialog());
 					}
 				});

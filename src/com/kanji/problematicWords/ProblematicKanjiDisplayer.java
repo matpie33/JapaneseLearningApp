@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ProblematicKanjiDisplayer
 		implements ProblematicWordsDisplayer<KanjiInformation>,
@@ -57,11 +56,13 @@ public class ProblematicKanjiDisplayer
 		controller.setProblematicWordsDisplayer(this);
 	}
 
-	@Override public MyList<KanjiInformation> getWordsToReviewList() {
+	@Override
+	public MyList<KanjiInformation> getWordsToReviewList() {
 		return wordsToReviewList;
 	}
 
-	@Override public void browseWord(WordRow<KanjiInformation> wordRow) {
+	@Override
+	public void browseWord(WordRow<KanjiInformation> wordRow) {
 		String uriText = KANJI_KOOHI_REVIEW_BASE_PAGE;
 		uriText += wordRow.getListElement().getKanjiID();
 		problematicKanjiPanel.showPageInKoohi(uriText);
@@ -75,11 +76,13 @@ public class ProblematicKanjiDisplayer
 		return new WordRow(listElement, rowNumber);
 	}
 
-	@Override public KanjiContext getContext() {
+	@Override
+	public KanjiContext getContext() {
 		return kanjiContext;
 	}
 
-	@Override public void initialize() {
+	@Override
+	public void initialize() {
 		String pageToRender = "";
 		if (isLoginDataRemembered()) {
 			pageToRender = KANJI_KOOHI_MAIN_PAGE;
@@ -91,11 +94,13 @@ public class ProblematicKanjiDisplayer
 		problematicKanjiPanel.initialize();
 	}
 
-	@Override public AbstractPanelWithHotkeysInfo getPanel() {
+	@Override
+	public AbstractPanelWithHotkeysInfo getPanel() {
 		return problematicKanjiPanel;
 	}
 
-	@Override public boolean isListPanelFocused() {
+	@Override
+	public boolean isListPanelFocused() {
 		return problematicKanjiPanel.isListPanelFocused();
 	}
 

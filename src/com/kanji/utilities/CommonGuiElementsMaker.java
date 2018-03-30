@@ -42,7 +42,8 @@ public class CommonGuiElementsMaker {
 				new TextComponentOptions().text(prompt).rowsAndColumns(1, 6)
 						.foregroundColor(Color.GRAY));
 		textComponent.addFocusListener(new FocusAdapter() {
-			@Override public void focusGained(FocusEvent e) {
+			@Override
+			public void focusGained(FocusEvent e) {
 				if (((JTextComponent) e.getSource()).getText().equals(prompt)) {
 					((JTextComponent) e.getSource()).setText("");
 					((JTextComponent) e.getSource()).setForeground(Color.BLACK);
@@ -50,7 +51,8 @@ public class CommonGuiElementsMaker {
 				super.focusGained(e);
 			}
 
-			@Override public void focusLost(FocusEvent e) {
+			@Override
+			public void focusLost(FocusEvent e) {
 				if (((JTextComponent) e.getSource()).getText().isEmpty()) {
 					((JTextComponent) e.getSource()).setText(prompt);
 					((JTextComponent) e.getSource()).setForeground(Color.GRAY);

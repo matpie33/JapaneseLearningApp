@@ -11,7 +11,8 @@ public class PositionerOnMyList implements CustomPositioner {
 		this.splitPane = splitPane;
 	}
 
-	@Override public Point getPosition() {
+	@Override
+	public Point getPosition() {
 		return splitPane.getRightComponent().getLocationOnScreen();
 	}
 }

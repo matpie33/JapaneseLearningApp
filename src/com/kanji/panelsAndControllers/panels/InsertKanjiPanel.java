@@ -39,7 +39,8 @@ public class InsertKanjiPanel<Word extends ListElement>
 		textComponentToPropertyManager = new HashMap<>();
 	}
 
-	@Override public void createElements() {
+	@Override
+	public void createElements() {
 
 		controller.setParentDialog(parentDialog);
 		MainPanel addWordPanel = new MainPanel(null);

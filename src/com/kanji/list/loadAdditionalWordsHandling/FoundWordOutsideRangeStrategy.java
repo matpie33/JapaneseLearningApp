@@ -1,7 +1,6 @@
 package com.kanji.list.loadAdditionalWordsHandling;
 
 import com.kanji.list.myList.ListWordsController;
-import com.kanji.list.myList.LoadNextWordsHandler;
 import com.kanji.range.Range;
 
 public class FoundWordOutsideRangeStrategy implements LoadWordsForFoundWord {

@@ -38,7 +38,8 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 				applicationController, this);
 	}
 
-	@Override public void createElements() {
+	@Override
+	public void createElements() {
 
 		JTextComponent prompt = GuiMaker.createTextArea(
 				new TextAreaOptions().editable(false).opaque(false)
@@ -180,7 +181,8 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 				.fillAllVertically());
 		SwingUtilities.invokeLater(new Runnable() {
 			// TODO swing utilities
-			@Override public void run() {
+			@Override
+			public void run() {
 				rangesPanel.getPanel().scrollRectToVisible(
 						rangesPanel.getRows().get(rowNumber).getBounds());
 			}
@@ -189,7 +191,8 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 	private void scrollToBottom() {
 		SwingUtilities.invokeLater(new Runnable() {
-			@Override public void run() {
+			@Override
+			public void run() {
 				// TODO swing utilities
 				scrollPane.getVerticalScrollBar().setValue(
 						scrollPane.getVerticalScrollBar().getMaximum());
@@ -249,7 +252,8 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		rangesPanel.changeVisibilityOfLastElementInRow(0, visibility);
 	}
 
-	@Override public void afterVisible() {
+	@Override
+	public void afterVisible() {
 		firstTextField.requestFocusInWindow();
 	}
 

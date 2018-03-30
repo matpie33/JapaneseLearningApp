@@ -131,8 +131,8 @@ public class InsertJapaneseWordController {
 			//TODO remove from this method show message - it should just add word and return boolean
 		}
 		else {
-			list.highlightRow(list
-					.get1BasedRowNumberOfWord(doesWordExistInMyList.getWord()) - 1, true);
+			list.highlightRow(list.get1BasedRowNumberOfWord(
+					doesWordExistInMyList.getWord()) - 1, true);
 			parentDialog.showMessageDialog(
 					String.format(ExceptionsMessages.WORD_ALREADY_EXISTS,
 							list.get1BasedRowNumberOfWord(
@@ -146,7 +146,8 @@ public class InsertJapaneseWordController {
 			Map<JTextComponent, ListElementPropertyManager<?, JapaneseWordInformation>> textsWithPropertyManagers,
 			JComboBox partOfSpeech) {
 		return new AbstractAction() {
-			@Override public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				validateAndAddWordIfValid(kanaToKanjiWritings,
 						textsWithPropertyManagers, partOfSpeech);
 			}

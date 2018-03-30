@@ -132,9 +132,8 @@ public class ListPanelMaker<Word extends ListElement>
 					removeWordsFromRangeInclusive(loadWordsHandler
 							.getRangeOfWordsToRemove(numberOfAddedWords));
 				}
-				boolean hasMoreWordsToShow =
-						numberOfAddedWords == listWordsController
-								.getMaximumWordsToShow()/2;
+				boolean hasMoreWordsToShow = numberOfAddedWords
+						== listWordsController.getMaximumWordsToShow() / 2;
 				loadWordsHandler
 						.enableOrDisableLoadWordsButtons(buttonLoadNextWords,
 								buttonLoadPreviousWords, hasMoreWordsToShow);

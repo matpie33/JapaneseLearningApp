@@ -59,7 +59,8 @@ public class RepeatingInformation implements Serializable, ListElement {
 		this.wasRepeated = wasRepeated;
 	}
 
-	@Override public String toString() {
+	@Override
+	public String toString() {
 		return "date:" + repeatingDate + "range" + repeatingRange + " timeSpent"
 				+ timeSpentOnRepeating;
 	}
@@ -72,7 +73,8 @@ public class RepeatingInformation implements Serializable, ListElement {
 		return () -> new RepeatingInformation("", null, false);
 	}
 
-	@Override public boolean isSameAs(ListElement element) {
+	@Override
+	public boolean isSameAs(ListElement element) {
 		if (element instanceof RepeatingInformation) {
 			RepeatingInformation otherWord = (RepeatingInformation) element;
 			return otherWord.getRepeatingDate().isEqual(repeatingDate);

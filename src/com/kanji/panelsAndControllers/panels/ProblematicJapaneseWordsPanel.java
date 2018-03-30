@@ -46,7 +46,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		kanjiInformationPanel = new MainPanel(BasicColors.OCEAN_BLUE);
 		englishDictionaryPanel = new WebPagePanel(this, null);
 		japaneseEnglishDictionaryPanel = new WebPagePanel(this, null);
-		kanjiKoohiWebPanel= new WebPagePanel(this, null);
+		kanjiKoohiWebPanel = new WebPagePanel(this, null);
 	}
 
 	public void initialize() {
@@ -64,7 +64,8 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	}
 
 	private boolean isLoginDataRemembered() {
-		CookieManager cookieManager = (CookieManager)CookieHandler.getDefault();
+		CookieManager cookieManager = (CookieManager) CookieHandler
+				.getDefault();
 		for (HttpCookie cookies : cookieManager.getCookieStore().getCookies()) {
 			if (cookies.getName().equals("koohii")) {
 				return true;
@@ -73,7 +74,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		return false;
 	}
 
-	public MainPanel getKanjiInformationPanel(){
+	public MainPanel getKanjiInformationPanel() {
 		return kanjiInformationPanel;
 	}
 
@@ -82,11 +83,13 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 				.showPage(TANGORIN_URL + "/general/" + word);
 	}
 
-	@Override public void setParentDialog(DialogWindow parentDialog) {
+	@Override
+	public void setParentDialog(DialogWindow parentDialog) {
 		super.setParentDialog(parentDialog);
 	}
 
-	@Override public void createElements() {
+	@Override
+	public void createElements() {
 
 		FocusableComponentMaker.makeFocusable(problematicWords.getPanel());
 		FocusableComponentMaker
@@ -113,24 +116,25 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 
 		JSplitPane wordAndDictionariesSplitPane = CommonGuiElementsMaker
 				.createSplitPane(SplitPaneOrientation.HORIZONTAL,
-						wordAndKanjiInformationSplitPane, dictionariesWithKoohiPageSplitPane,
-						0.4);
+						wordAndKanjiInformationSplitPane,
+						dictionariesWithKoohiPageSplitPane, 0.4);
 
 		mainPanel.addRows(SimpleRowBuilder
 				.createRow(FillType.BOTH, wordAndDictionariesSplitPane));
 		setNavigationButtons(Anchor.WEST, createButtonClose());
 	}
 
-	@Override public Object getContext() {
+	@Override
+	public Object getContext() {
 		return null; //TODO this should not be needed
 		// TODO - its wrong that web panel requires kanji context owner
 	}
 
-	public void showKoohiPage (int kanjiID){
-		showKoohiPage(""+kanjiID);
+	public void showKoohiPage(int kanjiID) {
+		showKoohiPage("" + kanjiID);
 	}
 
-	public void showKoohiPage (String kanjiData){
+	public void showKoohiPage(String kanjiData) {
 		String uriText = KANJI_KOOHI_REVIEW_BASE_PAGE;
 		uriText += kanjiData;
 		kanjiKoohiWebPanel.showPageWithoutGrabbingFocus(uriText);

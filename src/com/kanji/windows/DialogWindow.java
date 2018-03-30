@@ -98,7 +98,7 @@ public class DialogWindow {
 	public void createDialog(AbstractPanelWithHotkeysInfo panelCreator,
 			String title, boolean modal, Position position) {
 		if (!isDialogOfSameType(panelCreator) || childWindowIsClosed()) {
-			if (!getContainer().isVisible()){
+			if (!getContainer().isVisible()) {
 				return;
 			}
 			panelType = panelCreator;
@@ -162,7 +162,8 @@ public class DialogWindow {
 
 	public void maximize() {
 		SwingUtilities.invokeLater(new Runnable() {
-			@Override public void run() {
+			@Override
+			public void run() {
 				container.setBounds(
 						GraphicsEnvironment.getLocalGraphicsEnvironment().
 								getMaximumWindowBounds());

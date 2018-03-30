@@ -53,7 +53,7 @@ public class KanjiCharactersReader {
 		return words.get(id);
 	}
 
-	public int getIdOfKanji (String kanji){
+	public int getIdOfKanji(String kanji) {
 		return words.indexOf(kanji);
 	}
 

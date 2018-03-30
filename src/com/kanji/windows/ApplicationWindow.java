@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-@SuppressWarnings("serial") public class ApplicationWindow
-		extends DialogWindow {
+@SuppressWarnings("serial")
+public class ApplicationWindow extends DialogWindow {
 
 	private JPanel mainApplicationPanel;
 	private ProblematicWordsController activeProblematicWordsController;
@@ -89,7 +89,8 @@ import java.util.Set;
 
 	private WindowAdapter createClosingAdapter() {
 		return new WindowAdapter() {
-			@Override public void windowClosing(WindowEvent e) {
+			@Override
+			public void windowClosing(WindowEvent e) {
 				stopTimeMeasuring();
 				boolean shouldClose = applicationController.isClosingSafe();
 				if (!shouldClose) {
@@ -244,7 +245,8 @@ import java.util.Set;
 		JMenuItem item = new JMenuItem(MenuTexts.MENU_OPEN);
 
 		item.addActionListener(new ActionListener() {
-			@Override public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				applicationController.openKanjiProject();
 			}
 		});

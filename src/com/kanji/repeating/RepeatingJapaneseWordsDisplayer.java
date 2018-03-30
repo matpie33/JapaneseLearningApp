@@ -55,10 +55,9 @@ public class RepeatingJapaneseWordsDisplayer
 		currentProblematicWords = new HashSet<>();
 		initializeHintTypeValues();
 		initializeGuiElements();
-		recognizingWordPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.NONE, ElementCopier.copyLabel(
-						partOfSpeechLabel),
-						partOfSpeechCombobox));
+		recognizingWordPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE,
+				ElementCopier.copyLabel(partOfSpeechLabel),
+				partOfSpeechCombobox));
 
 	}
 
@@ -91,7 +90,8 @@ public class RepeatingJapaneseWordsDisplayer
 				.createTextArea(new TextAreaOptions().editable(false));
 	}
 
-	@Override public void showWordFullInformation(
+	@Override
+	public void showWordFullInformation(
 			JapaneseWordInformation kanjiInformation) {
 		fullWordInformationPanel.clear();
 		partOfSpeechText
@@ -122,15 +122,18 @@ public class RepeatingJapaneseWordsDisplayer
 
 	}
 
-	@Override public JPanel getFullInformationPanel() {
+	@Override
+	public JPanel getFullInformationPanel() {
 		return fullWordInformationPanel.getPanel();
 	}
 
-	@Override public JPanel getRecognizingWordPanel() {
+	@Override
+	public JPanel getRecognizingWordPanel() {
 		return recognizingWordPanel.getPanel();
 	}
 
-	@Override public void showRecognizingWordPanel() {
+	@Override
+	public void showRecognizingWordPanel() {
 		partOfSpeechCombobox.setSelectedIndex(0);
 	}
 
@@ -140,7 +143,8 @@ public class RepeatingJapaneseWordsDisplayer
 		currentProblematicWords.add(wordInformation);
 	}
 
-	@Override public void removeWordFromProblematic(
+	@Override
+	public void removeWordFromProblematic(
 			JapaneseWordInformation wordInformation) {
 		problematicJapaneseWords.remove(wordInformation);
 		currentProblematicWords.remove(wordInformation);
@@ -163,11 +167,13 @@ public class RepeatingJapaneseWordsDisplayer
 				new ArrayList<>((hintGetter.apply(kanjiInformation))));
 	}
 
-	@Override public Set<JapaneseWordInformation> getProblematicWords() {
+	@Override
+	public Set<JapaneseWordInformation> getProblematicWords() {
 		return currentProblematicWords;
 	}
 
-	@Override public RepeatingState getRepeatingState(TimeSpent timeSpent,
+	@Override
+	public RepeatingState getRepeatingState(TimeSpent timeSpent,
 			RepeatingInformation repeatingInformation,
 			Set<JapaneseWordInformation> words) {
 		RepeatingState<JapaneseWordInformation> kanjiRepeatingState = new RepeatingState<>(
@@ -176,15 +182,18 @@ public class RepeatingJapaneseWordsDisplayer
 		return kanjiRepeatingState;
 	}
 
-	@Override public boolean hasProblematicWords() {
+	@Override
+	public boolean hasProblematicWords() {
 		return !currentProblematicWords.isEmpty();
 	}
 
-	@Override public void clearRepeatingData() {
+	@Override
+	public void clearRepeatingData() {
 		currentProblematicWords.clear();
 	}
 
-	@Override public void setAllProblematicWords(
+	@Override
+	public void setAllProblematicWords(
 			Set<JapaneseWordInformation> problematicWords) {
 		problematicJapaneseWords = problematicWords;
 	}

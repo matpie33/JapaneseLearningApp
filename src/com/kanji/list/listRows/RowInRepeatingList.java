@@ -20,7 +20,8 @@ public class RowInRepeatingList implements ListRowMaker<RepeatingInformation> {
 
 	private final Color labelsColor = Color.WHITE;
 
-	@Override public MainPanel createListRow(RepeatingInformation rep,
+	@Override
+	public MainPanel createListRow(RepeatingInformation rep,
 			CommonListElements commonListElements) {
 		String word = rep.getRepeatingRange();
 		String time = rep.getTimeSpentOnRepeating();

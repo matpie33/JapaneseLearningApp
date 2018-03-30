@@ -45,7 +45,8 @@ public class RangesRow {
 		range = new Range(valueFrom, valueTo);
 	}
 
-	@Override public boolean equals(Object o) {
+	@Override
+	public boolean equals(Object o) {
 		if (o instanceof RangesRow) {
 			RangesRow r = (RangesRow) o;
 			return r.getTextFieldFrom() == this.textFieldFrom
@@ -71,11 +72,13 @@ public class RangesRow {
 		this.rowNumber = rowNumber;
 	}
 
-	@Override public int hashCode() {
+	@Override
+	public int hashCode() {
 		return Objects.hash(textFieldFrom.hashCode(), textFieldTo.hashCode());
 	}
 
-	@Override public String toString() {
+	@Override
+	public String toString() {
 		return "error: " + error + " row number " + rowNumber + " start" + range
 				.getRangeStart() + " end " + range.getRangeEnd();
 	}

@@ -26,7 +26,8 @@ public class RowInKanjiInformations implements ListRowMaker<KanjiInformation> {
 		this.applicationWindow = applicationWindow;
 	}
 
-	@Override public MainPanel createListRow(KanjiInformation kanji,
+	@Override
+	public MainPanel createListRow(KanjiInformation kanji,
 			CommonListElements commonListElements) {
 		MainPanel panel = new MainPanel(null);
 		JLabel kanjiKeyword = GuiMaker.createLabel(

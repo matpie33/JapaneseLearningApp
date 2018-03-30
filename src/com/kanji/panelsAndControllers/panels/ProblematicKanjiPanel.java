@@ -18,7 +18,6 @@ import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.utilities.CommonGuiElementsMaker;
 import com.kanji.utilities.FocusableComponentMaker;
 import com.kanji.webPanel.ConnectionFailKanjiOfflinePage;
-import com.kanji.webPanel.ConnectionFailMessagePage;
 import com.kanji.webPanel.WebPagePanel;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
@@ -48,8 +47,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiOnlineDisplayingPanel = new JFXPanel();
 		kanjiOfflineDisplayingPanel = new MainPanel(BasicColors.VERY_BLUE);
 		messageFont = new JLabel().getFont().deriveFont(15f);
-		dictionaryWebPanel = new WebPagePanel(kanjiContextContextOwner,
-				null);
+		dictionaryWebPanel = new WebPagePanel(kanjiContextContextOwner, null);
 		kanjiWebPanel = new WebPagePanel(kanjiContextContextOwner,
 				new ConnectionFailKanjiOfflinePage(kanjiFont));
 	}
@@ -60,11 +58,13 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		wordsToReviewList = controller.getWordsToReviewList();
 	}
 
-	@Override public void setParentDialog(DialogWindow dialog) {
+	@Override
+	public void setParentDialog(DialogWindow dialog) {
 		super.setParentDialog(dialog);
 	}
 
-	@Override public void createElements() {
+	@Override
+	public void createElements() {
 
 		kanjiTextPane = GuiMaker.createTextPane(
 				new TextPaneOptions().border(null).editable(false)
@@ -104,7 +104,8 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiWebPanel.showPageWithoutGrabbingFocus(url);
 	}
 
-	@Override public DialogWindow getDialog() {
+	@Override
+	public DialogWindow getDialog() {
 		return parentDialog;
 	}
 

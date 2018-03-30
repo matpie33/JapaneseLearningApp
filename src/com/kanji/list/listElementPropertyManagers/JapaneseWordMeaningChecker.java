@@ -10,22 +10,25 @@ public class JapaneseWordMeaningChecker extends WordSearchOptionsHolder
 		implements ListElementPropertyManager<String, JapaneseWordInformation> {
 	//TODO I hate to create a class which is veeery similar to each other for every word element
 
-	public JapaneseWordMeaningChecker (WordSearchOptions options){
+	public JapaneseWordMeaningChecker(WordSearchOptions options) {
 		super(options);
 	}
 
-	@Override public String getInvalidPropertyReason() {
+	@Override
+	public String getInvalidPropertyReason() {
 		return "TODO validacja";
 	}
 
-	@Override public boolean isPropertyFound(String wordInKanji,
+	@Override
+	public boolean isPropertyFound(String wordInKanji,
 			JapaneseWordInformation wordInformation) {
 		return wordInformation != null && WordSearching
 				.doesWordContainSearchedWord(wordInformation.getWordMeaning(),
 						wordInKanji, getWordSearchOptions());
 	}
 
-	@Override public String validateInputAndConvertToProperty(
+	@Override
+	public String validateInputAndConvertToProperty(
 			JTextComponent valueToConvert) {
 
 		return valueToConvert.getText();

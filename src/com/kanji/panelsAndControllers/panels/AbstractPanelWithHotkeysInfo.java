@@ -212,7 +212,8 @@ public abstract class AbstractPanelWithHotkeysInfo {
 
 	AbstractButton createButtonClose() {
 		AbstractAction dispose = new AbstractAction() {
-			@Override public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				parentDialog.getContainer().dispose();
 			}
 		};

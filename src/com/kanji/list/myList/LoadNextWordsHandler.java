@@ -40,11 +40,12 @@ public class LoadNextWordsHandler implements LoadWordsHandler {
 	@Override
 	public void enableOrDisableLoadWordsButtons(
 			AbstractButton buttonLoadNextWords,
-			AbstractButton buttonLoadPreviousWords, boolean hasMoreWordsToShow) {
-		if (!hasMoreWordsToShow){
+			AbstractButton buttonLoadPreviousWords,
+			boolean hasMoreWordsToShow) {
+		if (!hasMoreWordsToShow) {
 			buttonLoadNextWords.setEnabled(false);
 		}
-		else if (!buttonLoadPreviousWords.isEnabled()){
+		else if (!buttonLoadPreviousWords.isEnabled()) {
 			buttonLoadPreviousWords.setEnabled(true);
 		}
 	}

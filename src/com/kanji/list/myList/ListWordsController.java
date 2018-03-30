@@ -1,7 +1,6 @@
 package com.kanji.list.myList;
 
 import com.kanji.constants.strings.Prompts;
-import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.KanjiInformation;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listElements.RepeatingInformation;
@@ -94,7 +93,7 @@ public class ListWordsController<Word extends ListElement> {
 			ListRow<Word> listRow = allWordsToRowNumberMap.get(i);
 			JLabel label = listRow.getIndexLabel();
 			label.setText(rowCreator.createTextForRowNumber(i));
-			allWordsToRowNumberMap.put(i-1, listRow);
+			allWordsToRowNumberMap.put(i - 1, listRow);
 		}
 
 	}

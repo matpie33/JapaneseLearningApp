@@ -7,16 +7,19 @@ import javax.swing.text.JTextComponent;
 public class KanjiIdChecker
 		implements ListElementPropertyManager<Integer, KanjiInformation> {
 
-	@Override public String getInvalidPropertyReason() {
+	@Override
+	public String getInvalidPropertyReason() {
 		return "tekst powinien zawierać tylko cyfry";
 	}
 
-	@Override public boolean isPropertyFound(Integer property,
+	@Override
+	public boolean isPropertyFound(Integer property,
 			KanjiInformation kanjiInformation) {
 		return kanjiInformation.getKanjiID() == property;
 	}
 
-	@Override public Integer validateInputAndConvertToProperty(
+	@Override
+	public Integer validateInputAndConvertToProperty(
 			JTextComponent textComponent) {
 		String valueToConvert = textComponent.getText();
 		boolean isValidNumber = isIdValidNumber(valueToConvert);
@@ -27,7 +30,8 @@ public class KanjiIdChecker
 		return convertedValue;
 	}
 
-	@Override public void setProperty(KanjiInformation kanjiInformation,
+	@Override
+	public void setProperty(KanjiInformation kanjiInformation,
 			Integer propertyValue) {
 		kanjiInformation.setKanjiID(propertyValue);
 	}

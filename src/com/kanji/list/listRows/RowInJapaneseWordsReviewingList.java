@@ -57,7 +57,7 @@ public class RowInJapaneseWordsReviewingList
 				.text(japaneseWord.getPartOfSpeech().getPolishMeaning())
 				.foregroundColor(Color.WHITE));
 
-		panel.addElementsInColumnStartingFromColumn(meaningText,0,
+		panel.addElementsInColumnStartingFromColumn(meaningText, 0,
 				commonListElements.getRowNumberLabel(), meaningLabel,
 				meaningText);
 		panel.addElementsInColumnStartingFromColumn(1, partOfSpeechLabel,
@@ -92,7 +92,8 @@ public class RowInJapaneseWordsReviewingList
 					.collect(Collectors.toList());
 			writingTextFields
 					.forEach(tf -> tf.addMouseListener(new MouseAdapter() {
-						@Override public void mouseClicked(MouseEvent e) {
+						@Override
+						public void mouseClicked(MouseEvent e) {
 							problematicJapaneseWordsDisplayer.setSelectedWord(
 									(JTextComponent) e.getSource());
 							super.mouseClicked(e);
@@ -104,11 +105,10 @@ public class RowInJapaneseWordsReviewingList
 				components[i] = writingTextFields.get(i);
 			}
 			components[writingTextFields.size()] = createButtonSearchWord();
-			writingsPanel
-					.addElementsInColumnStartingFromColumn(0, components);
+			writingsPanel.addElementsInColumnStartingFromColumn(0, components);
 		}
-		panel.addElementsInColumnStartingFromColumn(writingsPanel.getPanel(),2,
-				FillType.HORIZONTAL,  writingsPanel.getPanel());
+		panel.addElementsInColumnStartingFromColumn(writingsPanel.getPanel(), 2,
+				FillType.HORIZONTAL, writingsPanel.getPanel());
 
 		return panel;
 	}
@@ -116,7 +116,8 @@ public class RowInJapaneseWordsReviewingList
 	private AbstractButton createButtonSearchWord() {
 		return GuiMaker.createButtonlikeComponent(ComponentType.BUTTON,
 				ButtonsNames.SEARCH_IN_DICTIONARY, new AbstractAction() {
-					@Override public void actionPerformed(ActionEvent e) {
+					@Override
+					public void actionPerformed(ActionEvent e) {
 						problematicJapaneseWordsDisplayer
 								.searchCurrentWordInDictionary();
 					}

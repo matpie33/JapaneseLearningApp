@@ -7,7 +7,8 @@ import static org.junit.Assert.assertEquals;
 
 public class RangesTests {
 
-	@Test public void inclusiveRangeShouldBeIncludedInto() {
+	@Test
+	public void inclusiveRangeShouldBeIncludedInto() {
 		Range inclusiveRange = new Range(10, 100);
 		Range includedRange = new Range(30, 40);
 
@@ -19,7 +20,8 @@ public class RangesTests {
 				inclusiveRange.includesRange(new Range(70, 100)));
 	}
 
-	@Test public void rangesThatFollowsShouldBeMerged() {
+	@Test
+	public void rangesThatFollowsShouldBeMerged() {
 		Range firstRange = new Range(30, 100);
 		Range followingRange = new Range(101, 200);
 

@@ -24,17 +24,20 @@ public class FocusableComponentMaker {
 
 	private static void addFocusListener(JComponent panelToSetBackground) {
 		panelToSetBackground.addMouseListener(new MouseAdapter() {
-			@Override public void mouseClicked(MouseEvent e) {
+			@Override
+			public void mouseClicked(MouseEvent e) {
 				panelToSetBackground.requestFocusInWindow();
 				super.mouseClicked(e);
 			}
 		});
 		panelToSetBackground.addFocusListener(new FocusAdapter() {
-			@Override public void focusLost(FocusEvent e) {
+			@Override
+			public void focusLost(FocusEvent e) {
 				panelToSetBackground.setBorder(createBorder(BasicColors.GREY));
 			}
 
-			@Override public void focusGained(FocusEvent e) {
+			@Override
+			public void focusGained(FocusEvent e) {
 				panelToSetBackground.requestFocusInWindow();
 				panelToSetBackground
 						.setBorder(createBorder(BasicColors.VERY_BLUE));
@@ -45,7 +48,8 @@ public class FocusableComponentMaker {
 	private static void addFocus(Container container,
 			JComponent componentToFocus) {
 		container.addMouseListener(new MouseAdapter() {
-			@Override public void mouseClicked(MouseEvent e) {
+			@Override
+			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
 				componentToFocus.requestFocusInWindow();
 			}

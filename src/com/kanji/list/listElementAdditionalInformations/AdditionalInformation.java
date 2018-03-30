@@ -23,7 +23,8 @@ public class AdditionalInformation implements Serializable {
 		return value;
 	}
 
-	@Override public boolean equals(Object o) {
+	@Override
+	public boolean equals(Object o) {
 		if (o.getClass() != getClass()) {
 			return false;
 		}
@@ -32,7 +33,8 @@ public class AdditionalInformation implements Serializable {
 				.equals(otherObject.getValue());
 	}
 
-	@Override public int hashCode() {
+	@Override
+	public int hashCode() {
 		return Objects.hash(tag, value);
 	}
 

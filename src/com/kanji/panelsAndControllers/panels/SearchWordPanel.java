@@ -56,7 +56,8 @@ public class SearchWordPanel<Word extends ListElement>
 		this.applicationWindow = applicationWindow;
 	}
 
-	@Override public void createElements() {
+	@Override
+	public void createElements() {
 
 		AbstractButton previous = createButtonFindPrevious();
 		AbstractButton next = createButtonFindNext();
@@ -94,7 +95,8 @@ public class SearchWordPanel<Word extends ListElement>
 
 	private void addHotkeyForSwitchingComboboxValue(JComboBox comboBox) {
 		AbstractAction action = new AbstractAction() {
-			@Override public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				if (comboBox.getSelectedIndex() < comboBox.getItemCount() - 1) {
 					comboBox.setSelectedIndex(comboBox.getSelectedIndex() + 1);
 				}

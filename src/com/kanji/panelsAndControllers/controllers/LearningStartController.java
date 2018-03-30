@@ -344,7 +344,8 @@ public class LearningStartController {
 	public ItemListener createListenerAddProblematicKanjis(
 			JCheckBox problematicKanjiCheckbox) {
 		return new ItemListener() {
-			@Override public void itemStateChanged(ItemEvent e) {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
 				updateNumberOfSelectedKanjiAfterCheckboxToggle(
 						problematicKanjiCheckbox.isSelected());
 
@@ -356,11 +357,13 @@ public class LearningStartController {
 			JTextComponent from, JTextComponent to) {
 		return new KeyAdapter() {
 
-			@Override public void keyTyped(KeyEvent e) {
+			@Override
+			public void keyTyped(KeyEvent e) {
 				handleKeyTyped(e, problematicCheckbox.isSelected());
 			}
 
-			@Override public void keyReleased(KeyEvent e) {
+			@Override
+			public void keyReleased(KeyEvent e) {
 				handleKeyReleased(e, to, from,
 						problematicCheckbox.isSelected());
 			}
@@ -371,7 +374,8 @@ public class LearningStartController {
 	public AbstractAction createActionDeleteRow(JCheckBox problematicCheckbox,
 			JTextComponent from, JTextComponent to) {
 		return new AbstractAction() {
-			@Override public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				removeRangeRow(from, to, problematicCheckbox.isSelected());
 			}
 		};
@@ -379,7 +383,8 @@ public class LearningStartController {
 
 	public AbstractAction createActionAddRow() {
 		return new AbstractAction() {
-			@Override public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				learningStartPanel.addRowToRangesPanel();
 			}
 		};
@@ -388,7 +393,8 @@ public class LearningStartController {
 	public AbstractAction createActionStartLearning(
 			JCheckBox problematicCheckbox) {
 		return new AbstractAction() {
-			@Override public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				showErrorsOrStart(problematicCheckbox.isSelected());
 			}
 		};
@@ -397,7 +403,8 @@ public class LearningStartController {
 	public AbstractAction createActionSelectProblematicCheckbox(
 			JCheckBox problematicCheckbox) {
 		return new AbstractAction() {
-			@Override public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				if (problematicCheckbox.isEnabled()) {
 					problematicCheckbox
 							.setSelected(!problematicCheckbox.isSelected());

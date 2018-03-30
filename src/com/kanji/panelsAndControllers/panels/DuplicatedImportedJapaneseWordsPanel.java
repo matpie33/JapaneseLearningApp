@@ -27,7 +27,8 @@ public class DuplicatedImportedJapaneseWordsPanel
 		this.duplicatedImportedJapaneseWordsPanelList = duplicatedImportedJapaneseWordsPanelList;
 	}
 
-	@Override public void createElements() {
+	@Override
+	public void createElements() {
 		MyList<DuplicatedJapaneseWordInformation> dup = new MyList<>(
 				getDialog(), applicationWindow.getApplicationController(),
 				new RowInDuplicatedImportedWordsList(applicationWindow,
@@ -42,7 +43,8 @@ public class DuplicatedImportedJapaneseWordsPanel
 		mainPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.BOTH, dup.getPanel()));
 		addHotkey(KeyEvent.VK_SPACE, new AbstractAction() {
-			@Override public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				dup.highlightRow(nextRowNotHighlighted);
 				applicationWindow.getApplicationController().getJapaneseWords().
 						highlightRow(duplicatedImportedJapaneseWordsPanelList

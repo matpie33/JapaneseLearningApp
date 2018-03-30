@@ -33,12 +33,14 @@ public class ConnectionFailMessagePage implements ConnectionFailPageHandler {
 		System.out.println("button rel: " + buttonReload);
 	}
 
-	@Override public JPanel getConnectionFailPage() {
+	@Override
+	public JPanel getConnectionFailPage() {
 		return messagePanel.getPanel();
 
 	}
 
-	@Override public void modifyConnectionFailPage(KanjiContext context) {
+	@Override
+	public void modifyConnectionFailPage(KanjiContext context) {
 		//TODO bad idea to require kanji context
 		return;
 	}

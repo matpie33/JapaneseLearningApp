@@ -14,7 +14,6 @@ import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.Titles;
 import com.kanji.panelsAndControllers.controllers.RepeatingWordsController;
-import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -61,7 +60,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 				wordFullInformationPanel);
 	}
 
-	@Override public void createElements() {
+	@Override
+	public void createElements() {
 		JLabel titleLabel = new JLabel(Titles.REPEATING_WORDS_DIALOG);
 		time = new JLabel();
 		remainingLabel = new JLabel(

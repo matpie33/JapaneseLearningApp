@@ -65,7 +65,8 @@ public class RowInDuplicatedImportedWordsList
 	private AbstractButton createButtonGoToRow(int rowNumber) {
 		return GuiMaker.createButtonlikeComponent(ComponentType.BUTTON,
 				ButtonsNames.GO_TO_ROW, new AbstractAction() {
-					@Override public void actionPerformed(ActionEvent e) {
+					@Override
+					public void actionPerformed(ActionEvent e) {
 						newJapaneseWords.highlightRow(rowNumber);
 					}
 				});

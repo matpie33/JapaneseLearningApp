@@ -27,7 +27,8 @@ public class RowInKanjiRepeatingList implements ListRowMaker<KanjiInformation> {
 		this.controller = controller;
 	}
 
-	@Override public MainPanel createListRow(KanjiInformation row,
+	@Override
+	public MainPanel createListRow(KanjiInformation row,
 			CommonListElements commonListElements) {
 		MainPanel panel = new MainPanel(null);
 		JLabel id = new JLabel("" + row.getKanjiID());
@@ -58,7 +59,8 @@ public class RowInKanjiRepeatingList implements ListRowMaker<KanjiInformation> {
 			KanjiInformation kanjiInformation) {
 		JButton button = new JButton(ButtonsNames.GO_TO_SOURCE);
 		button.addActionListener(new ActionListener() {
-			@Override public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				controller.goToSpecifiedResource(
 						new WordRow(kanjiInformation, rowNumber));
 			}

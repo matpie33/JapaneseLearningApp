@@ -33,11 +33,13 @@ public class ConnectionFailKanjiOfflinePage
 				.createRow(FillType.NONE, Anchor.CENTER, kanjiTextPane));
 	}
 
-	@Override public JPanel getConnectionFailPage() {
+	@Override
+	public JPanel getConnectionFailPage() {
 		return mainPanel.getPanel();
 	}
 
-	@Override public void modifyConnectionFailPage(KanjiContext context) {
+	@Override
+	public void modifyConnectionFailPage(KanjiContext context) {
 		if (context.isEmpty()) {
 			kanjiTextPane.setText(Prompts.NO_KANJI_TO_DISPLAY);
 			setFontSize(messageFontSize);

@@ -2,7 +2,6 @@ package com.kanji.utilities;
 
 import com.kanji.constants.enums.WordSearchOptions;
 
-import java.text.Normalizer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -34,12 +33,11 @@ public class WordSearching {
 	private static String removeDiacritics(String word) {
 		for (Map.Entry<Character, Character> letterAndReplacement : polishDiacriticsMap
 				.entrySet()) {
-			word = word.replace(letterAndReplacement.getKey(), letterAndReplacement.getValue());
+			word = word.replace(letterAndReplacement.getKey(),
+					letterAndReplacement.getValue());
 		}
 		return word;
 	}
-
-
 
 	public static boolean doesAnyOfTheWordsContainSearchedWord(
 			Set<String> words, String searched, WordSearchOptions options) {

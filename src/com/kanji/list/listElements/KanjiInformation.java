@@ -37,7 +37,8 @@ public class KanjiInformation implements Serializable, ListElement {
 		this.id = kanjiID;
 	}
 
-	@Override public boolean equals(Object another) {
+	@Override
+	public boolean equals(Object another) {
 		if (!(another instanceof KanjiInformation)) {
 			return false;
 		}
@@ -47,11 +48,13 @@ public class KanjiInformation implements Serializable, ListElement {
 
 	}
 
-	@Override public int hashCode() {
+	@Override
+	public int hashCode() {
 		return Objects.hash(id, keyword);
 	}
 
-	@Override public String toString() {
+	@Override
+	public String toString() {
 		return "Keyword: " + keyword + " int: " + id;
 	}
 
@@ -72,7 +75,8 @@ public class KanjiInformation implements Serializable, ListElement {
 	}
 
 	//TODO it's probably beter to override equals and hashcode and use set instead of lists
-	@Override public boolean isSameAs(ListElement element) {
+	@Override
+	public boolean isSameAs(ListElement element) {
 		if (element instanceof KanjiInformation) {
 			return ((KanjiInformation) element).getKanjiID() == id
 					|| ((KanjiInformation) element).getKanjiKeyword()

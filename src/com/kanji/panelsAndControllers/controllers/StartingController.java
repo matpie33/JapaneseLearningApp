@@ -16,7 +16,8 @@ public class StartingController {
 
 	public ChangeListener createTabChangeListener() {
 		return new ChangeListener() {
-			@Override public void stateChanged(ChangeEvent e) {
+			@Override
+			public void stateChanged(ChangeEvent e) {
 				JTabbedPane source = (JTabbedPane) e.getSource();
 				startingPanel.updateWordTypeContext(
 						source.getTitleAt(source.getSelectedIndex()));

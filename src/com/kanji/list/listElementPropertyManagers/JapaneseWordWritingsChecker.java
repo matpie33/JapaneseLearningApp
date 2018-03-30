@@ -1,6 +1,5 @@
 package com.kanji.list.listElementPropertyManagers;
 
-import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWordInformation;
@@ -31,11 +30,13 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 		this.japaneseWordPanelCreator = creator;
 	}
 
-	@Override public String getInvalidPropertyReason() {
+	@Override
+	public String getInvalidPropertyReason() {
 		return errorDetails;
 	}
 
-	@Override public boolean isPropertyFound(
+	@Override
+	public boolean isPropertyFound(
 			List<KanaAndKanjiStrings> kanaAndKanjiStrings,
 			JapaneseWordInformation wordInformation) {
 
@@ -89,20 +90,20 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 
 	private boolean areKanjisSame(List<String> searchedKanji,
 			List<String> existingKanjiWritings) {
-		if (addingWord){
-			if (areKanjiWritingsEmpty(searchedKanji)){
+		if (addingWord) {
+			if (areKanjiWritingsEmpty(searchedKanji)) {
 				return areKanjiWritingsEmpty(existingKanjiWritings);
 			}
-			else{
-				return existingKanjiWritings.containsAll(searchedKanji) ||
-						searchedKanji.containsAll(existingKanjiWritings);
+			else {
+				return existingKanjiWritings.containsAll(searchedKanji)
+						|| searchedKanji.containsAll(existingKanjiWritings);
 			}
 		}
-		else{
-			if (areKanjiWritingsEmpty(searchedKanji)){
+		else {
+			if (areKanjiWritingsEmpty(searchedKanji)) {
 				return true;
 			}
-			else{
+			else {
 				return existingKanjiWritings.containsAll(searchedKanji);
 			}
 		}

@@ -22,7 +22,8 @@ public class SearchWordController<Word extends ListElement> {
 
 	public AbstractAction createActionSwitchSearchingByOption() {
 		return new AbstractAction() {
-			@Override public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				JComboBox comboBox = (JComboBox) e.getSource();
 				String optionLabel = (String) comboBox.getSelectedItem();
 				searchWordPanel.switchToPanel(optionLabel);
@@ -33,7 +34,8 @@ public class SearchWordController<Word extends ListElement> {
 	public AbstractAction createActionSwitchSearchCriteria(
 			WordSearchOptions options) {
 		return new AbstractAction() {
-			@Override public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				searchWordPanel.setSearchOptions(options);
 			}
 		};
@@ -42,7 +44,8 @@ public class SearchWordController<Word extends ListElement> {
 	public AbstractAction createActionFindWord(
 			SearchingDirection searchingDirection) {
 		return new AbstractAction() {
-			@Override public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				TextInputAndPropertyManagerForListElement textInputAndPropertyManagerForListElement = searchWordPanel
 						.getTextInputAndPropertyManager();
 				list.findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(

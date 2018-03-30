@@ -63,15 +63,18 @@ public class RepeatingKanjiDisplayer
 		problematicKanjis = problematicWords;
 	}
 
-	@Override public void showRecognizingWordPanel() {
+	@Override
+	public void showRecognizingWordPanel() {
 
 	}
 
-	@Override public JPanel getFullInformationPanel() {
+	@Override
+	public JPanel getFullInformationPanel() {
 		return fullWordInformationPanel.getPanel();
 	}
 
-	@Override public JPanel getRecognizingWordPanel() {
+	@Override
+	public JPanel getRecognizingWordPanel() {
 		return recognizingWordPanel.getPanel();
 	}
 
@@ -87,15 +90,18 @@ public class RepeatingKanjiDisplayer
 		currentProblematicKanjis.remove(kanjiInformation);
 	}
 
-	@Override public String getWordHint(KanjiInformation kanjiInformation) {
+	@Override
+	public String getWordHint(KanjiInformation kanjiInformation) {
 		return kanjiInformation.getKanjiKeyword();
 	}
 
-	@Override public Set<KanjiInformation> getProblematicWords() {
+	@Override
+	public Set<KanjiInformation> getProblematicWords() {
 		return currentProblematicKanjis;
 	}
 
-	@Override public RepeatingState getRepeatingState(TimeSpent timeSpent,
+	@Override
+	public RepeatingState getRepeatingState(TimeSpent timeSpent,
 			RepeatingInformation repeatingInformation,
 			Set<KanjiInformation> words) {
 		RepeatingState<KanjiInformation> kanjiRepeatingState = new RepeatingState<>(
@@ -104,11 +110,13 @@ public class RepeatingKanjiDisplayer
 		return kanjiRepeatingState;
 	}
 
-	@Override public boolean hasProblematicWords() {
+	@Override
+	public boolean hasProblematicWords() {
 		return !currentProblematicKanjis.isEmpty();
 	}
 
-	@Override public void clearRepeatingData() {
+	@Override
+	public void clearRepeatingData() {
 		currentProblematicKanjis.clear();
 	}
 

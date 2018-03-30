@@ -121,7 +121,8 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 		return kanjiToAlternativeKanaWritingMap.keySet();
 	}
 
-	@Override public boolean isSameAs(ListElement element) {
+	@Override
+	public boolean isSameAs(ListElement element) {
 		if (element instanceof JapaneseWordInformation) {
 			JapaneseWordInformation otherWord = (JapaneseWordInformation) element;
 
@@ -146,7 +147,8 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 		return false;
 	}
 
-	@Override public String toString() {
+	@Override
+	public String toString() {
 		StringBuilder builder = new StringBuilder(20);
 		builder.append("\nKana to kanji");
 		builder.append(getKanaToKanjiWritingsMap());

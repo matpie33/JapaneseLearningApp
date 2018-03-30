@@ -54,11 +54,13 @@ public class ProblematicJapaneseWordsDisplayer
 
 	}
 
-	@Override public MyList<JapaneseWordInformation> getWordsToReviewList() {
+	@Override
+	public MyList<JapaneseWordInformation> getWordsToReviewList() {
 		return wordsToReviewList;
 	}
 
-	@Override public void browseWord(WordRow<JapaneseWordInformation> wordRow) {
+	@Override
+	public void browseWord(WordRow<JapaneseWordInformation> wordRow) {
 		JapaneseWordInformation japaneseWordInformation = wordRow
 				.getListElement();
 		KanjiCharactersReader kanjiCharactersReader = KanjiCharactersReader
@@ -123,16 +125,19 @@ public class ProblematicJapaneseWordsDisplayer
 		return kanjis;
 	}
 
-	@Override public WordRow createWordRow(JapaneseWordInformation listElement,
+	@Override
+	public WordRow createWordRow(JapaneseWordInformation listElement,
 			int rowNumber) {
 		return new WordRow(listElement, rowNumber);
 	}
 
-	@Override public void initialize() {
+	@Override
+	public void initialize() {
 		problematicJapaneseWordsPanel.initialize();
 	}
 
-	@Override public AbstractPanelWithHotkeysInfo getPanel() {
+	@Override
+	public AbstractPanelWithHotkeysInfo getPanel() {
 		return problematicJapaneseWordsPanel;
 	}
 
@@ -160,7 +165,8 @@ public class ProblematicJapaneseWordsDisplayer
 		}
 	}
 
-	@Override public boolean isListPanelFocused() {
+	@Override
+	public boolean isListPanelFocused() {
 		return wordsToReviewList.getPanel().hasFocus();
 	}
 
