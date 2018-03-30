@@ -266,4 +266,7 @@ public class ListPanelMaker<Word extends ListElement>
 		return rowsPanel.getNumberOfRows() - 2;
 	}
 
+	public void enableButtonShowPreviousWords() {
+		buttonLoadPreviousWords.setEnabled(true);
+	}
 }
