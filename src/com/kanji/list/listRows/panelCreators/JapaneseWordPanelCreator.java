@@ -206,6 +206,7 @@ public class JapaneseWordPanelCreator {
 			JapaneseWordInformation japaneseWord,
 			ListPanelViewMode listPanelViewMode,
 			CommonListElements listElements) {
+		//TODO looks like strategies can be used here, and common listElements can be null - should be done another way
 		MainPanel addWordPanel = new MainPanel(null);
 		createElements(japaneseWord, listPanelViewMode, listElements, true,
 				addWordPanel);
@@ -239,8 +240,10 @@ public class JapaneseWordPanelCreator {
 		addWordPanel.addElementsInColumnStartingFromColumn(1, new JLabel());
 		//TODO dummy label that gets removed in "add kana and kanji row" method
 		addKanaAndKanjiWritingRow(addWordPanel);
-		addWordPanel.addElementsInColumnStartingFromColumn(1,
-				listElements.getButtonDelete());
+		if (listPanelViewMode.equals(ListPanelViewMode.VIEW_AND_EDIT)) {
+			addWordPanel.addElementsInColumnStartingFromColumn(1,
+					listElements.getButtonDelete());
+		}
 
 		SwingUtilities
 				.invokeLater(() -> wordMeaningText.requestFocusInWindow());
