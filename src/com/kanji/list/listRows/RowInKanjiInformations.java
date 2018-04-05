@@ -52,7 +52,7 @@ public class RowInKanjiInformations implements ListRowMaker<KanjiInformation> {
 				applicationWindow.getApplicationController().getKanjiList(),
 				applicationWindow, new KanjiIdChecker(),
 				ExceptionsMessages.ID_ALREADY_DEFINED_EXCEPTION, true));
-		JButton remove = commonListElements.getButtonDelete();
+		AbstractButton remove = commonListElements.getButtonDelete();
 		panel.addElementsInColumnStartingFromColumn(wordTextArea, 0,
 				commonListElements.getRowNumberLabel(), kanjiKeyword,
 				wordTextArea);

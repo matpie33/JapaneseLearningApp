@@ -1,18 +1,21 @@
 package com.kanji.model;
 
 import com.kanji.constants.strings.Prompts;
+import com.kanji.list.listElementPropertyManagers.JapaneseWordWritingsChecker;
+import com.kanji.list.listElements.ListElement;
 
 import javax.swing.text.JTextComponent;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class KanaAndKanjiStrings {
+public class KanaAndKanjiStrings  {
 	private String kana;
 	private List<String> kanji;
 	private String modifiedValue;
 	private boolean kanaModified;
 	private final static String DEFAULT_VALUE = Prompts.KANJI_TEXT;
+	//TODO should be replaced with japanese writings class
 
 	public KanaAndKanjiStrings(String kana, List<String> kanji,
 			String modifiedValue, boolean kanaModified) {

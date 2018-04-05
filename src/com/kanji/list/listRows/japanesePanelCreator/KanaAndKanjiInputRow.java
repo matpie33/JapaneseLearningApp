@@ -1,4 +1,4 @@
-package com.kanji.list.listRows.panelCreators;
+package com.kanji.list.listRows.japanesePanelCreator;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;

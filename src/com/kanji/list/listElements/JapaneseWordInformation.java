@@ -39,7 +39,23 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 	}
 
 	public Map<String, List<String>> getKanaToKanjiWritingsMap() {
+		//TODO remove this method - use "get japanese writings"
 		return kanjiToAlternativeKanaWritingMap;
+	}
+
+	public List<JapaneseWriting> getJapaneseWritings() {
+		//TODO just store it as japanese writings instead of a map
+		List<JapaneseWriting> japaneseWritings = new ArrayList<>();
+		if (kanjiToAlternativeKanaWritingMap.isEmpty()) {
+			return Arrays.asList(new JapaneseWriting("", new ArrayList<>()));
+		}
+		for (Map.Entry<String, List<String>> kanaToKanjiWriting : kanjiToAlternativeKanaWritingMap
+				.entrySet()) {
+			japaneseWritings
+					.add(new JapaneseWriting(kanaToKanjiWriting.getKey(),
+							kanaToKanjiWriting.getValue()));
+		}
+		return japaneseWritings;
 	}
 
 	public String getWordMeaning() {

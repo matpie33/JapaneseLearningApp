@@ -18,7 +18,8 @@ import com.kanji.list.listElementPropertyManagers.WordSearchOptionsHolder;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listElements.ListElementData;
-import com.kanji.list.listRows.panelCreators.JapaneseWordPanelCreator;
+import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelServiceAddMode;
+import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.TextInputAndPropertyManagerForListElement;
 import com.kanji.panelsAndControllers.controllers.SearchWordController;
@@ -137,15 +138,15 @@ public class SearchWordPanel<Word extends ListElement>
 						textInputForElementType).getPanel();
 				break;
 			case KANA_KANJI_WRITINGS:
-				JapaneseWordPanelCreator japaneseWordPanelCreator = new JapaneseWordPanelCreator(
-						applicationWindow, false, parentDialog);
-				panelForElementType = createSearchByKanaAndKanjiWritingsPanel(
-						japaneseWordPanelCreator,
-						(JapaneseWordWritingsChecker) elementData
-								.getListElementPropertyManager()).getPanel();
-				textInputForElementType = japaneseWordPanelCreator
-						.getKanaToKanjiWritingsTextComponents().keySet()
-						.iterator().next();
+				panelForElementType = JapaneseWordPanelCreator
+						.createJapaneseWritingsList(parentDialog,
+								applicationWindow.getApplicationController(),
+								new JapanesePanelServiceAddMode()).getPanel();
+				textInputForElementType = null;
+//						japaneseWordPanelCreator
+//						.getKanaToKanjiWritingsTextComponents().keySet()
+//						.iterator().next();
+				//TODO reimplement
 				break;
 
 			default:
@@ -168,20 +169,6 @@ public class SearchWordPanel<Word extends ListElement>
 				.createRow(FillType.NONE, Anchor.NORTHWEST,
 						new JLabel(Labels.KANJI_ID_LABEL), inputField));
 		return kanjiIdSearchPanel;
-	}
-
-	private MainPanel createSearchByKanaAndKanjiWritingsPanel(
-			JapaneseWordPanelCreator japaneseWordPanelCreator,
-			JapaneseWordWritingsChecker writingsChecker) {
-
-		MainPanel panel = new MainPanel(null, true);
-
-		japaneseWordPanelCreator.createAndAddKanaAndKanjiRowGuiElements(
-				JapaneseWordInformation.getInitializer().initializeElement(),
-				panel, null, ListPanelViewMode.ADD, false);
-
-		writingsChecker.setJapaneseWordPanelCreator(japaneseWordPanelCreator);
-		return panel;
 	}
 
 	private MainPanel createSearchByWordPanel(JTextComponent inputField) {

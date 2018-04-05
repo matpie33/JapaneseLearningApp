@@ -13,6 +13,7 @@ import com.kanji.list.listElements.RepeatingInformation;
 import com.kanji.list.listRows.RowInJapaneseWordInformations;
 import com.kanji.list.listRows.RowInKanjiInformations;
 import com.kanji.list.listRows.RowInRepeatingList;
+import com.kanji.list.myList.ListConfiguration;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.KanjisAndRepeatingInfo;
 import com.kanji.panelsAndControllers.panels.RepeatingWordsPanel;
@@ -118,7 +119,7 @@ public class ApplicationController implements ApplicationStateManager {
 		rowInJapaneseWordInformations = new RowInJapaneseWordInformations(
 				parent);
 		japaneseWords = new MyList<>(parent, this,
-				rowInJapaneseWordInformations, Titles.JAPANESE_WORDS_LIST, true,
+				rowInJapaneseWordInformations, Titles.JAPANESE_WORDS_LIST,
 				JapaneseWordInformation.getElementsTypesAndLabels(),
 				JapaneseWordInformation.getInitializer());
 
@@ -145,7 +146,9 @@ public class ApplicationController implements ApplicationStateManager {
 
 	private void initializeJapaneseRepeatingDates() {
 		japaneseWordsRepeatingDates = new MyList<>(parent, this,
-				new RowInRepeatingList(), Titles.JAPANESE_REPEATING_LIST, false,
+				new RowInRepeatingList(), Titles.JAPANESE_REPEATING_LIST,
+				new ListConfiguration().enableWordAdding(false)
+						.showButtonsLoadNextPreviousWords(false),
 				RepeatingInformation.getElementsTypesAndLabels(),
 				RepeatingInformation.getInitializer());
 		japaneseWordsRepeatingDates.addWord(new RepeatingInformation("abc",
@@ -265,7 +268,8 @@ public class ApplicationController implements ApplicationStateManager {
 			return;
 		}
 		loadingAndSaving.setFileToSave(fileToSave);
-		rowInJapaneseWordInformations.getJapaneseWordPanelCreator().clear();
+		//		rowInJapaneseWordInformations.getJapaneseWordPanelCreator().clear();
+		//TODO reimplement
 		try {
 			if (savingInformation.getKanjiKoohiiCookiesHeaders() != null) {
 				//TODO this should go to application controller's "restore
@@ -320,7 +324,7 @@ public class ApplicationController implements ApplicationStateManager {
 
 	private void initializeKanjiList() {
 		kanjiList = new MyList<>(parent, this,
-				new RowInKanjiInformations(parent), Titles.KANJI_LIST, true,
+				new RowInKanjiInformations(parent), Titles.KANJI_LIST,
 				KanjiInformation.getElementsTypesAndLabels(),
 				KanjiInformation.getInitializer());
 
@@ -337,7 +341,9 @@ public class ApplicationController implements ApplicationStateManager {
 
 	private void initializeKanjiRepeatingDates() {
 		kanjiRepeatingDates = new MyList<>(parent, this,
-				new RowInRepeatingList(), Titles.KANJI_REPEATING_LIST, false,
+				new RowInRepeatingList(), Titles.KANJI_REPEATING_LIST,
+				new ListConfiguration().showButtonsLoadNextPreviousWords(false)
+						.enableWordAdding(false),
 				RepeatingInformation.getElementsTypesAndLabels(),
 				RepeatingInformation.getInitializer());
 		kanjiRepeatingDates.addWord(new RepeatingInformation("abc",

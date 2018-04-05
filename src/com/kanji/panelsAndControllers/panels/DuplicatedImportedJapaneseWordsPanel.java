@@ -35,7 +35,7 @@ public class DuplicatedImportedJapaneseWordsPanel
 						getDialog(),
 						applicationWindow.getApplicationController()
 								.getJapaneseWords()),
-				Titles.DUPLICATED_WORDS_PANEL, false, null, null);
+				Titles.DUPLICATED_WORDS_PANEL, null, null);
 		for (DuplicatedJapaneseWordInformation word : duplicatedImportedJapaneseWordsPanelList) {
 			dup.addWord(word);
 			System.out.println("adding: " + word);

@@ -24,10 +24,13 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ListPanelMaker<Word extends ListElement>
 		extends AbstractPanelWithHotkeysInfo {
 
+	private static final Color BACKGROUND_COLOR = BasicColors.VERY_BLUE;
 	private ListWordsController<Word> listWordsController;
 	private MainPanel rowsPanel;
 	private JScrollPane parentScrollPane;
@@ -37,28 +40,56 @@ public class ListPanelMaker<Word extends ListElement>
 	private Border rowBorder = BorderFactory
 			.createMatteBorder(0, 0, 2, 0, BasicColors.LIGHT_BLUE);
 	private ApplicationController applicationController;
-	private MainPanel listPanel;
+	private MainPanel rootPanel;
 	private boolean enableWordAdding;
 	private AbstractButton buttonLoadNextWords;
 	private AbstractButton buttonLoadPreviousWords;
 	private LoadNextWordsHandler loadNextWordsHandler;
 	private LoadPreviousWordsHandler loadPreviousWordsHandler;
+	private List<AbstractButton> navigationButtons;
+	private JComponent listElementsPanel;
+	private boolean isScrollBarInherited;
+	private boolean enableWordSearching;
+	private boolean showButtonsNextAndPrevious;
+	private boolean isSkipTitle;
 
-	public ListPanelMaker(boolean enableWordAdding,
+	public ListPanelMaker(ListConfiguration listConfiguration,
 			ApplicationController applicationController,
 			ListRowMaker<Word> listRow, ListWordsController<Word> controller) {
 		this.applicationController = applicationController;
 		listWordsController = controller;
-		this.enableWordAdding = enableWordAdding;
-
-		rowsPanel = new MainPanel(null, true);
-		listPanel = new MainPanel(null);
+		unwrapConfiguration(listConfiguration);
+		isSkipTitle = listConfiguration.isSkipTitle();
+		rowsPanel = new MainPanel(BasicColors.VERY_BLUE, true);
+		rootPanel = new MainPanel(null);
 		titleLabel = new JLabel();
-		createDefaultScrollPane();
-
+		loadNextWordsHandler = new LoadNextWordsHandler(listWordsController,
+				rowsPanel);
+		loadPreviousWordsHandler = new LoadPreviousWordsHandler(
+				listWordsController, rowsPanel);
 		rowsPanel.setBorder(rowBorder);
 		this.listRow = listRow;
-		createAndAddButtonsShowNextAndPrevious();
+
+		navigationButtons = new ArrayList<>();
+
+	}
+
+	private void unwrapConfiguration(ListConfiguration listConfiguration) {
+		this.enableWordAdding = listConfiguration.isWordAddingEnabled();
+		this.isScrollBarInherited = listConfiguration.isScrollBarInherited();
+		this.enableWordSearching = listConfiguration.isWordSearchingEnabled();
+		showButtonsNextAndPrevious = listConfiguration
+				.isShowButtonsLoadNextPreviousWords();
+	}
+
+	public void inheritScrollPane() {
+		isScrollBarInherited = false;
+	}
+
+	public void addNavigationButtons(AbstractButton... buttons) {
+		for (AbstractButton button : buttons) {
+			navigationButtons.add(button);
+		}
 	}
 
 	public LoadNextWordsHandler getLoadNextWordsHandler() {
@@ -74,10 +105,6 @@ public class ListPanelMaker<Word extends ListElement>
 				ButtonsNames.SHOW_NEXT_WORDS_ON_LIST);
 		buttonLoadPreviousWords = createAndAddButtonLoadWords(
 				ButtonsNames.SHOW_PREVIOUS_WORDS_ON_LIST);
-		loadNextWordsHandler = new LoadNextWordsHandler(listWordsController,
-				rowsPanel);
-		loadPreviousWordsHandler = new LoadPreviousWordsHandler(
-				listWordsController, rowsPanel);
 		buttonLoadNextWords.addActionListener(
 				createButtonShowNextOrPreviousWords(loadNextWordsHandler));
 		buttonLoadPreviousWords.addActionListener(
@@ -86,6 +113,10 @@ public class ListPanelMaker<Word extends ListElement>
 				.createRow(FillType.HORIZONTAL, buttonLoadPreviousWords));
 		rowsPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.HORIZONTAL, buttonLoadNextWords));
+		if (!showButtonsNextAndPrevious) {
+			buttonLoadPreviousWords.setVisible(false);
+			buttonLoadNextWords.setVisible(false);
+		}
 	}
 
 	private AbstractButton createAndAddButtonLoadWords(String buttonName) {
@@ -99,11 +130,12 @@ public class ListPanelMaker<Word extends ListElement>
 	public ListRow<Word> addRow(Word word, int rowNumber,
 			boolean shouldShowWord, LoadWordsHandler loadWordsHandler) {
 		JLabel rowNumberLabel = new JLabel(createTextForRowNumber(rowNumber));
-		JButton remove = new JButton(ButtonsNames.REMOVE_ROW);
+		AbstractButton remove = new JButton(ButtonsNames.REMOVE_ROW);
+		AbstractButton addNewWord = createButtonAddRow();
 		remove.addActionListener(
 				listWordsController.createDeleteRowAction(word));
 		CommonListElements commonListElements = new CommonListElements(remove,
-				rowNumberLabel);
+				rowNumberLabel, addNewWord);
 		rowNumberLabel.setForeground(BasicColors.OCEAN_BLUE);
 		JComponent row = null;
 		if (shouldShowWord) {
@@ -118,6 +150,16 @@ public class ListPanelMaker<Word extends ListElement>
 		}
 		rowsPanel.updateView();
 		return new ListRow<>(word, row, rowNumberLabel);
+	}
+
+	private AbstractButton createButtonAddRow() {
+		return GuiMaker.createButtonlikeComponent(ComponentType.BUTTON,
+				ButtonsNames.ADD_ROW, new AbstractAction() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						listWordsController.addNewWord();
+					}
+				});
 	}
 
 	private AbstractAction createButtonShowNextOrPreviousWords(
@@ -153,24 +195,41 @@ public class ListPanelMaker<Word extends ListElement>
 
 	@Override
 	public void createElements() {
-		listPanel.addRows(SimpleRowBuilder
-				.createRow(FillType.NONE, Anchor.CENTER, titleLabel)
-				.nextRow(FillType.BOTH, parentScrollPane));
+		createRootPanel();
+		createAndAddButtonsShowNextAndPrevious();
+
+		if (!isSkipTitle) {
+			rootPanel.addRow(SimpleRowBuilder
+					.createRow(FillType.NONE, Anchor.CENTER, titleLabel));
+		}
+
+		rootPanel.addRow(SimpleRowBuilder
+				.createRow(FillType.BOTH, listElementsPanel));
 		mainPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.BOTH, listPanel.getPanel()));
-		setNavigationButtons(enableWordAdding ?
-				new AbstractButton[] { createButtonAddWord(),
-						createButtonFindWord() } :
-				new AbstractButton[] { createButtonFindWord() });
+				.createRow(FillType.BOTH, rootPanel.getPanel()));
+		if (enableWordAdding) {
+			navigationButtons.add(createButtonAddWord());
+		}
+		if (enableWordSearching) {
+			navigationButtons.add(createButtonFindWord());
+		}
+
+		setNavigationButtons(
+				navigationButtons.toArray(new AbstractButton[] {}));
 	}
 
-	private void createDefaultScrollPane() {
+	private void createRootPanel() {
 		Border raisedBevel = BorderFactory
 				.createMatteBorder(3, 3, 0, 0, BasicColors.LIGHT_BLUE);
-		parentScrollPane = GuiMaker.createScrollPane(
-				new ScrollPaneOptions().componentToWrap(rowsPanel.getPanel())
-						.backgroundColor(BasicColors.VERY_BLUE)
-						.border(raisedBevel).preferredSize(scrollPanesSize));
+		if (!isScrollBarInherited) {
+			parentScrollPane = GuiMaker.createScrollPane(new ScrollPaneOptions()
+					.componentToWrap(rowsPanel.getPanel()).border(raisedBevel)
+					.preferredSize(scrollPanesSize));
+			listElementsPanel = parentScrollPane;
+		}
+		else {
+			listElementsPanel = rowsPanel.getPanel();
+		}
 
 	}
 

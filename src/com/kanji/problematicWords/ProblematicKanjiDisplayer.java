@@ -50,7 +50,7 @@ public class ProblematicKanjiDisplayer
 		kanjiCharactersReader.loadKanjisIfNeeded();
 		wordsToReviewList = new MyList<>(applicationWindow, null,
 				new RowInKanjiRepeatingList(controller),
-				Titles.PROBLEMATIC_KANJIS, false,
+				Titles.PROBLEMATIC_KANJIS,
 				KanjiInformation.getElementsTypesAndLabels(),
 				KanjiInformation.getInitializer());
 		controller.setProblematicWordsDisplayer(this);

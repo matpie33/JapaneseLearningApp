@@ -11,6 +11,7 @@ import com.kanji.list.listRows.RowInJapaneseWordInformations;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.KanaAndKanjiStrings;
 import com.kanji.model.WordInMyListExistence;
+import com.kanji.utilities.CommonGuiElementsMaker;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
@@ -71,8 +72,8 @@ public class InsertJapaneseWordController {
 
 		}
 		JapaneseWordWritingsChecker writingsChecker = new JapaneseWordWritingsChecker(
-				rowInJapaneseWordInformation.getJapaneseWordPanelCreator(),
-				true);
+				rowInJapaneseWordInformation.getJapaneseWordPanelCreator()
+						.getJapaneseWritingsList().getWords(), true);
 		for (Map.Entry<JTextComponent, List<JTextComponent>> entry : kanaToKanjiWritings
 				.entrySet()) {
 			JTextComponent kanaText = entry.getKey();
@@ -117,8 +118,12 @@ public class InsertJapaneseWordController {
 		for (Map.Entry<JTextComponent, List<JTextComponent>> kanaToKanjiMap : kanaToKanjiWritings
 				.entrySet()) {
 			for (JTextComponent textComponent : kanaToKanjiMap.getValue()) {
-				textComponent.setText(Prompts.KANJI_TEXT);
+				CommonGuiElementsMaker.setTextFieldToPromptValue(textComponent,
+						Prompts.KANJI_TEXT);
 			}
+			CommonGuiElementsMaker
+					.setTextFieldToPromptValue(kanaToKanjiMap.getKey(),
+							Prompts.KANA_TEXT);
 		}
 	}
 

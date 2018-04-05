@@ -3,6 +3,7 @@ package com.kanji.list.myList;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.KanjiInformation;
 import com.kanji.list.listElements.ListElement;
+import com.kanji.list.listElements.ListElementInitializer;
 import com.kanji.list.listElements.RepeatingInformation;
 import com.kanji.list.loadAdditionalWordsHandling.FoundWordInsideVisibleRangePlusMaximumWordsStrategy;
 import com.kanji.list.loadAdditionalWordsHandling.FoundWordInsideVisibleRangeStrategy;
@@ -29,16 +30,28 @@ public class ListWordsController<Word extends ListElement> {
 	private int lastRowVisible;
 	private final List<LoadWordsForFoundWord> strategiesForFoundWord = new ArrayList<>();
 	private ListRow<Word> currentlyHighlightedWord;
+	private ListElementInitializer<Word> wordInitializer;
 
-	public ListWordsController(boolean enableWordAdding,
+	public ListWordsController(ListConfiguration listConfiguration,
 			ListRowMaker<Word> listRowMaker, String title,
-			ApplicationController applicationController) {
+			ApplicationController applicationController,
+			ListElementInitializer wordInitializer) {
 		this.applicationController = applicationController;
-		listPanelMaker = new ListPanelMaker<>(enableWordAdding,
+		listPanelMaker = new ListPanelMaker<>(listConfiguration,
 				applicationController, listRowMaker, this);
 		listPanelMaker.createPanel();
 		this.listPanelMaker.setTitle(title);
+		this.wordInitializer = wordInitializer;
 		initializeFoundWordStrategies();
+
+	}
+
+	public void inheritScrollPane (){
+		listPanelMaker.inheritScrollPane();
+	}
+
+	public void addNavigationButtons(AbstractButton... buttons) {
+		listPanelMaker.addNavigationButtons(buttons);
 	}
 
 	private void initializeFoundWordStrategies() {
@@ -130,7 +143,8 @@ public class ListWordsController<Word extends ListElement> {
 		ListRow foundWord = allWordsToRowNumberMap.get(rowNumber);
 		foundWord.setHighlighted(true);
 		if (clearLastHighlightedWord && currentlyHighlightedWord != null) {
-			listPanelMaker.clearHighlightedRow(currentlyHighlightedWord.getPanel());
+			listPanelMaker
+					.clearHighlightedRow(currentlyHighlightedWord.getPanel());
 		}
 		listPanelMaker.highlightRowAndScroll(foundWord.getPanel());
 		currentlyHighlightedWord = foundWord;
@@ -261,7 +275,7 @@ public class ListWordsController<Word extends ListElement> {
 
 	public void showWordsStartingFromRow(int firstRowToLoad) {
 		listPanelMaker.clear();
-		if (firstRowToLoad>0){
+		if (firstRowToLoad > 0) {
 			listPanelMaker.enableButtonShowPreviousWords();
 		}
 		lastRowVisible = Math.max(firstRowToLoad - getMaximumWordsToShow(), -1);
@@ -283,4 +297,7 @@ public class ListWordsController<Word extends ListElement> {
 		listPanelMaker.removeWordsFromRangeInclusive(range);
 	}
 
+	public void addNewWord() {
+		add(wordInitializer.initializeElement());
+	}
 }

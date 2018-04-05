@@ -42,10 +42,10 @@ public class ProblematicJapaneseWordsDisplayer
 			ProblematicWordsController controller) {
 
 		problematicJapaneseWordsPanel = new ProblematicJapaneseWordsPanel(
-				controller, applicationWindow);
+				controller, applicationWindow, this);
 		this.wordsToReviewList = new MyList<>(applicationWindow, null,
 				new RowInJapaneseWordsReviewingList(this),
-				Titles.PROBLEMATIC_KANJIS, false,
+				Titles.PROBLEMATIC_KANJIS,
 				JapaneseWordInformation.getElementsTypesAndLabels(),
 				JapaneseWordInformation.getInitializer());
 		controller.setProblematicWordsDisplayer(this);

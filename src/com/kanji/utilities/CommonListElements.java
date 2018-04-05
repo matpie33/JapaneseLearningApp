@@ -4,15 +4,18 @@ import javax.swing.*;
 
 public class CommonListElements {
 
-	private JButton buttonDelete;
+	private AbstractButton buttonDelete;
 	private JLabel rowNumberLabel;
+	private AbstractButton buttonAddRow;
 
-	public CommonListElements(JButton buttonDelete, JLabel rowNumberLabel) {
+	public CommonListElements(AbstractButton buttonDelete, JLabel rowNumberLabel,
+			AbstractButton buttonAddRow) {
 		this.buttonDelete = buttonDelete;
 		this.rowNumberLabel = rowNumberLabel;
+		this.buttonAddRow = buttonAddRow;
 	}
 
-	public JButton getButtonDelete() {
+	public AbstractButton getButtonDelete() {
 		return buttonDelete;
 	}
 
@@ -20,4 +23,7 @@ public class CommonListElements {
 		return rowNumberLabel;
 	}
 
+	public AbstractButton getButtonAddRow() {
+		return buttonAddRow;
+	}
 }

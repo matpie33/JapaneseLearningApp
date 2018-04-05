@@ -46,7 +46,7 @@ public class RowInRepeatingList implements ListRowMaker<RepeatingInformation> {
 							.foregroundColor(labelsColor));
 		}
 
-		JButton delete = commonListElements.getButtonDelete();
+		AbstractButton delete = commonListElements.getButtonDelete();
 
 		MainPanel panel = new MainPanel(null);
 		panel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL,

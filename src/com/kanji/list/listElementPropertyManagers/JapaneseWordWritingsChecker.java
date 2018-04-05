@@ -3,7 +3,8 @@ package com.kanji.list.listElementPropertyManagers;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWordInformation;
-import com.kanji.list.listRows.panelCreators.JapaneseWordPanelCreator;
+import com.kanji.list.listElements.JapaneseWriting;
+import com.kanji.list.myList.MyList;
 import com.kanji.model.KanaAndKanjiStrings;
 import com.kanji.utilities.StringUtilities;
 
@@ -14,20 +15,15 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 		implements
 		ListElementPropertyManager<List<KanaAndKanjiStrings>, JapaneseWordInformation> {
 	//TODO I hate to create a class which is veeery similar to each other for every word element
-	private JapaneseWordPanelCreator japaneseWordPanelCreator;
 	private String errorDetails = "";
 	private boolean addingWord; //TODO rename in other places too (from kanaRequired)
 	private static final String DEFAULT_KANJI_INPUT = Prompts.KANJI_TEXT;
+	private List<JapaneseWriting> japaneseWritings;
 
-	public JapaneseWordWritingsChecker(
-			JapaneseWordPanelCreator japaneseWordPanelCreator,
+	public JapaneseWordWritingsChecker(List<JapaneseWriting> japaneseWritings,
 			boolean addingWord) {
-		this.japaneseWordPanelCreator = japaneseWordPanelCreator;
 		this.addingWord = addingWord;
-	}
-
-	public void setJapaneseWordPanelCreator(JapaneseWordPanelCreator creator) {
-		this.japaneseWordPanelCreator = creator;
+		this.japaneseWritings = japaneseWritings;
 	}
 
 	@Override
@@ -114,12 +110,11 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 	public List<KanaAndKanjiStrings> validateInputAndConvertToProperty(
 			JTextComponent valueToConvert) {
 		errorDetails = "";
-		for (Map.Entry<JTextComponent, List<JTextComponent>> kanaToKanjiWritingsTextFields : japaneseWordPanelCreator
-				.getKanaToKanjiWritingsTextComponents().entrySet()) {
+		for (JapaneseWriting japaneseWriting : japaneseWritings) {
 			boolean kanaModified = false;
 			boolean invalidInput = false;
 			boolean foundTextfield = false;
-			if (kanaToKanjiWritingsTextFields.getKey().equals(valueToConvert)) {
+			if (japaneseWriting.getKanaWriting().equals(valueToConvert)) {
 				kanaModified = true;
 				foundTextfield = true;
 				String kanaText = valueToConvert.getText();
@@ -131,7 +126,7 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 					invalidInput = true;
 				}
 			}
-			else if (kanaToKanjiWritingsTextFields.getValue()
+			else if (japaneseWriting.getKanjiWritings()
 					.contains(valueToConvert)) {
 				kanaModified = false;
 				foundTextfield = true;
@@ -148,17 +143,16 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 				return null;
 			}
 			Set<String> duplicateCheck = new HashSet<>();
-			for (JTextComponent textComponent : kanaToKanjiWritingsTextFields
-					.getValue()) {
-				if (!duplicateCheck.add(textComponent.getText())) {
+			for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
+				if (!duplicateCheck.add(kanjiWriting)) {
 					errorDetails = ExceptionsMessages.DUPLICATED_KANJI_WRITING_WITHIN_ROW;
 					return null;
 				}
 			}
 			if (foundTextfield) {
 				return Arrays.asList(new KanaAndKanjiStrings(
-						kanaToKanjiWritingsTextFields.getKey(),
-						kanaToKanjiWritingsTextFields.getValue(),
+						japaneseWriting.getKanaWriting(),
+						japaneseWriting.getKanjiWritings(),
 						valueToConvert.getText(), kanaModified));
 			}
 		}

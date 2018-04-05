@@ -41,6 +41,7 @@ public class CommonGuiElementsMaker {
 		JTextComponent textComponent = GuiMaker.createTextField(
 				new TextComponentOptions().text(prompt).rowsAndColumns(1, 6)
 						.foregroundColor(Color.GRAY));
+
 		textComponent.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -53,14 +54,20 @@ public class CommonGuiElementsMaker {
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				if (((JTextComponent) e.getSource()).getText().isEmpty()) {
-					((JTextComponent) e.getSource()).setText(prompt);
-					((JTextComponent) e.getSource()).setForeground(Color.GRAY);
+				JTextComponent textComponent = (JTextComponent) e.getSource();
+				if (textComponent.getText().isEmpty()) {
+					setTextFieldToPromptValue(textComponent, prompt);
 				}
 				super.focusLost(e);
 			}
 		});
 		return textComponent;
+	}
+
+	public static void setTextFieldToPromptValue(JTextComponent textComponent,
+			String prompt) {
+		textComponent.setText(prompt);
+		textComponent.setForeground(Color.GRAY);
 	}
 
 	public static JTextComponent createTextField(String defaultContent) {

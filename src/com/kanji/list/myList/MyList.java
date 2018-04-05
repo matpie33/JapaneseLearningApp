@@ -25,16 +25,34 @@ public class MyList<Word extends ListElement> {
 	public MyList(DialogWindow parentDialog,
 			ApplicationController applicationController,
 			ListRowMaker<Word> listRowMaker, String title,
-			boolean enableWordAdding,
+			ListConfiguration listConfiguration,
 			List<ListElementData<Word>> listElementData,
 			ListElementInitializer wordInitializer) {
 		this.applicationController = applicationController;
 		this.parent = parentDialog;
 		this.listElementData = listElementData;
-		listController = new ListWordsController<>(enableWordAdding,
-				listRowMaker, title, applicationController);
+		listController = new ListWordsController<>(listConfiguration,
+				listRowMaker, title, applicationController, wordInitializer);
 		this.wordInitializer = wordInitializer;
 		this.title = title;
+	}
+
+	public MyList(DialogWindow parentDialog,
+			ApplicationController applicationController,
+			ListRowMaker<Word> listRowMaker, String title,
+			List<ListElementData<Word>> listElementData,
+			ListElementInitializer wordInitializer) {
+		this(parentDialog, applicationController, listRowMaker, title,
+				new ListConfiguration(),
+				listElementData, wordInitializer);
+	}
+
+	public void inheritScrollPane() {
+		listController.inheritScrollPane();
+	}
+
+	public void addNavigationButtons(AbstractButton... buttons) {
+		listController.addNavigationButtons(buttons);
 	}
 
 	public void scrollToTop() {

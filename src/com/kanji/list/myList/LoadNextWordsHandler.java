@@ -9,6 +9,7 @@ import javax.swing.*;
 public class LoadNextWordsHandler implements LoadWordsHandler {
 	private ListWordsController listWordsController;
 	private MainPanel rowsPanel;
+	//TODO move to "loadAdditionalWordsHandling" package
 
 	public LoadNextWordsHandler(ListWordsController listWordsController,
 			MainPanel rowsPanel) {
