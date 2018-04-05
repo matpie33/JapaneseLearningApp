@@ -13,12 +13,12 @@ public class RowInJapaneseWritingsList
 
 	private JapanesePanelActionCreatingService actionCreatingService;
 	private MainPanel rowPanel;
-	private JapanesePanelCreatingService japanesePanelCreatingService;
+	private JapanesePanelRowCreatingService japanesePanelRowCreatingService;
 
 	public RowInJapaneseWritingsList(
-			JapanesePanelCreatingService japanesePanelCreatingService) {
+			JapanesePanelRowCreatingService japanesePanelRowCreatingService) {
 		this.actionCreatingService = new JapanesePanelActionCreatingService();
-		this.japanesePanelCreatingService = japanesePanelCreatingService;
+		this.japanesePanelRowCreatingService = japanesePanelRowCreatingService;
 	}
 
 	@Override
@@ -26,7 +26,7 @@ public class RowInJapaneseWritingsList
 			CommonListElements commonListElements) {
 		rowPanel = new MainPanel(BasicColors.OCEAN_BLUE);
 		rowPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE,
-				japanesePanelCreatingService
+				japanesePanelRowCreatingService
 						.addWritingsRow(data, commonListElements,
 								rowPanel)));
 		return rowPanel;

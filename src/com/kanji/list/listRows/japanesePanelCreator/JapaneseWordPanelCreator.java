@@ -34,7 +34,7 @@ public class JapaneseWordPanelCreator {
 
 	public MainPanel createPanel(
 			JapaneseWordInformation japaneseWordInformation,
-			JapanesePanelCreatingService panelCreatingService,
+			JapanesePanelRowCreatingService panelCreatingService,
 			DialogWindow parentDialog) {
 		createElements(japaneseWordInformation, panelCreatingService,
 				parentDialog);
@@ -42,7 +42,7 @@ public class JapaneseWordPanelCreator {
 	}
 
 	private void createElements(JapaneseWordInformation japaneseWordInformation,
-			JapanesePanelCreatingService panelCreatingService,
+			JapanesePanelRowCreatingService panelCreatingService,
 			DialogWindow parentDialog) {
 		wordMeaningLabel = GuiMaker.createLabel(
 				new ComponentOptions().text(Labels.WORD_MEANING)
@@ -63,7 +63,7 @@ public class JapaneseWordPanelCreator {
 
 	private MyList<JapaneseWriting> createWritingsList(
 			JapaneseWordInformation japaneseWordInformation,
-			JapanesePanelCreatingService panelCreatingService,
+			JapanesePanelRowCreatingService panelCreatingService,
 			DialogWindow parentDialog) {
 		writingsList = createJapaneseWritingsList(parentDialog,
 				applicationController, panelCreatingService);
@@ -75,7 +75,7 @@ public class JapaneseWordPanelCreator {
 	public static MyList<JapaneseWriting> createJapaneseWritingsList(
 			DialogWindow parentDialog,
 			ApplicationController applicationController,
-			JapanesePanelCreatingService panelCreatingService) {
+			JapanesePanelRowCreatingService panelCreatingService) {
 		return new MyList<>(parentDialog, applicationController,
 				new RowInJapaneseWritingsList(panelCreatingService),
 				Labels.WRITING_WAYS_IN_JAPANESE,

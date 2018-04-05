@@ -9,12 +9,12 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JapanesePanelServiceEditMode
-		implements JapanesePanelCreatingService {
+public class JapanesePanelRowServiceEditMode
+		implements JapanesePanelRowCreatingService {
 
 	private JapaneseWordInformation japaneseWordInformation;
 
-	public JapanesePanelServiceEditMode(
+	public JapanesePanelRowServiceEditMode(
 			JapaneseWordInformation japaneseWordInformation) {
 		this.japaneseWordInformation = japaneseWordInformation;
 	}

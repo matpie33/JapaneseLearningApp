@@ -8,8 +8,8 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JapanesePanelServiceAddMode
-		implements JapanesePanelCreatingService {
+public class JapanesePanelRowServiceAddMode
+		implements JapanesePanelRowCreatingService {
 
 	@Override
 	public JComponent[] addWritingsRow(JapaneseWriting japaneseWriting,

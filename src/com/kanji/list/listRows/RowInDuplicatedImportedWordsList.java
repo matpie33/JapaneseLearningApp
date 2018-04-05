@@ -9,7 +9,7 @@ import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWordInformation;
-import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelServiceAddMode;
+import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelRowServiceAddMode;
 import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.myList.ListRowMaker;
 import com.kanji.list.myList.MyList;
@@ -51,7 +51,7 @@ public class RowInDuplicatedImportedWordsList
 		MainPanel japaneseWordInformationPanel = new JapaneseWordPanelCreator(
 				applicationWindow.getApplicationController())
 				.createPanel(data.getJapaneseWordInformation(),
-						new JapanesePanelServiceAddMode(), parentDialog);
+						new JapanesePanelRowServiceAddMode(), parentDialog);
 		AbstractButton buttonGoToRow = createButtonGoToRow(
 				data.getDuplicatedWordRowNumber());
 		panel.addRow(SimpleRowBuilder

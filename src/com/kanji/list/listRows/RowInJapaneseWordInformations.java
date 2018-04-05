@@ -3,8 +3,7 @@ package com.kanji.list.listRows;
 import com.guimaker.panels.MainPanel;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.JapaneseWriting;
-import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelServiceAddMode;
-import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelServiceEditMode;
+import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelRowServiceEditMode;
 import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.myList.ListRowMaker;
 import com.kanji.list.myList.MyList;
@@ -26,7 +25,7 @@ public class RowInJapaneseWordInformations
 	public MainPanel createListRow(JapaneseWordInformation japaneseWord,
 			CommonListElements commonListElements) {
 		MainPanel panel = japaneseWordPanelCreator
-				.createPanel(japaneseWord, new JapanesePanelServiceEditMode(japaneseWord),
+				.createPanel(japaneseWord, new JapanesePanelRowServiceEditMode(japaneseWord),
 						applicationWindow);
 		return panel;
 	}

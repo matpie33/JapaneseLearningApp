@@ -5,20 +5,17 @@ import com.guimaker.enums.FillType;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
-import com.kanji.constants.enums.ListPanelViewMode;
 import com.kanji.constants.enums.SearchingDirection;
 import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.Prompts;
-import com.kanji.list.listElementPropertyManagers.JapaneseWordWritingsChecker;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElementPropertyManagers.WordSearchOptionsHolder;
-import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listElements.ListElementData;
-import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelServiceAddMode;
+import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelRowServiceAddMode;
 import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.TextInputAndPropertyManagerForListElement;
@@ -141,7 +138,7 @@ public class SearchWordPanel<Word extends ListElement>
 				panelForElementType = JapaneseWordPanelCreator
 						.createJapaneseWritingsList(parentDialog,
 								applicationWindow.getApplicationController(),
-								new JapanesePanelServiceAddMode()).getPanel();
+								new JapanesePanelRowServiceAddMode()).getPanel();
 				textInputForElementType = null;
 //						japaneseWordPanelCreator
 //						.getKanaToKanjiWritingsTextComponents().keySet()

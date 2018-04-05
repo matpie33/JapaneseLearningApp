@@ -6,7 +6,7 @@ import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listRows.RowInJapaneseWordInformations;
-import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelServiceAddMode;
+import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelRowServiceAddMode;
 import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.InsertJapaneseWordController;
@@ -38,7 +38,7 @@ public class InsertJapaneseWordPanel extends AbstractPanelWithHotkeysInfo {
 
 		MainPanel addWordPanel = japaneseWordPanelCreator.createPanel(
 				JapaneseWordInformation.getInitializer().initializeElement(),
-				new JapanesePanelServiceAddMode(), parentDialog);
+				new JapanesePanelRowServiceAddMode(), parentDialog);
 
 		AbstractButton cancel = createButtonClose();
 		AbstractButton approve = createButtonValidate(ButtonsNames.ADD_WORD);
