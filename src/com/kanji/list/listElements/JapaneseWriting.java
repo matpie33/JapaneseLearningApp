@@ -3,6 +3,7 @@ package com.kanji.list.listElements;
 import com.kanji.constants.enums.PartOfSpeech;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class JapaneseWriting implements ListElement {
@@ -15,6 +16,10 @@ public class JapaneseWriting implements ListElement {
 		this.kanjiWritings = kanjiWritings;
 	}
 
+	public boolean isEmpty (){
+		return kanaWriting.isEmpty() && kanjiWritings.isEmpty();
+	}
+
 	public String getKanaWriting() {
 		return kanaWriting;
 	}
@@ -24,7 +29,7 @@ public class JapaneseWriting implements ListElement {
 	}
 
 	public static ListElementInitializer<JapaneseWriting> getInitializer() {
-		return () -> new JapaneseWriting("", new ArrayList<>());
+		return () -> new JapaneseWriting("", Arrays.asList(""));
 	}
 
 	@Override

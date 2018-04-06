@@ -15,8 +15,8 @@ public class JapanesePanelRowServiceAddMode
 	public JComponent[] addWritingsRow(JapaneseWriting japaneseWriting,
 			CommonListElements commonListElements, MainPanel rowPanel) {
 		List<JComponent> rowElements = new ArrayList<>();
-		rowElements.add(JapanesePanelElementsMaker.createEmptyKanaTextField());
-		rowElements.add(JapanesePanelElementsMaker.createEmptyKanjiTextField());
+		rowElements.add(JapanesePanelElementsMaker.createKanaTextField(""));
+		rowElements.add(JapanesePanelElementsMaker.createKanjiTextField(""));
 		rowElements.add(JapanesePanelElementsMaker
 				.createButtonAddKanjiWriting(rowPanel));
 		rowElements.add(commonListElements.getButtonAddRow());

@@ -37,38 +37,6 @@ public class CommonGuiElementsMaker {
 						.rowsAndColumns(1, 6));
 	}
 
-	public static JTextComponent createShortInputWithPrompt(String prompt) {
-		JTextComponent textComponent = GuiMaker.createTextField(
-				new TextComponentOptions().text(prompt).rowsAndColumns(1, 6)
-						.foregroundColor(Color.GRAY));
-
-		textComponent.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				if (((JTextComponent) e.getSource()).getText().equals(prompt)) {
-					((JTextComponent) e.getSource()).setText("");
-					((JTextComponent) e.getSource()).setForeground(Color.BLACK);
-				}
-				super.focusGained(e);
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				JTextComponent textComponent = (JTextComponent) e.getSource();
-				if (textComponent.getText().isEmpty()) {
-					setTextFieldToPromptValue(textComponent, prompt);
-				}
-				super.focusLost(e);
-			}
-		});
-		return textComponent;
-	}
-
-	public static void setTextFieldToPromptValue(JTextComponent textComponent,
-			String prompt) {
-		textComponent.setText(prompt);
-		textComponent.setForeground(Color.GRAY);
-	}
 
 	public static JTextComponent createTextField(String defaultContent) {
 		return GuiMaker.createTextField(

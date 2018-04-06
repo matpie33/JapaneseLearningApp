@@ -1,5 +1,6 @@
 package com.kanji.panelsAndControllers.controllers;
 
+import com.guimaker.utilities.CommonActionsMaker;
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.Prompts;
@@ -118,10 +119,10 @@ public class InsertJapaneseWordController {
 		for (Map.Entry<JTextComponent, List<JTextComponent>> kanaToKanjiMap : kanaToKanjiWritings
 				.entrySet()) {
 			for (JTextComponent textComponent : kanaToKanjiMap.getValue()) {
-				CommonGuiElementsMaker.setTextFieldToPromptValue(textComponent,
+				CommonActionsMaker.setTextFieldToPromptValue(textComponent,
 						Prompts.KANJI_TEXT);
 			}
-			CommonGuiElementsMaker
+			CommonActionsMaker
 					.setTextFieldToPromptValue(kanaToKanjiMap.getKey(),
 							Prompts.KANA_TEXT);
 		}

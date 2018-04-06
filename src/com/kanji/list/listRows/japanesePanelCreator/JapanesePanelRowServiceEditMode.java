@@ -24,11 +24,11 @@ public class JapanesePanelRowServiceEditMode
 			CommonListElements commonListElements, MainPanel rowPanel) {
 		List<JComponent> rowElements = new ArrayList<>();
 		rowElements.add(JapanesePanelElementsMaker
-				.createKanaOrKanjiTextField(
+				.createKanaTextField(
 						japaneseWriting.getKanaWriting()));
 		for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
 			rowElements.add(JapanesePanelElementsMaker
-					.createKanaOrKanjiTextField(kanjiWriting));
+					.createKanjiTextField(kanjiWriting));
 		}
 		rowElements.add(JapanesePanelElementsMaker
 				.createButtonAddKanjiWriting(rowPanel));
