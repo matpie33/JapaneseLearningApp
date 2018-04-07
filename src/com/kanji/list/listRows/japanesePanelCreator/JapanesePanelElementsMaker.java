@@ -6,6 +6,7 @@ import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Prompts;
+import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelActions;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -23,9 +24,9 @@ public class JapanesePanelElementsMaker {
 
 	private static JTextComponent createKanaOrKanjiTextField(
 			String initialValue, String prompt) {
-		return GuiMaker.createTextField(
+		return JapanesePanelActions.withSwitchToJapaneseActionOnClick(GuiMaker.createTextField(
 				new TextComponentOptions().text(initialValue).editable(true)
-						.focusable(true).fontSize(30f).promptWhenEmpty(prompt));
+						.focusable(true).fontSize(30f).promptWhenEmpty(prompt)));
 	}
 
 	private static AbstractButton createButton(String buttonLabel,

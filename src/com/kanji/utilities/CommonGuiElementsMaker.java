@@ -22,6 +22,7 @@ import java.awt.event.FocusEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class CommonGuiElementsMaker {
 
@@ -78,7 +79,7 @@ public class CommonGuiElementsMaker {
 	public static List<JTextComponent> convertJapaneseWordWritingsToTextComponent(
 			JapaneseWordInformation japaneseWordInformation) {
 		List<JTextComponent> textComponents = new ArrayList<>();
-		for (Map.Entry<String, List<String>> writing : japaneseWordInformation
+		for (Map.Entry<String, Set<String>> writing : japaneseWordInformation
 				.getKanaToKanjiWritingsMap().entrySet()) {
 			List<String> writings = new ArrayList<>();
 			writings.add(writing.getKey());

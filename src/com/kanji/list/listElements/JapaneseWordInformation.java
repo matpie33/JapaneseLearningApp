@@ -16,14 +16,15 @@ import java.util.*;
 public class JapaneseWordInformation implements ListElement, Serializable {
 
 	private static final long serialVersionUID = 7723326146436941154L;
-	private Map<String, List<String>> kanjiToAlternativeKanaWritingMap;
+	private Map<String, Set<String>> kanjiToAlternativeKanaWritingMap;
 	private String wordMeaning;
 	private PartOfSpeech partOfSpeech;
 	private Set<AdditionalInformation> additionalInformations = new HashSet<>();
 	private static JapaneseWordMeaningChecker meaningChecker = new JapaneseWordMeaningChecker(
 			WordSearchOptions.BY_FULL_EXPRESSION);
 	private static JapaneseWordWritingsChecker writingsChecker = new JapaneseWordWritingsChecker(
-			null, true);
+			null, true, true, "");
+	//TODO kana checker flag is not always needed
 
 	public JapaneseWordInformation(PartOfSpeech partOfSpeech,
 			String wordMeaning) {
@@ -34,11 +35,11 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 
 	public void addWritings(String kanaWriting,
 			String... kanjiWritingsForThisKana) {
-		kanjiToAlternativeKanaWritingMap
-				.put(kanaWriting, Arrays.asList(kanjiWritingsForThisKana));
+		kanjiToAlternativeKanaWritingMap.put(kanaWriting,
+				new HashSet<>(Arrays.asList(kanjiWritingsForThisKana)));
 	}
 
-	public Map<String, List<String>> getKanaToKanjiWritingsMap() {
+	public Map<String, Set<String>> getKanaToKanjiWritingsMap() {
 		//TODO remove this method - use "get japanese writings"
 		return kanjiToAlternativeKanaWritingMap;
 	}
@@ -47,9 +48,9 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 		//TODO just store it as japanese writings instead of a map
 		List<JapaneseWriting> japaneseWritings = new ArrayList<>();
 		if (kanjiToAlternativeKanaWritingMap.isEmpty()) {
-			return Arrays.asList(new JapaneseWriting("", new ArrayList<>()));
+			japaneseWritings.add(new JapaneseWriting("", new HashSet<>()));
 		}
-		for (Map.Entry<String, List<String>> kanaToKanjiWriting : kanjiToAlternativeKanaWritingMap
+		for (Map.Entry<String, Set<String>> kanaToKanjiWriting : kanjiToAlternativeKanaWritingMap
 				.entrySet()) {
 			japaneseWritings
 					.add(new JapaneseWriting(kanaToKanjiWriting.getKey(),
@@ -63,10 +64,10 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 	}
 
 	public boolean hasKanjiWriting() {
-		for (List<String> kanjiWriting : kanjiToAlternativeKanaWritingMap
+		for (Set<String> kanjiWriting : kanjiToAlternativeKanaWritingMap
 				.values()) {
 			if (kanjiWriting.size() > 1 || (kanjiWriting.size() == 1
-					&& !kanjiWriting.get(0).isEmpty())) {
+					&& !kanjiWriting.iterator().next().isEmpty())) {
 				return true;
 			}
 		}
@@ -81,8 +82,8 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 				ListElementPropertyType.STRING_SHORT_WORD,
 				Labels.COMBOBOX_OPTION_SEARCH_BY_WORD_MEANING));
 		listElementData.add(new ListElementData<>(Labels.WORD_IN_KANA,
-				new JapaneseWordWritingsChecker(null /*TODO*/, false),
-				ListElementPropertyType.KANA_KANJI_WRITINGS,
+				new JapaneseWordWritingsChecker(null /*TODO*/, false, false,
+						""), ListElementPropertyType.KANA_KANJI_WRITINGS,
 				Labels.COMBOBOX_OPTION_SEARCH_BY_KANA));
 
 		return listElementData;
@@ -125,7 +126,7 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 
 	public Set<String> getKanjiWritings() {
 		Set<String> kanaWritingsSet = new HashSet<>();
-		for (List<String> kanaWritings : kanjiToAlternativeKanaWritingMap
+		for (Set<String> kanaWritings : kanjiToAlternativeKanaWritingMap
 				.values()) {
 			kanaWritingsSet.addAll(kanaWritings);
 		}
@@ -144,7 +145,7 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 
 			//TODO avoid passing null to japanese writings checker
 			List<KanaAndKanjiStrings> kanaAndKanjiStrings = new ArrayList<>();
-			for (Map.Entry<String, List<String>> kanaToKanjis : otherWord
+			for (Map.Entry<String, Set<String>> kanaToKanjis : otherWord
 					.getKanaToKanjiWritingsMap().entrySet()) {
 				kanaAndKanjiStrings
 						.add(new KanaAndKanjiStrings(kanaToKanjis.getKey(),

@@ -3,6 +3,7 @@ package com.kanji.list.listRows.japanesePanelCreator;
 import com.guimaker.panels.MainPanel;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.JapaneseWriting;
+import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelActionCreatingService;
 import com.kanji.utilities.CommonListElements;
 
 import javax.swing.*;
@@ -12,23 +13,29 @@ import java.util.List;
 public class JapanesePanelRowServiceEditMode
 		implements JapanesePanelRowCreatingService {
 
-	private JapaneseWordInformation japaneseWordInformation;
+	private JapanesePanelActionCreatingService actionsMaker;
+	private JapaneseWordInformation wordContainingWriting;
 
 	public JapanesePanelRowServiceEditMode(
-			JapaneseWordInformation japaneseWordInformation) {
-		this.japaneseWordInformation = japaneseWordInformation;
+			JapanesePanelActionCreatingService actionsMaker,
+			JapaneseWordInformation wordContainingWriting) {
+		this.actionsMaker = actionsMaker;
+		this.wordContainingWriting = wordContainingWriting;
 	}
 
 	@Override
 	public JComponent[] addWritingsRow(JapaneseWriting japaneseWriting,
 			CommonListElements commonListElements, MainPanel rowPanel) {
 		List<JComponent> rowElements = new ArrayList<>();
-		rowElements.add(JapanesePanelElementsMaker
-				.createKanaTextField(
-						japaneseWriting.getKanaWriting()));
+		rowElements.add(actionsMaker.withKanaValidation(
+				JapanesePanelElementsMaker
+						.createKanaTextField(japaneseWriting.getKanaWriting()),
+				japaneseWriting, wordContainingWriting));
 		for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
-			rowElements.add(JapanesePanelElementsMaker
-					.createKanjiTextField(kanjiWriting));
+			rowElements.add(actionsMaker.withKanjiValidation(
+					JapanesePanelElementsMaker
+							.createKanjiTextField(kanjiWriting), japaneseWriting,
+					wordContainingWriting));
 		}
 		rowElements.add(JapanesePanelElementsMaker
 				.createButtonAddKanjiWriting(rowPanel));

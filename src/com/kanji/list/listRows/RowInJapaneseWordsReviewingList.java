@@ -25,6 +25,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class RowInJapaneseWordsReviewingList
@@ -75,7 +76,7 @@ public class RowInJapaneseWordsReviewingList
 		writingsPanel.addElementsInColumnStartingFromColumn(0,
 				labels.toArray(new JComponent[] {}));
 		writingsPanel.setRowColor(Color.RED);
-		for (Map.Entry<String, List<String>> writings : japaneseWord
+		for (Map.Entry<String, Set<String>> writings : japaneseWord
 				.getKanaToKanjiWritingsMap().entrySet()) {
 
 			List<String> allWritings = new ArrayList<>();

@@ -44,6 +44,7 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 		this.defaultValue = defaultValue;
 	}
 
+	@Override
 	public void focusGained(FocusEvent e) {
 		JTextComponent textElement = (JTextComponent) e.getSource();
 
@@ -57,6 +58,7 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 				.equals(defaultValue);
 	}
 
+	@Override
 	public void focusLost(FocusEvent e) {
 		JTextComponent elem = (JTextComponent) e.getSource();
 		if (!isRequiredField && isTextFieldEmpty(elem)) {
@@ -79,10 +81,17 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 				.equals(propertyNewValue)) {
 			return;
 		}
+
+		listElementPropertyManager
+				.replaceProperty(propertyHolder, propertyBeingModified,
+						propertyNewValue);
 		WordInMyListExistence<PropertyHolder> wordInMyListExistence = list
 				.doesWordWithPropertyExist(propertyNewValue,
 						listElementPropertyManager, propertyHolder);
 		if (wordInMyListExistence.exists()) {
+			listElementPropertyManager
+					.replaceProperty(propertyHolder, propertyNewValue,
+							propertyBeingModified);
 			elem.requestFocusInWindow();
 			elem.setText(propertyBeingModified.toString().replace("[", "")
 					.replace("]", ""));
@@ -97,9 +106,7 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 			return;
 		}
 		else {
-			listElementPropertyManager
-					.replaceProperty(propertyHolder, propertyBeingModified,
-							propertyNewValue);
+
 			propertyBeingModified = null;
 			list.save();
 		}

@@ -6,9 +6,11 @@ import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
+import com.kanji.constants.enums.ListPanelDisplayMode;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWordInformation;
+import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelEditOrAddModeAction;
 import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelRowServiceAddMode;
 import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.myList.ListRowMaker;
@@ -48,10 +50,22 @@ public class RowInDuplicatedImportedWordsList
 						.foregroundColor(Color.WHITE));
 		JTextComponent rowNumberText = CommonGuiElementsMaker
 				.createTextField("" + (data.getDuplicatedWordRowNumber() + 1));
+
 		MainPanel japaneseWordInformationPanel = new JapaneseWordPanelCreator(
-				applicationWindow.getApplicationController())
+				applicationWindow.getApplicationController(),
+				new JapanesePanelEditOrAddModeAction(parentDialog,
+						applicationWindow.getApplicationController()
+								.getJapaneseWords(),
+						ListPanelDisplayMode.VIEW_AND_EDIT))
 				.createPanel(data.getJapaneseWordInformation(),
-						new JapanesePanelRowServiceAddMode(), parentDialog);
+						new JapanesePanelRowServiceAddMode(
+								new JapanesePanelEditOrAddModeAction(
+										parentDialog, applicationWindow
+										.getApplicationController()
+										.getJapaneseWords(),
+										ListPanelDisplayMode.VIEW_AND_EDIT),
+								data.getJapaneseWordInformation()),
+						parentDialog);
 		AbstractButton buttonGoToRow = createButtonGoToRow(
 				data.getDuplicatedWordRowNumber());
 		panel.addRow(SimpleRowBuilder

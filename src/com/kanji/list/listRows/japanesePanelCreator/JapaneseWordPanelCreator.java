@@ -6,6 +6,8 @@ import com.guimaker.panels.MainPanel;
 import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.JapaneseWriting;
+import com.kanji.list.listRows.RowInJapaneseWritingsList;
+import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelActionCreatingService;
 import com.kanji.list.myList.ListConfiguration;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
@@ -26,10 +28,12 @@ public class JapaneseWordPanelCreator {
 	private JLabel writingsLabel;
 	private MyList<JapaneseWriting> writingsList;
 	private ApplicationController applicationController;
+	private JapanesePanelActionCreatingService actionCreatingService;
 
-	public JapaneseWordPanelCreator(
-			ApplicationController applicationController) {
+	public JapaneseWordPanelCreator(ApplicationController applicationController,
+			JapanesePanelActionCreatingService actionCreatingService) {
 		this.applicationController = applicationController;
+		this.actionCreatingService = actionCreatingService;
 	}
 
 	public MainPanel createPanel(
@@ -38,6 +42,7 @@ public class JapaneseWordPanelCreator {
 			DialogWindow parentDialog) {
 		createElements(japaneseWordInformation, panelCreatingService,
 				parentDialog);
+		addActions(japaneseWordInformation);
 		return addElementsToGui();
 	}
 
@@ -61,6 +66,12 @@ public class JapaneseWordPanelCreator {
 						.foregroundColor(Color.WHITE));
 	}
 
+	private void addActions(JapaneseWordInformation japaneseWordInformation) {
+		actionCreatingService.addWordMeaningTextFieldListeners(wordMeaningText,
+				japaneseWordInformation);
+
+	}
+
 	private MyList<JapaneseWriting> createWritingsList(
 			JapaneseWordInformation japaneseWordInformation,
 			JapanesePanelRowCreatingService panelCreatingService,
@@ -81,8 +92,9 @@ public class JapaneseWordPanelCreator {
 				Labels.WRITING_WAYS_IN_JAPANESE,
 				new ListConfiguration().enableWordAdding(false)
 						.inheritScrollbar(true).enableWordSearching(false)
-						.showButtonsLoadNextPreviousWords(false).skipTitle(true),
-				new ArrayList<>(), JapaneseWriting.getInitializer());
+						.showButtonsLoadNextPreviousWords(false)
+						.skipTitle(true), new ArrayList<>(),
+				JapaneseWriting.getInitializer());
 	}
 
 	private MainPanel addElementsToGui() {
