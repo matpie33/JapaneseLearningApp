@@ -8,7 +8,6 @@ import com.guimaker.options.TextAreaOptions;
 import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
-import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.enums.SplitPaneOrientation;
 import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElements.JapaneseWordInformation;
@@ -17,8 +16,6 @@ import com.kanji.windows.ApplicationWindow;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +34,6 @@ public class CommonGuiElementsMaker {
 				new TextComponentOptions().text(defaultContent)
 						.rowsAndColumns(1, 6));
 	}
-
 
 	public static JTextComponent createTextField(String defaultContent) {
 		return GuiMaker.createTextField(
@@ -66,14 +62,6 @@ public class CommonGuiElementsMaker {
 		splitPane.setRightComponent(rightOrDownComponent);
 		splitPane.setResizeWeight(splittingWeight);
 		return splitPane;
-	}
-
-	public static JComboBox<String> createComboboxForPartOfSpeech() {
-		JComboBox<String> comboBox = new JComboBox<>();
-		for (PartOfSpeech partOfSpeech : PartOfSpeech.values()) {
-			comboBox.addItem(partOfSpeech.getPolishMeaning());
-		}
-		return comboBox;
 	}
 
 	public static List<JTextComponent> convertJapaneseWordWritingsToTextComponent(

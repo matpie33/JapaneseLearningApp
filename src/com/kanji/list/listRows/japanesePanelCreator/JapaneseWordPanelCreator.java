@@ -57,8 +57,9 @@ public class JapaneseWordPanelCreator {
 		partOfSpeechLabel = GuiMaker.createLabel(
 				new ComponentOptions().text(Labels.PART_OF_SPEECH)
 						.foregroundColor(Color.WHITE));
-		partOfSpeechCombobox = CommonGuiElementsMaker
-				.createComboboxForPartOfSpeech();
+		partOfSpeechCombobox = JapanesePanelElementsMaker
+				.createComboboxForPartOfSpeech(
+						japaneseWordInformation.getPartOfSpeech());
 		writingsList = createWritingsList(japaneseWordInformation,
 				panelCreatingService, parentDialog);
 		writingsLabel = GuiMaker.createLabel(
@@ -68,6 +69,8 @@ public class JapaneseWordPanelCreator {
 
 	private void addActions(JapaneseWordInformation japaneseWordInformation) {
 		actionCreatingService.addWordMeaningTextFieldListeners(wordMeaningText,
+				japaneseWordInformation);
+		actionCreatingService.addPartOfSpeechListener(partOfSpeechCombobox,
 				japaneseWordInformation);
 
 	}

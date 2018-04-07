@@ -53,13 +53,14 @@ public class RowInDuplicatedImportedWordsList
 
 		MainPanel japaneseWordInformationPanel = new JapaneseWordPanelCreator(
 				applicationWindow.getApplicationController(),
-				new JapanesePanelEditOrAddModeAction(parentDialog,
+				new JapanesePanelEditOrAddModeAction(applicationWindow.getApplicationController(), parentDialog,
 						applicationWindow.getApplicationController()
 								.getJapaneseWords(),
 						ListPanelDisplayMode.VIEW_AND_EDIT))
 				.createPanel(data.getJapaneseWordInformation(),
 						new JapanesePanelRowServiceAddMode(
-								new JapanesePanelEditOrAddModeAction(
+								new JapanesePanelEditOrAddModeAction(applicationWindow
+										.getApplicationController(),
 										parentDialog, applicationWindow
 										.getApplicationController()
 										.getJapaneseWords(),

@@ -26,10 +26,11 @@ public class InsertJapaneseWordPanel extends AbstractPanelWithHotkeysInfo {
 	public InsertJapaneseWordPanel(RowInJapaneseWordInformations row,
 			MyList<JapaneseWordInformation> list,
 			ApplicationWindow applicationWindow) {
-		japaneseWordInformation = JapaneseWordInformation
-				.getInitializer().initializeElement();
+		japaneseWordInformation = JapaneseWordInformation.getInitializer()
+				.initializeElement();
 		controller = new InsertJapaneseWordController(list,
-				applicationWindow.getApplicationController(), japaneseWordInformation);
+				applicationWindow.getApplicationController(),
+				japaneseWordInformation);
 		this.applicationWindow = applicationWindow;
 
 	}
@@ -39,17 +40,19 @@ public class InsertJapaneseWordPanel extends AbstractPanelWithHotkeysInfo {
 
 		japaneseWordPanelCreator = new JapaneseWordPanelCreator(
 				applicationWindow.getApplicationController(),
-				new JapanesePanelEditOrAddModeAction(parentDialog,
+				new JapanesePanelEditOrAddModeAction(
+						applicationWindow.getApplicationController(),
+						parentDialog,
 						applicationWindow.getApplicationController()
-								.getJapaneseWords(),
-						ListPanelDisplayMode.ADD));
+								.getJapaneseWords(), ListPanelDisplayMode.ADD));
 		controller.setParentDialog(parentDialog);
-
 
 		MainPanel addWordPanel = japaneseWordPanelCreator
 				.createPanel(japaneseWordInformation,
 						new JapanesePanelRowServiceAddMode(
 								new JapanesePanelEditOrAddModeAction(
+										applicationWindow
+												.getApplicationController(),
 										parentDialog, applicationWindow
 										.getApplicationController()
 										.getJapaneseWords(),

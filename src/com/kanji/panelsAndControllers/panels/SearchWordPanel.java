@@ -143,6 +143,8 @@ public class SearchWordPanel<Word extends ListElement>
 								applicationWindow.getApplicationController(),
 								new JapanesePanelRowServiceAddMode(
 										new JapanesePanelEditOrAddModeAction(
+												applicationWindow
+														.getApplicationController(),
 												parentDialog, applicationWindow
 												.getApplicationController()
 												.getJapaneseWords(),

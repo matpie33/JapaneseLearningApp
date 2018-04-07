@@ -3,6 +3,7 @@ package com.kanji.list.listRows.japanesePanelActionsCreator;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.JapaneseWriting;
 
+import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
 public interface JapanesePanelActionCreatingService {
@@ -19,4 +20,6 @@ public interface JapanesePanelActionCreatingService {
 			JapaneseWriting japaneseWriting,
 			JapaneseWordInformation japaneseWordInformation);
 
+	public void addPartOfSpeechListener(JComboBox partOfSpeechCombobox,
+			JapaneseWordInformation japaneseWordInformation);
 }

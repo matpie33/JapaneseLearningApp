@@ -3,12 +3,10 @@ package com.kanji.list.listRows;
 import com.guimaker.panels.MainPanel;
 import com.kanji.constants.enums.ListPanelDisplayMode;
 import com.kanji.list.listElements.JapaneseWordInformation;
-import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelEditOrAddModeAction;
 import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelRowServiceEditMode;
 import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.myList.ListRowMaker;
-import com.kanji.list.myList.MyList;
 import com.kanji.utilities.CommonListElements;
 import com.kanji.windows.ApplicationWindow;
 
@@ -20,7 +18,9 @@ public class RowInJapaneseWordInformations
 	public RowInJapaneseWordInformations(ApplicationWindow applicationWindow) {
 		japaneseWordPanelCreator = new JapaneseWordPanelCreator(
 				applicationWindow.getApplicationController(),
-				new JapanesePanelEditOrAddModeAction(applicationWindow,
+				new JapanesePanelEditOrAddModeAction(
+						applicationWindow.getApplicationController(),
+						applicationWindow,
 						applicationWindow.getApplicationController()
 								.getJapaneseWords(),
 						ListPanelDisplayMode.VIEW_AND_EDIT));
@@ -32,7 +32,9 @@ public class RowInJapaneseWordInformations
 			CommonListElements commonListElements) {
 		MainPanel panel = japaneseWordPanelCreator.createPanel(japaneseWord,
 				new JapanesePanelRowServiceEditMode(
-						new JapanesePanelEditOrAddModeAction(applicationWindow,
+						new JapanesePanelEditOrAddModeAction(
+								applicationWindow.getApplicationController(),
+								applicationWindow,
 								applicationWindow.getApplicationController()
 										.getJapaneseWords(),
 								ListPanelDisplayMode.VIEW_AND_EDIT),

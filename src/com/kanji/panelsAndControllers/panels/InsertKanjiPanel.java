@@ -4,6 +4,7 @@ import com.guimaker.enums.FillType;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.ListElementPropertyType;
+import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Labels;
@@ -13,6 +14,7 @@ import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.KanjiInformation;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listElements.ListElementData;
+import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelElementsMaker;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.InsertKanjiController;
@@ -68,8 +70,8 @@ public class InsertKanjiPanel<Word extends ListElement>
 				component = CommonGuiElementsMaker.createKanjiWordInput("");
 				break;
 			case COMBOBOX_OPTION:
-				component = CommonGuiElementsMaker
-						.createComboboxForPartOfSpeech();
+				component = JapanesePanelElementsMaker
+						.createComboboxForPartOfSpeech(PartOfSpeech.NOUN);
 				break;
 			default:
 				throw new RuntimeException(

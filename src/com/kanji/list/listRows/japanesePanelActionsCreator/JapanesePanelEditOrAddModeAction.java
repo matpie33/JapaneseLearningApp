@@ -8,8 +8,10 @@ import com.kanji.list.listElementPropertyManagers.JapaneseWordWritingsChecker;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.myList.MyList;
+import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.windows.DialogWindow;
 
+import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
 public class JapanesePanelEditOrAddModeAction
@@ -18,13 +20,17 @@ public class JapanesePanelEditOrAddModeAction
 	private DialogWindow parentDialog;
 	private MyList<JapaneseWordInformation> wordsList;
 	private ListPanelDisplayMode listPanelDisplayMode;
+	private ApplicationController applicationController;
 
-	public JapanesePanelEditOrAddModeAction(DialogWindow parentDialog,
+	public JapanesePanelEditOrAddModeAction(
+			ApplicationController applicationController,
+			DialogWindow parentDialog,
 			MyList<JapaneseWordInformation> wordsList,
 			ListPanelDisplayMode listPanelDisplayMode) {
 		this.parentDialog = parentDialog;
 		this.wordsList = wordsList;
 		this.listPanelDisplayMode = listPanelDisplayMode;
+		this.applicationController = applicationController;
 	}
 
 	@Override
@@ -72,4 +78,10 @@ public class JapanesePanelEditOrAddModeAction
 				parentDialog, wordsList);
 	}
 
+	@Override
+	public void addPartOfSpeechListener(JComboBox partOfSpeechCombobox,
+			JapaneseWordInformation japaneseWordInformation) {
+		JapanesePanelActions.addSavingOnSelectionListener(partOfSpeechCombobox,
+				japaneseWordInformation, applicationController);
+	}
 }

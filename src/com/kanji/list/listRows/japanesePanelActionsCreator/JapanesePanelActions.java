@@ -1,5 +1,6 @@
 package com.kanji.list.listRows.japanesePanelActionsCreator;
 
+import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
@@ -7,11 +8,15 @@ import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.myList.ListPropertyChangeHandler;
 import com.kanji.list.myList.MyList;
+import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.windows.DialogWindow;
 
+import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.Locale;
 
 public class JapanesePanelActions {
@@ -62,5 +67,21 @@ public class JapanesePanelActions {
 		return textComponent;
 	}
 
-
+	public static void addSavingOnSelectionListener(
+			JComboBox partOfSpeechCombobox,
+			JapaneseWordInformation japaneseWordInformation,
+			ApplicationController applicationController) {
+		partOfSpeechCombobox.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() != ItemEvent.SELECTED) {
+					return;
+				}
+				String newValue = (String) e.getItem();
+				japaneseWordInformation.setPartOfSpeech(
+						PartOfSpeech.getPartOfSpeachByPolishMeaning(newValue));
+				applicationController.saveProject();
+			}
+		});
+	}
 }

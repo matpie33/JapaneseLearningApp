@@ -4,6 +4,7 @@ import com.guimaker.enums.ComponentType;
 import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
+import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelActions;
@@ -25,10 +26,13 @@ public class JapanesePanelElementsMaker {
 
 	private static JTextComponent createKanaOrKanjiTextField(
 			String initialValue, String prompt) {
-		return JapanesePanelActions.withSwitchToJapaneseActionOnClick(GuiMaker.createTextField(
-				new TextComponentOptions().text(initialValue).editable(true).font(
-						ApplicationWindow.getKanjiFont())
-						.focusable(true).fontSize(30f).promptWhenEmpty(prompt)));
+		return JapanesePanelActions.withSwitchToJapaneseActionOnClick(
+				GuiMaker.createTextField(
+						new TextComponentOptions().text(initialValue)
+								.editable(true)
+								.font(ApplicationWindow.getKanjiFont())
+								.focusable(true).fontSize(30f)
+								.promptWhenEmpty(prompt)));
 	}
 
 	private static AbstractButton createButton(String buttonLabel,
@@ -39,6 +43,19 @@ public class JapanesePanelElementsMaker {
 
 	}
 
+	public static JComboBox<String> createComboboxForPartOfSpeech(
+			PartOfSpeech partOfSpeechToSelect) {
+		JComboBox<String> comboBox = new JComboBox<>();
+		for (PartOfSpeech partOfSpeech : PartOfSpeech.values()) {
+			comboBox.addItem(partOfSpeech.getPolishMeaning());
+			if (partOfSpeech.equals(partOfSpeechToSelect)) {
+				comboBox.setSelectedItem(
+						partOfSpeechToSelect.getPolishMeaning());
+			}
+		}
+		return comboBox;
+	}
+
 	public static AbstractButton createButtonAddKanjiWriting(
 			MainPanel rowPanel) {
 		AbstractButton button = createButton(ButtonsNames.ADD_KANJI_WRITING,
@@ -46,8 +63,8 @@ public class JapanesePanelElementsMaker {
 		button.addActionListener(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				rowPanel.insertElementInPlaceOfElement(
-						createKanjiTextField(""), button);
+				rowPanel.insertElementInPlaceOfElement(createKanjiTextField(""),
+						button);
 			}
 		});
 		return button;
