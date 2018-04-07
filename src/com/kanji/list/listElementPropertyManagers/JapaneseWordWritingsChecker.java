@@ -115,6 +115,12 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 		errorDetails = "";
 		boolean kanaModified = false;
 		boolean invalidInput = false;
+		String textValue = valueToConvert.getText();
+		if ((kanaChecker && isKanaWritingEmpty(textValue)) || (!kanaChecker
+				&& isKanjiInputEmpty(textValue))) {
+			return Arrays.asList(new KanaAndKanjiStrings("",
+					new HashSet<>(Arrays.asList("")), "", false));
+		}
 		if (kanaChecker) {
 			kanaModified = true;
 			String kanaText = valueToConvert.getText();
@@ -137,7 +143,7 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 								kanjiText);
 				invalidInput = true;
 			}
-			else{
+			else {
 				Set<String> duplicateCheck = new HashSet<>(
 						japaneseWritingToCheck.getKanjiWritings());
 				duplicateCheck.remove(previousValue);

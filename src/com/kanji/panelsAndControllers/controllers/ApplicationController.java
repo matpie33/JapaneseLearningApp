@@ -125,7 +125,7 @@ public class ApplicationController implements ApplicationStateManager {
 
 		JapaneseWordInformation cat = new JapaneseWordInformation(
 				PartOfSpeech.NOUN, "kot");
-		cat.addWritings("ねこ", "櫻");
+		cat.addWritings("ねこ", "頭骨");
 		japaneseWords.addWord(cat);
 		JapaneseWordInformation dog2 = new JapaneseWordInformation(
 				PartOfSpeech.NOUN, "pies");

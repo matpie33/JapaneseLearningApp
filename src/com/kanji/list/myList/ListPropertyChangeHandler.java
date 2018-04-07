@@ -47,10 +47,10 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	@Override
 	public void focusGained(FocusEvent e) {
 		JTextComponent textElement = (JTextComponent) e.getSource();
-
 		textElement.setForeground(Color.BLACK);
 		propertyBeingModified = listElementPropertyManager
 				.validateInputAndConvertToProperty(textElement);
+
 	}
 
 	private boolean isTextFieldEmpty(JTextComponent textComponent) {
@@ -66,7 +66,7 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 		}
 		Property propertyNewValue = listElementPropertyManager
 				.validateInputAndConvertToProperty(elem);
-		if (propertyNewValue == null && !elem.getText().equals(defaultValue)) {
+		if (propertyNewValue == null && !elem.getText().isEmpty()) {
 			String modifiedProperty = propertyBeingModified.toString();
 			elem.setForeground(Color.RED);
 			dialogWindow.showMessageDialog(
