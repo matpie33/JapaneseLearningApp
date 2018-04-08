@@ -19,7 +19,7 @@ import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listElements.ListElementData;
 import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelEditOrAddModeAction;
 import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelElementsMaker;
-import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelRowServiceAddMode;
+import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelRowServiceViewMode;
 import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.TextInputAndPropertyManagerForListElement;
@@ -149,7 +149,7 @@ public class SearchWordPanel<Word extends ListElement>
 				panelForElementType = JapaneseWordPanelCreator
 						.createJapaneseWritingsList(parentDialog,
 								applicationWindow.getApplicationController(),
-								new JapanesePanelRowServiceAddMode(
+								new JapanesePanelRowServiceViewMode(
 										new JapanesePanelElementsMaker(
 												actionMaker),
 										JapaneseWordInformation.getInitializer()

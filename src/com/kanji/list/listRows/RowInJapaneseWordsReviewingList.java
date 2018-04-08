@@ -32,6 +32,8 @@ public class RowInJapaneseWordsReviewingList
 			CommonListElements commonListElements) {
 		MainPanel panel = new MainPanel(null);
 		japanesePanelCreator
+				.setRowNumberLabel(commonListElements.getRowNumberLabel());
+		japanesePanelCreator
 				.addJapanesePanelToExistingPanel(panel, japaneseWord,
 						new JapanesePanelRowServiceViewMode(
 								japanesePanelCreator.getElementsMaker(),

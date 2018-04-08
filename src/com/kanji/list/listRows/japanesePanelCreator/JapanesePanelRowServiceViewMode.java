@@ -39,10 +39,4 @@ public class JapanesePanelRowServiceViewMode
 		return rowElements.toArray(new JComponent[] {});
 	}
 
-	@Override
-	public JLabel getRowLabel() {
-		JLabel label = new JLabel ("Poprawnie: ");
-		label.setForeground(Color.WHITE);
-		return label;
-	}
 }

@@ -9,13 +9,14 @@ import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listRows.RowInJapaneseWordInformations;
 import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelEditOrAddModeAction;
 import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelElementsMaker;
-import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelRowServiceAddMode;
+import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelRowServiceEditMode;
 import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.InsertJapaneseWordController;
 import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class InsertJapaneseWordPanel extends AbstractPanelWithHotkeysInfo {
 
@@ -46,11 +47,12 @@ public class InsertJapaneseWordPanel extends AbstractPanelWithHotkeysInfo {
 		japaneseWordPanelCreator = new JapaneseWordPanelCreator(
 				applicationWindow.getApplicationController(), actionMaker,
 				new JapanesePanelElementsMaker(actionMaker));
+		japaneseWordPanelCreator.setLabelsColor(Color.BLACK);
 		controller.setParentDialog(parentDialog);
 
 		MainPanel addWordPanel = new MainPanel(null);
 		japaneseWordPanelCreator.addJapanesePanelToExistingPanel(addWordPanel,
-				japaneseWordInformation, new JapanesePanelRowServiceAddMode(
+				japaneseWordInformation, new JapanesePanelRowServiceEditMode(
 						new JapanesePanelElementsMaker(
 								new JapanesePanelEditOrAddModeAction(
 										applicationWindow

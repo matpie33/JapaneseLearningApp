@@ -13,6 +13,5 @@ public interface JapanesePanelRowCreatingService {
 			JapaneseWriting japaneseWriting,
 			CommonListElements commonListElements, MainPanel rowPanel);
 
-	public JLabel getRowLabel ();
 
 }

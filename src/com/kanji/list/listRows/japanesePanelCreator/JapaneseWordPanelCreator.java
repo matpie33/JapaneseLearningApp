@@ -12,12 +12,14 @@ import com.kanji.list.myList.ListConfiguration;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.utilities.CommonGuiElementsMaker;
+import com.kanji.utilities.CommonListElements;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class JapaneseWordPanelCreator {
 
@@ -26,11 +28,12 @@ public class JapaneseWordPanelCreator {
 	private JLabel wordMeaningLabel;
 	private JLabel partOfSpeechLabel;
 	private JLabel writingsLabel;
-	private JLabel rowLabel;
+	private JLabel rowNumberLabel;
 	private MyList<JapaneseWriting> writingsList;
 	private ApplicationController applicationController;
 	private JapanesePanelActionCreatingService actionCreatingService;
 	private JapanesePanelElementsMaker elementsMaker;
+	private Color labelsColor = Color.WHITE;
 
 	public JapaneseWordPanelCreator(ApplicationController applicationController,
 			JapanesePanelActionCreatingService actionCreatingService,
@@ -38,6 +41,14 @@ public class JapaneseWordPanelCreator {
 		this.applicationController = applicationController;
 		this.actionCreatingService = actionCreatingService;
 		this.elementsMaker = elementsMaker;
+	}
+
+	public void setRowNumberLabel(JLabel label){
+		rowNumberLabel = label;
+	}
+
+	public void setLabelsColor(Color color){
+		labelsColor = color;
 	}
 
 	//TODO create a map: listpanel display mode -> listpanel creating service
@@ -52,7 +63,7 @@ public class JapaneseWordPanelCreator {
 		addElementsToPanel(existingPanel);
 	}
 
-	public JapanesePanelElementsMaker getElementsMaker(){
+	public JapanesePanelElementsMaker getElementsMaker() {
 		return elementsMaker;
 		//TODO won't be needed after mapping display mode to service
 	}
@@ -60,22 +71,27 @@ public class JapaneseWordPanelCreator {
 	private void createElements(JapaneseWordInformation japaneseWordInformation,
 			JapanesePanelRowCreatingService panelCreatingService,
 			DialogWindow parentDialog) {
-		rowLabel = panelCreatingService.getRowLabel();
+		if (rowNumberLabel == null){
+			rowNumberLabel = new JLabel("");
+		}
+		else{
+			rowNumberLabel.setForeground(labelsColor);
+		}
 		wordMeaningLabel = GuiMaker.createLabel(
 				new ComponentOptions().text(Labels.WORD_MEANING)
-						.foregroundColor(Color.WHITE));
+						.foregroundColor(labelsColor));
 		wordMeaningText = CommonGuiElementsMaker
 				.createShortInput(japaneseWordInformation.getWordMeaning());
 		partOfSpeechLabel = GuiMaker.createLabel(
 				new ComponentOptions().text(Labels.PART_OF_SPEECH)
-						.foregroundColor(Color.WHITE));
+						.foregroundColor(labelsColor));
 		partOfSpeechCombobox = elementsMaker.createComboboxForPartOfSpeech(
 				japaneseWordInformation.getPartOfSpeech());
 		writingsList = createWritingsList(japaneseWordInformation,
 				panelCreatingService, parentDialog);
 		writingsLabel = GuiMaker.createLabel(
 				new ComponentOptions().text(Labels.WRITING_WAYS_IN_JAPANESE)
-						.foregroundColor(Color.WHITE));
+						.foregroundColor(labelsColor));
 	}
 
 	private void addActions(JapaneseWordInformation japaneseWordInformation) {
@@ -83,7 +99,6 @@ public class JapaneseWordPanelCreator {
 				japaneseWordInformation);
 		actionCreatingService.addPartOfSpeechListener(partOfSpeechCombobox,
 				japaneseWordInformation);
-
 	}
 
 	private MyList<JapaneseWriting> createWritingsList(
@@ -115,7 +130,7 @@ public class JapaneseWordPanelCreator {
 
 		japaneseWordPanel
 				.addElementsInColumnStartingFromColumn(wordMeaningText, 0,
-						rowLabel, wordMeaningLabel, wordMeaningText);
+						rowNumberLabel, wordMeaningLabel, wordMeaningText);
 		japaneseWordPanel
 				.addElementsInColumnStartingFromColumn(partOfSpeechCombobox, 1,
 						partOfSpeechLabel, partOfSpeechCombobox);

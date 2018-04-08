@@ -34,10 +34,11 @@ public class RowInJapaneseWordInformations
 			CommonListElements commonListElements) {
 		MainPanel panel = new MainPanel(null);
 		japaneseWordPanelCreator
+				.setRowNumberLabel(commonListElements.getRowNumberLabel());
+		japaneseWordPanelCreator
 				.addJapanesePanelToExistingPanel(panel, japaneseWord,
 						new JapanesePanelRowServiceEditMode(elementsMaker,
-								japaneseWord, commonListElements),
-						applicationWindow);
+								japaneseWord), applicationWindow);
 		return panel;
 	}
 }

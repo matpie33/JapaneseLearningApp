@@ -14,6 +14,7 @@ import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.Titles;
 import com.kanji.panelsAndControllers.controllers.RepeatingWordsController;
+import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -121,7 +122,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private void createWordDescriptionTextArea() {
 		wordTextArea = GuiMaker.createTextPane(
 				new TextPaneOptions().textAlignment(TextAlignment.CENTERED)
-						.text("").enabled(false).fontSize(30f));
+						.text("").enabled(false).fontSize(30f).font(
+						ApplicationWindow.getKanjiFont()));
 	}
 
 	public void setButtonsToRecognizing() {

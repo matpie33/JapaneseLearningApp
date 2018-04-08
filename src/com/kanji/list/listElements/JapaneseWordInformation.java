@@ -48,7 +48,8 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 		//TODO just store it as japanese writings instead of a map
 		List<JapaneseWriting> japaneseWritings = new ArrayList<>();
 		if (kanjiToAlternativeKanaWritingMap.isEmpty()) {
-			japaneseWritings.add(new JapaneseWriting("", new HashSet<>()));
+			japaneseWritings.add(new JapaneseWriting("",
+					new HashSet<>(Arrays.asList(""))));
 		}
 		for (Map.Entry<String, Set<String>> kanaToKanjiWriting : kanjiToAlternativeKanaWritingMap
 				.entrySet()) {

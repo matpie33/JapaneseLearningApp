@@ -12,7 +12,7 @@ import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelEditOrAddModeAction;
 import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelElementsMaker;
-import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelRowServiceAddMode;
+import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelRowServiceViewMode;
 import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.myList.ListRowMaker;
 import com.kanji.list.myList.MyList;
@@ -63,7 +63,7 @@ public class RowInDuplicatedImportedWordsList
 				elementsMaker)
 				.addJapanesePanelToExistingPanel(japaneseWordInformationPanel,
 						data.getJapaneseWordInformation(),
-						new JapanesePanelRowServiceAddMode(elementsMaker,
+						new JapanesePanelRowServiceViewMode(elementsMaker,
 								data.getJapaneseWordInformation()),
 						parentDialog);
 		AbstractButton buttonGoToRow = createButtonGoToRow(

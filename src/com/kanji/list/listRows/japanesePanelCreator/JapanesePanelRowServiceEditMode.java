@@ -6,7 +6,6 @@ import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.utilities.CommonListElements;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,15 +14,12 @@ public class JapanesePanelRowServiceEditMode
 
 	private JapanesePanelElementsMaker elementsMaker;
 	private JapaneseWordInformation wordContainingWriting;
-	private CommonListElements commonListElements;
 
 	public JapanesePanelRowServiceEditMode(
 			JapanesePanelElementsMaker elementsMaker,
-			JapaneseWordInformation wordContainingWriting,
-			CommonListElements commonListElements) {
+			JapaneseWordInformation wordContainingWriting) {
 		this.elementsMaker = elementsMaker;
 		this.wordContainingWriting = wordContainingWriting;
-		this.commonListElements = commonListElements;
 	}
 
 	@Override
@@ -33,6 +29,8 @@ public class JapanesePanelRowServiceEditMode
 		rowElements.add(elementsMaker
 				.createKanaTextField(japaneseWriting.getKanaWriting(),
 						japaneseWriting, wordContainingWriting));
+		//TODO try to use the approach in whole application:
+		//GuiElement e = actionMaker.withAction(elementsMaker.createElement)
 		for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
 			rowElements.add(elementsMaker
 					.createKanjiTextField(kanjiWriting, japaneseWriting,
@@ -47,10 +45,4 @@ public class JapanesePanelRowServiceEditMode
 		return rowElements.toArray(new JComponent[] {});
 	}
 
-	@Override
-	public JLabel getRowLabel() {
-		JLabel label = commonListElements.getRowNumberLabel();
-		label.setForeground(Color.WHITE);
-		return label;
-	}
 }

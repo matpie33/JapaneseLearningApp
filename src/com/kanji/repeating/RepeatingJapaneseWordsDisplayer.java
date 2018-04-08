@@ -99,6 +99,7 @@ public class RepeatingJapaneseWordsDisplayer
 	public void showWordFullInformation(
 			JapaneseWordInformation japaneseWordInformation) {
 		fullWordInformationPanel.clear();
+		japaneseWordPanelCreator.setLabelsColor(Color.BLACK);
 		japaneseWordPanelCreator
 				.addJapanesePanelToExistingPanel(fullWordInformationPanel,
 						japaneseWordInformation,
