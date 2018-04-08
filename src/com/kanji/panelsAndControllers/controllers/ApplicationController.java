@@ -13,6 +13,9 @@ import com.kanji.list.listElements.RepeatingInformation;
 import com.kanji.list.listRows.RowInJapaneseWordInformations;
 import com.kanji.list.listRows.RowInKanjiInformations;
 import com.kanji.list.listRows.RowInRepeatingList;
+import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelEditOrAddModeAction;
+import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelElementsMaker;
+import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.myList.ListConfiguration;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.KanjisAndRepeatingInfo;
@@ -71,9 +74,17 @@ public class ApplicationController implements ApplicationStateManager {
 		loadingAndSaving = new LoadingAndSaving();
 		japaneseWordsFileReader = new JapaneseWordsFileReader();
 		repeatingJapaneseWordsDisplayer = new RepeatingJapaneseWordsDisplayer(
-				parent.getKanjiFont());
+				createJapanesePanelCreator());
 		kanjiWordDisplayer = new RepeatingKanjiDisplayer(parent.getKanjiFont());
+	}
 
+	private JapaneseWordPanelCreator createJapanesePanelCreator() {
+		JapanesePanelEditOrAddModeAction actionCreatingService = new JapanesePanelEditOrAddModeAction(
+				this, parent, getJapaneseWords(),
+				ListPanelDisplayMode.VIEW_AND_EDIT);
+		return new JapaneseWordPanelCreator(
+				this, actionCreatingService,
+				new JapanesePanelElementsMaker(actionCreatingService));
 	}
 
 	public ProblematicWordsController getProblematicKanjisController() {

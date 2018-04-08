@@ -48,18 +48,18 @@ public class InsertJapaneseWordPanel extends AbstractPanelWithHotkeysInfo {
 				new JapanesePanelElementsMaker(actionMaker));
 		controller.setParentDialog(parentDialog);
 
-		MainPanel addWordPanel = japaneseWordPanelCreator
-				.createPanel(japaneseWordInformation,
-						new JapanesePanelRowServiceAddMode(
-								new JapanesePanelElementsMaker(
-										new JapanesePanelEditOrAddModeAction(
-												applicationWindow
-														.getApplicationController(),
-												parentDialog, applicationWindow
-												.getApplicationController()
-												.getJapaneseWords(),
-												ListPanelDisplayMode.ADD)),
-								japaneseWordInformation), parentDialog);
+		MainPanel addWordPanel = new MainPanel(null);
+		japaneseWordPanelCreator.addJapanesePanelToExistingPanel(addWordPanel,
+				japaneseWordInformation, new JapanesePanelRowServiceAddMode(
+						new JapanesePanelElementsMaker(
+								new JapanesePanelEditOrAddModeAction(
+										applicationWindow
+												.getApplicationController(),
+										parentDialog, applicationWindow
+										.getApplicationController()
+										.getJapaneseWords(),
+										ListPanelDisplayMode.ADD)),
+						japaneseWordInformation), parentDialog);
 
 		AbstractButton cancel = createButtonClose();
 		AbstractButton approve = createButtonValidate(ButtonsNames.ADD_WORD);

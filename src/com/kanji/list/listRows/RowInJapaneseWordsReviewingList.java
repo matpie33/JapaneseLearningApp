@@ -1,115 +1,41 @@
 package com.kanji.list.listRows;
 
-import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.ComponentType;
-import com.guimaker.enums.FillType;
-import com.guimaker.options.ComponentOptions;
-import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.kanji.constants.strings.ButtonsNames;
-import com.kanji.constants.strings.Labels;
-import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWordInformation;
+import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelRowServiceViewMode;
+import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.myList.ListRowMaker;
 import com.kanji.problematicWords.ProblematicJapaneseWordsDisplayer;
-import com.kanji.utilities.CommonGuiElementsMaker;
 import com.kanji.utilities.CommonListElements;
 
 import javax.swing.*;
-import javax.swing.text.JTextComponent;
-import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class RowInJapaneseWordsReviewingList
 		implements ListRowMaker<JapaneseWordInformation> {
 
 	private ProblematicJapaneseWordsDisplayer problematicJapaneseWordsDisplayer;
+	private JapaneseWordPanelCreator japanesePanelCreator;
 
 	public RowInJapaneseWordsReviewingList(
-			ProblematicJapaneseWordsDisplayer problematicJapaneseWordsDisplayer) {
+			ProblematicJapaneseWordsDisplayer problematicJapaneseWordsDisplayer,
+			JapaneseWordPanelCreator japanesePanelCreator) {
 		this.problematicJapaneseWordsDisplayer = problematicJapaneseWordsDisplayer;
+		this.japanesePanelCreator = japanesePanelCreator;
 	}
 
 	@Override
 	public MainPanel createListRow(JapaneseWordInformation japaneseWord,
 			CommonListElements commonListElements) {
 		MainPanel panel = new MainPanel(null);
-
-		JLabel meaningLabel = GuiMaker.createLabel(
-				new ComponentOptions().text(Labels.WORD_MEANING)
-						.foregroundColor(BasicColors.OCEAN_BLUE));
-		String meaning = japaneseWord.getWordMeaning();
-		JTextComponent meaningText = CommonGuiElementsMaker
-				.createTextField(meaning);
-		JLabel partOfSpeechLabel = GuiMaker.createLabel(
-				new ComponentOptions().text(Labels.PART_OF_SPEECH)
-						.foregroundColor(Color.WHITE));
-		//TODO export white label as common
-
-		JLabel partOfSpeech = GuiMaker.createLabel(new ComponentOptions()
-				.text(japaneseWord.getPartOfSpeech().getPolishMeaning())
-				.foregroundColor(Color.WHITE));
-
-		panel.addElementsInColumnStartingFromColumn(meaningText, 0,
-				commonListElements.getRowNumberLabel(), meaningLabel,
-				meaningText);
-		panel.addElementsInColumnStartingFromColumn(1, partOfSpeechLabel,
-				partOfSpeech);
-
-		MainPanel writingsPanel = new MainPanel(BasicColors.OCEAN_BLUE, true);
-		List<String> headers = new ArrayList<>();
-		headers.add(Prompts.KANA_TEXT);
-		if (japaneseWord.hasKanjiWriting()) {
-			headers.add(Prompts.KANJI_TEXT);
-		}
-		List<JComponent> labels = headers.stream().map(header -> GuiMaker
-				.createLabel(new ComponentOptions().text(header)))
-				.collect(Collectors.toList());
-		writingsPanel.addElementsInColumnStartingFromColumn(0,
-				labels.toArray(new JComponent[] {}));
-		writingsPanel.setRowColor(Color.RED);
-		for (Map.Entry<String, Set<String>> writings : japaneseWord
-				.getKanaToKanjiWritingsMap().entrySet()) {
-
-			List<String> allWritings = new ArrayList<>();
-			allWritings.add(writings.getKey());
-			if (!writings.getValue().isEmpty()) {
-				allWritings.addAll(writings.getValue());
-			}
-			List<JComponent> writingTextFields = allWritings.stream()
-					.map(writing -> GuiMaker.createTextField(
-							new TextComponentOptions().text(writing)
-									.editable(false).focusable(false)
-									.fontSize(30f)))
-					//TODO specify the japanese font size in one place and use it consistently
-					.collect(Collectors.toList());
-			writingTextFields
-					.forEach(tf -> tf.addMouseListener(new MouseAdapter() {
-						@Override
-						public void mouseClicked(MouseEvent e) {
-							problematicJapaneseWordsDisplayer.setSelectedWord(
-									(JTextComponent) e.getSource());
-							super.mouseClicked(e);
-						}
-					}));
-			JComponent[] components = new JComponent[writingTextFields.size()
-					+ 1];
-			for (int i = 0; i < writingTextFields.size(); i++) {
-				components[i] = writingTextFields.get(i);
-			}
-			components[writingTextFields.size()] = createButtonSearchWord();
-			writingsPanel.addElementsInColumnStartingFromColumn(0, components);
-		}
-		panel.addElementsInColumnStartingFromColumn(writingsPanel.getPanel(), 2,
-				FillType.HORIZONTAL, writingsPanel.getPanel());
+		japanesePanelCreator
+				.addJapanesePanelToExistingPanel(panel, japaneseWord,
+						new JapanesePanelRowServiceViewMode(
+								japanesePanelCreator.getElementsMaker(),
+								japaneseWord), null);
 
 		return panel;
 	}

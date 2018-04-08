@@ -32,14 +32,12 @@ public class RowInJapaneseWordInformations
 	@Override
 	public MainPanel createListRow(JapaneseWordInformation japaneseWord,
 			CommonListElements commonListElements) {
-		MainPanel panel = japaneseWordPanelCreator.createPanel(japaneseWord,
-				new JapanesePanelRowServiceEditMode(
-						elementsMaker,
-						japaneseWord, commonListElements), applicationWindow);
+		MainPanel panel = new MainPanel(null);
+		japaneseWordPanelCreator
+				.addJapanesePanelToExistingPanel(panel, japaneseWord,
+						new JapanesePanelRowServiceEditMode(elementsMaker,
+								japaneseWord, commonListElements),
+						applicationWindow);
 		return panel;
-	}
-
-	public JapaneseWordPanelCreator getJapaneseWordPanelCreator() {
-		return japaneseWordPanelCreator;
 	}
 }

@@ -57,12 +57,13 @@ public class RowInDuplicatedImportedWordsList
 				ListPanelDisplayMode.VIEW_AND_EDIT);
 		JapanesePanelElementsMaker elementsMaker = new JapanesePanelElementsMaker(
 				actionMaker);
-		MainPanel japaneseWordInformationPanel = new JapaneseWordPanelCreator(
+		MainPanel japaneseWordInformationPanel = new MainPanel(null);
+		new JapaneseWordPanelCreator(
 				applicationWindow.getApplicationController(), actionMaker,
 				elementsMaker)
-				.createPanel(data.getJapaneseWordInformation(),
-						new JapanesePanelRowServiceAddMode(
-								elementsMaker,
+				.addJapanesePanelToExistingPanel(japaneseWordInformationPanel,
+						data.getJapaneseWordInformation(),
+						new JapanesePanelRowServiceAddMode(elementsMaker,
 								data.getJapaneseWordInformation()),
 						parentDialog);
 		AbstractButton buttonGoToRow = createButtonGoToRow(

@@ -40,14 +40,21 @@ public class JapaneseWordPanelCreator {
 		this.elementsMaker = elementsMaker;
 	}
 
-	public MainPanel createPanel(
+	//TODO create a map: listpanel display mode -> listpanel creating service
+	// then don't pass action and elements maker, instead pick it based on the list panel mode
+	public void addJapanesePanelToExistingPanel(MainPanel existingPanel,
 			JapaneseWordInformation japaneseWordInformation,
 			JapanesePanelRowCreatingService panelCreatingService,
 			DialogWindow parentDialog) {
 		createElements(japaneseWordInformation, panelCreatingService,
 				parentDialog);
 		addActions(japaneseWordInformation);
-		return addElementsToGui();
+		addElementsToPanel(existingPanel);
+	}
+
+	public JapanesePanelElementsMaker getElementsMaker(){
+		return elementsMaker;
+		//TODO won't be needed after mapping display mode to service
 	}
 
 	private void createElements(JapaneseWordInformation japaneseWordInformation,
@@ -62,9 +69,8 @@ public class JapaneseWordPanelCreator {
 		partOfSpeechLabel = GuiMaker.createLabel(
 				new ComponentOptions().text(Labels.PART_OF_SPEECH)
 						.foregroundColor(Color.WHITE));
-		partOfSpeechCombobox = elementsMaker
-				.createComboboxForPartOfSpeech(
-						japaneseWordInformation.getPartOfSpeech());
+		partOfSpeechCombobox = elementsMaker.createComboboxForPartOfSpeech(
+				japaneseWordInformation.getPartOfSpeech());
 		writingsList = createWritingsList(japaneseWordInformation,
 				panelCreatingService, parentDialog);
 		writingsLabel = GuiMaker.createLabel(
@@ -105,9 +111,8 @@ public class JapaneseWordPanelCreator {
 				JapaneseWriting.getInitializer());
 	}
 
-	private MainPanel addElementsToGui() {
+	private void addElementsToPanel(MainPanel japaneseWordPanel) {
 
-		MainPanel japaneseWordPanel = new MainPanel(null);
 		japaneseWordPanel
 				.addElementsInColumnStartingFromColumn(wordMeaningText, 0,
 						rowLabel, wordMeaningLabel, wordMeaningText);
@@ -118,9 +123,6 @@ public class JapaneseWordPanelCreator {
 		japaneseWordPanel
 				.addElementsInColumnStartingFromColumn(writingsListPanel, 1,
 						writingsLabel, writingsListPanel);
-
-		return japaneseWordPanel;
-
 	}
 
 }

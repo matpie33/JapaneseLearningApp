@@ -12,6 +12,8 @@ import com.kanji.constants.enums.VerbConjugationType;
 import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.RepeatingInformation;
+import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelRowServiceViewMode;
+import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.saving.RepeatingState;
 import com.kanji.timer.TimeSpent;
 import com.kanji.utilities.CommonGuiElementsMaker;
@@ -40,8 +42,10 @@ public class RepeatingJapaneseWordsDisplayer
 	private JComboBox<String> verbConjugationCombobox;
 	private JTextComponent verbConjugationText;
 	private Map<Integer, Function<JapaneseWordInformation, Set<String>>> hintTypeIntValues;
+	private JapaneseWordPanelCreator japaneseWordPanelCreator;
 
-	public RepeatingJapaneseWordsDisplayer(Font kanjiFont) {
+	public RepeatingJapaneseWordsDisplayer(
+			JapaneseWordPanelCreator japaneseWordPanelCreator) {
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		kanjiCharactersReader.loadKanjisIfNeeded();
 		//TODO kanjis can be loaded just once in the "get instance" method
@@ -58,6 +62,7 @@ public class RepeatingJapaneseWordsDisplayer
 		recognizingWordPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE,
 				ElementCopier.copyLabel(partOfSpeechLabel),
 				partOfSpeechCombobox));
+		this.japaneseWordPanelCreator = japaneseWordPanelCreator;
 
 	}
 
@@ -92,33 +97,16 @@ public class RepeatingJapaneseWordsDisplayer
 
 	@Override
 	public void showWordFullInformation(
-			JapaneseWordInformation kanjiInformation) {
+			JapaneseWordInformation japaneseWordInformation) {
 		fullWordInformationPanel.clear();
-		partOfSpeechText
-				.setText(kanjiInformation.getPartOfSpeech().getPolishMeaning());
-		JLabel meaning = GuiMaker.createLabel(new ComponentOptions());
-		meaning.setText(Labels.WORD_MEANING);
-		JTextComponent meaningText = CommonGuiElementsMaker
-				.createTextField(kanjiInformation.getWordMeaning());
-		fullWordInformationPanel
-				.addElementsInColumnStartingFromColumn(meaningText, 0,
-						FillType.HORIZONTAL, meaning, meaningText);
-		fullWordInformationPanel
-				.addElementsInColumnStartingFromColumn(partOfSpeechText, 0,
-						FillType.HORIZONTAL, partOfSpeechLabel,
-						partOfSpeechText);
+		japaneseWordPanelCreator
+				.addJapanesePanelToExistingPanel(fullWordInformationPanel,
+						japaneseWordInformation,
+						new JapanesePanelRowServiceViewMode(
+								japaneseWordPanelCreator.getElementsMaker(),
+								japaneseWordInformation), null);
+		//TODO parent dialog is not needed without validation i.e. in view mode
 
-		if (kanjiInformation.hasAdditionalVerbConjugationInformation()) {
-			fullWordInformationPanel
-					.addElementsInColumnStartingFromColumn(verbConjugationText,
-							0, FillType.HORIZONTAL, verbConjugationLabel,
-							verbConjugationText);
-			verbConjugationText
-					.setText(kanjiInformation.getVerbConjugationInformation());
-		}
-
-		CommonGuiElementsMaker.addKanaAndKanjiWritingsToPanel(kanjiInformation,
-				fullWordInformationPanel, 0, Color.BLACK);
 
 	}
 

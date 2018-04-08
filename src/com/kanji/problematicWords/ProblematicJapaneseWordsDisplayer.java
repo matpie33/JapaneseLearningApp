@@ -5,6 +5,7 @@ import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.TextAreaOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
+import com.kanji.constants.enums.ListPanelDisplayMode;
 import com.kanji.constants.enums.SearchingDirection;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Prompts;
@@ -13,6 +14,9 @@ import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.KanjiInformation;
 import com.kanji.list.listRows.RowInJapaneseWordsReviewingList;
+import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelEditOrAddModeAction;
+import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelElementsMaker;
+import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.WordRow;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
@@ -44,7 +48,8 @@ public class ProblematicJapaneseWordsDisplayer
 		problematicJapaneseWordsPanel = new ProblematicJapaneseWordsPanel(
 				controller, applicationWindow, this);
 		this.wordsToReviewList = new MyList<>(applicationWindow, null,
-				new RowInJapaneseWordsReviewingList(this),
+				new RowInJapaneseWordsReviewingList(this,
+						createJapanesePanelCreator(applicationWindow)),
 				Titles.PROBLEMATIC_KANJIS,
 				JapaneseWordInformation.getElementsTypesAndLabels(),
 				JapaneseWordInformation.getInitializer());
@@ -52,6 +57,17 @@ public class ProblematicJapaneseWordsDisplayer
 		kanjiInformations = applicationWindow.getApplicationController()
 				.getKanjiList();
 
+	}
+
+	private JapaneseWordPanelCreator createJapanesePanelCreator(
+			ApplicationWindow applicationWindow) {
+		JapanesePanelEditOrAddModeAction actionMaker = new JapanesePanelEditOrAddModeAction(
+				applicationWindow.getApplicationController(), applicationWindow,
+				applicationWindow.getApplicationController().getJapaneseWords(),
+				ListPanelDisplayMode.VIEW_AND_EDIT);
+		return new JapaneseWordPanelCreator(
+				applicationWindow.getApplicationController(), actionMaker,
+				new JapanesePanelElementsMaker(actionMaker));
 	}
 
 	@Override
