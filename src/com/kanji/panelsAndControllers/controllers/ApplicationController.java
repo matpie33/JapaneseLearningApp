@@ -13,8 +13,6 @@ import com.kanji.list.listElements.RepeatingInformation;
 import com.kanji.list.listRows.RowInJapaneseWordInformations;
 import com.kanji.list.listRows.RowInKanjiInformations;
 import com.kanji.list.listRows.RowInRepeatingList;
-import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelEditOrAddModeAction;
-import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelElementsMaker;
 import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.myList.ListConfiguration;
 import com.kanji.list.myList.MyList;
@@ -79,12 +77,9 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	private JapaneseWordPanelCreator createJapanesePanelCreator() {
-		JapanesePanelEditOrAddModeAction actionCreatingService = new JapanesePanelEditOrAddModeAction(
-				this, parent, getJapaneseWords(),
-				ListPanelDisplayMode.VIEW_AND_EDIT);
-		return new JapaneseWordPanelCreator(
-				this, actionCreatingService,
-				new JapanesePanelElementsMaker(actionCreatingService));
+		return new JapaneseWordPanelCreator(this, parent,
+				JapanesePanelDisplayMode.VIEW);
+		//TODO parent dialog is not needed without validation i.e. in view mode
 	}
 
 	public ProblematicWordsController getProblematicKanjisController() {

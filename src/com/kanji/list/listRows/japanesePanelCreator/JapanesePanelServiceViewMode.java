@@ -9,16 +9,20 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JapanesePanelRowServiceEditMode
-		implements JapanesePanelRowCreatingService {
+public class JapanesePanelServiceViewMode
+		implements JapanesePanelCreatingService {
 
 	private JapanesePanelElementsMaker elementsMaker;
 	private JapaneseWordInformation wordContainingWriting;
 
-	public JapanesePanelRowServiceEditMode(
-			JapanesePanelElementsMaker elementsMaker,
-			JapaneseWordInformation wordContainingWriting) {
+	public JapanesePanelServiceViewMode(
+			JapanesePanelElementsMaker elementsMaker) {
 		this.elementsMaker = elementsMaker;
+	}
+
+	@Override
+	public void setWord(
+			JapaneseWordInformation wordContainingWriting) {
 		this.wordContainingWriting = wordContainingWriting;
 	}
 
@@ -29,18 +33,11 @@ public class JapanesePanelRowServiceEditMode
 		rowElements.add(elementsMaker
 				.createKanaTextField(japaneseWriting.getKanaWriting(),
 						japaneseWriting, wordContainingWriting));
-		//TODO try to use the approach in whole application:
-		//GuiElement e = actionMaker.withAction(elementsMaker.createElement)
 		for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
 			rowElements.add(elementsMaker
 					.createKanjiTextField(kanjiWriting, japaneseWriting,
 							wordContainingWriting));
 		}
-		rowElements.add(elementsMaker
-				.createButtonAddKanjiWriting(rowPanel, japaneseWriting,
-						wordContainingWriting));
-		rowElements.add(commonListElements.getButtonAddRow());
-		rowElements.add(commonListElements.getButtonDelete());
 
 		return rowElements.toArray(new JComponent[] {});
 	}

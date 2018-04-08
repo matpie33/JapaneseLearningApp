@@ -5,7 +5,6 @@ import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.list.listElements.JapaneseWordInformation;
-import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelRowServiceViewMode;
 import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.myList.ListRowMaker;
 import com.kanji.problematicWords.ProblematicJapaneseWordsDisplayer;
@@ -34,10 +33,7 @@ public class RowInJapaneseWordsReviewingList
 		japanesePanelCreator
 				.setRowNumberLabel(commonListElements.getRowNumberLabel());
 		japanesePanelCreator
-				.addJapanesePanelToExistingPanel(panel, japaneseWord,
-						new JapanesePanelRowServiceViewMode(
-								japanesePanelCreator.getElementsMaker(),
-								japaneseWord), null);
+				.addJapanesePanelToExistingPanel(panel, japaneseWord);
 
 		return panel;
 	}

@@ -1,11 +1,10 @@
 package com.kanji.list.listRows;
 
 import com.guimaker.panels.MainPanel;
-import com.kanji.constants.enums.ListPanelDisplayMode;
+import com.kanji.constants.enums.JapanesePanelDisplayMode;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelEditOrAddModeAction;
 import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelElementsMaker;
-import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelRowServiceEditMode;
 import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.myList.ListRowMaker;
 import com.kanji.utilities.CommonListElements;
@@ -21,11 +20,11 @@ public class RowInJapaneseWordInformations
 		JapanesePanelEditOrAddModeAction actionMaker = new JapanesePanelEditOrAddModeAction(
 				applicationWindow.getApplicationController(), applicationWindow,
 				applicationWindow.getApplicationController().getJapaneseWords(),
-				ListPanelDisplayMode.VIEW_AND_EDIT);
+				JapanesePanelDisplayMode.EDIT);
 		elementsMaker = new JapanesePanelElementsMaker(actionMaker);
 		japaneseWordPanelCreator = new JapaneseWordPanelCreator(
-				applicationWindow.getApplicationController(), actionMaker,
-				elementsMaker);
+				applicationWindow.getApplicationController(), applicationWindow,
+				JapanesePanelDisplayMode.EDIT);
 		this.applicationWindow = applicationWindow;
 	}
 
@@ -36,9 +35,7 @@ public class RowInJapaneseWordInformations
 		japaneseWordPanelCreator
 				.setRowNumberLabel(commonListElements.getRowNumberLabel());
 		japaneseWordPanelCreator
-				.addJapanesePanelToExistingPanel(panel, japaneseWord,
-						new JapanesePanelRowServiceEditMode(elementsMaker,
-								japaneseWord), applicationWindow);
+				.addJapanesePanelToExistingPanel(panel, japaneseWord);
 		return panel;
 	}
 }

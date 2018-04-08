@@ -7,11 +7,13 @@ import com.kanji.utilities.CommonListElements;
 
 import javax.swing.*;
 
-public interface JapanesePanelRowCreatingService {
+public interface JapanesePanelCreatingService {
 
 	public JComponent[] addWritingsRow(
 			JapaneseWriting japaneseWriting,
 			CommonListElements commonListElements, MainPanel rowPanel);
+
+	public void setWord (JapaneseWordInformation word);
 
 
 }

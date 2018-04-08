@@ -3,23 +3,22 @@ package com.kanji.list.listRows.japanesePanelCreator;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
+import com.kanji.constants.enums.JapanesePanelDisplayMode;
 import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listRows.RowInJapaneseWritingsList;
-import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelActionCreatingService;
+import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelEditOrAddModeAction;
 import com.kanji.list.myList.ListConfiguration;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.utilities.CommonGuiElementsMaker;
-import com.kanji.utilities.CommonListElements;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class JapaneseWordPanelCreator {
 
@@ -31,50 +30,42 @@ public class JapaneseWordPanelCreator {
 	private JLabel rowNumberLabel;
 	private MyList<JapaneseWriting> writingsList;
 	private ApplicationController applicationController;
-	private JapanesePanelActionCreatingService actionCreatingService;
-	private JapanesePanelElementsMaker elementsMaker;
 	private Color labelsColor = Color.WHITE;
+	private DialogWindow parentDialog;
+	private JapanesePanelServiceStore japanesePanelServiceStore;
 
 	public JapaneseWordPanelCreator(ApplicationController applicationController,
-			JapanesePanelActionCreatingService actionCreatingService,
-			JapanesePanelElementsMaker elementsMaker) {
+			DialogWindow parentDialog, JapanesePanelDisplayMode displayMode) {
+		japanesePanelServiceStore = new JapanesePanelServiceStore(
+				applicationController, parentDialog,
+				applicationController.getJapaneseWords(), displayMode);
 		this.applicationController = applicationController;
-		this.actionCreatingService = actionCreatingService;
-		this.elementsMaker = elementsMaker;
+		this.parentDialog = parentDialog;
 	}
 
-	public void setRowNumberLabel(JLabel label){
+	public void setRowNumberLabel(JLabel label) {
 		rowNumberLabel = label;
 	}
 
-	public void setLabelsColor(Color color){
+	public void setLabelsColor(Color color) {
 		labelsColor = color;
 	}
 
-	//TODO create a map: listpanel display mode -> listpanel creating service
-	// then don't pass action and elements maker, instead pick it based on the list panel mode
 	public void addJapanesePanelToExistingPanel(MainPanel existingPanel,
-			JapaneseWordInformation japaneseWordInformation,
-			JapanesePanelRowCreatingService panelCreatingService,
-			DialogWindow parentDialog) {
-		createElements(japaneseWordInformation, panelCreatingService,
-				parentDialog);
+			JapaneseWordInformation japaneseWordInformation) {
+		japanesePanelServiceStore.getPanelCreatingService()
+				.setWord(japaneseWordInformation);
+		createElements(japaneseWordInformation);
 		addActions(japaneseWordInformation);
 		addElementsToPanel(existingPanel);
 	}
 
-	public JapanesePanelElementsMaker getElementsMaker() {
-		return elementsMaker;
-		//TODO won't be needed after mapping display mode to service
-	}
-
-	private void createElements(JapaneseWordInformation japaneseWordInformation,
-			JapanesePanelRowCreatingService panelCreatingService,
-			DialogWindow parentDialog) {
-		if (rowNumberLabel == null){
+	private void createElements(
+			JapaneseWordInformation japaneseWordInformation) {
+		if (rowNumberLabel == null) {
 			rowNumberLabel = new JLabel("");
 		}
-		else{
+		else {
 			rowNumberLabel.setForeground(labelsColor);
 		}
 		wordMeaningLabel = GuiMaker.createLabel(
@@ -85,39 +76,36 @@ public class JapaneseWordPanelCreator {
 		partOfSpeechLabel = GuiMaker.createLabel(
 				new ComponentOptions().text(Labels.PART_OF_SPEECH)
 						.foregroundColor(labelsColor));
-		partOfSpeechCombobox = elementsMaker.createComboboxForPartOfSpeech(
-				japaneseWordInformation.getPartOfSpeech());
-		writingsList = createWritingsList(japaneseWordInformation,
-				panelCreatingService, parentDialog);
+		partOfSpeechCombobox = japanesePanelServiceStore.getElementsMaker()
+				.createComboboxForPartOfSpeech(
+						japaneseWordInformation.getPartOfSpeech());
+		writingsList = createWritingsList(japaneseWordInformation);
 		writingsLabel = GuiMaker.createLabel(
 				new ComponentOptions().text(Labels.WRITING_WAYS_IN_JAPANESE)
 						.foregroundColor(labelsColor));
 	}
 
 	private void addActions(JapaneseWordInformation japaneseWordInformation) {
+		JapanesePanelEditOrAddModeAction actionCreatingService = japanesePanelServiceStore
+				.getActionMaker();
 		actionCreatingService.addWordMeaningTextFieldListeners(wordMeaningText,
 				japaneseWordInformation);
 		actionCreatingService.addPartOfSpeechListener(partOfSpeechCombobox,
 				japaneseWordInformation);
 	}
 
-	private MyList<JapaneseWriting> createWritingsList(
-			JapaneseWordInformation japaneseWordInformation,
-			JapanesePanelRowCreatingService panelCreatingService,
-			DialogWindow parentDialog) {
-		writingsList = createJapaneseWritingsList(parentDialog,
-				applicationController, panelCreatingService);
+	public MyList<JapaneseWriting> createWritingsList(
+			JapaneseWordInformation japaneseWordInformation) {
+		writingsList = createJapaneseWritingsList();
 		japaneseWordInformation.getJapaneseWritings().stream()
 				.forEach(writingsList::addWord);
 		return writingsList;
 	}
 
-	public static MyList<JapaneseWriting> createJapaneseWritingsList(
-			DialogWindow parentDialog,
-			ApplicationController applicationController,
-			JapanesePanelRowCreatingService panelCreatingService) {
+	private MyList<JapaneseWriting> createJapaneseWritingsList() {
 		return new MyList<>(parentDialog, applicationController,
-				new RowInJapaneseWritingsList(panelCreatingService),
+				new RowInJapaneseWritingsList(
+						japanesePanelServiceStore.getPanelCreatingService()),
 				Labels.WRITING_WAYS_IN_JAPANESE,
 				new ListConfiguration().enableWordAdding(false)
 						.inheritScrollbar(true).enableWordSearching(false)

@@ -1,11 +1,11 @@
 package com.kanji.constants.enums;
 
-public enum ListPanelDisplayMode {
-	VIEW_AND_EDIT(true), ADD(true);
+public enum JapanesePanelDisplayMode {
+	EDIT(true), VIEW(true);
 
 	private boolean kanaTextFieldRequired;
 
-	private ListPanelDisplayMode(boolean kanaTextFieldRequired) {
+	private JapanesePanelDisplayMode(boolean kanaTextFieldRequired) {
 		this.kanaTextFieldRequired = kanaTextFieldRequired;
 	}
 

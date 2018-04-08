@@ -12,11 +12,9 @@ import com.kanji.constants.enums.VerbConjugationType;
 import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.RepeatingInformation;
-import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelRowServiceViewMode;
 import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.saving.RepeatingState;
 import com.kanji.timer.TimeSpent;
-import com.kanji.utilities.CommonGuiElementsMaker;
 import com.kanji.utilities.KanjiCharactersReader;
 import com.kanji.utilities.StringUtilities;
 
@@ -102,11 +100,8 @@ public class RepeatingJapaneseWordsDisplayer
 		japaneseWordPanelCreator.setLabelsColor(Color.BLACK);
 		japaneseWordPanelCreator
 				.addJapanesePanelToExistingPanel(fullWordInformationPanel,
-						japaneseWordInformation,
-						new JapanesePanelRowServiceViewMode(
-								japaneseWordPanelCreator.getElementsMaker(),
-								japaneseWordInformation), null);
-		//TODO parent dialog is not needed without validation i.e. in view mode
+						japaneseWordInformation);
+
 
 
 	}

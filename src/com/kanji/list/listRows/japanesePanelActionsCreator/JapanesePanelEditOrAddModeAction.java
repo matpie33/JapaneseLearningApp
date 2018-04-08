@@ -1,6 +1,6 @@
 package com.kanji.list.listRows.japanesePanelActionsCreator;
 
-import com.kanji.constants.enums.ListPanelDisplayMode;
+import com.kanji.constants.enums.JapanesePanelDisplayMode;
 import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.Prompts;
@@ -14,26 +14,24 @@ import com.kanji.windows.DialogWindow;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
-public class JapanesePanelEditOrAddModeAction
-		implements JapanesePanelActionCreatingService {
+public class JapanesePanelEditOrAddModeAction {
 
 	private DialogWindow parentDialog;
 	private MyList<JapaneseWordInformation> wordsList;
-	private ListPanelDisplayMode listPanelDisplayMode;
+	private JapanesePanelDisplayMode japanesePanelDisplayMode;
 	private ApplicationController applicationController;
 
 	public JapanesePanelEditOrAddModeAction(
 			ApplicationController applicationController,
 			DialogWindow parentDialog,
 			MyList<JapaneseWordInformation> wordsList,
-			ListPanelDisplayMode listPanelDisplayMode) {
+			JapanesePanelDisplayMode japanesePanelDisplayMode) {
 		this.parentDialog = parentDialog;
 		this.wordsList = wordsList;
-		this.listPanelDisplayMode = listPanelDisplayMode;
+		this.japanesePanelDisplayMode = japanesePanelDisplayMode;
 		this.applicationController = applicationController;
 	}
 
-	@Override
 	public void addWordMeaningTextFieldListeners(
 			JTextComponent wordMeaningTextField,
 			JapaneseWordInformation japaneseWordInformation) {
@@ -44,7 +42,6 @@ public class JapanesePanelEditOrAddModeAction
 						wordsList);
 	}
 
-	@Override
 	public JTextComponent withKanaValidation(JTextComponent kanaTextField,
 			JapaneseWriting japaneseWriting,
 			JapaneseWordInformation japaneseWordInformation) {
@@ -53,7 +50,6 @@ public class JapanesePanelEditOrAddModeAction
 		return kanaTextField;
 	}
 
-	@Override
 	public JTextComponent withKanjiValidation(
 			JTextComponent kanjiWritingTextField,
 			JapaneseWriting japaneseWriting,
@@ -69,7 +65,7 @@ public class JapanesePanelEditOrAddModeAction
 			JapaneseWriting japaneseWriting,
 			JapaneseWordInformation japaneseWordInformation,
 			String promptOnEmpty, boolean kanaChecker) {
-		boolean isKanaRequired = listPanelDisplayMode.isKanaTextFieldRequired();
+		boolean isKanaRequired = japanesePanelDisplayMode.isKanaTextFieldRequired();
 		JapanesePanelActions.addPropertyChangeHandler(japaneseWritingTextField,
 				japaneseWordInformation, isKanaRequired, promptOnEmpty,
 				new JapaneseWordWritingsChecker(japaneseWriting, isKanaRequired,
@@ -78,7 +74,6 @@ public class JapanesePanelEditOrAddModeAction
 				parentDialog, wordsList);
 	}
 
-	@Override
 	public void addPartOfSpeechListener(JComboBox partOfSpeechCombobox,
 			JapaneseWordInformation japaneseWordInformation) {
 		JapanesePanelActions.addSavingOnSelectionListener(partOfSpeechCombobox,

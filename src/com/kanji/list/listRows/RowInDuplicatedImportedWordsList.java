@@ -6,13 +6,12 @@ import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.kanji.constants.enums.ListPanelDisplayMode;
+import com.kanji.constants.enums.JapanesePanelDisplayMode;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelEditOrAddModeAction;
 import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelElementsMaker;
-import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelRowServiceViewMode;
 import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.myList.ListRowMaker;
 import com.kanji.list.myList.MyList;
@@ -54,18 +53,15 @@ public class RowInDuplicatedImportedWordsList
 		JapanesePanelEditOrAddModeAction actionMaker = new JapanesePanelEditOrAddModeAction(
 				applicationWindow.getApplicationController(), parentDialog,
 				applicationWindow.getApplicationController().getJapaneseWords(),
-				ListPanelDisplayMode.VIEW_AND_EDIT);
+				JapanesePanelDisplayMode.EDIT);
 		JapanesePanelElementsMaker elementsMaker = new JapanesePanelElementsMaker(
 				actionMaker);
 		MainPanel japaneseWordInformationPanel = new MainPanel(null);
 		new JapaneseWordPanelCreator(
-				applicationWindow.getApplicationController(), actionMaker,
-				elementsMaker)
+				applicationWindow.getApplicationController(), parentDialog,
+				JapanesePanelDisplayMode.EDIT)
 				.addJapanesePanelToExistingPanel(japaneseWordInformationPanel,
-						data.getJapaneseWordInformation(),
-						new JapanesePanelRowServiceViewMode(elementsMaker,
-								data.getJapaneseWordInformation()),
-						parentDialog);
+						data.getJapaneseWordInformation());
 		AbstractButton buttonGoToRow = createButtonGoToRow(
 				data.getDuplicatedWordRowNumber());
 		panel.addRow(SimpleRowBuilder
