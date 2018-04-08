@@ -1,5 +1,7 @@
 package com.kanji.list.listRows.japanesePanelCreator;
 
+import com.guimaker.options.ComponentOptions;
+import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.JapaneseWriting;
@@ -7,6 +9,7 @@ import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelEditOrAd
 import com.kanji.utilities.CommonListElements;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,5 +43,11 @@ public class JapanesePanelRowServiceAddMode
 		rowElements.add(commonListElements.getButtonAddRow());
 		rowElements.add(commonListElements.getButtonDelete());
 		return rowElements.toArray(new JComponent[] {});
+	}
+
+	@Override
+	public JLabel getRowLabel() {
+		return GuiMaker.createLabel(
+				new ComponentOptions().foregroundColor(Color.WHITE).text("+"));
 	}
 }

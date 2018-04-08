@@ -12,4 +12,7 @@ public interface JapanesePanelRowCreatingService {
 	public JComponent[] addWritingsRow(
 			JapaneseWriting japaneseWriting,
 			CommonListElements commonListElements, MainPanel rowPanel);
+
+	public JLabel getRowLabel ();
+
 }

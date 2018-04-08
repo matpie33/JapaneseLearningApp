@@ -38,7 +38,7 @@ public class RowInJapaneseWordInformations
 								applicationWindow.getApplicationController()
 										.getJapaneseWords(),
 								ListPanelDisplayMode.VIEW_AND_EDIT),
-						japaneseWord), applicationWindow);
+						japaneseWord, commonListElements), applicationWindow);
 		return panel;
 	}
 

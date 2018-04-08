@@ -7,6 +7,7 @@ import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelActionCr
 import com.kanji.utilities.CommonListElements;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,12 +16,15 @@ public class JapanesePanelRowServiceEditMode
 
 	private JapanesePanelActionCreatingService actionsMaker;
 	private JapaneseWordInformation wordContainingWriting;
+	private CommonListElements commonListElements;
 
 	public JapanesePanelRowServiceEditMode(
 			JapanesePanelActionCreatingService actionsMaker,
-			JapaneseWordInformation wordContainingWriting) {
+			JapaneseWordInformation wordContainingWriting,
+			CommonListElements commonListElements) {
 		this.actionsMaker = actionsMaker;
 		this.wordContainingWriting = wordContainingWriting;
+		this.commonListElements = commonListElements;
 	}
 
 	@Override
@@ -34,8 +38,8 @@ public class JapanesePanelRowServiceEditMode
 		for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
 			rowElements.add(actionsMaker.withKanjiValidation(
 					JapanesePanelElementsMaker
-							.createKanjiTextField(kanjiWriting), japaneseWriting,
-					wordContainingWriting));
+							.createKanjiTextField(kanjiWriting),
+					japaneseWriting, wordContainingWriting));
 		}
 		rowElements.add(JapanesePanelElementsMaker
 				.createButtonAddKanjiWriting(rowPanel));
@@ -43,5 +47,12 @@ public class JapanesePanelRowServiceEditMode
 		rowElements.add(commonListElements.getButtonDelete());
 
 		return rowElements.toArray(new JComponent[] {});
+	}
+
+	@Override
+	public JLabel getRowLabel() {
+		JLabel label = commonListElements.getRowNumberLabel();
+		label.setForeground(Color.WHITE);
+		return label;
 	}
 }

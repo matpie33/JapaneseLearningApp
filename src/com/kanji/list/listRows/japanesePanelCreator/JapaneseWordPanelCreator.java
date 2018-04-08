@@ -26,9 +26,11 @@ public class JapaneseWordPanelCreator {
 	private JLabel wordMeaningLabel;
 	private JLabel partOfSpeechLabel;
 	private JLabel writingsLabel;
+	private JLabel rowLabel;
 	private MyList<JapaneseWriting> writingsList;
 	private ApplicationController applicationController;
 	private JapanesePanelActionCreatingService actionCreatingService;
+
 
 	public JapaneseWordPanelCreator(ApplicationController applicationController,
 			JapanesePanelActionCreatingService actionCreatingService) {
@@ -49,6 +51,7 @@ public class JapaneseWordPanelCreator {
 	private void createElements(JapaneseWordInformation japaneseWordInformation,
 			JapanesePanelRowCreatingService panelCreatingService,
 			DialogWindow parentDialog) {
+		rowLabel = panelCreatingService.getRowLabel();
 		wordMeaningLabel = GuiMaker.createLabel(
 				new ComponentOptions().text(Labels.WORD_MEANING)
 						.foregroundColor(Color.WHITE));
@@ -105,13 +108,13 @@ public class JapaneseWordPanelCreator {
 		MainPanel japaneseWordPanel = new MainPanel(null);
 		japaneseWordPanel
 				.addElementsInColumnStartingFromColumn(wordMeaningText, 0,
-						wordMeaningLabel, wordMeaningText);
+						rowLabel, wordMeaningLabel, wordMeaningText);
 		japaneseWordPanel
-				.addElementsInColumnStartingFromColumn(partOfSpeechCombobox, 0,
+				.addElementsInColumnStartingFromColumn(partOfSpeechCombobox, 1,
 						partOfSpeechLabel, partOfSpeechCombobox);
 		JPanel writingsListPanel = writingsList.getPanel();
 		japaneseWordPanel
-				.addElementsInColumnStartingFromColumn(writingsListPanel, 0,
+				.addElementsInColumnStartingFromColumn(writingsListPanel, 1,
 						writingsLabel, writingsListPanel);
 
 		return japaneseWordPanel;
