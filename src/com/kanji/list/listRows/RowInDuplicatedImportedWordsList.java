@@ -11,6 +11,7 @@ import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelEditOrAddModeAction;
+import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelElementsMaker;
 import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelRowServiceAddMode;
 import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.myList.ListRowMaker;
@@ -50,21 +51,18 @@ public class RowInDuplicatedImportedWordsList
 						.foregroundColor(Color.WHITE));
 		JTextComponent rowNumberText = CommonGuiElementsMaker
 				.createTextField("" + (data.getDuplicatedWordRowNumber() + 1));
-
+		JapanesePanelEditOrAddModeAction actionMaker = new JapanesePanelEditOrAddModeAction(
+				applicationWindow.getApplicationController(), parentDialog,
+				applicationWindow.getApplicationController().getJapaneseWords(),
+				ListPanelDisplayMode.VIEW_AND_EDIT);
+		JapanesePanelElementsMaker elementsMaker = new JapanesePanelElementsMaker(
+				actionMaker);
 		MainPanel japaneseWordInformationPanel = new JapaneseWordPanelCreator(
-				applicationWindow.getApplicationController(),
-				new JapanesePanelEditOrAddModeAction(applicationWindow.getApplicationController(), parentDialog,
-						applicationWindow.getApplicationController()
-								.getJapaneseWords(),
-						ListPanelDisplayMode.VIEW_AND_EDIT))
+				applicationWindow.getApplicationController(), actionMaker,
+				elementsMaker)
 				.createPanel(data.getJapaneseWordInformation(),
 						new JapanesePanelRowServiceAddMode(
-								new JapanesePanelEditOrAddModeAction(applicationWindow
-										.getApplicationController(),
-										parentDialog, applicationWindow
-										.getApplicationController()
-										.getJapaneseWords(),
-										ListPanelDisplayMode.VIEW_AND_EDIT),
+								elementsMaker,
 								data.getJapaneseWordInformation()),
 						parentDialog);
 		AbstractButton buttonGoToRow = createButtonGoToRow(

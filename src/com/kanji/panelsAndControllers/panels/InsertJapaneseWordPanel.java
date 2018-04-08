@@ -8,6 +8,7 @@ import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listRows.RowInJapaneseWordInformations;
 import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelEditOrAddModeAction;
+import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelElementsMaker;
 import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelRowServiceAddMode;
 import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.myList.MyList;
@@ -38,25 +39,26 @@ public class InsertJapaneseWordPanel extends AbstractPanelWithHotkeysInfo {
 	@Override
 	public void createElements() {
 
+		JapanesePanelEditOrAddModeAction actionMaker = new JapanesePanelEditOrAddModeAction(
+				applicationWindow.getApplicationController(), parentDialog,
+				applicationWindow.getApplicationController().getJapaneseWords(),
+				ListPanelDisplayMode.ADD);
 		japaneseWordPanelCreator = new JapaneseWordPanelCreator(
-				applicationWindow.getApplicationController(),
-				new JapanesePanelEditOrAddModeAction(
-						applicationWindow.getApplicationController(),
-						parentDialog,
-						applicationWindow.getApplicationController()
-								.getJapaneseWords(), ListPanelDisplayMode.ADD));
+				applicationWindow.getApplicationController(), actionMaker,
+				new JapanesePanelElementsMaker(actionMaker));
 		controller.setParentDialog(parentDialog);
 
 		MainPanel addWordPanel = japaneseWordPanelCreator
 				.createPanel(japaneseWordInformation,
 						new JapanesePanelRowServiceAddMode(
-								new JapanesePanelEditOrAddModeAction(
-										applicationWindow
-												.getApplicationController(),
-										parentDialog, applicationWindow
-										.getApplicationController()
-										.getJapaneseWords(),
-										ListPanelDisplayMode.ADD),
+								new JapanesePanelElementsMaker(
+										new JapanesePanelEditOrAddModeAction(
+												applicationWindow
+														.getApplicationController(),
+												parentDialog, applicationWindow
+												.getApplicationController()
+												.getJapaneseWords(),
+												ListPanelDisplayMode.ADD)),
 								japaneseWordInformation), parentDialog);
 
 		AbstractButton cancel = createButtonClose();
@@ -70,8 +72,9 @@ public class InsertJapaneseWordPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private AbstractButton createButtonValidate(String text) {
-		//		return createButtonWithHotkey(KeyEvent.VK_ENTER, controller
-		//						.createActionValidateAndAddWord(HotkeysDescriptions.ADD_WORD);
+		//				return createButtonWithHotkey(KeyEvent.VK_ENTER,
+		//						controller.createActionValidateAndAddWord(
+		//								HotkeysDescriptions.ADD_WORD));
 		return new JButton("hi");
 	}
 

@@ -30,12 +30,14 @@ public class JapaneseWordPanelCreator {
 	private MyList<JapaneseWriting> writingsList;
 	private ApplicationController applicationController;
 	private JapanesePanelActionCreatingService actionCreatingService;
-
+	private JapanesePanelElementsMaker elementsMaker;
 
 	public JapaneseWordPanelCreator(ApplicationController applicationController,
-			JapanesePanelActionCreatingService actionCreatingService) {
+			JapanesePanelActionCreatingService actionCreatingService,
+			JapanesePanelElementsMaker elementsMaker) {
 		this.applicationController = applicationController;
 		this.actionCreatingService = actionCreatingService;
+		this.elementsMaker = elementsMaker;
 	}
 
 	public MainPanel createPanel(
@@ -60,7 +62,7 @@ public class JapaneseWordPanelCreator {
 		partOfSpeechLabel = GuiMaker.createLabel(
 				new ComponentOptions().text(Labels.PART_OF_SPEECH)
 						.foregroundColor(Color.WHITE));
-		partOfSpeechCombobox = JapanesePanelElementsMaker
+		partOfSpeechCombobox = elementsMaker
 				.createComboboxForPartOfSpeech(
 						japaneseWordInformation.getPartOfSpeech());
 		writingsList = createWritingsList(japaneseWordInformation,
@@ -121,7 +123,4 @@ public class JapaneseWordPanelCreator {
 
 	}
 
-	public MyList<JapaneseWriting> getJapaneseWritingsList() {
-		return writingsList;
-	}
 }

@@ -4,6 +4,7 @@ import com.guimaker.panels.MainPanel;
 import com.kanji.constants.enums.ListPanelDisplayMode;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelEditOrAddModeAction;
+import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelElementsMaker;
 import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelRowServiceEditMode;
 import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.myList.ListRowMaker;
@@ -14,16 +15,17 @@ public class RowInJapaneseWordInformations
 		implements ListRowMaker<JapaneseWordInformation> {
 	private JapaneseWordPanelCreator japaneseWordPanelCreator;
 	private ApplicationWindow applicationWindow;
+	private JapanesePanelElementsMaker elementsMaker;
 
 	public RowInJapaneseWordInformations(ApplicationWindow applicationWindow) {
+		JapanesePanelEditOrAddModeAction actionMaker = new JapanesePanelEditOrAddModeAction(
+				applicationWindow.getApplicationController(), applicationWindow,
+				applicationWindow.getApplicationController().getJapaneseWords(),
+				ListPanelDisplayMode.VIEW_AND_EDIT);
+		elementsMaker = new JapanesePanelElementsMaker(actionMaker);
 		japaneseWordPanelCreator = new JapaneseWordPanelCreator(
-				applicationWindow.getApplicationController(),
-				new JapanesePanelEditOrAddModeAction(
-						applicationWindow.getApplicationController(),
-						applicationWindow,
-						applicationWindow.getApplicationController()
-								.getJapaneseWords(),
-						ListPanelDisplayMode.VIEW_AND_EDIT));
+				applicationWindow.getApplicationController(), actionMaker,
+				elementsMaker);
 		this.applicationWindow = applicationWindow;
 	}
 
@@ -32,12 +34,7 @@ public class RowInJapaneseWordInformations
 			CommonListElements commonListElements) {
 		MainPanel panel = japaneseWordPanelCreator.createPanel(japaneseWord,
 				new JapanesePanelRowServiceEditMode(
-						new JapanesePanelEditOrAddModeAction(
-								applicationWindow.getApplicationController(),
-								applicationWindow,
-								applicationWindow.getApplicationController()
-										.getJapaneseWords(),
-								ListPanelDisplayMode.VIEW_AND_EDIT),
+						elementsMaker,
 						japaneseWord, commonListElements), applicationWindow);
 		return panel;
 	}

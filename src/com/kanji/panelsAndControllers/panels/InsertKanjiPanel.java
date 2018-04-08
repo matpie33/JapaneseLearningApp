@@ -69,10 +69,6 @@ public class InsertKanjiPanel<Word extends ListElement>
 			case STRING_LONG_WORD:
 				component = CommonGuiElementsMaker.createKanjiWordInput("");
 				break;
-			case COMBOBOX_OPTION:
-				component = JapanesePanelElementsMaker
-						.createComboboxForPartOfSpeech(PartOfSpeech.NOUN);
-				break;
 			default:
 				throw new RuntimeException(
 						"Invalid element type in insert word panel");

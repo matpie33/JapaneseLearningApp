@@ -18,6 +18,7 @@ import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listElements.ListElementData;
 import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelEditOrAddModeAction;
+import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelElementsMaker;
 import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelRowServiceAddMode;
 import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.myList.MyList;
@@ -138,17 +139,19 @@ public class SearchWordPanel<Word extends ListElement>
 						textInputForElementType).getPanel();
 				break;
 			case KANA_KANJI_WRITINGS:
+				JapanesePanelEditOrAddModeAction actionMaker = new JapanesePanelEditOrAddModeAction(
+						applicationWindow.getApplicationController(),
+						parentDialog,
+						applicationWindow.getApplicationController()
+								.getJapaneseWords(),
+						ListPanelDisplayMode.VIEW_AND_EDIT);
+				//TODO this code looks terrible, need to lower the number of arguments
 				panelForElementType = JapaneseWordPanelCreator
 						.createJapaneseWritingsList(parentDialog,
 								applicationWindow.getApplicationController(),
 								new JapanesePanelRowServiceAddMode(
-										new JapanesePanelEditOrAddModeAction(
-												applicationWindow
-														.getApplicationController(),
-												parentDialog, applicationWindow
-												.getApplicationController()
-												.getJapaneseWords(),
-												ListPanelDisplayMode.VIEW_AND_EDIT),
+										new JapanesePanelElementsMaker(
+												actionMaker),
 										JapaneseWordInformation.getInitializer()
 												.initializeElement()))
 						.getPanel();
