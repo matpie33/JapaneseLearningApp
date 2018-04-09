@@ -15,8 +15,7 @@ public class TextFieldSelectionHandler {
 	private static final JTextComponent emptyTextField = new JTextField();
 
 	public void toggleSelection(JTextComponent clickedTextField) {
-		String word = clickedTextField.getText();
-		if (word.equals(currentlySelectedTextfield)) {
+		if (clickedTextField.equals(currentlySelectedTextfield)) {
 			currentlySelectedTextfield = emptyTextField;
 			clickedTextField.setBackground(NOT_SELECTED_COLOR);
 		}

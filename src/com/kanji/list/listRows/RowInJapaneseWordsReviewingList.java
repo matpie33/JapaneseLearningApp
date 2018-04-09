@@ -1,17 +1,11 @@
 package com.kanji.list.listRows;
 
-import com.guimaker.enums.ComponentType;
-import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
-import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.myList.ListRowMaker;
 import com.kanji.problematicWords.ProblematicJapaneseWordsDisplayer;
 import com.kanji.utilities.CommonListElements;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
 
 public class RowInJapaneseWordsReviewingList
 		implements ListRowMaker<JapaneseWordInformation> {
@@ -36,17 +30,6 @@ public class RowInJapaneseWordsReviewingList
 				.addJapanesePanelToExistingPanel(panel, japaneseWord);
 
 		return panel;
-	}
-
-	private AbstractButton createButtonSearchWord() {
-		return GuiMaker.createButtonlikeComponent(ComponentType.BUTTON,
-				ButtonsNames.SEARCH_IN_DICTIONARY, new AbstractAction() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						problematicJapaneseWordsDisplayer
-								.searchCurrentWordInDictionary();
-					}
-				});
 	}
 
 }
