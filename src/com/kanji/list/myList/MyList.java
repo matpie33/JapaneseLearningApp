@@ -43,16 +43,11 @@ public class MyList<Word extends ListElement> {
 			List<ListElementData<Word>> listElementData,
 			ListElementInitializer wordInitializer) {
 		this(parentDialog, applicationController, listRowMaker, title,
-				new ListConfiguration(),
-				listElementData, wordInitializer);
+				new ListConfiguration(), listElementData, wordInitializer);
 	}
 
 	public void inheritScrollPane() {
 		listController.inheritScrollPane();
-	}
-
-	public void addNavigationButtons(AbstractButton... buttons) {
-		listController.addNavigationButtons(buttons);
 	}
 
 	public void scrollToTop() {

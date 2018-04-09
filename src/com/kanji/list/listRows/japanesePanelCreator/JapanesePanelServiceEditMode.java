@@ -31,13 +31,13 @@ public class JapanesePanelServiceEditMode
 		List<JComponent> rowElements = new ArrayList<>();
 		rowElements.add(elementsMaker
 				.createKanaTextField(japaneseWriting.getKanaWriting(),
-						japaneseWriting, wordContainingWriting));
+						japaneseWriting, wordContainingWriting, true));
 		//TODO try to use the approach in whole application:
 		//GuiElement e = actionMaker.withAction(elementsMaker.createElement)
 		for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
 			rowElements.add(elementsMaker
 					.createKanjiTextField(kanjiWriting, japaneseWriting,
-							wordContainingWriting));
+							wordContainingWriting, true));
 		}
 		rowElements.add(elementsMaker
 				.createButtonAddKanjiWriting(rowPanel, japaneseWriting,

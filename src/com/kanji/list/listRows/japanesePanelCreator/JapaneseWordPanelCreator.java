@@ -128,4 +128,7 @@ public class JapaneseWordPanelCreator {
 						writingsLabel, writingsListPanel);
 	}
 
+	public TextFieldSelectionHandler getSelectionHandler() {
+		return japanesePanelServiceStore.getSelectionHandler();
+	}
 }

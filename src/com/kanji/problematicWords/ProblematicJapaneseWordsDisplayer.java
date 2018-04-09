@@ -15,6 +15,8 @@ import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.KanjiInformation;
 import com.kanji.list.listRows.RowInJapaneseWordsReviewingList;
 import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
+import com.kanji.list.listRows.japanesePanelCreator.TextFieldSelectionHandler;
+import com.kanji.list.myList.ListConfiguration;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.WordRow;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
@@ -26,7 +28,6 @@ import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.HashSet;
 import java.util.Set;
@@ -36,8 +37,8 @@ public class ProblematicJapaneseWordsDisplayer
 
 	private MyList<JapaneseWordInformation> wordsToReviewList;
 	private ProblematicJapaneseWordsPanel problematicJapaneseWordsPanel;
-	private JTextComponent selectedWord;
 	private MyList<KanjiInformation> kanjiInformations;
+	private TextFieldSelectionHandler selectionHandler;
 
 	public ProblematicJapaneseWordsDisplayer(
 			ApplicationWindow applicationWindow,
@@ -45,16 +46,31 @@ public class ProblematicJapaneseWordsDisplayer
 
 		problematicJapaneseWordsPanel = new ProblematicJapaneseWordsPanel(
 				controller, applicationWindow, this);
+		JapaneseWordPanelCreator japanesePanelCreator = createJapanesePanelCreator(
+				applicationWindow);
+		selectionHandler = japanesePanelCreator.getSelectionHandler();
 		this.wordsToReviewList = new MyList<>(applicationWindow, null,
-				new RowInJapaneseWordsReviewingList(this,
-						createJapanesePanelCreator(applicationWindow)),
+				new RowInJapaneseWordsReviewingList(this, japanesePanelCreator),
 				Titles.PROBLEMATIC_KANJIS,
+				new ListConfiguration().enableWordAdding(false)
+						.withAdditionalNavigationButtons(
+								createButtonSearchWord()),
 				JapaneseWordInformation.getElementsTypesAndLabels(),
 				JapaneseWordInformation.getInitializer());
 		controller.setProblematicWordsDisplayer(this);
 		kanjiInformations = applicationWindow.getApplicationController()
 				.getKanjiList();
 
+	}
+
+	private AbstractButton createButtonSearchWord() {
+		return GuiMaker.createButtonlikeComponent(ComponentType.BUTTON,
+				ButtonsNames.SEARCH_IN_DICTIONARY, new AbstractAction() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						searchCurrentWordInDictionary();
+					}
+				});
 	}
 
 	private JapaneseWordPanelCreator createJapanesePanelCreator(
@@ -151,24 +167,11 @@ public class ProblematicJapaneseWordsDisplayer
 		return problematicJapaneseWordsPanel;
 	}
 
-	public void setSelectedWord(JTextComponent component) {
-
-		if (selectedWord != null) {
-			selectedWord.setBackground(Color.WHITE);
-		}
-		if (selectedWord == component) {
-			selectedWord.setBackground(Color.WHITE);
-			selectedWord = null;
-			return;
-		}
-		selectedWord = component;
-		selectedWord.setBackground(Color.GRAY);
-
-	}
-
 	public void searchCurrentWordInDictionary() {
-		if (selectedWord != null) {
-			problematicJapaneseWordsPanel.searchWord(selectedWord.getText());
+		String currentlySelectedWord = selectionHandler
+				.getCurrentlySelectedWord();
+		if (!currentlySelectedWord.isEmpty()) {
+			problematicJapaneseWordsPanel.searchWord(currentlySelectedWord);
 		}
 		else {
 			//TODO add message about not selected words

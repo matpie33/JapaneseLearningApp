@@ -58,7 +58,7 @@ public class ListPanelMaker<Word extends ListElement>
 			ListRowMaker<Word> listRow, ListWordsController<Word> controller) {
 		this.applicationController = applicationController;
 		listWordsController = controller;
-		unwrapConfiguration(listConfiguration);
+
 		isSkipTitle = listConfiguration.isSkipTitle();
 		rowsPanel = new MainPanel(BasicColors.VERY_BLUE, true);
 		rootPanel = new MainPanel(null);
@@ -71,6 +71,7 @@ public class ListPanelMaker<Word extends ListElement>
 		this.listRow = listRow;
 
 		navigationButtons = new ArrayList<>();
+		unwrapConfiguration(listConfiguration);
 
 	}
 
@@ -80,13 +81,15 @@ public class ListPanelMaker<Word extends ListElement>
 		this.enableWordSearching = listConfiguration.isWordSearchingEnabled();
 		showButtonsNextAndPrevious = listConfiguration
 				.isShowButtonsLoadNextPreviousWords();
+		addNavigationButtons(
+				listConfiguration.getAdditionalNavigationButtons());
 	}
 
 	public void inheritScrollPane() {
 		isScrollBarInherited = false;
 	}
 
-	public void addNavigationButtons(AbstractButton... buttons) {
+	private void addNavigationButtons(AbstractButton... buttons) {
 		for (AbstractButton button : buttons) {
 			navigationButtons.add(button);
 		}

@@ -26,20 +26,38 @@ public class JapanesePanelElementsMaker {
 		this.actionsMaker = actionsMaker;
 	}
 
+	private JTextComponent viewOnlyTextField(JTextComponent field) {
+		field.setEnabled(false);
+		field.setBackground(TextFieldSelectionHandler.NOT_SELECTED_COLOR);
+		return field;
+	}
+
 	public JTextComponent createKanaTextField(String text,
 			JapaneseWriting japaneseWriting,
-			JapaneseWordInformation japaneseWordInformation) {
-		return actionsMaker.withKanaValidation(
+			JapaneseWordInformation japaneseWordInformation, boolean enabled) {
+		JTextComponent kanaTextField = actionsMaker.withKanaValidation(
 				createKanaOrKanjiTextField(text, Prompts.KANA_TEXT),
 				japaneseWriting, japaneseWordInformation);
+		if (!enabled){
+			return viewOnlyTextField(kanaTextField);
+		}
+		else{
+			return kanaTextField;
+		}
 	}
 
 	public JTextComponent createKanjiTextField(String text,
 			JapaneseWriting japaneseWriting,
-			JapaneseWordInformation japaneseWordInformation) {
-		return actionsMaker.withKanjiValidation(
+			JapaneseWordInformation japaneseWordInformation, boolean enabled) {
+		JTextComponent kanjiTextField =  actionsMaker.withKanjiValidation(
 				createKanaOrKanjiTextField(text, Prompts.KANJI_TEXT),
 				japaneseWriting, japaneseWordInformation);
+		if (!enabled){
+			return viewOnlyTextField(kanjiTextField);
+		}
+		else{
+			return kanjiTextField;
+		}
 	}
 
 	private JTextComponent createKanaOrKanjiTextField(String initialValue,
@@ -84,7 +102,7 @@ public class JapanesePanelElementsMaker {
 			public void actionPerformed(ActionEvent e) {
 				rowPanel.insertElementInPlaceOfElement(
 						createKanjiTextField("", japaneseWriting,
-								japaneseWordInformation), button);
+								japaneseWordInformation, true), button);
 			}
 		});
 		return button;

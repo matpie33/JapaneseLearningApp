@@ -101,9 +101,6 @@ public class RepeatingJapaneseWordsDisplayer
 		japaneseWordPanelCreator
 				.addJapanesePanelToExistingPanel(fullWordInformationPanel,
 						japaneseWordInformation);
-
-
-
 	}
 
 	@Override

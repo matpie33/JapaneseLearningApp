@@ -12,7 +12,8 @@ public class JapanesePanelServiceStore {
 	private JapanesePanelEditOrAddModeAction actionMaker;
 	private JapanesePanelElementsMaker elementsMaker;
 
-	public JapanesePanelServiceStore(ApplicationController applicationController,
+	public JapanesePanelServiceStore(
+			ApplicationController applicationController,
 			DialogWindow parentDialog,
 			MyList<JapaneseWordInformation> wordsList,
 			JapanesePanelDisplayMode japanesePanelDisplayMode) {
@@ -22,7 +23,8 @@ public class JapanesePanelServiceStore {
 		getPanelRowService(japanesePanelDisplayMode);
 	}
 
-	private void getPanelRowService(JapanesePanelDisplayMode japanesePanelDisplayMode) {
+	private void getPanelRowService(
+			JapanesePanelDisplayMode japanesePanelDisplayMode) {
 		switch (japanesePanelDisplayMode) {
 		case EDIT:
 			panelCreatingService = new JapanesePanelServiceEditMode(
@@ -30,7 +32,7 @@ public class JapanesePanelServiceStore {
 			break;
 		case VIEW:
 			panelCreatingService = new JapanesePanelServiceViewMode(
-					elementsMaker);
+					elementsMaker, new TextFieldSelectionHandler());
 			break;
 		}
 	}
@@ -55,5 +57,17 @@ public class JapanesePanelServiceStore {
 
 	public JapanesePanelElementsMaker getElementsMaker() {
 		return elementsMaker;
+	}
+
+	public TextFieldSelectionHandler getSelectionHandler() {
+		if (panelCreatingService instanceof JapanesePanelServiceViewMode) {
+			return ((JapanesePanelServiceViewMode) panelCreatingService)
+					.getSelectionHandler();
+		}
+		else {
+			throw new IllegalArgumentException(
+					"Only panel in view mode contains selection hanler - and this panel is not view mode");
+		}
+
 	}
 }

@@ -6,6 +6,7 @@ import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.JapaneseWordInformation;
+import com.kanji.list.listRows.japanesePanelCreator.TextFieldSelectionHandler;
 import com.kanji.list.myList.ListPropertyChangeHandler;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
@@ -13,10 +14,7 @@ import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
 import java.util.Locale;
 
 public class JapanesePanelActions {
@@ -84,4 +82,22 @@ public class JapanesePanelActions {
 			}
 		});
 	}
+
+	public static JTextComponent selectableTextfield(
+			JTextComponent textComponent,
+			TextFieldSelectionHandler selectionHandler) {
+		textComponent.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+				if (e.getSource() instanceof JTextComponent) {
+					selectionHandler
+							.toggleSelection((JTextComponent) e.getSource());
+				}
+
+			}
+		});
+		return textComponent;
+	}
+
 }

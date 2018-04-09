@@ -50,9 +50,6 @@ public class ListWordsController<Word extends ListElement> {
 		listPanelMaker.inheritScrollPane();
 	}
 
-	public void addNavigationButtons(AbstractButton... buttons) {
-		listPanelMaker.addNavigationButtons(buttons);
-	}
 
 	private void initializeFoundWordStrategies() {
 		strategiesForFoundWord.add(new FoundWordInsideVisibleRangeStrategy());

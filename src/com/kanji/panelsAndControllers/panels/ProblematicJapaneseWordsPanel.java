@@ -2,21 +2,18 @@ package com.kanji.panelsAndControllers.panels;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
-import com.guimaker.enums.ComponentType;
 import com.guimaker.enums.FillType;
 import com.guimaker.options.ScrollPaneOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.SplitPaneOrientation;
-import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Urls;
 import com.kanji.context.ContextOwner;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.problematicWords.ProblematicJapaneseWordsDisplayer;
-import com.kanji.problematicWords.ProblematicWordsDisplayer;
 import com.kanji.utilities.CommonGuiElementsMaker;
 import com.kanji.utilities.FocusableComponentMaker;
 import com.kanji.webPanel.WebPagePanel;
@@ -24,7 +21,6 @@ import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.HttpCookie;
@@ -59,7 +55,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 
 	public void initialize() {
 		problematicWords = problematicWordsController.getWordsToReviewList();
-		problematicWords.addNavigationButtons(createButtonSearchWord());
+
 		japaneseEnglishDictionaryPanel.showPage(TANGORIN_URL);
 		englishDictionaryPanel.showPage(Urls.DICTIONARY_PL_EN_MAIN_PAGE);
 		String pageToRender = "";
@@ -70,17 +66,6 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 			pageToRender = KANJI_KOOHI_LOGIN_PAGE;
 		}
 		kanjiKoohiWebPanel.showPageWithoutGrabbingFocus(pageToRender);
-	}
-
-	private AbstractButton createButtonSearchWord() {
-		return GuiMaker.createButtonlikeComponent(ComponentType.BUTTON,
-				ButtonsNames.SEARCH_IN_DICTIONARY, new AbstractAction() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						problematicJapaneseWordsDisplayer
-								.searchCurrentWordInDictionary();
-					}
-				});
 	}
 
 	private boolean isLoginDataRemembered() {

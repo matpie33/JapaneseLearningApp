@@ -1,5 +1,7 @@
 package com.kanji.list.myList;
 
+import javax.swing.*;
+
 public class ListConfiguration {
 
 	private boolean enableWordAdding = true;
@@ -7,6 +9,7 @@ public class ListConfiguration {
 	private boolean showButtonsLoadNextPreviousWords = true;
 	private boolean enableWordSearching = true;
 	private boolean skipTitle = false;
+	private AbstractButton[] additionalNavigationButtons = new AbstractButton[] {};
 
 	public boolean isSkipTitle() {
 		return skipTitle;
@@ -52,5 +55,15 @@ public class ListConfiguration {
 			boolean showButtonsLoadNextPreviousWords) {
 		this.showButtonsLoadNextPreviousWords = showButtonsLoadNextPreviousWords;
 		return this;
+	}
+
+	public ListConfiguration withAdditionalNavigationButtons(
+			AbstractButton... buttons) {
+		this.additionalNavigationButtons = buttons;
+		return this;
+	}
+
+	public AbstractButton[] getAdditionalNavigationButtons() {
+		return additionalNavigationButtons;
 	}
 }

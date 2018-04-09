@@ -29,7 +29,7 @@ public class ButtonsNames {
 
 	public static final String CONFIRM = "Tak";
 	public static final String REJECT = "Nie";
-	public static final String SEARCH_IN_DICTIONARY = "->";
+	public static final String SEARCH_IN_DICTIONARY = "Szukaj w słowniku";
 	public static final String ADD_KANJI_WRITING = "Dodaj zapis kanji";
 	public static final String ADD_KANA_AND_KANJI_WRITINGS = "Dodaj kana i kanji";
 	public static final String REMOVE_KANA_AND_KANJI_WRITINGS = "Usun wiersz";
