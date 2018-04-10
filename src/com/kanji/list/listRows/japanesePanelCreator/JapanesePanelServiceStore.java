@@ -1,9 +1,7 @@
 package com.kanji.list.listRows.japanesePanelCreator;
 
 import com.kanji.constants.enums.JapanesePanelDisplayMode;
-import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelEditOrAddModeAction;
-import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.windows.DialogWindow;
 
@@ -15,9 +13,8 @@ public class JapanesePanelServiceStore {
 	public JapanesePanelServiceStore(
 			ApplicationController applicationController,
 			DialogWindow parentDialog,
-			MyList<JapaneseWordInformation> wordsList,
 			JapanesePanelDisplayMode japanesePanelDisplayMode) {
-		initializeActionMaker(applicationController, parentDialog, wordsList,
+		initializeActionMaker(applicationController, parentDialog,
 				japanesePanelDisplayMode);
 		elementsMaker = new JapanesePanelElementsMaker(actionMaker);
 		getPanelRowService(japanesePanelDisplayMode);
@@ -40,11 +37,9 @@ public class JapanesePanelServiceStore {
 	private void initializeActionMaker(
 			ApplicationController applicationController,
 			DialogWindow parentDialog,
-			MyList<JapaneseWordInformation> wordsList,
 			JapanesePanelDisplayMode japanesePanelDisplayMode) {
 		actionMaker = new JapanesePanelEditOrAddModeAction(
-				applicationController, parentDialog, wordsList,
-				japanesePanelDisplayMode);
+				applicationController, parentDialog, japanesePanelDisplayMode);
 	}
 
 	public JapanesePanelCreatingService getPanelCreatingService() {

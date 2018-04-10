@@ -122,8 +122,10 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	private void initializeJapaneseWordsList() {
+		JapaneseWordPanelCreator japaneseWordPanelCreator = new JapaneseWordPanelCreator(
+				this, parent, JapanesePanelDisplayMode.EDIT);
 		rowInJapaneseWordInformations = new RowInJapaneseWordInformations(
-				parent);
+				japaneseWordPanelCreator);
 		japaneseWords = new MyList<>(parent, this,
 				rowInJapaneseWordInformations, Titles.JAPANESE_WORDS_LIST,
 				JapaneseWordInformation.getElementsTypesAndLabels(),
@@ -139,8 +141,8 @@ public class ApplicationController implements ApplicationStateManager {
 		japaneseWords.addWord(dog2);
 		JapaneseWordInformation verb = new JapaneseWordInformation(
 				PartOfSpeech.VERB, "otwierać");
-		verb.addWritings("あける", "開ける", " 空ける", "明ける");
-		verb.addWritings("ひらける", "開ける", " 空ける", "明ける");
+		verb.addWritings("あける", "開ける", "空ける", "明ける");
+		verb.addWritings("ひらける", "開ける", "空ける", "明ける");
 		verb.addAditionalInformation(AdditionalInformationTag.VERB_CONJUGATION,
 				Labels.VERB_CONJUGATION_GODAN);
 		JapaneseWordInformation japaneseWordInformation = new JapaneseWordInformation(

@@ -37,8 +37,7 @@ public class JapaneseWordPanelCreator {
 	public JapaneseWordPanelCreator(ApplicationController applicationController,
 			DialogWindow parentDialog, JapanesePanelDisplayMode displayMode) {
 		japanesePanelServiceStore = new JapanesePanelServiceStore(
-				applicationController, parentDialog,
-				applicationController.getJapaneseWords(), displayMode);
+				applicationController, parentDialog, displayMode);
 		this.applicationController = applicationController;
 		this.parentDialog = parentDialog;
 	}
@@ -131,4 +130,9 @@ public class JapaneseWordPanelCreator {
 	public TextFieldSelectionHandler getSelectionHandler() {
 		return japanesePanelServiceStore.getSelectionHandler();
 	}
+
+	public void focusMeaningTextfield (){
+		SwingUtilities.invokeLater(()->wordMeaningText.requestFocusInWindow());
+	}
+
 }

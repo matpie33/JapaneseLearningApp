@@ -17,6 +17,7 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 	private String errorDetails = "";
 	private boolean addingWord; //TODO rename in other places too (from kanaRequired)
 	private static final String DEFAULT_KANJI_INPUT = Prompts.KANJI_TEXT;
+	private static final String DEFAULT_KANA_INPUT = Prompts.KANA_TEXT;
 	private JapaneseWriting japaneseWritingToCheck;
 	private boolean kanaChecker;
 	private String previousValue;
@@ -26,7 +27,18 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 		this.addingWord = addingWord;
 		this.japaneseWritingToCheck = japaneseWritingToCheck;
 		this.kanaChecker = kanaChecker;
-		this.previousValue = previousValue;
+		this.previousValue = convertDefaultValueToEmpty(kanaChecker, previousValue);
+	}
+
+	private String convertDefaultValueToEmpty(boolean kanaChecker,
+			String previousValue) {
+		if (kanaChecker && previousValue.equals(DEFAULT_KANA_INPUT)){
+			return "";
+		}
+		if (!kanaChecker && previousValue.equals(DEFAULT_KANJI_INPUT)){
+			return "";
+		}
+		return previousValue;
 	}
 
 	@Override
@@ -65,7 +77,7 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 
 	private boolean areKanjiWritingsEmpty(Set<String> kanjiWritings) {
 		return kanjiWritings.isEmpty() || (kanjiWritings.size() == 1
-				&& kanjiWritings.iterator().next().equals(Prompts.KANJI_TEXT));
+				&& kanjiWritings.iterator().next().equals(DEFAULT_KANJI_INPUT));
 	}
 
 	private boolean kanaWritingsAreEqualAndKanjiWritingsContainAllOtherKanjiWritings(

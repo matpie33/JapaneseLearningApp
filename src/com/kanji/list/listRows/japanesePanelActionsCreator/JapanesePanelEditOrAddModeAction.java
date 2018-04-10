@@ -7,7 +7,6 @@ import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordWritingsChecker;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.JapaneseWriting;
-import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.windows.DialogWindow;
 
@@ -17,17 +16,14 @@ import javax.swing.text.JTextComponent;
 public class JapanesePanelEditOrAddModeAction {
 
 	private DialogWindow parentDialog;
-	private MyList<JapaneseWordInformation> wordsList;
 	private JapanesePanelDisplayMode japanesePanelDisplayMode;
 	private ApplicationController applicationController;
 
 	public JapanesePanelEditOrAddModeAction(
 			ApplicationController applicationController,
 			DialogWindow parentDialog,
-			MyList<JapaneseWordInformation> wordsList,
 			JapanesePanelDisplayMode japanesePanelDisplayMode) {
 		this.parentDialog = parentDialog;
-		this.wordsList = wordsList;
 		this.japanesePanelDisplayMode = japanesePanelDisplayMode;
 		this.applicationController = applicationController;
 	}
@@ -39,7 +35,7 @@ public class JapanesePanelEditOrAddModeAction {
 				.addWordMeaningPropertyChangeListener(wordMeaningTextField,
 						japaneseWordInformation,
 						WordSearchOptions.BY_FULL_EXPRESSION, parentDialog,
-						wordsList);
+						applicationController.getJapaneseWords());
 	}
 
 	public JTextComponent withKanaValidation(JTextComponent kanaTextField,
@@ -65,13 +61,14 @@ public class JapanesePanelEditOrAddModeAction {
 			JapaneseWriting japaneseWriting,
 			JapaneseWordInformation japaneseWordInformation,
 			String promptOnEmpty, boolean kanaChecker) {
-		boolean isKanaRequired = japanesePanelDisplayMode.isKanaTextFieldRequired();
+		boolean isKanaRequired = japanesePanelDisplayMode
+				.isKanaTextFieldRequired();
 		JapanesePanelActions.addPropertyChangeHandler(japaneseWritingTextField,
 				japaneseWordInformation, isKanaRequired, promptOnEmpty,
 				new JapaneseWordWritingsChecker(japaneseWriting, isKanaRequired,
 						kanaChecker, japaneseWritingTextField.getText()),
 				ExceptionsMessages.JAPANESE_WORD_WRITINGS_ALREADY_DEFINED,
-				parentDialog, wordsList);
+				parentDialog, applicationController.getJapaneseWords());
 	}
 
 	public void addPartOfSpeechListener(JComboBox partOfSpeechCombobox,

@@ -50,12 +50,6 @@ public class RowInDuplicatedImportedWordsList
 						.foregroundColor(Color.WHITE));
 		JTextComponent rowNumberText = CommonGuiElementsMaker
 				.createTextField("" + (data.getDuplicatedWordRowNumber() + 1));
-		JapanesePanelEditOrAddModeAction actionMaker = new JapanesePanelEditOrAddModeAction(
-				applicationWindow.getApplicationController(), parentDialog,
-				applicationWindow.getApplicationController().getJapaneseWords(),
-				JapanesePanelDisplayMode.EDIT);
-		JapanesePanelElementsMaker elementsMaker = new JapanesePanelElementsMaker(
-				actionMaker);
 		MainPanel japaneseWordInformationPanel = new MainPanel(null);
 		new JapaneseWordPanelCreator(
 				applicationWindow.getApplicationController(), parentDialog,
