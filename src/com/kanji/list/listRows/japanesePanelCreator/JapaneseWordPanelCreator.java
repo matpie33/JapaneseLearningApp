@@ -1,8 +1,10 @@
 package com.kanji.list.listRows.japanesePanelCreator;
 
+import com.guimaker.enums.FillType;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
+import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.JapanesePanelDisplayMode;
 import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElements.JapaneseWordInformation;
@@ -61,7 +63,7 @@ public class JapaneseWordPanelCreator {
 
 	private void createElements(
 			JapaneseWordInformation japaneseWordInformation) {
-		if (rowNumberLabel != null){
+		if (rowNumberLabel != null) {
 			rowNumberLabel.setForeground(labelsColor);
 		}
 		wordMeaningLabel = GuiMaker.createLabel(
@@ -111,17 +113,18 @@ public class JapaneseWordPanelCreator {
 	}
 
 	private void addElementsToPanel(MainPanel japaneseWordPanel) {
-
-		japaneseWordPanel
-				.addElementsInColumnStartingFromColumn(wordMeaningText, 0,
-						rowNumberLabel, wordMeaningLabel, wordMeaningText);
-		japaneseWordPanel
-				.addElementsInColumnStartingFromColumn(partOfSpeechCombobox, 1,
-						partOfSpeechLabel, partOfSpeechCombobox);
 		JPanel writingsListPanel = writingsList.getPanel();
-		japaneseWordPanel
-				.addElementsInColumnStartingFromColumn(writingsListPanel, 1,
-						writingsLabel, writingsListPanel);
+		japaneseWordPanel.addRowsOfElementsInColumnStartingFromColumn(
+				SimpleRowBuilder
+						.createRowStartingFromColumn(0, FillType.HORIZONTAL,
+								rowNumberLabel, wordMeaningLabel,
+								wordMeaningText)
+						.fillHorizontallySomeElements(wordMeaningText)
+						.nextRow(partOfSpeechLabel, partOfSpeechCombobox)
+						.setColumnToPutRowInto(1)
+						.fillHorizontallySomeElements(partOfSpeechCombobox)
+						.nextRow(writingsLabel, writingsListPanel)
+						.fillHorizontallySomeElements(writingsListPanel));
 	}
 
 	public TextFieldSelectionHandler getSelectionHandler() {

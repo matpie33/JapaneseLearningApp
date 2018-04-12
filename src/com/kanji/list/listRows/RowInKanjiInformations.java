@@ -1,9 +1,10 @@
 package com.kanji.list.listRows;
 
-import com.guimaker.colors.BasicColors;
+import com.guimaker.enums.FillType;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
+import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
@@ -55,10 +56,12 @@ public class RowInKanjiInformations implements ListRowMaker<KanjiInformation> {
 				ExceptionsMessages.ID_ALREADY_DEFINED_EXCEPTION, true));
 		AbstractButton remove = commonListElements.getButtonDelete();
 		JLabel rowNumberLabel = commonListElements.getRowNumberLabel();
-		panel.addElementsInColumnStartingFromColumn(wordTextArea, 0,
-				rowNumberLabel, kanjiKeyword, wordTextArea);
-		panel.addElementsInColumnStartingFromColumn(1, kanjiId, idTextArea);
-		panel.addElementsInColumnStartingFromColumn(1, remove);
+		panel.addRowsOfElementsInColumnStartingFromColumn(SimpleRowBuilder
+				.createRowStartingFromColumn(0, FillType.HORIZONTAL,
+						rowNumberLabel, kanjiKeyword, wordTextArea)
+				.fillHorizontallySomeElements(wordTextArea)
+				.nextRow(kanjiId, idTextArea).setColumnToPutRowInto(1)
+				.nextRow(remove));
 
 		return panel;
 

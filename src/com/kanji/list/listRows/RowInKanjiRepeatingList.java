@@ -1,10 +1,12 @@
 package com.kanji.list.listRows;
 
 import com.guimaker.colors.BasicColors;
+import com.guimaker.enums.FillType;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.TextAreaOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
+import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElements.KanjiInformation;
@@ -46,12 +48,15 @@ public class RowInKanjiRepeatingList implements ListRowMaker<KanjiInformation> {
 		int rowNumber = controller.getNumberOfRows();
 
 		JButton buttonGoToSource = createButtonGoToSource(rowNumber, row);
-		panel.addElementsInColumnStartingFromColumn(kanjiTextArea, 0,
-				commonListElements.getRowNumberLabel(), kanjiKeyword,
-				kanjiTextArea);
-		panel.addElementsInColumnStartingFromColumn(1, kanjiId, id);
-		panel.addElementsInColumnStartingFromColumn(buttonGoToSource, 1,
-				buttonGoToSource);
+		panel.addRowsOfElementsInColumnStartingFromColumn(SimpleRowBuilder
+				.createRowStartingFromColumn(0, FillType.HORIZONTAL,
+						commonListElements.getRowNumberLabel(), kanjiKeyword,
+						kanjiTextArea)
+				.fillHorizontallySomeElements(kanjiTextArea)
+				.nextRow(kanjiId, id)
+				.setColumnToPutRowInto(1)
+				.nextRow(buttonGoToSource)
+				.fillHorizontallyEqually());
 		return panel;
 	}
 

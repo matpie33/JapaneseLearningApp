@@ -1,10 +1,12 @@
 package com.kanji.problematicWords;
 
 import com.guimaker.enums.ComponentType;
+import com.guimaker.enums.FillType;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.TextAreaOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
+import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.JapanesePanelDisplayMode;
 import com.kanji.constants.enums.SearchingDirection;
 import com.kanji.constants.strings.ButtonsNames;
@@ -130,8 +132,10 @@ public class ProblematicJapaneseWordsDisplayer
 							});
 			goToButton.setFocusable(false);
 
-			panel.addElementsInColumnStartingFromColumn(0, kanjiLabel,
-					keywordLabel, goToButton);
+			panel.addElementsInColumnStartingFromColumn(SimpleRowBuilder
+					.createRowStartingFromColumn(0, FillType.NONE, keywordLabel,
+							goToButton)
+					.fillHorizontallySomeElements(kanjiLabel));
 		}
 		panel.updateView();
 	}
