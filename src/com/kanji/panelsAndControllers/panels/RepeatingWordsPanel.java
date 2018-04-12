@@ -78,7 +78,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 				.nextRow(FillType.NONE, Anchor.CENTER, remainingLabel,
 						returnButton));
 		//TODO in gui maker enable me to put some element in some anchor so that remaining label can be positioned vertically center
-		mainPanel.addRows(SimpleRowBuilder
+		mainPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.BOTH, Anchor.CENTER, centerPanel.getPanel())
 				.useAllExtraVerticalSpace());
 	}

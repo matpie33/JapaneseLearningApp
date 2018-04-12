@@ -1,7 +1,7 @@
 package com.kanji.list.myList;
 
 import com.guimaker.panels.MainPanel;
-import com.guimaker.row.SimpleRow;
+import com.guimaker.row.AbstractSimpleRow;
 import com.kanji.range.Range;
 
 import javax.swing.*;
@@ -28,8 +28,9 @@ public class LoadNextWordsHandler implements LoadWordsHandler {
 	}
 
 	@Override
-	public JComponent showWord(SimpleRow simpleRow) {
-		return rowsPanel.insertRow(rowsPanel.getNumberOfRows() - 1, simpleRow);
+	public JComponent showWord(AbstractSimpleRow abstractSimpleRow) {
+		return rowsPanel.insertRow(rowsPanel.getNumberOfRows() - 1,
+				abstractSimpleRow);
 	}
 
 	@Override

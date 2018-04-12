@@ -29,7 +29,7 @@ public class MessagePanel extends AbstractPanelWithHotkeysInfo {
 						.opaque(true).preferredSize(new Dimension(200, 100))
 						.enabled(false));
 		mainPanel
-				.addRows(SimpleRowBuilder.createRow(FillType.BOTH, scrollPane));
+				.addRow(SimpleRowBuilder.createRow(FillType.BOTH, scrollPane));
 		setNavigationButtons(Anchor.CENTER, buttonClose);
 	}
 

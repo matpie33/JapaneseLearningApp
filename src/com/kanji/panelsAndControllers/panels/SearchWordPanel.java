@@ -73,13 +73,13 @@ public class SearchWordPanel<Word extends ListElement>
 
 		MainPanel searchPanel = new MainPanel(null);
 
-		searchPanel.addRows(SimpleRowBuilder
+		searchPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.WEST, searchOptionPrompt,
 						comboBox));
-		searchPanel.addRows(SimpleRowBuilder
+		searchPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.HORIZONTAL, Anchor.NORTHWEST,
 						searchingPanel).useAllExtraVerticalSpace());
-		mainPanel.addRows(SimpleRowBuilder
+		mainPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.BOTH, Anchor.WEST, searchPanel.getPanel()));
 
 		// TODO fix in gui maker: if putting rows as highest
@@ -166,7 +166,7 @@ public class SearchWordPanel<Word extends ListElement>
 	private MainPanel createSearchByNumericInputPanel(
 			JTextComponent inputField) {
 		MainPanel kanjiIdSearchPanel = new MainPanel(null, true);
-		kanjiIdSearchPanel.addRows(SimpleRowBuilder
+		kanjiIdSearchPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.NORTHWEST,
 						new JLabel(Labels.KANJI_ID_LABEL), inputField));
 		return kanjiIdSearchPanel;
@@ -181,7 +181,7 @@ public class SearchWordPanel<Word extends ListElement>
 		radioButtons.get(0).setSelected(true);
 		addRadioButtonsToGroup(radioButtons);
 		MainPanel keywordSearchPanel = new MainPanel(null);
-		keywordSearchPanel.addRows(SimpleRowBuilder
+		keywordSearchPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.HORIZONTAL, prompt, inputField)
 				.fillHorizontallySomeElements(inputField));
 		radioButtons.stream().forEach(radioButton -> keywordSearchPanel

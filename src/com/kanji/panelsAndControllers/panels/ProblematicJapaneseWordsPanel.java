@@ -124,7 +124,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 						wordAndKanjiInformationSplitPane,
 						dictionariesWithKoohiPageSplitPane, 0.4);
 
-		mainPanel.addRows(SimpleRowBuilder
+		mainPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.BOTH, wordAndDictionariesSplitPane));
 		setNavigationButtons(Anchor.WEST, createButtonClose());
 	}

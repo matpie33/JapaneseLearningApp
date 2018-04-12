@@ -8,7 +8,7 @@ import com.guimaker.options.TextAreaOptions;
 import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
-import com.guimaker.row.SimpleRow;
+import com.guimaker.row.AbstractSimpleRow;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.strings.*;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
@@ -72,7 +72,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 						.nextRow(FillType.HORIZONTAL, newRow, sumRangeField)
 						.fillVertically(sumRangeField)
 						.fillHorizontallySomeElements(sumRangeField)));
-		mainPanel.addRows(SimpleRowBuilder
+		mainPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.BOTH, problematicPanel.getPanel())
 				.useAllExtraVerticalSpace());
 		setNavigationButtons(cancel, approve);
@@ -108,7 +108,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		JLabel label = new JLabel(Prompts.PROBLEMATIC_KANJIS_ADDED);
 		label.setForeground(BasicColors.NAVY_BLUE);
 		int rowNumber = rangesPanel.getNumberOfRows();
-		rangesPanel.addRows(
+		rangesPanel.addRow(
 				SimpleRowBuilder.createRow(FillType.NONE, Anchor.NORTH, label));
 		rangesPanel.updateView();
 		c.requestFocusInWindow();
@@ -147,7 +147,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		JLabel from = new JLabel(Labels.RANGE_FROM_LABEL);
 		JLabel labelTo = new JLabel(Labels.RANGE_TO_LABEL);
 
-		SimpleRow newRow = SimpleRowBuilder
+		AbstractSimpleRow newRow = SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.NORTH, from, fieldFrom,
 						labelTo, fieldTo, delete);
 
@@ -156,7 +156,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 			rangesPanel.insertRow(nextRowNumber, newRow);
 		}
 		else {
-			rangesPanel.addRows(newRow);
+			rangesPanel.addRow(newRow);
 		}
 		rangesPanel.updateView();
 

@@ -7,7 +7,7 @@ import com.guimaker.enums.FillType;
 import com.guimaker.options.ScrollPaneOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
-import com.guimaker.row.SimpleRow;
+import com.guimaker.row.AbstractSimpleRow;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
 import com.kanji.constants.strings.ButtonsNames;
@@ -143,11 +143,11 @@ public class ListPanelMaker<Word extends ListElement>
 		rowNumberLabel.setForeground(labelsColor);
 		JComponent row = null;
 		if (shouldShowWord) {
-			SimpleRow simpleRow = SimpleRowBuilder
+			AbstractSimpleRow abstractSimpleRow = SimpleRowBuilder
 					.createRow(FillType.HORIZONTAL, Anchor.NORTH,
 							listRow.createListRow(word, commonListElements)
 									.getPanel());
-			row = loadWordsHandler.showWord(simpleRow);
+			row = loadWordsHandler.showWord(abstractSimpleRow);
 		}
 		else if (!buttonLoadNextWords.isEnabled()) {
 			buttonLoadNextWords.setEnabled(true);

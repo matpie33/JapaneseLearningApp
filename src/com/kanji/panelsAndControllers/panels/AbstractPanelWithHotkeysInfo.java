@@ -7,7 +7,7 @@ import com.guimaker.enums.FillType;
 import com.guimaker.panels.ExpandablePanel;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
-import com.guimaker.row.SimpleRow;
+import com.guimaker.row.AbstractSimpleRow;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.CommonActionsMaker;
 import com.guimaker.utilities.HotkeyWrapper;
@@ -81,20 +81,20 @@ public abstract class AbstractPanelWithHotkeysInfo {
 		if (hotkeysMapping.isEmpty()) {
 			return;
 		}
-		SimpleRow row = SimpleRowBuilder
+		AbstractSimpleRow row = SimpleRowBuilder
 				.createRow(FillType.HORIZONTAL, Anchor.SOUTH,
 						hotkeysPanel.getPanel());
 		MainPanel panelForHotkeys = parentPanelForHotkeys();
 
 		if (hotkeysPanelIndex == -1) {
-			panelForHotkeys.addRows(row);
+			panelForHotkeys.addRow(row);
 		}
 		else if (hotkeysPanelIndex > 0) {
 			panelForHotkeys.insertRow(hotkeysPanelIndex, row);
 		}
 		if (navigationButtons != null)
 			panelForHotkeys
-					.addRows( // TODO fix in gui maker: if putting rows as
+					.addRow( // TODO fix in gui maker: if putting rows as
 							// highest
 							// as
 							// possible, then west

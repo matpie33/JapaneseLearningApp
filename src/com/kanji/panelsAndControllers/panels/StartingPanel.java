@@ -120,7 +120,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 
 		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, tabs));
 		addHotkeysPanelHere();
-		mainPanel.addRows(SimpleRowBuilder
+		mainPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.HORIZONTAL, bottomPanel.getPanel()));
 	}
 
