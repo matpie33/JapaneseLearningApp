@@ -27,4 +27,9 @@ public class DuplicatedJapaneseWordInformation implements ListElement {
 	public boolean isSameAs(ListElement element) {
 		return false; //TODO implement if needed
 	}
+
+	@Override
+	public boolean isEmpty() {
+		return japaneseWordInformation == null || duplicatedWordRowNumber == 0;
+	}
 }

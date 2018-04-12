@@ -13,7 +13,7 @@ import com.kanji.constants.strings.Titles;
 import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.KanjiInformation;
-import com.kanji.list.listRows.RowInJapaneseWordsReviewingList;
+import com.kanji.list.listRows.RowInJapaneseWordInformations;
 import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.listRows.japanesePanelCreator.TextFieldSelectionHandler;
 import com.kanji.list.myList.ListConfiguration;
@@ -50,7 +50,7 @@ public class ProblematicJapaneseWordsDisplayer
 				applicationWindow);
 		selectionHandler = japanesePanelCreator.getSelectionHandler();
 		this.wordsToReviewList = new MyList<>(applicationWindow, null,
-				new RowInJapaneseWordsReviewingList(this, japanesePanelCreator),
+				new RowInJapaneseWordInformations(japanesePanelCreator),
 				Titles.PROBLEMATIC_KANJIS,
 				new ListConfiguration().enableWordAdding(false)
 						.withAdditionalNavigationButtons(

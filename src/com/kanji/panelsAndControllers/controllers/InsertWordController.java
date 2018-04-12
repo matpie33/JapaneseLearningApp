@@ -1,27 +1,27 @@
 package com.kanji.panelsAndControllers.controllers;
 
 import com.kanji.constants.strings.ExceptionsMessages;
-import com.kanji.list.listElements.JapaneseWordInformation;
+import com.kanji.list.listElements.ListElement;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.WordInMyListExistence;
-import com.kanji.panelsAndControllers.panels.InsertJapaneseWordPanel;
+import com.kanji.panelsAndControllers.panels.InsertWordPanel;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class InsertJapaneseWordController {
+public class InsertWordController<Word extends ListElement> {
 
-	private MyList<JapaneseWordInformation> list;
+	private MyList<Word> list;
 	private DialogWindow parentDialog;
 	private ApplicationController applicationController;
-	private InsertJapaneseWordPanel insertJapaneseWordPanel;
+	private InsertWordPanel<Word> insertWordPanel;
 
-	public InsertJapaneseWordController(MyList<JapaneseWordInformation> list,
+	public InsertWordController(MyList<Word> list,
 			ApplicationController applicationController,
-			InsertJapaneseWordPanel insertJapaneseWordPanel) {
-		this.insertJapaneseWordPanel = insertJapaneseWordPanel;
+			InsertWordPanel insertWordPanel) {
+		this.insertWordPanel = insertWordPanel;
 		this.list = list;
 		this.applicationController = applicationController;
 	}
@@ -30,16 +30,19 @@ public class InsertJapaneseWordController {
 		parentDialog = parent;
 	}
 
-	private void validateAndAddWordIfValid(
-			JapaneseWordInformation japaneseWordInformation) {
-		boolean isItNewWord = addWordToList(japaneseWordInformation);
-		if (isItNewWord) {
+	private void addWordIfItsNew(Word word) {
+		if (word.isEmpty()){
+			parentDialog.showMessageDialog(ExceptionsMessages.NO_INPUT_SUPPLIED);
+			return;
+		}
+		boolean addedWord = addWordToList(word);
+		if (addedWord) {
 			applicationController.saveProject();
 		}
 	}
 
-	private boolean addWordToList(JapaneseWordInformation word) {
-		WordInMyListExistence<JapaneseWordInformation> doesWordExistInMyList = list
+	private boolean addWordToList(Word word) {
+		WordInMyListExistence<Word> doesWordExistInMyList = list
 				.isWordDefined(word);
 		if (!doesWordExistInMyList.exists()) {
 			list.addWord(word);
@@ -65,9 +68,9 @@ public class InsertJapaneseWordController {
 					KeyboardFocusManager.getCurrentKeyboardFocusManager()
 							.clearGlobalFocusOwner();
 					SwingUtilities.invokeLater(() -> {
-						validateAndAddWordIfValid(
-								insertJapaneseWordPanel.getWord());
-						insertJapaneseWordPanel.reinitializePanel();
+						addWordIfItsNew(
+								insertWordPanel.getWord());
+						insertWordPanel.reinitializePanel();
 					});
 				});
 

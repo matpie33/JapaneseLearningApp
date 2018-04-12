@@ -14,6 +14,7 @@ public class JapaneseWriting implements ListElement {
 		this.kanjiWritings = kanjiWritings;
 	}
 
+	@Override
 	public boolean isEmpty (){
 		return kanaWriting.isEmpty() && kanjiWritings.isEmpty();
 	}

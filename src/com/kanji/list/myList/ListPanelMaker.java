@@ -52,6 +52,7 @@ public class ListPanelMaker<Word extends ListElement>
 	private boolean enableWordSearching;
 	private boolean showButtonsNextAndPrevious;
 	private boolean isSkipTitle;
+	private Color labelsColor = Color.WHITE;
 
 	public ListPanelMaker(ListConfiguration listConfiguration,
 			ApplicationController applicationController,
@@ -138,8 +139,8 @@ public class ListPanelMaker<Word extends ListElement>
 		remove.addActionListener(
 				listWordsController.createDeleteRowAction(word));
 		CommonListElements commonListElements = new CommonListElements(remove,
-				rowNumberLabel, addNewWord);
-		rowNumberLabel.setForeground(BasicColors.OCEAN_BLUE);
+				rowNumberLabel, addNewWord, labelsColor);
+		rowNumberLabel.setForeground(labelsColor);
 		JComponent row = null;
 		if (shouldShowWord) {
 			SimpleRow simpleRow = SimpleRowBuilder

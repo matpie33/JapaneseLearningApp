@@ -184,4 +184,8 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 		return builder.toString();
 	}
 
+	@Override
+	public boolean isEmpty() {
+		return getWordMeaning().isEmpty() || getKanaToKanjiWritingsMap().isEmpty();
+	}
 }

@@ -30,12 +30,13 @@ public class RowInKanjiInformations implements ListRowMaker<KanjiInformation> {
 	public MainPanel createListRow(KanjiInformation kanji,
 			CommonListElements commonListElements) {
 		MainPanel panel = new MainPanel(null);
+		Color labelsColor = commonListElements.getLabelsColor();
 		JLabel kanjiKeyword = GuiMaker.createLabel(
 				new ComponentOptions().text(Labels.KANJI_KEYWORD_LABEL)
-						.foregroundColor(BasicColors.OCEAN_BLUE));
+						.foregroundColor(labelsColor));
 		JLabel kanjiId = GuiMaker.createLabel(
 				new ComponentOptions().text(Labels.KANJI_ID_LABEL)
-						.foregroundColor(Color.WHITE));
+						.foregroundColor(labelsColor));
 		String text = kanji.getKanjiKeyword();
 		int ID = kanji.getKanjiID();
 		JTextComponent wordTextArea = CommonGuiElementsMaker
@@ -47,15 +48,15 @@ public class RowInKanjiInformations implements ListRowMaker<KanjiInformation> {
 				ExceptionsMessages.KANJI_KEYWORD_ALREADY_DEFINED_EXCEPTION,
 				true));
 		JTextComponent idTextArea = CommonGuiElementsMaker.createKanjiIdInput();
-		idTextArea.setText(Integer.toString(ID));
+		idTextArea.setText(ID > 0 ? Integer.toString(ID) : "");
 		idTextArea.addFocusListener(new ListPropertyChangeHandler<>(kanji,
 				applicationWindow.getApplicationController().getKanjiList(),
 				applicationWindow, new KanjiIdChecker(),
 				ExceptionsMessages.ID_ALREADY_DEFINED_EXCEPTION, true));
 		AbstractButton remove = commonListElements.getButtonDelete();
+		JLabel rowNumberLabel = commonListElements.getRowNumberLabel();
 		panel.addElementsInColumnStartingFromColumn(wordTextArea, 0,
-				commonListElements.getRowNumberLabel(), kanjiKeyword,
-				wordTextArea);
+				rowNumberLabel, kanjiKeyword, wordTextArea);
 		panel.addElementsInColumnStartingFromColumn(1, kanjiId, idTextArea);
 		panel.addElementsInColumnStartingFromColumn(1, remove);
 

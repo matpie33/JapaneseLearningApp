@@ -33,12 +33,9 @@ public class RepeatingJapaneseWordsDisplayer
 	private KanjiCharactersReader kanjiCharactersReader;
 	private Set<JapaneseWordInformation> currentProblematicWords;
 	private Set<JapaneseWordInformation> problematicJapaneseWords;
-	private JTextComponent partOfSpeechText;
 	private JLabel partOfSpeechLabel;
 	private JComboBox<String> partOfSpeechCombobox;
-	private JLabel verbConjugationLabel;
 	private JComboBox<String> verbConjugationCombobox;
-	private JTextComponent verbConjugationText;
 	private Map<Integer, Function<JapaneseWordInformation, Set<String>>> hintTypeIntValues;
 	private JapaneseWordPanelCreator japaneseWordPanelCreator;
 
@@ -85,12 +82,6 @@ public class RepeatingJapaneseWordsDisplayer
 				verbConjugationType -> verbConjugationCombobox
 						.addItem(verbConjugationType.getDisplayedText()));
 
-		verbConjugationLabel = GuiMaker.createLabel(
-				new ComponentOptions().text(Labels.VERB_CONJUGATION));
-		partOfSpeechText = GuiMaker
-				.createTextArea(new TextAreaOptions().editable(false));
-		verbConjugationText = GuiMaker
-				.createTextArea(new TextAreaOptions().editable(false));
 	}
 
 	@Override

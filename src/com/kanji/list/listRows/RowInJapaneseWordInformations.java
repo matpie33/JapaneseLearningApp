@@ -6,6 +6,8 @@ import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.myList.ListRowMaker;
 import com.kanji.utilities.CommonListElements;
 
+import javax.swing.*;
+
 public class RowInJapaneseWordInformations
 		implements ListRowMaker<JapaneseWordInformation> {
 	private JapaneseWordPanelCreator japaneseWordPanelCreator;
@@ -19,10 +21,12 @@ public class RowInJapaneseWordInformations
 	public MainPanel createListRow(JapaneseWordInformation japaneseWord,
 			CommonListElements commonListElements) {
 		MainPanel panel = new MainPanel(null);
-		japaneseWordPanelCreator
-				.setRowNumberLabel(commonListElements.getRowNumberLabel());
+		JLabel rowNumberLabel = commonListElements.getRowNumberLabel();
+		japaneseWordPanelCreator.setRowNumberLabel(rowNumberLabel);
+		japaneseWordPanelCreator.setLabelsColor(commonListElements.getLabelsColor());
 		japaneseWordPanelCreator
 				.addJapanesePanelToExistingPanel(panel, japaneseWord);
+		japaneseWordPanelCreator.focusMeaningTextfield();
 		return panel;
 	}
 }

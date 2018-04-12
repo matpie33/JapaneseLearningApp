@@ -82,4 +82,8 @@ public class RepeatingInformation implements Serializable, ListElement {
 		return false;
 	}
 
+	@Override
+	public boolean isEmpty() {
+		return repeatingDate == null || repeatingRange.isEmpty();
+	}
 }

@@ -85,4 +85,8 @@ public class KanjiInformation implements Serializable, ListElement {
 		return false;
 	}
 
+	@Override
+	public boolean isEmpty() {
+		return id ==0 || keyword.isEmpty();
+	}
 }

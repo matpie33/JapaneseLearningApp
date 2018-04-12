@@ -7,10 +7,7 @@ import com.kanji.constants.strings.MenuTexts;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Titles;
 import com.kanji.customPositioning.PositionerOnMyList;
-import com.kanji.list.listElements.JapaneseWordInformation;
-import com.kanji.list.listElements.KanjiInformation;
 import com.kanji.list.listElements.ListElement;
-import com.kanji.list.listRows.RowInJapaneseWordInformations;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.DuplicatedJapaneseWordInformation;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
@@ -145,23 +142,11 @@ public class ApplicationWindow extends DialogWindow {
 
 	// TODO dialogs should either be jframe or modal in order for alt tab to
 	// switch focus to the right window
-	public void showInsertDialog(
-			RowInJapaneseWordInformations rowInJapaneseWordInformation,
-			MyList list) {
+	public <Word extends ListElement> void showInsertDialog(MyList<Word> list) {
 		customPositioner = new PositionerOnMyList(
 				getStartingPanel().getSplitPaneFor(list.getListElementClass()));
-		AbstractPanelWithHotkeysInfo panel;
-		if (list.getListElementClass().equals(KanjiInformation.class)) {
-			panel = new InsertKanjiPanel(list, getApplicationController());
-		}
-		else if (list.getListElementClass()
-				.equals(JapaneseWordInformation.class)) {
-			panel = new InsertJapaneseWordPanel(rowInJapaneseWordInformation,
-					list, this);
-		}
-		else {
-			throw new RuntimeException("Unknown list word");
-		}
+		AbstractPanelWithHotkeysInfo panel = new InsertWordPanel<>(
+				list, this);
 		createDialog(panel, Titles.INSERT_WORD_DIALOG, false, Position.CUSTOM);
 	}
 

@@ -3,14 +3,12 @@ package com.kanji.panelsAndControllers.panels;
 import com.guimaker.enums.FillType;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.kanji.constants.enums.JapanesePanelDisplayMode;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
-import com.kanji.list.listElements.JapaneseWordInformation;
-import com.kanji.list.listRows.RowInJapaneseWordInformations;
-import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
+import com.kanji.list.listElements.ListElement;
 import com.kanji.list.myList.MyList;
-import com.kanji.panelsAndControllers.controllers.InsertJapaneseWordController;
+import com.kanji.panelsAndControllers.controllers.InsertWordController;
+import com.kanji.utilities.CommonListElements;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
 
@@ -18,22 +16,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class InsertJapaneseWordPanel extends AbstractPanelWithHotkeysInfo {
+public class InsertWordPanel<Word extends ListElement>
+		extends AbstractPanelWithHotkeysInfo {
 
-	private InsertJapaneseWordController controller;
-	private JapaneseWordPanelCreator japaneseWordPanelCreator;
-	private ApplicationWindow applicationWindow;
-	private JapaneseWordInformation japaneseWordInformation;
+	private InsertWordController<Word> controller;
+	private Word word;
+	private MyList<Word> wordsList;
+	private Color labelsColor;
 
-	//TODO now the insert word panel/controller are ready to be used with generics -
-	// for both kanji and japanese word inserting
-
-	public InsertJapaneseWordPanel(RowInJapaneseWordInformations row,
-			MyList<JapaneseWordInformation> list,
+	public InsertWordPanel(MyList<Word> list,
 			ApplicationWindow applicationWindow) {
-		controller = new InsertJapaneseWordController(list,
+		wordsList = list;
+		controller = new InsertWordController(list,
 				applicationWindow.getApplicationController(), this);
-		this.applicationWindow = applicationWindow;
 
 	}
 
@@ -45,10 +40,6 @@ public class InsertJapaneseWordPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private void initializeGuiOneTimeOnlyElements() {
-		japaneseWordPanelCreator = new JapaneseWordPanelCreator(
-				applicationWindow.getApplicationController(), parentDialog,
-				JapanesePanelDisplayMode.EDIT);
-		japaneseWordPanelCreator.setLabelsColor(Color.BLACK);
 		AbstractButton cancel = createButtonClose();
 		AbstractButton approve = createButtonValidate();
 		setNavigationButtons(cancel, approve);
@@ -61,15 +52,15 @@ public class InsertJapaneseWordPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private void initializeWord() {
-		japaneseWordInformation = JapaneseWordInformation.getInitializer()
+		word = wordsList.getWordInitializer()
 				.initializeElement();
 	}
 
 	private void initializeJapaneseWordPanel() {
-		MainPanel addWordPanel = new MainPanel(null);
-		japaneseWordPanelCreator.addJapanesePanelToExistingPanel(addWordPanel,
-				japaneseWordInformation);
-		japaneseWordPanelCreator.focusMeaningTextfield();
+		labelsColor = Color.BLACK;
+		MainPanel addWordPanel = wordsList.getListRowMaker()
+				.createListRow(word, CommonListElements.forSingleRowOnly(
+						labelsColor));
 		mainPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.BOTH, addWordPanel.getPanel())
 				.useAllExtraVerticalSpace());
@@ -87,7 +78,7 @@ public class InsertJapaneseWordPanel extends AbstractPanelWithHotkeysInfo {
 				HotkeysDescriptions.ADD_WORD);
 	}
 
-	public JapaneseWordInformation getWord() {
-		return japaneseWordInformation;
+	public Word getWord() {
+		return word;
 	}
 }

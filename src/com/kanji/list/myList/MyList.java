@@ -21,6 +21,7 @@ public class MyList<Word extends ListElement> {
 	private ListElementInitializer<Word> wordInitializer;
 	private Class listElementClass;
 	private String title;
+	private ListRowMaker<Word> listRowMaker;
 
 	public MyList(DialogWindow parentDialog,
 			ApplicationController applicationController,
@@ -28,6 +29,7 @@ public class MyList<Word extends ListElement> {
 			ListConfiguration listConfiguration,
 			List<ListElementData<Word>> listElementData,
 			ListElementInitializer wordInitializer) {
+		this.listRowMaker = listRowMaker;
 		this.applicationController = applicationController;
 		this.parent = parentDialog;
 		this.listElementData = listElementData;
@@ -35,6 +37,14 @@ public class MyList<Word extends ListElement> {
 				listRowMaker, title, applicationController, wordInitializer);
 		this.wordInitializer = wordInitializer;
 		this.title = title;
+	}
+
+	public ListElementInitializer<Word> getWordInitializer() {
+		return wordInitializer;
+	}
+
+	public ListRowMaker<Word> getListRowMaker() {
+		return listRowMaker;
 	}
 
 	public MyList(DialogWindow parentDialog,

@@ -61,10 +61,7 @@ public class JapaneseWordPanelCreator {
 
 	private void createElements(
 			JapaneseWordInformation japaneseWordInformation) {
-		if (rowNumberLabel == null) {
-			rowNumberLabel = new JLabel("");
-		}
-		else {
+		if (rowNumberLabel != null){
 			rowNumberLabel.setForeground(labelsColor);
 		}
 		wordMeaningLabel = GuiMaker.createLabel(
@@ -131,8 +128,9 @@ public class JapaneseWordPanelCreator {
 		return japanesePanelServiceStore.getSelectionHandler();
 	}
 
-	public void focusMeaningTextfield (){
-		SwingUtilities.invokeLater(()->wordMeaningText.requestFocusInWindow());
+	public void focusMeaningTextfield() {
+		SwingUtilities
+				.invokeLater(() -> wordMeaningText.requestFocusInWindow());
 	}
 
 }

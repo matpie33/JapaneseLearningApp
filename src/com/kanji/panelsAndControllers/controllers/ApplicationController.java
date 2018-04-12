@@ -389,8 +389,7 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	public void showInsertWordDialog() {
-		parent.showInsertDialog(rowInJapaneseWordInformations,
-				parent.getStartingPanel().getActiveWordsList());
+		parent.showInsertDialog(parent.getStartingPanel().getActiveWordsList());
 	}
 
 	public void showSearchWordDialog() {
