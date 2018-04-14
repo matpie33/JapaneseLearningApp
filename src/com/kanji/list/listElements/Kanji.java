@@ -3,18 +3,18 @@ package com.kanji.list.listElements;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class KanjiInformation implements Serializable, ListElement {
+public class Kanji implements Serializable, ListElement {
 
 	private static final long serialVersionUID = 5172798853536032765L;
 	private String keyword;
 	private int id;
 
-	public KanjiInformation(String keyword, int iD) {
+	public Kanji(String keyword, int iD) {
 		this.keyword = keyword;
 		this.id = iD;
 	}
 
-	public String getKanjiKeyword() {
+	public String getKeyword() {
 		return keyword;
 	}
 
@@ -22,22 +22,22 @@ public class KanjiInformation implements Serializable, ListElement {
 		this.keyword = kanjiKeyword;
 	}
 
-	public int getKanjiID() {
+	public int getId() {
 		return id;
 	}
 
-	public void setKanjiID(int kanjiID) {
+	public void setId(int kanjiID) {
 		this.id = kanjiID;
 	}
 
 	@Override
 	public boolean equals(Object another) {
-		if (!(another instanceof KanjiInformation)) {
+		if (!(another instanceof Kanji)) {
 			return false;
 		}
-		KanjiInformation kanjiInformation = (KanjiInformation) another;
-		return kanjiInformation.getKanjiKeyword().equals(keyword)
-				&& kanjiInformation.getKanjiID() == id;
+		Kanji kanji = (Kanji) another;
+		return kanji.getKeyword().equals(keyword)
+				&& kanji.getId() == id;
 
 	}
 
@@ -51,16 +51,16 @@ public class KanjiInformation implements Serializable, ListElement {
 		return "Keyword: " + keyword + " int: " + id;
 	}
 
-	public static ListElementInitializer<KanjiInformation> getInitializer() {
-		return () -> new KanjiInformation("", 0);
+	public static ListElementInitializer<Kanji> getInitializer() {
+		return () -> new Kanji("", 0);
 	}
 
 	//TODO it's probably beter to override equals and hashcode and use set instead of lists
 	@Override
 	public boolean isSameAs(ListElement element) {
-		if (element instanceof KanjiInformation) {
-			return ((KanjiInformation) element).getKanjiID() == id
-					|| ((KanjiInformation) element).getKanjiKeyword()
+		if (element instanceof Kanji) {
+			return ((Kanji) element).getId() == id
+					|| ((Kanji) element).getKeyword()
 					.equals(keyword);
 		}
 		return false;

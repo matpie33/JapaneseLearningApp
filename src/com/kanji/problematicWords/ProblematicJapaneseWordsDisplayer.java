@@ -13,8 +13,8 @@ import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Titles;
 import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
-import com.kanji.list.listElements.JapaneseWordInformation;
-import com.kanji.list.listElements.KanjiInformation;
+import com.kanji.list.listElements.JapaneseWord;
+import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listRows.RowInJapaneseWordInformations;
 import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.listRows.japanesePanelCreator.TextFieldSelectionHandler;
@@ -35,11 +35,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ProblematicJapaneseWordsDisplayer
-		implements ProblematicWordsDisplayer<JapaneseWordInformation> {
+		implements ProblematicWordsDisplayer<JapaneseWord> {
 
-	private MyList<JapaneseWordInformation> wordsToReviewList;
+	private MyList<JapaneseWord> wordsToReviewList;
 	private ProblematicJapaneseWordsPanel problematicJapaneseWordsPanel;
-	private MyList<KanjiInformation> kanjiInformations;
+	private MyList<Kanji> kanjiInformations;
 	private TextFieldSelectionHandler selectionHandler;
 
 	public ProblematicJapaneseWordsDisplayer(
@@ -57,7 +57,7 @@ public class ProblematicJapaneseWordsDisplayer
 				new ListConfiguration().enableWordAdding(false)
 						.withAdditionalNavigationButtons(
 								createButtonSearchWord()),
-				JapaneseWordInformation.getInitializer());
+				JapaneseWord.getInitializer());
 		controller.setProblematicWordsDisplayer(this);
 		kanjiInformations = applicationWindow.getApplicationController()
 				.getKanjiList();
@@ -82,22 +82,22 @@ public class ProblematicJapaneseWordsDisplayer
 	}
 
 	@Override
-	public MyList<JapaneseWordInformation> getWordsToReviewList() {
+	public MyList<JapaneseWord> getWordsToReviewList() {
 		return wordsToReviewList;
 	}
 
 	@Override
-	public void browseWord(WordRow<JapaneseWordInformation> wordRow) {
-		JapaneseWordInformation japaneseWordInformation = wordRow
+	public void browseWord(WordRow<JapaneseWord> wordRow) {
+		JapaneseWord japaneseWord = wordRow
 				.getListElement();
 		KanjiCharactersReader kanjiCharactersReader = KanjiCharactersReader
 				.getInstance();
-		Set<String> kanjis = extractKanjis(japaneseWordInformation);
+		Set<String> kanjis = extractKanjis(japaneseWord);
 		MainPanel panel = problematicJapaneseWordsPanel
 				.getKanjiInformationPanel();
 		panel.clear();
 		for (String kanji : kanjis) {
-			KanjiInformation kanjiInformation = kanjiInformations.
+			Kanji kanjiInformation = kanjiInformations.
 					findRowBasedOnPropertyStartingFromBeginningOfList(
 							new KanjiIdChecker(),
 							kanjiCharactersReader.getIdOfKanji(kanji),
@@ -107,7 +107,7 @@ public class ProblematicJapaneseWordsDisplayer
 			kanjiLabel.setFont(kanjiLabel.getFont().deriveFont(30f));
 			//TODO set the kanjis font in one place for whole application
 			String keyword = kanjiInformation != null ?
-					kanjiInformation.getKanjiKeyword() :
+					kanjiInformation.getKeyword() :
 					Prompts.NO_KANJI_INFORMATION_AVAILABLE;
 			JTextComponent keywordLabel = GuiMaker.createTextArea(
 					new TextAreaOptions().rowsAndColumns(2, 5).text(keyword));
@@ -124,7 +124,7 @@ public class ProblematicJapaneseWordsDisplayer
 									else {
 										problematicJapaneseWordsPanel
 												.showKoohiPage(kanjiInformation
-														.getKanjiID());
+														.getId());
 									}
 
 								}
@@ -140,9 +140,9 @@ public class ProblematicJapaneseWordsDisplayer
 	}
 
 	private Set<String> extractKanjis(
-			JapaneseWordInformation japaneseWordInformation) {
+			JapaneseWord japaneseWord) {
 		Set<String> kanjis = new HashSet<>();
-		Set<String> kanjiWritings = japaneseWordInformation.getKanjiWritings();
+		Set<String> kanjiWritings = japaneseWord.getKanjiWritings();
 		for (String kanjiWriting : kanjiWritings) {
 			for (int i = 0; i < kanjiWriting.length(); i++) {
 				char nextCharacter = kanjiWriting.charAt(i);
@@ -155,7 +155,7 @@ public class ProblematicJapaneseWordsDisplayer
 	}
 
 	@Override
-	public WordRow createWordRow(JapaneseWordInformation listElement,
+	public WordRow createWordRow(JapaneseWord listElement,
 			int rowNumber) {
 		return new WordRow(listElement, rowNumber);
 	}

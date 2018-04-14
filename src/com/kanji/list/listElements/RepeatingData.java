@@ -2,10 +2,8 @@ package com.kanji.list.listElements;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-public class RepeatingInformation implements Serializable, ListElement {
+public class RepeatingData implements Serializable, ListElement {
 
 	private static final long serialVersionUID = 6124164088342544292L;
 	private String repeatingRange;
@@ -13,12 +11,12 @@ public class RepeatingInformation implements Serializable, ListElement {
 	private boolean wasRepeated;
 	private String timeSpentOnRepeating;
 
-	public RepeatingInformation(String repeatingRange,
+	public RepeatingData(String repeatingRange,
 			LocalDateTime repeatingDate, boolean wasRepeated) {
 		this(repeatingRange, repeatingDate, wasRepeated, "nie wiadomo");
 	}
 
-	public RepeatingInformation(String repeatingRange,
+	public RepeatingData(String repeatingRange,
 			LocalDateTime repeatingDate, boolean wasRepeated,
 			String timeSpentOnRepeating) {
 		this.repeatingRange = repeatingRange;
@@ -65,14 +63,14 @@ public class RepeatingInformation implements Serializable, ListElement {
 				+ timeSpentOnRepeating;
 	}
 
-	public static ListElementInitializer<RepeatingInformation> getInitializer() {
-		return () -> new RepeatingInformation("", null, false);
+	public static ListElementInitializer<RepeatingData> getInitializer() {
+		return () -> new RepeatingData("", null, false);
 	}
 
 	@Override
 	public boolean isSameAs(ListElement element) {
-		if (element instanceof RepeatingInformation) {
-			RepeatingInformation otherWord = (RepeatingInformation) element;
+		if (element instanceof RepeatingData) {
+			RepeatingData otherWord = (RepeatingData) element;
 			return otherWord.getRepeatingDate().isEqual(repeatingDate);
 		}
 		return false;

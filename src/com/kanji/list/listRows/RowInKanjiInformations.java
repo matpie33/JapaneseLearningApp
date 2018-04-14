@@ -12,7 +12,7 @@ import com.kanji.constants.strings.ListPropertiesNames;
 import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
 import com.kanji.list.listElementPropertyManagers.KanjiKeywordChecker;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
-import com.kanji.list.listElements.KanjiInformation;
+import com.kanji.list.listElements.Kanji;
 import com.kanji.list.myList.ListPropertyChangeHandler;
 import com.kanji.list.myList.ListPropertyInformation;
 import com.kanji.list.myList.ListRowData;
@@ -27,7 +27,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RowInKanjiInformations implements ListRowMaker<KanjiInformation> {
+public class RowInKanjiInformations implements ListRowMaker<Kanji> {
 	private ApplicationWindow applicationWindow;
 
 	public RowInKanjiInformations(ApplicationWindow applicationWindow) {
@@ -35,7 +35,7 @@ public class RowInKanjiInformations implements ListRowMaker<KanjiInformation> {
 	}
 
 	@Override
-	public ListRowData createListRow(KanjiInformation kanji,
+	public ListRowData createListRow(Kanji kanji,
 			CommonListElements commonListElements, boolean forSearchPanel) {
 		MainPanel panel = new MainPanel(null);
 		//TODO do it like in rowInJapaneseWordInformations
@@ -46,8 +46,8 @@ public class RowInKanjiInformations implements ListRowMaker<KanjiInformation> {
 		JLabel kanjiId = GuiMaker.createLabel(
 				new ComponentOptions().text(Labels.KANJI_ID_LABEL)
 						.foregroundColor(labelsColor));
-		String text = kanji.getKanjiKeyword();
-		int ID = kanji.getKanjiID();
+		String text = kanji.getKeyword();
+		int ID = kanji.getId();
 		JTextComponent wordTextArea = CommonGuiElementsMaker
 				.createKanjiWordInput(text);
 		KanjiKeywordChecker keywordChecker = new KanjiKeywordChecker();
@@ -78,14 +78,14 @@ public class RowInKanjiInformations implements ListRowMaker<KanjiInformation> {
 
 			Map<String, ListPropertyInformation> propertyInformations = new HashMap<>();
 
-			Map<JTextComponent, ListElementPropertyManager<?, KanjiInformation>> propertyManagerOfTextFieldsKeyword = new HashMap<>();
+			Map<JTextComponent, ListElementPropertyManager<?, Kanji>> propertyManagerOfTextFieldsKeyword = new HashMap<>();
 			propertyManagerOfTextFieldsKeyword
 					.put(wordTextArea, keywordChecker);
 			propertyInformations.put(ListPropertiesNames.KANJI_KEYWORD,
 					new ListPropertyInformation(rows.getAllRows().get(0),
 							propertyManagerOfTextFieldsKeyword));
 
-			Map<JTextComponent, ListElementPropertyManager<?, KanjiInformation>> propertyManagerOfTextFieldsKanjiId = new HashMap<>();
+			Map<JTextComponent, ListElementPropertyManager<?, Kanji>> propertyManagerOfTextFieldsKanjiId = new HashMap<>();
 
 			propertyManagerOfTextFieldsKanjiId.put(idTextArea, idChecker);
 			propertyInformations.put(ListPropertiesNames.KANJI_ID,

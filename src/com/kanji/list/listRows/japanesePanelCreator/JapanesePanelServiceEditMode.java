@@ -1,7 +1,7 @@
 package com.kanji.list.listRows.japanesePanelCreator;
 
 import com.guimaker.panels.MainPanel;
-import com.kanji.list.listElements.JapaneseWordInformation;
+import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.utilities.CommonListElements;
 
@@ -13,7 +13,7 @@ public class JapanesePanelServiceEditMode
 		implements JapanesePanelCreatingService {
 
 	private JapanesePanelElementsMaker elementsMaker;
-	private JapaneseWordInformation wordContainingWriting;
+	private JapaneseWord wordContainingWriting;
 
 	public JapanesePanelServiceEditMode(
 			JapanesePanelElementsMaker elementsMaker) {
@@ -21,7 +21,7 @@ public class JapanesePanelServiceEditMode
 	}
 
 	@Override
-	public void setWord (JapaneseWordInformation wordInformation){
+	public void setWord (JapaneseWord wordInformation){
 		wordContainingWriting = wordInformation;
 	}
 

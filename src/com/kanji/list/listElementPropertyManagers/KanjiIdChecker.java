@@ -1,11 +1,11 @@
 package com.kanji.list.listElementPropertyManagers;
 
-import com.kanji.list.listElements.KanjiInformation;
+import com.kanji.list.listElements.Kanji;
 
 import javax.swing.text.JTextComponent;
 
 public class KanjiIdChecker
-		implements ListElementPropertyManager<Integer, KanjiInformation> {
+		implements ListElementPropertyManager<Integer, Kanji> {
 
 	@Override
 	public String getInvalidPropertyReason() {
@@ -14,8 +14,8 @@ public class KanjiIdChecker
 
 	@Override
 	public boolean isPropertyFound(Integer property,
-			KanjiInformation kanjiInformation) {
-		return kanjiInformation.getKanjiID() == property;
+			Kanji kanji) {
+		return kanji.getId() == property;
 	}
 
 	@Override
@@ -31,9 +31,9 @@ public class KanjiIdChecker
 	}
 
 	@Override
-	public void setProperty(KanjiInformation kanjiInformation,
+	public void setProperty(Kanji kanji,
 			Integer propertyValue) {
-		kanjiInformation.setKanjiID(propertyValue);
+		kanji.setId(propertyValue);
 	}
 
 	private boolean isIdValidNumber(String number) {

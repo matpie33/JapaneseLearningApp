@@ -1,12 +1,12 @@
 package com.kanji.list.listElementPropertyManagers;
 
-import com.kanji.list.listElements.KanjiInformation;
+import com.kanji.list.listElements.Kanji;
 import com.kanji.utilities.WordSearching;
 
 import javax.swing.text.JTextComponent;
 
 public class KanjiKeywordChecker extends WordSearchOptionsHolder
-		implements ListElementPropertyManager<String, KanjiInformation> {
+		implements ListElementPropertyManager<String, Kanji> {
 
 	@Override
 	public String getInvalidPropertyReason() {
@@ -15,9 +15,9 @@ public class KanjiKeywordChecker extends WordSearchOptionsHolder
 
 	@Override
 	public boolean isPropertyFound(String kanjiKeyWord,
-			KanjiInformation kanjiInformation) {
-		return kanjiInformation != null && WordSearching
-				.doesWordContainSearchedWord(kanjiInformation.getKanjiKeyword(),
+			Kanji kanji) {
+		return kanji != null && WordSearching
+				.doesWordContainSearchedWord(kanji.getKeyword(),
 						kanjiKeyWord, getWordSearchOptions());
 	}
 
@@ -29,9 +29,9 @@ public class KanjiKeywordChecker extends WordSearchOptionsHolder
 	}
 
 	@Override
-	public void setProperty(KanjiInformation kanjiInformation,
+	public void setProperty(Kanji kanji,
 			String propertyValue) {
-		kanjiInformation.setKanjiKeyword(propertyValue);
+		kanji.setKanjiKeyword(propertyValue);
 	}
 
 }

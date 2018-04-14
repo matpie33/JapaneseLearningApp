@@ -1,13 +1,13 @@
 package com.kanji.list.listElementPropertyManagers;
 
 import com.kanji.constants.enums.WordSearchOptions;
-import com.kanji.list.listElements.JapaneseWordInformation;
+import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.utilities.WordSearching;
 
 import javax.swing.text.JTextComponent;
 
 public class JapaneseWordMeaningChecker extends WordSearchOptionsHolder
-		implements ListElementPropertyManager<String, JapaneseWordInformation> {
+		implements ListElementPropertyManager<String, JapaneseWord> {
 	//TODO I hate to create a class which is veeery similar to each other for every word element
 
 	public JapaneseWordMeaningChecker() {
@@ -25,9 +25,9 @@ public class JapaneseWordMeaningChecker extends WordSearchOptionsHolder
 
 	@Override
 	public boolean isPropertyFound(String wordInKanji,
-			JapaneseWordInformation wordInformation) {
+			JapaneseWord wordInformation) {
 		return wordInformation != null && WordSearching
-				.doesWordContainSearchedWord(wordInformation.getWordMeaning(),
+				.doesWordContainSearchedWord(wordInformation.getMeaning(),
 						wordInKanji, getWordSearchOptions());
 	}
 
@@ -39,9 +39,9 @@ public class JapaneseWordMeaningChecker extends WordSearchOptionsHolder
 	}
 
 	@Override
-	public void setProperty(JapaneseWordInformation japaneseWordInformation,
+	public void setProperty(JapaneseWord japaneseWord,
 			String propertyValue) {
-		japaneseWordInformation.setWordMeaning(propertyValue);
+		japaneseWord.setMeaning(propertyValue);
 	}
 
 }

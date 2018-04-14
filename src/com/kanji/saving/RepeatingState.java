@@ -1,7 +1,7 @@
 package com.kanji.saving;
 
 import com.kanji.list.listElements.ListElement;
-import com.kanji.list.listElements.RepeatingInformation;
+import com.kanji.list.listElements.RepeatingData;
 import com.kanji.timer.TimeSpent;
 
 import java.io.Serializable;
@@ -11,16 +11,16 @@ public class RepeatingState<Element extends ListElement>
 		implements Serializable {
 
 	private TimeSpent timeSpent;
-	private RepeatingInformation repeatingInformation;
+	private RepeatingData repeatingData;
 	private Set<Element> currentProblematicWords;
 	private Set<Element> currentlyRepeatedWords;
 
 	public RepeatingState(TimeSpent timeSpent,
-			RepeatingInformation repeatingInformation,
+			RepeatingData repeatingData,
 			Set<Element> currentProblematicWords,
 			Set<Element> currentlyRepeatedWords) {
 		this.timeSpent = timeSpent;
-		this.repeatingInformation = repeatingInformation;
+		this.repeatingData = repeatingData;
 		this.currentProblematicWords = currentProblematicWords;
 		this.currentlyRepeatedWords = currentlyRepeatedWords;
 	}
@@ -29,8 +29,8 @@ public class RepeatingState<Element extends ListElement>
 		return timeSpent;
 	}
 
-	public RepeatingInformation getRepeatingInformation() {
-		return repeatingInformation;
+	public RepeatingData getRepeatingData() {
+		return repeatingData;
 	}
 
 	public Set<Element> getCurrentProblematicWords() {

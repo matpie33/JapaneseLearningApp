@@ -3,7 +3,7 @@ package com.kanji.panelsAndControllers.controllers;
 import com.kanji.constants.enums.ApplicationSaveableState;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Prompts;
-import com.kanji.list.listElements.KanjiInformation;
+import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.WordRow;
@@ -160,7 +160,7 @@ public class ProblematicWordsController<Element extends ListElement>
 				.getApplicationState();
 		savingInformation.setProblematicKanjisState(information,
 				wordsToReview.get(0).getListElement().getClass()
-						.equals(KanjiInformation.class) ?
+						.equals(Kanji.class) ?
 						ApplicationSaveableState.REVIEWING_PROBLEMATIC_KANJIS :
 						ApplicationSaveableState.REVIEWING_PROBLEMATIC_JAPANESE_WORDS);
 

@@ -1,25 +1,14 @@
 package com.kanji.utilities;
 
-import com.guimaker.colors.BasicColors;
-import com.guimaker.enums.FillType;
 import com.guimaker.options.ComponentOptions;
-import com.guimaker.options.ScrollPaneOptions;
 import com.guimaker.options.TextAreaOptions;
 import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiMaker;
-import com.guimaker.panels.MainPanel;
 import com.kanji.constants.enums.SplitPaneOrientation;
-import com.kanji.constants.strings.Labels;
-import com.kanji.list.listElements.JapaneseWordInformation;
-import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class CommonGuiElementsMaker {
 

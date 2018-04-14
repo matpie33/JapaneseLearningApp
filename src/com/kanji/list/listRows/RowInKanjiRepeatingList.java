@@ -9,11 +9,7 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Labels;
-import com.kanji.constants.strings.ListPropertiesNames;
-import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
-import com.kanji.list.listElements.KanjiInformation;
-import com.kanji.list.listElements.RepeatingInformation;
-import com.kanji.list.myList.ListPropertyInformation;
+import com.kanji.list.listElements.Kanji;
 import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.ListRowMaker;
 import com.kanji.model.WordRow;
@@ -25,10 +21,8 @@ import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
-import java.util.Map;
 
-public class RowInKanjiRepeatingList implements ListRowMaker<KanjiInformation> {
+public class RowInKanjiRepeatingList implements ListRowMaker<Kanji> {
 
 	private ProblematicWordsController controller;
 
@@ -37,15 +31,15 @@ public class RowInKanjiRepeatingList implements ListRowMaker<KanjiInformation> {
 	}
 
 	@Override
-	public ListRowData createListRow(KanjiInformation kanjiInformation,
+	public ListRowData createListRow(Kanji kanji,
 			CommonListElements commonListElements, boolean forSearchPanel) {
 		MainPanel panel = new MainPanel(null);
-		JLabel id = new JLabel("" + kanjiInformation.getKanjiID());
+		JLabel id = new JLabel("" + kanji.getId());
 		id.setForeground(Color.white);
 		JTextComponent kanjiTextArea = GuiMaker.createTextArea(
 				new TextAreaOptions().editable(false).opaque(true)
 						.rowsAndColumns(2, 5));
-		kanjiTextArea.setText(kanjiInformation.getKanjiKeyword());
+		kanjiTextArea.setText(kanji.getKeyword());
 		JLabel kanjiKeyword = GuiMaker.createLabel(
 				new ComponentOptions().text(Labels.KANJI_KEYWORD_LABEL)
 						.foregroundColor(BasicColors.OCEAN_BLUE));
@@ -54,7 +48,7 @@ public class RowInKanjiRepeatingList implements ListRowMaker<KanjiInformation> {
 						.foregroundColor(Color.WHITE));
 		int rowNumber = controller.getNumberOfRows();
 
-		JButton buttonGoToSource = createButtonGoToSource(rowNumber, kanjiInformation);
+		JButton buttonGoToSource = createButtonGoToSource(rowNumber, kanji);
 		panel.addRowsOfElementsInColumnStartingFromColumn(SimpleRowBuilder
 				.createRowStartingFromColumn(0, FillType.HORIZONTAL,
 						commonListElements.getRowNumberLabel(), kanjiKeyword,
@@ -77,13 +71,13 @@ public class RowInKanjiRepeatingList implements ListRowMaker<KanjiInformation> {
 		//TODO merge this class with rowInKanjiInformations
 
 	private JButton createButtonGoToSource(int rowNumber,
-			KanjiInformation kanjiInformation) {
+			Kanji kanji) {
 		JButton button = new JButton(ButtonsNames.GO_TO_SOURCE);
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.goToSpecifiedResource(
-						new WordRow(kanjiInformation, rowNumber));
+						new WordRow(kanji, rowNumber));
 			}
 		});
 		button.setFocusable(false);

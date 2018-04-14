@@ -10,7 +10,7 @@ import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.SplitPaneOrientation;
 import com.kanji.constants.strings.Urls;
 import com.kanji.context.ContextOwner;
-import com.kanji.list.listElements.JapaneseWordInformation;
+import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.problematicWords.ProblematicJapaneseWordsDisplayer;
@@ -29,7 +29,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		implements ContextOwner {
 
 	private ProblematicWordsController problematicWordsController;
-	private MyList<JapaneseWordInformation> problematicWords;
+	private MyList<JapaneseWord> problematicWords;
 	private MainPanel kanjiInformationPanel;
 	private WebPagePanel englishDictionaryPanel;
 	private WebPagePanel japaneseEnglishDictionaryPanel;

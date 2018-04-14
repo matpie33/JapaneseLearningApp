@@ -7,7 +7,7 @@ import com.guimaker.panels.MainPanel;
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Prompts;
-import com.kanji.list.listElements.JapaneseWordInformation;
+import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelActions;
 import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelEditOrAddModeAction;
@@ -34,10 +34,10 @@ public class JapanesePanelElementsMaker {
 
 	public JTextComponent createKanaTextField(String text,
 			JapaneseWriting japaneseWriting,
-			JapaneseWordInformation japaneseWordInformation, boolean enabled) {
+			JapaneseWord japaneseWord, boolean enabled) {
 		JTextComponent kanaTextField = actionsMaker.withKanaValidation(
 				createKanaOrKanjiTextField(text, Prompts.KANA_TEXT),
-				japaneseWriting, japaneseWordInformation);
+				japaneseWriting, japaneseWord);
 		if (!enabled){
 			return viewOnlyTextField(kanaTextField);
 		}
@@ -48,10 +48,10 @@ public class JapanesePanelElementsMaker {
 
 	public JTextComponent createKanjiTextField(String text,
 			JapaneseWriting japaneseWriting,
-			JapaneseWordInformation japaneseWordInformation, boolean enabled) {
+			JapaneseWord japaneseWord, boolean enabled) {
 		JTextComponent kanjiTextField =  actionsMaker.withKanjiValidation(
 				createKanaOrKanjiTextField(text, Prompts.KANJI_TEXT),
-				japaneseWriting, japaneseWordInformation);
+				japaneseWriting, japaneseWord);
 		if (!enabled){
 			return viewOnlyTextField(kanjiTextField);
 		}
@@ -94,15 +94,14 @@ public class JapanesePanelElementsMaker {
 
 	public AbstractButton createButtonAddKanjiWriting(MainPanel rowPanel,
 			JapaneseWriting japaneseWriting,
-			JapaneseWordInformation japaneseWordInformation) {
+			JapaneseWord japaneseWord) {
 		AbstractButton button = createButton(ButtonsNames.ADD_KANJI_WRITING,
 				null);
 		button.addActionListener(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				rowPanel.insertElementInPlaceOfElement(
-						createKanjiTextField("", japaneseWriting,
-								japaneseWordInformation, true), button);
+						createKanjiTextField("", japaneseWriting, japaneseWord, true), button);
 			}
 		});
 		return button;

@@ -2,8 +2,8 @@ package com.kanji.panelsAndControllers.controllers;
 
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.Labels;
-import com.kanji.list.listElements.KanjiInformation;
-import com.kanji.list.listElements.RepeatingInformation;
+import com.kanji.list.listElements.Kanji;
+import com.kanji.list.listElements.RepeatingData;
 import com.kanji.model.RangesRow;
 import com.kanji.panelsAndControllers.panels.LearningStartPanel;
 import com.kanji.range.SetOfRanges;
@@ -58,10 +58,10 @@ public class LearningStartController {
 	}
 
 	private void addOrSubtractProblematicKanjisFromSum(int direction) {
-		Set<KanjiInformation> problematics = applicationController
+		Set<Kanji> problematics = applicationController
 				.getProblematicKanjis();
-		for (KanjiInformation i : problematics) {
-			if (!rangesToRepeat.isValueInsideThisSet(i.getKanjiID())) {
+		for (Kanji i : problematics) {
+			if (!rangesToRepeat.isValueInsideThisSet(i.getId())) {
 				sumOfWords += direction;
 			}
 		}
@@ -279,7 +279,7 @@ public class LearningStartController {
 		repeatingInfo += rangesToRepeat;
 		repeatingInfo += ".";
 		applicationController.setRepeatingInformation(
-				new RepeatingInformation(repeatingInfo, LocalDateTime.now(),
+				new RepeatingData(repeatingInfo, LocalDateTime.now(),
 						false));
 	}
 

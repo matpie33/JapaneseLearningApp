@@ -1,10 +1,10 @@
 package com.kanji.list.myList;
 
 import com.kanji.constants.strings.Prompts;
-import com.kanji.list.listElements.KanjiInformation;
+import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listElements.ListElementInitializer;
-import com.kanji.list.listElements.RepeatingInformation;
+import com.kanji.list.listElements.RepeatingData;
 import com.kanji.list.loadAdditionalWordsHandling.FoundWordInsideVisibleRangePlusMaximumWordsStrategy;
 import com.kanji.list.loadAdditionalWordsHandling.FoundWordInsideVisibleRangeStrategy;
 import com.kanji.list.loadAdditionalWordsHandling.FoundWordOutsideRangeStrategy;
@@ -196,10 +196,10 @@ public class ListWordsController<Word extends ListElement> {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String rowSpecificPrompt = "";
-				if (word instanceof KanjiInformation) {
+				if (word instanceof Kanji) {
 					rowSpecificPrompt = Prompts.KANJI_ROW;
 				}
-				if (word instanceof RepeatingInformation) {
+				if (word instanceof RepeatingData) {
 					rowSpecificPrompt = Prompts.REPEATING_ELEMENT;
 				}
 

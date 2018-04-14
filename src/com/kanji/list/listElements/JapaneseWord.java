@@ -11,11 +11,11 @@ import com.kanji.model.KanaAndKanjiStrings;
 import java.io.Serializable;
 import java.util.*;
 
-public class JapaneseWordInformation implements ListElement, Serializable {
+public class JapaneseWord implements ListElement, Serializable {
 
 	private static final long serialVersionUID = 7723326146436941154L;
 	private Map<String, Set<String>> kanjiToAlternativeKanaWritingMap;
-	private String wordMeaning;
+	private String meaning;
 	private PartOfSpeech partOfSpeech;
 	private Set<AdditionalInformation> additionalInformations = new HashSet<>();
 	private static JapaneseWordMeaningChecker meaningChecker = new JapaneseWordMeaningChecker(
@@ -24,10 +24,10 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 			null, true, true, "");
 	//TODO kana checker flag is not always needed
 
-	public JapaneseWordInformation(PartOfSpeech partOfSpeech,
-			String wordMeaning) {
+	public JapaneseWord(PartOfSpeech partOfSpeech,
+			String meaning) {
 		this.partOfSpeech = partOfSpeech;
-		this.wordMeaning = wordMeaning;
+		this.meaning = meaning;
 		kanjiToAlternativeKanaWritingMap = new HashMap<>();
 	}
 
@@ -42,7 +42,7 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 		return kanjiToAlternativeKanaWritingMap;
 	}
 
-	public List<JapaneseWriting> getJapaneseWritings() {
+	public List<JapaneseWriting> getWritings() {
 		//TODO just store it as japanese writings instead of a map
 		List<JapaneseWriting> japaneseWritings = new ArrayList<>();
 		if (kanjiToAlternativeKanaWritingMap.isEmpty()) {
@@ -58,8 +58,8 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 		return japaneseWritings;
 	}
 
-	public String getWordMeaning() {
-		return wordMeaning;
+	public String getMeaning() {
+		return meaning;
 	}
 
 	public boolean hasKanjiWriting() {
@@ -73,8 +73,8 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 		return false;
 	}
 
-	public void setWordMeaning(String wordMeaning) {
-		this.wordMeaning = wordMeaning;
+	public void setMeaning(String meaning) {
+		this.meaning = meaning;
 	}
 
 	public void addAditionalInformation(AdditionalInformationTag tag,
@@ -82,8 +82,8 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 		additionalInformations.add(new AdditionalInformation(tag, value));
 	}
 
-	public static ListElementInitializer<JapaneseWordInformation> getInitializer() {
-		return () -> new JapaneseWordInformation(PartOfSpeech.NOUN, "");
+	public static ListElementInitializer<JapaneseWord> getInitializer() {
+		return () -> new JapaneseWord(PartOfSpeech.NOUN, "");
 	}
 
 	public PartOfSpeech getPartOfSpeech() {
@@ -124,8 +124,8 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 
 	@Override
 	public boolean isSameAs(ListElement element) {
-		if (element instanceof JapaneseWordInformation) {
-			JapaneseWordInformation otherWord = (JapaneseWordInformation) element;
+		if (element instanceof JapaneseWord) {
+			JapaneseWord otherWord = (JapaneseWord) element;
 
 			//TODO avoid passing null to japanese writings checker
 			List<KanaAndKanjiStrings> kanaAndKanjiStrings = new ArrayList<>();
@@ -140,7 +140,7 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 				return true;
 			}
 			if (meaningChecker
-					.isPropertyFound(otherWord.getWordMeaning(), this)) {
+					.isPropertyFound(otherWord.getMeaning(), this)) {
 				return true;
 			}
 			return false;
@@ -162,14 +162,14 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 
 		builder.append("\nWord type: ");
 		builder.append(partOfSpeech.getPolishMeaning());
-		builder.append("\nWord meaning: " + wordMeaning);
+		builder.append("\nWord meaning: " + meaning);
 
 		return builder.toString();
 	}
 
 	@Override
 	public boolean isEmpty() {
-		return getWordMeaning().isEmpty() || getKanaToKanjiWritingsMap()
+		return getMeaning().isEmpty() || getKanaToKanjiWritingsMap()
 				.isEmpty();
 	}
 }

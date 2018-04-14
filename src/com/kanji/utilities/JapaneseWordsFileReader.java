@@ -5,7 +5,7 @@ import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.enums.VerbConjugationType;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.exception.IncorrectJapaneseWordsListInputException;
-import com.kanji.list.listElements.JapaneseWordInformation;
+import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.model.DuplicatedJapaneseWordInformation;
 
@@ -28,7 +28,7 @@ public class JapaneseWordsFileReader {
 	private List<String> meaningsList = new ArrayList<>();
 	private List<String> repeatingRangesList = new ArrayList<>();
 
-	private List<JapaneseWordInformation> newWords = new ArrayList<>();
+	private List<JapaneseWord> newWords = new ArrayList<>();
 	private List<DuplicatedJapaneseWordInformation> duplicatedWords = new ArrayList<>();
 
 	public void readFiles(File[] files)
@@ -43,18 +43,16 @@ public class JapaneseWordsFileReader {
 
 	private void changeStringsToJapaneseWordInformation() {
 		for (int i = 0; i < wordsInKanaList.size(); i++) {
-			JapaneseWordInformation japaneseWordInformation = JapaneseWordInformation
+			JapaneseWord japaneseWord = JapaneseWord
 					.getInitializer().initializeElement();
 			String stringInKana = wordsInKanaList.get(i);
 			String stringInKanji = wordsInKanjiList.get(i);
 			String meaning = meaningsList.get(i);
 			char[] particlesToCheck = new char[] { 'に', 'と', 'を' };
-			stringInKana = checkIfWordTakesParticles(stringInKana,
-					japaneseWordInformation, particlesToCheck);
+			stringInKana = checkIfWordTakesParticles(stringInKana, japaneseWord, particlesToCheck);
 			stringInKanji = checkIfWordTakesParticles(stringInKanji,
-					japaneseWordInformation, particlesToCheck);
-			meaning = checkIfWordTakesParticles(meaning,
-					japaneseWordInformation, particlesToCheck);
+					japaneseWord, particlesToCheck);
+			meaning = checkIfWordTakesParticles(meaning, japaneseWord, particlesToCheck);
 			//TODO can we avoid making 3 calls?
 
 			if (stringInKanji.contains("-")) {
@@ -111,18 +109,18 @@ public class JapaneseWordsFileReader {
 				partOfSpeech = PartOfSpeech.EXPRESSION;
 			}
 
-			setAlternativeWritings(japaneseWordInformation, stringInKanji,
+			setAlternativeWritings(japaneseWord, stringInKanji,
 					stringInKana, partOfSpeech);
-			japaneseWordInformation.setWordMeaning(meaning);
+			japaneseWord.setMeaning(meaning);
 
 			int potentialDuplicateIndex = searchForElementInList(newWords,
-					japaneseWordInformation);
+					japaneseWord);
 			if (potentialDuplicateIndex != -1) {
 				duplicatedWords.add(new DuplicatedJapaneseWordInformation(
-						japaneseWordInformation, potentialDuplicateIndex));
+						japaneseWord, potentialDuplicateIndex));
 			}
 			else {
-				newWords.add(japaneseWordInformation);
+				newWords.add(japaneseWord);
 			}
 
 		}
@@ -139,18 +137,18 @@ public class JapaneseWordsFileReader {
 	}
 
 	private String checkIfWordTakesParticles(String wordRepresentation,
-			JapaneseWordInformation japaneseWordInformation,
+			JapaneseWord japaneseWord,
 			char... particles) {
 		for (char particle : particles) {
 			wordRepresentation = checkForTakingParticleAndModifyString(
-					wordRepresentation, particle, japaneseWordInformation);
+					wordRepresentation, particle, japaneseWord);
 		}
 		return wordRepresentation;
 	}
 
 	private String checkForTakingParticleAndModifyString(
 			String wordRepresentation, char particle,
-			JapaneseWordInformation japaneseWordInformation) {
+			JapaneseWord japaneseWord) {
 		if (wordRepresentation.contains("+" + particle) || wordRepresentation
 				.contains("+ " + particle)) {
 			if (particle == 'と' && wordRepresentation.contains("ところ")) {
@@ -159,7 +157,7 @@ public class JapaneseWordsFileReader {
 			wordRepresentation = wordRepresentation.replace("+", "");
 			wordRepresentation = wordRepresentation.replace(particle + "", "");
 			wordRepresentation = wordRepresentation.replace(",", "");
-			japaneseWordInformation.addAditionalInformation(
+			japaneseWord.addAditionalInformation(
 					AdditionalInformationTag.TAKING_PARTICLE, "" + particle);
 		}
 
@@ -174,27 +172,27 @@ public class JapaneseWordsFileReader {
 	}
 
 	private void setAlternativeWritings(
-			JapaneseWordInformation japaneseWordInformation,
+			JapaneseWord japaneseWord,
 			String stringInKanji, String stringInKana,
 			PartOfSpeech partOfSpeech) {
 		String[] alternativeKanjiWritings = splitWordByComma(stringInKanji);
 		String[] alternativeKanaWritings = splitWordByComma(stringInKana);
 
-		japaneseWordInformation.setPartOfSpeech(partOfSpeech);
+		japaneseWord.setPartOfSpeech(partOfSpeech);
 		addWritings(extractAndSetAlternativeWritingsAndConjugationType(
-				alternativeKanaWritings, japaneseWordInformation, partOfSpeech),
+				alternativeKanaWritings, japaneseWord, partOfSpeech),
 
 				extractAndSetAlternativeWritingsAndConjugationType(
-						alternativeKanjiWritings, japaneseWordInformation,
-						partOfSpeech), japaneseWordInformation);
+						alternativeKanjiWritings, japaneseWord,
+						partOfSpeech), japaneseWord);
 		//TODO maybe we could do it as a one call
 	}
 
 	private void addWritings(String[] kanaWritings, String[] kanjiWritings,
-			JapaneseWordInformation japaneseWordInformation) {
+			JapaneseWord japaneseWord) {
 		if (kanaWritings.length == kanjiWritings.length) {
 			for (int i = 0; i < kanaWritings.length; i++) {
-				japaneseWordInformation
+				japaneseWord
 						.addWritings(kanaWritings[i], kanjiWritings[i]);
 			}
 		}
@@ -204,10 +202,10 @@ public class JapaneseWordsFileReader {
 			for (int i = 0; i < difference; i++) {
 				kanjiWritingsForKanaWriting.add(kanjiWritings[i]);
 			}
-			japaneseWordInformation.addWritings(kanaWritings[0],
+			japaneseWord.addWritings(kanaWritings[0],
 					kanjiWritingsForKanaWriting.toArray(new String[] {}));
 			for (int i = 1; i < kanaWritings.length; i++) {
-				japaneseWordInformation.addWritings(kanaWritings[i],
+				japaneseWord.addWritings(kanaWritings[i],
 						kanjiWritings[i + difference]);
 			}
 		}
@@ -216,14 +214,14 @@ public class JapaneseWordsFileReader {
 				throw new IllegalStateException("Should not happen");
 			}
 			for (String s : kanaWritings) {
-				japaneseWordInformation.addWritings(s, kanjiWritings[0]);
+				japaneseWord.addWritings(s, kanjiWritings[0]);
 			}
 		}
 	}
 
 	private String[] extractAndSetAlternativeWritingsAndConjugationType(
 			String[] splittedWords,
-			JapaneseWordInformation japaneseWordInformation,
+			JapaneseWord japaneseWord,
 			PartOfSpeech partOfSpeech) {
 		if (splittedWords.length == 1) {
 			return splittedWords;
@@ -245,7 +243,7 @@ public class JapaneseWordsFileReader {
 					&& lastCharacterOfNextWord
 					!= lastCharacterOfWordToCompare) {
 				if (!foundVerbConjugationType) {
-					japaneseWordInformation.addAditionalInformation(
+					japaneseWord.addAditionalInformation(
 							AdditionalInformationTag.VERB_CONJUGATION,
 							determineVerbConjugationType(
 									nextWord.charAt(nextWord.length() - 2))
@@ -361,7 +359,7 @@ public class JapaneseWordsFileReader {
 
 	}
 
-	public List<JapaneseWordInformation> getNewWords() {
+	public List<JapaneseWord> getNewWords() {
 		return newWords;
 	}
 

@@ -5,7 +5,7 @@ import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
-import com.kanji.list.listElements.JapaneseWordInformation;
+import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listRows.japanesePanelCreator.TextFieldSelectionHandler;
 import com.kanji.list.myList.ListPropertyChangeHandler;
 import com.kanji.list.myList.MyList;
@@ -20,25 +20,25 @@ import java.util.Locale;
 public class JapanesePanelActions {
 
 	public static void addPropertyChangeHandler(JTextComponent textComponent,
-			JapaneseWordInformation japaneseWordInformation,
+			JapaneseWord japaneseWord,
 			boolean kanaRequired, String defaultValue,
-			ListElementPropertyManager<?, JapaneseWordInformation> propertyChangeHandler,
+			ListElementPropertyManager<?, JapaneseWord> propertyChangeHandler,
 			String exceptionMessage, DialogWindow parentDialog,
-			MyList<JapaneseWordInformation> wordsList) {
+			MyList<JapaneseWord> wordsList) {
 		textComponent.addFocusListener(
-				new ListPropertyChangeHandler<>(japaneseWordInformation,
+				new ListPropertyChangeHandler<>(japaneseWord,
 						wordsList, parentDialog, propertyChangeHandler,
 						exceptionMessage, defaultValue, kanaRequired));
 	}
 
 	public static JapaneseWordMeaningChecker addWordMeaningPropertyChangeListener(
 			JTextComponent wordMeaningTextField,
-			JapaneseWordInformation japaneseWordInformation,
+			JapaneseWord japaneseWord,
 			WordSearchOptions meaningSearchOptions, DialogWindow parentDialog,
-			MyList<JapaneseWordInformation> wordsList) {
+			MyList<JapaneseWord> wordsList) {
 		JapaneseWordMeaningChecker japaneseWordMeaningChecker = new JapaneseWordMeaningChecker(
 				meaningSearchOptions);
-		addPropertyChangeHandler(wordMeaningTextField, japaneseWordInformation,
+		addPropertyChangeHandler(wordMeaningTextField, japaneseWord,
 				true, "", japaneseWordMeaningChecker,
 				ExceptionsMessages.JAPANESE_WORD_MEANING_ALREADY_DEFINED,
 				parentDialog, wordsList);
@@ -70,7 +70,7 @@ public class JapanesePanelActions {
 
 	public static void addSavingOnSelectionListener(
 			JComboBox partOfSpeechCombobox,
-			JapaneseWordInformation japaneseWordInformation,
+			JapaneseWord japaneseWord,
 			ApplicationController applicationController) {
 		partOfSpeechCombobox.addItemListener(new ItemListener() {
 			@Override
@@ -79,7 +79,7 @@ public class JapanesePanelActions {
 					return;
 				}
 				String newValue = (String) e.getItem();
-				japaneseWordInformation.setPartOfSpeech(
+				japaneseWord.setPartOfSpeech(
 						PartOfSpeech.getPartOfSpeachByPolishMeaning(newValue));
 				applicationController.saveProject();
 			}

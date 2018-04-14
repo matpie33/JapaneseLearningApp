@@ -1,9 +1,9 @@
 package com.kanji.saving;
 
 import com.kanji.constants.enums.ApplicationSaveableState;
-import com.kanji.list.listElements.JapaneseWordInformation;
-import com.kanji.list.listElements.KanjiInformation;
-import com.kanji.list.listElements.RepeatingInformation;
+import com.kanji.list.listElements.JapaneseWord;
+import com.kanji.list.listElements.Kanji;
+import com.kanji.list.listElements.RepeatingData;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,28 +11,28 @@ import java.util.Set;
 
 public class SavingInformation implements Serializable {
 	private final static long serialVersionUID = -8017224611162128282L;
-	private List<KanjiInformation> kanjiWords;
-	private List<RepeatingInformation> repeatingList;
-	private Set<KanjiInformation> problematicKanjis;
-	private Set<JapaneseWordInformation> problematicJapaneseWords;
+	private List<Kanji> kanjiWords;
+	private List<RepeatingData> repeatingList;
+	private Set<Kanji> problematicKanjis;
+	private Set<JapaneseWord> problematicJapaneseWords;
 	private RepeatingState repeatingState;
 	private ProblematicKanjisState problematicKanjisState;
 	private ApplicationSaveableState applicationSaveableState;
 	private String kanjiKoohiCookiesHeaders;
-	private List<JapaneseWordInformation> japaneseWordInformations;
-	private List<RepeatingInformation> japaneseWordsRepeatingLists;
+	private List<JapaneseWord> japaneseWords;
+	private List<RepeatingData> japaneseWordsRepeatingLists;
 
-	public SavingInformation(List<KanjiInformation> kanjiWords,
-			List<RepeatingInformation> repeatingList,
-			Set<KanjiInformation> problematicKanjis,
-			Set<JapaneseWordInformation> problematicJapaneseWords,
-			List<JapaneseWordInformation> japaneseWordInformations,
-			List<RepeatingInformation> japaneseWordsRepeatingLists) {
+	public SavingInformation(List<Kanji> kanjiWords,
+			List<RepeatingData> repeatingList,
+			Set<Kanji> problematicKanjis,
+			Set<JapaneseWord> problematicJapaneseWords,
+			List<JapaneseWord> japaneseWords,
+			List<RepeatingData> japaneseWordsRepeatingLists) {
 		this.kanjiWords = kanjiWords;
 		this.repeatingList = repeatingList;
 		this.problematicKanjis = problematicKanjis;
 		this.problematicJapaneseWords = problematicJapaneseWords;
-		this.japaneseWordInformations = japaneseWordInformations;
+		this.japaneseWords = japaneseWords;
 		this.japaneseWordsRepeatingLists = japaneseWordsRepeatingLists;
 	}
 
@@ -44,15 +44,15 @@ public class SavingInformation implements Serializable {
 		return !problematicJapaneseWords.isEmpty();
 	}
 
-	public List<KanjiInformation> getKanjiWords() {
+	public List<Kanji> getKanjiWords() {
 		return kanjiWords;
 	}
 
-	public List<RepeatingInformation> getRepeatingList() {
+	public List<RepeatingData> getRepeatingList() {
 		return repeatingList;
 	}
 
-	public Set<KanjiInformation> getProblematicKanjis() {
+	public Set<Kanji> getProblematicKanjis() {
 		return problematicKanjis;
 	}
 
@@ -100,15 +100,15 @@ public class SavingInformation implements Serializable {
 		return kanjiKoohiCookiesHeaders;
 	}
 
-	public List<JapaneseWordInformation> getJapaneseWordInformations() {
-		return japaneseWordInformations;
+	public List<JapaneseWord> getJapaneseWords() {
+		return japaneseWords;
 	}
 
-	public List<RepeatingInformation> getJapaneseWordsRepeatingInformations() {
+	public List<RepeatingData> getJapaneseWordsRepeatingInformations() {
 		return japaneseWordsRepeatingLists;
 	}
 
-	public Set<JapaneseWordInformation> getProblematicJapaneseWords() {
+	public Set<JapaneseWord> getProblematicJapaneseWords() {
 		return problematicJapaneseWords;
 	}
 }

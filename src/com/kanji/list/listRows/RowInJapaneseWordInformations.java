@@ -1,8 +1,7 @@
 package com.kanji.list.listRows;
 
 import com.guimaker.panels.MainPanel;
-import com.kanji.list.listElements.JapaneseWordInformation;
-import com.kanji.list.listElements.JapaneseWriting;
+import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
 import com.kanji.list.myList.ListPropertyInformation;
 import com.kanji.list.myList.ListRowData;
@@ -13,7 +12,7 @@ import javax.swing.*;
 import java.util.Map;
 
 public class RowInJapaneseWordInformations
-		implements ListRowMaker<JapaneseWordInformation> {
+		implements ListRowMaker<JapaneseWord> {
 	private JapaneseWordPanelCreator japaneseWordPanelCreator;
 	private Map<String, ListPropertyInformation> propertiesInformation;
 
@@ -23,7 +22,7 @@ public class RowInJapaneseWordInformations
 	}
 
 	@Override
-	public ListRowData createListRow(JapaneseWordInformation japaneseWord,
+	public ListRowData createListRow(JapaneseWord japaneseWord,
 			CommonListElements commonListElements, boolean forSearchPanel) {
 		MainPanel panel = new MainPanel(null);
 		JLabel rowNumberLabel = commonListElements.getRowNumberLabel();

@@ -3,7 +3,7 @@ package com.kanji.problematicWords;
 import com.kanji.constants.strings.Titles;
 import com.kanji.context.ContextOwner;
 import com.kanji.context.KanjiContext;
-import com.kanji.list.listElements.KanjiInformation;
+import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listRows.RowInKanjiRepeatingList;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.WordRow;
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ProblematicKanjiDisplayer
-		implements ProblematicWordsDisplayer<KanjiInformation>,
+		implements ProblematicWordsDisplayer<Kanji>,
 		ContextOwner<KanjiContext> {
 
 	private ProblematicKanjiPanel problematicKanjiPanel;
@@ -35,7 +35,7 @@ public class ProblematicKanjiDisplayer
 	private CookieManager cookieManager;
 	private KanjiContext kanjiContext;
 	private KanjiCharactersReader kanjiCharactersReader;
-	private MyList<KanjiInformation> wordsToReviewList;
+	private MyList<Kanji> wordsToReviewList;
 
 	public ProblematicKanjiDisplayer(ApplicationWindow applicationWindow,
 			ProblematicWordsController controller) {
@@ -51,27 +51,27 @@ public class ProblematicKanjiDisplayer
 		wordsToReviewList = new MyList<>(applicationWindow, null,
 				new RowInKanjiRepeatingList(controller),
 				Titles.PROBLEMATIC_KANJIS,
-				KanjiInformation.getInitializer());
+				Kanji.getInitializer());
 		controller.setProblematicWordsDisplayer(this);
 	}
 
 	@Override
-	public MyList<KanjiInformation> getWordsToReviewList() {
+	public MyList<Kanji> getWordsToReviewList() {
 		return wordsToReviewList;
 	}
 
 	@Override
-	public void browseWord(WordRow<KanjiInformation> wordRow) {
+	public void browseWord(WordRow<Kanji> wordRow) {
 		String uriText = KANJI_KOOHI_REVIEW_BASE_PAGE;
-		uriText += wordRow.getListElement().getKanjiID();
+		uriText += wordRow.getListElement().getId();
 		problematicKanjiPanel.showPageInKoohi(uriText);
 		kanjiContext = new KanjiContext(kanjiCharactersReader
-				.getKanjiById(wordRow.getListElement().getKanjiID()),
-				wordRow.getListElement().getKanjiID());
+				.getKanjiById(wordRow.getListElement().getId()),
+				wordRow.getListElement().getId());
 	}
 
 	@Override
-	public WordRow createWordRow(KanjiInformation listElement, int rowNumber) {
+	public WordRow createWordRow(Kanji listElement, int rowNumber) {
 		return new WordRow(listElement, rowNumber);
 	}
 

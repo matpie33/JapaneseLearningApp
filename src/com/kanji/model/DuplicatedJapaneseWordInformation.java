@@ -1,22 +1,22 @@
 package com.kanji.model;
 
-import com.kanji.list.listElements.JapaneseWordInformation;
+import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.ListElement;
 
 public class DuplicatedJapaneseWordInformation implements ListElement {
 
-	private JapaneseWordInformation japaneseWordInformation;
+	private JapaneseWord japaneseWord;
 	private int duplicatedWordRowNumber;
 
 	public DuplicatedJapaneseWordInformation(
-			JapaneseWordInformation japaneseWordInformation,
+			JapaneseWord japaneseWord,
 			int duplicatedWordRowNumber) {
-		this.japaneseWordInformation = japaneseWordInformation;
+		this.japaneseWord = japaneseWord;
 		this.duplicatedWordRowNumber = duplicatedWordRowNumber;
 	}
 
-	public JapaneseWordInformation getJapaneseWordInformation() {
-		return japaneseWordInformation;
+	public JapaneseWord getJapaneseWord() {
+		return japaneseWord;
 	}
 
 	public int getDuplicatedWordRowNumber() {
@@ -30,6 +30,6 @@ public class DuplicatedJapaneseWordInformation implements ListElement {
 
 	@Override
 	public boolean isEmpty() {
-		return japaneseWordInformation == null || duplicatedWordRowNumber == 0;
+		return japaneseWord == null || duplicatedWordRowNumber == 0;
 	}
 }

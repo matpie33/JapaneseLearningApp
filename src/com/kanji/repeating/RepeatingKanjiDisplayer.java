@@ -8,8 +8,8 @@ import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.kanji.list.listElements.KanjiInformation;
-import com.kanji.list.listElements.RepeatingInformation;
+import com.kanji.list.listElements.Kanji;
+import com.kanji.list.listElements.RepeatingData;
 import com.kanji.saving.RepeatingState;
 import com.kanji.timer.TimeSpent;
 import com.kanji.utilities.KanjiCharactersReader;
@@ -21,14 +21,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class RepeatingKanjiDisplayer
-		implements RepeatingWordDisplayer<KanjiInformation> {
+		implements RepeatingWordDisplayer<Kanji> {
 
 	private MainPanel fullWordInformationPanel;
 	private MainPanel recognizingWordPanel;
 	private JTextComponent wordTextArea;
 	private KanjiCharactersReader kanjiCharactersReader;
-	private Set<KanjiInformation> currentProblematicKanjis;
-	private Set<KanjiInformation> problematicKanjis;
+	private Set<Kanji> currentProblematicKanjis;
+	private Set<Kanji> problematicKanjis;
 
 	public RepeatingKanjiDisplayer(Font kanjiFont) {
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
@@ -47,19 +47,19 @@ public class RepeatingKanjiDisplayer
 		currentProblematicKanjis = new HashSet<>();
 	}
 
-	public void addProblematicKanjis(Set<KanjiInformation> integers) {
+	public void addProblematicKanjis(Set<Kanji> integers) {
 		problematicKanjis.addAll(integers);
 	}
 
 	@Override
-	public void showWordFullInformation(KanjiInformation kanjiInformation) {
+	public void showWordFullInformation(Kanji kanji) {
 		wordTextArea.setText(kanjiCharactersReader
-				.getKanjiById(kanjiInformation.getKanjiID()));
+				.getKanjiById(kanji.getId()));
 
 	}
 
 	@Override
-	public void setAllProblematicWords(Set<KanjiInformation> problematicWords) {
+	public void setAllProblematicWords(Set<Kanji> problematicWords) {
 		problematicKanjis = problematicWords;
 	}
 
@@ -79,33 +79,33 @@ public class RepeatingKanjiDisplayer
 	}
 
 	@Override
-	public void markWordAsProblematic(KanjiInformation kanjiInformation) {
-		problematicKanjis.add(kanjiInformation);
-		currentProblematicKanjis.add(kanjiInformation);
+	public void markWordAsProblematic(Kanji kanji) {
+		problematicKanjis.add(kanji);
+		currentProblematicKanjis.add(kanji);
 	}
 
 	@Override
-	public void removeWordFromProblematic(KanjiInformation kanjiInformation) {
-		problematicKanjis.remove(kanjiInformation);
-		currentProblematicKanjis.remove(kanjiInformation);
+	public void removeWordFromProblematic(Kanji kanji) {
+		problematicKanjis.remove(kanji);
+		currentProblematicKanjis.remove(kanji);
 	}
 
 	@Override
-	public String getWordHint(KanjiInformation kanjiInformation) {
-		return kanjiInformation.getKanjiKeyword();
+	public String getWordHint(Kanji kanji) {
+		return kanji.getKeyword();
 	}
 
 	@Override
-	public Set<KanjiInformation> getProblematicWords() {
+	public Set<Kanji> getProblematicWords() {
 		return currentProblematicKanjis;
 	}
 
 	@Override
 	public RepeatingState getRepeatingState(TimeSpent timeSpent,
-			RepeatingInformation repeatingInformation,
-			Set<KanjiInformation> words) {
-		RepeatingState<KanjiInformation> kanjiRepeatingState = new RepeatingState<>(
-				timeSpent, repeatingInformation, currentProblematicKanjis,
+			RepeatingData repeatingData,
+			Set<Kanji> words) {
+		RepeatingState<Kanji> kanjiRepeatingState = new RepeatingState<>(
+				timeSpent, repeatingData, currentProblematicKanjis,
 				words);
 		return kanjiRepeatingState;
 	}

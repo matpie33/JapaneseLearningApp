@@ -1,32 +1,32 @@
 package com.kanji.model;
 
-import com.kanji.list.listElements.KanjiInformation;
-import com.kanji.list.listElements.RepeatingInformation;
+import com.kanji.list.listElements.Kanji;
+import com.kanji.list.listElements.RepeatingData;
 
 import java.util.List;
 import java.util.Set;
 
 public class KanjisAndRepeatingInfo {
 
-	private List<KanjiInformation> kanjiInformations;
-	private List<RepeatingInformation> repeatingInformations;
+	private List<Kanji> kanjis;
+	private List<RepeatingData> repeatingData;
 	private Set<Integer> problematicKanjis;
 
-	public KanjisAndRepeatingInfo(List<KanjiInformation> kanjiInformations,
-			List<RepeatingInformation> repeatingInformations,
+	public KanjisAndRepeatingInfo(List<Kanji> kanjis,
+			List<RepeatingData> repeatingData,
 			Set<Integer> problematicKanjis) {
-		this.kanjiInformations = kanjiInformations;
-		this.repeatingInformations = repeatingInformations;
+		this.kanjis = kanjis;
+		this.repeatingData = repeatingData;
 		this.problematicKanjis = problematicKanjis;
 
 	}
 
-	public List<KanjiInformation> getKanjiInformations() {
-		return kanjiInformations;
+	public List<Kanji> getKanjis() {
+		return kanjis;
 	}
 
-	public List<RepeatingInformation> getRepeatingInformations() {
-		return repeatingInformations;
+	public List<RepeatingData> getRepeatingData() {
+		return repeatingData;
 	}
 
 	public Set<Integer> getProblematicKanjis() {

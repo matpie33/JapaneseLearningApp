@@ -5,7 +5,6 @@ import com.guimaker.enums.FillType;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.list.listElements.JapaneseWriting;
-import com.kanji.list.listElements.KanjiInformation;
 import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelCreatingService;
 import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.ListRowMaker;

@@ -2,7 +2,7 @@ package com.kanji.list.listElementPropertyManagers;
 
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.Prompts;
-import com.kanji.list.listElements.JapaneseWordInformation;
+import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.model.KanaAndKanjiStrings;
 import com.kanji.utilities.StringUtilities;
@@ -12,7 +12,7 @@ import java.util.*;
 
 public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 		implements
-		ListElementPropertyManager<List<KanaAndKanjiStrings>, JapaneseWordInformation> {
+		ListElementPropertyManager<List<KanaAndKanjiStrings>, JapaneseWord> {
 	//TODO I hate to create a class which is veeery similar to each other for every word element
 	private String errorDetails = "";
 	private boolean addingWord; //TODO rename in other places too (from kanaRequired)
@@ -49,7 +49,7 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 	@Override
 	public boolean isPropertyFound(
 			List<KanaAndKanjiStrings> kanaAndKanjiStrings,
-			JapaneseWordInformation wordInformation) {
+			JapaneseWord wordInformation) {
 
 		for (KanaAndKanjiStrings kanaAndKanjiStrings1 : kanaAndKanjiStrings) {
 			boolean japaneseWordContainsTheseWritings = false;
@@ -184,7 +184,7 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 	}
 
 	@Override
-	public void setProperty(JapaneseWordInformation japaneseWordInformation,
+	public void setProperty(JapaneseWord japaneseWord,
 			List<KanaAndKanjiStrings> kanaAndKanjiStringsList) {
 		for (KanaAndKanjiStrings kanjiStringsForGivenKana : kanaAndKanjiStringsList) {
 			Set<String> kanjiWritings = kanjiStringsForGivenKana.getKanji();
@@ -194,14 +194,14 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 				}
 			}
 			String kanaWriting = kanjiStringsForGivenKana.getKana();
-			japaneseWordInformation.addWritings(kanaWriting,
+			japaneseWord.addWritings(kanaWriting,
 					kanjiWritings.toArray(new String[] {}));
 		}
 
 	}
 
 	@Override
-	public void replaceProperty(JapaneseWordInformation propertyHolder,
+	public void replaceProperty(JapaneseWord propertyHolder,
 			List<KanaAndKanjiStrings> oldValueList,
 			List<KanaAndKanjiStrings> newValueList) {
 		if (oldValueList.size() > 1 || newValueList.size() > 1) {

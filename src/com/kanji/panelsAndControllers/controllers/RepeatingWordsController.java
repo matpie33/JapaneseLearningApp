@@ -4,7 +4,7 @@ import com.kanji.constants.enums.ApplicationPanels;
 import com.kanji.constants.enums.RepeatingWordsPanelState;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.ListElement;
-import com.kanji.list.listElements.RepeatingInformation;
+import com.kanji.list.listElements.RepeatingData;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.panels.RepeatingWordsPanel;
 import com.kanji.range.Range;
@@ -32,7 +32,7 @@ public class RepeatingWordsController
 	private MyList wordsList;
 	private RepeatingWordsPanelState repeatingWordsPanelState;
 	private TimeSpentHandler timeSpentHandler;
-	private RepeatingInformation repeatInfo;
+	private RepeatingData repeatInfo;
 	private RepeatingWordsPanel panel;
 	private List<ListElement> wordsLeftToRepeat;
 	private RepeatingWordDisplayer wordDisplayer;
@@ -103,7 +103,7 @@ public class RepeatingWordsController
 		for (ListElement keyword : repeatingState.getCurrentlyRepeatedWords()) {
 			wordsLeftToRepeat.add(keyword);
 		}
-		repeatInfo = repeatingState.getRepeatingInformation();
+		repeatInfo = repeatingState.getRepeatingData();
 		repeatInfo.setRepeatingDate(LocalDateTime.now());
 		timeSpentHandler.resumeTime(repeatingState.getTimeSpent());
 	}
@@ -171,7 +171,7 @@ public class RepeatingWordsController
 		wordsList = parent.getApplicationController().getActiveWordsList();
 	}
 
-	void setRepeatingInformation(RepeatingInformation info) {
+	void setRepeatingInformation(RepeatingData info) {
 		repeatInfo = info;
 	}
 

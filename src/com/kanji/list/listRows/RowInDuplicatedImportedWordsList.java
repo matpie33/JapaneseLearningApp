@@ -9,11 +9,8 @@ import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.JapanesePanelDisplayMode;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Prompts;
-import com.kanji.list.listElements.JapaneseWordInformation;
-import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelEditOrAddModeAction;
-import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelElementsMaker;
+import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
-import com.kanji.list.myList.ListPropertyInformation;
 import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.ListRowMaker;
 import com.kanji.list.myList.MyList;
@@ -27,18 +24,17 @@ import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.Map;
 
 public class RowInDuplicatedImportedWordsList
 		implements ListRowMaker<DuplicatedJapaneseWordInformation> {
 
 	private ApplicationWindow applicationWindow;
 	private DialogWindow parentDialog;
-	private MyList<JapaneseWordInformation> newJapaneseWords;
+	private MyList<JapaneseWord> newJapaneseWords;
 
 	public RowInDuplicatedImportedWordsList(ApplicationWindow applicationWindow,
 			DialogWindow parentDialog,
-			MyList<JapaneseWordInformation> newJapaneseWords) {
+			MyList<JapaneseWord> newJapaneseWords) {
 		this.applicationWindow = applicationWindow;
 		this.parentDialog = parentDialog;
 		this.newJapaneseWords = newJapaneseWords;
@@ -58,7 +54,7 @@ public class RowInDuplicatedImportedWordsList
 				applicationWindow.getApplicationController(), parentDialog,
 				JapanesePanelDisplayMode.EDIT)
 				.addJapanesePanelToExistingPanel(japaneseWordInformationPanel,
-						data.getJapaneseWordInformation());
+						data.getJapaneseWord());
 		AbstractButton buttonGoToRow = createButtonGoToRow(
 				data.getDuplicatedWordRowNumber());
 		panel.addRow(SimpleRowBuilder

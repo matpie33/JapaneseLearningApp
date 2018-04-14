@@ -15,10 +15,10 @@ public class OldToNewestVersionConverter {
 	private static Map<String, String> replacements = new HashMap<>();
 
 	static {
-		replacements.put("com.kanji.listElements.KanjiInformation",
-				"com.kanji.list.listElements.KanjiInformation");
-		replacements.put("com.kanji.listElements.RepeatingInformation",
-				"com.kanji.list.listElements.RepeatingInformation");
+		replacements.put("com.kanji.listElements.Kanji",
+				"com.kanji.list.listElements.Kanji");
+		replacements.put("com.kanji.listElements.RepeatingData",
+				"com.kanji.list.listElements.RepeatingData");
 		replacements.put("com.kanji.enums.ApplicationSaveableState",
 				"com.kanji.constants.enums.ApplicationSaveableState");
 	}

@@ -1,7 +1,7 @@
 package com.kanji.list.listRows.japanesePanelCreator;
 
 import com.guimaker.panels.MainPanel;
-import com.kanji.list.listElements.JapaneseWordInformation;
+import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelActions;
 import com.kanji.utilities.CommonListElements;
@@ -14,7 +14,7 @@ public class JapanesePanelServiceViewMode
 		implements JapanesePanelCreatingService {
 
 	private JapanesePanelElementsMaker elementsMaker;
-	private JapaneseWordInformation wordContainingWriting;
+	private JapaneseWord wordContainingWriting;
 	private TextFieldSelectionHandler textFieldSelectionHandler;
 
 	public JapanesePanelServiceViewMode(
@@ -25,7 +25,7 @@ public class JapanesePanelServiceViewMode
 	}
 
 	@Override
-	public void setWord(JapaneseWordInformation wordContainingWriting) {
+	public void setWord(JapaneseWord wordContainingWriting) {
 		this.wordContainingWriting = wordContainingWriting;
 	}
 

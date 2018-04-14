@@ -1,7 +1,7 @@
 package com.kanji.repeating;
 
 import com.kanji.list.listElements.ListElement;
-import com.kanji.list.listElements.RepeatingInformation;
+import com.kanji.list.listElements.RepeatingData;
 import com.kanji.saving.RepeatingState;
 import com.kanji.timer.TimeSpent;
 
@@ -27,7 +27,7 @@ public interface RepeatingWordDisplayer<Word extends ListElement> {
 	public Set<Word> getProblematicWords();
 
 	public RepeatingState getRepeatingState(TimeSpent timeSpent,
-			RepeatingInformation repeatingInformation, Set<Word> words);
+			RepeatingData repeatingData, Set<Word> words);
 
 	public boolean hasProblematicWords();
 

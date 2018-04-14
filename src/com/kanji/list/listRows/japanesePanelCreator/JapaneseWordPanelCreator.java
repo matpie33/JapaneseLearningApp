@@ -8,7 +8,7 @@ import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.JapanesePanelDisplayMode;
 import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
-import com.kanji.list.listElements.JapaneseWordInformation;
+import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listRows.RowInJapaneseWritingsList;
 import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelEditOrAddModeAction;
@@ -53,16 +53,16 @@ public class JapaneseWordPanelCreator {
 	}
 
 	public void addJapanesePanelToExistingPanel(MainPanel existingPanel,
-			JapaneseWordInformation japaneseWordInformation) {
+			JapaneseWord japaneseWord) {
 		japanesePanelServiceStore.getPanelCreatingService()
-				.setWord(japaneseWordInformation);
-		createElements(japaneseWordInformation);
-		addActions(japaneseWordInformation);
+				.setWord(japaneseWord);
+		createElements(japaneseWord);
+		addActions(japaneseWord);
 		addElementsToPanel(existingPanel);
 	}
 
 	private void createElements(
-			JapaneseWordInformation japaneseWordInformation) {
+			JapaneseWord japaneseWord) {
 		if (rowNumberLabel != null) {
 			rowNumberLabel.setForeground(labelsColor);
 		}
@@ -70,34 +70,33 @@ public class JapaneseWordPanelCreator {
 				new ComponentOptions().text(Labels.WORD_MEANING)
 						.foregroundColor(labelsColor));
 		wordMeaningText = CommonGuiElementsMaker
-				.createShortInput(japaneseWordInformation.getWordMeaning());
+				.createShortInput(japaneseWord.getMeaning());
 		partOfSpeechLabel = GuiMaker.createLabel(
 				new ComponentOptions().text(Labels.PART_OF_SPEECH)
 						.foregroundColor(labelsColor));
 		partOfSpeechCombobox = japanesePanelServiceStore.getElementsMaker()
 				.createComboboxForPartOfSpeech(
-						japaneseWordInformation.getPartOfSpeech());
-		writingsList = createWritingsList(japaneseWordInformation);
+						japaneseWord.getPartOfSpeech());
+		writingsList = createWritingsList(japaneseWord);
 		writingsLabel = GuiMaker.createLabel(
 				new ComponentOptions().text(Labels.WRITING_WAYS_IN_JAPANESE)
 						.foregroundColor(labelsColor));
 	}
 
-	private void addActions(JapaneseWordInformation japaneseWordInformation) {
+	private void addActions(JapaneseWord japaneseWord) {
 		JapanesePanelEditOrAddModeAction actionCreatingService = japanesePanelServiceStore
 				.getActionMaker();
 		//TODO do it only if its called for search or add panel
 		JapaneseWordMeaningChecker meaningChecker = actionCreatingService
-				.addWordMeaningTextFieldListeners(wordMeaningText,
-						japaneseWordInformation);
+				.addWordMeaningTextFieldListeners(wordMeaningText, japaneseWord);
 		actionCreatingService.addPartOfSpeechListener(partOfSpeechCombobox,
-				japaneseWordInformation);
+				japaneseWord);
 	}
 
 	public MyList<JapaneseWriting> createWritingsList(
-			JapaneseWordInformation japaneseWordInformation) {
+			JapaneseWord japaneseWord) {
 		writingsList = createJapaneseWritingsList();
-		japaneseWordInformation.getJapaneseWritings().stream()
+		japaneseWord.getWritings().stream()
 				.forEach(writingsList::addWord);
 		return writingsList;
 	}

@@ -11,8 +11,8 @@ import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.context.ContextOwner;
 import com.kanji.context.WordTypeContext;
-import com.kanji.list.listElements.JapaneseWordInformation;
-import com.kanji.list.listElements.KanjiInformation;
+import com.kanji.list.listElements.JapaneseWord;
+import com.kanji.list.listElements.Kanji;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.StartingController;
@@ -62,7 +62,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 	}
 
 	public JSplitPane getSplitPaneFor(Class listClass) {
-		if (listClass.equals(KanjiInformation.class)) {
+		if (listClass.equals(Kanji.class)) {
 			return kanjiRepeatingPanel.getListsSplitPane();
 		}
 		else {
@@ -125,10 +125,10 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 	}
 
 	public void switchToList(Class listType) {
-		if (listType.equals(KanjiInformation.class)) {
+		if (listType.equals(Kanji.class)) {
 			tabs.setSelectedIndex(0);
 		}
-		else if (listType.equals(JapaneseWordInformation.class)) {
+		else if (listType.equals(JapaneseWord.class)) {
 			tabs.setSelectedIndex(1);
 			//TODO use enum instead of class checking, and tab index to enum and use it instead of
 			// listToLabel map
@@ -142,10 +142,10 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 	public void updateProblematicWordsAmount(int problematicKanjisNumber,
 			Class activeWordsClass) {
 		String prefix;
-		if (activeWordsClass.equals(KanjiInformation.class)) {
+		if (activeWordsClass.equals(Kanji.class)) {
 			prefix = Prompts.PROBLEMATIC_KANJI;
 		}
-		else if (activeWordsClass.equals(JapaneseWordInformation.class)) {
+		else if (activeWordsClass.equals(JapaneseWord.class)) {
 			prefix = Prompts.PROBLEMATIC_WORDS;
 		}
 		else {
@@ -245,7 +245,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 		changeSaveStatus(SavingStatus.NO_CHANGES);
 		updateProblematicWordsAmount(
 				applicationController.getProblematicKanjis().size(),
-				KanjiInformation.class);
+				Kanji.class);
 	}
 
 	private JButton createShowProblematicKanjiButton() {
