@@ -11,8 +11,6 @@ public class Titles {
 	public static final String CONFIRM_DIALOG = "Potwierdzenie.";
 	public static final String KANJI_RANGES = "Przedziały kanji.";
 	public static final String HOTKEYS = "Skróty klawiszowe";
-	public static final String OPTIONS_FOR_SHOWING_PROBLEMATIC_KANJIS = "Opcje wyświetlania kanji";
-	public static final String KANJI_DIALOG = "Kanji";
 	public static final String KANJI_LIST = "Lista kanji";
 	public static final String JAPANESE_WORDS_LIST = "Lista słów";
 	public static final String KANJI_REPEATING_LIST = "Powtórki znaków kanji";

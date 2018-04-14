@@ -4,7 +4,6 @@ import com.kanji.constants.enums.SearchingDirection;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.ListElement;
-import com.kanji.list.listElements.ListElementData;
 import com.kanji.list.listElements.ListElementInitializer;
 import com.kanji.model.WordInMyListExistence;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;

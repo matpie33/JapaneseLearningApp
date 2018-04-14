@@ -1,10 +1,8 @@
 package com.kanji.list.listElements;
 
 import com.kanji.constants.enums.AdditionalInformationTag;
-import com.kanji.constants.enums.ListElementPropertyType;
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.enums.WordSearchOptions;
-import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElementAdditionalInformations.AdditionalInformation;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordWritingsChecker;
@@ -73,21 +71,6 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 			}
 		}
 		return false;
-	}
-
-	public static List<ListElementData<JapaneseWordInformation>> getElementsTypesAndLabels() {
-		List<ListElementData<JapaneseWordInformation>> listElementData = new ArrayList<>();
-		listElementData.add(new ListElementData<>(Labels.WORD_MEANING,
-				new JapaneseWordMeaningChecker(
-						WordSearchOptions.BY_WORD_FRAGMENT),
-				ListElementPropertyType.STRING_SHORT_WORD,
-				Labels.COMBOBOX_OPTION_SEARCH_BY_WORD_MEANING));
-		listElementData.add(new ListElementData<>(Labels.WORD_IN_KANA,
-				new JapaneseWordWritingsChecker(null /*TODO*/, false, false,
-						""), ListElementPropertyType.KANA_KANJI_WRITINGS,
-				Labels.COMBOBOX_OPTION_SEARCH_BY_KANA));
-
-		return listElementData;
 	}
 
 	public void setWordMeaning(String wordMeaning) {
@@ -186,6 +169,7 @@ public class JapaneseWordInformation implements ListElement, Serializable {
 
 	@Override
 	public boolean isEmpty() {
-		return getWordMeaning().isEmpty() || getKanaToKanjiWritingsMap().isEmpty();
+		return getWordMeaning().isEmpty() || getKanaToKanjiWritingsMap()
+				.isEmpty();
 	}
 }
