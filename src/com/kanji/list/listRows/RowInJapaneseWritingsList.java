@@ -5,7 +5,9 @@ import com.guimaker.enums.FillType;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.list.listElements.JapaneseWriting;
+import com.kanji.list.listElements.KanjiInformation;
 import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelCreatingService;
+import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.ListRowMaker;
 import com.kanji.utilities.CommonListElements;
 
@@ -21,14 +23,15 @@ public class RowInJapaneseWritingsList
 	}
 
 	@Override
-	public MainPanel createListRow(JapaneseWriting data,
-			CommonListElements commonListElements) {
+	public ListRowData createListRow(JapaneseWriting japaneseWriting,
+			CommonListElements commonListElements, boolean forSearchPanel) {
 		rowPanel = new MainPanel(BasicColors.OCEAN_BLUE);
 		rowPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE,
 				japanesePanelCreatingService
-						.addWritingsRow(data, commonListElements,
+						.addWritingsRow(japaneseWriting, commonListElements,
 								rowPanel)));
-		return rowPanel;
+		ListRowData rowData = new ListRowData(rowPanel);
+		return rowData;
 	}
 
 }

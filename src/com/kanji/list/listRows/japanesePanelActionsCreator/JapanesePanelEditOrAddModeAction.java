@@ -4,6 +4,7 @@ import com.kanji.constants.enums.JapanesePanelDisplayMode;
 import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.Prompts;
+import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordWritingsChecker;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.JapaneseWriting;
@@ -28,10 +29,10 @@ public class JapanesePanelEditOrAddModeAction {
 		this.applicationController = applicationController;
 	}
 
-	public void addWordMeaningTextFieldListeners(
+	public JapaneseWordMeaningChecker addWordMeaningTextFieldListeners(
 			JTextComponent wordMeaningTextField,
 			JapaneseWordInformation japaneseWordInformation) {
-		JapanesePanelActions
+		return JapanesePanelActions
 				.addWordMeaningPropertyChangeListener(wordMeaningTextField,
 						japaneseWordInformation,
 						WordSearchOptions.BY_FULL_EXPRESSION, parentDialog,

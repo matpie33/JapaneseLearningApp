@@ -128,7 +128,6 @@ public class ApplicationController implements ApplicationStateManager {
 				japaneseWordPanelCreator);
 		japaneseWords = new MyList<>(parent, this,
 				rowInJapaneseWordInformations, Titles.JAPANESE_WORDS_LIST,
-				JapaneseWordInformation.getElementsTypesAndLabels(),
 				JapaneseWordInformation.getInitializer());
 
 		JapaneseWordInformation cat = new JapaneseWordInformation(
@@ -157,7 +156,6 @@ public class ApplicationController implements ApplicationStateManager {
 				new RowInRepeatingList(), Titles.JAPANESE_REPEATING_LIST,
 				new ListConfiguration().enableWordAdding(false)
 						.showButtonsLoadNextPreviousWords(false),
-				RepeatingInformation.getElementsTypesAndLabels(),
 				RepeatingInformation.getInitializer());
 		japaneseWordsRepeatingDates.addWord(new RepeatingInformation("abc",
 				LocalDateTime.of(1993, 11, 13, 13, 25), true, "3 minuty"));
@@ -333,7 +331,6 @@ public class ApplicationController implements ApplicationStateManager {
 	private void initializeKanjiList() {
 		kanjiList = new MyList<>(parent, this,
 				new RowInKanjiInformations(parent), Titles.KANJI_LIST,
-				KanjiInformation.getElementsTypesAndLabels(),
 				KanjiInformation.getInitializer());
 
 		for (int i = 1; i <= 510; i++) {
@@ -352,7 +349,6 @@ public class ApplicationController implements ApplicationStateManager {
 				new RowInRepeatingList(), Titles.KANJI_REPEATING_LIST,
 				new ListConfiguration().showButtonsLoadNextPreviousWords(false)
 						.enableWordAdding(false),
-				RepeatingInformation.getElementsTypesAndLabels(),
 				RepeatingInformation.getInitializer());
 		kanjiRepeatingDates.addWord(new RepeatingInformation("abc",
 				LocalDateTime.of(1993, 11, 13, 13, 25), true, "3 minuty"));

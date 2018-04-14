@@ -17,7 +17,6 @@ public class MyList<Word extends ListElement> {
 	private DialogWindow parent;
 	private ApplicationController applicationController;
 	private ListWordsController<Word> listController;
-	private List<ListElementData<Word>> listElementData;
 	private ListElementInitializer<Word> wordInitializer;
 	private Class listElementClass;
 	private String title;
@@ -27,17 +26,25 @@ public class MyList<Word extends ListElement> {
 			ApplicationController applicationController,
 			ListRowMaker<Word> listRowMaker, String title,
 			ListConfiguration listConfiguration,
-			List<ListElementData<Word>> listElementData,
 			ListElementInitializer wordInitializer) {
 		this.listRowMaker = listRowMaker;
 		this.applicationController = applicationController;
 		this.parent = parentDialog;
-		this.listElementData = listElementData;
 		listController = new ListWordsController<>(listConfiguration,
 				listRowMaker, title, applicationController, wordInitializer);
 		this.wordInitializer = wordInitializer;
 		this.title = title;
 	}
+
+
+	public MyList(DialogWindow parentDialog,
+			ApplicationController applicationController,
+			ListRowMaker<Word> listRowMaker, String title,
+			ListElementInitializer wordInitializer) {
+		this(parentDialog, applicationController, listRowMaker, title,
+				new ListConfiguration(), wordInitializer);
+	}
+
 
 	public ListElementInitializer<Word> getWordInitializer() {
 		return wordInitializer;
@@ -45,15 +52,6 @@ public class MyList<Word extends ListElement> {
 
 	public ListRowMaker<Word> getListRowMaker() {
 		return listRowMaker;
-	}
-
-	public MyList(DialogWindow parentDialog,
-			ApplicationController applicationController,
-			ListRowMaker<Word> listRowMaker, String title,
-			List<ListElementData<Word>> listElementData,
-			ListElementInitializer wordInitializer) {
-		this(parentDialog, applicationController, listRowMaker, title,
-				new ListConfiguration(), listElementData, wordInitializer);
 	}
 
 	public void inheritScrollPane() {
@@ -296,10 +294,6 @@ public class MyList<Word extends ListElement> {
 
 	public List<Word> getNotHighlightedWords() {
 		return listController.getWordsByHighlight(false);
-	}
-
-	public List<ListElementData<Word>> getListElementData() {
-		return listElementData;
 	}
 
 	public int getMaximumDisplayedWords() {

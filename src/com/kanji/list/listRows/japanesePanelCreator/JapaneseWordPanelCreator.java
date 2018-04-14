@@ -7,6 +7,7 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.JapanesePanelDisplayMode;
 import com.kanji.constants.strings.Labels;
+import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
 import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listRows.RowInJapaneseWritingsList;
@@ -20,7 +21,6 @@ import com.kanji.windows.DialogWindow;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class JapaneseWordPanelCreator {
 
@@ -86,8 +86,10 @@ public class JapaneseWordPanelCreator {
 	private void addActions(JapaneseWordInformation japaneseWordInformation) {
 		JapanesePanelEditOrAddModeAction actionCreatingService = japanesePanelServiceStore
 				.getActionMaker();
-		actionCreatingService.addWordMeaningTextFieldListeners(wordMeaningText,
-				japaneseWordInformation);
+		//TODO do it only if its called for search or add panel
+		JapaneseWordMeaningChecker meaningChecker = actionCreatingService
+				.addWordMeaningTextFieldListeners(wordMeaningText,
+						japaneseWordInformation);
 		actionCreatingService.addPartOfSpeechListener(partOfSpeechCombobox,
 				japaneseWordInformation);
 	}
@@ -108,8 +110,7 @@ public class JapaneseWordPanelCreator {
 				new ListConfiguration().enableWordAdding(false)
 						.inheritScrollbar(true).enableWordSearching(false)
 						.showButtonsLoadNextPreviousWords(false)
-						.skipTitle(true), new ArrayList<>(),
-				JapaneseWriting.getInitializer());
+						.skipTitle(true), JapaneseWriting.getInitializer());
 	}
 
 	private void addElementsToPanel(MainPanel japaneseWordPanel) {

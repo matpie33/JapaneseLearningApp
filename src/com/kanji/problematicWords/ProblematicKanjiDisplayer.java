@@ -51,7 +51,6 @@ public class ProblematicKanjiDisplayer
 		wordsToReviewList = new MyList<>(applicationWindow, null,
 				new RowInKanjiRepeatingList(controller),
 				Titles.PROBLEMATIC_KANJIS,
-				KanjiInformation.getElementsTypesAndLabels(),
 				KanjiInformation.getInitializer());
 		controller.setProblematicWordsDisplayer(this);
 	}

@@ -6,26 +6,34 @@ import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
+import com.kanji.constants.strings.ListPropertiesNames;
 import com.kanji.constants.strings.Prompts;
+import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
+import com.kanji.list.listElements.KanjiInformation;
 import com.kanji.list.listElements.RepeatingInformation;
+import com.kanji.list.myList.ListPropertyInformation;
+import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.ListRowMaker;
 import com.kanji.utilities.CommonListElements;
 
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RowInRepeatingList implements ListRowMaker<RepeatingInformation> {
 
 	private final Color labelsColor = Color.WHITE;
 
 	@Override
-	public MainPanel createListRow(RepeatingInformation rep,
-			CommonListElements commonListElements) {
-		String word = rep.getRepeatingRange();
-		String time = rep.getTimeSpentOnRepeating();
-		LocalDateTime date1 = rep.getRepeatingDate();
+	public ListRowData createListRow(RepeatingInformation repeatingData,
+			CommonListElements commonListElements, boolean forSearchPanel) {
+		String word = repeatingData.getRepeatingRange();
+		String time = repeatingData.getTimeSpentOnRepeating();
+		LocalDateTime date1 = repeatingData.getRepeatingDate();
 
 		JLabel repeatedWords = GuiMaker.createLabel(new ComponentOptions()
 				.text(Prompts.REPEATING_WORDS_RANGE + word)
@@ -53,7 +61,14 @@ public class RowInRepeatingList implements ListRowMaker<RepeatingInformation> {
 				commonListElements.getRowNumberLabel(), date)
 				.nextRow(repeatedWords).nextRow(timeSpent)
 				.nextRow(FillType.NONE, delete));
-		return panel;
+
+		ListRowData rowData = new ListRowData(panel);
+
+		if (forSearchPanel){
+			//TODO implement it for searching repeating list to work
+		}
+
+		return rowData;
 
 	}
 

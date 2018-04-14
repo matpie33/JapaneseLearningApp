@@ -57,7 +57,6 @@ public class ProblematicJapaneseWordsDisplayer
 				new ListConfiguration().enableWordAdding(false)
 						.withAdditionalNavigationButtons(
 								createButtonSearchWord()),
-				JapaneseWordInformation.getElementsTypesAndLabels(),
 				JapaneseWordInformation.getInitializer());
 		controller.setProblematicWordsDisplayer(this);
 		kanjiInformations = applicationWindow.getApplicationController()

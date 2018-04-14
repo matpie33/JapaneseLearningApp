@@ -2,13 +2,15 @@ package com.kanji.panelsAndControllers.controllers;
 
 import com.kanji.constants.enums.SearchingDirection;
 import com.kanji.constants.enums.WordSearchOptions;
+import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.myList.MyList;
-import com.kanji.model.TextInputAndPropertyManagerForListElement;
 import com.kanji.panelsAndControllers.panels.SearchWordPanel;
 
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 import java.awt.event.ActionEvent;
+import java.util.Map;
 
 public class SearchWordController<Word extends ListElement> {
 
@@ -26,7 +28,7 @@ public class SearchWordController<Word extends ListElement> {
 			public void actionPerformed(ActionEvent e) {
 				JComboBox comboBox = (JComboBox) e.getSource();
 				String optionLabel = (String) comboBox.getSelectedItem();
-				searchWordPanel.switchToPanel(optionLabel);
+				searchWordPanel.switchToListProperty(optionLabel);
 			}
 		};
 	}
@@ -46,16 +48,15 @@ public class SearchWordController<Word extends ListElement> {
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				TextInputAndPropertyManagerForListElement textInputAndPropertyManagerForListElement = searchWordPanel
-						.getTextInputAndPropertyManager();
+				Map<JTextComponent, ListElementPropertyManager> textInputAndPropertyManagerForListElement = searchWordPanel
+						.getTextFieldsWithPropertyManagersForCurrentProperty();
+				JTextComponent textField = textInputAndPropertyManagerForListElement
+						.entrySet().iterator().next().getKey();
+				ListElementPropertyManager listElementPropertyManager = textInputAndPropertyManagerForListElement
+						.entrySet().iterator().next().getValue();
 				list.findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(
-						textInputAndPropertyManagerForListElement
-								.getListElementPropertyManager(),
-						textInputAndPropertyManagerForListElement
-								.getListElementPropertyManager().
-								validateInputAndConvertToProperty(
-										textInputAndPropertyManagerForListElement
-												.getTextComponent()),
+						listElementPropertyManager, listElementPropertyManager.
+								validateInputAndConvertToProperty(textField),
 						searchingDirection);
 			}
 		};

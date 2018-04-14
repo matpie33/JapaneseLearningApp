@@ -13,6 +13,8 @@ import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelEditOrAddModeAction;
 import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelElementsMaker;
 import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
+import com.kanji.list.myList.ListPropertyInformation;
+import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.ListRowMaker;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.DuplicatedJapaneseWordInformation;
@@ -25,6 +27,7 @@ import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.Map;
 
 public class RowInDuplicatedImportedWordsList
 		implements ListRowMaker<DuplicatedJapaneseWordInformation> {
@@ -42,8 +45,8 @@ public class RowInDuplicatedImportedWordsList
 	}
 
 	@Override
-	public MainPanel createListRow(DuplicatedJapaneseWordInformation data,
-			CommonListElements commonListElements) {
+	public ListRowData createListRow(DuplicatedJapaneseWordInformation data,
+			CommonListElements commonListElements, boolean forSearchPanel) {
 		MainPanel panel = new MainPanel(null);
 		JLabel rowNumber = GuiMaker.createLabel(
 				new ComponentOptions().text(Prompts.ROW_NUMBER)
@@ -63,7 +66,8 @@ public class RowInDuplicatedImportedWordsList
 						buttonGoToRow));
 		panel.addRow(SimpleRowBuilder.createRow(FillType.BOTH,
 				japaneseWordInformationPanel.getPanel()));
-		return panel;
+		ListRowData rowData = new ListRowData(panel);
+		return rowData;
 	}
 
 	private AbstractButton createButtonGoToRow(int rowNumber) {

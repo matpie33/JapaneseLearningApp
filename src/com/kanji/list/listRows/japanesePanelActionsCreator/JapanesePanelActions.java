@@ -31,15 +31,18 @@ public class JapanesePanelActions {
 						exceptionMessage, defaultValue, kanaRequired));
 	}
 
-	public static void addWordMeaningPropertyChangeListener(
+	public static JapaneseWordMeaningChecker addWordMeaningPropertyChangeListener(
 			JTextComponent wordMeaningTextField,
 			JapaneseWordInformation japaneseWordInformation,
 			WordSearchOptions meaningSearchOptions, DialogWindow parentDialog,
 			MyList<JapaneseWordInformation> wordsList) {
+		JapaneseWordMeaningChecker japaneseWordMeaningChecker = new JapaneseWordMeaningChecker(
+				meaningSearchOptions);
 		addPropertyChangeHandler(wordMeaningTextField, japaneseWordInformation,
-				true, "", new JapaneseWordMeaningChecker(meaningSearchOptions),
+				true, "", japaneseWordMeaningChecker,
 				ExceptionsMessages.JAPANESE_WORD_MEANING_ALREADY_DEFINED,
 				parentDialog, wordsList);
+		return japaneseWordMeaningChecker;
 	}
 
 	public static JTextComponent withSwitchToJapaneseActionOnClick(

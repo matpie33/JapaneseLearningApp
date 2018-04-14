@@ -145,8 +145,8 @@ public class ListPanelMaker<Word extends ListElement>
 		if (shouldShowWord) {
 			AbstractSimpleRow abstractSimpleRow = SimpleRowBuilder
 					.createRow(FillType.HORIZONTAL, Anchor.NORTH,
-							listRow.createListRow(word, commonListElements)
-									.getPanel());
+							listRow.createListRow(word, commonListElements,
+									false).getRowPanel().getPanel());
 			row = loadWordsHandler.showWord(abstractSimpleRow);
 		}
 		else if (!buttonLoadNextWords.isEnabled()) {

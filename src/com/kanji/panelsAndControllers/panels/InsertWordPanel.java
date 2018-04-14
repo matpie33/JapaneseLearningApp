@@ -60,7 +60,7 @@ public class InsertWordPanel<Word extends ListElement>
 		labelsColor = Color.BLACK;
 		MainPanel addWordPanel = wordsList.getListRowMaker()
 				.createListRow(word, CommonListElements.forSingleRowOnly(
-						labelsColor));
+						labelsColor), false).getRowPanel();
 		mainPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.BOTH, addWordPanel.getPanel())
 				.useAllExtraVerticalSpace());

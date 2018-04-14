@@ -5,23 +5,19 @@ import com.guimaker.enums.FillType;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
-import com.kanji.constants.enums.JapanesePanelDisplayMode;
 import com.kanji.constants.enums.SearchingDirection;
 import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
-import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElementPropertyManagers.WordSearchOptionsHolder;
-import com.kanji.list.listElements.JapaneseWordInformation;
 import com.kanji.list.listElements.ListElement;
-import com.kanji.list.listElements.ListElementData;
-import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
+import com.kanji.list.myList.ListPropertyInformation;
+import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.MyList;
-import com.kanji.model.TextInputAndPropertyManagerForListElement;
 import com.kanji.panelsAndControllers.controllers.SearchWordController;
-import com.kanji.utilities.CommonGuiElementsMaker;
+import com.kanji.utilities.CommonListElements;
 import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
@@ -29,30 +25,25 @@ import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class SearchWordPanel<Word extends ListElement>
 		extends AbstractPanelWithHotkeysInfo {
 
-	private MyList<Word> list;
 	private CardLayout cardLayout;
 	private JPanel searchingPanel;
 	private SearchWordController<Word> searchWordController;
-	private String selectedComboboxLabel;
-	private List<String> comboboxLabels;
-	private List<TextInputAndPropertyManagerForListElement> listOfInputsAndPropertyManagersForListElementType;
-	private ApplicationWindow applicationWindow;
+	private ListRowData listRowData;
+	private String currentlySearchedProperty;
+	private MyList<Word> searchedList;
 
 	public SearchWordPanel(ApplicationWindow applicationWindow,
-			MyList<Word> list) {
-		searchWordController = new SearchWordController<>(this, list);
-		this.list = list;
-		listOfInputsAndPropertyManagersForListElementType = new ArrayList<>();
-		comboboxLabels = new ArrayList<>();
-		this.applicationWindow = applicationWindow;
+			MyList<Word> searchedList) {
+		searchWordController = new SearchWordController<>(this, searchedList);
+		this.searchedList = searchedList;
 	}
 
 	@Override
@@ -67,12 +58,33 @@ public class SearchWordPanel<Word extends ListElement>
 		searchingPanel = new JPanel(this.cardLayout);
 		searchingPanel.setOpaque(false);
 
-		createPanelForElementType();
-		JComboBox<String> comboBox = createCombobox();
+		listRowData = searchedList.getListRowMaker().createListRow(
+				searchedList.getWordInitializer().initializeElement(),
+				CommonListElements.forSingleRowOnly(Color.BLACK), true);
+		if (listRowData.getRowPropertiesData().isPresent()) {
+			for (Map.Entry<String, ListPropertyInformation> listPropertyData : listRowData
+					.getRowPropertiesData().get().entrySet()) {
+				MainPanel rowForProperty = new MainPanel(null);
+				rowForProperty.addRow(listPropertyData.getValue()
+						.getRowForProperty());
+				Map<JTextComponent, ListElementPropertyManager> textFieldsWithPropertyManagers = listPropertyData
+						.getValue().getTextFieldsWithPropertyManagers();
+				if (textFieldsWithPropertyManagers.values().iterator()
+						.next() instanceof WordSearchOptionsHolder) {
+					addWordSearchOptions(rowForProperty);
+				}
+				searchingPanel.add(listPropertyData.getKey(),
+						rowForProperty.getPanel());
+			}
+		}
+
+		JComboBox<String> comboBox = createComboboxForSearchedProperty();
 		addHotkeyForSwitchingComboboxValue(comboBox);
 
 		MainPanel searchPanel = new MainPanel(null);
-
+		JLabel prompt = new JLabel(Prompts.SEARCH_DIALOG);
+		searchPanel.addRow(SimpleRowBuilder
+				.createRow(FillType.NONE, Anchor.CENTER, prompt));
 		searchPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.WEST, searchOptionPrompt,
 						comboBox));
@@ -110,103 +122,41 @@ public class SearchWordPanel<Word extends ListElement>
 				HotkeysDescriptions.SWITCH_SEARCH_CRITERIA);
 	}
 
-	private void createPanelForElementType() {
-		for (ListElementData elementData : list.getListElementData()) {
-			comboboxLabels.add(elementData.getComboboxLabel());
-			JTextComponent textInputForElementType;
-			JPanel panelForElementType;
+	private void addWordSearchOptions(MainPanel panel) {
 
-			switch (elementData.getListElementPropertyType()) {
-			case STRING_LONG_WORD:
-				textInputForElementType = CommonGuiElementsMaker
-						.createShortInput("");
-				panelForElementType = createSearchByWordPanel(
-						textInputForElementType).getPanel();
-				break;
-			case NUMERIC_INPUT:
-				textInputForElementType = CommonGuiElementsMaker
-						.createKanjiIdInput();
-				panelForElementType = createSearchByNumericInputPanel(
-						textInputForElementType).getPanel();
-				break;
-			case STRING_SHORT_WORD:
-				textInputForElementType = CommonGuiElementsMaker
-						.createTextField("");
-				panelForElementType = createSearchByWordPanel(
-						textInputForElementType).getPanel();
-				break;
-			case KANA_KANJI_WRITINGS:
-				JapaneseWordPanelCreator japaneseWordPanelCreator = new JapaneseWordPanelCreator(
-						applicationWindow.getApplicationController(),
-						applicationWindow, JapanesePanelDisplayMode.EDIT);
-				panelForElementType = japaneseWordPanelCreator
-						.createWritingsList(
-								JapaneseWordInformation.getInitializer()
-										.initializeElement()).getPanel();
-				textInputForElementType = null;
-				//						japaneseWordPanelCreator
-				//						.getKanaToKanjiWritingsTextComponents().keySet()
-				//						.iterator().next();
-				//TODO reimplement
-				break;
-
-			default:
-				throw new RuntimeException("Unknown type of list word element");
-			}
-			listOfInputsAndPropertyManagersForListElementType
-					.add(new TextInputAndPropertyManagerForListElement(
-							elementData.getComboboxLabel(),
-							textInputForElementType,
-							elementData.getListElementPropertyManager()));
-			searchingPanel
-					.add(elementData.getComboboxLabel(), panelForElementType);
-		}
-	}
-
-	private MainPanel createSearchByNumericInputPanel(
-			JTextComponent inputField) {
-		MainPanel kanjiIdSearchPanel = new MainPanel(null, true);
-		kanjiIdSearchPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.NONE, Anchor.NORTHWEST,
-						new JLabel(Labels.KANJI_ID_LABEL), inputField));
-		return kanjiIdSearchPanel;
-	}
-
-	private MainPanel createSearchByWordPanel(JTextComponent inputField) {
-		JLabel prompt = new JLabel(Prompts.SEARCH_DIALOG);
 		List<JRadioButton> radioButtons = Arrays
-				.asList(WordSearchOptions.values()).stream().
-						map(option -> createRadioButtonForSearchingOption(
-								option)).collect(Collectors.toList());
+				.stream(WordSearchOptions.values()).
+						map(this::createRadioButtonForSearchingOption)
+				.collect(Collectors.toList());
 		radioButtons.get(0).setSelected(true);
 		addRadioButtonsToGroup(radioButtons);
-		MainPanel keywordSearchPanel = new MainPanel(null);
-		keywordSearchPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.HORIZONTAL, prompt, inputField)
-				.fillHorizontallySomeElements(inputField));
-		radioButtons.stream().forEach(radioButton -> keywordSearchPanel
-				.addRow(SimpleRowBuilder
-						.createRow(FillType.HORIZONTAL, radioButton)));
-		return keywordSearchPanel;
+		radioButtons.forEach(radioButton -> panel.addRow(SimpleRowBuilder
+				.createRow(FillType.HORIZONTAL, radioButton)));
 	}
 
-	private JComboBox<String> createCombobox() {
+	private JComboBox<String> createComboboxForSearchedProperty() {
 		JComboBox<String> comboBox = new JComboBox<>();
-		comboboxLabels.stream().forEach(comboBox::addItem);
-
+		listRowData.getRowPropertiesData().get().keySet()
+				.forEach(comboBox::addItem);
 		comboBox.addActionListener(
 				searchWordController.createActionSwitchSearchingByOption());
 		comboBox.setSelectedIndex(0);
 		return comboBox;
 	}
 
-	public void switchToPanel(String selectedComboboxLabel) {
-		this.selectedComboboxLabel = selectedComboboxLabel;
-		cardLayout.show(searchingPanel, selectedComboboxLabel);
-		SwingUtilities.invokeLater(
-				() -> getTextInputAndPropertyManager().getTextComponent()
-						.requestFocusInWindow());
+	public void switchToListProperty(String property) {
+		this.currentlySearchedProperty = property;
+		cardLayout.show(searchingPanel, property);
+		SwingUtilities.invokeLater(this::focusFirstTextfieldForCurrentProperty);
 
+	}
+
+	private void focusFirstTextfieldForCurrentProperty() {
+		Map<JTextComponent, ListElementPropertyManager> textFieldsWithPropertyManagers = listRowData
+				.getRowPropertiesData().get().get(currentlySearchedProperty)
+				.getTextFieldsWithPropertyManagers();
+		textFieldsWithPropertyManagers.keySet().iterator().next()
+				.requestFocusInWindow();
 	}
 
 	private JRadioButton createRadioButtonForSearchingOption(
@@ -239,23 +189,20 @@ public class SearchWordPanel<Word extends ListElement>
 				ButtonsNames.FIND_NEXT, HotkeysDescriptions.SEARCH_NEXT_KANJI);
 	}
 
-	public TextInputAndPropertyManagerForListElement getTextInputAndPropertyManager() {
-		for (TextInputAndPropertyManagerForListElement textAndProperty : listOfInputsAndPropertyManagersForListElementType) {
-			if (textAndProperty.getComboboxLabel()
-					.equals(selectedComboboxLabel)) {
-				return textAndProperty;
-			}
-		}
-		return null;
-	}
-
 	public void setSearchOptions(WordSearchOptions wordSearchOptions) {
-		ListElementPropertyManager currentListElementPropertyManager = getTextInputAndPropertyManager()
-				.getListElementPropertyManager();
+		Map<JTextComponent, ListElementPropertyManager> textFieldsWithPropertyManagers = getTextFieldsWithPropertyManagersForCurrentProperty();
+		ListElementPropertyManager currentListElementPropertyManager = textFieldsWithPropertyManagers
+				.values().iterator().next();
 		if (currentListElementPropertyManager instanceof WordSearchOptionsHolder) {
 			((WordSearchOptionsHolder) currentListElementPropertyManager)
 					.setWordSearchOptions(wordSearchOptions);
 		}
+	}
+
+	public Map<JTextComponent, ListElementPropertyManager> getTextFieldsWithPropertyManagersForCurrentProperty() {
+		return listRowData.getRowPropertiesData().get()
+				.get(currentlySearchedProperty)
+				.getTextFieldsWithPropertyManagers();
 	}
 
 }
