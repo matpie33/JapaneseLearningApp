@@ -54,7 +54,7 @@ public class RowInDuplicatedImportedWordsList
 				applicationWindow.getApplicationController(), parentDialog,
 				JapanesePanelDisplayMode.EDIT)
 				.addJapanesePanelToExistingPanel(japaneseWordInformationPanel,
-						data.getJapaneseWord());
+						data.getJapaneseWord(), forSearchPanel);
 		AbstractButton buttonGoToRow = createButtonGoToRow(
 				data.getDuplicatedWordRowNumber());
 		panel.addRow(SimpleRowBuilder

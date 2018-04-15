@@ -28,11 +28,10 @@ public class RowInJapaneseWordInformations
 		JLabel rowNumberLabel = commonListElements.getRowNumberLabel();
 		japaneseWordPanelCreator.setRowNumberLabel(rowNumberLabel);
 		japaneseWordPanelCreator.setLabelsColor(commonListElements.getLabelsColor());
-		japaneseWordPanelCreator
-				.addJapanesePanelToExistingPanel(panel, japaneseWord);
+		ListRowData rowData = japaneseWordPanelCreator
+				.addJapanesePanelToExistingPanel(panel, japaneseWord, forSearchPanel);
 		japaneseWordPanelCreator.focusMeaningTextfield();
 
-		ListRowData rowData = new ListRowData(panel);
 
 		return rowData;
 	}

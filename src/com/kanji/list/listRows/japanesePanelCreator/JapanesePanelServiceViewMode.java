@@ -16,12 +16,15 @@ public class JapanesePanelServiceViewMode
 	private JapanesePanelElementsMaker elementsMaker;
 	private JapaneseWord wordContainingWriting;
 	private TextFieldSelectionHandler textFieldSelectionHandler;
+	private JapanesePanelActions actionsCreator;
 
 	public JapanesePanelServiceViewMode(
 			JapanesePanelElementsMaker elementsMaker,
-			TextFieldSelectionHandler textFieldSelectionHandler) {
+			TextFieldSelectionHandler textFieldSelectionHandler,
+			JapanesePanelActions actionsCreator) {
 		this.elementsMaker = elementsMaker;
 		this.textFieldSelectionHandler = textFieldSelectionHandler;
+		this.actionsCreator = actionsCreator;
 	}
 
 	@Override
@@ -33,12 +36,12 @@ public class JapanesePanelServiceViewMode
 	public JComponent[] addWritingsRow(JapaneseWriting japaneseWriting,
 			CommonListElements commonListElements, MainPanel rowPanel) {
 		List<JComponent> rowElements = new ArrayList<>();
-		rowElements.add(JapanesePanelActions.selectableTextfield(elementsMaker
+		rowElements.add(actionsCreator.selectableTextfield(elementsMaker
 						.createKanaTextField(japaneseWriting.getKanaWriting(),
 								japaneseWriting, wordContainingWriting, false),
 				textFieldSelectionHandler));
 		for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
-			rowElements.add(JapanesePanelActions.selectableTextfield(
+			rowElements.add(actionsCreator.selectableTextfield(
 					elementsMaker
 							.createKanjiTextField(kanjiWriting, japaneseWriting,
 									wordContainingWriting, false),

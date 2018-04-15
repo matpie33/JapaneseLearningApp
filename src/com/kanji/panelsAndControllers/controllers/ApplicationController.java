@@ -130,22 +130,18 @@ public class ApplicationController implements ApplicationStateManager {
 				rowInJapaneseWordInformations, Titles.JAPANESE_WORDS_LIST,
 				JapaneseWord.getInitializer());
 
-		JapaneseWord cat = new JapaneseWord(
-				PartOfSpeech.NOUN, "kot");
+		JapaneseWord cat = new JapaneseWord(PartOfSpeech.NOUN, "kot");
 		cat.addWritings("ねこ", "頭骨");
 		japaneseWords.addWord(cat);
-		JapaneseWord dog2 = new JapaneseWord(
-				PartOfSpeech.NOUN, "pies");
+		JapaneseWord dog2 = new JapaneseWord(PartOfSpeech.NOUN, "pies");
 		dog2.addWritings("いぬ", "二", "三", "四");
 		japaneseWords.addWord(dog2);
-		JapaneseWord verb = new JapaneseWord(
-				PartOfSpeech.VERB, "otwierać");
+		JapaneseWord verb = new JapaneseWord(PartOfSpeech.VERB, "otwierać");
 		verb.addWritings("あける", "開ける", "空ける", "明ける");
 		verb.addWritings("ひらける", "開ける", "空ける", "明ける");
 		verb.addAditionalInformation(AdditionalInformationTag.VERB_CONJUGATION,
 				Labels.VERB_CONJUGATION_GODAN);
-		JapaneseWord japaneseWord = new JapaneseWord(
-				PartOfSpeech.NOUN, "Test");
+		JapaneseWord japaneseWord = new JapaneseWord(PartOfSpeech.NOUN, "Test");
 		japaneseWord.addWritings("らけ", "務");
 		japaneseWords.addWord(japaneseWord);
 		japaneseWords.addWord(verb);
@@ -157,12 +153,15 @@ public class ApplicationController implements ApplicationStateManager {
 				new ListConfiguration().enableWordAdding(false)
 						.showButtonsLoadNextPreviousWords(false),
 				RepeatingData.getInitializer());
-		japaneseWordsRepeatingDates.addWord(new RepeatingData("abc",
-				LocalDateTime.of(1993, 11, 13, 13, 25), true, "3 minuty"));
-		japaneseWordsRepeatingDates.addWord(new RepeatingData("abc",
-				LocalDateTime.of(2005, 1, 1, 11, 11), true, "4 minuty"));
-		japaneseWordsRepeatingDates.addWord(new RepeatingData("abc",
-				LocalDateTime.of(2000, 12, 31, 10, 0), true, "5 minut"));
+		japaneseWordsRepeatingDates.addWord(
+				new RepeatingData("abc", LocalDateTime.of(1993, 11, 13, 13, 25),
+						true, "3 minuty"));
+		japaneseWordsRepeatingDates.addWord(
+				new RepeatingData("abc", LocalDateTime.of(2005, 1, 1, 11, 11),
+						true, "4 minuty"));
+		japaneseWordsRepeatingDates.addWord(
+				new RepeatingData("abc", LocalDateTime.of(2000, 12, 31, 10, 0),
+						true, "5 minut"));
 	}
 
 	private JFileChooser createFileChooser() {
@@ -232,8 +231,7 @@ public class ApplicationController implements ApplicationStateManager {
 		KanjiListFileReader fileReader = new KanjiListFileReader();
 		KanjisAndRepeatingInfo words = fileReader.readFile(file);
 		List<Kanji> kanjis = words.getKanjis();
-		List<RepeatingData> repeatingDataList = words
-				.getRepeatingData();
+		List<RepeatingData> repeatingDataList = words.getRepeatingData();
 		Set<Integer> problematicKanjis = words.getProblematicKanjis();
 
 		kanjiList.cleanWords();
@@ -248,8 +246,7 @@ public class ApplicationController implements ApplicationStateManager {
 				convertIdsToKanjiInformations(problematicKanjis));
 	}
 
-	public Set<Kanji> convertIdsToKanjiInformations(
-			Set<Integer> ids) {
+	public Set<Kanji> convertIdsToKanjiInformations(Set<Integer> ids) {
 		Set<Kanji> kanjis = new HashSet<>();
 		for (Integer i : ids) {
 			kanjis.add(getKanjiList()
@@ -302,8 +299,8 @@ public class ApplicationController implements ApplicationStateManager {
 
 		LoadingProjectWorker loadingProjectWorker = new LoadingProjectWorker(
 				parent, parent.showProgressDialog());
-		loadingProjectWorker.load(japaneseWords,
-				savingInformation.getJapaneseWords());
+		loadingProjectWorker
+				.load(japaneseWords, savingInformation.getJapaneseWords());
 		loadingProjectWorker.load(kanjiList, savingInformation.getKanjiWords());
 		loadingProjectWorker.load(japaneseWordsRepeatingDates,
 				savingInformation.getJapaneseWordsRepeatingInformations());
@@ -350,12 +347,15 @@ public class ApplicationController implements ApplicationStateManager {
 				new ListConfiguration().showButtonsLoadNextPreviousWords(false)
 						.enableWordAdding(false),
 				RepeatingData.getInitializer());
-		kanjiRepeatingDates.addWord(new RepeatingData("abc",
-				LocalDateTime.of(1993, 11, 13, 13, 25), true, "3 minuty"));
-		kanjiRepeatingDates.addWord(new RepeatingData("abc",
-				LocalDateTime.of(2005, 1, 1, 11, 11), true, "4 minuty"));
-		kanjiRepeatingDates.addWord(new RepeatingData("abc",
-				LocalDateTime.of(2000, 12, 31, 10, 0), true, "5 minut"));
+		kanjiRepeatingDates.addWord(
+				new RepeatingData("abc", LocalDateTime.of(1993, 11, 13, 13, 25),
+						true, "3 minuty"));
+		kanjiRepeatingDates.addWord(
+				new RepeatingData("abc", LocalDateTime.of(2005, 1, 1, 11, 11),
+						true, "4 minuty"));
+		kanjiRepeatingDates.addWord(
+				new RepeatingData("abc", LocalDateTime.of(2000, 12, 31, 10, 0),
+						true, "5 minut"));
 	}
 
 	private File openFile() {
@@ -508,8 +508,7 @@ public class ApplicationController implements ApplicationStateManager {
 		if (activeWordsElementClass.equals(Kanji.class)) {
 			return problematicKanjis;
 		}
-		else if (activeWordsElementClass
-				.equals(JapaneseWord.class)) {
+		else if (activeWordsElementClass.equals(JapaneseWord.class)) {
 			return problematicJapaneseWords;
 		}
 		else {

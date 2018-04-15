@@ -15,37 +15,50 @@ import com.kanji.windows.DialogWindow;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.event.*;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class JapanesePanelActions {
 
-	public static void addPropertyChangeHandler(JTextComponent textComponent,
-			JapaneseWord japaneseWord,
-			boolean kanaRequired, String defaultValue,
+	private Map<JTextComponent, ListElementPropertyManager> textFieldsWithPropertyManagers = new HashMap<>();
+
+	private boolean isForSearchDialog;
+
+
+	public Map<JTextComponent, ListElementPropertyManager> getTextFieldsWithPropertyManagers() {
+		return textFieldsWithPropertyManagers;
+	}
+
+	public void addPropertyChangeHandler(JTextComponent textComponent,
+			JapaneseWord japaneseWord, boolean kanaRequired,
+			String defaultValue,
 			ListElementPropertyManager<?, JapaneseWord> propertyChangeHandler,
 			String exceptionMessage, DialogWindow parentDialog,
 			MyList<JapaneseWord> wordsList) {
 		textComponent.addFocusListener(
-				new ListPropertyChangeHandler<>(japaneseWord,
-						wordsList, parentDialog, propertyChangeHandler,
-						exceptionMessage, defaultValue, kanaRequired));
+				new ListPropertyChangeHandler<>(japaneseWord, wordsList,
+						parentDialog, propertyChangeHandler, exceptionMessage,
+						defaultValue, kanaRequired));
+		if (isForSearchDialog) {
+			textFieldsWithPropertyManagers
+					.put(textComponent, propertyChangeHandler);
+		}
+
 	}
 
-	public static JapaneseWordMeaningChecker addWordMeaningPropertyChangeListener(
-			JTextComponent wordMeaningTextField,
-			JapaneseWord japaneseWord,
+	public void addWordMeaningPropertyChangeListener(
+			JTextComponent wordMeaningTextField, JapaneseWord japaneseWord,
 			WordSearchOptions meaningSearchOptions, DialogWindow parentDialog,
 			MyList<JapaneseWord> wordsList) {
-		JapaneseWordMeaningChecker japaneseWordMeaningChecker = new JapaneseWordMeaningChecker(
-				meaningSearchOptions);
-		addPropertyChangeHandler(wordMeaningTextField, japaneseWord,
-				true, "", japaneseWordMeaningChecker,
+		addPropertyChangeHandler(wordMeaningTextField, japaneseWord, true, "",
+				new JapaneseWordMeaningChecker(
+						meaningSearchOptions),
 				ExceptionsMessages.JAPANESE_WORD_MEANING_ALREADY_DEFINED,
 				parentDialog, wordsList);
-		return japaneseWordMeaningChecker;
 	}
 
-	public static JTextComponent withSwitchToJapaneseActionOnClick(
+	public JTextComponent withSwitchToJapaneseActionOnClick(
 			JTextComponent textComponent) {
 		textComponent.addFocusListener(new FocusAdapter() {
 
@@ -68,8 +81,7 @@ public class JapanesePanelActions {
 		return textComponent;
 	}
 
-	public static void addSavingOnSelectionListener(
-			JComboBox partOfSpeechCombobox,
+	public void addSavingOnSelectionListener(JComboBox partOfSpeechCombobox,
 			JapaneseWord japaneseWord,
 			ApplicationController applicationController) {
 		partOfSpeechCombobox.addItemListener(new ItemListener() {
@@ -86,8 +98,7 @@ public class JapanesePanelActions {
 		});
 	}
 
-	public static JTextComponent selectableTextfield(
-			JTextComponent textComponent,
+	public JTextComponent selectableTextfield(JTextComponent textComponent,
 			TextFieldSelectionHandler selectionHandler) {
 		textComponent.addMouseListener(new MouseAdapter() {
 			@Override
@@ -103,4 +114,8 @@ public class JapanesePanelActions {
 		return textComponent;
 	}
 
+	public void setIsForSearchDialog(
+			boolean rememberTextfieldsAndPropertyManagers) {
+		this.isForSearchDialog = rememberTextfieldsAndPropertyManagers;
+	}
 }

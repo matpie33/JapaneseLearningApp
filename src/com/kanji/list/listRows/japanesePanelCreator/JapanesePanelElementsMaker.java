@@ -20,10 +20,13 @@ import java.awt.event.ActionEvent;
 public class JapanesePanelElementsMaker {
 
 	private JapanesePanelEditOrAddModeAction actionsMaker;
+	private JapanesePanelActions actionsCreator;
 
 	public JapanesePanelElementsMaker(
-			JapanesePanelEditOrAddModeAction actionsMaker) {
+			JapanesePanelEditOrAddModeAction actionsMaker,
+			JapanesePanelActions actionsCreator) {
 		this.actionsMaker = actionsMaker;
+		this.actionsCreator = actionsCreator;
 	}
 
 	private JTextComponent viewOnlyTextField(JTextComponent field) {
@@ -33,36 +36,36 @@ public class JapanesePanelElementsMaker {
 	}
 
 	public JTextComponent createKanaTextField(String text,
-			JapaneseWriting japaneseWriting,
-			JapaneseWord japaneseWord, boolean enabled) {
+			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
+			boolean enabled) {
 		JTextComponent kanaTextField = actionsMaker.withKanaValidation(
 				createKanaOrKanjiTextField(text, Prompts.KANA_TEXT),
 				japaneseWriting, japaneseWord);
-		if (!enabled){
+		if (!enabled) {
 			return viewOnlyTextField(kanaTextField);
 		}
-		else{
+		else {
 			return kanaTextField;
 		}
 	}
 
 	public JTextComponent createKanjiTextField(String text,
-			JapaneseWriting japaneseWriting,
-			JapaneseWord japaneseWord, boolean enabled) {
-		JTextComponent kanjiTextField =  actionsMaker.withKanjiValidation(
+			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
+			boolean enabled) {
+		JTextComponent kanjiTextField = actionsMaker.withKanjiValidation(
 				createKanaOrKanjiTextField(text, Prompts.KANJI_TEXT),
 				japaneseWriting, japaneseWord);
-		if (!enabled){
+		if (!enabled) {
 			return viewOnlyTextField(kanjiTextField);
 		}
-		else{
+		else {
 			return kanjiTextField;
 		}
 	}
 
 	private JTextComponent createKanaOrKanjiTextField(String initialValue,
 			String prompt) {
-		return JapanesePanelActions.withSwitchToJapaneseActionOnClick(
+		return actionsCreator.withSwitchToJapaneseActionOnClick(
 				GuiMaker.createTextField(
 						new TextComponentOptions().text(initialValue)
 								.editable(true)
@@ -93,15 +96,15 @@ public class JapanesePanelElementsMaker {
 	}
 
 	public AbstractButton createButtonAddKanjiWriting(MainPanel rowPanel,
-			JapaneseWriting japaneseWriting,
-			JapaneseWord japaneseWord) {
+			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord) {
 		AbstractButton button = createButton(ButtonsNames.ADD_KANJI_WRITING,
 				null);
 		button.addActionListener(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				rowPanel.insertElementInPlaceOfElement(
-						createKanjiTextField("", japaneseWriting, japaneseWord, true), button);
+						createKanjiTextField("", japaneseWriting, japaneseWord,
+								true), button);
 			}
 		});
 		return button;

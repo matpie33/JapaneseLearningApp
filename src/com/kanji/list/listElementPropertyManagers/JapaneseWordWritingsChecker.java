@@ -27,15 +27,16 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 		this.addingWord = addingWord;
 		this.japaneseWritingToCheck = japaneseWritingToCheck;
 		this.kanaChecker = kanaChecker;
-		this.previousValue = convertDefaultValueToEmpty(kanaChecker, previousValue);
+		this.previousValue = convertDefaultValueToEmpty(kanaChecker,
+				previousValue);
 	}
 
 	private String convertDefaultValueToEmpty(boolean kanaChecker,
 			String previousValue) {
-		if (kanaChecker && previousValue.equals(DEFAULT_KANA_INPUT)){
+		if (kanaChecker && previousValue.equals(DEFAULT_KANA_INPUT)) {
 			return "";
 		}
-		if (!kanaChecker && previousValue.equals(DEFAULT_KANJI_INPUT)){
+		if (!kanaChecker && previousValue.equals(DEFAULT_KANJI_INPUT)) {
 			return "";
 		}
 		return previousValue;

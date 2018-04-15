@@ -89,7 +89,7 @@ public class RepeatingJapaneseWordsDisplayer
 		japaneseWordPanelCreator.setLabelsColor(Color.BLACK);
 		japaneseWordPanelCreator
 				.addJapanesePanelToExistingPanel(fullWordInformationPanel,
-						japaneseWord);
+						japaneseWord, false);
 	}
 
 	@Override

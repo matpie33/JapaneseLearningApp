@@ -61,21 +61,19 @@ public class SearchWordPanel<Word extends ListElement>
 		listRowData = searchedList.getListRowMaker().createListRow(
 				searchedList.getWordInitializer().initializeElement(),
 				CommonListElements.forSingleRowOnly(Color.BLACK), true);
-		if (listRowData.getRowPropertiesData().isPresent()) {
-			for (Map.Entry<String, ListPropertyInformation> listPropertyData : listRowData
-					.getRowPropertiesData().get().entrySet()) {
-				MainPanel rowForProperty = new MainPanel(null);
-				rowForProperty.addRow(listPropertyData.getValue()
-						.getRowForProperty());
-				Map<JTextComponent, ListElementPropertyManager> textFieldsWithPropertyManagers = listPropertyData
-						.getValue().getTextFieldsWithPropertyManagers();
-				if (textFieldsWithPropertyManagers.values().iterator()
-						.next() instanceof WordSearchOptionsHolder) {
-					addWordSearchOptions(rowForProperty);
-				}
-				searchingPanel.add(listPropertyData.getKey(),
-						rowForProperty.getPanel());
+		for (Map.Entry<String, ListPropertyInformation> listPropertyData : listRowData
+				.getRowPropertiesData().entrySet()) {
+			MainPanel rowForProperty = new MainPanel(null);
+			rowForProperty
+					.addRow(listPropertyData.getValue().getRowForProperty());
+			Map<JTextComponent, ListElementPropertyManager> textFieldsWithPropertyManagers = listPropertyData
+					.getValue().getTextFieldsWithPropertyManagers();
+			if (textFieldsWithPropertyManagers.values().iterator()
+					.next() instanceof WordSearchOptionsHolder) {
+				addWordSearchOptions(rowForProperty);
 			}
+			searchingPanel
+					.add(listPropertyData.getKey(), rowForProperty.getPanel());
 		}
 
 		JComboBox<String> comboBox = createComboboxForSearchedProperty();
@@ -136,8 +134,7 @@ public class SearchWordPanel<Word extends ListElement>
 
 	private JComboBox<String> createComboboxForSearchedProperty() {
 		JComboBox<String> comboBox = new JComboBox<>();
-		listRowData.getRowPropertiesData().get().keySet()
-				.forEach(comboBox::addItem);
+		listRowData.getRowPropertiesData().keySet().forEach(comboBox::addItem);
 		comboBox.addActionListener(
 				searchWordController.createActionSwitchSearchingByOption());
 		comboBox.setSelectedIndex(0);
@@ -153,7 +150,7 @@ public class SearchWordPanel<Word extends ListElement>
 
 	private void focusFirstTextfieldForCurrentProperty() {
 		Map<JTextComponent, ListElementPropertyManager> textFieldsWithPropertyManagers = listRowData
-				.getRowPropertiesData().get().get(currentlySearchedProperty)
+				.getRowPropertiesData().get(currentlySearchedProperty)
 				.getTextFieldsWithPropertyManagers();
 		textFieldsWithPropertyManagers.keySet().iterator().next()
 				.requestFocusInWindow();
@@ -200,8 +197,7 @@ public class SearchWordPanel<Word extends ListElement>
 	}
 
 	public Map<JTextComponent, ListElementPropertyManager> getTextFieldsWithPropertyManagersForCurrentProperty() {
-		return listRowData.getRowPropertiesData().get()
-				.get(currentlySearchedProperty)
+		return listRowData.getRowPropertiesData().get(currentlySearchedProperty)
 				.getTextFieldsWithPropertyManagers();
 	}
 

@@ -1,6 +1,7 @@
 package com.kanji.list.listRows.japanesePanelCreator;
 
 import com.kanji.constants.enums.JapanesePanelDisplayMode;
+import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelActions;
 import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelEditOrAddModeAction;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.windows.DialogWindow;
@@ -9,15 +10,16 @@ public class JapanesePanelServiceStore {
 	private JapanesePanelCreatingService panelCreatingService;
 	private JapanesePanelEditOrAddModeAction actionMaker;
 	private JapanesePanelElementsMaker elementsMaker;
+	private JapanesePanelActions actionsCreator;
 
 	public JapanesePanelServiceStore(
 			ApplicationController applicationController,
-			DialogWindow parentDialog,
-			JapanesePanelDisplayMode japanesePanelDisplayMode) {
-		initializeActionMaker(applicationController, parentDialog,
-				japanesePanelDisplayMode);
-		elementsMaker = new JapanesePanelElementsMaker(actionMaker);
-		getPanelRowService(japanesePanelDisplayMode);
+			DialogWindow parentDialog, JapanesePanelDisplayMode displayMode) {
+		actionsCreator = new JapanesePanelActions();
+		initializeActionMaker(applicationController, parentDialog);
+		elementsMaker = new JapanesePanelElementsMaker(actionMaker,
+				actionsCreator);
+		getPanelRowService(displayMode);
 	}
 
 	private void getPanelRowService(
@@ -29,17 +31,17 @@ public class JapanesePanelServiceStore {
 			break;
 		case VIEW:
 			panelCreatingService = new JapanesePanelServiceViewMode(
-					elementsMaker, new TextFieldSelectionHandler());
+					elementsMaker, new TextFieldSelectionHandler(),
+					actionsCreator);
 			break;
 		}
 	}
 
 	private void initializeActionMaker(
 			ApplicationController applicationController,
-			DialogWindow parentDialog,
-			JapanesePanelDisplayMode japanesePanelDisplayMode) {
+			DialogWindow parentDialog) {
 		actionMaker = new JapanesePanelEditOrAddModeAction(
-				applicationController, parentDialog, japanesePanelDisplayMode);
+				applicationController, parentDialog, actionsCreator);
 	}
 
 	public JapanesePanelCreatingService getPanelCreatingService() {
@@ -64,5 +66,9 @@ public class JapanesePanelServiceStore {
 					"Only panel in view mode contains selection hanler - and this panel is not view mode");
 		}
 
+	}
+
+	public JapanesePanelActions getActionCreator() {
+		return actionsCreator;
 	}
 }
