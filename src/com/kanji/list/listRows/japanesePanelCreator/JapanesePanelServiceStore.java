@@ -15,7 +15,8 @@ public class JapanesePanelServiceStore {
 	public JapanesePanelServiceStore(
 			ApplicationController applicationController,
 			DialogWindow parentDialog, JapanesePanelDisplayMode displayMode) {
-		actionsCreator = new JapanesePanelActions();
+		actionsCreator = new JapanesePanelActions(parentDialog,
+				applicationController);
 		initializeActionMaker(applicationController, parentDialog);
 		elementsMaker = new JapanesePanelElementsMaker(actionMaker,
 				actionsCreator);

@@ -101,7 +101,7 @@ public class JapaneseWordsFileReader {
 				// '' imieslow czasownikowy''
 				partOfSpeech = PartOfSpeech.I_ADJECTIVE;
 			}
-			else if (StringUtilities
+			else if (JapaneseWritingUtilities
 					.characterIsKanji(lastCharacterOf(stringInKanji))) {
 				partOfSpeech = PartOfSpeech.NOUN;
 			}
@@ -230,7 +230,7 @@ public class JapaneseWordsFileReader {
 		String wordToCompare = splittedWords[0];
 		alternativeWritings.add(wordToCompare);
 		char lastCharacterOfWordToCompare = lastCharacterOf(wordToCompare);
-		boolean isLastCharacterKanji = StringUtilities
+		boolean isLastCharacterKanji = JapaneseWritingUtilities
 				.characterIsKanji(lastCharacterOfWordToCompare);
 		boolean foundVerbConjugationType = false;
 		for (int i = 1; i < splittedWords.length; i++) {

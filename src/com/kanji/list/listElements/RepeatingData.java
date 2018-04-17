@@ -1,11 +1,15 @@
 package com.kanji.list.listElements;
 
+import com.kanji.utilities.StringUtilities;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public class RepeatingData implements Serializable, ListElement {
 
 	private static final long serialVersionUID = 6124164088342544292L;
+	private static final String DATE = "data";
+	private static final String RANGE = "zakres";
 	private String repeatingRange;
 	private LocalDateTime repeatingDate;
 	private boolean wasRepeated;
@@ -79,5 +83,13 @@ public class RepeatingData implements Serializable, ListElement {
 	@Override
 	public boolean isEmpty() {
 		return repeatingDate == null || repeatingRange.isEmpty();
+	}
+
+	@Override
+	public String getDisplayedText() {
+		return StringUtilities.joinPropertyValuePairs(
+				StringUtilities.joinPropertyAndValue(DATE, getRepeatingDate().toString()),
+				StringUtilities.joinPropertyAndValue(RANGE, getRepeatingRange())
+		);
 	}
 }

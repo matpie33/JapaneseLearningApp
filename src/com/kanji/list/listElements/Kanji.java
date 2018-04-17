@@ -1,11 +1,15 @@
 package com.kanji.list.listElements;
 
+import com.kanji.utilities.StringUtilities;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 public class Kanji implements Serializable, ListElement {
 
 	private static final long serialVersionUID = 5172798853536032765L;
+	private static final String KEYWORD = "słowo kluczowe";
+	private static final String ID = "numer";
 	private String keyword;
 	private int id;
 
@@ -36,8 +40,7 @@ public class Kanji implements Serializable, ListElement {
 			return false;
 		}
 		Kanji kanji = (Kanji) another;
-		return kanji.getKeyword().equals(keyword)
-				&& kanji.getId() == id;
+		return kanji.getKeyword().equals(keyword) && kanji.getId() == id;
 
 	}
 
@@ -59,9 +62,8 @@ public class Kanji implements Serializable, ListElement {
 	@Override
 	public boolean isSameAs(ListElement element) {
 		if (element instanceof Kanji) {
-			return ((Kanji) element).getId() == id
-					|| ((Kanji) element).getKeyword()
-					.equals(keyword);
+			return ((Kanji) element).getId() == id || ((Kanji) element)
+					.getKeyword().equals(keyword);
 		}
 		return false;
 	}
@@ -69,5 +71,13 @@ public class Kanji implements Serializable, ListElement {
 	@Override
 	public boolean isEmpty() {
 		return id == 0 || keyword.isEmpty();
+	}
+
+	@Override
+	public String getDisplayedText() {
+		return StringUtilities.joinPropertyValuePairs(
+				StringUtilities.joinPropertyAndValue(KEYWORD, getKeyword()),
+				StringUtilities
+						.joinPropertyAndValue(ID, Integer.toString(getId())));
 	}
 }

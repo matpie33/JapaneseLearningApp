@@ -1,8 +1,10 @@
 package com.kanji.list.myList;
 
+import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.model.WordInMyListExistence;
+import com.kanji.utilities.StringUtilities;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.text.JTextComponent;
@@ -15,9 +17,8 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 
 	private MyList<PropertyHolder> list;
 	private DialogWindow dialogWindow;
-	private Property propertyBeingModified;
+	private String previousValueOfTextInput;
 	private ListElementPropertyManager<Property, PropertyHolder> listElementPropertyManager;
-	private String propertyDefinedExceptionMessage;
 	private PropertyHolder propertyHolder;
 	private String defaultValue = "";
 	private boolean isRequiredField;
@@ -25,11 +26,10 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	public ListPropertyChangeHandler(PropertyHolder propertyHolder,
 			MyList<PropertyHolder> list, DialogWindow dialogWindow,
 			ListElementPropertyManager<Property, PropertyHolder> listElementPropertyManager,
-			String propertyDefinedExceptionMessage, boolean isRequiredField) {
+			boolean isRequiredField) {
 		this.list = list;
 		this.dialogWindow = dialogWindow;
 		this.listElementPropertyManager = listElementPropertyManager;
-		this.propertyDefinedExceptionMessage = propertyDefinedExceptionMessage;
 		this.propertyHolder = propertyHolder;
 		this.isRequiredField = isRequiredField;
 	}
@@ -37,10 +37,9 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	public ListPropertyChangeHandler(PropertyHolder propertyHolder,
 			MyList<PropertyHolder> list, DialogWindow dialogWindow,
 			ListElementPropertyManager<Property, PropertyHolder> listElementPropertyManager,
-			String propertyDefinedExceptionMessage, String defaultValue,
-			boolean isRequiredField) {
+			String defaultValue, boolean isRequiredField) {
 		this(propertyHolder, list, dialogWindow, listElementPropertyManager,
-				propertyDefinedExceptionMessage, isRequiredField);
+				isRequiredField);
 		this.defaultValue = defaultValue;
 	}
 
@@ -48,8 +47,7 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	public void focusGained(FocusEvent e) {
 		JTextComponent textElement = (JTextComponent) e.getSource();
 		textElement.setForeground(Color.BLACK);
-		propertyBeingModified = listElementPropertyManager
-				.validateInputAndConvertToProperty(textElement);
+		previousValueOfTextInput = textElement.getText();
 
 	}
 
@@ -61,53 +59,44 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	@Override
 	public void focusLost(FocusEvent e) {
 		JTextComponent elem = (JTextComponent) e.getSource();
-		if (!isRequiredField && isTextFieldEmpty(elem)) {
+		if (!isRequiredField && isTextFieldEmpty(elem) || elem.getText()
+				.equals(previousValueOfTextInput)) {
 			return;
 		}
 		Property propertyNewValue = listElementPropertyManager
 				.validateInputAndConvertToProperty(elem);
 		if (propertyNewValue == null && !elem.getText().isEmpty()) {
-			String modifiedProperty = propertyBeingModified.toString();
 			elem.setForeground(Color.RED);
 			dialogWindow.showMessageDialog(
 					listElementPropertyManager.getInvalidPropertyReason());
-			elem.setText(modifiedProperty.replace("[", "").replace("]", ""));
+			elem.setText(previousValueOfTextInput);
 			elem.selectAll();
 			elem.requestFocusInWindow();
-			return;
-		}
-
-		if (propertyNewValue == null || propertyBeingModified
-				.equals(propertyNewValue)) {
 			return;
 		}
 
 		listElementPropertyManager
-				.replaceProperty(propertyHolder, propertyBeingModified,
-						propertyNewValue);
+				.setProperty(propertyHolder, propertyNewValue);
 		WordInMyListExistence<PropertyHolder> wordInMyListExistence = list
 				.doesWordWithPropertyExist(propertyNewValue,
 						listElementPropertyManager, propertyHolder);
 		if (wordInMyListExistence.exists()) {
-			listElementPropertyManager
-					.replaceProperty(propertyHolder, propertyNewValue,
-							propertyBeingModified);
+			elem.setText(previousValueOfTextInput);
 			elem.requestFocusInWindow();
-			elem.setText(propertyBeingModified.toString().replace("[", "")
-					.replace("]", ""));
 			elem.selectAll();
 			list.highlightRow(list.get1BasedRowNumberOfWord(
 					wordInMyListExistence.getWord()) - 1, true);
-			dialogWindow.showMessageDialog(
-					String.format(propertyDefinedExceptionMessage,
-							propertyNewValue, list.get1BasedRowNumberOfWord(
-									wordInMyListExistence.getWord())));
+			dialogWindow.showMessageDialog(listElementPropertyManager
+					.getPropertyDefinedException(propertyNewValue)
+					+ StringUtilities.putInNewLine(String.format(
+					ExceptionsMessages.ROW_FOR_DUPLICATED_PROPERTY,
+					list.get1BasedRowNumberOfWord(
+							wordInMyListExistence.getWord()))));
 
 			return;
 		}
 		else {
-
-			propertyBeingModified = null;
+			previousValueOfTextInput = null;
 			list.save();
 		}
 

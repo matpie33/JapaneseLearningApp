@@ -2,6 +2,7 @@ package com.kanji.model;
 
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.ListElement;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class DuplicatedJapaneseWordInformation implements ListElement {
 
@@ -31,5 +32,10 @@ public class DuplicatedJapaneseWordInformation implements ListElement {
 	@Override
 	public boolean isEmpty() {
 		return japaneseWord == null || duplicatedWordRowNumber == 0;
+	}
+
+	@Override
+	public String getDisplayedText() {
+		throw new IllegalStateException("Duplicated words are not used anymore");
 	}
 }

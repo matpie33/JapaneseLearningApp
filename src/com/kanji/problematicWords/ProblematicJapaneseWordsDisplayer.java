@@ -24,8 +24,8 @@ import com.kanji.model.WordRow;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.panelsAndControllers.panels.ProblematicJapaneseWordsPanel;
+import com.kanji.utilities.JapaneseWritingUtilities;
 import com.kanji.utilities.KanjiCharactersReader;
-import com.kanji.utilities.StringUtilities;
 import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
@@ -146,7 +146,7 @@ public class ProblematicJapaneseWordsDisplayer
 		for (String kanjiWriting : kanjiWritings) {
 			for (int i = 0; i < kanjiWriting.length(); i++) {
 				char nextCharacter = kanjiWriting.charAt(i);
-				if (StringUtilities.characterIsKanji(nextCharacter)) {
+				if (JapaneseWritingUtilities.characterIsKanji(nextCharacter)) {
 					kanjis.add("" + nextCharacter);
 				}
 			}

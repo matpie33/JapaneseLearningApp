@@ -1,11 +1,14 @@
 package com.kanji.list.listElements;
 
-import com.kanji.constants.enums.PartOfSpeech;
+import com.kanji.utilities.StringUtilities;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class JapaneseWriting implements ListElement {
 
+	private static final String KANA = "kana";
+	private static final String KANJI = "kanji";
 	private String kanaWriting;
 	private Set<String> kanjiWritings;
 
@@ -15,7 +18,7 @@ public class JapaneseWriting implements ListElement {
 	}
 
 	@Override
-	public boolean isEmpty (){
+	public boolean isEmpty() {
 		return kanaWriting.isEmpty() && kanjiWritings.isEmpty();
 	}
 
@@ -23,7 +26,7 @@ public class JapaneseWriting implements ListElement {
 		return kanaWriting;
 	}
 
-	public void setKanaWriting (String kanaWriting){
+	public void setKanaWriting(String kanaWriting) {
 		this.kanaWriting = kanaWriting;
 	}
 
@@ -47,4 +50,20 @@ public class JapaneseWriting implements ListElement {
 	public void setKanjiWritings(Set<String> kanjiWritings) {
 		this.kanjiWritings = kanjiWritings;
 	}
+
+	public void addKanjiWriting(String textValue) {
+		kanjiWritings.add(textValue);
+	}
+
+	@Override
+	public String getDisplayedText() {
+		return StringUtilities.joinPropertyValuePairs(//
+				StringUtilities.joinPropertyAndValue(KANA, getKanaWriting()),
+				StringUtilities.joinPropertyAndValue(KANJI, StringUtilities
+						.concatenateStrings(getKanjiWritings())));
+	}
+
+
+
+
 }

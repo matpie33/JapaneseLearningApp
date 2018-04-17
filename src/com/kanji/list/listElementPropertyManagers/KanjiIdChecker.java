@@ -1,5 +1,6 @@
 package com.kanji.list.listElementPropertyManagers;
 
+import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElements.Kanji;
 
 import javax.swing.text.JTextComponent;
@@ -41,4 +42,8 @@ public class KanjiIdChecker
 		return valid;
 	}
 
+	@Override
+	public String getPropertyDefinedException(Integer id) {
+		return String.format(ExceptionsMessages.DUPLICATED_ID_EXCEPTION, id);
+	}
 }

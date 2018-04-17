@@ -1,54 +1,36 @@
 package com.kanji.utilities;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public class StringUtilities {
 
-	public static String concatenateStrings(List<String> strings) {
+	private static final String COMMA_SPACE = ", ";
+	private static final String COLON_SPACE = ": ";
+
+	public static String joinPropertyAndValue (String property, String value){
+		return property + COLON_SPACE + value;
+	}
+
+	public static String joinPropertyValuePairs (String ... propertyValuePairs){
+		return concatenateStrings(Arrays.asList(propertyValuePairs));
+	}
+
+	public static String concatenateStrings(Collection<String> strings) {
 		StringBuilder builder = new StringBuilder();
 		for (String string : strings) {
 			if (string.isEmpty()) {
 				continue;
 			}
 			builder.append(string);
-			builder.append(", ");
+			builder.append(COMMA_SPACE);
 		}
 		return builder.toString().substring(0, builder.length() - 2);
 	}
 
-	public static boolean characterIsKanji(char character) {
-		return Character.UnicodeBlock.of(character) == Character.UnicodeBlock.
-				CJK_UNIFIED_IDEOGRAPHS;
-	}
-
-	public static boolean characterIsKana(char character) {
-		return Character.UnicodeBlock.of(character) == Character.UnicodeBlock.
-				HIRAGANA || Character.UnicodeBlock.of(character)
-				== Character.UnicodeBlock.KATAKANA;
-	}
-
-	public static boolean wordIsInKana(String word) {
-		word = word.trim();
-		for (char c : word.toCharArray()) {
-			if (!characterIsKana(c)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public static boolean wordIsInKanji(String word) {
-		boolean anyKanji = false;
-		word = word.trim();
-		for (char c : word.toCharArray()) {
-			if (characterIsKanji(c)) {
-				anyKanji = true;
-			}
-			if (!characterIsKanji(c) && !characterIsKana(c)) {
-				return false;
-			}
-		}
-		return anyKanji;
+	public static String putInNewLine (String expression){
+		return "\n"+expression;
 	}
 
 }

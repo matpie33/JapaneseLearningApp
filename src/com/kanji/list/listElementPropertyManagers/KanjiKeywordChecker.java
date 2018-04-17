@@ -1,5 +1,6 @@
 package com.kanji.list.listElementPropertyManagers;
 
+import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.utilities.WordSearching;
 
@@ -34,4 +35,8 @@ public class KanjiKeywordChecker extends WordSearchOptionsHolder
 		kanji.setKanjiKeyword(propertyValue);
 	}
 
+	@Override
+	public String getPropertyDefinedException(String keyword) {
+		return String.format(ExceptionsMessages.DUPLICATED_KEYWORD_EXCEPTION, keyword);
+	}
 }

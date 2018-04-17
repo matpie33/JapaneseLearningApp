@@ -6,21 +6,25 @@ import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.strings.ButtonsNames;
-import com.kanji.constants.strings.Prompts;
+import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordWritingsInputManager;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelActions;
 import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelEditOrAddModeAction;
+import com.kanji.utilities.JapaneseWritingUtilities;
 import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.event.ActionEvent;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JapanesePanelElementsMaker {
 
 	private JapanesePanelEditOrAddModeAction actionsMaker;
 	private JapanesePanelActions actionsCreator;
+	private Map<JapaneseWriting, JapaneseWordWritingsInputManager> writingsInputManagers = new HashMap<>();
 
 	public JapanesePanelElementsMaker(
 			JapanesePanelEditOrAddModeAction actionsMaker,
@@ -29,49 +33,62 @@ public class JapanesePanelElementsMaker {
 		this.actionsCreator = actionsCreator;
 	}
 
-	private JTextComponent viewOnlyTextField(JTextComponent field) {
+	private JTextComponent viewOnlyTextInput(JTextComponent field) {
 		field.setEnabled(false);
 		field.setBackground(TextFieldSelectionHandler.NOT_SELECTED_COLOR);
 		return field;
 	}
 
-	public JTextComponent createKanaTextField(String text,
+	public JapaneseWordWritingsInputManager createJapaneseWritingsTextFields(
 			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
 			boolean enabled) {
-		JTextComponent kanaTextField = actionsMaker.withKanaValidation(
-				createKanaOrKanjiTextField(text, Prompts.KANA_TEXT),
-				japaneseWriting, japaneseWord);
+		//TODO can I use just one of them? only japanese writing or only japanese word?
+		JTextComponent kanaInput = createWritingsInput(
+				japaneseWriting.getKanaWriting(), enabled, true);
+		JapaneseWordWritingsInputManager inputManager = new JapaneseWordWritingsInputManager(
+				kanaInput);
+		writingsInputManagers.put(japaneseWriting, inputManager);
+		actionsCreator.withJapaneseWritingValidation(kanaInput, inputManager,
+				japaneseWriting, japaneseWord, true);
+
+		for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
+			createKanjiInputWithValidation(kanjiWriting, inputManager,
+					japaneseWriting, japaneseWord);
+		}
+
+		return inputManager;
+
+	}
+
+	private JTextComponent createKanjiInputWithValidation(String text,
+			JapaneseWordWritingsInputManager inputManager,
+			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord) {
+		return actionsCreator.withJapaneseWritingValidation(
+				createWritingsInput(text, true, false), inputManager,
+				japaneseWriting, japaneseWord, false);
+	}
+
+	public JTextComponent createWritingsInput(String text, boolean enabled,
+			boolean isKana) {
+		JTextComponent kanjiTextInput = createWritingsInput(text, isKana);
 		if (!enabled) {
-			return viewOnlyTextField(kanaTextField);
+			return viewOnlyTextInput(kanjiTextInput);
 		}
 		else {
-			return kanaTextField;
+			return kanjiTextInput;
 		}
 	}
 
-	public JTextComponent createKanjiTextField(String text,
-			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
-			boolean enabled) {
-		JTextComponent kanjiTextField = actionsMaker.withKanjiValidation(
-				createKanaOrKanjiTextField(text, Prompts.KANJI_TEXT),
-				japaneseWriting, japaneseWord);
-		if (!enabled) {
-			return viewOnlyTextField(kanjiTextField);
-		}
-		else {
-			return kanjiTextField;
-		}
-	}
-
-	private JTextComponent createKanaOrKanjiTextField(String initialValue,
-			String prompt) {
+	private JTextComponent createWritingsInput(String initialValue,
+			boolean isKana) {
 		return actionsCreator.withSwitchToJapaneseActionOnClick(
 				GuiMaker.createTextField(
 						new TextComponentOptions().text(initialValue)
 								.editable(true)
 								.font(ApplicationWindow.getKanjiFont())
-								.focusable(true).fontSize(30f)
-								.promptWhenEmpty(prompt)));
+								.focusable(true).fontSize(30f).promptWhenEmpty(
+								JapaneseWritingUtilities
+										.getDefaultValueForWriting(isKana))));
 	}
 
 	private AbstractButton createButton(String buttonLabel,
@@ -103,8 +120,9 @@ public class JapanesePanelElementsMaker {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				rowPanel.insertElementInPlaceOfElement(
-						createKanjiTextField("", japaneseWriting, japaneseWord,
-								true), button);
+						createKanjiInputWithValidation("",
+								writingsInputManagers.get(japaneseWriting),
+								japaneseWriting, japaneseWord), button);
 			}
 		});
 		return button;

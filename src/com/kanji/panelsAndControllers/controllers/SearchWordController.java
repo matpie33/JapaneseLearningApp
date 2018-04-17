@@ -50,14 +50,17 @@ public class SearchWordController<Word extends ListElement> {
 			public void actionPerformed(ActionEvent e) {
 				Map<JTextComponent, ListElementPropertyManager> textInputAndPropertyManagerForListElement = searchWordPanel
 						.getTextFieldsWithPropertyManagersForCurrentProperty();
-				JTextComponent textField = textInputAndPropertyManagerForListElement
-						.entrySet().iterator().next().getKey();
-				ListElementPropertyManager listElementPropertyManager = textInputAndPropertyManagerForListElement
-						.entrySet().iterator().next().getValue();
+				Object property = null;
+				ListElementPropertyManager anyPropertyManager = null;
+				for (Map.Entry<JTextComponent, ListElementPropertyManager> propertyManagerEntry : textInputAndPropertyManagerForListElement
+						.entrySet()) {
+					property = propertyManagerEntry.getValue()
+							.validateInputAndConvertToProperty(
+									propertyManagerEntry.getKey());
+					anyPropertyManager = propertyManagerEntry.getValue();
+				}
 				list.findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(
-						listElementPropertyManager, listElementPropertyManager.
-								validateInputAndConvertToProperty(textField),
-						searchingDirection);
+						anyPropertyManager, property, searchingDirection);
 			}
 		};
 	}

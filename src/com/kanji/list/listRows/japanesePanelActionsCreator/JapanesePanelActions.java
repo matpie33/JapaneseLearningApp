@@ -5,11 +5,15 @@ import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
+import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordWritingsChecker;
+import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordWritingsInputManager;
 import com.kanji.list.listElements.JapaneseWord;
+import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listRows.japanesePanelCreator.TextFieldSelectionHandler;
 import com.kanji.list.myList.ListPropertyChangeHandler;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
+import com.kanji.utilities.JapaneseWritingUtilities;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
@@ -22,12 +26,35 @@ import java.util.Map;
 public class JapanesePanelActions {
 
 	private Map<JTextComponent, ListElementPropertyManager> textFieldsWithPropertyManagers = new HashMap<>();
-
 	private boolean isForSearchDialog;
+	private DialogWindow parentDialog;
+	private ApplicationController applicationController;
 
+	public JapanesePanelActions(DialogWindow parentDialog,
+			ApplicationController applicationController) {
+		this.parentDialog = parentDialog;
+		this.applicationController = applicationController;
+	}
 
 	public Map<JTextComponent, ListElementPropertyManager> getTextFieldsWithPropertyManagers() {
 		return textFieldsWithPropertyManagers;
+	}
+
+	public JTextComponent withJapaneseWritingValidation(JTextComponent textComponent,
+			JapaneseWordWritingsInputManager writingsInputManager,
+			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
+			boolean isKana) {
+		if (!isKana){
+			writingsInputManager.addKanjiInput(textComponent);
+		}
+		addPropertyChangeHandler(textComponent, japaneseWord,
+				!isForSearchDialog,
+				JapaneseWritingUtilities.getDefaultValueForWriting(isKana),
+				new JapaneseWordWritingsChecker(writingsInputManager,
+						japaneseWriting, !isForSearchDialog //TODO real value
+				), ExceptionsMessages.JAPANESE_WORD_WRITINGS_ALREADY_DEFINED,
+				parentDialog, applicationController.getJapaneseWords());
+		return textComponent;
 	}
 
 	public void addPropertyChangeHandler(JTextComponent textComponent,
@@ -38,8 +65,7 @@ public class JapanesePanelActions {
 			MyList<JapaneseWord> wordsList) {
 		textComponent.addFocusListener(
 				new ListPropertyChangeHandler<>(japaneseWord, wordsList,
-						parentDialog, propertyChangeHandler, exceptionMessage,
-						defaultValue, kanaRequired));
+						parentDialog, propertyChangeHandler, defaultValue, kanaRequired));
 		if (isForSearchDialog) {
 			textFieldsWithPropertyManagers
 					.put(textComponent, propertyChangeHandler);
@@ -52,9 +78,8 @@ public class JapanesePanelActions {
 			WordSearchOptions meaningSearchOptions, DialogWindow parentDialog,
 			MyList<JapaneseWord> wordsList) {
 		addPropertyChangeHandler(wordMeaningTextField, japaneseWord, true, "",
-				new JapaneseWordMeaningChecker(
-						meaningSearchOptions),
-				ExceptionsMessages.JAPANESE_WORD_MEANING_ALREADY_DEFINED,
+				new JapaneseWordMeaningChecker(meaningSearchOptions),
+				ExceptionsMessages.DUPLICATED_WORD_MEANING,
 				parentDialog, wordsList);
 	}
 

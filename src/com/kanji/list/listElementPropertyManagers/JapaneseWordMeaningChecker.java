@@ -1,6 +1,7 @@
 package com.kanji.list.listElementPropertyManagers;
 
 import com.kanji.constants.enums.WordSearchOptions;
+import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.utilities.WordSearching;
 
@@ -39,9 +40,13 @@ public class JapaneseWordMeaningChecker extends WordSearchOptionsHolder
 	}
 
 	@Override
-	public void setProperty(JapaneseWord japaneseWord,
-			String propertyValue) {
+	public void setProperty(JapaneseWord japaneseWord, String propertyValue) {
 		japaneseWord.setMeaning(propertyValue);
 	}
 
+	@Override
+	public String getPropertyDefinedException(String property) {
+		return String
+				.format(ExceptionsMessages.DUPLICATED_WORD_MEANING, property);
+	}
 }

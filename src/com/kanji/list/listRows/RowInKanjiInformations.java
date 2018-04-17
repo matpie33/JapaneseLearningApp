@@ -6,7 +6,6 @@ import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.NextRow;
 import com.guimaker.row.SimpleRowBuilder;
-import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.ListPropertiesNames;
 import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
@@ -53,16 +52,13 @@ public class RowInKanjiInformations implements ListRowMaker<Kanji> {
 		KanjiKeywordChecker keywordChecker = new KanjiKeywordChecker();
 		wordTextArea.addFocusListener(new ListPropertyChangeHandler<>(kanji,
 				applicationWindow.getApplicationController().getKanjiList(),
-				applicationWindow, keywordChecker,
-				ExceptionsMessages.KANJI_KEYWORD_ALREADY_DEFINED_EXCEPTION,
-				true));
+				applicationWindow, keywordChecker, true));
 		JTextComponent idTextArea = CommonGuiElementsMaker.createKanjiIdInput();
 		idTextArea.setText(ID > 0 ? Integer.toString(ID) : "");
 		KanjiIdChecker idChecker = new KanjiIdChecker();
 		idTextArea.addFocusListener(new ListPropertyChangeHandler<>(kanji,
 				applicationWindow.getApplicationController().getKanjiList(),
-				applicationWindow, idChecker,
-				ExceptionsMessages.ID_ALREADY_DEFINED_EXCEPTION, true));
+				applicationWindow, idChecker, true));
 		AbstractButton remove = commonListElements.getButtonDelete();
 		JLabel rowNumberLabel = commonListElements.getRowNumberLabel();
 		NextRow rows = SimpleRowBuilder

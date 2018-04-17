@@ -1,12 +1,14 @@
 package com.kanji.list.listRows.japanesePanelCreator;
 
 import com.guimaker.panels.MainPanel;
+import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordWritingsInputManager;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelActions;
 import com.kanji.utilities.CommonListElements;
 
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,15 +38,14 @@ public class JapanesePanelServiceViewMode
 	public JComponent[] addWritingsRow(JapaneseWriting japaneseWriting,
 			CommonListElements commonListElements, MainPanel rowPanel) {
 		List<JComponent> rowElements = new ArrayList<>();
-		rowElements.add(actionsCreator.selectableTextfield(elementsMaker
-						.createKanaTextField(japaneseWriting.getKanaWriting(),
-								japaneseWriting, wordContainingWriting, false),
-				textFieldSelectionHandler));
-		for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
-			rowElements.add(actionsCreator.selectableTextfield(
-					elementsMaker
-							.createKanjiTextField(kanjiWriting, japaneseWriting,
-									wordContainingWriting, false),
+		JapaneseWordWritingsInputManager japaneseWritingsTextFields = elementsMaker
+				.createJapaneseWritingsTextFields(japaneseWriting,
+						wordContainingWriting, true);
+		rowElements.add(actionsCreator
+				.selectableTextfield(japaneseWritingsTextFields.getKanaInput(),
+						textFieldSelectionHandler));
+		for (JTextComponent kanjiInput : japaneseWritingsTextFields.getKanjiInputs()) {
+			rowElements.add(actionsCreator.selectableTextfield(kanjiInput,
 					textFieldSelectionHandler));
 		}
 

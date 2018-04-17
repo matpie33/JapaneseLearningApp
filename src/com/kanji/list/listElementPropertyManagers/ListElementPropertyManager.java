@@ -26,9 +26,7 @@ public interface ListElementPropertyManager<PropertyType, PropertyHolder extends
 		return propertyValue != null;
 	}
 
-	public default void replaceProperty(PropertyHolder propertyHolder,
-			PropertyType oldValue, PropertyType newValue) {
-		setProperty(propertyHolder, newValue);
-	}
+	public String getPropertyDefinedException (PropertyType property);
+
 
 }
