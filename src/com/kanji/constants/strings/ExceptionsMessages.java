@@ -36,7 +36,7 @@ public class ExceptionsMessages {
 	public static final String KANJI_WRITING_INCORRECT =
 			"Niepoprawny zapis kanji: %s. Powinien zawierać tylko hiraganę lub katakanę "
 					+ "i co najmniej jeden znak kanji.";
-	public static final String DUPLICATED_KANJI_WRITING_WITHIN_ROW = "Istnieje już słowo z takimi zapisami: %s.";
+	public static final String DUPLICATED_KANJI_WRITING_WITHIN_ROW = "Kanji %s już wystepuje w tym wierszu.";
 	public static final String WORD_ALREADY_EXISTS = "Takie slowo już istnieje w wierszu %d.";
 	public static final String EXCEPTION_WHILE_LOADING_KANJI_PROJECT = "Wystąpił błąd przy wczytywaniu: %s.";
 	public static final String ROW_FOR_DUPLICATED_PROPERTY = "Duplikat występuje w wierszu nr %s.";
