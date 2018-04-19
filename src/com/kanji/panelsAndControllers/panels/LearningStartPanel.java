@@ -108,8 +108,8 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		JLabel label = new JLabel(Prompts.PROBLEMATIC_KANJIS_ADDED);
 		label.setForeground(BasicColors.NAVY_BLUE);
 		int rowNumber = rangesPanel.getNumberOfRows();
-		rangesPanel.addRow(
-				SimpleRowBuilder.createRow(FillType.NONE, Anchor.NORTH, label));
+		rangesPanel.addRow(SimpleRowBuilder
+				.createRow(FillType.NONE, Anchor.NORTH, label));
 		rangesPanel.updateView();
 		c.requestFocusInWindow();
 		return rowNumber;

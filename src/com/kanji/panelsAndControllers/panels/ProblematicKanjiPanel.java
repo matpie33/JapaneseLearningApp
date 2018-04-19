@@ -94,8 +94,8 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 						wordsAndDictionaryPane,
 						kanjiWebPanel.getSwitchingPanel(), 0.2);
 
-		mainPanel.addRow(
-				SimpleRowBuilder.createRow(FillType.BOTH, mainSplitPane));
+		mainPanel.addRow(SimpleRowBuilder
+				.createRow(FillType.BOTH, mainSplitPane));
 
 		setNavigationButtons(Anchor.WEST, buttonClose);
 	}

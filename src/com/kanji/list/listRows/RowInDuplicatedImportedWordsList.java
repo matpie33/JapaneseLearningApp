@@ -15,7 +15,6 @@ import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.ListRowMaker;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.DuplicatedJapaneseWordInformation;
-import com.kanji.model.ListRow;
 import com.kanji.utilities.CommonGuiElementsMaker;
 import com.kanji.utilities.CommonListElements;
 import com.kanji.windows.ApplicationWindow;
@@ -34,8 +33,7 @@ public class RowInDuplicatedImportedWordsList
 	private MyList<JapaneseWord> newJapaneseWords;
 
 	public RowInDuplicatedImportedWordsList(ApplicationWindow applicationWindow,
-			DialogWindow parentDialog,
-			MyList<JapaneseWord> newJapaneseWords) {
+			DialogWindow parentDialog, MyList<JapaneseWord> newJapaneseWords) {
 		this.applicationWindow = applicationWindow;
 		this.parentDialog = parentDialog;
 		this.newJapaneseWords = newJapaneseWords;
@@ -77,7 +75,7 @@ public class RowInDuplicatedImportedWordsList
 	}
 
 	@Override
-	public ListRowData getRowData(){
+	public ListRowData getRowData() {
 		return null;// TODO not needed atm
 	}
 

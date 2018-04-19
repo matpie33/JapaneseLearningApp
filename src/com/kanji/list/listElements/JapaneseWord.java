@@ -117,8 +117,8 @@ public class JapaneseWord implements ListElement, Serializable {
 			JapaneseWord otherWord = (JapaneseWord) element;
 
 			for (JapaneseWriting japaneseWriting : otherWord.getWritings()) {
-				if(new JapaneseWordWritingsChecker(japaneseWriting, true)
-						.isPropertyFound(japaneseWriting, this)){
+				if (new JapaneseWordWritingsChecker(japaneseWriting, true)
+						.isPropertyFound(japaneseWriting, this)) {
 					return false;
 				}
 			}
@@ -126,7 +126,8 @@ public class JapaneseWord implements ListElement, Serializable {
 				return true;
 			}
 			return false;
-		} return false;
+		}
+		return false;
 	}
 
 	@Override

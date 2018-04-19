@@ -52,8 +52,7 @@ public class RowInKanjiInformations implements ListRowMaker<Kanji> {
 						.foregroundColor(labelsColor));
 		String text = kanji.getKeyword();
 		int ID = kanji.getId();
-		keywordInput = CommonGuiElementsMaker
-				.createKanjiWordInput(text);
+		keywordInput = CommonGuiElementsMaker.createKanjiWordInput(text);
 		keywordChecker = new KanjiKeywordChecker();
 		keywordInput.addFocusListener(new ListPropertyChangeHandler<>(kanji,
 				applicationWindow.getApplicationController().getKanjiList(),
@@ -84,8 +83,7 @@ public class RowInKanjiInformations implements ListRowMaker<Kanji> {
 		Map<String, ListPropertyInformation> propertyInformations = new HashMap<>();
 
 		Map<JTextComponent, ListElementPropertyManager<?, Kanji>> propertyManagerOfKeywordInput = new HashMap<>();
-		propertyManagerOfKeywordInput
-				.put(keywordInput, keywordChecker);
+		propertyManagerOfKeywordInput.put(keywordInput, keywordChecker);
 		propertyInformations.put(ListPropertiesNames.KANJI_KEYWORD,
 				new ListPropertyInformation(lastPanelMade.getAllRows().get(0),
 						propertyManagerOfKeywordInput));

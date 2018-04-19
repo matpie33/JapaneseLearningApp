@@ -20,8 +20,7 @@ import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class RepeatingKanjiDisplayer
-		implements RepeatingWordDisplayer<Kanji> {
+public class RepeatingKanjiDisplayer implements RepeatingWordDisplayer<Kanji> {
 
 	private MainPanel fullWordInformationPanel;
 	private MainPanel recognizingWordPanel;
@@ -53,8 +52,7 @@ public class RepeatingKanjiDisplayer
 
 	@Override
 	public void showWordFullInformation(Kanji kanji) {
-		wordTextArea.setText(kanjiCharactersReader
-				.getKanjiById(kanji.getId()));
+		wordTextArea.setText(kanjiCharactersReader.getKanjiById(kanji.getId()));
 
 	}
 
@@ -102,11 +100,9 @@ public class RepeatingKanjiDisplayer
 
 	@Override
 	public RepeatingState getRepeatingState(TimeSpent timeSpent,
-			RepeatingData repeatingData,
-			Set<Kanji> words) {
+			RepeatingData repeatingData, Set<Kanji> words) {
 		RepeatingState<Kanji> kanjiRepeatingState = new RepeatingState<>(
-				timeSpent, repeatingData, currentProblematicKanjis,
-				words);
+				timeSpent, repeatingData, currentProblematicKanjis, words);
 		return kanjiRepeatingState;
 	}
 

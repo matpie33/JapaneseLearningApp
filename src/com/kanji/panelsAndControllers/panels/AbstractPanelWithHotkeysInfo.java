@@ -93,18 +93,15 @@ public abstract class AbstractPanelWithHotkeysInfo {
 			panelForHotkeys.insertRow(hotkeysPanelIndex, row);
 		}
 		if (navigationButtons != null)
-			panelForHotkeys
-					.addRow( // TODO fix in gui maker: if putting rows as
-							// highest
-							// as
-							// possible, then west
-							// should be as highest as possible, but now I need
-							// to
-							// use northwest
-							SimpleRowBuilder
-									.createRow(FillType.NONE, buttonsAnchor,
-											navigationButtons).disableBorder()
-									.setNotOpaque());
+			panelForHotkeys.addRow( // TODO fix in gui maker: if putting rows as
+					// highest
+					// as
+					// possible, then west
+					// should be as highest as possible, but now I need
+					// to
+					// use northwest
+					SimpleRowBuilder.createRow(FillType.NONE, buttonsAnchor,
+							navigationButtons).disableBorder().setNotOpaque());
 
 	}
 

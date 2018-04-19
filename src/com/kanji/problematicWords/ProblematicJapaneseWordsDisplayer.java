@@ -88,8 +88,7 @@ public class ProblematicJapaneseWordsDisplayer
 
 	@Override
 	public void browseWord(WordRow<JapaneseWord> wordRow) {
-		JapaneseWord japaneseWord = wordRow
-				.getListElement();
+		JapaneseWord japaneseWord = wordRow.getListElement();
 		KanjiCharactersReader kanjiCharactersReader = KanjiCharactersReader
 				.getInstance();
 		Set<String> kanjis = extractKanjis(japaneseWord);
@@ -139,8 +138,7 @@ public class ProblematicJapaneseWordsDisplayer
 		panel.updateView();
 	}
 
-	private Set<String> extractKanjis(
-			JapaneseWord japaneseWord) {
+	private Set<String> extractKanjis(JapaneseWord japaneseWord) {
 		Set<String> kanjis = new HashSet<>();
 		Set<String> kanjiWritings = japaneseWord.getKanjiWritings();
 		for (String kanjiWriting : kanjiWritings) {
@@ -155,8 +153,7 @@ public class ProblematicJapaneseWordsDisplayer
 	}
 
 	@Override
-	public WordRow createWordRow(JapaneseWord listElement,
-			int rowNumber) {
+	public WordRow createWordRow(JapaneseWord listElement, int rowNumber) {
 		return new WordRow(listElement, rowNumber);
 	}
 

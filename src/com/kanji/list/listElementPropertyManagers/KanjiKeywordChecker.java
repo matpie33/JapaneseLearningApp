@@ -15,11 +15,10 @@ public class KanjiKeywordChecker extends WordSearchOptionsHolder
 	}
 
 	@Override
-	public boolean isPropertyFound(String kanjiKeyWord,
-			Kanji kanji) {
+	public boolean isPropertyFound(String kanjiKeyWord, Kanji kanji) {
 		return kanji != null && WordSearching
-				.doesWordContainSearchedWord(kanji.getKeyword(),
-						kanjiKeyWord, getWordSearchOptions());
+				.doesWordContainSearchedWord(kanji.getKeyword(), kanjiKeyWord,
+						getWordSearchOptions());
 	}
 
 	@Override
@@ -30,13 +29,13 @@ public class KanjiKeywordChecker extends WordSearchOptionsHolder
 	}
 
 	@Override
-	public void setProperty(Kanji kanji,
-			String propertyValue) {
+	public void setProperty(Kanji kanji, String propertyValue) {
 		kanji.setKanjiKeyword(propertyValue);
 	}
 
 	@Override
 	public String getPropertyDefinedException(String keyword) {
-		return String.format(ExceptionsMessages.DUPLICATED_KEYWORD_EXCEPTION, keyword);
+		return String.format(ExceptionsMessages.DUPLICATED_KEYWORD_EXCEPTION,
+				keyword);
 	}
 }

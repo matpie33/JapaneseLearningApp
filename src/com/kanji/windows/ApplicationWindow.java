@@ -145,8 +145,7 @@ public class ApplicationWindow extends DialogWindow {
 	public <Word extends ListElement> void showInsertDialog(MyList<Word> list) {
 		customPositioner = new PositionerOnMyList(
 				getStartingPanel().getSplitPaneFor(list.getListElementClass()));
-		AbstractPanelWithHotkeysInfo panel = new InsertWordPanel<>(
-				list, this);
+		AbstractPanelWithHotkeysInfo panel = new InsertWordPanel<>(list, this);
 		createDialog(panel, Titles.INSERT_WORD_DIALOG, false, Position.CUSTOM);
 	}
 

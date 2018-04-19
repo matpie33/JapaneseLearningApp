@@ -15,14 +15,13 @@ public class RepeatingData implements Serializable, ListElement {
 	private boolean wasRepeated;
 	private String timeSpentOnRepeating;
 
-	public RepeatingData(String repeatingRange,
-			LocalDateTime repeatingDate, boolean wasRepeated) {
+	public RepeatingData(String repeatingRange, LocalDateTime repeatingDate,
+			boolean wasRepeated) {
 		this(repeatingRange, repeatingDate, wasRepeated, "nie wiadomo");
 	}
 
-	public RepeatingData(String repeatingRange,
-			LocalDateTime repeatingDate, boolean wasRepeated,
-			String timeSpentOnRepeating) {
+	public RepeatingData(String repeatingRange, LocalDateTime repeatingDate,
+			boolean wasRepeated, String timeSpentOnRepeating) {
 		this.repeatingRange = repeatingRange;
 		this.repeatingDate = repeatingDate;
 		this.wasRepeated = wasRepeated;
@@ -87,9 +86,9 @@ public class RepeatingData implements Serializable, ListElement {
 
 	@Override
 	public String getDisplayedText() {
-		return StringUtilities.joinPropertyValuePairs(
-				StringUtilities.joinPropertyAndValue(DATE, getRepeatingDate().toString()),
-				StringUtilities.joinPropertyAndValue(RANGE, getRepeatingRange())
-		);
+		return StringUtilities.joinPropertyValuePairs(StringUtilities
+						.joinPropertyAndValue(DATE, getRepeatingDate().toString()),
+				StringUtilities
+						.joinPropertyAndValue(RANGE, getRepeatingRange()));
 	}
 }

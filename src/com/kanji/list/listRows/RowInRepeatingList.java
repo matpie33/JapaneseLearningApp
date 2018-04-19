@@ -55,8 +55,7 @@ public class RowInRepeatingList implements ListRowMaker<RepeatingData> {
 				.nextRow(repeatedWords).nextRow(timeSpent)
 				.nextRow(FillType.NONE, delete));
 
-
-		if (forSearchPanel){
+		if (forSearchPanel) {
 			//TODO implement it for searching repeating list to work
 		}
 

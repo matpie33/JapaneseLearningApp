@@ -26,7 +26,6 @@ public interface ListElementPropertyManager<PropertyType, PropertyHolder extends
 		return propertyValue != null;
 	}
 
-	public String getPropertyDefinedException (PropertyType property);
-
+	public String getPropertyDefinedException(PropertyType property);
 
 }

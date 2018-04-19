@@ -52,15 +52,13 @@ public class InsertWordPanel<Word extends ListElement>
 	}
 
 	private void initializeWord() {
-		word = wordsList.getWordInitializer()
-				.initializeElement();
+		word = wordsList.getWordInitializer().initializeElement();
 	}
 
 	private void initializeJapaneseWordPanel() {
 		labelsColor = Color.BLACK;
-		MainPanel addWordPanel = wordsList.getListRowMaker()
-				.createListRow(word, CommonListElements.forSingleRowOnly(
-						labelsColor), false);
+		MainPanel addWordPanel = wordsList.getListRowMaker().createListRow(word,
+				CommonListElements.forSingleRowOnly(labelsColor), false);
 		mainPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.BOTH, addWordPanel.getPanel())
 				.useAllExtraVerticalSpace());

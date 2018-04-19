@@ -153,9 +153,10 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 			copiedKanjiWritings.remove(kanjiInput.getText());
 		}
 		if (copiedKanjiWritings.size() > 1) {
-			throw new IllegalStateException("Found more than 1 previous value.");
+			throw new IllegalStateException(
+					"Found more than 1 previous value.");
 		}
-		if (copiedKanjiWritings.isEmpty()){
+		if (copiedKanjiWritings.isEmpty()) {
 			return "";
 		}
 		return copiedKanjiWritings.iterator().next();

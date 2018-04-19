@@ -33,8 +33,8 @@ public class WordsAndRepeatingInformationsPanel
 	@Override
 	public void createElements() {
 		createSplitPane(wordsList, repeatingList);
-		mainPanel.addRow(
-				SimpleRowBuilder.createRow(FillType.BOTH, listsSplitPane));
+		mainPanel.addRow(SimpleRowBuilder
+				.createRow(FillType.BOTH, listsSplitPane));
 	}
 
 	private void createSplitPane(MyList wordsList, MyList repeatingList) {

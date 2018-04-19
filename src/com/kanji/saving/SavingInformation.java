@@ -23,8 +23,7 @@ public class SavingInformation implements Serializable {
 	private List<RepeatingData> japaneseWordsRepeatingLists;
 
 	public SavingInformation(List<Kanji> kanjiWords,
-			List<RepeatingData> repeatingList,
-			Set<Kanji> problematicKanjis,
+			List<RepeatingData> repeatingList, Set<Kanji> problematicKanjis,
 			Set<JapaneseWord> problematicJapaneseWords,
 			List<JapaneseWord> japaneseWords,
 			List<RepeatingData> japaneseWordsRepeatingLists) {

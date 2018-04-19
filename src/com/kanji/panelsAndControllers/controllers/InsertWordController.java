@@ -31,8 +31,9 @@ public class InsertWordController<Word extends ListElement> {
 	}
 
 	private void addWordIfItsNew(Word word) {
-		if (word.isEmpty()){
-			parentDialog.showMessageDialog(ExceptionsMessages.NO_INPUT_SUPPLIED);
+		if (word.isEmpty()) {
+			parentDialog
+					.showMessageDialog(ExceptionsMessages.NO_INPUT_SUPPLIED);
 			return;
 		}
 		boolean addedWord = addWordToList(word);
@@ -68,8 +69,7 @@ public class InsertWordController<Word extends ListElement> {
 					KeyboardFocusManager.getCurrentKeyboardFocusManager()
 							.clearGlobalFocusOwner();
 					SwingUtilities.invokeLater(() -> {
-						addWordIfItsNew(
-								insertWordPanel.getWord());
+						addWordIfItsNew(insertWordPanel.getWord());
 						insertWordPanel.reinitializePanel();
 					});
 				});

@@ -58,8 +58,7 @@ public class LearningStartController {
 	}
 
 	private void addOrSubtractProblematicKanjisFromSum(int direction) {
-		Set<Kanji> problematics = applicationController
-				.getProblematicKanjis();
+		Set<Kanji> problematics = applicationController.getProblematicKanjis();
 		for (Kanji i : problematics) {
 			if (!rangesToRepeat.isValueInsideThisSet(i.getId())) {
 				sumOfWords += direction;
@@ -279,8 +278,7 @@ public class LearningStartController {
 		repeatingInfo += rangesToRepeat;
 		repeatingInfo += ".";
 		applicationController.setRepeatingInformation(
-				new RepeatingData(repeatingInfo, LocalDateTime.now(),
-						false));
+				new RepeatingData(repeatingInfo, LocalDateTime.now(), false));
 	}
 
 	public void switchPanelAndSetWordsRangesToRepeat(

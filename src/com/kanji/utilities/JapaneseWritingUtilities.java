@@ -17,9 +17,7 @@ public class JapaneseWritingUtilities {
 	}
 
 	public static boolean isInputValid(String inputText, boolean isKana) {
-		return isKana ?
-				wordIsInKana(inputText) :
-				wordIsInKanji(inputText);
+		return isKana ? wordIsInKana(inputText) : wordIsInKanji(inputText);
 	}
 
 	public static String getDefaultValueForWriting(boolean isKanaWriting) {

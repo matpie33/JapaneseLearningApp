@@ -8,13 +8,11 @@ public class ExceptionsMessages {
 	public static final String DUPLICATED_WORD_EXCEPTION =
 			"Pewne słowo występuje wielokrotnie "
 					+ "na liście słów. Należy poprawić.";
-	public static final String DUPLICATED_ID_EXCEPTION =
-			"Istnieje już słowo z id: %s";
+	public static final String DUPLICATED_ID_EXCEPTION = "Istnieje już słowo z id: %s";
 	public static final String NUMBER_FORMAT_EXCEPTION = "Niepoprawnie wpisana liczba.";
 	public static final String ID_ALREADY_DEFINED_EXCEPTION =
 			"Id o wartości %d juz istnieje" + "w wierszu %d.";
-	public static final String DUPLICATED_KEYWORD_EXCEPTION =
-			"Kanji o słowie kluczowym \"%s\" już istnieje.";
+	public static final String DUPLICATED_KEYWORD_EXCEPTION = "Kanji o słowie kluczowym \"%s\" już istnieje.";
 	public static final String WORD_ALREADY_HIGHLIGHTED_EXCEPTION =
 			"To slowo jest juz zaznaczone." + "Nie znaleziono innych pozycji.";
 	public static final String RANGE_TO_VALUE_LESS_THAN_RANGE_FROM_VALUE = "Górna wartość zakresu jest mniejsza lub równa dolnej wartości.";

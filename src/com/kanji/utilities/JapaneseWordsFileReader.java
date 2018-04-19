@@ -43,16 +43,18 @@ public class JapaneseWordsFileReader {
 
 	private void changeStringsToJapaneseWordInformation() {
 		for (int i = 0; i < wordsInKanaList.size(); i++) {
-			JapaneseWord japaneseWord = JapaneseWord
-					.getInitializer().initializeElement();
+			JapaneseWord japaneseWord = JapaneseWord.getInitializer()
+					.initializeElement();
 			String stringInKana = wordsInKanaList.get(i);
 			String stringInKanji = wordsInKanjiList.get(i);
 			String meaning = meaningsList.get(i);
 			char[] particlesToCheck = new char[] { 'に', 'と', 'を' };
-			stringInKana = checkIfWordTakesParticles(stringInKana, japaneseWord, particlesToCheck);
+			stringInKana = checkIfWordTakesParticles(stringInKana, japaneseWord,
+					particlesToCheck);
 			stringInKanji = checkIfWordTakesParticles(stringInKanji,
 					japaneseWord, particlesToCheck);
-			meaning = checkIfWordTakesParticles(meaning, japaneseWord, particlesToCheck);
+			meaning = checkIfWordTakesParticles(meaning, japaneseWord,
+					particlesToCheck);
 			//TODO can we avoid making 3 calls?
 
 			if (stringInKanji.contains("-")) {
@@ -109,15 +111,16 @@ public class JapaneseWordsFileReader {
 				partOfSpeech = PartOfSpeech.EXPRESSION;
 			}
 
-			setAlternativeWritings(japaneseWord, stringInKanji,
-					stringInKana, partOfSpeech);
+			setAlternativeWritings(japaneseWord, stringInKanji, stringInKana,
+					partOfSpeech);
 			japaneseWord.setMeaning(meaning);
 
 			int potentialDuplicateIndex = searchForElementInList(newWords,
 					japaneseWord);
 			if (potentialDuplicateIndex != -1) {
-				duplicatedWords.add(new DuplicatedJapaneseWordInformation(
-						japaneseWord, potentialDuplicateIndex));
+				duplicatedWords
+						.add(new DuplicatedJapaneseWordInformation(japaneseWord,
+								potentialDuplicateIndex));
 			}
 			else {
 				newWords.add(japaneseWord);
@@ -137,8 +140,7 @@ public class JapaneseWordsFileReader {
 	}
 
 	private String checkIfWordTakesParticles(String wordRepresentation,
-			JapaneseWord japaneseWord,
-			char... particles) {
+			JapaneseWord japaneseWord, char... particles) {
 		for (char particle : particles) {
 			wordRepresentation = checkForTakingParticleAndModifyString(
 					wordRepresentation, particle, japaneseWord);
@@ -171,8 +173,7 @@ public class JapaneseWordsFileReader {
 				word;
 	}
 
-	private void setAlternativeWritings(
-			JapaneseWord japaneseWord,
+	private void setAlternativeWritings(JapaneseWord japaneseWord,
 			String stringInKanji, String stringInKana,
 			PartOfSpeech partOfSpeech) {
 		String[] alternativeKanjiWritings = splitWordByComma(stringInKanji);
@@ -183,8 +184,8 @@ public class JapaneseWordsFileReader {
 				alternativeKanaWritings, japaneseWord, partOfSpeech),
 
 				extractAndSetAlternativeWritingsAndConjugationType(
-						alternativeKanjiWritings, japaneseWord,
-						partOfSpeech), japaneseWord);
+						alternativeKanjiWritings, japaneseWord, partOfSpeech),
+				japaneseWord);
 		//TODO maybe we could do it as a one call
 	}
 
@@ -192,8 +193,7 @@ public class JapaneseWordsFileReader {
 			JapaneseWord japaneseWord) {
 		if (kanaWritings.length == kanjiWritings.length) {
 			for (int i = 0; i < kanaWritings.length; i++) {
-				japaneseWord
-						.addWritings(kanaWritings[i], kanjiWritings[i]);
+				japaneseWord.addWritings(kanaWritings[i], kanjiWritings[i]);
 			}
 		}
 		else if (kanjiWritings.length > kanaWritings.length) {
@@ -220,8 +220,7 @@ public class JapaneseWordsFileReader {
 	}
 
 	private String[] extractAndSetAlternativeWritingsAndConjugationType(
-			String[] splittedWords,
-			JapaneseWord japaneseWord,
+			String[] splittedWords, JapaneseWord japaneseWord,
 			PartOfSpeech partOfSpeech) {
 		if (splittedWords.length == 1) {
 			return splittedWords;

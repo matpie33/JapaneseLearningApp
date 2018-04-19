@@ -38,7 +38,8 @@ public class JapanesePanelServiceEditMode
 		for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
 			rowElements.add(elementsMaker
 					.createKanjiInputWithValidation(kanjiWriting,
-							japaneseWriting, wordContainingWriting, forSearchPanel));
+							japaneseWriting, wordContainingWriting,
+							forSearchPanel));
 		}
 		rowElements.add(elementsMaker
 				.createButtonAddKanjiWriting(rowPanel, japaneseWriting,

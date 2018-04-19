@@ -1,10 +1,6 @@
 package com.kanji.list.myList;
 
-import com.guimaker.panels.MainPanel;
-
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public class ListRowData {
 

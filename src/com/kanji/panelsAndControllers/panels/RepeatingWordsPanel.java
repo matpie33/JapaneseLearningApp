@@ -122,8 +122,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private void createWordDescriptionTextArea() {
 		wordTextArea = GuiMaker.createTextPane(
 				new TextPaneOptions().textAlignment(TextAlignment.CENTERED)
-						.text("").enabled(false).fontSize(30f).font(
-						ApplicationWindow.getKanjiFont()));
+						.text("").enabled(false).fontSize(30f)
+						.font(ApplicationWindow.getKanjiFont()));
 	}
 
 	public void setButtonsToRecognizing() {

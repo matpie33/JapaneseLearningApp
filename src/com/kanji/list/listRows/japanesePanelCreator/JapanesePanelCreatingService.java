@@ -13,7 +13,6 @@ public interface JapanesePanelCreatingService {
 			CommonListElements commonListElements, MainPanel rowPanel,
 			boolean forSearchPanel);
 
-	public void setWord (JapaneseWord word);
-
+	public void setWord(JapaneseWord word);
 
 }

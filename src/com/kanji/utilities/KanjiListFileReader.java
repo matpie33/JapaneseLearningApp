@@ -35,8 +35,7 @@ public class KanjiListFileReader {
 		in = new BufferedReader(
 				new InputStreamReader(new FileInputStream(file), "UTF8"));
 		List<Kanji> kanjis = findWordsAndIDs(file);
-		List<RepeatingData> repeatingData = findRepeatingInformations(
-				file);
+		List<RepeatingData> repeatingData = findRepeatingInformations(file);
 		Set<Integer> problematicKanjis = findProblematicKanjisNumbers();
 		KanjisAndRepeatingInfo kanjisAndRepeatingInfo = new KanjisAndRepeatingInfo(
 				kanjis, repeatingData, problematicKanjis);
@@ -45,16 +44,15 @@ public class KanjiListFileReader {
 	}
 
 	public void writeToFile(File f, MyList<Kanji> listOfWords,
-			MyList<RepeatingData> repeats,
-			Set<Kanji> problematicKanjis) throws IOException {
+			MyList<RepeatingData> repeats, Set<Kanji> problematicKanjis)
+			throws IOException {
 		BufferedWriter p = new BufferedWriter(
 				new OutputStreamWriter(new FileOutputStream(f), "UTF8"));
 		List<Kanji> list = listOfWords.getWords();
 		p.write(KANJIS_HEADER);
 		p.newLine();
 		for (Kanji kanji : list) {
-			p.write(kanji.getKeyword() + SEPARATOR + kanji.getId()
-					+ SEPARATOR);
+			p.write(kanji.getKeyword() + SEPARATOR + kanji.getId() + SEPARATOR);
 			p.newLine();
 		}
 		List<RepeatingData> repeatingData = repeats.getWords();
@@ -106,16 +104,14 @@ public class KanjiListFileReader {
 				openDesktopAndShowMessage(kanjiKeyword, wordIdInt, kanjis);
 			}
 			else {
-				kanjis.add(new Kanji(kanjiKeyword,
-						Integer.valueOf(wordIdInt)));
+				kanjis.add(new Kanji(kanjiKeyword, Integer.valueOf(wordIdInt)));
 			}
 		}
 
 		return kanjis;
 	}
 
-	private boolean isIdDuplicated(int id,
-			List<Kanji> kanjis) {
+	private boolean isIdDuplicated(int id, List<Kanji> kanjis) {
 		for (Kanji kanji : kanjis) {
 			if (kanji.getId() == id) {
 				return true;
@@ -124,8 +120,7 @@ public class KanjiListFileReader {
 		return false;
 	}
 
-	private boolean isKeywordDefined(String keyword,
-			List<Kanji> kanjis) {
+	private boolean isKeywordDefined(String keyword, List<Kanji> kanjis) {
 		for (Kanji kanji : kanjis) {
 			if (kanji.getKeyword().equals(keyword)) {
 				return true;
@@ -195,8 +190,7 @@ public class KanjiListFileReader {
 	}
 
 	private void openDesktopAndShowMessage(String duplicatedWord, int wordId,
-			List<Kanji> kanjis)
-			throws DuplicatedWordException, IOException {
+			List<Kanji> kanjis) throws DuplicatedWordException, IOException {
 		Desktop.getDesktop().open(this.readedFile);
 		throw new DuplicatedWordException(
 				ExceptionsMessages.DUPLICATED_WORD_EXCEPTION + " " + WORD_TEXT
@@ -204,8 +198,7 @@ public class KanjiListFileReader {
 						+ " oraz " + getKeywordID(duplicatedWord, kanjis));
 	}
 
-	private int getKeywordID(String keyword,
-			List<Kanji> kanjis) {
+	private int getKeywordID(String keyword, List<Kanji> kanjis) {
 		for (Kanji kanji : kanjis) {
 			return kanji.getId();
 		}

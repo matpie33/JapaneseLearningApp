@@ -43,9 +43,9 @@ public class JapanesePanelServiceViewMode
 				textFieldSelectionHandler));
 		for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
 			rowElements.add(actionsCreator.selectableTextfield(elementsMaker
-							.createKanjiInputWithValidation(kanjiWriting,
-									japaneseWriting, wordContainingWriting, forSearchPanel),
-					textFieldSelectionHandler));
+					.createKanjiInputWithValidation(kanjiWriting,
+							japaneseWriting, wordContainingWriting,
+							forSearchPanel), textFieldSelectionHandler));
 		}
 
 		return rowElements.toArray(new JComponent[] {});

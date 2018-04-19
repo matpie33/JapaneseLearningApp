@@ -26,13 +26,13 @@ public class JapaneseWordWritingsInputManager {
 
 	}
 
-	public void setKanaInput(JTextComponent kanaInput){
+	public void setKanaInput(JTextComponent kanaInput) {
 		this.kanaInput = kanaInput;
 	}
 
 	private boolean kanjiInputIsNew(JTextComponent input) {
 		for (JTextComponent kanjiInput : kanjiInputs) {
-			if (input == kanjiInput){
+			if (input == kanjiInput) {
 				continue;
 			}
 			if (kanjiInput.getText().equals(input.getText())) {

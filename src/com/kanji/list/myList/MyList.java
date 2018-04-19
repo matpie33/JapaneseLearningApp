@@ -35,7 +35,6 @@ public class MyList<Word extends ListElement> {
 		this.title = title;
 	}
 
-
 	public MyList(DialogWindow parentDialog,
 			ApplicationController applicationController,
 			ListRowMaker<Word> listRowMaker, String title,
@@ -43,7 +42,6 @@ public class MyList<Word extends ListElement> {
 		this(parentDialog, applicationController, listRowMaker, title,
 				new ListConfiguration(), wordInitializer);
 	}
-
 
 	public ListElementInitializer<Word> getWordInitializer() {
 		return wordInitializer;

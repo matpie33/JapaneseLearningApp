@@ -44,7 +44,7 @@ public class JapaneseWriting implements ListElement {
 
 	@Override
 	public boolean isSameAs(ListElement element) {
-		if (!element.getClass().equals(getClass())){
+		if (!element.getClass().equals(getClass())) {
 			return false;
 		}
 		JapaneseWriting otherWriting = (JapaneseWriting) element;

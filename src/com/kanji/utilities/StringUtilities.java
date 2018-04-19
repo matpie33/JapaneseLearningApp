@@ -2,18 +2,17 @@ package com.kanji.utilities;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 public class StringUtilities {
 
 	private static final String COMMA_SPACE = ", ";
 	private static final String COLON_SPACE = ": ";
 
-	public static String joinPropertyAndValue (String property, String value){
+	public static String joinPropertyAndValue(String property, String value) {
 		return property + COLON_SPACE + value;
 	}
 
-	public static String joinPropertyValuePairs (String ... propertyValuePairs){
+	public static String joinPropertyValuePairs(String... propertyValuePairs) {
 		return concatenateStrings(Arrays.asList(propertyValuePairs));
 	}
 
@@ -29,8 +28,8 @@ public class StringUtilities {
 		return builder.toString().substring(0, builder.length() - 2);
 	}
 
-	public static String putInNewLine (String expression){
-		return "\n"+expression;
+	public static String putInNewLine(String expression) {
+		return "\n" + expression;
 	}
 
 }

@@ -83,8 +83,7 @@ public class RepeatingJapaneseWordsDisplayer
 	}
 
 	@Override
-	public void showWordFullInformation(
-			JapaneseWord japaneseWord) {
+	public void showWordFullInformation(JapaneseWord japaneseWord) {
 		fullWordInformationPanel.clear();
 		japaneseWordPanelCreator.setLabelsColor(Color.BLACK);
 		japaneseWordPanelCreator
@@ -114,8 +113,7 @@ public class RepeatingJapaneseWordsDisplayer
 	}
 
 	@Override
-	public void removeWordFromProblematic(
-			JapaneseWord wordInformation) {
+	public void removeWordFromProblematic(JapaneseWord wordInformation) {
 		problematicJapaneseWords.remove(wordInformation);
 		currentProblematicWords.remove(wordInformation);
 	}
@@ -144,11 +142,9 @@ public class RepeatingJapaneseWordsDisplayer
 
 	@Override
 	public RepeatingState getRepeatingState(TimeSpent timeSpent,
-			RepeatingData repeatingData,
-			Set<JapaneseWord> words) {
+			RepeatingData repeatingData, Set<JapaneseWord> words) {
 		RepeatingState<JapaneseWord> kanjiRepeatingState = new RepeatingState<>(
-				timeSpent, repeatingData, currentProblematicWords,
-				words);
+				timeSpent, repeatingData, currentProblematicWords, words);
 		return kanjiRepeatingState;
 	}
 
@@ -163,8 +159,7 @@ public class RepeatingJapaneseWordsDisplayer
 	}
 
 	@Override
-	public void setAllProblematicWords(
-			Set<JapaneseWord> problematicWords) {
+	public void setAllProblematicWords(Set<JapaneseWord> problematicWords) {
 		problematicJapaneseWords = problematicWords;
 	}
 

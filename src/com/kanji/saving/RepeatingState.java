@@ -15,8 +15,7 @@ public class RepeatingState<Element extends ListElement>
 	private Set<Element> currentProblematicWords;
 	private Set<Element> currentlyRepeatedWords;
 
-	public RepeatingState(TimeSpent timeSpent,
-			RepeatingData repeatingData,
+	public RepeatingState(TimeSpent timeSpent, RepeatingData repeatingData,
 			Set<Element> currentProblematicWords,
 			Set<Element> currentlyRepeatedWords) {
 		this.timeSpent = timeSpent;

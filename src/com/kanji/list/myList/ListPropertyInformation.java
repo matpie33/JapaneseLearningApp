@@ -1,7 +1,6 @@
 package com.kanji.list.myList;
 
 import com.guimaker.row.AbstractSimpleRow;
-import com.guimaker.row.SimpleRow;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.ListElement;
 

@@ -14,8 +14,7 @@ public class KanjiIdChecker
 	}
 
 	@Override
-	public boolean isPropertyFound(Integer property,
-			Kanji kanji) {
+	public boolean isPropertyFound(Integer property, Kanji kanji) {
 		return kanji.getId() == property;
 	}
 
@@ -32,8 +31,7 @@ public class KanjiIdChecker
 	}
 
 	@Override
-	public void setProperty(Kanji kanji,
-			Integer propertyValue) {
+	public void setProperty(Kanji kanji, Integer propertyValue) {
 		kanji.setId(propertyValue);
 	}
 

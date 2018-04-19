@@ -62,12 +62,9 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	public void focusLost(FocusEvent e) {
 		JTextComponent elem = (JTextComponent) e.getSource();
 		Property propertyNewValue = validateAndConvertToProperty(elem);
-		if (propertyNewValue != null && addingWord){
+		if (propertyNewValue != null && addingWord) {
 			add(elem, propertyNewValue);
 		}
-
-
-		
 
 	}
 
