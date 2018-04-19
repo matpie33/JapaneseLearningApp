@@ -9,7 +9,6 @@ import javax.swing.text.JTextComponent;
 
 public class JapaneseWordMeaningChecker extends WordSearchOptionsHolder
 		implements ListElementPropertyManager<String, JapaneseWord> {
-	//TODO I hate to create a class which is veeery similar to each other for every word element
 
 	public JapaneseWordMeaningChecker() {
 		this(WordSearchOptions.BY_WORD_FRAGMENT);

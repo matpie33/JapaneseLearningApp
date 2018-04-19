@@ -5,6 +5,7 @@ import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.list.listElementAdditionalInformations.AdditionalInformation;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
+import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordWritingsChecker;
 import com.kanji.utilities.StringUtilities;
 
 import java.io.Serializable;
@@ -116,17 +117,16 @@ public class JapaneseWord implements ListElement, Serializable {
 			JapaneseWord otherWord = (JapaneseWord) element;
 
 			for (JapaneseWriting japaneseWriting : otherWord.getWritings()) {
-				//TODO reimplement this
+				if(new JapaneseWordWritingsChecker(japaneseWriting, true)
+						.isPropertyFound(japaneseWriting, this)){
+					return false;
+				}
 			}
-			//			if (writingsChecker.isPropertyFound(kanaAndKanjiStrings, this)) {
-			//				return true;
-			//			}
 			if (meaningChecker.isPropertyFound(otherWord.getMeaning(), this)) {
 				return true;
 			}
 			return false;
-		}
-		return false;
+		} return false;
 	}
 
 	@Override

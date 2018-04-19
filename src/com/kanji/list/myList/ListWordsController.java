@@ -46,10 +46,9 @@ public class ListWordsController<Word extends ListElement> {
 
 	}
 
-	public void inheritScrollPane (){
+	public void inheritScrollPane() {
 		listPanelMaker.inheritScrollPane();
 	}
-
 
 	private void initializeFoundWordStrategies() {
 		strategiesForFoundWord.add(new FoundWordInsideVisibleRangeStrategy());
@@ -67,13 +66,14 @@ public class ListWordsController<Word extends ListElement> {
 		return MAXIMUM_WORDS_TO_SHOW;
 	}
 
-	public boolean add(Word r) {
+	public boolean add(Word r, boolean forSearchPanel) {
 		if (!isWordDefined(r).exists()) {
 			boolean canNewWordBeDisplayed = canNewWordBeDisplayed();
 			ListRow<Word> newWord = listPanelMaker
 					.addRow(r, allWordsToRowNumberMap.size() + 1,
 							canNewWordBeDisplayed,
-							listPanelMaker.getLoadNextWordsHandler());
+							listPanelMaker.getLoadNextWordsHandler(),
+							forSearchPanel);
 			allWordsToRowNumberMap.put(allWordsToRowNumberMap.size(), newWord);
 			if (canNewWordBeDisplayed) {
 				lastRowVisible = allWordsToRowNumberMap.size() - 1;
@@ -257,7 +257,7 @@ public class ListWordsController<Word extends ListElement> {
 		int rowNumber = getFirstVisibleRowNumber();
 		ListRow addedWord = listPanelMaker
 				.addRow(allWordsToRowNumberMap.get(rowNumber).getWord(),
-						rowNumber + 1, true, loadPreviousWords);
+						rowNumber + 1, true, loadPreviousWords, false);
 		allWordsToRowNumberMap.put(rowNumber, addedWord);
 
 	}
@@ -266,7 +266,7 @@ public class ListWordsController<Word extends ListElement> {
 		lastRowVisible++;
 		ListRow visibleRow = listPanelMaker
 				.addRow(allWordsToRowNumberMap.get(lastRowVisible).getWord(),
-						lastRowVisible + 1, true, loadNextWords);
+						lastRowVisible + 1, true, loadNextWords, false);
 		allWordsToRowNumberMap.put(lastRowVisible, visibleRow);
 	}
 
@@ -294,7 +294,8 @@ public class ListWordsController<Word extends ListElement> {
 		listPanelMaker.removeWordsFromRangeInclusive(range);
 	}
 
+	//TODO not the best idea to pass the boolean "is for search panel" - maybe keep it as field
 	public void addNewWord() {
-		add(wordInitializer.initializeElement());
+		add(wordInitializer.initializeElement(), false);
 	}
 }

@@ -8,22 +8,30 @@ import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.utilities.JapaneseWritingUtilities;
 
 import javax.swing.text.JTextComponent;
+import java.util.HashSet;
 import java.util.Set;
 
 public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 		implements ListElementPropertyManager<JapaneseWriting, JapaneseWord> {
-	//TODO I hate to create a class which is veeery similar to each other for every word element
 	private String errorDetails = "";
-	private boolean addingWord; //TODO rename in other places too (from kanaRequired)
+	private boolean addingWord;
 	private JapaneseWriting japaneseWritingToCheck;
 	private JapaneseWordWritingsInputManager writingsInputManager;
 
-	public JapaneseWordWritingsChecker(
-			JapaneseWordWritingsInputManager inputManager,
-			JapaneseWriting japaneseWritingToCheck, boolean addingWord) {
+	public JapaneseWordWritingsChecker(JapaneseWriting japaneseWritingToCheck,
+			boolean addingWord) {
 		this.japaneseWritingToCheck = japaneseWritingToCheck;
 		this.addingWord = addingWord;
-		this.writingsInputManager = inputManager;
+		writingsInputManager = new JapaneseWordWritingsInputManager();
+	}
+
+	public void setKanaInput(JTextComponent kanaInput) {
+		writingsInputManager.setKanaInput(kanaInput);
+		japaneseWritingToCheck.setKanaWriting(kanaInput.getText());
+	}
+
+	public void addKanjiInput(JTextComponent kanjiInput) {
+		writingsInputManager.addKanjiInput(kanjiInput);
 	}
 
 	@Override
@@ -56,7 +64,6 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 	private boolean kanaWritingsAreEqualAndKanjiWritingsContainAllOtherKanjiWritings(
 			String searchedKana, String existingWordKana,
 			Set<String> searchedKanji, Set<String> existingKanjiWritings) {
-		//TODO move the logic checking if textfield is empty (default value or no value) to one place and use it everywhere, now its scattered
 
 		if (JapaneseWritingUtilities.isInputEmpty(searchedKana, true)) {
 			return areKanjisSame(searchedKanji, existingKanjiWritings);
@@ -100,22 +107,22 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 			JTextComponent valueToConvert) {
 
 		errorDetails = "";
-		String textValue = valueToConvert.getText();
+		String newValue = valueToConvert.getText();
 		boolean isKana = writingsInputManager.getKanaInput() == valueToConvert;
-		if (JapaneseWritingUtilities.isInputEmpty(textValue, isKana)) {
+		if (JapaneseWritingUtilities.isInputEmpty(newValue, isKana)) {
 			return japaneseWritingToCheck;
 		}
-		if (!JapaneseWritingUtilities.isInputValid(textValue, isKana)) {
+		if (!JapaneseWritingUtilities.isInputValid(newValue, isKana)) {
 			//TODO validate if kana is duplicated inside the word - isSameAs method for JapaneseWriting
 			String exceptionMessage = isKana ?
 					ExceptionsMessages.KANA_WRITING_INCORRECT :
 					ExceptionsMessages.KANJI_WRITING_INCORRECT;
-			errorDetails += String.format(exceptionMessage, textValue);
+			errorDetails += String.format(exceptionMessage, newValue);
 			return null;
 		}
 		else {
 			if (isKana) {
-				japaneseWritingToCheck.setKanaWriting(textValue);
+				japaneseWritingToCheck.setKanaWriting(newValue);
 				return japaneseWritingToCheck;
 			}
 			boolean isNewWriting = writingsInputManager
@@ -126,10 +133,11 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 			}
 			else {
 				if (isKana) {
-					japaneseWritingToCheck.setKanaWriting(textValue);
+					japaneseWritingToCheck.setKanaWriting(newValue);
 				}
 				else {
-					japaneseWritingToCheck.addKanjiWriting(textValue);
+					japaneseWritingToCheck
+							.replaceKanji(findKanjiPreviousValue(), newValue);
 				}
 				return japaneseWritingToCheck;
 			}
@@ -137,23 +145,21 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 
 	}
 
-
 	private String findKanjiPreviousValue() {
 		Set<String> kanjiWritings = japaneseWritingToCheck.getKanjiWritings();
-		for (String kanjiWriting : kanjiWritings) {
-			boolean foundKanjiWriting = false;
-			for (JTextComponent kanjiInput : writingsInputManager
-					.getKanjiInputs()) {
-				if (kanjiInput.getText().equals(kanjiWriting)) {
-					foundKanjiWriting = true;
-					break;
-				}
-			}
-			if (!foundKanjiWriting) {
-				return kanjiWriting;
-			}
+		Set<String> copiedKanjiWritings = new HashSet<>(kanjiWritings);
+		for (JTextComponent kanjiInput : writingsInputManager
+				.getKanjiInputs()) {
+			copiedKanjiWritings.remove(kanjiInput.getText());
 		}
-		throw new IllegalStateException("No previuos value found");
+		if (copiedKanjiWritings.size() > 1) {
+			throw new IllegalStateException("Found more than 1 previous value.");
+		}
+		if (copiedKanjiWritings.isEmpty()){
+			return "";
+		}
+		return copiedKanjiWritings.iterator().next();
+
 	}
 
 	@Override
@@ -164,7 +170,8 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 
 	@Override
 	public String getPropertyDefinedException(JapaneseWriting writing) {
-		return String.format(ExceptionsMessages.DUPLICATED_KANJI_WRITING_WITHIN_ROW,
-				writing.getDisplayedText());
+		return String
+				.format(ExceptionsMessages.DUPLICATED_KANJI_WRITING_WITHIN_ROW,
+						writing.getDisplayedText());
 	}
 }

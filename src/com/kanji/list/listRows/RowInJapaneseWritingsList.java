@@ -22,15 +22,18 @@ public class RowInJapaneseWritingsList
 	}
 
 	@Override
-	public ListRowData createListRow(JapaneseWriting japaneseWriting,
+	public MainPanel createListRow(JapaneseWriting japaneseWriting,
 			CommonListElements commonListElements, boolean forSearchPanel) {
 		rowPanel = new MainPanel(BasicColors.OCEAN_BLUE);
 		rowPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE,
 				japanesePanelCreatingService
 						.addWritingsRow(japaneseWriting, commonListElements,
-								rowPanel)));
-		ListRowData rowData = new ListRowData(rowPanel);
-		return rowData;
+								rowPanel, forSearchPanel)));
+		return rowPanel;
 	}
 
+	@Override
+	public ListRowData getRowData() {
+		return null;
+	}
 }

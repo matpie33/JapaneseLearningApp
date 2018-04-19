@@ -73,7 +73,11 @@ public class MyList<Word extends ListElement> {
 	}
 
 	public boolean addWord(Word word) {
-		return listController.add(word);
+		return listController.add(word, false);
+	}
+
+	public boolean addWord(Word word, boolean forSearchPanel) {
+		return listController.add(word, forSearchPanel);
 	}
 
 	public Word createWord() {

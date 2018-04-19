@@ -22,17 +22,23 @@ public class RowInJapaneseWordInformations
 	}
 
 	@Override
-	public ListRowData createListRow(JapaneseWord japaneseWord,
+	public MainPanel createListRow(JapaneseWord japaneseWord,
 			CommonListElements commonListElements, boolean forSearchPanel) {
 		MainPanel panel = new MainPanel(null);
 		JLabel rowNumberLabel = commonListElements.getRowNumberLabel();
 		japaneseWordPanelCreator.setRowNumberLabel(rowNumberLabel);
-		japaneseWordPanelCreator.setLabelsColor(commonListElements.getLabelsColor());
-		ListRowData rowData = japaneseWordPanelCreator
-				.addJapanesePanelToExistingPanel(panel, japaneseWord, forSearchPanel);
+		japaneseWordPanelCreator
+				.setLabelsColor(commonListElements.getLabelsColor());
+		japaneseWordPanelCreator
+				.addJapanesePanelToExistingPanel(panel, japaneseWord,
+						forSearchPanel);
 		japaneseWordPanelCreator.focusMeaningTextfield();
 
+		return panel;
+	}
 
-		return rowData;
+	@Override
+	public ListRowData getRowData() {
+		return japaneseWordPanelCreator.getRowData();
 	}
 }

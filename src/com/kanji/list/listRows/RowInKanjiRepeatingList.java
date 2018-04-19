@@ -31,7 +31,7 @@ public class RowInKanjiRepeatingList implements ListRowMaker<Kanji> {
 	}
 
 	@Override
-	public ListRowData createListRow(Kanji kanji,
+	public MainPanel createListRow(Kanji kanji,
 			CommonListElements commonListElements, boolean forSearchPanel) {
 		MainPanel panel = new MainPanel(null);
 		JLabel id = new JLabel("" + kanji.getId());
@@ -54,34 +54,32 @@ public class RowInKanjiRepeatingList implements ListRowMaker<Kanji> {
 						commonListElements.getRowNumberLabel(), kanjiKeyword,
 						kanjiTextArea)
 				.fillHorizontallySomeElements(kanjiTextArea)
-				.nextRow(kanjiId, id)
-				.setColumnToPutRowInto(1)
-				.nextRow(buttonGoToSource)
-				.fillHorizontallyEqually());
+				.nextRow(kanjiId, id).setColumnToPutRowInto(1)
+				.nextRow(buttonGoToSource).fillHorizontallyEqually());
 
-		ListRowData rowData = new ListRowData(panel);
-
-		if (forSearchPanel){
+		if (forSearchPanel) {
 			//TODO to be merged
 		}
 
-		return rowData;
+		return panel;
 	}
 
-		//TODO merge this class with rowInKanjiInformations
+	//TODO merge this class with rowInKanjiInformations
 
-	private JButton createButtonGoToSource(int rowNumber,
-			Kanji kanji) {
+	private JButton createButtonGoToSource(int rowNumber, Kanji kanji) {
 		JButton button = new JButton(ButtonsNames.GO_TO_SOURCE);
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.goToSpecifiedResource(
-						new WordRow(kanji, rowNumber));
+				controller.goToSpecifiedResource(new WordRow(kanji, rowNumber));
 			}
 		});
 		button.setFocusable(false);
 		return button;
 	}
 
+	@Override
+	public ListRowData getRowData() {
+		return null;
+	}
 }

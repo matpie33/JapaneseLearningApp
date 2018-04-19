@@ -6,7 +6,6 @@ import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.strings.ButtonsNames;
-import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordWritingsInputManager;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelActions;
@@ -17,14 +16,11 @@ import com.kanji.windows.ApplicationWindow;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.event.ActionEvent;
-import java.util.HashMap;
-import java.util.Map;
 
 public class JapanesePanelElementsMaker {
 
 	private JapanesePanelEditOrAddModeAction actionsMaker;
 	private JapanesePanelActions actionsCreator;
-	private Map<JapaneseWriting, JapaneseWordWritingsInputManager> writingsInputManagers = new HashMap<>();
 
 	public JapanesePanelElementsMaker(
 			JapanesePanelEditOrAddModeAction actionsMaker,
@@ -39,33 +35,21 @@ public class JapanesePanelElementsMaker {
 		return field;
 	}
 
-	public JapaneseWordWritingsInputManager createJapaneseWritingsTextFields(
+	public JTextComponent createKanaInputWithValidation(
 			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
-			boolean enabled) {
-		//TODO can I use just one of them? only japanese writing or only japanese word?
-		JTextComponent kanaInput = createWritingsInput(
-				japaneseWriting.getKanaWriting(), enabled, true);
-		JapaneseWordWritingsInputManager inputManager = new JapaneseWordWritingsInputManager(
-				kanaInput);
-		writingsInputManagers.put(japaneseWriting, inputManager);
-		actionsCreator.withJapaneseWritingValidation(kanaInput, inputManager,
-				japaneseWriting, japaneseWord, true);
-
-		for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
-			createKanjiInputWithValidation(kanjiWriting, inputManager,
-					japaneseWriting, japaneseWord);
-		}
-
-		return inputManager;
-
+			boolean enabled, boolean isForSearchDialog) {
+		return actionsCreator.withJapaneseWritingValidation(
+				createWritingsInput(japaneseWriting.getKanaWriting(), enabled,
+						true), japaneseWriting, japaneseWord, true,
+				isForSearchDialog);
 	}
 
-	private JTextComponent createKanjiInputWithValidation(String text,
-			JapaneseWordWritingsInputManager inputManager,
-			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord) {
+	public JTextComponent createKanjiInputWithValidation(String text,
+			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
+			boolean isForSearchDialog) {
 		return actionsCreator.withJapaneseWritingValidation(
-				createWritingsInput(text, true, false), inputManager,
-				japaneseWriting, japaneseWord, false);
+				createWritingsInput(text, true, false), japaneseWriting,
+				japaneseWord, false, isForSearchDialog);
 	}
 
 	public JTextComponent createWritingsInput(String text, boolean enabled,
@@ -113,16 +97,16 @@ public class JapanesePanelElementsMaker {
 	}
 
 	public AbstractButton createButtonAddKanjiWriting(MainPanel rowPanel,
-			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord) {
+			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
+			boolean isForSearchDialog) {
 		AbstractButton button = createButton(ButtonsNames.ADD_KANJI_WRITING,
 				null);
 		button.addActionListener(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				rowPanel.insertElementInPlaceOfElement(
-						createKanjiInputWithValidation("",
-								writingsInputManagers.get(japaneseWriting),
-								japaneseWriting, japaneseWord), button);
+						createKanjiInputWithValidation("", japaneseWriting,
+								japaneseWord, isForSearchDialog), button);
 			}
 		});
 		return button;

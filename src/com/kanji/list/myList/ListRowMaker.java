@@ -8,8 +8,8 @@ import java.util.Map;
 
 public interface ListRowMaker<Word extends ListElement> {
 
-	public ListRowData createListRow(Word word,
+	public MainPanel createListRow(Word word,
 			CommonListElements commonListElements, boolean forSearchPanel);
 
-
+	public ListRowData getRowData();
 }

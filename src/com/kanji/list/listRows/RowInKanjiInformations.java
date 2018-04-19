@@ -28,13 +28,18 @@ import java.util.Map;
 
 public class RowInKanjiInformations implements ListRowMaker<Kanji> {
 	private ApplicationWindow applicationWindow;
+	private JTextComponent keywordInput;
+	private KanjiKeywordChecker keywordChecker;
+	private JTextComponent idInput;
+	private KanjiIdChecker idChecker;
+	private NextRow lastPanelMade;
 
 	public RowInKanjiInformations(ApplicationWindow applicationWindow) {
 		this.applicationWindow = applicationWindow;
 	}
 
 	@Override
-	public ListRowData createListRow(Kanji kanji,
+	public MainPanel createListRow(Kanji kanji,
 			CommonListElements commonListElements, boolean forSearchPanel) {
 		MainPanel panel = new MainPanel(null);
 		//TODO do it like in rowInJapaneseWordInformations
@@ -47,52 +52,52 @@ public class RowInKanjiInformations implements ListRowMaker<Kanji> {
 						.foregroundColor(labelsColor));
 		String text = kanji.getKeyword();
 		int ID = kanji.getId();
-		JTextComponent wordTextArea = CommonGuiElementsMaker
+		keywordInput = CommonGuiElementsMaker
 				.createKanjiWordInput(text);
-		KanjiKeywordChecker keywordChecker = new KanjiKeywordChecker();
-		wordTextArea.addFocusListener(new ListPropertyChangeHandler<>(kanji,
+		keywordChecker = new KanjiKeywordChecker();
+		keywordInput.addFocusListener(new ListPropertyChangeHandler<>(kanji,
 				applicationWindow.getApplicationController().getKanjiList(),
-				applicationWindow, keywordChecker, true));
-		JTextComponent idTextArea = CommonGuiElementsMaker.createKanjiIdInput();
-		idTextArea.setText(ID > 0 ? Integer.toString(ID) : "");
-		KanjiIdChecker idChecker = new KanjiIdChecker();
-		idTextArea.addFocusListener(new ListPropertyChangeHandler<>(kanji,
+				applicationWindow, keywordChecker, true, !forSearchPanel));
+		idInput = CommonGuiElementsMaker.createKanjiIdInput();
+		idInput.setText(ID > 0 ? Integer.toString(ID) : "");
+		idChecker = new KanjiIdChecker();
+		idInput.addFocusListener(new ListPropertyChangeHandler<>(kanji,
 				applicationWindow.getApplicationController().getKanjiList(),
-				applicationWindow, idChecker, true));
+				applicationWindow, idChecker, true, !forSearchPanel));
 		AbstractButton remove = commonListElements.getButtonDelete();
 		JLabel rowNumberLabel = commonListElements.getRowNumberLabel();
-		NextRow rows = SimpleRowBuilder
+		lastPanelMade = SimpleRowBuilder
 				.createRowStartingFromColumn(0, FillType.HORIZONTAL,
-						rowNumberLabel, kanjiKeyword, wordTextArea)
-				.fillHorizontallySomeElements(wordTextArea)
-				.nextRow(kanjiId, idTextArea).setColumnToPutRowInto(1)
+						rowNumberLabel, kanjiKeyword, keywordInput)
+				.fillHorizontallySomeElements(keywordInput)
+				.nextRow(kanjiId, idInput).setColumnToPutRowInto(1)
 				.nextRow(remove);
-		panel.addRowsOfElementsInColumnStartingFromColumn(rows);
-		ListRowData rowData = new ListRowData(panel);
+		panel.addRowsOfElementsInColumnStartingFromColumn(lastPanelMade);
 
-		if (forSearchPanel) {
-
-			Map<String, ListPropertyInformation> propertyInformations = new HashMap<>();
-
-			Map<JTextComponent, ListElementPropertyManager<?, Kanji>> propertyManagerOfTextFieldsKeyword = new HashMap<>();
-			propertyManagerOfTextFieldsKeyword
-					.put(wordTextArea, keywordChecker);
-			propertyInformations.put(ListPropertiesNames.KANJI_KEYWORD,
-					new ListPropertyInformation(rows.getAllRows().get(0),
-							propertyManagerOfTextFieldsKeyword));
-
-			Map<JTextComponent, ListElementPropertyManager<?, Kanji>> propertyManagerOfTextFieldsKanjiId = new HashMap<>();
-
-			propertyManagerOfTextFieldsKanjiId.put(idTextArea, idChecker);
-			propertyInformations.put(ListPropertiesNames.KANJI_ID,
-					new ListPropertyInformation(rows.getAllRows().get(1),
-							propertyManagerOfTextFieldsKanjiId));
-
-			rowData.setRowPropertiesData(propertyInformations);
-		}
-
-		return rowData;
+		return panel;
 
 	}
 
+	@Override
+	public ListRowData getRowData() {
+		ListRowData rowData = new ListRowData();
+		Map<String, ListPropertyInformation> propertyInformations = new HashMap<>();
+
+		Map<JTextComponent, ListElementPropertyManager<?, Kanji>> propertyManagerOfKeywordInput = new HashMap<>();
+		propertyManagerOfKeywordInput
+				.put(keywordInput, keywordChecker);
+		propertyInformations.put(ListPropertiesNames.KANJI_KEYWORD,
+				new ListPropertyInformation(lastPanelMade.getAllRows().get(0),
+						propertyManagerOfKeywordInput));
+
+		Map<JTextComponent, ListElementPropertyManager<?, Kanji>> propertyManagerOfIdInput = new HashMap<>();
+
+		propertyManagerOfIdInput.put(idInput, idChecker);
+		propertyInformations.put(ListPropertiesNames.KANJI_ID,
+				new ListPropertyInformation(lastPanelMade.getAllRows().get(1),
+						propertyManagerOfIdInput));
+
+		rowData.setRowPropertiesData(propertyInformations);
+		return rowData;
+	}
 }

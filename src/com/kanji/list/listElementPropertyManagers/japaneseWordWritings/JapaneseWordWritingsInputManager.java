@@ -9,10 +9,6 @@ public class JapaneseWordWritingsInputManager {
 	private JTextComponent kanaInput;
 	private List<JTextComponent> kanjiInputs = new ArrayList<>();
 
-	public JapaneseWordWritingsInputManager(JTextComponent kanaInput) {
-		this.kanaInput = kanaInput;
-	}
-
 	public JTextComponent getKanaInput() {
 		return kanaInput;
 	}
@@ -28,6 +24,10 @@ public class JapaneseWordWritingsInputManager {
 		}
 		return inputIsNew;
 
+	}
+
+	public void setKanaInput(JTextComponent kanaInput){
+		this.kanaInput = kanaInput;
 	}
 
 	private boolean kanjiInputIsNew(JTextComponent input) {

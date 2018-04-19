@@ -132,7 +132,8 @@ public class ListPanelMaker<Word extends ListElement>
 	}
 
 	public ListRow<Word> addRow(Word word, int rowNumber,
-			boolean shouldShowWord, LoadWordsHandler loadWordsHandler) {
+			boolean shouldShowWord, LoadWordsHandler loadWordsHandler,
+			boolean forSearchPanel) {
 		JLabel rowNumberLabel = new JLabel(createTextForRowNumber(rowNumber));
 		AbstractButton remove = new JButton(ButtonsNames.REMOVE_ROW);
 		AbstractButton addNewWord = createButtonAddRow();
@@ -146,7 +147,7 @@ public class ListPanelMaker<Word extends ListElement>
 			AbstractSimpleRow abstractSimpleRow = SimpleRowBuilder
 					.createRow(FillType.HORIZONTAL, Anchor.NORTH,
 							listRow.createListRow(word, commonListElements,
-									false).getRowPanel().getPanel());
+									forSearchPanel).getPanel());
 			row = loadWordsHandler.showWord(abstractSimpleRow);
 		}
 		else if (!buttonLoadNextWords.isEnabled()) {

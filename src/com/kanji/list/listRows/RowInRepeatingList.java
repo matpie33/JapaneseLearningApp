@@ -22,7 +22,7 @@ public class RowInRepeatingList implements ListRowMaker<RepeatingData> {
 	private final Color labelsColor = Color.WHITE;
 
 	@Override
-	public ListRowData createListRow(RepeatingData repeatingData,
+	public MainPanel createListRow(RepeatingData repeatingData,
 			CommonListElements commonListElements, boolean forSearchPanel) {
 		String word = repeatingData.getRepeatingRange();
 		String time = repeatingData.getTimeSpentOnRepeating();
@@ -55,14 +55,17 @@ public class RowInRepeatingList implements ListRowMaker<RepeatingData> {
 				.nextRow(repeatedWords).nextRow(timeSpent)
 				.nextRow(FillType.NONE, delete));
 
-		ListRowData rowData = new ListRowData(panel);
 
 		if (forSearchPanel){
 			//TODO implement it for searching repeating list to work
 		}
 
-		return rowData;
+		return panel;
 
 	}
 
+	@Override
+	public ListRowData getRowData() {
+		return null;
+	}
 }

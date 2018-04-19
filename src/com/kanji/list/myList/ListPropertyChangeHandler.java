@@ -22,24 +22,26 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	private PropertyHolder propertyHolder;
 	private String defaultValue = "";
 	private boolean isRequiredField;
+	private boolean addingWord;
 
 	public ListPropertyChangeHandler(PropertyHolder propertyHolder,
 			MyList<PropertyHolder> list, DialogWindow dialogWindow,
 			ListElementPropertyManager<Property, PropertyHolder> listElementPropertyManager,
-			boolean isRequiredField) {
+			boolean isRequiredField, boolean addingWord) {
 		this.list = list;
 		this.dialogWindow = dialogWindow;
 		this.listElementPropertyManager = listElementPropertyManager;
 		this.propertyHolder = propertyHolder;
 		this.isRequiredField = isRequiredField;
+		this.addingWord = addingWord;
 	}
 
 	public ListPropertyChangeHandler(PropertyHolder propertyHolder,
 			MyList<PropertyHolder> list, DialogWindow dialogWindow,
 			ListElementPropertyManager<Property, PropertyHolder> listElementPropertyManager,
-			String defaultValue, boolean isRequiredField) {
+			String defaultValue, boolean isRequiredField, boolean addingWord) {
 		this(propertyHolder, list, dialogWindow, listElementPropertyManager,
-				isRequiredField);
+				isRequiredField, addingWord);
 		this.defaultValue = defaultValue;
 	}
 
@@ -59,22 +61,17 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	@Override
 	public void focusLost(FocusEvent e) {
 		JTextComponent elem = (JTextComponent) e.getSource();
-		if (!isRequiredField && isTextFieldEmpty(elem) || elem.getText()
-				.equals(previousValueOfTextInput)) {
-			return;
-		}
-		Property propertyNewValue = listElementPropertyManager
-				.validateInputAndConvertToProperty(elem);
-		if (propertyNewValue == null && !elem.getText().isEmpty()) {
-			elem.setForeground(Color.RED);
-			dialogWindow.showMessageDialog(
-					listElementPropertyManager.getInvalidPropertyReason());
-			elem.setText(previousValueOfTextInput);
-			elem.selectAll();
-			elem.requestFocusInWindow();
-			return;
+		Property propertyNewValue = validateAndConvertToProperty(elem);
+		if (propertyNewValue != null && addingWord){
+			add(elem, propertyNewValue);
 		}
 
+
+		
+
+	}
+
+	private void add(JTextComponent elem, Property propertyNewValue) {
 		listElementPropertyManager
 				.setProperty(propertyHolder, propertyNewValue);
 		WordInMyListExistence<PropertyHolder> wordInMyListExistence = list
@@ -99,6 +96,25 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 			previousValueOfTextInput = null;
 			list.save();
 		}
+	}
+
+	private Property validateAndConvertToProperty(JTextComponent elem) {
+		if (!isRequiredField && isTextFieldEmpty(elem) || elem.getText()
+				.equals(previousValueOfTextInput)) {
+			return null;
+		}
+		Property propertyNewValue = listElementPropertyManager
+				.validateInputAndConvertToProperty(elem);
+		if (propertyNewValue == null && !elem.getText().isEmpty()) {
+			elem.setForeground(Color.RED);
+			dialogWindow.showMessageDialog(
+					listElementPropertyManager.getInvalidPropertyReason());
+			elem.setText(previousValueOfTextInput);
+			elem.selectAll();
+			elem.requestFocusInWindow();
+			return null;
+		}
+		return propertyNewValue;
 
 	}
 
