@@ -4,7 +4,7 @@ import com.guimaker.enums.FillType;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiMaker;
 import com.guimaker.panels.MainPanel;
-import com.guimaker.row.NextRow;
+import com.guimaker.row.ComplexRow;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.JapanesePanelDisplayMode;
 import com.kanji.constants.strings.Labels;
@@ -42,7 +42,7 @@ public class JapaneseWordPanelCreator {
 	private Color labelsColor = Color.WHITE;
 	private DialogWindow parentDialog;
 	private JapanesePanelServiceStore japanesePanelServiceStore;
-	private NextRow lastJapanesePanelMade;
+	private ComplexRow lastJapanesePanelMade;
 
 	public JapaneseWordPanelCreator(ApplicationController applicationController,
 			DialogWindow parentDialog, JapanesePanelDisplayMode displayMode) {
