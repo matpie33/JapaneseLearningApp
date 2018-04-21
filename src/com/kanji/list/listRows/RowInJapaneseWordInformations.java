@@ -2,7 +2,7 @@ package com.kanji.list.listRows;
 
 import com.guimaker.panels.MainPanel;
 import com.kanji.list.listElements.JapaneseWord;
-import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
+import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
 import com.kanji.list.myList.ListPropertyInformation;
 import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.ListRowMaker;

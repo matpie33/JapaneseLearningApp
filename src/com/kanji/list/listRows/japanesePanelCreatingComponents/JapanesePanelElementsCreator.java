@@ -1,4 +1,4 @@
-package com.kanji.list.listRows.japanesePanelCreator;
+package com.kanji.list.listRows.japanesePanelCreatingComponents;
 
 import com.guimaker.enums.ComponentType;
 import com.guimaker.options.TextComponentOptions;
@@ -8,8 +8,6 @@ import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
-import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelActions;
-import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelEditOrAddModeAction;
 import com.kanji.utilities.JapaneseWritingUtilities;
 import com.kanji.windows.ApplicationWindow;
 
@@ -17,15 +15,12 @@ import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.event.ActionEvent;
 
-public class JapanesePanelElementsMaker {
+public class JapanesePanelElementsCreator {
 
-	private JapanesePanelEditOrAddModeAction actionsMaker;
-	private JapanesePanelActions actionsCreator;
+	private JapanesePanelActionsCreator actionsCreator;
 
-	public JapanesePanelElementsMaker(
-			JapanesePanelEditOrAddModeAction actionsMaker,
-			JapanesePanelActions actionsCreator) {
-		this.actionsMaker = actionsMaker;
+	public JapanesePanelElementsCreator(
+			JapanesePanelActionsCreator actionsCreator) {
 		this.actionsCreator = actionsCreator;
 	}
 

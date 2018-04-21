@@ -1,4 +1,4 @@
-package com.kanji.list.listRows.japanesePanelCreator;
+package com.kanji.list.listRows.japanesePanelCreatingComponents;
 
 import com.guimaker.enums.FillType;
 import com.guimaker.options.ComponentOptions;
@@ -7,14 +7,13 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.ComplexRow;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.JapanesePanelDisplayMode;
+import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.ListPropertiesNames;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
-import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listRows.RowInJapaneseWritingsList;
-import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelEditOrAddModeAction;
 import com.kanji.list.myList.ListConfiguration;
 import com.kanji.list.myList.ListPropertyInformation;
 import com.kanji.list.myList.ListRowData;
@@ -41,12 +40,12 @@ public class JapaneseWordPanelCreator {
 	private ApplicationController applicationController;
 	private Color labelsColor = Color.WHITE;
 	private DialogWindow parentDialog;
-	private JapanesePanelServiceStore japanesePanelServiceStore;
+	private JapanesePanelComponentsStore japanesePanelComponentsStore;
 	private ComplexRow lastJapanesePanelMade;
 
 	public JapaneseWordPanelCreator(ApplicationController applicationController,
 			DialogWindow parentDialog, JapanesePanelDisplayMode displayMode) {
-		japanesePanelServiceStore = new JapanesePanelServiceStore(
+		japanesePanelComponentsStore = new JapanesePanelComponentsStore(
 				applicationController, parentDialog, displayMode);
 		this.applicationController = applicationController;
 		this.parentDialog = parentDialog;
@@ -63,7 +62,7 @@ public class JapaneseWordPanelCreator {
 	public void addJapanesePanelToExistingPanel(MainPanel existingPanel,
 			JapaneseWord japaneseWord, boolean forSearchPanel) {
 		createElements(japaneseWord, forSearchPanel);
-		addActions(japaneseWord, forSearchPanel);
+		addActions(japaneseWord);
 		addElementsToPanel(existingPanel, forSearchPanel);
 	}
 
@@ -80,7 +79,7 @@ public class JapaneseWordPanelCreator {
 		partOfSpeechLabel = GuiMaker.createLabel(
 				new ComponentOptions().text(Labels.PART_OF_SPEECH)
 						.foregroundColor(labelsColor));
-		partOfSpeechCombobox = japanesePanelServiceStore.getElementsMaker()
+		partOfSpeechCombobox = japanesePanelComponentsStore.getElementsMaker()
 				.createComboboxForPartOfSpeech(japaneseWord.getPartOfSpeech());
 		writingsList = createWritingsList(japaneseWord, forSearchPanel);
 		writingsLabel = GuiMaker.createLabel(
@@ -88,14 +87,14 @@ public class JapaneseWordPanelCreator {
 						.foregroundColor(labelsColor));
 	}
 
-	private void addActions(JapaneseWord japaneseWord, boolean forSearchPanel) {
-		JapanesePanelEditOrAddModeAction actionCreatingService = japanesePanelServiceStore
-				.getActionMaker();
+	private void addActions(JapaneseWord japaneseWord) {
+		JapanesePanelActionsCreator actionCreatingService = japanesePanelComponentsStore
+				.getActionCreator();
 		actionCreatingService
-				.addWordMeaningTextFieldListeners(wordMeaningText, japaneseWord,
-						forSearchPanel);
-		actionCreatingService
-				.addPartOfSpeechListener(partOfSpeechCombobox, japaneseWord);
+				.addWordMeaningPropertyChangeListener(wordMeaningText,
+						japaneseWord, WordSearchOptions.BY_FULL_EXPRESSION);
+		actionCreatingService.addSavingOnSelectionListener(partOfSpeechCombobox,
+				japaneseWord);
 	}
 
 	public MyList<JapaneseWriting> createWritingsList(JapaneseWord japaneseWord,
@@ -110,8 +109,8 @@ public class JapaneseWordPanelCreator {
 			JapaneseWord japaneseWord) {
 		return new MyList<>(parentDialog, applicationController,
 				new RowInJapaneseWritingsList(
-						japanesePanelServiceStore.getPanelCreatingService(), japaneseWord),
-				Labels.WRITING_WAYS_IN_JAPANESE,
+						japanesePanelComponentsStore.getPanelCreatingService(),
+						japaneseWord), Labels.WRITING_WAYS_IN_JAPANESE,
 				new ListConfiguration().enableWordAdding(false)
 						.inheritScrollbar(true).enableWordSearching(false)
 						.showButtonsLoadNextPreviousWords(false)
@@ -139,12 +138,13 @@ public class JapaneseWordPanelCreator {
 		ListRowData rowData = new ListRowData();
 		Map<String, ListPropertyInformation> propertiesData = new HashMap<>();
 
-		Map<JTextComponent, ListElementPropertyManager> allTextFieldsWithPropertyManagers = japanesePanelServiceStore
+		Map<JTextComponent, ListElementPropertyManager> allTextFieldsWithPropertyManagers = japanesePanelComponentsStore
 				.getActionCreator().getInputManagersForInputs();
 
 		Map<JTextComponent, ListElementPropertyManager<?, JapaneseWord>> meaningInputWithPropertyManager = new HashMap<>();
 		meaningInputWithPropertyManager.put(wordMeaningText,
-				japanesePanelServiceStore.getActionCreator().getWordMeaningChecker());
+				japanesePanelComponentsStore.getActionCreator()
+						.getWordMeaningChecker());
 		propertiesData.put(ListPropertiesNames.JAPANESE_WORD_MEANING,
 				new ListPropertyInformation(
 						lastJapanesePanelMade.getAllRows().get(0),
@@ -172,7 +172,7 @@ public class JapaneseWordPanelCreator {
 	}
 
 	public TextFieldSelectionHandler getSelectionHandler() {
-		return japanesePanelServiceStore.getSelectionHandler();
+		return japanesePanelComponentsStore.getSelectionHandler();
 	}
 
 	public void focusMeaningTextfield() {

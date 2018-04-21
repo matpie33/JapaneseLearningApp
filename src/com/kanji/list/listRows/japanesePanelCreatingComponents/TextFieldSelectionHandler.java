@@ -1,4 +1,4 @@
-package com.kanji.list.listRows.japanesePanelCreator;
+package com.kanji.list.listRows.japanesePanelCreatingComponents;
 
 import com.guimaker.colors.BasicColors;
 

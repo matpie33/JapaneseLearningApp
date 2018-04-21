@@ -1,4 +1,4 @@
-package com.kanji.list.listRows.japanesePanelCreator;
+package com.kanji.list.listRows.japanesePanelCreatingService;
 
 import com.guimaker.panels.MainPanel;
 import com.kanji.list.listElements.JapaneseWord;

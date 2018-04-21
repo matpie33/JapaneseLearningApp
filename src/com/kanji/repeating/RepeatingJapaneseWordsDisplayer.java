@@ -11,7 +11,7 @@ import com.kanji.constants.enums.VerbConjugationType;
 import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.RepeatingData;
-import com.kanji.list.listRows.japanesePanelCreator.JapaneseWordPanelCreator;
+import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
 import com.kanji.saving.RepeatingState;
 import com.kanji.timer.TimeSpent;
 import com.kanji.utilities.KanjiCharactersReader;

@@ -1,21 +1,22 @@
-package com.kanji.list.listRows.japanesePanelCreator;
+package com.kanji.list.listRows.japanesePanelCreatingService;
 
 import com.guimaker.panels.MainPanel;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
+import com.kanji.list.listRows.japanesePanelCreatingComponents.JapanesePanelElementsCreator;
 import com.kanji.utilities.CommonListElements;
 
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JapanesePanelServiceEditMode
+public class JapanesePanelInEditModeCreator
 		implements JapanesePanelCreatingService {
 
-	private JapanesePanelElementsMaker elementsMaker;
+	private JapanesePanelElementsCreator elementsMaker;
 
-	public JapanesePanelServiceEditMode(
-			JapanesePanelElementsMaker elementsMaker) {
+	public JapanesePanelInEditModeCreator(
+			JapanesePanelElementsCreator elementsMaker) {
 		this.elementsMaker = elementsMaker;
 	}
 

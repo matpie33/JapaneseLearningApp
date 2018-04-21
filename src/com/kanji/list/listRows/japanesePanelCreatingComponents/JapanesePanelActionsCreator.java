@@ -1,4 +1,4 @@
-package com.kanji.list.listRows.japanesePanelActionsCreator;
+package com.kanji.list.listRows.japanesePanelCreatingComponents;
 
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.enums.WordSearchOptions;
@@ -7,7 +7,6 @@ import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordChecker;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
-import com.kanji.list.listRows.japanesePanelCreator.TextFieldSelectionHandler;
 import com.kanji.list.myList.ListPropertyChangeHandler;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
@@ -20,7 +19,7 @@ import javax.swing.text.JTextComponent;
 import java.awt.event.*;
 import java.util.*;
 
-public class JapanesePanelActions {
+public class JapanesePanelActionsCreator {
 
 	//TODO cannot search by japanese word because it gets changed
 	private List<Pair<JapaneseWord, JapaneseWordChecker>> checkersForJapaneseWords = new ArrayList<>();
@@ -32,7 +31,7 @@ public class JapanesePanelActions {
 		return wordMeaningChecker;
 	}
 
-	public JapanesePanelActions(DialogWindow parentDialog,
+	public JapanesePanelActionsCreator(DialogWindow parentDialog,
 			ApplicationController applicationController) {
 		this.parentDialog = parentDialog;
 		this.applicationController = applicationController;
@@ -98,12 +97,12 @@ public class JapanesePanelActions {
 
 	public void addWordMeaningPropertyChangeListener(
 			JTextComponent wordMeaningTextField, JapaneseWord japaneseWord,
-			WordSearchOptions meaningSearchOptions, DialogWindow parentDialog,
-			MyList<JapaneseWord> wordsList) {
+			WordSearchOptions meaningSearchOptions) {
 		wordMeaningChecker = new JapaneseWordMeaningChecker(
 				meaningSearchOptions);
 		addPropertyChangeHandler(wordMeaningTextField, japaneseWord, true, "",
-				wordMeaningChecker, parentDialog, wordsList);
+				wordMeaningChecker, parentDialog,
+				applicationController.getJapaneseWords());
 	}
 
 	public JTextComponent withSwitchToJapaneseActionOnClick(
@@ -130,8 +129,7 @@ public class JapanesePanelActions {
 	}
 
 	public void addSavingOnSelectionListener(JComboBox partOfSpeechCombobox,
-			JapaneseWord japaneseWord,
-			ApplicationController applicationController) {
+			JapaneseWord japaneseWord) {
 		partOfSpeechCombobox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {

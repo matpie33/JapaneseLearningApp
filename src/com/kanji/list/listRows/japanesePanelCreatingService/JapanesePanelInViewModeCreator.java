@@ -1,26 +1,28 @@
-package com.kanji.list.listRows.japanesePanelCreator;
+package com.kanji.list.listRows.japanesePanelCreatingService;
 
 import com.guimaker.panels.MainPanel;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
-import com.kanji.list.listRows.japanesePanelActionsCreator.JapanesePanelActions;
+import com.kanji.list.listRows.japanesePanelCreatingComponents.JapanesePanelActionsCreator;
+import com.kanji.list.listRows.japanesePanelCreatingComponents.JapanesePanelElementsCreator;
+import com.kanji.list.listRows.japanesePanelCreatingComponents.TextFieldSelectionHandler;
 import com.kanji.utilities.CommonListElements;
 
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JapanesePanelServiceViewMode
+public class JapanesePanelInViewModeCreator
 		implements JapanesePanelCreatingService {
 
-	private JapanesePanelElementsMaker elementsMaker;
+	private JapanesePanelElementsCreator elementsMaker;
 	private TextFieldSelectionHandler textFieldSelectionHandler;
-	private JapanesePanelActions actionsCreator;
+	private JapanesePanelActionsCreator actionsCreator;
 
-	public JapanesePanelServiceViewMode(
-			JapanesePanelElementsMaker elementsMaker,
+	public JapanesePanelInViewModeCreator(
+			JapanesePanelElementsCreator elementsMaker,
 			TextFieldSelectionHandler textFieldSelectionHandler,
-			JapanesePanelActions actionsCreator) {
+			JapanesePanelActionsCreator actionsCreator) {
 		this.elementsMaker = elementsMaker;
 		this.textFieldSelectionHandler = textFieldSelectionHandler;
 		this.actionsCreator = actionsCreator;
