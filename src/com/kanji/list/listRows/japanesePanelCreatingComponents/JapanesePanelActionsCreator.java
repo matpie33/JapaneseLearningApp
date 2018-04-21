@@ -172,4 +172,16 @@ public class JapanesePanelActionsCreator {
 		});
 		return buttonDelete;
 	}
+
+	public JTextComponent repaintParentOnFocusLost (JTextComponent textInput){
+		textInput.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				super.focusLost(e);
+				parentDialog.getContainer().repaint();
+			}
+		});
+		return textInput;
+	}
+
 }

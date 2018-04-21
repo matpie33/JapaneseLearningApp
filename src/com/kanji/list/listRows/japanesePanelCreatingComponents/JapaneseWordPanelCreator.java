@@ -99,30 +99,32 @@ public class JapaneseWordPanelCreator {
 
 	public MyList<JapaneseWriting> createWritingsList(JapaneseWord japaneseWord,
 			boolean forSearchPanel) {
-		writingsList = createJapaneseWritingsList(japaneseWord);
+		writingsList = createJapaneseWritingsList(japaneseWord, forSearchPanel);
 		japaneseWord.getWritings().stream()
 				.forEach(word -> writingsList.addWord(word, forSearchPanel));
 		return writingsList;
 	}
 
 	private MyList<JapaneseWriting> createJapaneseWritingsList(
-			JapaneseWord japaneseWord) {
+			JapaneseWord japaneseWord, boolean forSearchPanel) {
 		return new MyList<>(parentDialog, applicationController,
 				new RowInJapaneseWritingsList(
 						japanesePanelComponentsStore.getPanelCreatingService(),
 						japaneseWord), Labels.WRITING_WAYS_IN_JAPANESE,
 				new ListConfiguration().enableWordAdding(false)
-						.inheritScrollbar(true).enableWordSearching(false)
+						.inheritScrollbar(!forSearchPanel)
+						.enableWordSearching(false)
 						.showButtonsLoadNextPreviousWords(false)
-						.skipTitle(true), JapaneseWriting.getInitializer());
+						.scrollBarFitsContent(forSearchPanel).skipTitle(true),
+				JapaneseWriting.getInitializer());
 	}
 
 	private void addElementsToPanel(MainPanel japaneseWordPanel,
 			boolean forSearchPanel) {
 		JPanel writingsListPanel = writingsList.getPanel();
 		lastJapanesePanelMade = SimpleRowBuilder
-				.createRowStartingFromColumn(0, FillType.HORIZONTAL,
-						rowNumberLabel, wordMeaningLabel, wordMeaningText)
+				.createRowStartingFromColumn(0, FillType.BOTH, rowNumberLabel,
+						wordMeaningLabel, wordMeaningText)
 				.fillHorizontallySomeElements(wordMeaningText)
 				.nextRow(partOfSpeechLabel, partOfSpeechCombobox)
 				.setColumnToPutRowInto(1)

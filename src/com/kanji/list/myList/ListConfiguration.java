@@ -9,6 +9,7 @@ public class ListConfiguration {
 	private boolean showButtonsLoadNextPreviousWords = true;
 	private boolean enableWordSearching = true;
 	private boolean skipTitle = false;
+	private boolean scrollBarSizeFittingContent = false;
 	private AbstractButton[] additionalNavigationButtons = new AbstractButton[] {};
 
 	public boolean isSkipTitle() {
@@ -47,6 +48,11 @@ public class ListConfiguration {
 		return this;
 	}
 
+	public ListConfiguration scrollBarFitsContent(boolean fitsContent){
+		this.scrollBarSizeFittingContent = fitsContent;
+		return this;
+	}
+
 	public boolean isShowButtonsLoadNextPreviousWords() {
 		return showButtonsLoadNextPreviousWords;
 	}
@@ -65,5 +71,9 @@ public class ListConfiguration {
 
 	public AbstractButton[] getAdditionalNavigationButtons() {
 		return additionalNavigationButtons;
+	}
+
+	public boolean isScrollBarSizeFittingContent() {
+		return scrollBarSizeFittingContent;
 	}
 }

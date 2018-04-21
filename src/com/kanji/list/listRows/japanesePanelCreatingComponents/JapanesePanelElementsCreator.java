@@ -13,6 +13,7 @@ import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class JapanesePanelElementsCreator {
@@ -60,14 +61,17 @@ public class JapanesePanelElementsCreator {
 
 	private JTextComponent createWritingsInput(String initialValue,
 			boolean isKana) {
-		return actionsCreator.withSwitchToJapaneseActionOnClick(
-				GuiElementsCreator.createTextField(
-						new TextComponentOptions().text(initialValue)
-								.editable(true)
-								.font(ApplicationWindow.getKanjiFont())
-								.focusable(true).fontSize(30f).promptWhenEmpty(
-								JapaneseWritingUtilities
-										.getDefaultValueForWriting(isKana))));
+		return actionsCreator.repaintParentOnFocusLost(actionsCreator
+				.withSwitchToJapaneseActionOnClick(GuiElementsCreator
+						.createTextField(
+								new TextComponentOptions().text(initialValue)
+										.editable(true)
+										.font(ApplicationWindow.getKanjiFont())
+										.focusable(true).fontSize(30f)
+										.promptWhenEmpty(
+												JapaneseWritingUtilities
+														.getDefaultValueForWriting(
+																isKana)))));
 	}
 
 	private AbstractButton createButton(String buttonLabel,

@@ -34,7 +34,7 @@ public class ListPanelCreator<Word extends ListElement>
 	private ListWordsController<Word> listWordsController;
 	private MainPanel rowsPanel;
 	private JScrollPane parentScrollPane;
-	private final Dimension scrollPanesSize = new Dimension(350, 200);
+	private final Dimension scrollPanesSize = new Dimension(350, 100);
 	private JLabel titleLabel;
 	private ListRowCreator<Word> listRow;
 	private Border rowBorder = BorderFactory
@@ -53,10 +53,12 @@ public class ListPanelCreator<Word extends ListElement>
 	private boolean showButtonsNextAndPrevious;
 	private boolean isSkipTitle;
 	private Color labelsColor = Color.WHITE;
+	private boolean scrollBarSizeFittingContent;
 
 	public ListPanelCreator(ListConfiguration listConfiguration,
 			ApplicationController applicationController,
-			ListRowCreator<Word> listRow, ListWordsController<Word> controller) {
+			ListRowCreator<Word> listRow,
+			ListWordsController<Word> controller) {
 		this.applicationController = applicationController;
 		listWordsController = controller;
 
@@ -82,6 +84,8 @@ public class ListPanelCreator<Word extends ListElement>
 		this.enableWordSearching = listConfiguration.isWordSearchingEnabled();
 		showButtonsNextAndPrevious = listConfiguration
 				.isShowButtonsLoadNextPreviousWords();
+		scrollBarSizeFittingContent = listConfiguration
+				.isScrollBarSizeFittingContent();
 		addNavigationButtons(
 				listConfiguration.getAdditionalNavigationButtons());
 	}
@@ -158,13 +162,14 @@ public class ListPanelCreator<Word extends ListElement>
 	}
 
 	private AbstractButton createButtonAddRow(boolean forSearchPanel) {
-		return GuiElementsCreator.createButtonlikeComponent(ComponentType.BUTTON,
-				ButtonsNames.ADD_ROW, new AbstractAction() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						listWordsController.addNewWord(forSearchPanel);
-					}
-				});
+		return GuiElementsCreator
+				.createButtonlikeComponent(ComponentType.BUTTON,
+						ButtonsNames.ADD_ROW, new AbstractAction() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								listWordsController.addNewWord(forSearchPanel);
+							}
+						});
 	}
 
 	private AbstractAction createButtonShowNextOrPreviousWords(
@@ -227,9 +232,13 @@ public class ListPanelCreator<Word extends ListElement>
 		Border raisedBevel = BorderFactory
 				.createMatteBorder(3, 3, 0, 0, BasicColors.LIGHT_BLUE);
 		if (!isScrollBarInherited) {
-			parentScrollPane = GuiElementsCreator.createScrollPane(new ScrollPaneOptions()
-					.componentToWrap(rowsPanel.getPanel()).border(raisedBevel)
-					.preferredSize(scrollPanesSize));
+			parentScrollPane = GuiElementsCreator.createScrollPane(
+					new ScrollPaneOptions()
+							.componentToWrap(rowsPanel.getPanel())
+							.border(raisedBevel));
+			if (!scrollBarSizeFittingContent){
+				parentScrollPane.setPreferredSize(scrollPanesSize);
+			}
 			listElementsPanel = parentScrollPane;
 		}
 		else {

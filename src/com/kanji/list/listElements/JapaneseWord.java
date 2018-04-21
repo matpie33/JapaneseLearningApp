@@ -74,6 +74,7 @@ public class JapaneseWord implements ListElement, Serializable {
 		return () -> {
 			JapaneseWord japaneseWord = new JapaneseWord(PartOfSpeech.NOUN, "");
 			japaneseWord.addWritings("", new String[] { "" });
+			japaneseWord.addWritings("", new String[] { "" });
 			return japaneseWord;
 		};
 	}
