@@ -112,4 +112,11 @@ public class JapanesePanelElementsMaker {
 		return button;
 	}
 
+	public JComponent updateWritingsInWordCheckerWhenDeleteWriting(
+			AbstractButton buttonDelete, JapaneseWord japaneseWord,
+			JapaneseWriting writing, boolean isForSearchDialog) {
+		return actionsCreator
+				.updateWritingsInWordWhenDeleteWriting(buttonDelete,
+						japaneseWord, writing, isForSearchDialog);
+	}
 }

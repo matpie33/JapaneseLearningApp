@@ -128,8 +128,9 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 			boolean isNewWriting = writingsInputManager
 					.addKanjiInput(valueToConvert);
 			if (!isNewWriting) {
-				errorDetails = String.format(
-						ExceptionsMessages.DUPLICATED_KANJI_WRITING_WITHIN_ROW, newValue);
+				errorDetails = String
+						.format(ExceptionsMessages.DUPLICATED_KANJI_WRITING_WITHIN_ROW,
+								newValue);
 				return null;
 			}
 			else {

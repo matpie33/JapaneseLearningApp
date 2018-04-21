@@ -132,7 +132,7 @@ public class JapaneseWordsFileReader {
 	private int searchForElementInList(List<? extends ListElement> list,
 			ListElement o) {
 		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i).isSameAs(o)) {
+			if (list.get(i).equals(o)) {
 				return i;
 			}
 		}

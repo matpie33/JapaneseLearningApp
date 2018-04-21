@@ -10,6 +10,8 @@ import com.kanji.utilities.StringUtilities;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -112,14 +114,14 @@ public class JapaneseWord implements ListElement, Serializable {
 	}
 
 	@Override
-	public boolean isSameAs(ListElement element) {
+	public boolean equals(Object element) {
 		if (element instanceof JapaneseWord) {
 			JapaneseWord otherWord = (JapaneseWord) element;
 
 			for (JapaneseWriting japaneseWriting : otherWord.getWritings()) {
 				if (new JapaneseWordWritingsChecker(japaneseWriting, true)
 						.isPropertyFound(japaneseWriting, this)) {
-					return false;
+					return true;
 				}
 			}
 			if (meaningChecker.isPropertyFound(otherWord.getMeaning(), this)) {
@@ -128,6 +130,11 @@ public class JapaneseWord implements ListElement, Serializable {
 			return false;
 		}
 		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getWritings(), getMeaning(), getPartOfSpeech());
 	}
 
 	@Override
@@ -154,8 +161,12 @@ public class JapaneseWord implements ListElement, Serializable {
 		return getMeaning().isEmpty() || getWritings().isEmpty();
 	}
 
-	public void setWriting(JapaneseWriting writing) {
-		this.japaneseWritings.add(writing);
+	public boolean setWriting(JapaneseWriting writing) {
+		return this.japaneseWritings.add(writing);
+	}
+
+	public void setWritings(Set<JapaneseWriting> writings) {
+		japaneseWritings = writings;
 	}
 
 	@Override
@@ -173,4 +184,12 @@ public class JapaneseWord implements ListElement, Serializable {
 										.collect(Collectors.toList()))));//
 	}
 
+	public boolean containsWriting(JapaneseWriting writing) {
+		for (JapaneseWriting thisWriting: getWritings()){
+			if (thisWriting.equals(writing)){
+				return true;
+			}
+		}
+		return false;
+	}
 }

@@ -43,12 +43,14 @@ public class JapaneseWriting implements ListElement {
 	}
 
 	@Override
-	public boolean isSameAs(ListElement element) {
+	public boolean equals(Object element) {
 		if (!element.getClass().equals(getClass())) {
 			return false;
 		}
 		JapaneseWriting otherWriting = (JapaneseWriting) element;
-		return otherWriting.getKanaWriting().equals(getKanaWriting());
+		return !getKanaWriting().isEmpty() && otherWriting.getKanaWriting()
+				.equals(getKanaWriting()) && getKanjiWritings()
+				.containsAll(otherWriting.getKanjiWritings());
 	}
 
 	public void setKanjiWritings(Set<String> kanjiWritings) {
@@ -71,4 +73,10 @@ public class JapaneseWriting implements ListElement {
 		getKanjiWritings().remove(previousValue);
 		getKanjiWritings().add(newValue);
 	}
+
+	@Override
+	public String toString (){
+		return getDisplayedText();
+	}
+
 }

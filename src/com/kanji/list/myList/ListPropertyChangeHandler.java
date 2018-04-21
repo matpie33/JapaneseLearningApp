@@ -47,9 +47,9 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 
 	@Override
 	public void focusGained(FocusEvent e) {
-		JTextComponent textElement = (JTextComponent) e.getSource();
-		textElement.setForeground(Color.BLACK);
-		previousValueOfTextInput = textElement.getText();
+		JTextComponent textInput = (JTextComponent) e.getSource();
+		textInput.setForeground(Color.BLACK);
+		previousValueOfTextInput = textInput.getText();
 
 	}
 
@@ -60,33 +60,28 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 
 	@Override
 	public void focusLost(FocusEvent e) {
-		JTextComponent elem = (JTextComponent) e.getSource();
-		Property propertyNewValue = validateAndConvertToProperty(elem);
+		JTextComponent input = (JTextComponent) e.getSource();
+		Property propertyNewValue = validateAndConvertToProperty(input);
 		if (propertyNewValue != null && addingWord) {
-			add(elem, propertyNewValue);
+			add(input, propertyNewValue);
 		}
 
 	}
 
-	private void add(JTextComponent elem, Property propertyNewValue) {
+	private void add(JTextComponent input, Property propertyNewValue) {
 		listElementPropertyManager
 				.setProperty(propertyHolder, propertyNewValue);
 		WordInMyListExistence<PropertyHolder> wordInMyListExistence = list
 				.doesWordWithPropertyExist(propertyNewValue,
 						listElementPropertyManager, propertyHolder);
 		if (wordInMyListExistence.exists()) {
-			elem.setText(previousValueOfTextInput);
-			elem.requestFocusInWindow();
-			elem.selectAll();
+			String exceptionMessage = getExceptionForDuplicate(propertyNewValue,
+					wordInMyListExistence.getWord());
+			setTextInputToPreviousValue(input);
+			setWordToPreviousValue(input);
 			list.highlightRow(list.get1BasedRowNumberOfWord(
 					wordInMyListExistence.getWord()) - 1, true);
-			dialogWindow.showMessageDialog(listElementPropertyManager
-					.getPropertyDefinedException(propertyNewValue)
-					+ StringUtilities.putInNewLine(String.format(
-					ExceptionsMessages.ROW_FOR_DUPLICATED_PROPERTY,
-					list.get1BasedRowNumberOfWord(
-							wordInMyListExistence.getWord()))));
-
+			dialogWindow.showMessageDialog(exceptionMessage);
 			return;
 		}
 		else {
@@ -95,24 +90,46 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 		}
 	}
 
-	private Property validateAndConvertToProperty(JTextComponent elem) {
-		if (!isRequiredField && isTextFieldEmpty(elem) || elem.getText()
+	private void setWordToPreviousValue(JTextComponent input) {
+		listElementPropertyManager.setProperty(propertyHolder,
+				listElementPropertyManager
+						.validateInputAndConvertToProperty(input));
+	}
+
+	private void setTextInputToPreviousValue(JTextComponent input) {
+		input.setText(previousValueOfTextInput);
+		input.requestFocusInWindow();
+		input.selectAll();
+	}
+
+	private String getExceptionForDuplicate(Property propertyNewValue,
+			PropertyHolder duplicatedWord) {
+		String propertyDefinedMessage = listElementPropertyManager
+				.getPropertyDefinedException(propertyNewValue);
+		int duplicateRowNumber = list.get1BasedRowNumberOfWord(duplicatedWord);
+		String duplicatedRowMessage = StringUtilities.putInNewLine(
+				String.format(ExceptionsMessages.ROW_FOR_DUPLICATED_PROPERTY,
+						duplicateRowNumber));
+		return propertyDefinedMessage + duplicatedRowMessage;
+	}
+
+	private Property validateAndConvertToProperty(JTextComponent input) {
+		if (!isRequiredField && isTextFieldEmpty(input) || input.getText()
 				.equals(previousValueOfTextInput)) {
 			return null;
 		}
 		Property propertyNewValue = listElementPropertyManager
-				.validateInputAndConvertToProperty(elem);
-		if (propertyNewValue == null && !elem.getText().isEmpty()) {
-			elem.setForeground(Color.RED);
+				.validateInputAndConvertToProperty(input);
+		if (propertyNewValue == null && !input.getText().isEmpty()) {
+			setTextInputToPreviousValue(input);
+			input.setForeground(Color.RED);
 			dialogWindow.showMessageDialog(
 					listElementPropertyManager.getInvalidPropertyReason());
-			elem.setText(previousValueOfTextInput);
-			elem.selectAll();
-			elem.requestFocusInWindow();
 			return null;
 		}
 		return propertyNewValue;
 
 	}
+
 
 }

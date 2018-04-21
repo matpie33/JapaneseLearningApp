@@ -10,10 +10,6 @@ import javax.swing.text.JTextComponent;
 public class JapaneseWordMeaningChecker extends WordSearchOptionsHolder
 		implements ListElementPropertyManager<String, JapaneseWord> {
 
-	public JapaneseWordMeaningChecker() {
-		this(WordSearchOptions.BY_WORD_FRAGMENT);
-	}
-
 	public JapaneseWordMeaningChecker(WordSearchOptions options) {
 		super(options);
 	}

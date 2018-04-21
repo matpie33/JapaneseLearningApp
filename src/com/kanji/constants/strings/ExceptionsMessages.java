@@ -30,7 +30,7 @@ public class ExceptionsMessages {
 	public static final String INCORRECT_JAPANESE_WORDS_LISTS_SIZES =
 			"Długości list słów zapisanych kaną, "
 					+ "kanji oraz przetłumaczonych na polski nie są jednakowe - a powinny.";
-	public static final String JAPANESE_WORD_WRITINGS_ALREADY_DEFINED = "Słowo z takimi %s zapisami kana/kanji już istnieje i ma numer %d";
+	public static final String JAPANESE_WORD_WRITINGS_ALREADY_DEFINED = "Słowo z takimi zapisami: %s już istnieje.";
 	public static final String DUPLICATED_WORD_MEANING = "Słowo o znaczeniu \"%s\" już istnieje.";
 	public static final String KANA_WRITING_INCORRECT = "Niepoprawny zapis kaną: %s. Powinien zawierać tylko hiraganę lub katakanę.";
 	public static final String KANJI_WRITING_INCORRECT =
@@ -40,4 +40,5 @@ public class ExceptionsMessages {
 	public static final String WORD_ALREADY_EXISTS = "Takie slowo już istnieje w wierszu %d.";
 	public static final String EXCEPTION_WHILE_LOADING_KANJI_PROJECT = "Wystąpił błąd przy wczytywaniu: %s.";
 	public static final String ROW_FOR_DUPLICATED_PROPERTY = "Duplikat występuje w wierszu nr %s.";
+	public static final String DUPLICATED_WRITINGS_IN_WORD = "Wpisano identyczne zapisy słowa w dwóch wierszach.";
 }

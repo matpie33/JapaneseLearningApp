@@ -136,7 +136,7 @@ public class ListPanelMaker<Word extends ListElement>
 			boolean forSearchPanel) {
 		JLabel rowNumberLabel = new JLabel(createTextForRowNumber(rowNumber));
 		AbstractButton remove = new JButton(ButtonsNames.REMOVE_ROW);
-		AbstractButton addNewWord = createButtonAddRow();
+		AbstractButton addNewWord = createButtonAddRow(forSearchPanel);
 		remove.addActionListener(
 				listWordsController.createDeleteRowAction(word));
 		CommonListElements commonListElements = new CommonListElements(remove,
@@ -157,12 +157,12 @@ public class ListPanelMaker<Word extends ListElement>
 		return new ListRow<>(word, row, rowNumberLabel);
 	}
 
-	private AbstractButton createButtonAddRow() {
+	private AbstractButton createButtonAddRow(boolean forSearchPanel) {
 		return GuiMaker.createButtonlikeComponent(ComponentType.BUTTON,
 				ButtonsNames.ADD_ROW, new AbstractAction() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						listWordsController.addNewWord();
+						listWordsController.addNewWord(forSearchPanel);
 					}
 				});
 	}

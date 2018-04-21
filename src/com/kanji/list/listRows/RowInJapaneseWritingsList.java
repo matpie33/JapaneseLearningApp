@@ -4,6 +4,7 @@ import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.FillType;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
+import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listRows.japanesePanelCreator.JapanesePanelCreatingService;
 import com.kanji.list.myList.ListRowData;
@@ -15,10 +16,14 @@ public class RowInJapaneseWritingsList
 
 	private MainPanel rowPanel;
 	private JapanesePanelCreatingService japanesePanelCreatingService;
+	private JapaneseWord wordContainingWritings;
 
 	public RowInJapaneseWritingsList(
-			JapanesePanelCreatingService japanesePanelCreatingService) {
+			JapanesePanelCreatingService japanesePanelCreatingService,
+			JapaneseWord wordContainingWritings) {
 		this.japanesePanelCreatingService = japanesePanelCreatingService;
+		this.wordContainingWritings = wordContainingWritings;
+
 	}
 
 	@Override
@@ -28,7 +33,8 @@ public class RowInJapaneseWritingsList
 		rowPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE,
 				japanesePanelCreatingService
 						.addWritingsRow(japaneseWriting, commonListElements,
-								rowPanel, forSearchPanel)));
+								wordContainingWritings, forSearchPanel,
+								rowPanel)));
 		return rowPanel;
 	}
 

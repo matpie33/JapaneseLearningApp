@@ -27,8 +27,7 @@ public class JapanesePanelEditOrAddModeAction {
 			boolean isForSearchDialog) {
 		actionsMaker.addWordMeaningPropertyChangeListener(wordMeaningTextField,
 				japaneseWord, WordSearchOptions.BY_FULL_EXPRESSION,
-				parentDialog, applicationController.getJapaneseWords(),
-				isForSearchDialog);
+				parentDialog, applicationController.getJapaneseWords());
 	}
 
 	public void addPartOfSpeechListener(JComboBox partOfSpeechCombobox,
@@ -37,4 +36,7 @@ public class JapanesePanelEditOrAddModeAction {
 				japaneseWord, applicationController);
 	}
 
+	public void updateWritingsInWordWhenDeleteWriting(
+			AbstractButton buttonDelete, JapaneseWord japaneseWord) {
+	}
 }

@@ -213,7 +213,7 @@ public class MyList<Word extends ListElement> {
 			ListElementPropertyManager<Property, Word> propertyManager,
 			Word wordToExclude) {
 		for (Word word : getWords()) {
-			if (word.equals(wordToExclude)) {
+			if (word == wordToExclude) {
 				continue;
 			}
 			if (propertyManager.isPropertyFound(property, word)) {

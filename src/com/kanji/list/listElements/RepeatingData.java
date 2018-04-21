@@ -4,6 +4,7 @@ import com.kanji.utilities.StringUtilities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class RepeatingData implements Serializable, ListElement {
 
@@ -71,12 +72,17 @@ public class RepeatingData implements Serializable, ListElement {
 	}
 
 	@Override
-	public boolean isSameAs(ListElement element) {
+	public boolean equals(Object element) {
 		if (element instanceof RepeatingData) {
 			RepeatingData otherWord = (RepeatingData) element;
 			return otherWord.getRepeatingDate().isEqual(repeatingDate);
 		}
 		return false;
+	}
+
+	@Override
+	public int hashCode(){
+		return Objects.hash(repeatingDate, timeSpentOnRepeating, repeatingRange);
 	}
 
 	@Override

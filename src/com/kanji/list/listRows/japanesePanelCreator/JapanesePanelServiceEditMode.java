@@ -13,7 +13,6 @@ public class JapanesePanelServiceEditMode
 		implements JapanesePanelCreatingService {
 
 	private JapanesePanelElementsMaker elementsMaker;
-	private JapaneseWord wordContainingWriting;
 
 	public JapanesePanelServiceEditMode(
 			JapanesePanelElementsMaker elementsMaker) {
@@ -21,31 +20,27 @@ public class JapanesePanelServiceEditMode
 	}
 
 	@Override
-	public void setWord(JapaneseWord wordInformation) {
-		wordContainingWriting = wordInformation;
-	}
-
-	@Override
 	public JComponent[] addWritingsRow(JapaneseWriting japaneseWriting,
-			CommonListElements commonListElements, MainPanel rowPanel,
-			boolean forSearchPanel) {
+			CommonListElements commonListElements, JapaneseWord japaneseWord,
+			boolean forSearchPanel, MainPanel rowPanel) {
 		List<JComponent> rowElements = new ArrayList<>();
 		rowElements.add(elementsMaker
-				.createKanaInputWithValidation(japaneseWriting,
-						wordContainingWriting, true, forSearchPanel));
+				.createKanaInputWithValidation(japaneseWriting, japaneseWord,
+						true, forSearchPanel));
 		//TODO try to use the approach in whole application:
 		//GuiElement e = actionMaker.withAction(elementsMaker.createElement)
 		for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
 			rowElements.add(elementsMaker
 					.createKanjiInputWithValidation(kanjiWriting,
-							japaneseWriting, wordContainingWriting,
-							forSearchPanel));
+							japaneseWriting, japaneseWord, forSearchPanel));
 		}
 		rowElements.add(elementsMaker
 				.createButtonAddKanjiWriting(rowPanel, japaneseWriting,
-						wordContainingWriting, forSearchPanel));
+						japaneseWord, forSearchPanel));
 		rowElements.add(commonListElements.getButtonAddRow());
-		rowElements.add(commonListElements.getButtonDelete());
+		rowElements.add(elementsMaker.updateWritingsInWordCheckerWhenDeleteWriting(
+				commonListElements.getButtonDelete(), japaneseWord,
+				japaneseWriting, forSearchPanel));
 
 		return rowElements.toArray(new JComponent[] {});
 	}

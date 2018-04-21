@@ -14,7 +14,6 @@ public class JapanesePanelServiceViewMode
 		implements JapanesePanelCreatingService {
 
 	private JapanesePanelElementsMaker elementsMaker;
-	private JapaneseWord wordContainingWriting;
 	private TextFieldSelectionHandler textFieldSelectionHandler;
 	private JapanesePanelActions actionsCreator;
 
@@ -28,23 +27,18 @@ public class JapanesePanelServiceViewMode
 	}
 
 	@Override
-	public void setWord(JapaneseWord wordContainingWriting) {
-		this.wordContainingWriting = wordContainingWriting;
-	}
-
-	@Override
 	public JComponent[] addWritingsRow(JapaneseWriting japaneseWriting,
-			CommonListElements commonListElements, MainPanel rowPanel,
-			boolean forSearchPanel) {
+			CommonListElements commonListElements, JapaneseWord japaneseWord,
+			boolean forSearchPanel, MainPanel rowPanel) {
 		List<JComponent> rowElements = new ArrayList<>();
 		rowElements.add(actionsCreator.selectableTextfield(elementsMaker
 						.createKanaInputWithValidation(japaneseWriting,
-								wordContainingWriting, false, forSearchPanel),
+								japaneseWord, false, forSearchPanel),
 				textFieldSelectionHandler));
 		for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
 			rowElements.add(actionsCreator.selectableTextfield(elementsMaker
 					.createKanjiInputWithValidation(kanjiWriting,
-							japaneseWriting, wordContainingWriting,
+							japaneseWriting, japaneseWord,
 							forSearchPanel), textFieldSelectionHandler));
 		}
 

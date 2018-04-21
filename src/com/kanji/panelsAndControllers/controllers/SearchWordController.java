@@ -9,6 +9,7 @@ import com.kanji.panelsAndControllers.panels.SearchWordPanel;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Map;
 
@@ -50,17 +51,31 @@ public class SearchWordController<Word extends ListElement> {
 			public void actionPerformed(ActionEvent e) {
 				Map<JTextComponent, ListElementPropertyManager> textInputAndPropertyManagerForListElement = searchWordPanel
 						.getTextFieldsWithPropertyManagersForCurrentProperty();
-				Object property = null;
-				ListElementPropertyManager anyPropertyManager = null;
-				for (Map.Entry<JTextComponent, ListElementPropertyManager> propertyManagerEntry : textInputAndPropertyManagerForListElement
-						.entrySet()) {
-					property = propertyManagerEntry.getValue()
-							.validateInputAndConvertToProperty(
-									propertyManagerEntry.getKey());
-					anyPropertyManager = propertyManagerEntry.getValue();
+				Component c = searchWordPanel.getDialog().getContainer()
+						.getFocusOwner();
+				JTextComponent focusedTextField;
+				if (c instanceof JTextComponent) {
+					focusedTextField = (JTextComponent) c;
+				}
+				else {
+					focusedTextField = textInputAndPropertyManagerForListElement
+							.keySet().iterator().next();
+				}
+				ListElementPropertyManager propertyManager = textInputAndPropertyManagerForListElement
+						.get(focusedTextField);
+				Object property = propertyManager
+						.validateInputAndConvertToProperty(focusedTextField);
+				//TODO if focused component isn't a textfield - all inputs are valid
+				//because they lost focus, that means why just have to convert to property
+				// but not validate - separate the methods
+
+				if (property == null) {
+					KeyboardFocusManager.getCurrentKeyboardFocusManager()
+							.clearGlobalFocusOwner();
+					return;
 				}
 				list.findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(
-						anyPropertyManager, property, searchingDirection);
+						propertyManager, property, searchingDirection);
 			}
 		};
 	}

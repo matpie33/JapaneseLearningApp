@@ -99,10 +99,11 @@ public class ListWordsController<Word extends ListElement> {
 
 	private void updateRowNumbers(int startingIndex) {
 		for (int i = startingIndex + 1;
-			 i < allWordsToRowNumberMap.size(); i++) {
+			 i <= allWordsToRowNumberMap.size(); i++) {
 			ListRow<Word> listRow = allWordsToRowNumberMap.get(i);
 			JLabel label = listRow.getIndexLabel();
 			label.setText(listPanelMaker.createTextForRowNumber(i));
+			allWordsToRowNumberMap.remove(i);
 			allWordsToRowNumberMap.put(i - 1, listRow);
 		}
 
@@ -184,7 +185,7 @@ public class ListWordsController<Word extends ListElement> {
 
 	public WordInMyListExistence<Word> isWordDefined(Word word) {
 		for (ListRow<Word> listRow : allWordsToRowNumberMap.values()) {
-			if (listRow.getWord().isSameAs(word)) {
+			if (listRow.getWord().equals(word)) {
 				return new WordInMyListExistence<>(true, listRow.getWord());
 			}
 		}
@@ -295,7 +296,7 @@ public class ListWordsController<Word extends ListElement> {
 	}
 
 	//TODO not the best idea to pass the boolean "is for search panel" - maybe keep it as field
-	public void addNewWord() {
-		add(wordInitializer.initializeElement(), false);
+	public void addNewWord(boolean forSearchPanel) {
+		add(wordInitializer.initializeElement(), forSearchPanel);
 	}
 }

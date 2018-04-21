@@ -58,16 +58,6 @@ public class Kanji implements Serializable, ListElement {
 		return () -> new Kanji("", 0);
 	}
 
-	//TODO it's probably beter to override equals and hashcode and use set instead of lists
-	@Override
-	public boolean isSameAs(ListElement element) {
-		if (element instanceof Kanji) {
-			return ((Kanji) element).getId() == id || ((Kanji) element)
-					.getKeyword().equals(keyword);
-		}
-		return false;
-	}
-
 	@Override
 	public boolean isEmpty() {
 		return id == 0 || keyword.isEmpty();

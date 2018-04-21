@@ -10,9 +10,8 @@ import javax.swing.*;
 public interface JapanesePanelCreatingService {
 
 	public JComponent[] addWritingsRow(JapaneseWriting japaneseWriting,
-			CommonListElements commonListElements, MainPanel rowPanel,
-			boolean forSearchPanel);
+			CommonListElements commonListElements, JapaneseWord japaneseWord,
+			boolean forSearchPanel, MainPanel rowPanel);
 
-	public void setWord(JapaneseWord word);
 
 }

@@ -100,18 +100,17 @@ public class JapaneseWordPanelCreator {
 
 	public MyList<JapaneseWriting> createWritingsList(JapaneseWord japaneseWord,
 			boolean forSearchPanel) {
-		japanesePanelServiceStore.getPanelCreatingService()
-				.setWord(japaneseWord);
-		writingsList = createJapaneseWritingsList();
+		writingsList = createJapaneseWritingsList(japaneseWord);
 		japaneseWord.getWritings().stream()
 				.forEach(word -> writingsList.addWord(word, forSearchPanel));
 		return writingsList;
 	}
 
-	private MyList<JapaneseWriting> createJapaneseWritingsList() {
+	private MyList<JapaneseWriting> createJapaneseWritingsList(
+			JapaneseWord japaneseWord) {
 		return new MyList<>(parentDialog, applicationController,
 				new RowInJapaneseWritingsList(
-						japanesePanelServiceStore.getPanelCreatingService()),
+						japanesePanelServiceStore.getPanelCreatingService(), japaneseWord),
 				Labels.WRITING_WAYS_IN_JAPANESE,
 				new ListConfiguration().enableWordAdding(false)
 						.inheritScrollbar(true).enableWordSearching(false)
@@ -141,17 +140,17 @@ public class JapaneseWordPanelCreator {
 		Map<String, ListPropertyInformation> propertiesData = new HashMap<>();
 
 		Map<JTextComponent, ListElementPropertyManager> allTextFieldsWithPropertyManagers = japanesePanelServiceStore
-				.getActionCreator().getTextFieldsWithPropertyManagers();
+				.getActionCreator().getInputManagersForInputs();
 
-		Map<JTextComponent, ListElementPropertyManager<?, Kanji>> meaningInputWithPropertyManager = new HashMap<>();
+		Map<JTextComponent, ListElementPropertyManager<?, JapaneseWord>> meaningInputWithPropertyManager = new HashMap<>();
 		meaningInputWithPropertyManager.put(wordMeaningText,
-				allTextFieldsWithPropertyManagers.get(wordMeaningText));
+				japanesePanelServiceStore.getActionCreator().getWordMeaningChecker());
 		propertiesData.put(ListPropertiesNames.JAPANESE_WORD_MEANING,
 				new ListPropertyInformation(
 						lastJapanesePanelMade.getAllRows().get(0),
 						meaningInputWithPropertyManager));
 
-		Map<JTextComponent, ListElementPropertyManager<?, Kanji>> japaneseWritingsInputWithPropertyManagers = new HashMap<>();
+		Map<JTextComponent, ListElementPropertyManager<?, JapaneseWord>> japaneseWritingsInputWithPropertyManagers = new HashMap<>();
 		for (Map.Entry<JTextComponent, ListElementPropertyManager> textFieldWithPropertyManager : allTextFieldsWithPropertyManagers
 				.entrySet()) {
 			if (textFieldWithPropertyManager.getKey().equals(wordMeaningText)) {
