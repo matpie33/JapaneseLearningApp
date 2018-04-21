@@ -5,7 +5,7 @@ import com.guimaker.enums.ComponentType;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.TextAlignment;
 import com.guimaker.options.TextPaneOptions;
-import com.guimaker.panels.GuiMaker;
+import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.ElementCopier;
@@ -93,7 +93,7 @@ public class WebPagePanel {
 
 	private void initiatePanels() {
 		messagePanel = new MainPanel(null);
-		messageComponent = GuiMaker.createTextPane(new TextPaneOptions().
+		messageComponent = GuiElementsCreator.createTextPane(new TextPaneOptions().
 				text(Prompts.LOADING_PAGE).fontSize(20)
 				.textAlignment(TextAlignment.CENTERED).editable(false));
 
@@ -122,7 +122,7 @@ public class WebPagePanel {
 	}
 
 	private void createButtonReload() {
-		reloadButton = GuiMaker.createButtonlikeComponent(ComponentType.BUTTON,
+		reloadButton = GuiElementsCreator.createButtonlikeComponent(ComponentType.BUTTON,
 				ButtonsNames.RELOAD_PAGE, new AbstractAction() {
 					@Override
 					public void actionPerformed(ActionEvent e) {

@@ -2,7 +2,7 @@ package com.kanji.list.listRows.japanesePanelCreatingComponents;
 
 import com.guimaker.enums.FillType;
 import com.guimaker.options.ComponentOptions;
-import com.guimaker.panels.GuiMaker;
+import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.ComplexRow;
 import com.guimaker.row.SimpleRowBuilder;
@@ -19,7 +19,7 @@ import com.kanji.list.myList.ListPropertyInformation;
 import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
-import com.kanji.utilities.CommonGuiElementsMaker;
+import com.kanji.utilities.CommonGuiElementsCreator;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
@@ -71,18 +71,18 @@ public class JapaneseWordPanelCreator {
 		if (rowNumberLabel != null) {
 			rowNumberLabel.setForeground(labelsColor);
 		}
-		wordMeaningLabel = GuiMaker.createLabel(
+		wordMeaningLabel = GuiElementsCreator.createLabel(
 				new ComponentOptions().text(Labels.WORD_MEANING)
 						.foregroundColor(labelsColor));
-		wordMeaningText = CommonGuiElementsMaker
+		wordMeaningText = CommonGuiElementsCreator
 				.createShortInput(japaneseWord.getMeaning());
-		partOfSpeechLabel = GuiMaker.createLabel(
+		partOfSpeechLabel = GuiElementsCreator.createLabel(
 				new ComponentOptions().text(Labels.PART_OF_SPEECH)
 						.foregroundColor(labelsColor));
 		partOfSpeechCombobox = japanesePanelComponentsStore.getElementsMaker()
 				.createComboboxForPartOfSpeech(japaneseWord.getPartOfSpeech());
 		writingsList = createWritingsList(japaneseWord, forSearchPanel);
-		writingsLabel = GuiMaker.createLabel(
+		writingsLabel = GuiElementsCreator.createLabel(
 				new ComponentOptions().text(Labels.WRITING_WAYS_IN_JAPANESE)
 						.foregroundColor(labelsColor));
 	}

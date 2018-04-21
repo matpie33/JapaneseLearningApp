@@ -2,7 +2,7 @@ package com.kanji.list.listRows.japanesePanelCreatingComponents;
 
 import com.guimaker.enums.ComponentType;
 import com.guimaker.options.TextComponentOptions;
-import com.guimaker.panels.GuiMaker;
+import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.strings.ButtonsNames;
@@ -61,7 +61,7 @@ public class JapanesePanelElementsCreator {
 	private JTextComponent createWritingsInput(String initialValue,
 			boolean isKana) {
 		return actionsCreator.withSwitchToJapaneseActionOnClick(
-				GuiMaker.createTextField(
+				GuiElementsCreator.createTextField(
 						new TextComponentOptions().text(initialValue)
 								.editable(true)
 								.font(ApplicationWindow.getKanjiFont())
@@ -72,7 +72,7 @@ public class JapanesePanelElementsCreator {
 
 	private AbstractButton createButton(String buttonLabel,
 			AbstractAction actionOnClick) {
-		return GuiMaker
+		return GuiElementsCreator
 				.createButtonlikeComponent(ComponentType.BUTTON, buttonLabel,
 						actionOnClick);
 

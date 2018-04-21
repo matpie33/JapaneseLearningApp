@@ -57,7 +57,7 @@ public class InsertWordPanel<Word extends ListElement>
 
 	private void initializeJapaneseWordPanel() {
 		labelsColor = Color.BLACK;
-		MainPanel addWordPanel = wordsList.getListRowMaker().createListRow(word,
+		MainPanel addWordPanel = wordsList.getListRowCreator().createListRow(word,
 				CommonListElements.forSingleRowOnly(labelsColor), false);
 		mainPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.BOTH, addWordPanel.getPanel())

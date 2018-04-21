@@ -4,7 +4,7 @@ import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.TextAlignment;
 import com.guimaker.options.TextPaneOptions;
-import com.guimaker.panels.GuiMaker;
+import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.row.SimpleRowBuilder;
 
 import javax.swing.*;
@@ -22,7 +22,7 @@ public class MessagePanel extends AbstractPanelWithHotkeysInfo {
 	@Override
 	public void createElements() {
 		buttonClose = createButtonClose();
-		JScrollPane scrollPane = GuiMaker.createTextPaneWrappedInScrollPane(
+		JScrollPane scrollPane = GuiElementsCreator.createTextPaneWrappedInScrollPane(
 				// TODO add vertical alignment
 				new TextPaneOptions().backgroundColor(Color.WHITE)
 						.textAlignment(TextAlignment.JUSTIFIED).text(message)

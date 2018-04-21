@@ -5,7 +5,7 @@ import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.SplitPaneOrientation;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.list.myList.MyList;
-import com.kanji.utilities.CommonGuiElementsMaker;
+import com.kanji.utilities.CommonGuiElementsCreator;
 
 import javax.swing.*;
 
@@ -38,7 +38,7 @@ public class WordsAndRepeatingInformationsPanel
 	}
 
 	private void createSplitPane(MyList wordsList, MyList repeatingList) {
-		listsSplitPane = CommonGuiElementsMaker
+		listsSplitPane = CommonGuiElementsCreator
 				.createSplitPane(SplitPaneOrientation.HORIZONTAL,
 						wordsList.getPanel(), repeatingList.getPanel(), 0.5);
 	}

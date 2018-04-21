@@ -10,7 +10,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class FocusableComponentMaker {
+public class FocusableComponentCreator {
 
 	public static void makeFocusable(JComponent panelToWrap) {
 		panelToWrap.setFocusable(true);

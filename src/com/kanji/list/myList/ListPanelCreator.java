@@ -5,7 +5,7 @@ import com.guimaker.enums.Anchor;
 import com.guimaker.enums.ComponentType;
 import com.guimaker.enums.FillType;
 import com.guimaker.options.ScrollPaneOptions;
-import com.guimaker.panels.GuiMaker;
+import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.AbstractSimpleRow;
 import com.guimaker.row.SimpleRowBuilder;
@@ -27,7 +27,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListPanelMaker<Word extends ListElement>
+public class ListPanelCreator<Word extends ListElement>
 		extends AbstractPanelWithHotkeysInfo {
 
 	private static final Color BACKGROUND_COLOR = BasicColors.VERY_BLUE;
@@ -36,7 +36,7 @@ public class ListPanelMaker<Word extends ListElement>
 	private JScrollPane parentScrollPane;
 	private final Dimension scrollPanesSize = new Dimension(350, 200);
 	private JLabel titleLabel;
-	private ListRowMaker<Word> listRow;
+	private ListRowCreator<Word> listRow;
 	private Border rowBorder = BorderFactory
 			.createMatteBorder(0, 0, 2, 0, BasicColors.LIGHT_BLUE);
 	private ApplicationController applicationController;
@@ -54,9 +54,9 @@ public class ListPanelMaker<Word extends ListElement>
 	private boolean isSkipTitle;
 	private Color labelsColor = Color.WHITE;
 
-	public ListPanelMaker(ListConfiguration listConfiguration,
+	public ListPanelCreator(ListConfiguration listConfiguration,
 			ApplicationController applicationController,
-			ListRowMaker<Word> listRow, ListWordsController<Word> controller) {
+			ListRowCreator<Word> listRow, ListWordsController<Word> controller) {
 		this.applicationController = applicationController;
 		listWordsController = controller;
 
@@ -124,7 +124,7 @@ public class ListPanelMaker<Word extends ListElement>
 	}
 
 	private AbstractButton createAndAddButtonLoadWords(String buttonName) {
-		AbstractButton button = GuiMaker
+		AbstractButton button = GuiElementsCreator
 				.createButtonlikeComponent(ComponentType.BUTTON, buttonName,
 						null);
 		button.setEnabled(false);
@@ -158,7 +158,7 @@ public class ListPanelMaker<Word extends ListElement>
 	}
 
 	private AbstractButton createButtonAddRow(boolean forSearchPanel) {
-		return GuiMaker.createButtonlikeComponent(ComponentType.BUTTON,
+		return GuiElementsCreator.createButtonlikeComponent(ComponentType.BUTTON,
 				ButtonsNames.ADD_ROW, new AbstractAction() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -227,7 +227,7 @@ public class ListPanelMaker<Word extends ListElement>
 		Border raisedBevel = BorderFactory
 				.createMatteBorder(3, 3, 0, 0, BasicColors.LIGHT_BLUE);
 		if (!isScrollBarInherited) {
-			parentScrollPane = GuiMaker.createScrollPane(new ScrollPaneOptions()
+			parentScrollPane = GuiElementsCreator.createScrollPane(new ScrollPaneOptions()
 					.componentToWrap(rowsPanel.getPanel()).border(raisedBevel)
 					.preferredSize(scrollPanesSize));
 			listElementsPanel = parentScrollPane;

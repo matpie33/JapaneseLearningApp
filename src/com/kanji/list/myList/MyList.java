@@ -19,27 +19,27 @@ public class MyList<Word extends ListElement> {
 	private ListElementInitializer<Word> wordInitializer;
 	private Class listElementClass;
 	private String title;
-	private ListRowMaker<Word> listRowMaker;
+	private ListRowCreator<Word> listRowCreator;
 
 	public MyList(DialogWindow parentDialog,
 			ApplicationController applicationController,
-			ListRowMaker<Word> listRowMaker, String title,
+			ListRowCreator<Word> listRowCreator, String title,
 			ListConfiguration listConfiguration,
 			ListElementInitializer wordInitializer) {
-		this.listRowMaker = listRowMaker;
+		this.listRowCreator = listRowCreator;
 		this.applicationController = applicationController;
 		this.parent = parentDialog;
 		listController = new ListWordsController<>(listConfiguration,
-				listRowMaker, title, applicationController, wordInitializer);
+				listRowCreator, title, applicationController, wordInitializer);
 		this.wordInitializer = wordInitializer;
 		this.title = title;
 	}
 
 	public MyList(DialogWindow parentDialog,
 			ApplicationController applicationController,
-			ListRowMaker<Word> listRowMaker, String title,
+			ListRowCreator<Word> listRowCreator, String title,
 			ListElementInitializer wordInitializer) {
-		this(parentDialog, applicationController, listRowMaker, title,
+		this(parentDialog, applicationController, listRowCreator, title,
 				new ListConfiguration(), wordInitializer);
 	}
 
@@ -47,8 +47,8 @@ public class MyList<Word extends ListElement> {
 		return wordInitializer;
 	}
 
-	public ListRowMaker<Word> getListRowMaker() {
-		return listRowMaker;
+	public ListRowCreator<Word> getListRowCreator() {
+		return listRowCreator;
 	}
 
 	public void inheritScrollPane() {

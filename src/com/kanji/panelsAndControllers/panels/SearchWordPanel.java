@@ -58,10 +58,10 @@ public class SearchWordPanel<Word extends ListElement>
 		searchingPanel = new JPanel(this.cardLayout);
 		searchingPanel.setOpaque(false);
 
-		searchedList.getListRowMaker().createListRow(
+		searchedList.getListRowCreator().createListRow(
 				searchedList.getWordInitializer().initializeElement(),
 				CommonListElements.forSingleRowOnly(Color.BLACK), true);
-		listRowData = searchedList.getListRowMaker().getRowData();
+		listRowData = searchedList.getListRowCreator().getRowData();
 		//TODO here I got to get only rows - maybe separate the calls
 		// for rows and for the textfields + property managers
 		for (Map.Entry<String, ListPropertyInformation> listPropertyData : listRowData
@@ -200,7 +200,7 @@ public class SearchWordPanel<Word extends ListElement>
 	}
 
 	public Map<JTextComponent, ListElementPropertyManager> getTextFieldsWithPropertyManagersForCurrentProperty() {
-		return searchedList.getListRowMaker().getRowData()
+		return searchedList.getListRowCreator().getRowData()
 				.getRowPropertiesData().get(currentlySearchedProperty)
 				.getTextFieldsWithPropertyManagers();
 	}

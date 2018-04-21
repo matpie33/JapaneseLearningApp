@@ -2,7 +2,7 @@ package com.kanji.repeating;
 
 import com.guimaker.enums.FillType;
 import com.guimaker.options.ComponentOptions;
-import com.guimaker.panels.GuiMaker;
+import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.ElementCopier;
@@ -45,7 +45,7 @@ public class RepeatingJapaneseWordsDisplayer
 		fullWordInformationPanel = new MainPanel(null, true);
 		recognizingWordPanel = new MainPanel(null, true);
 		recognizingWordPanel.getPanel().setPreferredSize(wordPanelsSize);
-		partOfSpeechLabel = GuiMaker.createLabel(
+		partOfSpeechLabel = GuiElementsCreator.createLabel(
 				new ComponentOptions().text(Labels.PART_OF_SPEECH));
 		fullWordInformationPanel.getPanel().setPreferredSize(wordPanelsSize);
 		problematicJapaneseWords = new HashSet<>();

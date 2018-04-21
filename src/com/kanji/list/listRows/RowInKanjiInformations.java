@@ -2,7 +2,7 @@ package com.kanji.list.listRows;
 
 import com.guimaker.enums.FillType;
 import com.guimaker.options.ComponentOptions;
-import com.guimaker.panels.GuiMaker;
+import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.ComplexRow;
 import com.guimaker.row.SimpleRowBuilder;
@@ -15,8 +15,8 @@ import com.kanji.list.listElements.Kanji;
 import com.kanji.list.myList.ListPropertyChangeHandler;
 import com.kanji.list.myList.ListPropertyInformation;
 import com.kanji.list.myList.ListRowData;
-import com.kanji.list.myList.ListRowMaker;
-import com.kanji.utilities.CommonGuiElementsMaker;
+import com.kanji.list.myList.ListRowCreator;
+import com.kanji.utilities.CommonGuiElementsCreator;
 import com.kanji.utilities.CommonListElements;
 import com.kanji.windows.ApplicationWindow;
 
@@ -26,7 +26,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RowInKanjiInformations implements ListRowMaker<Kanji> {
+public class RowInKanjiInformations implements ListRowCreator<Kanji> {
 	private ApplicationWindow applicationWindow;
 	private JTextComponent keywordInput;
 	private KanjiKeywordChecker keywordChecker;
@@ -44,20 +44,20 @@ public class RowInKanjiInformations implements ListRowMaker<Kanji> {
 		MainPanel panel = new MainPanel(null);
 		//TODO do it like in rowInJapaneseWordInformations
 		Color labelsColor = commonListElements.getLabelsColor();
-		JLabel kanjiKeyword = GuiMaker.createLabel(
+		JLabel kanjiKeyword = GuiElementsCreator.createLabel(
 				new ComponentOptions().text(Labels.KANJI_KEYWORD_LABEL)
 						.foregroundColor(labelsColor));
-		JLabel kanjiId = GuiMaker.createLabel(
+		JLabel kanjiId = GuiElementsCreator.createLabel(
 				new ComponentOptions().text(Labels.KANJI_ID_LABEL)
 						.foregroundColor(labelsColor));
 		String text = kanji.getKeyword();
 		int ID = kanji.getId();
-		keywordInput = CommonGuiElementsMaker.createKanjiWordInput(text);
+		keywordInput = CommonGuiElementsCreator.createKanjiWordInput(text);
 		keywordChecker = new KanjiKeywordChecker();
 		keywordInput.addFocusListener(new ListPropertyChangeHandler<>(kanji,
 				applicationWindow.getApplicationController().getKanjiList(),
 				applicationWindow, keywordChecker, true, !forSearchPanel));
-		idInput = CommonGuiElementsMaker.createKanjiIdInput();
+		idInput = CommonGuiElementsCreator.createKanjiIdInput();
 		idInput.setText(ID > 0 ? Integer.toString(ID) : "");
 		idChecker = new KanjiIdChecker();
 		idInput.addFocusListener(new ListPropertyChangeHandler<>(kanji,

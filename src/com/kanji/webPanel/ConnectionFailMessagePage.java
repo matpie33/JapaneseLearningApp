@@ -4,7 +4,7 @@ import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.TextAlignment;
 import com.guimaker.options.TextPaneOptions;
-import com.guimaker.panels.GuiMaker;
+import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.strings.Prompts;
@@ -22,7 +22,7 @@ public class ConnectionFailMessagePage implements ConnectionFailPageHandler {
 	public ConnectionFailMessagePage(AbstractButton buttonReload) {
 		this.buttonReload = buttonReload;
 		messagePanel = new MainPanel(null);
-		messageComponent = GuiMaker.createTextPane(new TextPaneOptions().
+		messageComponent = GuiElementsCreator.createTextPane(new TextPaneOptions().
 				text(Prompts.CONNECTION_ERROR).fontSize(20)
 				.textAlignment(TextAlignment.CENTERED).editable(false));
 		messagePanel.addRow(SimpleRowBuilder

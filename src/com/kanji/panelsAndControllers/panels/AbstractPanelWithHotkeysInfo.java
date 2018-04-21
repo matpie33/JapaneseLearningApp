@@ -5,11 +5,11 @@ import com.guimaker.enums.Anchor;
 import com.guimaker.enums.ComponentType;
 import com.guimaker.enums.FillType;
 import com.guimaker.panels.ExpandablePanel;
-import com.guimaker.panels.GuiMaker;
+import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.AbstractSimpleRow;
 import com.guimaker.row.SimpleRowBuilder;
-import com.guimaker.utilities.CommonActionsMaker;
+import com.guimaker.utilities.CommonActionsCreator;
 import com.guimaker.utilities.HotkeyWrapper;
 import com.guimaker.utilities.KeyModifiers;
 import com.kanji.constants.strings.ButtonsNames;
@@ -131,7 +131,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 							+ " in the class: " + this);
 		}
 		hotkeysMapping.put(wrapper, action);
-		CommonActionsMaker
+		CommonActionsCreator
 				.addHotkey(keyEvent, wrapper.getKeyMask(), action, component);
 		addHotkeyInformation(hotkeyDescription, wrapper);
 	}
@@ -146,7 +146,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	public AbstractButton createButtonWithHotkey(KeyModifiers keyModifier,
 			int keyEvent, AbstractAction action, String buttonLabel,
 			String hotkeyDescription) {
-		AbstractButton button = GuiMaker
+		AbstractButton button = GuiElementsCreator
 				.createButtonlikeComponent(ComponentType.BUTTON, buttonLabel,
 						action);
 		addHotkey(keyModifier, keyEvent, action, button, hotkeyDescription);

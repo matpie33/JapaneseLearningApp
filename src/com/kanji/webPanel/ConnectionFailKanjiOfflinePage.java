@@ -5,7 +5,7 @@ import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.TextAlignment;
 import com.guimaker.options.TextPaneOptions;
-import com.guimaker.panels.GuiMaker;
+import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.strings.Prompts;
@@ -24,7 +24,7 @@ public class ConnectionFailKanjiOfflinePage
 	private final float messageFontSize = 30f;
 
 	public ConnectionFailKanjiOfflinePage(Font kanjiFont) {
-		kanjiTextPane = GuiMaker.createTextPane(
+		kanjiTextPane = GuiElementsCreator.createTextPane(
 				new TextPaneOptions().border(null).editable(false)
 						.textAlignment(TextAlignment.CENTERED).text(""));
 		kanjiTextPane.setFont(kanjiFont.deriveFont(kanjiFontSize));

@@ -24,7 +24,7 @@ import java.util.Map;
 public class ListWordsController<Word extends ListElement> {
 	private static final long serialVersionUID = -3144332338336535803L;
 	private Map<Integer, ListRow<Word>> allWordsToRowNumberMap = new HashMap<>();
-	private ListPanelMaker<Word> listPanelMaker;
+	private ListPanelCreator<Word> listPanelCreator;
 	private ApplicationController applicationController;
 	private final int MAXIMUM_WORDS_TO_SHOW = 200;
 	private int lastRowVisible;
@@ -33,21 +33,21 @@ public class ListWordsController<Word extends ListElement> {
 	private ListElementInitializer<Word> wordInitializer;
 
 	public ListWordsController(ListConfiguration listConfiguration,
-			ListRowMaker<Word> listRowMaker, String title,
+			ListRowCreator<Word> listRowCreator, String title,
 			ApplicationController applicationController,
 			ListElementInitializer wordInitializer) {
 		this.applicationController = applicationController;
-		listPanelMaker = new ListPanelMaker<>(listConfiguration,
-				applicationController, listRowMaker, this);
-		listPanelMaker.createPanel();
-		this.listPanelMaker.setTitle(title);
+		listPanelCreator = new ListPanelCreator<>(listConfiguration,
+				applicationController, listRowCreator, this);
+		listPanelCreator.createPanel();
+		this.listPanelCreator.setTitle(title);
 		this.wordInitializer = wordInitializer;
 		initializeFoundWordStrategies();
 
 	}
 
 	public void inheritScrollPane() {
-		listPanelMaker.inheritScrollPane();
+		listPanelCreator.inheritScrollPane();
 	}
 
 	private void initializeFoundWordStrategies() {
@@ -55,8 +55,8 @@ public class ListWordsController<Word extends ListElement> {
 		strategiesForFoundWord
 				.add(new FoundWordInsideVisibleRangePlusMaximumWordsStrategy(
 						MAXIMUM_WORDS_TO_SHOW, this,
-						listPanelMaker.getLoadPreviousWordsHandler(),
-						listPanelMaker.getLoadNextWordsHandler()));
+						listPanelCreator.getLoadPreviousWordsHandler(),
+						listPanelCreator.getLoadNextWordsHandler()));
 		strategiesForFoundWord
 				.add(new FoundWordOutsideRangeStrategy(MAXIMUM_WORDS_TO_SHOW,
 						this));
@@ -69,10 +69,10 @@ public class ListWordsController<Word extends ListElement> {
 	public boolean add(Word r, boolean forSearchPanel) {
 		if (!isWordDefined(r).exists()) {
 			boolean canNewWordBeDisplayed = canNewWordBeDisplayed();
-			ListRow<Word> newWord = listPanelMaker
+			ListRow<Word> newWord = listPanelCreator
 					.addRow(r, allWordsToRowNumberMap.size() + 1,
 							canNewWordBeDisplayed,
-							listPanelMaker.getLoadNextWordsHandler(),
+							listPanelCreator.getLoadNextWordsHandler(),
 							forSearchPanel);
 			allWordsToRowNumberMap.put(allWordsToRowNumberMap.size(), newWord);
 			if (canNewWordBeDisplayed) {
@@ -85,12 +85,12 @@ public class ListWordsController<Word extends ListElement> {
 	}
 
 	private boolean canNewWordBeDisplayed() {
-		return listPanelMaker.getNumberOfListRows() < MAXIMUM_WORDS_TO_SHOW;
+		return listPanelCreator.getNumberOfListRows() < MAXIMUM_WORDS_TO_SHOW;
 	}
 
 	public void remove(Word word) {
 		ListRow<Word> listRow = findListRowContainingWord(word);
-		int panelRowNumber = listPanelMaker.removeRow(listRow.getPanel());
+		int panelRowNumber = listPanelCreator.removeRow(listRow.getPanel());
 		int listRowNumber = panelRowNumber - 1;
 		allWordsToRowNumberMap.remove(listRowNumber);
 		updateRowNumbers(listRowNumber);
@@ -102,7 +102,7 @@ public class ListWordsController<Word extends ListElement> {
 			 i <= allWordsToRowNumberMap.size(); i++) {
 			ListRow<Word> listRow = allWordsToRowNumberMap.get(i);
 			JLabel label = listRow.getIndexLabel();
-			label.setText(listPanelMaker.createTextForRowNumber(i));
+			label.setText(listPanelCreator.createTextForRowNumber(i));
 			allWordsToRowNumberMap.remove(i);
 			allWordsToRowNumberMap.put(i - 1, listRow);
 		}
@@ -141,10 +141,10 @@ public class ListWordsController<Word extends ListElement> {
 		ListRow foundWord = allWordsToRowNumberMap.get(rowNumber);
 		foundWord.setHighlighted(true);
 		if (clearLastHighlightedWord && currentlyHighlightedWord != null) {
-			listPanelMaker
+			listPanelCreator
 					.clearHighlightedRow(currentlyHighlightedWord.getPanel());
 		}
-		listPanelMaker.highlightRowAndScroll(foundWord.getPanel());
+		listPanelCreator.highlightRowAndScroll(foundWord.getPanel());
 		currentlyHighlightedWord = foundWord;
 	}
 
@@ -170,16 +170,16 @@ public class ListWordsController<Word extends ListElement> {
 
 	public void scrollToBottom() {
 		loadWordsIfNecessary(allWordsToRowNumberMap.size() - 1);
-		listPanelMaker.scrollToBottom();
+		listPanelCreator.scrollToBottom();
 	}
 
 	public JPanel getPanel() {
-		return listPanelMaker.getPanel();
+		return listPanelCreator.getPanel();
 	}
 
 	public void clear() {
 		allWordsToRowNumberMap.clear();
-		listPanelMaker.clear();
+		listPanelCreator.clear();
 		lastRowVisible = 0;
 	}
 
@@ -226,7 +226,7 @@ public class ListWordsController<Word extends ListElement> {
 	}
 
 	public void scrollToTop() {
-		listPanelMaker.scrollToTop();
+		listPanelCreator.scrollToTop();
 	}
 
 	public int addNextHalfOfMaximumWords(LoadWordsHandler loadWordsHandler) {
@@ -256,7 +256,7 @@ public class ListWordsController<Word extends ListElement> {
 		//TODO lots of magic numbers
 		lastRowVisible--;
 		int rowNumber = getFirstVisibleRowNumber();
-		ListRow addedWord = listPanelMaker
+		ListRow addedWord = listPanelCreator
 				.addRow(allWordsToRowNumberMap.get(rowNumber).getWord(),
 						rowNumber + 1, true, loadPreviousWords, false);
 		allWordsToRowNumberMap.put(rowNumber, addedWord);
@@ -265,19 +265,19 @@ public class ListWordsController<Word extends ListElement> {
 
 	public void showNextWord(LoadNextWordsHandler loadNextWords) {
 		lastRowVisible++;
-		ListRow visibleRow = listPanelMaker
+		ListRow visibleRow = listPanelCreator
 				.addRow(allWordsToRowNumberMap.get(lastRowVisible).getWord(),
 						lastRowVisible + 1, true, loadNextWords, false);
 		allWordsToRowNumberMap.put(lastRowVisible, visibleRow);
 	}
 
 	public void showWordsStartingFromRow(int firstRowToLoad) {
-		listPanelMaker.clear();
+		listPanelCreator.clear();
 		if (firstRowToLoad > 0) {
-			listPanelMaker.enableButtonShowPreviousWords();
+			listPanelCreator.enableButtonShowPreviousWords();
 		}
 		lastRowVisible = Math.max(firstRowToLoad - getMaximumWordsToShow(), -1);
-		LoadNextWordsHandler loadNextWordsHandler = listPanelMaker
+		LoadNextWordsHandler loadNextWordsHandler = listPanelCreator
 				.getLoadNextWordsHandler();
 		for (int i = 0; i < getMaximumWordsToShow() && loadNextWordsHandler
 				.shouldContinue(lastRowVisible,
@@ -287,12 +287,12 @@ public class ListWordsController<Word extends ListElement> {
 	}
 
 	public void clearVisibleRows() {
-		listPanelMaker.removeWordsFromRangeInclusive(
-				new Range(1, listPanelMaker.getNumberOfListRows()));
+		listPanelCreator.removeWordsFromRangeInclusive(
+				new Range(1, listPanelCreator.getNumberOfListRows()));
 	}
 
 	public void removeRowsFromRangeInclusive(Range range) {
-		listPanelMaker.removeWordsFromRangeInclusive(range);
+		listPanelCreator.removeWordsFromRangeInclusive(range);
 	}
 
 	//TODO not the best idea to pass the boolean "is for search panel" - maybe keep it as field

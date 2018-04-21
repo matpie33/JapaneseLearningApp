@@ -8,11 +8,11 @@ import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listRows.japanesePanelCreatingService.JapanesePanelCreatingService;
 import com.kanji.list.myList.ListRowData;
-import com.kanji.list.myList.ListRowMaker;
+import com.kanji.list.myList.ListRowCreator;
 import com.kanji.utilities.CommonListElements;
 
 public class RowInJapaneseWritingsList
-		implements ListRowMaker<JapaneseWriting> {
+		implements ListRowCreator<JapaneseWriting> {
 
 	private MainPanel rowPanel;
 	private JapanesePanelCreatingService japanesePanelCreatingService;

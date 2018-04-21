@@ -5,7 +5,7 @@ import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.TextAlignment;
 import com.guimaker.options.TextPaneOptions;
-import com.guimaker.panels.GuiMaker;
+import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.SplitPaneOrientation;
@@ -15,8 +15,8 @@ import com.kanji.context.ContextOwner;
 import com.kanji.context.KanjiContext;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
-import com.kanji.utilities.CommonGuiElementsMaker;
-import com.kanji.utilities.FocusableComponentMaker;
+import com.kanji.utilities.CommonGuiElementsCreator;
+import com.kanji.utilities.FocusableComponentCreator;
 import com.kanji.webPanel.ConnectionFailKanjiOfflinePage;
 import com.kanji.webPanel.WebPagePanel;
 import com.kanji.windows.ApplicationWindow;
@@ -66,7 +66,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	@Override
 	public void createElements() {
 
-		kanjiTextPane = GuiMaker.createTextPane(
+		kanjiTextPane = GuiElementsCreator.createTextPane(
 				new TextPaneOptions().border(null).editable(false)
 						.textAlignment(TextAlignment.CENTERED).text("")
 						.border(getDefaultBorder()));
@@ -80,16 +80,16 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiOfflineDisplayingPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.CENTER, kanjiTextPane));
 
-		FocusableComponentMaker.makeFocusable(wordsToReviewList.getPanel());
-		FocusableComponentMaker.makeFocusable(dictionaryWebPanel.getWebPanel());
-		FocusableComponentMaker.makeFocusable(kanjiWebPanel.getWebPanel());
+		FocusableComponentCreator.makeFocusable(wordsToReviewList.getPanel());
+		FocusableComponentCreator.makeFocusable(dictionaryWebPanel.getWebPanel());
+		FocusableComponentCreator.makeFocusable(kanjiWebPanel.getWebPanel());
 
-		JSplitPane wordsAndDictionaryPane = CommonGuiElementsMaker
+		JSplitPane wordsAndDictionaryPane = CommonGuiElementsCreator
 				.createSplitPane(SplitPaneOrientation.VERTICAL,
 						dictionaryWebPanel.getSwitchingPanel(),
 						wordsToReviewList.getPanel(), 0.7);
 
-		JSplitPane mainSplitPane = CommonGuiElementsMaker
+		JSplitPane mainSplitPane = CommonGuiElementsCreator
 				.createSplitPane(SplitPaneOrientation.HORIZONTAL,
 						wordsAndDictionaryPane,
 						kanjiWebPanel.getSwitchingPanel(), 0.2);

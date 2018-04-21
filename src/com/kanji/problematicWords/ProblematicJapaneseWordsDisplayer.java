@@ -4,7 +4,7 @@ import com.guimaker.enums.ComponentType;
 import com.guimaker.enums.FillType;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.TextAreaOptions;
-import com.guimaker.panels.GuiMaker;
+import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.JapanesePanelDisplayMode;
@@ -65,7 +65,7 @@ public class ProblematicJapaneseWordsDisplayer
 	}
 
 	private AbstractButton createButtonSearchWord() {
-		return GuiMaker.createButtonlikeComponent(ComponentType.BUTTON,
+		return GuiElementsCreator.createButtonlikeComponent(ComponentType.BUTTON,
 				ButtonsNames.SEARCH_IN_DICTIONARY, new AbstractAction() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -101,16 +101,16 @@ public class ProblematicJapaneseWordsDisplayer
 							new KanjiIdChecker(),
 							kanjiCharactersReader.getIdOfKanji(kanji),
 							SearchingDirection.FORWARD, false);
-			JLabel kanjiLabel = GuiMaker
+			JLabel kanjiLabel = GuiElementsCreator
 					.createLabel(new ComponentOptions().text(kanji));
 			kanjiLabel.setFont(kanjiLabel.getFont().deriveFont(30f));
 			//TODO set the kanjis font in one place for whole application
 			String keyword = kanjiInformation != null ?
 					kanjiInformation.getKeyword() :
 					Prompts.NO_KANJI_INFORMATION_AVAILABLE;
-			JTextComponent keywordLabel = GuiMaker.createTextArea(
+			JTextComponent keywordLabel = GuiElementsCreator.createTextArea(
 					new TextAreaOptions().rowsAndColumns(2, 5).text(keyword));
-			AbstractButton goToButton = GuiMaker
+			AbstractButton goToButton = GuiElementsCreator
 					.createButtonlikeComponent(ComponentType.BUTTON,
 							ButtonsNames.SHOW_KANJI_STORIES,
 							new AbstractAction() {

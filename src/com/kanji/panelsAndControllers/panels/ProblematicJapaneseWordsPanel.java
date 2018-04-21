@@ -4,7 +4,7 @@ import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.options.ScrollPaneOptions;
-import com.guimaker.panels.GuiMaker;
+import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.SplitPaneOrientation;
@@ -14,8 +14,8 @@ import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.problematicWords.ProblematicJapaneseWordsDisplayer;
-import com.kanji.utilities.CommonGuiElementsMaker;
-import com.kanji.utilities.FocusableComponentMaker;
+import com.kanji.utilities.CommonGuiElementsCreator;
+import com.kanji.utilities.FocusableComponentCreator;
 import com.kanji.webPanel.WebPagePanel;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
@@ -96,30 +96,30 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	@Override
 	public void createElements() {
 
-		FocusableComponentMaker.makeFocusable(problematicWords.getPanel());
-		FocusableComponentMaker
+		FocusableComponentCreator.makeFocusable(problematicWords.getPanel());
+		FocusableComponentCreator
 				.makeFocusable(japaneseEnglishDictionaryPanel.getWebPanel());
-		FocusableComponentMaker
+		FocusableComponentCreator
 				.makeFocusable(englishDictionaryPanel.getWebPanel());
-		FocusableComponentMaker.makeFocusable(kanjiInformationPanel.getPanel());
-		JScrollPane scrollPaneForKanjiInformations = GuiMaker.createScrollPane(
+		FocusableComponentCreator.makeFocusable(kanjiInformationPanel.getPanel());
+		JScrollPane scrollPaneForKanjiInformations = GuiElementsCreator.createScrollPane(
 				new ScrollPaneOptions()
 						.componentToWrap(kanjiInformationPanel.getPanel()));
-		JSplitPane wordAndKanjiInformationSplitPane = CommonGuiElementsMaker
+		JSplitPane wordAndKanjiInformationSplitPane = CommonGuiElementsCreator
 				.createSplitPane(SplitPaneOrientation.VERTICAL,
 						problematicWords.getPanel(),
 						scrollPaneForKanjiInformations, 0.2);
-		JSplitPane dictionariesSplitPane = CommonGuiElementsMaker
+		JSplitPane dictionariesSplitPane = CommonGuiElementsCreator
 				.createSplitPane(SplitPaneOrientation.VERTICAL,
 						japaneseEnglishDictionaryPanel.getSwitchingPanel(),
 						englishDictionaryPanel.getSwitchingPanel(), 0.5);
 
-		JSplitPane dictionariesWithKoohiPageSplitPane = CommonGuiElementsMaker
+		JSplitPane dictionariesWithKoohiPageSplitPane = CommonGuiElementsCreator
 				.createSplitPane(SplitPaneOrientation.HORIZONTAL,
 						dictionariesSplitPane,
 						kanjiKoohiWebPanel.getSwitchingPanel(), 0.8);
 
-		JSplitPane wordAndDictionariesSplitPane = CommonGuiElementsMaker
+		JSplitPane wordAndDictionariesSplitPane = CommonGuiElementsCreator
 				.createSplitPane(SplitPaneOrientation.HORIZONTAL,
 						wordAndKanjiInformationSplitPane,
 						dictionariesWithKoohiPageSplitPane, 0.4);
