@@ -64,7 +64,7 @@ public class JapaneseWordPanelCreator {
 			JapaneseWord japaneseWord, boolean forSearchPanel,
 			CommonListElements commonListElements) {
 		createElements(japaneseWord, forSearchPanel);
-		addActions(japaneseWord);
+		addActions(japaneseWord, forSearchPanel);
 		addElementsToPanel(existingPanel, commonListElements);
 	}
 
@@ -89,12 +89,14 @@ public class JapaneseWordPanelCreator {
 						.foregroundColor(labelsColor));
 	}
 
-	private void addActions(JapaneseWord japaneseWord) {
+	private void addActions(JapaneseWord japaneseWord,
+			boolean forSearchDialog) {
 		JapanesePanelActionsCreator actionCreatingService = japanesePanelComponentsStore
 				.getActionCreator();
 		actionCreatingService
 				.addWordMeaningPropertyChangeListener(wordMeaningText,
-						japaneseWord, WordSearchOptions.BY_FULL_EXPRESSION);
+						japaneseWord, WordSearchOptions.BY_FULL_EXPRESSION,
+						!forSearchDialog);
 		actionCreatingService.addSavingOnSelectionListener(partOfSpeechCombobox,
 				japaneseWord);
 	}

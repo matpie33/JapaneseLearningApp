@@ -75,12 +75,15 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 				.doesWordWithPropertyExist(propertyNewValue,
 						listElementPropertyManager, propertyHolder);
 		if (wordInMyListExistence.exists()) {
-			String exceptionMessage = getExceptionForDuplicate(propertyNewValue,
-					wordInMyListExistence.getWord());
 			setTextInputToPreviousValue(input);
 			setWordToPreviousValue(input);
-			list.highlightRow(list.get1BasedRowNumberOfWord(
-					wordInMyListExistence.getWord()) - 1, true);
+			PropertyHolder duplicatedWord = wordInMyListExistence.getWord();
+			int duplicateRowNumber = list
+					.get1BasedRowNumberOfWord(duplicatedWord);
+			String exceptionMessage = getExceptionForDuplicate(propertyNewValue,
+					duplicateRowNumber);
+
+			list.highlightRow(duplicateRowNumber - 1, true);
 			dialogWindow.showMessageDialog(exceptionMessage);
 			return;
 		}
@@ -103,10 +106,9 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	}
 
 	private String getExceptionForDuplicate(Property propertyNewValue,
-			PropertyHolder duplicatedWord) {
+			int duplicateRowNumber) {
 		String propertyDefinedMessage = listElementPropertyManager
 				.getPropertyDefinedException(propertyNewValue);
-		int duplicateRowNumber = list.get1BasedRowNumberOfWord(duplicatedWord);
 		String duplicatedRowMessage = StringUtilities.putInNewLine(
 				String.format(ExceptionsMessages.ROW_FOR_DUPLICATED_PROPERTY,
 						duplicateRowNumber));
@@ -130,6 +132,5 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 		return propertyNewValue;
 
 	}
-
 
 }

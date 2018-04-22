@@ -1,7 +1,9 @@
 package com.kanji.panelsAndControllers.panels;
 
 import com.guimaker.enums.Anchor;
+import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
+import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
@@ -86,9 +88,10 @@ public class SearchWordPanel<Word extends ListElement>
 		addHotkeyForSwitchingComboboxValue(comboBox);
 
 		MainPanel searchPanel = new MainPanel(null);
-		JLabel prompt = GuiElementsCreator.createLabel(new ComponentOptions().text(
+		JLabel prompt = GuiElementsCreator
+				.createLabel(new ComponentOptions().text(
 
-		Prompts.SEARCH_DIALOG));
+						Prompts.SEARCH_DIALOG));
 		searchPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.CENTER, prompt));
 		searchPanel.addRow(SimpleRowBuilder
@@ -130,7 +133,7 @@ public class SearchWordPanel<Word extends ListElement>
 
 	private void addWordSearchOptions(MainPanel panel) {
 
-		List<JRadioButton> radioButtons = Arrays
+		List<AbstractButton> radioButtons = Arrays
 				.stream(WordSearchOptions.values()).
 						map(this::createRadioButtonForSearchingOption)
 				.collect(Collectors.toList());
@@ -164,19 +167,21 @@ public class SearchWordPanel<Word extends ListElement>
 				.requestFocusInWindow();
 	}
 
-	private JRadioButton createRadioButtonForSearchingOption(
+	private AbstractButton createRadioButtonForSearchingOption(
 			WordSearchOptions searchOption) {
-		JRadioButton searchOptionRadioButton = new JRadioButton(
-				searchOption.getPanelLabel());
+		AbstractButton searchOptionRadioButton = GuiElementsCreator
+				.createButtonlikeComponent(
+						new ButtonOptions(ButtonType.RADIOBUTTON)
+								.text(searchOption.getPanelLabel()),
+						searchWordController.createActionSwitchSearchCriteria(
+								searchOption));
 		searchOptionRadioButton.setFocusable(false);
-		searchOptionRadioButton.addActionListener(searchWordController
-				.createActionSwitchSearchCriteria(searchOption));
 		return searchOptionRadioButton;
 	}
 
-	private void addRadioButtonsToGroup(List<JRadioButton> buttons) {
+	private void addRadioButtonsToGroup(List<AbstractButton> buttons) {
 		ButtonGroup group = new ButtonGroup();
-		for (JRadioButton button : buttons)
+		for (AbstractButton button : buttons)
 			group.add(button);
 	}
 

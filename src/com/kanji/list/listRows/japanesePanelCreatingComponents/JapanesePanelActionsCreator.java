@@ -64,7 +64,7 @@ public class JapanesePanelActionsCreator {
 				!isForSearchDialog,
 				JapaneseWritingUtilities.getDefaultValueForWriting(isKana),
 				checker, parentDialog,
-				applicationController.getJapaneseWords());
+				applicationController.getJapaneseWords(), !isForSearchDialog);
 		return textComponent;
 	}
 
@@ -87,22 +87,23 @@ public class JapanesePanelActionsCreator {
 			JapaneseWord japaneseWord, boolean kanaRequired,
 			String defaultValue,
 			ListElementPropertyManager<?, JapaneseWord> propertyChangeHandler,
-			DialogWindow parentDialog, MyList<JapaneseWord> wordsList) {
+			DialogWindow parentDialog, MyList<JapaneseWord> wordsList,
+			boolean addingWord) {
 		textComponent.addFocusListener(
 				new ListPropertyChangeHandler<>(japaneseWord, wordsList,
 						parentDialog, propertyChangeHandler, defaultValue,
-						kanaRequired, kanaRequired));
+						kanaRequired, addingWord));
 
 	}
 
 	public void addWordMeaningPropertyChangeListener(
 			JTextComponent wordMeaningTextField, JapaneseWord japaneseWord,
-			WordSearchOptions meaningSearchOptions) {
+			WordSearchOptions meaningSearchOptions, boolean addingWord) {
 		wordMeaningChecker = new JapaneseWordMeaningChecker(
 				meaningSearchOptions);
 		addPropertyChangeHandler(wordMeaningTextField, japaneseWord, true, "",
 				wordMeaningChecker, parentDialog,
-				applicationController.getJapaneseWords());
+				applicationController.getJapaneseWords(), addingWord);
 	}
 
 	public JTextComponent withSwitchToJapaneseActionOnClick(
@@ -173,7 +174,7 @@ public class JapanesePanelActionsCreator {
 		return buttonDelete;
 	}
 
-	public JTextComponent repaintParentOnFocusLost (JTextComponent textInput){
+	public JTextComponent repaintParentOnFocusLost(JTextComponent textInput) {
 		textInput.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
