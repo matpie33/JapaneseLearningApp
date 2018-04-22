@@ -11,8 +11,8 @@ import com.kanji.constants.enums.JapanesePanelDisplayMode;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
-import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.ListRowCreator;
+import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.DuplicatedJapaneseWordInformation;
 import com.kanji.utilities.CommonGuiElementsCreator;
@@ -53,7 +53,8 @@ public class RowInDuplicatedImportedWordsList
 				applicationWindow.getApplicationController(), parentDialog,
 				JapanesePanelDisplayMode.EDIT)
 				.addJapanesePanelToExistingPanel(japaneseWordInformationPanel,
-						data.getJapaneseWord(), forSearchPanel);
+						data.getJapaneseWord(), forSearchPanel,
+						commonListElements);
 		AbstractButton buttonGoToRow = createButtonGoToRow(
 				data.getDuplicatedWordRowNumber());
 		panel.addRow(SimpleRowBuilder
@@ -65,13 +66,14 @@ public class RowInDuplicatedImportedWordsList
 	}
 
 	private AbstractButton createButtonGoToRow(int rowNumber) {
-		return GuiElementsCreator.createButtonlikeComponent(new ButtonOptions(ButtonType.BUTTON),
-				new AbstractAction() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						newJapaneseWords.highlightRow(rowNumber);
-					}
-				});
+		return GuiElementsCreator
+				.createButtonlikeComponent(new ButtonOptions(ButtonType.BUTTON),
+						new AbstractAction() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								newJapaneseWords.highlightRow(rowNumber);
+							}
+						});
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.kanji.webPanel;
 
+import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
@@ -10,6 +11,7 @@ import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.ElementCopier;
+import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.context.ContextOwner;
 import com.kanji.context.KanjiContext;
@@ -92,7 +94,7 @@ public class WebPagePanel {
 	}
 
 	private void initiatePanels() {
-		messagePanel = new MainPanel(null);
+		messagePanel = new MainPanel(BasicColors.MEDIUM_BLUE);
 		messageComponent = GuiElementsCreator
 				.createTextPane(new TextPaneOptions().
 						text(Prompts.LOADING_PAGE).fontSize(20)
@@ -124,7 +126,8 @@ public class WebPagePanel {
 
 	private void createButtonReload() {
 		reloadButton = GuiElementsCreator
-				.createButtonlikeComponent(new ButtonOptions(ButtonType.BUTTON),
+				.createButtonlikeComponent(new ButtonOptions(ButtonType.BUTTON).text(
+						ButtonsNames.RELOAD_PAGE),
 						new AbstractAction() {
 							@Override
 							public void actionPerformed(ActionEvent e) {

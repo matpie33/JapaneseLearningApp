@@ -90,8 +90,9 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 	private AbstractButton createProblematicKanjiCheckbox() {
 		AbstractButton problematicCheckbox = GuiElementsCreator
 				.createButtonlikeComponent(
-						new ButtonOptions(ButtonType.CHECKBOX).opaque(false),
-						null);
+						new ButtonOptions(ButtonType.CHECKBOX)
+								.text(Labels.PROBLEMATIC_KANJI_OPTION)
+								.opaque(false), null);
 		if (controller.getProblematicWordsNumber() == 0) {
 			problematicCheckbox.setEnabled(false);
 		}

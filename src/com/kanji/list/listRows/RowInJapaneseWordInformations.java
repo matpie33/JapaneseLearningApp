@@ -31,7 +31,7 @@ public class RowInJapaneseWordInformations
 				.setLabelsColor(commonListElements.getLabelsColor());
 		japaneseWordPanelCreator
 				.addJapanesePanelToExistingPanel(panel, japaneseWord,
-						forSearchPanel);
+						forSearchPanel, commonListElements);
 		japaneseWordPanelCreator.focusMeaningTextfield();
 
 		return panel;

@@ -46,7 +46,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 			ProblematicJapaneseWordsDisplayer problematicWordsDisplayer) {
 		parentDialog = parent;
 		this.problematicWordsController = problematicWordsController;
-		kanjiInformationPanel = new MainPanel(BasicColors.OCEAN_BLUE);
+		kanjiInformationPanel = new MainPanel(BasicColors.MEDIUM_BLUE);
 		englishDictionaryPanel = new WebPagePanel(this, null);
 		japaneseEnglishDictionaryPanel = new WebPagePanel(this, null);
 		kanjiKoohiWebPanel = new WebPagePanel(this, null);
@@ -108,7 +108,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		JSplitPane wordAndKanjiInformationSplitPane = CommonGuiElementsCreator
 				.createSplitPane(SplitPaneOrientation.VERTICAL,
 						problematicWords.getPanel(),
-						scrollPaneForKanjiInformations, 0.2);
+						scrollPaneForKanjiInformations, 0.6);
 		JSplitPane dictionariesSplitPane = CommonGuiElementsCreator
 				.createSplitPane(SplitPaneOrientation.VERTICAL,
 						japaneseEnglishDictionaryPanel.getSwitchingPanel(),

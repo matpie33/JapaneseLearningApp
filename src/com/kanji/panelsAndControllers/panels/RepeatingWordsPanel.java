@@ -27,7 +27,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private AbstractButton showKanjiOrRecognizeWord;
 	private AbstractButton notRecognizedWord;
 	private MainPanel repeatingPanel;
-	private final Color repeatingBackgroundColor = BasicColors.VERY_BLUE;
+	private final Color repeatingBackgroundColor = BasicColors.MEDIUM_BLUE;
 	private AbstractButton showPreviousWord;
 	private JLabel time;
 	private MainPanel centerPanel;
@@ -40,7 +40,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private final static String WORD_FULL_INFORMATION_PANEL_NAME = "Word full information";
 
 	public RepeatingWordsPanel(RepeatingWordsController controller) {
-		centerPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE);
+		centerPanel = new MainPanel(BasicColors.MEDIUM_BLUE);
 		repeatingPanel = new MainPanel(this.repeatingBackgroundColor);
 		repeatingPanel.setBorder(getDefaultBorder());
 		this.repeatingWordsController = controller;
@@ -49,7 +49,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
 	private void initializeWordInformationPanel() {
 		wordInformationPanel = new JPanel(new CardLayout());
-		wordInformationPanel.setBackground(BasicColors.VERY_LIGHT_BLUE);
+		wordInformationPanel.setBackground(BasicColors.MEDIUM_BLUE);
 		addWordInformationPanelCards(new JPanel(), new JPanel());
 	}
 
@@ -106,7 +106,6 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 				this.showPreviousWord };
 		repeatingPanel.addRows(
 				SimpleRowBuilder.createRow(FillType.HORIZONTAL, wordTextArea)
-						.setColor(BasicColors.VERY_LIGHT_BLUE)
 						.nextRow(FillType.BOTH, Anchor.CENTER,
 								wordInformationPanel)
 						.nextRow(FillType.NONE, navigationButtons)
@@ -124,7 +123,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private void createWordDescriptionTextArea() {
 		wordTextArea = GuiElementsCreator.createTextPane(
 				new TextPaneOptions().textAlignment(TextAlignment.CENTERED)
-						.text("").enabled(false).fontSize(30f)
+						.text("").editable(false).fontSize(30f)
 						.font(ApplicationWindow.getKanjiFont()));
 	}
 

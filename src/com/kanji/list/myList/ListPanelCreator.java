@@ -287,7 +287,7 @@ public class ListPanelCreator<Word extends ListElement>
 
 	public void highlightRowAndScroll(JComponent row) {
 		int rowNumber = rowsPanel.getIndexOfPanel(row);
-		changePanelColor(rowNumber, Color.red);
+		changePanelColor(rowNumber, BasicColors.WATER_BLUE);
 		scrollTo(rowsPanel.getRows().get(rowNumber));
 		this.rowsPanel.getPanel().repaint();
 	}

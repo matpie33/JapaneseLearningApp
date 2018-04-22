@@ -14,6 +14,7 @@ import com.kanji.list.listElements.RepeatingData;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
 import com.kanji.saving.RepeatingState;
 import com.kanji.timer.TimeSpent;
+import com.kanji.utilities.CommonListElements;
 import com.kanji.utilities.KanjiCharactersReader;
 import com.kanji.utilities.StringUtilities;
 
@@ -85,10 +86,10 @@ public class RepeatingJapaneseWordsDisplayer
 	@Override
 	public void showWordFullInformation(JapaneseWord japaneseWord) {
 		fullWordInformationPanel.clear();
-		japaneseWordPanelCreator.setLabelsColor(Color.BLACK);
 		japaneseWordPanelCreator
 				.addJapanesePanelToExistingPanel(fullWordInformationPanel,
-						japaneseWord, false);
+						japaneseWord, false,
+						CommonListElements.forSingleRowOnly(Color.WHITE));
 	}
 
 	@Override

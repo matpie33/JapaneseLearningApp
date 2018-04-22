@@ -1,5 +1,6 @@
 package com.kanji.webPanel;
 
+import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.TextAlignment;
@@ -21,7 +22,7 @@ public class ConnectionFailMessagePage implements ConnectionFailPageHandler {
 
 	public ConnectionFailMessagePage(AbstractButton buttonReload) {
 		this.buttonReload = buttonReload;
-		messagePanel = new MainPanel(null);
+		messagePanel = new MainPanel(BasicColors.MEDIUM_BLUE);
 		messageComponent = GuiElementsCreator.createTextPane(new TextPaneOptions().
 				text(Prompts.CONNECTION_ERROR).fontSize(20)
 				.textAlignment(TextAlignment.CENTERED).editable(false));

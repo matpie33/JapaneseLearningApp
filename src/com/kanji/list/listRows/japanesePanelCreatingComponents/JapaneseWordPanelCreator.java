@@ -20,6 +20,7 @@ import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.utilities.CommonGuiElementsCreator;
+import com.kanji.utilities.CommonListElements;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
@@ -60,10 +61,11 @@ public class JapaneseWordPanelCreator {
 	}
 
 	public void addJapanesePanelToExistingPanel(MainPanel existingPanel,
-			JapaneseWord japaneseWord, boolean forSearchPanel) {
+			JapaneseWord japaneseWord, boolean forSearchPanel,
+			CommonListElements commonListElements) {
 		createElements(japaneseWord, forSearchPanel);
 		addActions(japaneseWord);
-		addElementsToPanel(existingPanel, forSearchPanel);
+		addElementsToPanel(existingPanel, commonListElements);
 	}
 
 	private void createElements(JapaneseWord japaneseWord,
@@ -120,17 +122,19 @@ public class JapaneseWordPanelCreator {
 	}
 
 	private void addElementsToPanel(MainPanel japaneseWordPanel,
-			boolean forSearchPanel) {
+			CommonListElements commonListElements) {
 		JPanel writingsListPanel = writingsList.getPanel();
 		lastJapanesePanelMade = SimpleRowBuilder
-				.createRowStartingFromColumn(0, FillType.BOTH, rowNumberLabel,
+				.createRowStartingFromColumn(0, FillType.BOTH,
+						commonListElements.getRowNumberLabel(),
 						wordMeaningLabel, wordMeaningText)
 				.fillHorizontallySomeElements(wordMeaningText)
 				.nextRow(partOfSpeechLabel, partOfSpeechCombobox)
 				.setColumnToPutRowInto(1)
 				.fillHorizontallySomeElements(partOfSpeechCombobox)
 				.nextRow(writingsLabel, writingsListPanel)
-				.fillHorizontallySomeElements(writingsListPanel);
+				.fillHorizontallySomeElements(writingsListPanel)
+				.nextRow(commonListElements.getButtonDelete());
 		japaneseWordPanel.addRowsOfElementsInColumnStartingFromColumn(
 				lastJapanesePanelMade);
 	}
