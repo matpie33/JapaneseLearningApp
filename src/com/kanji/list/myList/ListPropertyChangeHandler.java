@@ -48,7 +48,7 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	@Override
 	public void focusGained(FocusEvent e) {
 		JTextComponent textInput = (JTextComponent) e.getSource();
-		textInput.setForeground(Color.BLACK);
+		textInput.setForeground(Color.WHITE);
 		previousValueOfTextInput = textInput.getText();
 
 	}

@@ -27,17 +27,18 @@ public class JapanesePanelInEditModeCreator
 		List<JComponent> rowElements = new ArrayList<>();
 		rowElements.add(elementsMaker
 				.createKanaInputWithValidation(japaneseWriting, japaneseWord,
-						true, forSearchPanel));
+						true, forSearchPanel, false));
 		//TODO try to use the approach in whole application:
 		//GuiElement e = actionMaker.withAction(elementsMaker.createElement)
 		for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
 			rowElements.add(elementsMaker
 					.createKanjiInputWithValidation(kanjiWriting,
-							japaneseWriting, japaneseWord, forSearchPanel));
+							japaneseWriting, japaneseWord, forSearchPanel, true,
+							false));
 		}
 		rowElements.add(elementsMaker
 				.createButtonAddKanjiWriting(rowPanel, japaneseWriting,
-						japaneseWord, forSearchPanel));
+						japaneseWord, forSearchPanel, true, false));
 		rowElements.add(commonListElements.getButtonAddRow());
 		rowElements.add(elementsMaker.updateWritingsInWordCheckerWhenDeleteWriting(
 				commonListElements.getButtonDelete(), japaneseWord,

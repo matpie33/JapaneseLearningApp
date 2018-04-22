@@ -1,13 +1,13 @@
 package com.kanji.list.listRows;
 
-import com.guimaker.enums.ComponentType;
+import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
+import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.JapanesePanelDisplayMode;
-import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
@@ -65,8 +65,8 @@ public class RowInDuplicatedImportedWordsList
 	}
 
 	private AbstractButton createButtonGoToRow(int rowNumber) {
-		return GuiElementsCreator.createButtonlikeComponent(ComponentType.BUTTON,
-				ButtonsNames.GO_TO_ROW, new AbstractAction() {
+		return GuiElementsCreator.createButtonlikeComponent(new ButtonOptions(ButtonType.BUTTON),
+				new AbstractAction() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						newJapaneseWords.highlightRow(rowNumber);

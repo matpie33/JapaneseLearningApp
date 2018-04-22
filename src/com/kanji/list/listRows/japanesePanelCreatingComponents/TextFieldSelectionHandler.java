@@ -9,7 +9,7 @@ import java.awt.*;
 public class TextFieldSelectionHandler {
 
 	private JTextComponent currentlySelectedTextfield = emptyTextField;
-	public static final Color NOT_SELECTED_COLOR = BasicColors.GREY;
+	public static final Color NOT_SELECTED_COLOR = Color.GRAY;
 	public static final Color SELECTED_COLOR = BasicColors.DARK_BLUE;
 	private static final JTextComponent emptyTextField = new JTextField();
 

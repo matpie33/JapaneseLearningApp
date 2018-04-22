@@ -29,7 +29,7 @@ public class RowInJapaneseWritingsList
 	@Override
 	public MainPanel createListRow(JapaneseWriting japaneseWriting,
 			CommonListElements commonListElements, boolean forSearchPanel) {
-		rowPanel = new MainPanel(BasicColors.OCEAN_BLUE);
+		rowPanel = new MainPanel(null);
 		rowPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE,
 				japanesePanelCreatingService
 						.addWritingsRow(japaneseWriting, commonListElements,

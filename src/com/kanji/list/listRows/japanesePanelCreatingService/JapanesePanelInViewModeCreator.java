@@ -35,13 +35,13 @@ public class JapanesePanelInViewModeCreator
 		List<JComponent> rowElements = new ArrayList<>();
 		rowElements.add(actionsCreator.selectableTextfield(elementsMaker
 						.createKanaInputWithValidation(japaneseWriting,
-								japaneseWord, false, forSearchPanel),
+								japaneseWord, false, forSearchPanel, true),
 				textFieldSelectionHandler));
 		for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
 			rowElements.add(actionsCreator.selectableTextfield(elementsMaker
 					.createKanjiInputWithValidation(kanjiWriting,
 							japaneseWriting, japaneseWord,
-							forSearchPanel), textFieldSelectionHandler));
+							forSearchPanel, false, true), textFieldSelectionHandler));
 		}
 
 		return rowElements.toArray(new JComponent[] {});

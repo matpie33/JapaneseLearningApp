@@ -1,6 +1,9 @@
 package com.kanji.panelsAndControllers.panels;
 
+import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.FillType;
+import com.guimaker.options.ComponentOptions;
+import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
@@ -22,10 +25,12 @@ import com.kanji.windows.DialogWindow;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.*;
+import java.util.List;
 
 public class StartingPanel extends AbstractPanelWithHotkeysInfo
 		implements ContextOwner<WordTypeContext> {
@@ -88,6 +93,10 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 			tabs.addTab(listAndTabLabel.getKey(),
 					listAndTabLabel.getValue().createPanel());
 		}
+		for (int i=0; i<tabs.getTabCount(); i++){
+			tabs.setBackgroundAt(i, BasicColors.LIGHT_BLUE);
+		}
+
 		tabs.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -239,8 +248,8 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 	}
 
 	private void createInformationsPanel() {
-		saveInfo = new JLabel();
-		problematicKanjis = new JLabel();
+		saveInfo = GuiElementsCreator.createLabel(new ComponentOptions());
+		problematicKanjis = GuiElementsCreator.createLabel(new ComponentOptions());
 		showProblematicKanjis = createShowProblematicKanjiButton();
 		changeSaveStatus(SavingStatus.NO_CHANGES);
 		updateProblematicWordsAmount(

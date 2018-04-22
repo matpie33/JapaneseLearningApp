@@ -340,7 +340,7 @@ public class LearningStartController {
 	}
 
 	public ItemListener createListenerAddProblematicKanjis(
-			JCheckBox problematicKanjiCheckbox) {
+			AbstractButton problematicKanjiCheckbox) {
 		return new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -351,7 +351,7 @@ public class LearningStartController {
 		};
 	}
 
-	public KeyAdapter createListenerForKeyTyped(JCheckBox problematicCheckbox,
+	public KeyAdapter createListenerForKeyTyped(AbstractButton problematicCheckbox,
 			JTextComponent from, JTextComponent to) {
 		return new KeyAdapter() {
 
@@ -369,7 +369,7 @@ public class LearningStartController {
 		};
 	}
 
-	public AbstractAction createActionDeleteRow(JCheckBox problematicCheckbox,
+	public AbstractAction createActionDeleteRow(AbstractButton problematicCheckbox,
 			JTextComponent from, JTextComponent to) {
 		return new AbstractAction() {
 			@Override
@@ -389,7 +389,7 @@ public class LearningStartController {
 	}
 
 	public AbstractAction createActionStartLearning(
-			JCheckBox problematicCheckbox) {
+			AbstractButton problematicCheckbox) {
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -399,7 +399,7 @@ public class LearningStartController {
 	}
 
 	public AbstractAction createActionSelectProblematicCheckbox(
-			JCheckBox problematicCheckbox) {
+			AbstractButton problematicCheckbox) {
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

@@ -2,8 +2,10 @@ package com.kanji.panelsAndControllers.panels;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
-import com.guimaker.enums.ComponentType;
+import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
+import com.guimaker.options.ButtonOptions;
+import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.ExpandablePanel;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
@@ -39,8 +41,8 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	private boolean isMaximized;
 
 	public AbstractPanelWithHotkeysInfo() {
-		mainPanel = new MainPanel(BasicColors.OCEAN_BLUE);
-		mainPanel.setRowColor(BasicColors.VERY_LIGHT_BLUE);
+		mainPanel = new MainPanel(BasicColors.VERY_BLUE);
+		mainPanel.setRowColor(BasicColors.MEDIUM_BLUE);
 		mainPanel.setBorder(defaultBorder);
 		createHotkeysPanel();
 		isMaximized = false;
@@ -146,9 +148,8 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	public AbstractButton createButtonWithHotkey(KeyModifiers keyModifier,
 			int keyEvent, AbstractAction action, String buttonLabel,
 			String hotkeyDescription) {
-		AbstractButton button = GuiElementsCreator
-				.createButtonlikeComponent(ComponentType.BUTTON, buttonLabel,
-						action);
+		AbstractButton button = GuiElementsCreator.createButtonlikeComponent(
+				new ButtonOptions(ButtonType.BUTTON).text(buttonLabel), action);
 		addHotkey(keyModifier, keyEvent, action, button, hotkeyDescription);
 		button.setFocusable(false);
 		return button;
@@ -159,8 +160,9 @@ public abstract class AbstractPanelWithHotkeysInfo {
 		if (hotkeyDescription.isEmpty()) {
 			return;
 		}
-		JLabel hotkeyInfo = new JLabel(
-				createInformationAboutHotkey(hotkey, hotkeyDescription));
+		JLabel hotkeyInfo = GuiElementsCreator.createLabel(
+				new ComponentOptions().text(createInformationAboutHotkey(hotkey,
+						hotkeyDescription)));
 		hotkeysPanel.createRow(
 				SimpleRowBuilder.createRow(FillType.HORIZONTAL, hotkeyInfo));
 	}

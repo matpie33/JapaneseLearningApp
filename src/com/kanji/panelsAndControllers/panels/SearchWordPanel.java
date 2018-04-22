@@ -2,6 +2,8 @@ package com.kanji.panelsAndControllers.panels;
 
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
+import com.guimaker.options.ComponentOptions;
+import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
@@ -52,7 +54,8 @@ public class SearchWordPanel<Word extends ListElement>
 		AbstractButton previous = createButtonFindPrevious();
 		AbstractButton next = createButtonFindNext();
 		AbstractButton cancel = createButtonClose();
-		JLabel searchOptionPrompt = new JLabel(Prompts.SEARCH_OPTION_PROMPT);
+		JLabel searchOptionPrompt = GuiElementsCreator.createLabel(
+				new ComponentOptions().text(Prompts.SEARCH_OPTION_PROMPT));
 
 		this.cardLayout = new CardLayout();
 		searchingPanel = new JPanel(this.cardLayout);
@@ -60,7 +63,7 @@ public class SearchWordPanel<Word extends ListElement>
 
 		searchedList.getListRowCreator().createListRow(
 				searchedList.getWordInitializer().initializeElement(),
-				CommonListElements.forSingleRowOnly(Color.BLACK), true);
+				CommonListElements.forSingleRowOnly(Color.WHITE), true);
 		listRowData = searchedList.getListRowCreator().getRowData();
 		//TODO here I got to get only rows - maybe separate the calls
 		// for rows and for the textfields + property managers
@@ -83,7 +86,9 @@ public class SearchWordPanel<Word extends ListElement>
 		addHotkeyForSwitchingComboboxValue(comboBox);
 
 		MainPanel searchPanel = new MainPanel(null);
-		JLabel prompt = new JLabel(Prompts.SEARCH_DIALOG);
+		JLabel prompt = GuiElementsCreator.createLabel(new ComponentOptions().text(
+
+		Prompts.SEARCH_DIALOG));
 		searchPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.CENTER, prompt));
 		searchPanel.addRow(SimpleRowBuilder

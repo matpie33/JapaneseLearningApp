@@ -2,10 +2,9 @@ package com.kanji.panelsAndControllers.panels;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
+import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
-import com.guimaker.options.ScrollPaneOptions;
-import com.guimaker.options.TextAreaOptions;
-import com.guimaker.options.TextComponentOptions;
+import com.guimaker.options.*;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.AbstractSimpleRow;
@@ -27,7 +26,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 	private JScrollPane scrollPane;
 	private JTextComponent sumRangeField;
-	private JCheckBox problematicCheckbox;
+	private AbstractButton problematicCheckbox;
 	private LearningStartController controller;
 	private MainPanel rangesPanel;
 	private JTextComponent firstTextField;
@@ -45,7 +44,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 				new TextAreaOptions().editable(false).opaque(false)
 						.text(Prompts.LEARNING_START).border(null));
 		problematicCheckbox = createProblematicKanjiCheckbox();
-		rangesPanel = new MainPanel(BasicColors.VERY_LIGHT_BLUE, true);
+		rangesPanel = new MainPanel(null, true);
 		scrollPane = createRangesPanelScrollPane();
 		addRowToRangesPanel();
 
@@ -66,7 +65,9 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 						.nextRow(FillType.HORIZONTAL, problematicCheckbox)
 						.nextRow(problematicKanjis)
 						.nextRow(FillType.NONE, Anchor.CENTER,
-								new JLabel(Titles.KANJI_RANGES))
+								GuiElementsCreator.createLabel(
+										new ComponentOptions()
+												.text(Titles.KANJI_RANGES)))
 						.nextRow(FillType.BOTH, scrollPane)
 						.useAllExtraVerticalSpace()
 						.nextRow(FillType.HORIZONTAL, newRow, sumRangeField)
@@ -81,14 +82,16 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 	private JScrollPane createRangesPanelScrollPane() {
 		Border b = BorderFactory.createBevelBorder(BevelBorder.LOWERED);
 		return GuiElementsCreator.createScrollPane(
-				new ScrollPaneOptions().componentToWrap(rangesPanel.getPanel())
-						.backgroundColor(BasicColors.DARK_BLUE).border(b)
+				new ScrollPaneOptions().opaque(false)
+						.componentToWrap(rangesPanel.getPanel()).border(null)
 						.preferredSize(new Dimension(350, 200)));
 	}
 
-	private JCheckBox createProblematicKanjiCheckbox() {
-		final JCheckBox problematicCheckbox = new JCheckBox(
-				Labels.PROBLEMATIC_KANJI_OPTION);
+	private AbstractButton createProblematicKanjiCheckbox() {
+		AbstractButton problematicCheckbox = GuiElementsCreator
+				.createButtonlikeComponent(
+						new ButtonOptions(ButtonType.CHECKBOX).opaque(false),
+						null);
 		if (controller.getProblematicWordsNumber() == 0) {
 			problematicCheckbox.setEnabled(false);
 		}
@@ -144,8 +147,10 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 			delete.setVisible(false);
 		}
 
-		JLabel from = new JLabel(Labels.RANGE_FROM_LABEL);
-		JLabel labelTo = new JLabel(Labels.RANGE_TO_LABEL);
+		JLabel from = GuiElementsCreator.createLabel(
+				new ComponentOptions().text(Labels.RANGE_FROM_LABEL));
+		JLabel labelTo = GuiElementsCreator.createLabel(
+				new ComponentOptions().text(Labels.RANGE_TO_LABEL));
 
 		AbstractSimpleRow newRow = SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.NORTH, from, fieldFrom,
@@ -225,10 +230,11 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private JTextComponent createProblematicRangeField(String text) {
-		JTextComponent sumRange = new JTextField(text);
-		sumRange.setEditable(false);
-		sumRange.setText(
-				sumRange.getText() + controller.getProblematicWordsNumber());
+		JTextComponent sumRange = GuiElementsCreator.createTextField(
+				new TextComponentOptions()
+						.text(text + controller.getProblematicWordsNumber())
+						.editable(false));
+		new JTextField(text);
 		return sumRange;
 	}
 

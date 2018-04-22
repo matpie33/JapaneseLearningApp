@@ -48,15 +48,15 @@ public class InsertWordPanel<Word extends ListElement>
 	@Override
 	public void createElements() {
 		initializeWord();
-		initializeJapaneseWordPanel();
+		initializeAddWordPanel();
 	}
 
 	private void initializeWord() {
 		word = wordsList.getWordInitializer().initializeElement();
 	}
 
-	private void initializeJapaneseWordPanel() {
-		labelsColor = Color.BLACK;
+	private void initializeAddWordPanel() {
+		labelsColor = Color.WHITE;
 		MainPanel addWordPanel = wordsList.getListRowCreator().createListRow(word,
 				CommonListElements.forSingleRowOnly(labelsColor), false);
 		mainPanel.addRow(SimpleRowBuilder

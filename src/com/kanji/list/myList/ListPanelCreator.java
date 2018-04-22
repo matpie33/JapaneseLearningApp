@@ -2,8 +2,10 @@ package com.kanji.list.myList;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
-import com.guimaker.enums.ComponentType;
+import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
+import com.guimaker.options.ButtonOptions;
+import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.ScrollPaneOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
@@ -20,7 +22,6 @@ import com.kanji.range.Range;
 import com.kanji.utilities.CommonListElements;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -37,8 +38,6 @@ public class ListPanelCreator<Word extends ListElement>
 	private final Dimension scrollPanesSize = new Dimension(350, 100);
 	private JLabel titleLabel;
 	private ListRowCreator<Word> listRow;
-	private Border rowBorder = BorderFactory
-			.createMatteBorder(0, 0, 2, 0, BasicColors.LIGHT_BLUE);
 	private ApplicationController applicationController;
 	private MainPanel rootPanel;
 	private boolean enableWordAdding;
@@ -63,14 +62,13 @@ public class ListPanelCreator<Word extends ListElement>
 		listWordsController = controller;
 
 		isSkipTitle = listConfiguration.isSkipTitle();
-		rowsPanel = new MainPanel(BasicColors.VERY_BLUE, true);
+		rowsPanel = new MainPanel(null, true);
 		rootPanel = new MainPanel(null);
-		titleLabel = new JLabel();
+		titleLabel = GuiElementsCreator.createLabel(new ComponentOptions());
 		loadNextWordsHandler = new LoadNextWordsHandler(listWordsController,
 				rowsPanel);
 		loadPreviousWordsHandler = new LoadPreviousWordsHandler(
 				listWordsController, rowsPanel);
-		rowsPanel.setBorder(rowBorder);
 		this.listRow = listRow;
 
 		navigationButtons = new ArrayList<>();
@@ -128,9 +126,8 @@ public class ListPanelCreator<Word extends ListElement>
 	}
 
 	private AbstractButton createAndAddButtonLoadWords(String buttonName) {
-		AbstractButton button = GuiElementsCreator
-				.createButtonlikeComponent(ComponentType.BUTTON, buttonName,
-						null);
+		AbstractButton button = GuiElementsCreator.createButtonlikeComponent(
+				new ButtonOptions(ButtonType.BUTTON).text(buttonName), null);
 		button.setEnabled(false);
 		return button;
 	}
@@ -139,10 +136,11 @@ public class ListPanelCreator<Word extends ListElement>
 			boolean shouldShowWord, LoadWordsHandler loadWordsHandler,
 			boolean forSearchPanel) {
 		JLabel rowNumberLabel = new JLabel(createTextForRowNumber(rowNumber));
-		AbstractButton remove = new JButton(ButtonsNames.REMOVE_ROW);
-		AbstractButton addNewWord = createButtonAddRow(forSearchPanel);
-		remove.addActionListener(
+		AbstractButton remove = GuiElementsCreator.createButtonlikeComponent(
+				new ButtonOptions(ButtonType.BUTTON)
+						.text(ButtonsNames.REMOVE_ROW),
 				listWordsController.createDeleteRowAction(word));
+		AbstractButton addNewWord = createButtonAddRow(forSearchPanel);
 		CommonListElements commonListElements = new CommonListElements(remove,
 				rowNumberLabel, addNewWord, labelsColor);
 		rowNumberLabel.setForeground(labelsColor);
@@ -162,14 +160,14 @@ public class ListPanelCreator<Word extends ListElement>
 	}
 
 	private AbstractButton createButtonAddRow(boolean forSearchPanel) {
-		return GuiElementsCreator
-				.createButtonlikeComponent(ComponentType.BUTTON,
-						ButtonsNames.ADD_ROW, new AbstractAction() {
-							@Override
-							public void actionPerformed(ActionEvent e) {
-								listWordsController.addNewWord(forSearchPanel);
-							}
-						});
+		return GuiElementsCreator.createButtonlikeComponent(
+				new ButtonOptions(ButtonType.BUTTON).text(ButtonsNames.ADD_ROW),
+				new AbstractAction() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						listWordsController.addNewWord(forSearchPanel);
+					}
+				});
 	}
 
 	private AbstractAction createButtonShowNextOrPreviousWords(
@@ -211,12 +209,15 @@ public class ListPanelCreator<Word extends ListElement>
 		if (!isSkipTitle) {
 			rootPanel.addRow(SimpleRowBuilder
 					.createRow(FillType.NONE, Anchor.CENTER, titleLabel));
+			rootPanel.addRow(SimpleRowBuilder
+					.createRow(FillType.BOTH, listElementsPanel));
+			mainPanel.addRow(SimpleRowBuilder
+					.createRow(FillType.BOTH, rootPanel.getPanel()));
+		}
+		else {
+			mainPanel = rowsPanel;
 		}
 
-		rootPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.BOTH, listElementsPanel));
-		mainPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.BOTH, rootPanel.getPanel()));
 		if (enableWordAdding) {
 			navigationButtons.add(createButtonAddWord());
 		}
@@ -229,14 +230,11 @@ public class ListPanelCreator<Word extends ListElement>
 	}
 
 	private void createRootPanel() {
-		Border raisedBevel = BorderFactory
-				.createMatteBorder(3, 3, 0, 0, BasicColors.LIGHT_BLUE);
 		if (!isScrollBarInherited) {
 			parentScrollPane = GuiElementsCreator.createScrollPane(
-					new ScrollPaneOptions()
-							.componentToWrap(rowsPanel.getPanel())
-							.border(raisedBevel));
-			if (!scrollBarSizeFittingContent){
+					new ScrollPaneOptions().opaque(false)
+							.componentToWrap(rowsPanel.getPanel()));
+			if (!scrollBarSizeFittingContent) {
 				parentScrollPane.setPreferredSize(scrollPanesSize);
 			}
 			listElementsPanel = parentScrollPane;

@@ -1,6 +1,7 @@
 package com.kanji.list.listRows.japanesePanelCreatingComponents;
 
-import com.guimaker.enums.ComponentType;
+import com.guimaker.enums.ButtonType;
+import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
@@ -13,7 +14,6 @@ import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class JapanesePanelElementsCreator {
@@ -25,47 +25,31 @@ public class JapanesePanelElementsCreator {
 		this.actionsCreator = actionsCreator;
 	}
 
-	private JTextComponent viewOnlyTextInput(JTextComponent field) {
-		field.setEnabled(false);
-		field.setBackground(TextFieldSelectionHandler.NOT_SELECTED_COLOR);
-		return field;
-	}
-
 	public JTextComponent createKanaInputWithValidation(
 			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
-			boolean enabled, boolean isForSearchDialog) {
+			boolean enabled, boolean isForSearchDialog, boolean selectable) {
 		return actionsCreator.withJapaneseWritingValidation(
-				createWritingsInput(japaneseWriting.getKanaWriting(), enabled,
-						true), japaneseWriting, japaneseWord, true,
-				isForSearchDialog);
+				createWritingsInput(japaneseWriting.getKanaWriting(), true,
+						enabled, selectable), japaneseWriting, japaneseWord,
+				true, isForSearchDialog);
 	}
 
 	public JTextComponent createKanjiInputWithValidation(String text,
 			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
-			boolean isForSearchDialog) {
+			boolean isForSearchDialog, boolean enabled, boolean selectable) {
 		return actionsCreator.withJapaneseWritingValidation(
-				createWritingsInput(text, true, false), japaneseWriting,
-				japaneseWord, false, isForSearchDialog);
+				createWritingsInput(text, false, enabled, selectable),
+				japaneseWriting, japaneseWord, false, isForSearchDialog);
 	}
 
-	public JTextComponent createWritingsInput(String text, boolean enabled,
-			boolean isKana) {
-		JTextComponent kanjiTextInput = createWritingsInput(text, isKana);
-		if (!enabled) {
-			return viewOnlyTextInput(kanjiTextInput);
-		}
-		else {
-			return kanjiTextInput;
-		}
-	}
-
-	private JTextComponent createWritingsInput(String initialValue,
-			boolean isKana) {
+	public JTextComponent createWritingsInput(String initialValue,
+			boolean isKana, boolean editable, boolean selectable) {
 		return actionsCreator.repaintParentOnFocusLost(actionsCreator
 				.withSwitchToJapaneseActionOnClick(GuiElementsCreator
 						.createTextField(
 								new TextComponentOptions().text(initialValue)
-										.editable(true)
+										.editable(editable)
+										.selectable(selectable)
 										.font(ApplicationWindow.getKanjiFont())
 										.focusable(true).fontSize(30f)
 										.promptWhenEmpty(
@@ -76,9 +60,9 @@ public class JapanesePanelElementsCreator {
 
 	private AbstractButton createButton(String buttonLabel,
 			AbstractAction actionOnClick) {
-		return GuiElementsCreator
-				.createButtonlikeComponent(ComponentType.BUTTON, buttonLabel,
-						actionOnClick);
+		return GuiElementsCreator.createButtonlikeComponent(
+				new ButtonOptions(ButtonType.BUTTON).text(buttonLabel),
+				actionOnClick);
 
 	}
 
@@ -97,7 +81,7 @@ public class JapanesePanelElementsCreator {
 
 	public AbstractButton createButtonAddKanjiWriting(MainPanel rowPanel,
 			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
-			boolean isForSearchDialog) {
+			boolean isForSearchDialog, boolean editMode, boolean selectable) {
 		AbstractButton button = createButton(ButtonsNames.ADD_KANJI_WRITING,
 				null);
 		button.addActionListener(new AbstractAction() {
@@ -105,7 +89,8 @@ public class JapanesePanelElementsCreator {
 			public void actionPerformed(ActionEvent e) {
 				rowPanel.insertElementInPlaceOfElement(
 						createKanjiInputWithValidation("", japaneseWriting,
-								japaneseWord, isForSearchDialog), button);
+								japaneseWord, isForSearchDialog, editMode,
+								selectable), button);
 			}
 		});
 		return button;

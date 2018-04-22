@@ -4,6 +4,7 @@ import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.TextAlignment;
+import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
@@ -63,10 +64,11 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
 	@Override
 	public void createElements() {
-		JLabel titleLabel = new JLabel(Titles.REPEATING_WORDS_DIALOG);
-		time = new JLabel();
-		remainingLabel = new JLabel(
-				repeatingWordsController.createRemainingWordsPrompt());
+		JLabel titleLabel = GuiElementsCreator.createLabel(
+				new ComponentOptions().text(Titles.REPEATING_WORDS_DIALOG));
+		time = GuiElementsCreator.createLabel(new ComponentOptions());
+		remainingLabel = GuiElementsCreator.createLabel(new ComponentOptions()
+				.text(repeatingWordsController.createRemainingWordsPrompt()));
 		AbstractButton returnButton = createReturnButton();
 		createRepeatingPanel();
 		setButtonsToRecognizingState();

@@ -1,7 +1,8 @@
 package com.kanji.problematicWords;
 
-import com.guimaker.enums.ComponentType;
+import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
+import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.TextAreaOptions;
 import com.guimaker.panels.GuiElementsCreator;
@@ -9,7 +10,6 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.JapanesePanelDisplayMode;
 import com.kanji.constants.enums.SearchingDirection;
-import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Titles;
 import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
@@ -65,13 +65,14 @@ public class ProblematicJapaneseWordsDisplayer
 	}
 
 	private AbstractButton createButtonSearchWord() {
-		return GuiElementsCreator.createButtonlikeComponent(ComponentType.BUTTON,
-				ButtonsNames.SEARCH_IN_DICTIONARY, new AbstractAction() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						searchCurrentWordInDictionary();
-					}
-				});
+		return GuiElementsCreator
+				.createButtonlikeComponent(new ButtonOptions(ButtonType.BUTTON),
+						new AbstractAction() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								searchCurrentWordInDictionary();
+							}
+						});
 	}
 
 	private JapaneseWordPanelCreator createJapanesePanelCreator(
@@ -111,9 +112,8 @@ public class ProblematicJapaneseWordsDisplayer
 			JTextComponent keywordLabel = GuiElementsCreator.createTextArea(
 					new TextAreaOptions().rowsAndColumns(2, 5).text(keyword));
 			AbstractButton goToButton = GuiElementsCreator
-					.createButtonlikeComponent(ComponentType.BUTTON,
-							ButtonsNames.SHOW_KANJI_STORIES,
-							new AbstractAction() {
+					.createButtonlikeComponent(
+							new ButtonOptions(ButtonType.BUTTON), new AbstractAction() {
 								@Override
 								public void actionPerformed(ActionEvent e) {
 									if (kanjiInformation == null) {
