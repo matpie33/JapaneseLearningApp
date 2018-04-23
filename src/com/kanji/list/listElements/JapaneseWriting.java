@@ -2,13 +2,15 @@ package com.kanji.list.listElements;
 
 import com.kanji.utilities.StringUtilities;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class JapaneseWriting implements ListElement {
+public class JapaneseWriting implements ListElement, Serializable {
 
 	private static final String KANA = "kana";
 	private static final String KANJI = "kanji";
+	private static final long serialVersionUID = -7397611423482201633L;
 	private String kanaWriting;
 	private Set<String> kanjiWritings;
 

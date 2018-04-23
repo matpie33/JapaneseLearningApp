@@ -25,12 +25,10 @@ import com.kanji.windows.DialogWindow;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.*;
-import java.util.List;
 
 public class StartingPanel extends AbstractPanelWithHotkeysInfo
 		implements ContextOwner<WordTypeContext> {
@@ -93,7 +91,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 			tabs.addTab(listAndTabLabel.getKey(),
 					listAndTabLabel.getValue().createPanel());
 		}
-		for (int i=0; i<tabs.getTabCount(); i++){
+		for (int i = 0; i < tabs.getTabCount(); i++) {
 			tabs.setBackgroundAt(i, BasicColors.LIGHT_BLUE);
 		}
 
@@ -178,7 +176,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 				action = new AbstractAction() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						applicationController.loadList(getContext());
+						applicationController.loadWordsFromTextFiles();
 					}
 				};
 				break;
@@ -249,7 +247,8 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 
 	private void createInformationsPanel() {
 		saveInfo = GuiElementsCreator.createLabel(new ComponentOptions());
-		problematicKanjis = GuiElementsCreator.createLabel(new ComponentOptions());
+		problematicKanjis = GuiElementsCreator
+				.createLabel(new ComponentOptions());
 		showProblematicKanjis = createShowProblematicKanjiButton();
 		changeSaveStatus(SavingStatus.NO_CHANGES);
 		updateProblematicWordsAmount(

@@ -3,8 +3,8 @@ package com.kanji.panelsAndControllers.controllers;
 import com.kanji.constants.enums.*;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.Titles;
-import com.kanji.context.WordTypeContext;
 import com.kanji.exception.DuplicatedWordException;
+import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
 import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
@@ -16,7 +16,7 @@ import com.kanji.list.listRows.RowInRepeatingList;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
 import com.kanji.list.myList.ListConfiguration;
 import com.kanji.list.myList.MyList;
-import com.kanji.model.KanjisAndRepeatingInfo;
+import com.kanji.model.WordsAndRepeatingInfo;
 import com.kanji.panelsAndControllers.panels.RepeatingWordsPanel;
 import com.kanji.problematicWords.ProblematicJapaneseWordsDisplayer;
 import com.kanji.problematicWords.ProblematicKanjiDisplayer;
@@ -29,7 +29,7 @@ import com.kanji.saving.LoadingAndSaving;
 import com.kanji.saving.SavingInformation;
 import com.kanji.swingWorkers.LoadingProjectWorker;
 import com.kanji.utilities.JapaneseWordsFileReader;
-import com.kanji.utilities.KanjiListFileReader;
+import com.kanji.utilities.WordsListReadWrite;
 import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
@@ -172,17 +172,6 @@ public class ApplicationController implements ApplicationStateManager {
 		return fileChooser;
 	}
 
-	public void loadList(WordTypeContext wordTypeContext) {
-		switch (wordTypeContext.getWordTypeForRepeating()) {
-		case KANJIS:
-			loadKanjiList();
-			break;
-		case JAPANESE_WORDS:
-			loadJapaneseWordsList();
-			break;
-		}
-	}
-
 	private void loadJapaneseWordsList() {
 		JFileChooser fileChooser = createFileChooser();
 		fileChooser.setMultiSelectionEnabled(true);
@@ -211,14 +200,14 @@ public class ApplicationController implements ApplicationStateManager {
 		}
 	}
 
-	private void loadKanjiList() {
+	public void loadWordsFromTextFiles() {
 		JFileChooser fileChooser = createFileChooser();
 		int option = fileChooser.showOpenDialog(parent.getContainer());
 		if (option == JFileChooser.CANCEL_OPTION) {
 			return;
 		}
 		try {
-			loadKanjisListsFromTextFile(fileChooser.getSelectedFile());
+			getWordsAndFillLists(fileChooser.getSelectedFile());
 		}
 		catch (DuplicatedWordException | IOException e) {
 			parent.showMessageDialog(e.getMessage());
@@ -226,24 +215,59 @@ public class ApplicationController implements ApplicationStateManager {
 		}
 	}
 
-	private void loadKanjisListsFromTextFile(File file)
+	private void getWordsAndFillLists(File file)
 			throws DuplicatedWordException, IOException {
-		KanjiListFileReader fileReader = new KanjiListFileReader();
-		KanjisAndRepeatingInfo words = fileReader.readFile(file);
-		List<Kanji> kanjis = words.getKanjis();
-		List<RepeatingData> repeatingDataList = words.getRepeatingData();
-		Set<Integer> problematicKanjis = words.getProblematicKanjis();
+		WordsListReadWrite fileReader = new WordsListReadWrite();
+		fileReader.readFile(file);
+		WordsAndRepeatingInfo<Kanji, Integer> words = fileReader
+				.getKanjisAndRepeatingData();
+		List<Kanji> kanjiInformations = words.getWords();
+		List<RepeatingData> repeatingInformations = words
+				.getRepeatingInformations();
+		Set<Integer> problematicKanjis = words.getProblematicWords();
+
+		WordsAndRepeatingInfo<JapaneseWord, String> japaneseWords = fileReader
+				.getJapaneseWordsAndRepeatingData();
+		List<JapaneseWord> japaneseWordsInfo = japaneseWords.getWords();
+		Set<String> problematicJapaneseWords = japaneseWords
+				.getProblematicWords();
+		List<RepeatingData> repeatingJapaneseWordsInformation = japaneseWords
+				.getRepeatingInformations();
 
 		kanjiList.cleanWords();
 		kanjiRepeatingDates.cleanWords();
-		for (Kanji kanji : kanjis) {
+
+		for (Kanji kanji: kanjiInformations){
 			kanjiList.addWord(kanji);
 		}
-		for (RepeatingData repeatingData : repeatingDataList) {
-			kanjiRepeatingDates.addWord(repeatingData);
+		for (RepeatingData repeatingData: repeatingInformations){
+			getKanjiRepeatingDates().addWord(repeatingData);
 		}
 		setProblematicWordsAndUpdateInformation(
 				convertIdsToKanjiInformations(problematicKanjis));
+
+		getJapaneseWords().cleanWords();
+		getJapaneseWordsRepeatingDates().cleanWords();
+		for (JapaneseWord japaneseWord : japaneseWordsInfo) {
+			getJapaneseWords().addWord(japaneseWord);
+		}
+		for (RepeatingData repeatingInformation : repeatingJapaneseWordsInformation) {
+			getJapaneseWordsRepeatingDates().addWord(repeatingInformation);
+		}
+		setProblematicWordsAndUpdateInformation(
+				getWordsByMeanings(problematicJapaneseWords));
+	}
+
+	private Set<JapaneseWord> getWordsByMeanings(Set<String> meanings) {
+		Set<JapaneseWord> japaneseWordInformations = new HashSet<>();
+		for (String meaning : meanings) {
+			japaneseWordInformations.add(getJapaneseWords()
+					.findRowBasedOnPropertyStartingFromBeginningOfList(
+							new JapaneseWordMeaningChecker(
+									WordSearchOptions.BY_FULL_EXPRESSION),
+							meaning, SearchingDirection.FORWARD, true));
+		}
+		return japaneseWordInformations;
 	}
 
 	public Set<Kanji> convertIdsToKanjiInformations(Set<Integer> ids) {
@@ -450,10 +474,13 @@ public class ApplicationController implements ApplicationStateManager {
 
 		File f = fileChooser.getSelectedFile();
 		f = new File(f.toString() + ".txt");
-		KanjiListFileReader reader = new KanjiListFileReader();
+		WordsListReadWrite reader = new WordsListReadWrite();
 		try {
-			reader.writeToFile(f, kanjiList, kanjiRepeatingDates,
+			reader.writeKanjiListToFile(f, kanjiList, kanjiRepeatingDates,
 					getProblematicKanjis());
+			reader.writeJapaneseListToFile(f, getJapaneseWords(),
+					getJapaneseWordsRepeatingDates(),
+					getProblematicJapaneseWords());
 		}
 		catch (IOException e) {
 			parent.showMessageDialog(e.getMessage());
