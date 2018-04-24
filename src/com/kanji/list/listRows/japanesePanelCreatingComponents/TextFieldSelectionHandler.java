@@ -16,13 +16,19 @@ public class TextFieldSelectionHandler {
 	public void toggleSelection(JTextComponent clickedTextField) {
 		if (clickedTextField.equals(currentlySelectedTextfield)) {
 			currentlySelectedTextfield = emptyTextField;
-			clickedTextField.setBackground(NOT_SELECTED_COLOR);
+			unselectTextInput(clickedTextField);
 		}
 		else {
-			currentlySelectedTextfield.setBackground(NOT_SELECTED_COLOR);
+			unselectTextInput(currentlySelectedTextfield);	
 			currentlySelectedTextfield = clickedTextField;
 			currentlySelectedTextfield.setBackground(SELECTED_COLOR);
+			currentlySelectedTextfield.setOpaque(true);
 		}
+	}
+
+	private void unselectTextInput (JTextComponent textInput){
+		textInput.setBackground(NOT_SELECTED_COLOR);
+		textInput.setOpaque(false);
 	}
 
 	public String getCurrentlySelectedWord() {

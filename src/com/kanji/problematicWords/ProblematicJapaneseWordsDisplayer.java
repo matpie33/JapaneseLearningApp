@@ -104,15 +104,17 @@ public class ProblematicJapaneseWordsDisplayer
 							new KanjiIdChecker(),
 							kanjiCharactersReader.getIdOfKanji(kanji),
 							SearchingDirection.FORWARD, false);
-			JLabel kanjiLabel = GuiElementsCreator
-					.createLabel(new ComponentOptions().text(kanji));
+			JLabel kanjiLabel = GuiElementsCreator.createLabel(
+					new ComponentOptions().text(kanji)
+							.font(ApplicationWindow.getKanjiFont()));
 			kanjiLabel.setFont(kanjiLabel.getFont().deriveFont(30f));
 			//TODO set the kanjis font in one place for whole application
 			String keyword = kanjiInformation != null ?
 					kanjiInformation.getKeyword() :
 					Prompts.NO_KANJI_INFORMATION_AVAILABLE;
 			JTextComponent keywordLabel = GuiElementsCreator.createTextArea(
-					new TextAreaOptions().editable(false).rowsAndColumns(2, 5).text(keyword));
+					new TextAreaOptions().editable(false).rowsAndColumns(2, 5)
+							.text(keyword));
 			AbstractButton goToButton = GuiElementsCreator
 					.createButtonlikeComponent(
 							new ButtonOptions(ButtonType.BUTTON)
@@ -135,9 +137,8 @@ public class ProblematicJapaneseWordsDisplayer
 			goToButton.setFocusable(false);
 
 			panel.addElementsInColumnStartingFromColumn(SimpleRowBuilder
-					.createRowStartingFromColumn(0, FillType.NONE, keywordLabel,
-							goToButton)
-					.fillHorizontallySomeElements(kanjiLabel));
+					.createRowStartingFromColumn(0, FillType.NONE, kanjiLabel,
+							keywordLabel, goToButton));
 		}
 		panel.updateView();
 	}

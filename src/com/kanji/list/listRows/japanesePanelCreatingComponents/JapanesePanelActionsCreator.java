@@ -147,6 +147,7 @@ public class JapanesePanelActionsCreator {
 
 	public JTextComponent selectableTextfield(JTextComponent textComponent,
 			TextFieldSelectionHandler selectionHandler) {
+		textComponent.setFocusable(false);
 		textComponent.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {

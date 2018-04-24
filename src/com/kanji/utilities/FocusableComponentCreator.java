@@ -33,14 +33,14 @@ public class FocusableComponentCreator {
 		panelToSetBackground.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				panelToSetBackground.setBorder(createBorder(BasicColors.GREY));
+				panelToSetBackground.setBorder(null);
 			}
 
 			@Override
 			public void focusGained(FocusEvent e) {
 				panelToSetBackground.requestFocusInWindow();
 				panelToSetBackground
-						.setBorder(createBorder(BasicColors.VERY_BLUE));
+						.setBorder(createBorder(BasicColors.VERY_LIGHT_BLUE));
 			}
 		});
 	}

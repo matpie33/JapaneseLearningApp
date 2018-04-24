@@ -185,6 +185,8 @@ public class RepeatingWordsController
 
 	private void goToPreviousWord() {
 		showWord(previousWord);
+		wordDisplayer.showWordFullInformation(previousWord);
+		panel.showCardWithFullInformationAboutWord();
 		currentWord = previousWord;
 		removeWordFromCurrentProblematics();
 		panel.setButtonsToRecognizing();

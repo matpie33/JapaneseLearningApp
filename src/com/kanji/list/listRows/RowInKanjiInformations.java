@@ -6,6 +6,7 @@ import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.ComplexRow;
 import com.guimaker.row.SimpleRowBuilder;
+import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.ListPropertiesNames;
 import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
@@ -54,6 +55,7 @@ public class RowInKanjiInformations implements ListRowCreator<Kanji> {
 		int ID = kanji.getId();
 		keywordInput = CommonGuiElementsCreator.createKanjiWordInput(text);
 		keywordChecker = new KanjiKeywordChecker();
+		keywordChecker.setWordSearchOptions(WordSearchOptions.BY_FULL_EXPRESSION);
 		keywordInput.addFocusListener(new ListPropertyChangeHandler<>(kanji,
 				applicationWindow.getApplicationController().getKanjiList(),
 				applicationWindow, keywordChecker, true, !forSearchPanel));
