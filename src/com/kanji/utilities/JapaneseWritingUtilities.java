@@ -26,7 +26,7 @@ public class JapaneseWritingUtilities {
 
 	public static boolean characterIsKanji(char character) {
 		return Character.UnicodeBlock.of(character) == Character.UnicodeBlock.
-				CJK_UNIFIED_IDEOGRAPHS;
+				CJK_UNIFIED_IDEOGRAPHS || character=='々';
 	}
 
 	public static boolean characterIsKana(char character) {
