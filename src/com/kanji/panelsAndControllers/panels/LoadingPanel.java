@@ -30,7 +30,7 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 	public void createElements() {
 
 		//TODO add method in gui maker to enable connecting one row with another or create a separate row
-		progressBarsPanel = new MainPanel(BasicColors.OCEAN_BLUE, false);
+		progressBarsPanel = new MainPanel(BasicColors.MEDIUM_BLUE, false);
 		JScrollPane scrollPane = GuiElementsCreator.createScrollPane(
 				new ScrollPaneOptions()
 						.componentToWrap(progressBarsPanel.getPanel())

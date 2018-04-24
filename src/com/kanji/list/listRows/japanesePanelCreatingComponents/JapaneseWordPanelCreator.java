@@ -96,7 +96,9 @@ public class JapaneseWordPanelCreator {
 				.getActionCreator();
 		actionCreatingService
 				.addWordMeaningPropertyChangeListener(wordMeaningText,
-						japaneseWord, WordSearchOptions.BY_FULL_EXPRESSION,
+						japaneseWord, forSearchDialog ?
+								WordSearchOptions.BY_WORD_FRAGMENT :
+								WordSearchOptions.BY_FULL_EXPRESSION,
 						!forSearchDialog);
 		actionCreatingService.addSavingOnSelectionListener(partOfSpeechCombobox,
 				japaneseWord);
@@ -104,7 +106,7 @@ public class JapaneseWordPanelCreator {
 
 	public MyList<JapaneseWriting> createWritingsList(JapaneseWord japaneseWord,
 			boolean forSearchPanel, boolean inheritScrollBar) {
-		writingsList = createJapaneseWritingsList(japaneseWord, forSearchPanel,
+		writingsList = createJapaneseWritingsList(japaneseWord,
 				inheritScrollBar);
 		japaneseWord.getWritings().stream()
 				.forEach(word -> writingsList.addWord(word, forSearchPanel));
@@ -112,8 +114,7 @@ public class JapaneseWordPanelCreator {
 	}
 
 	private MyList<JapaneseWriting> createJapaneseWritingsList(
-			JapaneseWord japaneseWord, boolean forSearchPanel,
-			boolean inheritScrollBar) {
+			JapaneseWord japaneseWord, boolean inheritScrollBar) {
 		return new MyList<>(parentDialog, applicationController,
 				new RowInJapaneseWritingsList(
 						japanesePanelComponentsStore.getPanelCreatingService(),
@@ -122,8 +123,8 @@ public class JapaneseWordPanelCreator {
 						.inheritScrollbar(inheritScrollBar)
 						.enableWordSearching(false)
 						.showButtonsLoadNextPreviousWords(false)
-						.scrollBarFitsContent(!inheritScrollBar).skipTitle(true),
-				JapaneseWriting.getInitializer());
+						.scrollBarFitsContent(!inheritScrollBar)
+						.skipTitle(true), JapaneseWriting.getInitializer());
 	}
 
 	private void addElementsToPanel(MainPanel japaneseWordPanel,

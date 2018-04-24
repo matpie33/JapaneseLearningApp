@@ -170,6 +170,8 @@ public class JapanesePanelActionsCreator {
 			public void actionPerformed(ActionEvent e) {
 				getOrCreateCheckerFor(writing, japaneseWord, isForSearchDialog)
 						.removeWriting(writing);
+				japaneseWord.getWritings().remove(writing);
+				applicationController.saveProject();
 			}
 		});
 		return buttonDelete;
