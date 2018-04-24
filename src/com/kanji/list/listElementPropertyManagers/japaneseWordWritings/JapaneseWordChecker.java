@@ -93,7 +93,7 @@ public class JapaneseWordChecker implements
 		}
 
 		updateWritingsInMaps(existingWritingForInput, convertedProperty);
-		return writingToCheckerMap.keySet();
+		return new HashSet<>(writingToCheckerMap.keySet());
 	}
 
 	private void updateWritingsInMaps(JapaneseWriting oldWriting,
