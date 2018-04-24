@@ -1,5 +1,6 @@
 package com.kanji.list.listElements;
 
+import com.kanji.utilities.JapaneseWritingUtilities;
 import com.kanji.utilities.StringUtilities;
 
 import java.io.Serializable;
@@ -21,7 +22,9 @@ public class JapaneseWriting implements ListElement, Serializable {
 
 	@Override
 	public boolean isEmpty() {
-		return kanaWriting.isEmpty() && kanjiWritings.isEmpty();
+		return JapaneseWritingUtilities.isInputEmpty(kanaWriting, true) && (
+				kanjiWritings.isEmpty() || JapaneseWritingUtilities
+						.areKanjiWritingsEmpty(kanjiWritings));
 	}
 
 	public String getKanaWriting() {
@@ -55,13 +58,6 @@ public class JapaneseWriting implements ListElement, Serializable {
 				.containsAll(otherWriting.getKanjiWritings());
 	}
 
-	public void setKanjiWritings(Set<String> kanjiWritings) {
-		this.kanjiWritings = kanjiWritings;
-	}
-
-	public void addKanjiWriting(String textValue) {
-		kanjiWritings.add(textValue);
-	}
 
 	@Override
 	public String getDisplayedText() {
@@ -77,8 +73,11 @@ public class JapaneseWriting implements ListElement, Serializable {
 	}
 
 	@Override
-	public String toString (){
+	public String toString() {
 		return getDisplayedText();
 	}
 
+	public void setKanjiWritings(Set<String> kanjiWritings) {
+		this.kanjiWritings = kanjiWritings;
+	}
 }

@@ -89,7 +89,8 @@ public class RepeatingJapaneseWordsDisplayer
 		japaneseWordPanelCreator
 				.addJapanesePanelToExistingPanel(fullWordInformationPanel,
 						japaneseWord, false,
-						CommonListElements.forSingleRowOnly(Color.WHITE));
+						CommonListElements.forSingleRowOnly(Color.WHITE),
+						false);
 	}
 
 	@Override

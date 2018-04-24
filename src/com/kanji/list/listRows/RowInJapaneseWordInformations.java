@@ -4,8 +4,8 @@ import com.guimaker.panels.MainPanel;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
 import com.kanji.list.myList.ListPropertyInformation;
-import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.ListRowCreator;
+import com.kanji.list.myList.ListRowData;
 import com.kanji.utilities.CommonListElements;
 
 import javax.swing.*;
@@ -31,7 +31,8 @@ public class RowInJapaneseWordInformations
 				.setLabelsColor(commonListElements.getLabelsColor());
 		japaneseWordPanelCreator
 				.addJapanesePanelToExistingPanel(panel, japaneseWord,
-						forSearchPanel, commonListElements);
+						forSearchPanel, commonListElements,
+						!commonListElements.isForSingleRowOnly());
 		japaneseWordPanelCreator.focusMeaningTextfield();
 
 		return panel;

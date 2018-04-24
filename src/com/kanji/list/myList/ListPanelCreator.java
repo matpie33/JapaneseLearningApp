@@ -142,7 +142,7 @@ public class ListPanelCreator<Word extends ListElement>
 				listWordsController.createDeleteRowAction(word));
 		AbstractButton addNewWord = createButtonAddRow(forSearchPanel);
 		CommonListElements commonListElements = new CommonListElements(remove,
-				rowNumberLabel, addNewWord, labelsColor);
+				rowNumberLabel, addNewWord, labelsColor, false);
 		rowNumberLabel.setForeground(labelsColor);
 		JComponent row = null;
 		if (shouldShowWord) {
@@ -209,14 +209,11 @@ public class ListPanelCreator<Word extends ListElement>
 		if (!isSkipTitle) {
 			rootPanel.addRow(SimpleRowBuilder
 					.createRow(FillType.NONE, Anchor.CENTER, titleLabel));
-			rootPanel.addRow(SimpleRowBuilder
-					.createRow(FillType.BOTH, listElementsPanel));
-			mainPanel.addRow(SimpleRowBuilder
-					.createRow(FillType.BOTH, rootPanel.getPanel()));
 		}
-		else {
-			mainPanel = rowsPanel;
-		}
+		rootPanel.addRow(SimpleRowBuilder
+				.createRow(FillType.BOTH, listElementsPanel));
+		mainPanel.addRow(SimpleRowBuilder
+				.createRow(FillType.BOTH, rootPanel.getPanel()));
 
 		if (enableWordAdding) {
 			navigationButtons.add(createButtonAddWord());

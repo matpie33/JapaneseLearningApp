@@ -163,11 +163,20 @@ public class JapaneseWord implements ListElement, Serializable {
 	}
 
 	public boolean setWriting(JapaneseWriting writing) {
-		return this.japaneseWritings.add(writing);
+		if (!writing.isEmpty()){
+			return this.japaneseWritings.add(writing);
+		}
+		return false;
 	}
 
 	public void setWritings(Set<JapaneseWriting> writings) {
-		japaneseWritings = writings;
+		japaneseWritings.clear();
+		for (JapaneseWriting writing: writings){
+			if (!writing.isEmpty()){
+				japaneseWritings.add(writing);
+			}
+		}
+
 	}
 
 	@Override

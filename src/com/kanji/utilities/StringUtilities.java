@@ -25,7 +25,12 @@ public class StringUtilities {
 			builder.append(string);
 			builder.append(COMMA_SPACE);
 		}
-		return builder.toString().substring(0, builder.length() - 2);
+		if (builder.length()>0){
+			return builder.toString().substring(0, builder.length() - 2);
+		}
+		else{
+			return "";
+		}
 	}
 
 	public static String putInNewLine(String expression) {

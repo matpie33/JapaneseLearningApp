@@ -109,42 +109,54 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 		errorDetails = "";
 		String newValue = valueToConvert.getText();
 		boolean isKana = writingsInputManager.getKanaInput() == valueToConvert;
+		JapaneseWriting writingToAdd;
 		if (JapaneseWritingUtilities.isInputEmpty(newValue, isKana)) {
-			return japaneseWritingToCheck;
+			writingToAdd = japaneseWritingToCheck;
 		}
-		if (!JapaneseWritingUtilities.isInputValid(newValue, isKana)) {
-			//TODO validate if kana is duplicated inside the word - isSameAs method for JapaneseWriting
-			String exceptionMessage = isKana ?
-					ExceptionsMessages.KANA_WRITING_INCORRECT :
-					ExceptionsMessages.KANJI_WRITING_INCORRECT;
-			errorDetails += String.format(exceptionMessage, newValue);
-			return null;
-		}
-		else {
-			if (isKana) {
-				japaneseWritingToCheck.setKanaWriting(newValue);
-				return japaneseWritingToCheck;
-			}
-			boolean isNewWriting = writingsInputManager
-					.addKanjiInput(valueToConvert);
-			if (!isNewWriting) {
-				errorDetails = String
-						.format(ExceptionsMessages.DUPLICATED_KANJI_WRITING_WITHIN_ROW,
-								newValue);
-				return null;
+		else{
+			if (!JapaneseWritingUtilities.isInputValid(newValue, isKana)) {
+				String exceptionMessage = isKana ?
+						ExceptionsMessages.KANA_WRITING_INCORRECT :
+						ExceptionsMessages.KANJI_WRITING_INCORRECT;
+				errorDetails += String.format(exceptionMessage, newValue);
+				writingToAdd = null;
 			}
 			else {
 				if (isKana) {
 					japaneseWritingToCheck.setKanaWriting(newValue);
+					writingToAdd = japaneseWritingToCheck;
 				}
 				else {
-					japaneseWritingToCheck
-							.replaceKanji(findKanjiPreviousValue(), newValue);
+					boolean isNewWriting = writingsInputManager
+							.addKanjiInput(valueToConvert);
+					if (!isNewWriting) {
+						errorDetails = String
+								.format(ExceptionsMessages.DUPLICATED_KANJI_WRITING_WITHIN_ROW,
+										newValue);
+						writingToAdd = null;
+					}
+					else {
+						japaneseWritingToCheck
+								.replaceKanji(findKanjiPreviousValue(), newValue);
+						writingToAdd = japaneseWritingToCheck;
+					}
 				}
-				return japaneseWritingToCheck;
 			}
 		}
 
+		removeEmptyValues();
+		return writingToAdd;
+
+	}
+
+	private void removeEmptyValues() {
+		Set<String> notEmptyKanjiValues = new HashSet<>();
+		for (String kanjiWriting : japaneseWritingToCheck.getKanjiWritings()) {
+			if (!JapaneseWritingUtilities.isInputEmpty(kanjiWriting, false)) {
+				notEmptyKanjiValues.add(kanjiWriting);
+			}
+		}
+		japaneseWritingToCheck.setKanjiWritings(notEmptyKanjiValues);
 	}
 
 	private String findKanjiPreviousValue() {
@@ -167,8 +179,8 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 
 	@Override
 	public void setProperty(JapaneseWord japaneseWord,
-			JapaneseWriting writingChange) {
-		japaneseWord.setWriting(writingChange);
+			JapaneseWriting newWriting) {
+		japaneseWord.setWriting(newWriting);
 	}
 
 	@Override

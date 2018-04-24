@@ -62,14 +62,14 @@ public class JapaneseWordPanelCreator {
 
 	public void addJapanesePanelToExistingPanel(MainPanel existingPanel,
 			JapaneseWord japaneseWord, boolean forSearchPanel,
-			CommonListElements commonListElements) {
-		createElements(japaneseWord, forSearchPanel);
+			CommonListElements commonListElements, boolean inheritScrollBar) {
+		createElements(japaneseWord, forSearchPanel, inheritScrollBar);
 		addActions(japaneseWord, forSearchPanel);
 		addElementsToPanel(existingPanel, commonListElements);
 	}
 
 	private void createElements(JapaneseWord japaneseWord,
-			boolean forSearchPanel) {
+			boolean forSearchPanel, boolean inheritScrollBar) {
 		if (rowNumberLabel != null) {
 			rowNumberLabel.setForeground(labelsColor);
 		}
@@ -83,7 +83,8 @@ public class JapaneseWordPanelCreator {
 						.foregroundColor(labelsColor));
 		partOfSpeechCombobox = japanesePanelComponentsStore.getElementsMaker()
 				.createComboboxForPartOfSpeech(japaneseWord.getPartOfSpeech());
-		writingsList = createWritingsList(japaneseWord, forSearchPanel);
+		writingsList = createWritingsList(japaneseWord, forSearchPanel,
+				inheritScrollBar);
 		writingsLabel = GuiElementsCreator.createLabel(
 				new ComponentOptions().text(Labels.WRITING_WAYS_IN_JAPANESE)
 						.foregroundColor(labelsColor));
@@ -102,24 +103,26 @@ public class JapaneseWordPanelCreator {
 	}
 
 	public MyList<JapaneseWriting> createWritingsList(JapaneseWord japaneseWord,
-			boolean forSearchPanel) {
-		writingsList = createJapaneseWritingsList(japaneseWord, forSearchPanel);
+			boolean forSearchPanel, boolean inheritScrollBar) {
+		writingsList = createJapaneseWritingsList(japaneseWord, forSearchPanel,
+				inheritScrollBar);
 		japaneseWord.getWritings().stream()
 				.forEach(word -> writingsList.addWord(word, forSearchPanel));
 		return writingsList;
 	}
 
 	private MyList<JapaneseWriting> createJapaneseWritingsList(
-			JapaneseWord japaneseWord, boolean forSearchPanel) {
+			JapaneseWord japaneseWord, boolean forSearchPanel,
+			boolean inheritScrollBar) {
 		return new MyList<>(parentDialog, applicationController,
 				new RowInJapaneseWritingsList(
 						japanesePanelComponentsStore.getPanelCreatingService(),
 						japaneseWord), Labels.WRITING_WAYS_IN_JAPANESE,
 				new ListConfiguration().enableWordAdding(false)
-						.inheritScrollbar(!forSearchPanel)
+						.inheritScrollbar(inheritScrollBar)
 						.enableWordSearching(false)
 						.showButtonsLoadNextPreviousWords(false)
-						.scrollBarFitsContent(forSearchPanel).skipTitle(true),
+						.scrollBarFitsContent(!inheritScrollBar).skipTitle(true),
 				JapaneseWriting.getInitializer());
 	}
 
