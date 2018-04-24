@@ -1,6 +1,5 @@
 package com.kanji.panelsAndControllers.panels;
 
-import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
@@ -50,7 +49,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 		JTextComponent problematicKanjis = createProblematicRangeField(
 				Prompts.PROBLEMATIC_KANJI);
-		JButton newRow = createButtonAddRow(ButtonsNames.ADD_ROW);
+		AbstractButton newRow = createButtonAddRow(ButtonsNames.ADD_ROW);
 		sumRangeField = GuiElementsCreator.createTextField(
 				new TextComponentOptions().text(Prompts.RANGE_SUM)
 						.editable(false));
@@ -109,8 +108,8 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 	public int showLabelWithProblematicKanjis() {
 		Component c = parentDialog.getContainer().getFocusOwner();
-		JLabel label = new JLabel(Prompts.PROBLEMATIC_KANJIS_ADDED);
-		label.setForeground(BasicColors.NAVY_BLUE);
+		JLabel label = GuiElementsCreator.createLabel(
+				new ComponentOptions().text(Prompts.PROBLEMATIC_KANJIS_ADDED));
 		int rowNumber = rangesPanel.getNumberOfRows();
 		rangesPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.NORTH, label));
@@ -143,7 +142,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 		firstTextField = fieldFrom;
 
-		JButton delete = createDeleteButton(fieldFrom, fieldTo);
+		AbstractButton delete = createDeleteButton(fieldFrom, fieldTo);
 		if (controller.getNumberOfRangesRows() == 1) {
 			delete.setVisible(false);
 		}
@@ -211,9 +210,9 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		sumRangeField.setText(Prompts.RANGE_SUM + sumOfWords);
 	}
 
-	private JButton createDeleteButton(JTextComponent from, JTextComponent to) {
-		JButton delete = new JButton(ButtonsNames.REMOVE_ROW);
-		delete.addActionListener(controller
+	private AbstractButton createDeleteButton(JTextComponent from, JTextComponent to) {
+		AbstractButton delete = GuiElementsCreator.createButtonlikeComponent(new ButtonOptions(ButtonType.BUTTON).text(
+				ButtonsNames.REMOVE_ROW),controller
 				.createActionDeleteRow(problematicCheckbox, from, to));
 		return delete;
 	}
@@ -224,9 +223,10 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 				.requestFocusInWindow();
 	}
 
-	private JButton createButtonAddRow(String text) {
-		JButton button = new JButton(text);
-		button.addActionListener(controller.createActionAddRow());
+	private AbstractButton createButtonAddRow(String text) {
+		AbstractButton button = GuiElementsCreator.createButtonlikeComponent(
+				new ButtonOptions(ButtonType.BUTTON).text(text),
+				controller.createActionAddRow());
 		return button;
 	}
 
