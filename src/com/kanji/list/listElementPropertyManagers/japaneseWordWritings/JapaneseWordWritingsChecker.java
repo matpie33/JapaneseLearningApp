@@ -180,7 +180,7 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 	@Override
 	public void setProperty(JapaneseWord japaneseWord,
 			JapaneseWriting newWriting) {
-		japaneseWord.setWriting(newWriting);
+		japaneseWord.addWriting(newWriting);
 	}
 
 	@Override

@@ -193,7 +193,7 @@ public class JapaneseWordsFileReader {
 			JapaneseWord japaneseWord) {
 		if (kanaWritings.length == kanjiWritings.length) {
 			for (int i = 0; i < kanaWritings.length; i++) {
-				japaneseWord.addWritings(kanaWritings[i], kanjiWritings[i]);
+				japaneseWord.addWritingsForKana(kanaWritings[i], kanjiWritings[i]);
 			}
 		}
 		else if (kanjiWritings.length > kanaWritings.length) {
@@ -202,10 +202,10 @@ public class JapaneseWordsFileReader {
 			for (int i = 0; i < difference; i++) {
 				kanjiWritingsForKanaWriting.add(kanjiWritings[i]);
 			}
-			japaneseWord.addWritings(kanaWritings[0],
+			japaneseWord.addWritingsForKana(kanaWritings[0],
 					kanjiWritingsForKanaWriting.toArray(new String[] {}));
 			for (int i = 1; i < kanaWritings.length; i++) {
-				japaneseWord.addWritings(kanaWritings[i],
+				japaneseWord.addWritingsForKana(kanaWritings[i],
 						kanjiWritings[i + difference]);
 			}
 		}
@@ -214,7 +214,7 @@ public class JapaneseWordsFileReader {
 				throw new IllegalStateException("Should not happen");
 			}
 			for (String s : kanaWritings) {
-				japaneseWord.addWritings(s, kanjiWritings[0]);
+				japaneseWord.addWritingsForKana(s, kanjiWritings[0]);
 			}
 		}
 	}

@@ -6,11 +6,11 @@ import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.list.listElementAdditionalInformations.AdditionalInformation;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
 import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordWritingsChecker;
+import com.kanji.utilities.JapaneseWritingUtilities;
 import com.kanji.utilities.StringUtilities;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,11 +35,14 @@ public class JapaneseWord implements ListElement, Serializable {
 		japaneseWritings = new HashSet<>();
 	}
 
-	public void addWritings(String kanaWriting,
+	public void addWritingsForKana(String kanaWriting,
 			String... kanjiWritingsForThisKana) {
 		Set<String> kanjiWritings = new HashSet<>();
 		for (String kanjiWriting : kanjiWritingsForThisKana) {
-			kanjiWritings.add(kanjiWriting);
+			if (!JapaneseWritingUtilities.isInputEmpty(kanjiWriting, false)){
+				kanjiWritings.add(kanjiWriting);
+			}
+
 		}
 		japaneseWritings.add(new JapaneseWriting(kanaWriting, kanjiWritings));
 	}
@@ -73,8 +76,8 @@ public class JapaneseWord implements ListElement, Serializable {
 	public static ListElementInitializer<JapaneseWord> getInitializer() {
 		return () -> {
 			JapaneseWord japaneseWord = new JapaneseWord(PartOfSpeech.NOUN, "");
-			japaneseWord.addWritings("", new String[] { "" });
-			japaneseWord.addWritings("", new String[] { "" });
+			japaneseWord.addWritingsForKana("", new String[] { "" });
+			japaneseWord.addWritingsForKana("", new String[] { "" });
 			return japaneseWord;
 		};
 	}
@@ -162,14 +165,14 @@ public class JapaneseWord implements ListElement, Serializable {
 		return getMeaning().isEmpty() || getWritings().isEmpty();
 	}
 
-	public boolean setWriting(JapaneseWriting writing) {
+	public boolean addWriting(JapaneseWriting writing) {
 		if (!writing.isEmpty()){
 			return this.japaneseWritings.add(writing);
 		}
 		return false;
 	}
 
-	public void setWritings(Set<JapaneseWriting> writings) {
+	public void addWritings(Set<JapaneseWriting> writings) {
 		japaneseWritings.clear();
 		for (JapaneseWriting writing: writings){
 			if (!writing.isEmpty()){

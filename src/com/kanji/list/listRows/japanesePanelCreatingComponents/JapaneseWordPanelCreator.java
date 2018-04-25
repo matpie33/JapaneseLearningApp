@@ -108,6 +108,9 @@ public class JapaneseWordPanelCreator {
 			boolean forSearchPanel, boolean inheritScrollBar) {
 		writingsList = createJapaneseWritingsList(japaneseWord,
 				inheritScrollBar);
+		if (japaneseWord.getWritings().isEmpty()){
+			japaneseWord.addWritingsForKana("", "");
+		}
 		japaneseWord.getWritings().stream()
 				.forEach(word -> writingsList.addWord(word, forSearchPanel));
 		return writingsList;
