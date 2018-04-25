@@ -55,7 +55,7 @@ public class RowInKanjiInformations implements ListRowCreator<Kanji> {
 		int ID = kanji.getId();
 		keywordInput = CommonGuiElementsCreator.createKanjiWordInput(text);
 		keywordChecker = new KanjiKeywordChecker();
-		keywordChecker.setWordSearchOptions(WordSearchOptions.BY_FULL_EXPRESSION);
+		keywordChecker.setWordSearchOptions(WordSearchOptions.BY_WORD_FRAGMENT);
 		keywordInput.addFocusListener(new ListPropertyChangeHandler<>(kanji,
 				applicationWindow.getApplicationController().getKanjiList(),
 				applicationWindow, keywordChecker, true, !forSearchPanel));
