@@ -13,20 +13,23 @@ import com.kanji.constants.strings.ListPropertiesNames;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
+import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listRows.RowInJapaneseWritingsList;
 import com.kanji.list.myList.ListConfiguration;
-import com.kanji.list.myList.ListPropertyInformation;
 import com.kanji.list.myList.ListRowData;
+import com.kanji.list.myList.ListRowDataCreator;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.utilities.CommonGuiElementsCreator;
 import com.kanji.utilities.CommonListElements;
+import com.kanji.utilities.Pair;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class JapaneseWordPanelCreator {
@@ -60,12 +63,15 @@ public class JapaneseWordPanelCreator {
 		labelsColor = color;
 	}
 
-	public void addJapanesePanelToExistingPanel(MainPanel existingPanel,
-			JapaneseWord japaneseWord, boolean forSearchPanel,
-			CommonListElements commonListElements, boolean inheritScrollBar) {
+	public ListRowData<JapaneseWord> addJapanesePanelToExistingPanel(
+			MainPanel existingPanel, JapaneseWord japaneseWord,
+			boolean forSearchPanel, CommonListElements commonListElements,
+			boolean inheritScrollBar) {
 		createElements(japaneseWord, forSearchPanel, inheritScrollBar);
 		addActions(japaneseWord, forSearchPanel);
-		addElementsToPanel(existingPanel, commonListElements);
+		return addElementsToPanel(existingPanel, commonListElements,
+				forSearchPanel);
+
 	}
 
 	private void createElements(JapaneseWord japaneseWord,
@@ -108,7 +114,7 @@ public class JapaneseWordPanelCreator {
 			boolean forSearchPanel, boolean inheritScrollBar) {
 		writingsList = createJapaneseWritingsList(japaneseWord,
 				inheritScrollBar);
-		if (japaneseWord.getWritings().isEmpty()){
+		if (japaneseWord.getWritings().isEmpty()) {
 			japaneseWord.addWritingsForKana("", "");
 		}
 		japaneseWord.getWritings().stream()
@@ -130,8 +136,9 @@ public class JapaneseWordPanelCreator {
 						.skipTitle(true), JapaneseWriting.getInitializer());
 	}
 
-	private void addElementsToPanel(MainPanel japaneseWordPanel,
-			CommonListElements commonListElements) {
+	private ListRowData<JapaneseWord> addElementsToPanel(
+			MainPanel japaneseWordPanel, CommonListElements commonListElements,
+			boolean forSearchPanel) {
 		JPanel writingsListPanel = writingsList.getPanel();
 		lastJapanesePanelMade = SimpleRowBuilder
 				.createRowStartingFromColumn(0, FillType.BOTH,
@@ -144,46 +151,41 @@ public class JapaneseWordPanelCreator {
 				.nextRow(writingsLabel, writingsListPanel)
 				.fillHorizontallySomeElements(writingsListPanel)
 				.nextRow(commonListElements.getButtonDelete());
-		japaneseWordPanel.addRowsOfElementsInColumn(
-				lastJapanesePanelMade);
+		japaneseWordPanel.addRowsOfElementsInColumn(lastJapanesePanelMade);
+		ListRowDataCreator<Kanji> rowDataCreator = new ListRowDataCreator<>(
+				japaneseWordPanel);
+		if (forSearchPanel) {
+			rowDataCreator
+					.addPropertyData(ListPropertiesNames.JAPANESE_WORD_MEANING,
+							lastJapanesePanelMade.getAllRows().get(0),
+							Pair.of(wordMeaningText,
+									japanesePanelComponentsStore
+											.getActionCreator()
+											.getWordMeaningChecker()));
+			List<Pair<JTextComponent, ListElementPropertyManager<?, JapaneseWord>>> inputsWithPropertyManagersForJapaneseWritings = getWritingsInputsWithManagers();
+
+			rowDataCreator
+					.addPropertyData(ListPropertiesNames.JAPANESE_WORD_WRITINGS,
+							lastJapanesePanelMade.getAllRows().get(2),
+							inputsWithPropertyManagersForJapaneseWritings
+									.toArray(new Pair[] {}));
+		}
+		return rowDataCreator.getListRowData();
 	}
 
-	public ListRowData getRowData() {
-
-		ListRowData rowData = new ListRowData();
-		Map<String, ListPropertyInformation> propertiesData = new HashMap<>();
-
-		Map<JTextComponent, ListElementPropertyManager> allTextFieldsWithPropertyManagers = japanesePanelComponentsStore
-				.getActionCreator().getInputManagersForInputs();
-
-		Map<JTextComponent, ListElementPropertyManager<?, JapaneseWord>> meaningInputWithPropertyManager = new HashMap<>();
-		meaningInputWithPropertyManager.put(wordMeaningText,
-				japanesePanelComponentsStore.getActionCreator()
-						.getWordMeaningChecker());
-		propertiesData.put(ListPropertiesNames.JAPANESE_WORD_MEANING,
-				new ListPropertyInformation(
-						lastJapanesePanelMade.getAllRows().get(0),
-						meaningInputWithPropertyManager));
-
-		Map<JTextComponent, ListElementPropertyManager<?, JapaneseWord>> japaneseWritingsInputWithPropertyManagers = new HashMap<>();
-		for (Map.Entry<JTextComponent, ListElementPropertyManager> textFieldWithPropertyManager : allTextFieldsWithPropertyManagers
-				.entrySet()) {
+	private List<Pair<JTextComponent, ListElementPropertyManager<?, JapaneseWord>>> getWritingsInputsWithManagers() {
+		List<Pair<JTextComponent, ListElementPropertyManager<?, JapaneseWord>>> inputsWithPropertyManagers = new ArrayList<>();
+		for (Map.Entry<JTextComponent, ListElementPropertyManager> textFieldWithPropertyManager : japanesePanelComponentsStore
+				.getActionCreator().getInputManagersForInputs().entrySet()) {
 			if (textFieldWithPropertyManager.getKey().equals(wordMeaningText)) {
-				continue;
+				continue; //TODO refactor actions creator so that we dont have to exclude word meaning text
 			}
-			japaneseWritingsInputWithPropertyManagers
-					.put(textFieldWithPropertyManager.getKey(),
-							textFieldWithPropertyManager.getValue());
+			inputsWithPropertyManagers.add(Pair
+					.of(textFieldWithPropertyManager.getKey(),
+							textFieldWithPropertyManager.getValue()));
 
 		}
-
-		propertiesData.put(ListPropertiesNames.JAPANESE_WORD_WRITINGS,
-				new ListPropertyInformation(
-						lastJapanesePanelMade.getAllRows().get(2),
-						japaneseWritingsInputWithPropertyManagers));
-
-		rowData.setRowPropertiesData(propertiesData);
-		return rowData;
+		return inputsWithPropertyManagers;
 	}
 
 	public TextFieldSelectionHandler getSelectionHandler() {
@@ -195,4 +197,8 @@ public class JapaneseWordPanelCreator {
 				.invokeLater(() -> wordMeaningText.requestFocusInWindow());
 	}
 
+	public JapaneseWordPanelCreator copy() {
+		return new JapaneseWordPanelCreator(applicationController, parentDialog,
+				JapanesePanelDisplayMode.EDIT);
+	}
 }

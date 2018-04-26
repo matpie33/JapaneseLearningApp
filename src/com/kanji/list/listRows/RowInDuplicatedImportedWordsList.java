@@ -10,9 +10,11 @@ import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.JapanesePanelDisplayMode;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWord;
+import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
 import com.kanji.list.myList.ListRowCreator;
 import com.kanji.list.myList.ListRowData;
+import com.kanji.list.myList.ListRowDataCreator;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.DuplicatedJapaneseWordInformation;
 import com.kanji.utilities.CommonGuiElementsCreator;
@@ -40,7 +42,7 @@ public class RowInDuplicatedImportedWordsList
 	}
 
 	@Override
-	public MainPanel createListRow(DuplicatedJapaneseWordInformation data,
+	public ListRowData createListRow(DuplicatedJapaneseWordInformation data,
 			CommonListElements commonListElements, boolean forSearchPanel) {
 		MainPanel panel = new MainPanel(null);
 		JLabel rowNumber = GuiElementsCreator.createLabel(
@@ -62,7 +64,9 @@ public class RowInDuplicatedImportedWordsList
 						buttonGoToRow));
 		panel.addRow(SimpleRowBuilder.createRow(FillType.BOTH,
 				japaneseWordInformationPanel.getPanel()));
-		return panel;
+		ListRowDataCreator<Kanji> rowDataCreator = new ListRowDataCreator<>(
+				panel);
+		return rowDataCreator.getListRowData();
 	}
 
 	private AbstractButton createButtonGoToRow(int rowNumber) {
@@ -74,11 +78,6 @@ public class RowInDuplicatedImportedWordsList
 								newJapaneseWords.highlightRow(rowNumber);
 							}
 						});
-	}
-
-	@Override
-	public ListRowData getRowData() {
-		return null;// TODO not needed atm
 	}
 
 }

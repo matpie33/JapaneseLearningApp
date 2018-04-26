@@ -3,43 +3,47 @@ package com.kanji.list.listRows;
 import com.guimaker.panels.MainPanel;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
-import com.kanji.list.myList.ListPropertyInformation;
 import com.kanji.list.myList.ListRowCreator;
 import com.kanji.list.myList.ListRowData;
 import com.kanji.utilities.CommonListElements;
 
 import javax.swing.*;
-import java.util.Map;
+import java.util.Optional;
 
 public class RowInJapaneseWordInformations
 		implements ListRowCreator<JapaneseWord> {
-	private JapaneseWordPanelCreator japaneseWordPanelCreator;
-	private Map<String, ListPropertyInformation> propertiesInformation;
+	private JapaneseWordPanelCreator newWordsPanelCreator;
+	private Optional<JapaneseWordPanelCreator> searchDialogPanelCreator;
 
 	public RowInJapaneseWordInformations(
-			JapaneseWordPanelCreator japaneseWordPanelCreator) {
-		this.japaneseWordPanelCreator = japaneseWordPanelCreator;
+			JapaneseWordPanelCreator newWordsPanelCreator) {
+		this.newWordsPanelCreator = newWordsPanelCreator;
+		searchDialogPanelCreator = Optional.empty();
 	}
 
 	@Override
-	public MainPanel createListRow(JapaneseWord japaneseWord,
+	public ListRowData createListRow(JapaneseWord japaneseWord,
 			CommonListElements commonListElements, boolean forSearchPanel) {
 		MainPanel panel = new MainPanel(null);
 		JLabel rowNumberLabel = commonListElements.getRowNumberLabel();
-		japaneseWordPanelCreator.setRowNumberLabel(rowNumberLabel);
-		japaneseWordPanelCreator
+		JapaneseWordPanelCreator panelCreatorToUse;
+		if (commonListElements.isForSingleRowOnly()){
+			panelCreatorToUse = searchDialogPanelCreator.orElse(
+					newWordsPanelCreator.copy());
+		}
+		else{
+			panelCreatorToUse = newWordsPanelCreator;
+		}
+		panelCreatorToUse.setRowNumberLabel(rowNumberLabel);
+		panelCreatorToUse
 				.setLabelsColor(commonListElements.getLabelsColor());
-		japaneseWordPanelCreator
+		ListRowData<JapaneseWord> rowData = panelCreatorToUse
 				.addJapanesePanelToExistingPanel(panel, japaneseWord,
 						forSearchPanel, commonListElements,
 						!commonListElements.isForSingleRowOnly());
-		japaneseWordPanelCreator.focusMeaningTextfield();
+		panelCreatorToUse.focusMeaningTextfield();
 
-		return panel;
+		return rowData;
 	}
 
-	@Override
-	public ListRowData getRowData() {
-		return japaneseWordPanelCreator.getRowData();
-	}
 }

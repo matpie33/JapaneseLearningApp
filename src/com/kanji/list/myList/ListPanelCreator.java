@@ -149,7 +149,7 @@ public class ListPanelCreator<Word extends ListElement>
 			AbstractSimpleRow abstractSimpleRow = SimpleRowBuilder
 					.createRow(FillType.HORIZONTAL, Anchor.NORTH,
 							listRow.createListRow(word, commonListElements,
-									forSearchPanel).getPanel());
+									forSearchPanel).getRowPanel().getPanel());
 			row = loadWordsHandler.showWord(abstractSimpleRow);
 		}
 		else if (!buttonLoadNextWords.isEnabled()) {

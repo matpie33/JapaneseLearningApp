@@ -40,7 +40,7 @@ public class SearchWordPanel<Word extends ListElement>
 	private CardLayout cardLayout;
 	private JPanel searchingPanel;
 	private SearchWordController<Word> searchWordController;
-	private ListRowData listRowData;
+	private ListRowData<Word> listRowData;
 	private String currentlySearchedProperty;
 	private MyList<Word> searchedList;
 
@@ -63,18 +63,17 @@ public class SearchWordPanel<Word extends ListElement>
 		searchingPanel = new JPanel(this.cardLayout);
 		searchingPanel.setOpaque(false);
 
-		searchedList.getListRowCreator().createListRow(
+		listRowData = searchedList.getListRowCreator().createListRow(
 				searchedList.getWordInitializer().initializeElement(),
 				CommonListElements.forSingleRowOnly(Color.WHITE), true);
-		listRowData = searchedList.getListRowCreator().getRowData();
 		//TODO here I got to get only rows - maybe separate the calls
 		// for rows and for the textfields + property managers
-		for (Map.Entry<String, ListPropertyInformation> listPropertyData : listRowData
+		for (Map.Entry<String, ListPropertyInformation<Word>> listPropertyData : listRowData
 				.getRowPropertiesData().entrySet()) {
 			MainPanel rowForProperty = new MainPanel(null);
 			rowForProperty
 					.addRow(listPropertyData.getValue().getRowForProperty());
-			Map<JTextComponent, ListElementPropertyManager> textFieldsWithPropertyManagers = listPropertyData
+			Map<JTextComponent, ListElementPropertyManager<?, Word>> textFieldsWithPropertyManagers = listPropertyData
 					.getValue().getTextFieldsWithPropertyManagers();
 			if (textFieldsWithPropertyManagers.values().iterator()
 					.next() instanceof WordSearchOptionsHolder) {
@@ -160,7 +159,7 @@ public class SearchWordPanel<Word extends ListElement>
 	}
 
 	private void focusFirstTextfieldForCurrentProperty() {
-		Map<JTextComponent, ListElementPropertyManager> textFieldsWithPropertyManagers = listRowData
+		Map<JTextComponent, ListElementPropertyManager<?, Word>> textFieldsWithPropertyManagers = listRowData
 				.getRowPropertiesData().get(currentlySearchedProperty)
 				.getTextFieldsWithPropertyManagers();
 		textFieldsWithPropertyManagers.keySet().iterator().next()
@@ -200,7 +199,7 @@ public class SearchWordPanel<Word extends ListElement>
 	}
 
 	public void setSearchOptions(WordSearchOptions wordSearchOptions) {
-		Map<JTextComponent, ListElementPropertyManager> textFieldsWithPropertyManagers = getTextFieldsWithPropertyManagersForCurrentProperty();
+		Map<JTextComponent, ListElementPropertyManager<?, Word>> textFieldsWithPropertyManagers = getTextFieldsWithPropertyManagersForCurrentProperty();
 		ListElementPropertyManager currentListElementPropertyManager = textFieldsWithPropertyManagers
 				.values().iterator().next();
 		if (currentListElementPropertyManager instanceof WordSearchOptionsHolder) {
@@ -209,9 +208,8 @@ public class SearchWordPanel<Word extends ListElement>
 		}
 	}
 
-	public Map<JTextComponent, ListElementPropertyManager> getTextFieldsWithPropertyManagersForCurrentProperty() {
-		return searchedList.getListRowCreator().getRowData()
-				.getRowPropertiesData().get(currentlySearchedProperty)
+	public Map<JTextComponent, ListElementPropertyManager<?, Word>> getTextFieldsWithPropertyManagersForCurrentProperty() {
+		return listRowData.getRowPropertiesData().get(currentlySearchedProperty)
 				.getTextFieldsWithPropertyManagers();
 	}
 

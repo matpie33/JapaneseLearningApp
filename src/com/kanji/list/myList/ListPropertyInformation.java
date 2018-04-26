@@ -5,6 +5,7 @@ import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.ListElement;
 
 import javax.swing.text.JTextComponent;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ListPropertyInformation<Word extends ListElement> {
@@ -12,10 +13,9 @@ public class ListPropertyInformation<Word extends ListElement> {
 	private AbstractSimpleRow rowForProperty;
 	private Map<JTextComponent, ListElementPropertyManager<?, Word>> textFieldsWithPropertyManagers;
 
-	public ListPropertyInformation(AbstractSimpleRow rowForProperty,
-			Map<JTextComponent, ListElementPropertyManager<?, Word>> textFieldsWithPropertyManagers) {
+	public ListPropertyInformation(AbstractSimpleRow rowForProperty) {
+		textFieldsWithPropertyManagers = new HashMap<>();
 		this.rowForProperty = rowForProperty;
-		this.textFieldsWithPropertyManagers = textFieldsWithPropertyManagers;
 	}
 
 	public AbstractSimpleRow getRowForProperty() {
@@ -24,5 +24,10 @@ public class ListPropertyInformation<Word extends ListElement> {
 
 	public Map<JTextComponent, ListElementPropertyManager<?, Word>> getTextFieldsWithPropertyManagers() {
 		return textFieldsWithPropertyManagers;
+	}
+
+	public void addInputWithManager(JTextComponent input,
+			ListElementPropertyManager<?, Word> propertyManager) {
+		textFieldsWithPropertyManagers.put(input, propertyManager);
 	}
 }

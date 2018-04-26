@@ -12,6 +12,7 @@ import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.ListRowCreator;
+import com.kanji.list.myList.ListRowDataCreator;
 import com.kanji.model.WordRow;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.utilities.CommonListElements;
@@ -31,7 +32,7 @@ public class RowInKanjiRepeatingList implements ListRowCreator<Kanji> {
 	}
 
 	@Override
-	public MainPanel createListRow(Kanji kanji,
+	public ListRowData createListRow(Kanji kanji,
 			CommonListElements commonListElements, boolean forSearchPanel) {
 		MainPanel panel = new MainPanel(null);
 		JLabel id = new JLabel("" + kanji.getId());
@@ -61,7 +62,9 @@ public class RowInKanjiRepeatingList implements ListRowCreator<Kanji> {
 			//TODO to be merged
 		}
 
-		return panel;
+		ListRowDataCreator<Kanji> rowDataCreator = new ListRowDataCreator<>(
+				panel);
+		return rowDataCreator.getListRowData();
 	}
 
 	//TODO merge this class with rowInKanjiInformations
@@ -78,8 +81,4 @@ public class RowInKanjiRepeatingList implements ListRowCreator<Kanji> {
 		return button;
 	}
 
-	@Override
-	public ListRowData getRowData() {
-		return null;
-	}
 }

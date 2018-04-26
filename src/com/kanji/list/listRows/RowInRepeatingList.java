@@ -7,9 +7,11 @@ import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.strings.Prompts;
+import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.RepeatingData;
 import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.ListRowCreator;
+import com.kanji.list.myList.ListRowDataCreator;
 import com.kanji.utilities.CommonListElements;
 
 import javax.swing.*;
@@ -22,7 +24,7 @@ public class RowInRepeatingList implements ListRowCreator<RepeatingData> {
 	private final Color labelsColor = Color.WHITE;
 
 	@Override
-	public MainPanel createListRow(RepeatingData repeatingData,
+	public ListRowData createListRow(RepeatingData repeatingData,
 			CommonListElements commonListElements, boolean forSearchPanel) {
 		String word = repeatingData.getRepeatingRange();
 		String time = repeatingData.getTimeSpentOnRepeating();
@@ -59,12 +61,10 @@ public class RowInRepeatingList implements ListRowCreator<RepeatingData> {
 			//TODO implement it for searching repeating list to work
 		}
 
-		return panel;
+		ListRowDataCreator<Kanji> rowDataCreator = new ListRowDataCreator<>(
+				panel);
+		return rowDataCreator.getListRowData();
 
 	}
 
-	@Override
-	public ListRowData getRowData() {
-		return null;
-	}
 }
