@@ -144,7 +144,7 @@ public class JapaneseWordPanelCreator {
 				.nextRow(writingsLabel, writingsListPanel)
 				.fillHorizontallySomeElements(writingsListPanel)
 				.nextRow(commonListElements.getButtonDelete());
-		japaneseWordPanel.addRowsOfElementsInColumnStartingFromColumn(
+		japaneseWordPanel.addRowsOfElementsInColumn(
 				lastJapanesePanelMade);
 	}
 

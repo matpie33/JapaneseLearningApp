@@ -49,7 +49,7 @@ public class RowInKanjiRepeatingList implements ListRowCreator<Kanji> {
 		int rowNumber = controller.getNumberOfRows();
 
 		JButton buttonGoToSource = createButtonGoToSource(rowNumber, kanji);
-		panel.addRowsOfElementsInColumnStartingFromColumn(SimpleRowBuilder
+		panel.addRowsOfElementsInColumn(SimpleRowBuilder
 				.createRowStartingFromColumn(0, FillType.HORIZONTAL,
 						commonListElements.getRowNumberLabel(), kanjiKeyword,
 						kanjiTextArea)

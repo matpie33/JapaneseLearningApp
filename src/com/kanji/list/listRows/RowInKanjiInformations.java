@@ -73,7 +73,7 @@ public class RowInKanjiInformations implements ListRowCreator<Kanji> {
 				.fillHorizontallySomeElements(keywordInput)
 				.nextRow(kanjiId, idInput).setColumnToPutRowInto(1)
 				.nextRow(remove);
-		panel.addRowsOfElementsInColumnStartingFromColumn(lastPanelMade);
+		panel.addRowsOfElementsInColumn(lastPanelMade);
 
 		return panel;
 

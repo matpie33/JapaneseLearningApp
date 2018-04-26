@@ -4,6 +4,7 @@ import com.kanji.utilities.JapaneseWritingUtilities;
 import com.kanji.utilities.StringUtilities;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,6 +19,10 @@ public class JapaneseWriting implements ListElement, Serializable {
 	public JapaneseWriting(String kanaWriting, Set<String> kanjiWritings) {
 		this.kanaWriting = kanaWriting;
 		this.kanjiWritings = kanjiWritings;
+	}
+
+	public JapaneseWriting (String kanaWriting, String... kanjiWritings){
+		this(kanaWriting, new HashSet<>(Arrays.asList(kanjiWritings)));
 	}
 
 	@Override
@@ -41,9 +46,9 @@ public class JapaneseWriting implements ListElement, Serializable {
 
 	public static ListElementInitializer<JapaneseWriting> getInitializer() {
 		return () -> {
-			Set<String> arrayList = new HashSet<>();
-			arrayList.add("");
-			return new JapaneseWriting("", arrayList);
+			Set<String> kanjiWritings = new HashSet<>();
+			kanjiWritings.add("");
+			return new JapaneseWriting("", kanjiWritings);
 		};
 	}
 

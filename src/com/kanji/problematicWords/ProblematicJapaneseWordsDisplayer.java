@@ -136,7 +136,7 @@ public class ProblematicJapaneseWordsDisplayer
 							});
 			goToButton.setFocusable(false);
 
-			panel.addElementsInColumnStartingFromColumn(SimpleRowBuilder
+			panel.addElementsInColumn(SimpleRowBuilder
 					.createRowStartingFromColumn(0, FillType.NONE, kanjiLabel,
 							keywordLabel, goToButton));
 		}

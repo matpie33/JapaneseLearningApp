@@ -49,7 +49,7 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 				.createLabel(new ComponentOptions().text(textLabel));
 		JProgressBar progressBar = new JProgressBar();
 		progressBars.add(progressBar);
-		progressBarsPanel.addElementsInColumnStartingFromColumn(SimpleRowBuilder
+		progressBarsPanel.addElementsInColumn(SimpleRowBuilder
 				.createRowStartingFromColumn(0, FillType.NONE, label,
 						progressBar));
 		return progressBar;

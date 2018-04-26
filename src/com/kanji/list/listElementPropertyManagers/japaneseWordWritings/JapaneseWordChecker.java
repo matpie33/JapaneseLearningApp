@@ -113,7 +113,7 @@ public class JapaneseWordChecker implements
 	@Override
 	public void setProperty(JapaneseWord japaneseWord,
 			Set<JapaneseWriting> newWritings) {
-		japaneseWord.addWritings(newWritings);
+		japaneseWord.setWritings(newWritings);
 	}
 
 	@Override
