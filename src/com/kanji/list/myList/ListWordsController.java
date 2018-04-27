@@ -16,10 +16,7 @@ import com.kanji.range.Range;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ListWordsController<Word extends ListElement> {
 	private static final long serialVersionUID = -3144332338336535803L;
@@ -184,12 +181,16 @@ public class ListWordsController<Word extends ListElement> {
 	}
 
 	public WordInMyListExistence<Word> isWordDefined(Word word) {
-		for (ListRow<Word> listRow : allWordsToRowNumberMap.values()) {
+		Iterator<ListRow<Word>> iterator = allWordsToRowNumberMap.values()
+				.iterator();
+		for (int indexOfWord = 0; iterator.hasNext(); indexOfWord++) {
+			ListRow<Word> listRow = iterator.next();
 			if (listRow.getWord().equals(word)) {
-				return new WordInMyListExistence<>(true, listRow.getWord());
+				return new WordInMyListExistence<>(true, listRow.getWord(),
+						indexOfWord + 1);
 			}
 		}
-		return new WordInMyListExistence<>(false, null);
+		return new WordInMyListExistence<>(false, null, -1);
 	}
 
 	public AbstractAction createDeleteRowAction(Word word) {

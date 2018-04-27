@@ -9,7 +9,7 @@ public class StringUtilities {
 	private static final String COLON_SPACE = ": ";
 
 	public static String joinPropertyAndValue(String property, String value) {
-		return property + COLON_SPACE + value;
+		return value.isEmpty() ? "" : property + COLON_SPACE + value;
 	}
 
 	public static String joinPropertyValuePairs(String... propertyValuePairs) {
@@ -25,10 +25,10 @@ public class StringUtilities {
 			builder.append(string);
 			builder.append(COMMA_SPACE);
 		}
-		if (builder.length()>0){
+		if (builder.length() > 0) {
 			return builder.toString().substring(0, builder.length() - 2);
 		}
-		else{
+		else {
 			return "";
 		}
 	}

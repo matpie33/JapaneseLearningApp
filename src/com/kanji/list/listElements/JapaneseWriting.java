@@ -21,7 +21,7 @@ public class JapaneseWriting implements ListElement, Serializable {
 		this.kanjiWritings = kanjiWritings;
 	}
 
-	public JapaneseWriting (String kanaWriting, String... kanjiWritings){
+	public JapaneseWriting(String kanaWriting, String... kanjiWritings) {
 		this(kanaWriting, new HashSet<>(Arrays.asList(kanjiWritings)));
 	}
 
@@ -58,10 +58,12 @@ public class JapaneseWriting implements ListElement, Serializable {
 			return false;
 		}
 		JapaneseWriting otherWriting = (JapaneseWriting) element;
-		return !getKanaWriting().isEmpty() && otherWriting.getKanaWriting()
-				.equals(getKanaWriting()) && getKanjiWritings()
+		return !JapaneseWritingUtilities.isInputEmpty(getKanaWriting(), true)
+				&& otherWriting.getKanaWriting().equals(getKanaWriting())
+				&& getKanjiWritings()
 				.containsAll(otherWriting.getKanjiWritings());
 	}
+
 
 
 	@Override

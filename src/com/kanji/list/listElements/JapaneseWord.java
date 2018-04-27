@@ -70,8 +70,10 @@ public class JapaneseWord implements ListElement, Serializable {
 	public static ListElementInitializer<JapaneseWord> getInitializer() {
 		return () -> {
 			JapaneseWord japaneseWord = new JapaneseWord(PartOfSpeech.NOUN, "");
-			japaneseWord.japaneseWritings.add(JapaneseWriting.getInitializer().initializeElement());
-			japaneseWord.japaneseWritings.add(JapaneseWriting.getInitializer().initializeElement());
+			japaneseWord.japaneseWritings
+					.add(JapaneseWriting.getInitializer().initializeElement());
+			japaneseWord.japaneseWritings
+					.add(JapaneseWriting.getInitializer().initializeElement());
 			return japaneseWord;
 		};
 	}
@@ -193,7 +195,8 @@ public class JapaneseWord implements ListElement, Serializable {
 
 	public boolean containsWriting(JapaneseWriting writing) {
 		for (JapaneseWriting thisWriting : getWritings()) {
-			if (thisWriting.equals(writing)) {
+			if (thisWriting.equals(writing) || (thisWriting.isEmpty() && writing
+					.isEmpty())) {
 				return true;
 			}
 		}

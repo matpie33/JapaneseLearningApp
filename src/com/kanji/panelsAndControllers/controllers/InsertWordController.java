@@ -68,9 +68,13 @@ public class InsertWordController<Word extends ListElement> {
 				SwingUtilities.invokeLater(() -> {
 					KeyboardFocusManager.getCurrentKeyboardFocusManager()
 							.clearGlobalFocusOwner();
+
 					SwingUtilities.invokeLater(() -> {
-						addWordIfItsNew(insertWordPanel.getWord());
-						insertWordPanel.reinitializePanel();
+						if (!insertWordPanel.getDialog()
+								.hasMessageDialogOpened()) {
+							addWordIfItsNew(insertWordPanel.getWord());
+							insertWordPanel.reinitializePanel();
+						}
 					});
 				});
 

@@ -212,15 +212,17 @@ public class MyList<Word extends ListElement> {
 			Property property,
 			ListElementPropertyManager<Property, Word> propertyManager,
 			Word wordToExclude) {
-		for (Word word : getWords()) {
+		for (int indexOfWord = 0;
+			 indexOfWord < getWords().size(); indexOfWord++) {
+			Word word = getWords().get(indexOfWord);
 			if (word == wordToExclude) {
 				continue;
 			}
 			if (propertyManager.isPropertyFound(property, word)) {
-				return new WordInMyListExistence<Word>(true, word);
+				return new WordInMyListExistence<>(true, word, indexOfWord + 1);
 			}
 		}
-		return new WordInMyListExistence<Word>(false, null);
+		return new WordInMyListExistence<Word>(false, null, -1);
 	}
 
 	private Word getHighlightedWord() {

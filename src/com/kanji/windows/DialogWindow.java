@@ -172,4 +172,9 @@ public class DialogWindow {
 
 	}
 
+	public boolean hasMessageDialogOpened() {
+		return panelType != null && panelType.getClass()
+				.equals(MessagePanel.class);
+	}
+
 }

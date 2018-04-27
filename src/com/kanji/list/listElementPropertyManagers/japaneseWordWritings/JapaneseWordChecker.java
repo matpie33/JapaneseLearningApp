@@ -28,11 +28,11 @@ public class JapaneseWordChecker implements
 		remember(kanaInput, writingContainingThisKana, checkerForWriting);
 	}
 
-	private void remember(JTextComponent kanaInput,
-			JapaneseWriting writingContainingThisKana,
+	private void remember(JTextComponent input,
+			JapaneseWriting writingContainingThisInput,
 			JapaneseWordWritingsChecker checkerForWriting) {
-		inputToWritingMap.put(kanaInput, writingContainingThisKana);
-		writingToCheckerMap.put(writingContainingThisKana, checkerForWriting);
+		inputToWritingMap.put(input, writingContainingThisInput);
+		writingToCheckerMap.put(writingContainingThisInput, checkerForWriting);
 	}
 
 	private JapaneseWordWritingsChecker getCheckerForInput(

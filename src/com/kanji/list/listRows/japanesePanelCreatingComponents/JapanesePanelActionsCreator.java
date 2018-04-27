@@ -21,7 +21,6 @@ import java.util.*;
 
 public class JapanesePanelActionsCreator {
 
-	//TODO cannot search by japanese word because it gets changed
 	private List<Pair<JapaneseWord, JapaneseWordChecker>> checkersForJapaneseWords = new ArrayList<>();
 	private DialogWindow parentDialog;
 	private ApplicationController applicationController;

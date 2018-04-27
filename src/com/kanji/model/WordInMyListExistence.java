@@ -6,10 +6,13 @@ public class WordInMyListExistence<Word extends ListElement> {
 
 	private boolean existsInList;
 	private Word word;
+	private int oneBasedRowNumber;
 
-	public WordInMyListExistence(boolean existsInList, Word word) {
+	public WordInMyListExistence(boolean existsInList, Word word,
+			int oneBasedRowNumber) {
 		this.existsInList = existsInList;
 		this.word = word;
+		this.oneBasedRowNumber = oneBasedRowNumber;
 	}
 
 	public boolean exists() {
@@ -18,5 +21,9 @@ public class WordInMyListExistence<Word extends ListElement> {
 
 	public Word getWord() {
 		return word;
+	}
+
+	public int getOneBasedRowNumber() {
+		return oneBasedRowNumber;
 	}
 }

@@ -42,6 +42,9 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 	@Override
 	public boolean isPropertyFound(JapaneseWriting searchedWriting,
 			JapaneseWord word) {
+		//TODO try to define the logic in japanese writing equals method/
+		// otherwise we duplicate code
+		//the only problem is how to put there boolean of whether we add or search for word
 		boolean japaneseWordContainsTheseWritings = false;
 		for (JapaneseWriting writing : word.getWritings()) {
 			Set<String> searchedKanjiWritings = searchedWriting
@@ -82,9 +85,15 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 	private boolean areKanjisSame(Set<String> searchedKanji,
 			Set<String> existingKanjiWritings) {
 		if (addingWord) {
-			if (JapaneseWritingUtilities.areKanjiWritingsEmpty(searchedKanji)) {
-				return JapaneseWritingUtilities
-						.areKanjiWritingsEmpty(existingKanjiWritings);
+			if (JapaneseWritingUtilities
+					.areKanjiWritingsEmpty(existingKanjiWritings)) {
+				return true;
+			}
+			else if (!JapaneseWritingUtilities
+					.areKanjiWritingsEmpty(existingKanjiWritings)
+					&& JapaneseWritingUtilities
+					.areKanjiWritingsEmpty(searchedKanji)) {
+				return false;
 			}
 			else {
 				return existingKanjiWritings.containsAll(searchedKanji)
@@ -113,7 +122,7 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 		if (JapaneseWritingUtilities.isInputEmpty(newValue, isKana)) {
 			writingToAdd = japaneseWritingToCheck;
 		}
-		else{
+		else {
 			if (!JapaneseWritingUtilities.isInputValid(newValue, isKana)) {
 				String exceptionMessage = isKana ?
 						ExceptionsMessages.KANA_WRITING_INCORRECT :
@@ -137,7 +146,8 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 					}
 					else {
 						japaneseWritingToCheck
-								.replaceKanji(findKanjiPreviousValue(), newValue);
+								.replaceKanji(findKanjiPreviousValue(),
+										newValue);
 						writingToAdd = japaneseWritingToCheck;
 					}
 				}
