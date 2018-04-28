@@ -94,7 +94,17 @@ public class JapaneseWordChecker implements
 		}
 
 		updateWritingsInMaps(existingWritingForInput, convertedProperty);
-		return new HashSet<>(writingToCheckerMap.keySet());
+		return filterNotEmptyWritings();
+	}
+
+	private Set<JapaneseWriting> filterNotEmptyWritings() {
+		Set <JapaneseWriting> writings = new HashSet<>();
+		for (JapaneseWriting writing : writingToCheckerMap.keySet()) {
+			if (!writing.isEmpty()){
+				writings.add(writing);
+			}
+		}
+		return writings;
 	}
 
 	private void updateWritingsInMaps(JapaneseWriting oldWriting,

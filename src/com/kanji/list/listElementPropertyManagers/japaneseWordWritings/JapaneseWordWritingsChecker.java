@@ -85,7 +85,7 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 
 	private boolean areKanjisSame(Set<String> searchedKanji,
 			Set<String> existingKanjiWritings) {
-		if (inputGoal.equals(InputGoal.SEARCH)) {
+		if (inputGoal.equals(InputGoal.ADD)) {
 			if (JapaneseWritingUtilities
 					.areKanjiWritingsEmpty(existingKanjiWritings)) {
 				return true;
