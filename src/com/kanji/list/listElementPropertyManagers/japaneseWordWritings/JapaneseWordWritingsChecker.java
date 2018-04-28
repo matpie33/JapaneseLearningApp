@@ -110,8 +110,6 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 						|| searchedKanji.containsAll(existingKanjiWritings);
 			}
 		}
-
-
 	}
 
 	@Override
