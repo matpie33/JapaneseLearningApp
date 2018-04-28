@@ -9,12 +9,14 @@ import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
+import com.kanji.list.myList.InputValidationListener;
 import com.kanji.utilities.JapaneseWritingUtilities;
 import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.event.ActionEvent;
+import java.util.Set;
 
 public class JapanesePanelElementsCreator {
 
@@ -102,5 +104,10 @@ public class JapanesePanelElementsCreator {
 		return actionsCreator
 				.updateWritingsInWordWhenDeleteWriting(buttonDelete,
 						japaneseWord, writing, isForSearchDialog);
+	}
+
+	public void addValidationListeners(
+			Set<InputValidationListener<JapaneseWord>> validationListeners) {
+		actionsCreator.setInputValidationListeners(validationListeners);
 	}
 }

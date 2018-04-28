@@ -1,5 +1,6 @@
 package com.kanji.list.listElementPropertyManagers.japaneseWordWritings;
 
+import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.JapaneseWord;
@@ -13,11 +14,11 @@ public class JapaneseWordChecker implements
 
 	private Map<JTextComponent, JapaneseWriting> inputToWritingMap = new HashMap<>();
 	private Map<JapaneseWriting, JapaneseWordWritingsChecker> writingToCheckerMap = new HashMap<>();
-	private boolean addingWord;
+	private InputGoal inputGoal;
 	private String invalidPropertyReason;
 
-	public JapaneseWordChecker(boolean addingWord) {
-		this.addingWord = addingWord;
+	public JapaneseWordChecker(InputGoal inputGoal) {
+		this.inputGoal = inputGoal;
 	}
 
 	public void addKanaInput(JTextComponent kanaInput,
@@ -41,7 +42,7 @@ public class JapaneseWordChecker implements
 				.get(writingContainingThisKana);
 		if (checkerForWriting == null) {
 			checkerForWriting = new JapaneseWordWritingsChecker(
-					writingContainingThisKana, addingWord);
+					writingContainingThisKana, inputGoal);
 		}
 		return checkerForWriting;
 	}
@@ -143,8 +144,7 @@ public class JapaneseWordChecker implements
 		inputsRemoved.forEach(input -> inputToWritingMap.remove(input));
 	}
 
-	public boolean isForSearchWord() {
-		return !addingWord;
+	public InputGoal getInputGoal() {
+		return inputGoal;
 	}
-
 }

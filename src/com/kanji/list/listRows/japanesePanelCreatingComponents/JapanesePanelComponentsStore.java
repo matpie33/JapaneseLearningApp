@@ -1,11 +1,15 @@
 package com.kanji.list.listRows.japanesePanelCreatingComponents;
 
 import com.kanji.constants.enums.JapanesePanelDisplayMode;
+import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listRows.japanesePanelCreatingService.JapanesePanelCreatingService;
 import com.kanji.list.listRows.japanesePanelCreatingService.JapanesePanelInEditModeCreator;
 import com.kanji.list.listRows.japanesePanelCreatingService.JapanesePanelInViewModeCreator;
+import com.kanji.list.myList.InputValidationListener;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.windows.DialogWindow;
+
+import java.util.Set;
 
 public class JapanesePanelComponentsStore {
 	private JapanesePanelCreatingService panelCreatingService;
@@ -58,5 +62,10 @@ public class JapanesePanelComponentsStore {
 
 	public JapanesePanelActionsCreator getActionCreator() {
 		return actionsCreator;
+	}
+
+	public void addValidationListeners(
+			Set<InputValidationListener<JapaneseWord>> validationListeners) {
+		elementsMaker.addValidationListeners(validationListeners);
 	}
 }

@@ -11,6 +11,8 @@ import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElement>
 		implements FocusListener {
@@ -23,6 +25,7 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	private String defaultValue = "";
 	private boolean isRequiredField;
 	private boolean addingWord;
+	private Set<InputValidationListener<PropertyHolder>> validationListeners = new HashSet<>();
 
 	public ListPropertyChangeHandler(PropertyHolder propertyHolder,
 			MyList<PropertyHolder> list, DialogWindow dialogWindow,
@@ -45,11 +48,17 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 		this.defaultValue = defaultValue;
 	}
 
+	public void addValidationListener(
+			InputValidationListener<PropertyHolder> validationListener) {
+		validationListeners.add(validationListener);
+	}
+
 	@Override
 	public void focusGained(FocusEvent e) {
 		JTextComponent textInput = (JTextComponent) e.getSource();
 		textInput.setForeground(Color.WHITE);
-		previousValueOfTextInput = textInput.getText();
+		previousValueOfTextInput = textInput.getText().isEmpty()? defaultValue:
+				textInput.getText();
 
 	}
 
@@ -62,13 +71,20 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	public void focusLost(FocusEvent e) {
 		JTextComponent input = (JTextComponent) e.getSource();
 		Property propertyNewValue = validateAndConvertToProperty(input);
-		if (propertyNewValue != null && addingWord) {
-			add(input, propertyNewValue);
+		boolean inputValid = propertyNewValue != null;
+		if (inputValid && addingWord) {
+			addWordToList(input, propertyNewValue);
 		}
+		notifyValidationListeners(inputValid);
 
 	}
 
-	private void add(JTextComponent input, Property propertyNewValue) {
+	private void notifyValidationListeners(boolean inputValid) {
+		validationListeners.forEach(listener -> listener
+				.inputValidated(inputValid, propertyHolder));
+	}
+
+	private void addWordToList(JTextComponent input, Property propertyNewValue) {
 		listElementPropertyManager
 				.setProperty(propertyHolder, propertyNewValue);
 		WordInMyListExistence<PropertyHolder> wordInMyListExistence = list
@@ -77,11 +93,10 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 		if (wordInMyListExistence.exists()) {
 			setTextInputToPreviousValue(input);
 			setWordToPreviousValue(input);
-			PropertyHolder duplicatedWord = wordInMyListExistence.getWord();
-			int duplicateRowNumber = wordInMyListExistence.getOneBasedRowNumber();
+			int duplicateRowNumber = wordInMyListExistence
+					.getOneBasedRowNumber();
 			String exceptionMessage = getExceptionForDuplicate(propertyNewValue,
 					duplicateRowNumber);
-
 			list.highlightRow(duplicateRowNumber - 1, true);
 			dialogWindow.showMessageDialog(exceptionMessage);
 			return;
@@ -115,17 +130,17 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	}
 
 	private Property validateAndConvertToProperty(JTextComponent input) {
-		if (!isRequiredField && isTextFieldEmpty(input) || input.getText()
+		if ((!isRequiredField && isTextFieldEmpty(input)) || input.getText()
 				.equals(previousValueOfTextInput)) {
 			return null;
 		}
 		Property propertyNewValue = listElementPropertyManager
 				.validateInputAndConvertToProperty(input);
 		if (propertyNewValue == null && !input.getText().isEmpty()) {
-			setTextInputToPreviousValue(input);
 			input.setForeground(Color.RED);
 			dialogWindow.showMessageDialog(
 					listElementPropertyManager.getInvalidPropertyReason());
+			setTextInputToPreviousValue(input);
 			return null;
 		}
 		return propertyNewValue;

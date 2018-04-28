@@ -2,6 +2,7 @@ package com.kanji.panelsAndControllers.controllers;
 
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElements.ListElement;
+import com.kanji.list.myList.InputValidationListener;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.WordInMyListExistence;
 import com.kanji.panelsAndControllers.panels.InsertWordPanel;
@@ -11,12 +12,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class InsertWordController<Word extends ListElement> {
+public class InsertWordController<Word extends ListElement>
+		implements InputValidationListener<Word> {
 
 	private MyList<Word> list;
 	private DialogWindow parentDialog;
 	private ApplicationController applicationController;
 	private InsertWordPanel<Word> insertWordPanel;
+	private boolean addingWordWasRequested = false;
 
 	public InsertWordController(MyList<Word> list,
 			ApplicationController applicationController,
@@ -61,26 +64,24 @@ public class InsertWordController<Word extends ListElement> {
 		return !doesWordExistInMyList.exists();
 	}
 
-	public AbstractAction createActionValidateAndAddWord() {
+	public AbstractAction createActionValidateFocusedElement() {
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SwingUtilities.invokeLater(() -> {
-					KeyboardFocusManager.getCurrentKeyboardFocusManager()
-							.clearGlobalFocusOwner();
-
-					SwingUtilities.invokeLater(() -> {
-						if (!insertWordPanel.getDialog()
-								.hasMessageDialogOpened()) {
-							addWordIfItsNew(insertWordPanel.getWord());
-							insertWordPanel.reinitializePanel();
-						}
-					});
-				});
-
+				KeyboardFocusManager.getCurrentKeyboardFocusManager()
+						.clearGlobalFocusOwner();
+				addingWordWasRequested = true;
 			}
 		};
 
 	}
 
+	@Override
+	public void inputValidated(boolean isValid, Word validatedWord) {
+		if (addingWordWasRequested && isValid) {
+			addWordIfItsNew(insertWordPanel.getWord());
+			insertWordPanel.reinitializePanel();
+		}
+		addingWordWasRequested = false;
+	}
 }

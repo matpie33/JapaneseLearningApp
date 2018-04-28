@@ -49,8 +49,7 @@ public class DialogWindow {
 		mainPanel = panel;
 	}
 
-	public void showYourself(AbstractPanelWithHotkeysInfo panelCreator,
-			String title, boolean modal) {
+	public void showYourself(String title, boolean modal) {
 		container.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		container.setContentPane(mainPanel);
 		container.pack();
@@ -114,7 +113,7 @@ public class DialogWindow {
 			if (panelCreator.isMaximized()) {
 				childWindow.maximize();
 			}
-			childWindow.showYourself(panelCreator, title, modal);
+			childWindow.showYourself(title, modal);
 			childWindow.getContainer()
 					.setMinimumSize(childWindow.getContainer().getSize());
 			panelCreator.afterVisible();
@@ -172,9 +171,5 @@ public class DialogWindow {
 
 	}
 
-	public boolean hasMessageDialogOpened() {
-		return panelType != null && panelType.getClass()
-				.equals(MessagePanel.class);
-	}
 
 }

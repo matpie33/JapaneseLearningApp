@@ -1,5 +1,6 @@
 package com.kanji.list.listRows.japanesePanelCreatingComponents;
 
+import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
@@ -7,6 +8,7 @@ import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordChecker;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
+import com.kanji.list.myList.InputValidationListener;
 import com.kanji.list.myList.ListPropertyChangeHandler;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
@@ -25,10 +27,7 @@ public class JapanesePanelActionsCreator {
 	private DialogWindow parentDialog;
 	private ApplicationController applicationController;
 	private JapaneseWordMeaningChecker wordMeaningChecker;
-
-	public JapaneseWordMeaningChecker getWordMeaningChecker() {
-		return wordMeaningChecker;
-	}
+	private Set<InputValidationListener<JapaneseWord>> inputValidationListeners = new HashSet<>();
 
 	public JapanesePanelActionsCreator(DialogWindow parentDialog,
 			ApplicationController applicationController) {
@@ -36,10 +35,22 @@ public class JapanesePanelActionsCreator {
 		this.applicationController = applicationController;
 	}
 
+	public void setInputValidationListeners(
+			Set<InputValidationListener<JapaneseWord>> inputValidationListeners) {
+		this.inputValidationListeners = inputValidationListeners;
+	}
+
+	public JapaneseWordMeaningChecker getWordMeaningChecker() {
+		return wordMeaningChecker;
+	}
+
 	public Map<JTextComponent, ListElementPropertyManager> getInputManagersForInputs() {
 		Map<JTextComponent, ListElementPropertyManager> propertyManagersForInputs = new HashMap<>();
 		for (Pair<JapaneseWord, JapaneseWordChecker> japaneseWordChecker : checkersForJapaneseWords) {
-			if (japaneseWordChecker.getValue().isForSearchWord()) {
+			InputGoal checkerInputGoal = japaneseWordChecker.getValue()
+					.getInputGoal();
+			if (checkerInputGoal.equals(InputGoal.SEARCH) || checkerInputGoal
+					.equals(InputGoal.ADD)) {
 				propertyManagersForInputs.putAll(japaneseWordChecker.getValue()
 						.getInputToCheckerMap());
 			}
@@ -60,10 +71,10 @@ public class JapanesePanelActionsCreator {
 			checker.addKanjiInput(textComponent, japaneseWriting);
 		}
 		addPropertyChangeHandler(textComponent, japaneseWord,
-				!isForSearchDialog,
+				!isForSearchDialog && isKana,
 				JapaneseWritingUtilities.getDefaultValueForWriting(isKana),
-				checker, parentDialog,
-				applicationController.getJapaneseWords(), !isForSearchDialog);
+				checker, parentDialog, applicationController.getJapaneseWords(),
+				!isForSearchDialog);
 		return textComponent;
 	}
 
@@ -75,23 +86,30 @@ public class JapanesePanelActionsCreator {
 				return checkerForJapaneseWord.getValue();
 			}
 		}
-
-		JapaneseWordChecker checker = new JapaneseWordChecker(
-				!isForSearchDialog);
+		InputGoal inputGoal = isForSearchDialog ?
+				InputGoal.SEARCH :
+				InputGoal.ADD;
+		JapaneseWordChecker checker = new JapaneseWordChecker(inputGoal);
 		checkersForJapaneseWords.add(new Pair<>(word, checker));
 		return checker;
 	}
 
-	public void addPropertyChangeHandler(JTextComponent textComponent,
-			JapaneseWord japaneseWord, boolean kanaRequired,
+	private void addPropertyChangeHandler(JTextComponent textComponent,
+			JapaneseWord japaneseWord, boolean requiredInput,
 			String defaultValue,
-			ListElementPropertyManager<?, JapaneseWord> propertyChangeHandler,
+			ListElementPropertyManager<?, JapaneseWord> propertyManager,
 			DialogWindow parentDialog, MyList<JapaneseWord> wordsList,
 			boolean addingWord) {
-		textComponent.addFocusListener(
-				new ListPropertyChangeHandler<>(japaneseWord, wordsList,
-						parentDialog, propertyChangeHandler, defaultValue,
-						kanaRequired, addingWord));
+		//TODO pass my enum instead of boolean
+		ListPropertyChangeHandler<?, JapaneseWord> propertyChangeHandler = new ListPropertyChangeHandler<>(
+				japaneseWord, wordsList, parentDialog, propertyManager,
+				defaultValue, requiredInput, addingWord);
+		if (addingWord){
+			inputValidationListeners
+					.forEach(propertyChangeHandler::addValidationListener);
+		}
+
+		textComponent.addFocusListener(propertyChangeHandler);
 
 	}
 

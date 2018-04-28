@@ -7,8 +7,10 @@ import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.strings.Prompts;
+import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.RepeatingData;
+import com.kanji.list.myList.InputValidationListener;
 import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.ListRowCreator;
 import com.kanji.list.myList.ListRowDataCreator;
@@ -67,4 +69,9 @@ public class RowInRepeatingList implements ListRowCreator<RepeatingData> {
 
 	}
 
+	@Override
+	public void addValidationListener(
+			InputValidationListener<RepeatingData> inputValidationListener) {
+
+	}
 }

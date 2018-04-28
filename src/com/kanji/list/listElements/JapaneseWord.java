@@ -1,6 +1,7 @@
 package com.kanji.list.listElements;
 
 import com.kanji.constants.enums.AdditionalInformationTag;
+import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.list.listElementAdditionalInformations.AdditionalInformation;
@@ -119,8 +120,8 @@ public class JapaneseWord implements ListElement, Serializable {
 			JapaneseWord otherWord = (JapaneseWord) element;
 
 			for (JapaneseWriting japaneseWriting : otherWord.getWritings()) {
-				if (new JapaneseWordWritingsChecker(japaneseWriting, true)
-						.isPropertyFound(japaneseWriting, this)) {
+				if (new JapaneseWordWritingsChecker(japaneseWriting,
+						InputGoal.ADD).isPropertyFound(japaneseWriting, this)) {
 					return true;
 				}
 			}

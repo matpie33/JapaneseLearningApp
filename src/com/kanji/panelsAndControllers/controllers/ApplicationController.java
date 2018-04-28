@@ -175,8 +175,6 @@ public class ApplicationController implements ApplicationStateManager {
 	private void loadJapaneseWordsList() {
 		JFileChooser fileChooser = createFileChooser();
 		fileChooser.setMultiSelectionEnabled(true);
-		//TODO each file should have a label at the top, parser should parse the word type in kanji list:
-		// noun (default), verb (ending in ru, su, mu etc), adjective ending in -i, expression
 		int option = fileChooser.showOpenDialog(parent.getContainer());
 		if (option == JFileChooser.CANCEL_OPTION) {
 			return;

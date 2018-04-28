@@ -12,10 +12,7 @@ import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
-import com.kanji.list.myList.ListRowCreator;
-import com.kanji.list.myList.ListRowData;
-import com.kanji.list.myList.ListRowDataCreator;
-import com.kanji.list.myList.MyList;
+import com.kanji.list.myList.*;
 import com.kanji.model.DuplicatedJapaneseWordInformation;
 import com.kanji.utilities.CommonGuiElementsCreator;
 import com.kanji.utilities.CommonListElements;
@@ -80,4 +77,9 @@ public class RowInDuplicatedImportedWordsList
 						});
 	}
 
+	@Override
+	public void addValidationListener(
+			InputValidationListener<DuplicatedJapaneseWordInformation> inputValidationListener) {
+
+	}
 }

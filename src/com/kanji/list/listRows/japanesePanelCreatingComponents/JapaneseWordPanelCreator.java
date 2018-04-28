@@ -15,10 +15,7 @@ import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listRows.RowInJapaneseWritingsList;
-import com.kanji.list.myList.ListConfiguration;
-import com.kanji.list.myList.ListRowData;
-import com.kanji.list.myList.ListRowDataCreator;
-import com.kanji.list.myList.MyList;
+import com.kanji.list.myList.*;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.utilities.CommonGuiElementsCreator;
 import com.kanji.utilities.CommonListElements;
@@ -31,6 +28,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class JapaneseWordPanelCreator {
 
@@ -154,7 +152,7 @@ public class JapaneseWordPanelCreator {
 		japaneseWordPanel.addRowsOfElementsInColumn(lastJapanesePanelMade);
 		ListRowDataCreator<Kanji> rowDataCreator = new ListRowDataCreator<>(
 				japaneseWordPanel);
-		if (forSearchPanel) {
+		if (commonListElements.isForSingleRowOnly()) {
 			rowDataCreator
 					.addPropertyData(ListPropertiesNames.JAPANESE_WORD_MEANING,
 							lastJapanesePanelMade.getAllRows().get(0),
@@ -200,5 +198,10 @@ public class JapaneseWordPanelCreator {
 	public JapaneseWordPanelCreator copy() {
 		return new JapaneseWordPanelCreator(applicationController, parentDialog,
 				JapanesePanelDisplayMode.EDIT);
+	}
+
+	public void addValidationListeners(
+			Set<InputValidationListener<JapaneseWord>> validationListeners) {
+		japanesePanelComponentsStore.addValidationListeners(validationListeners);
 	}
 }

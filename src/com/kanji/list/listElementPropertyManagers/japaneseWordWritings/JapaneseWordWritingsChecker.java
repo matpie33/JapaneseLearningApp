@@ -1,5 +1,6 @@
 package com.kanji.list.listElementPropertyManagers.japaneseWordWritings;
 
+import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElementPropertyManagers.WordSearchOptionsHolder;
@@ -14,14 +15,14 @@ import java.util.Set;
 public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 		implements ListElementPropertyManager<JapaneseWriting, JapaneseWord> {
 	private String errorDetails = "";
-	private boolean addingWord;
+	private InputGoal inputGoal;
 	private JapaneseWriting japaneseWritingToCheck;
 	private JapaneseWordWritingsInputManager writingsInputManager;
 
 	public JapaneseWordWritingsChecker(JapaneseWriting japaneseWritingToCheck,
-			boolean addingWord) {
+			InputGoal inputGoal) {
 		this.japaneseWritingToCheck = japaneseWritingToCheck;
-		this.addingWord = addingWord;
+		this.inputGoal = inputGoal;
 		writingsInputManager = new JapaneseWordWritingsInputManager();
 	}
 
@@ -84,7 +85,7 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 
 	private boolean areKanjisSame(Set<String> searchedKanji,
 			Set<String> existingKanjiWritings) {
-		if (addingWord) {
+		if (inputGoal.equals(InputGoal.SEARCH)) {
 			if (JapaneseWritingUtilities
 					.areKanjiWritingsEmpty(existingKanjiWritings)) {
 				return true;
