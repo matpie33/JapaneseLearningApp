@@ -1,5 +1,6 @@
 package com.kanji.list.myList;
 
+import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.SearchingDirection;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
@@ -71,25 +72,17 @@ public class MyList<Word extends ListElement> {
 	}
 
 	public boolean addWord(Word word) {
-		return listController.add(word, false);
+		return listController.add(word, InputGoal.EDIT);
 	}
 
-	public boolean addWord(Word word, boolean forSearchPanel) {
-		return listController.add(word, forSearchPanel);
+	public boolean addWord(Word word, InputGoal inputGoal) {
+		return listController.add(word, inputGoal);
 	}
 
 	public Word createWord() {
 		Word word = wordInitializer.initializeElement();
 		listElementClass = word.getClass();
 		return word;
-	}
-
-	public boolean addWordsList(List<Word> words) {
-		boolean added = false;
-		for (Word word : words) {
-			added = addWord(word) || added;
-		}
-		return added;
 	}
 
 	public void highlightRow(int rowNumber) {

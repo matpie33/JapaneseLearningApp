@@ -1,5 +1,6 @@
 package com.kanji.list.myList;
 
+import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.ListElement;
@@ -63,14 +64,14 @@ public class ListWordsController<Word extends ListElement> {
 		return MAXIMUM_WORDS_TO_SHOW;
 	}
 
-	public boolean add(Word r, boolean forSearchPanel) {
+	public boolean add(Word r, InputGoal inputGoal) {
 		if (!isWordDefined(r).exists()) {
 			boolean canNewWordBeDisplayed = canNewWordBeDisplayed();
 			ListRow<Word> newWord = listPanelCreator
 					.addRow(r, allWordsToRowNumberMap.size() + 1,
 							canNewWordBeDisplayed,
 							listPanelCreator.getLoadNextWordsHandler(),
-							forSearchPanel);
+							inputGoal);
 			allWordsToRowNumberMap.put(allWordsToRowNumberMap.size(), newWord);
 			if (canNewWordBeDisplayed) {
 				lastRowVisible = allWordsToRowNumberMap.size() - 1;
@@ -259,7 +260,7 @@ public class ListWordsController<Word extends ListElement> {
 		int rowNumber = getFirstVisibleRowNumber();
 		ListRow addedWord = listPanelCreator
 				.addRow(allWordsToRowNumberMap.get(rowNumber).getWord(),
-						rowNumber + 1, true, loadPreviousWords, false);
+						rowNumber + 1, true, loadPreviousWords, InputGoal.EDIT);
 		allWordsToRowNumberMap.put(rowNumber, addedWord);
 
 	}
@@ -268,7 +269,7 @@ public class ListWordsController<Word extends ListElement> {
 		lastRowVisible++;
 		ListRow visibleRow = listPanelCreator
 				.addRow(allWordsToRowNumberMap.get(lastRowVisible).getWord(),
-						lastRowVisible + 1, true, loadNextWords, false);
+						lastRowVisible + 1, true, loadNextWords, InputGoal.EDIT);
 		allWordsToRowNumberMap.put(lastRowVisible, visibleRow);
 	}
 
@@ -297,7 +298,7 @@ public class ListWordsController<Word extends ListElement> {
 	}
 
 	//TODO not the best idea to pass the boolean "is for search panel" - maybe keep it as field
-	public void addNewWord(boolean forSearchPanel) {
-		add(wordInitializer.initializeElement(), forSearchPanel);
+	public void addNewWord(InputGoal inputGoal) {
+		add(wordInitializer.initializeElement(), inputGoal);
 	}
 }

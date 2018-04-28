@@ -1,6 +1,7 @@
 package com.kanji.list.listRows.japanesePanelCreatingService;
 
 import com.guimaker.panels.MainPanel;
+import com.kanji.constants.enums.InputGoal;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapanesePanelActionsCreator;
@@ -31,17 +32,17 @@ public class JapanesePanelInViewModeCreator
 	@Override
 	public JComponent[] addWritingsRow(JapaneseWriting japaneseWriting,
 			CommonListElements commonListElements, JapaneseWord japaneseWord,
-			boolean forSearchPanel, MainPanel rowPanel) {
+			InputGoal inputGoal, MainPanel rowPanel) {
 		List<JComponent> rowElements = new ArrayList<>();
 		rowElements.add(actionsCreator.selectableTextfield(elementsMaker
 						.createKanaInputWithValidation(japaneseWriting,
-								japaneseWord, false, forSearchPanel, true),
+								japaneseWord, false, inputGoal, true),
 				textFieldSelectionHandler));
 		for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
 			rowElements.add(actionsCreator.selectableTextfield(elementsMaker
 					.createKanjiInputWithValidation(kanjiWriting,
 							japaneseWriting, japaneseWord,
-							forSearchPanel, false, true), textFieldSelectionHandler));
+							inputGoal, false, true), textFieldSelectionHandler));
 		}
 
 		return rowElements.toArray(new JComponent[] {});

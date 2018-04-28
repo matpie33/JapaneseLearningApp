@@ -6,6 +6,7 @@ import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.ElementCopier;
+import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.enums.VerbConjugationType;
 import com.kanji.constants.strings.Labels;
@@ -88,7 +89,7 @@ public class RepeatingJapaneseWordsDisplayer
 		fullWordInformationPanel.clear();
 		japaneseWordPanelCreator
 				.addJapanesePanelToExistingPanel(fullWordInformationPanel,
-						japaneseWord, false,
+						japaneseWord, InputGoal.NO_INPUT,
 						CommonListElements.forSingleRowOnly(Color.WHITE),
 						false);
 	}

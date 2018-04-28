@@ -5,6 +5,7 @@ import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
+import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.list.listElements.JapaneseWord;
@@ -29,19 +30,19 @@ public class JapanesePanelElementsCreator {
 
 	public JTextComponent createKanaInputWithValidation(
 			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
-			boolean enabled, boolean isForSearchDialog, boolean selectable) {
+			boolean enabled, InputGoal inputGoal, boolean selectable) {
 		return actionsCreator.withJapaneseWritingValidation(
 				createWritingsInput(japaneseWriting.getKanaWriting(), true,
 						enabled, selectable), japaneseWriting, japaneseWord,
-				true, isForSearchDialog);
+				true, inputGoal);
 	}
 
 	public JTextComponent createKanjiInputWithValidation(String text,
 			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
-			boolean isForSearchDialog, boolean enabled, boolean selectable) {
+			InputGoal inputGoal, boolean enabled, boolean selectable) {
 		return actionsCreator.withJapaneseWritingValidation(
 				createWritingsInput(text, false, enabled, selectable),
-				japaneseWriting, japaneseWord, false, isForSearchDialog);
+				japaneseWriting, japaneseWord, false, inputGoal);
 	}
 
 	public JTextComponent createWritingsInput(String initialValue,
@@ -83,7 +84,7 @@ public class JapanesePanelElementsCreator {
 
 	public AbstractButton createButtonAddKanjiWriting(MainPanel rowPanel,
 			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
-			boolean isForSearchDialog, boolean editMode, boolean selectable) {
+			InputGoal inputGoal, boolean editMode, boolean selectable) {
 		AbstractButton button = createButton(ButtonsNames.ADD_KANJI_WRITING,
 				null);
 		button.addActionListener(new AbstractAction() {
@@ -91,7 +92,7 @@ public class JapanesePanelElementsCreator {
 			public void actionPerformed(ActionEvent e) {
 				rowPanel.insertElementInPlaceOfElement(
 						createKanjiInputWithValidation("", japaneseWriting,
-								japaneseWord, isForSearchDialog, editMode,
+								japaneseWord, inputGoal, editMode,
 								selectable), button);
 			}
 		});
@@ -100,10 +101,10 @@ public class JapanesePanelElementsCreator {
 
 	public JComponent updateWritingsInWordCheckerWhenDeleteWriting(
 			AbstractButton buttonDelete, JapaneseWord japaneseWord,
-			JapaneseWriting writing, boolean isForSearchDialog) {
+			JapaneseWriting writing, InputGoal inputGoal) {
 		return actionsCreator
 				.updateWritingsInWordWhenDeleteWriting(buttonDelete,
-						japaneseWord, writing, isForSearchDialog);
+						japaneseWord, writing, inputGoal);
 	}
 
 	public void addValidationListeners(

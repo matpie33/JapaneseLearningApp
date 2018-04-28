@@ -3,6 +3,7 @@ package com.kanji.list.listRows;
 import com.guimaker.enums.FillType;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
+import com.kanji.constants.enums.InputGoal;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listElements.Kanji;
@@ -29,12 +30,12 @@ public class RowInJapaneseWritingsList
 
 	@Override
 	public ListRowData createListRow(JapaneseWriting japaneseWriting,
-			CommonListElements commonListElements, boolean forSearchPanel) {
+			CommonListElements commonListElements, InputGoal inputGoal) {
 		MainPanel rowPanel = new MainPanel(null);
 		rowPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE,
 				japanesePanelCreatingService
 						.addWritingsRow(japaneseWriting, commonListElements,
-								wordContainingWritings, forSearchPanel,
+								wordContainingWritings, inputGoal,
 								rowPanel)));
 		ListRowDataCreator<Kanji> rowDataCreator = new ListRowDataCreator<>(
 				rowPanel);

@@ -9,6 +9,7 @@ import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
+import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.SearchingDirection;
 import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.ButtonsNames;
@@ -65,7 +66,8 @@ public class SearchWordPanel<Word extends ListElement>
 
 		listRowData = searchedList.getListRowCreator().createListRow(
 				searchedList.getWordInitializer().initializeElement(),
-				CommonListElements.forSingleRowOnly(Color.WHITE), true);
+				CommonListElements.forSingleRowOnly(Color.WHITE),
+				InputGoal.SEARCH);
 		//TODO here I got to get only rows - maybe separate the calls
 		// for rows and for the textfields + property managers
 		for (Map.Entry<String, ListPropertyInformation<Word>> listPropertyData : listRowData

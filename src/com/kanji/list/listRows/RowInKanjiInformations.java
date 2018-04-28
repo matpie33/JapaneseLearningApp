@@ -6,6 +6,7 @@ import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.ComplexRow;
 import com.guimaker.row.SimpleRowBuilder;
+import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.ListPropertiesNames;
@@ -35,7 +36,7 @@ public class RowInKanjiInformations implements ListRowCreator<Kanji> {
 
 	@Override
 	public ListRowData createListRow(Kanji kanji,
-			CommonListElements commonListElements, boolean forSearchPanel) {
+			CommonListElements commonListElements, InputGoal inputGoal) {
 		MainPanel panel = new MainPanel(null);
 		//TODO do it like in rowInJapaneseWordInformations
 		Color labelsColor = commonListElements.getLabelsColor();
@@ -54,7 +55,7 @@ public class RowInKanjiInformations implements ListRowCreator<Kanji> {
 		ListPropertyChangeHandler<String, Kanji> keywordChangeHandler = new ListPropertyChangeHandler<>(
 				kanji,
 				applicationWindow.getApplicationController().getKanjiList(),
-				applicationWindow, keywordChecker, true, !forSearchPanel);
+				applicationWindow, keywordChecker, true, inputGoal);
 		validationListeners.forEach(keywordChangeHandler::addValidationListener);
 		keywordInput.addFocusListener(keywordChangeHandler);
 		JTextComponent idInput = CommonGuiElementsCreator.createKanjiIdInput();
@@ -63,7 +64,7 @@ public class RowInKanjiInformations implements ListRowCreator<Kanji> {
 		ListPropertyChangeHandler<Integer, Kanji> idChangeListener = new ListPropertyChangeHandler<>(
 				kanji,
 				applicationWindow.getApplicationController().getKanjiList(),
-				applicationWindow, idChecker, true, !forSearchPanel);
+				applicationWindow, idChecker, true, inputGoal);
 		validationListeners.forEach(idChangeListener::addValidationListener);
 		idInput.addFocusListener(idChangeListener);
 		AbstractButton remove = commonListElements.getButtonDelete();
@@ -78,8 +79,7 @@ public class RowInKanjiInformations implements ListRowCreator<Kanji> {
 		ListRowDataCreator<Kanji> rowDataCreator = new ListRowDataCreator<>(
 				panel);
 
-		if (forSearchPanel) {
-
+		if (inputGoal.equals(InputGoal.ADD) || inputGoal.equals(InputGoal.SEARCH)) {
 			rowDataCreator.addPropertyData(ListPropertiesNames.KANJI_KEYWORD,
 					panelRows.getAllRows().get(0),
 					Pair.of(keywordInput, keywordChecker));

@@ -3,6 +3,7 @@ package com.kanji.panelsAndControllers.panels;
 import com.guimaker.enums.FillType;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
+import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.ListPropertiesNames;
@@ -66,7 +67,7 @@ public class InsertWordPanel<Word extends ListElement>
 		labelsColor = Color.WHITE;
 
 		listRowData = wordsList.getListRowCreator().createListRow(word,
-				CommonListElements.forSingleRowOnly(labelsColor), false);
+				CommonListElements.forSingleRowOnly(labelsColor), InputGoal.ADD);
 		MainPanel addWordPanel = listRowData.getRowPanel();
 		mainPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.BOTH, addWordPanel.getPanel())

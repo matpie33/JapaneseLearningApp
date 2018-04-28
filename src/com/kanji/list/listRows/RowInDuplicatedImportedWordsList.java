@@ -7,6 +7,7 @@ import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
+import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.JapanesePanelDisplayMode;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWord;
@@ -40,7 +41,7 @@ public class RowInDuplicatedImportedWordsList
 
 	@Override
 	public ListRowData createListRow(DuplicatedJapaneseWordInformation data,
-			CommonListElements commonListElements, boolean forSearchPanel) {
+			CommonListElements commonListElements, InputGoal inputGoal) {
 		MainPanel panel = new MainPanel(null);
 		JLabel rowNumber = GuiElementsCreator.createLabel(
 				new ComponentOptions().text(Prompts.ROW_NUMBER)
@@ -52,7 +53,7 @@ public class RowInDuplicatedImportedWordsList
 				applicationWindow.getApplicationController(), parentDialog,
 				JapanesePanelDisplayMode.EDIT)
 				.addJapanesePanelToExistingPanel(japaneseWordInformationPanel,
-						data.getJapaneseWord(), forSearchPanel,
+						data.getJapaneseWord(), inputGoal,
 						commonListElements, false);
 		AbstractButton buttonGoToRow = createButtonGoToRow(
 				data.getDuplicatedWordRowNumber());

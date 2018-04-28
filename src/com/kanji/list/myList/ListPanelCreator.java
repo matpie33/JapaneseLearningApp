@@ -12,6 +12,7 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.AbstractSimpleRow;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
+import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.list.listElements.ListElement;
@@ -134,13 +135,13 @@ public class ListPanelCreator<Word extends ListElement>
 
 	public ListRow<Word> addRow(Word word, int rowNumber,
 			boolean shouldShowWord, LoadWordsHandler loadWordsHandler,
-			boolean forSearchPanel) {
+			InputGoal inputGoal) {
 		JLabel rowNumberLabel = new JLabel(createTextForRowNumber(rowNumber));
 		AbstractButton remove = GuiElementsCreator.createButtonlikeComponent(
 				new ButtonOptions(ButtonType.BUTTON)
 						.text(ButtonsNames.REMOVE_ROW),
 				listWordsController.createDeleteRowAction(word));
-		AbstractButton addNewWord = createButtonAddRow(forSearchPanel);
+		AbstractButton addNewWord = createButtonAddRow(inputGoal);
 		CommonListElements commonListElements = new CommonListElements(remove,
 				rowNumberLabel, addNewWord, labelsColor, false);
 		rowNumberLabel.setForeground(labelsColor);
@@ -149,7 +150,7 @@ public class ListPanelCreator<Word extends ListElement>
 			AbstractSimpleRow abstractSimpleRow = SimpleRowBuilder
 					.createRow(FillType.HORIZONTAL, Anchor.NORTH,
 							listRow.createListRow(word, commonListElements,
-									forSearchPanel).getRowPanel().getPanel());
+									inputGoal).getRowPanel().getPanel());
 			row = loadWordsHandler.showWord(abstractSimpleRow);
 		}
 		else if (!buttonLoadNextWords.isEnabled()) {
@@ -159,13 +160,13 @@ public class ListPanelCreator<Word extends ListElement>
 		return new ListRow<>(word, row, rowNumberLabel);
 	}
 
-	private AbstractButton createButtonAddRow(boolean forSearchPanel) {
+	private AbstractButton createButtonAddRow(InputGoal inputGoal) {
 		return GuiElementsCreator.createButtonlikeComponent(
 				new ButtonOptions(ButtonType.BUTTON).text(ButtonsNames.ADD_ROW),
 				new AbstractAction() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						listWordsController.addNewWord(forSearchPanel);
+						listWordsController.addNewWord(inputGoal);
 					}
 				});
 	}

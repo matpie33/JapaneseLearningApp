@@ -6,6 +6,7 @@ import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.ComplexRow;
 import com.guimaker.row.SimpleRowBuilder;
+import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.JapanesePanelDisplayMode;
 import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.Labels;
@@ -63,17 +64,16 @@ public class JapaneseWordPanelCreator {
 
 	public ListRowData<JapaneseWord> addJapanesePanelToExistingPanel(
 			MainPanel existingPanel, JapaneseWord japaneseWord,
-			boolean forSearchPanel, CommonListElements commonListElements,
+			InputGoal inputGoal, CommonListElements commonListElements,
 			boolean inheritScrollBar) {
-		createElements(japaneseWord, forSearchPanel, inheritScrollBar);
-		addActions(japaneseWord, forSearchPanel);
-		return addElementsToPanel(existingPanel, commonListElements,
-				forSearchPanel);
+		createElements(japaneseWord, inputGoal, inheritScrollBar);
+		addActions(japaneseWord, inputGoal);
+		return addElementsToPanel(existingPanel, commonListElements, inputGoal);
 
 	}
 
 	private void createElements(JapaneseWord japaneseWord,
-			boolean forSearchPanel, boolean inheritScrollBar) {
+			InputGoal inputGoal, boolean inheritScrollBar) {
 		if (rowNumberLabel != null) {
 			rowNumberLabel.setForeground(labelsColor);
 		}
@@ -87,7 +87,7 @@ public class JapaneseWordPanelCreator {
 						.foregroundColor(labelsColor));
 		partOfSpeechCombobox = japanesePanelComponentsStore.getElementsMaker()
 				.createComboboxForPartOfSpeech(japaneseWord.getPartOfSpeech());
-		writingsList = createWritingsList(japaneseWord, forSearchPanel,
+		writingsList = createWritingsList(japaneseWord, inputGoal,
 				inheritScrollBar);
 		writingsLabel = GuiElementsCreator.createLabel(
 				new ComponentOptions().text(Labels.WRITING_WAYS_IN_JAPANESE)
@@ -95,28 +95,28 @@ public class JapaneseWordPanelCreator {
 	}
 
 	private void addActions(JapaneseWord japaneseWord,
-			boolean forSearchDialog) {
+			InputGoal inputGoal) {
 		JapanesePanelActionsCreator actionCreatingService = japanesePanelComponentsStore
 				.getActionCreator();
 		actionCreatingService
 				.addWordMeaningPropertyChangeListener(wordMeaningText,
-						japaneseWord, forSearchDialog ?
+						japaneseWord, inputGoal.equals(InputGoal.SEARCH) ?
 								WordSearchOptions.BY_WORD_FRAGMENT :
 								WordSearchOptions.BY_FULL_EXPRESSION,
-						!forSearchDialog);
+						inputGoal);
 		actionCreatingService.addSavingOnSelectionListener(partOfSpeechCombobox,
 				japaneseWord);
 	}
 
 	public MyList<JapaneseWriting> createWritingsList(JapaneseWord japaneseWord,
-			boolean forSearchPanel, boolean inheritScrollBar) {
+			InputGoal inputGoal, boolean inheritScrollBar) {
 		writingsList = createJapaneseWritingsList(japaneseWord,
 				inheritScrollBar);
 		if (japaneseWord.getWritings().isEmpty()) {
 			japaneseWord.addWritingsForKana("", "");
 		}
 		japaneseWord.getWritings().stream()
-				.forEach(word -> writingsList.addWord(word, forSearchPanel));
+				.forEach(word -> writingsList.addWord(word, inputGoal));
 		return writingsList;
 	}
 
@@ -136,7 +136,7 @@ public class JapaneseWordPanelCreator {
 
 	private ListRowData<JapaneseWord> addElementsToPanel(
 			MainPanel japaneseWordPanel, CommonListElements commonListElements,
-			boolean forSearchPanel) {
+			InputGoal inputGoal) {
 		JPanel writingsListPanel = writingsList.getPanel();
 		lastJapanesePanelMade = SimpleRowBuilder
 				.createRowStartingFromColumn(0, FillType.BOTH,
@@ -152,7 +152,7 @@ public class JapaneseWordPanelCreator {
 		japaneseWordPanel.addRowsOfElementsInColumn(lastJapanesePanelMade);
 		ListRowDataCreator<Kanji> rowDataCreator = new ListRowDataCreator<>(
 				japaneseWordPanel);
-		if (commonListElements.isForSingleRowOnly()) {
+		if (inputGoal.equals(InputGoal.ADD) || inputGoal.equals(InputGoal.SEARCH)) {
 			rowDataCreator
 					.addPropertyData(ListPropertiesNames.JAPANESE_WORD_MEANING,
 							lastJapanesePanelMade.getAllRows().get(0),

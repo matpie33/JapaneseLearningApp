@@ -61,9 +61,9 @@ public class JapanesePanelActionsCreator {
 	public JTextComponent withJapaneseWritingValidation(
 			JTextComponent textComponent, JapaneseWriting japaneseWriting,
 			JapaneseWord japaneseWord, boolean isKana,
-			boolean isForSearchDialog) {
+			InputGoal inputGoal) {
 		JapaneseWordChecker checker = getOrCreateCheckerFor(japaneseWriting,
-				japaneseWord, isForSearchDialog);
+				japaneseWord, inputGoal);
 		if (isKana) {
 			checker.addKanaInput(textComponent, japaneseWriting);
 		}
@@ -71,24 +71,21 @@ public class JapanesePanelActionsCreator {
 			checker.addKanjiInput(textComponent, japaneseWriting);
 		}
 		addPropertyChangeHandler(textComponent, japaneseWord,
-				!isForSearchDialog && isKana,
+				!inputGoal.equals(InputGoal.SEARCH) && isKana,
 				JapaneseWritingUtilities.getDefaultValueForWriting(isKana),
 				checker, parentDialog, applicationController.getJapaneseWords(),
-				!isForSearchDialog);
+				inputGoal);
 		return textComponent;
 	}
 
 	private JapaneseWordChecker getOrCreateCheckerFor(JapaneseWriting writing,
-			JapaneseWord word, boolean isForSearchDialog) {
+			JapaneseWord word, InputGoal inputGoal) {
 
 		for (Pair<JapaneseWord, JapaneseWordChecker> checkerForJapaneseWord : checkersForJapaneseWords) {
 			if (checkerForJapaneseWord.getKey().containsWriting(writing)) {
 				return checkerForJapaneseWord.getValue();
 			}
 		}
-		InputGoal inputGoal = isForSearchDialog ?
-				InputGoal.SEARCH :
-				InputGoal.ADD;
 		JapaneseWordChecker checker = new JapaneseWordChecker(inputGoal);
 		checkersForJapaneseWords.add(new Pair<>(word, checker));
 		return checker;
@@ -99,12 +96,11 @@ public class JapanesePanelActionsCreator {
 			String defaultValue,
 			ListElementPropertyManager<?, JapaneseWord> propertyManager,
 			DialogWindow parentDialog, MyList<JapaneseWord> wordsList,
-			boolean addingWord) {
-		//TODO pass my enum instead of boolean
+			InputGoal inputGoal) {
 		ListPropertyChangeHandler<?, JapaneseWord> propertyChangeHandler = new ListPropertyChangeHandler<>(
 				japaneseWord, wordsList, parentDialog, propertyManager,
-				defaultValue, requiredInput, addingWord);
-		if (addingWord){
+				defaultValue, requiredInput, inputGoal);
+		if (inputGoal.equals(InputGoal.ADD)){
 			inputValidationListeners
 					.forEach(propertyChangeHandler::addValidationListener);
 		}
@@ -115,12 +111,12 @@ public class JapanesePanelActionsCreator {
 
 	public void addWordMeaningPropertyChangeListener(
 			JTextComponent wordMeaningTextField, JapaneseWord japaneseWord,
-			WordSearchOptions meaningSearchOptions, boolean addingWord) {
+			WordSearchOptions meaningSearchOptions, InputGoal inputGoal) {
 		wordMeaningChecker = new JapaneseWordMeaningChecker(
 				meaningSearchOptions);
 		addPropertyChangeHandler(wordMeaningTextField, japaneseWord, true, "",
 				wordMeaningChecker, parentDialog,
-				applicationController.getJapaneseWords(), addingWord);
+				applicationController.getJapaneseWords(), inputGoal);
 	}
 
 	public JTextComponent withSwitchToJapaneseActionOnClick(
@@ -181,11 +177,11 @@ public class JapanesePanelActionsCreator {
 
 	public AbstractButton updateWritingsInWordWhenDeleteWriting(
 			AbstractButton buttonDelete, JapaneseWord japaneseWord,
-			JapaneseWriting writing, boolean isForSearchDialog) {
+			JapaneseWriting writing, InputGoal inputGoal) {
 		buttonDelete.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				getOrCreateCheckerFor(writing, japaneseWord, isForSearchDialog)
+				getOrCreateCheckerFor(writing, japaneseWord, inputGoal)
 						.removeWriting(writing);
 				japaneseWord.getWritings().remove(writing);
 				applicationController.saveProject();

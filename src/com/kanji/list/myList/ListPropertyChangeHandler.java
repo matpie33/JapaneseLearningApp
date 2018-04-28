@@ -1,5 +1,6 @@
 package com.kanji.list.myList;
 
+import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.ListElement;
@@ -24,27 +25,27 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	private PropertyHolder propertyHolder;
 	private String defaultValue = "";
 	private boolean isRequiredField;
-	private boolean addingWord;
+	private InputGoal inputGoal;
 	private Set<InputValidationListener<PropertyHolder>> validationListeners = new HashSet<>();
 
 	public ListPropertyChangeHandler(PropertyHolder propertyHolder,
 			MyList<PropertyHolder> list, DialogWindow dialogWindow,
 			ListElementPropertyManager<Property, PropertyHolder> listElementPropertyManager,
-			boolean isRequiredField, boolean addingWord) {
+			boolean isRequiredField, InputGoal inputGoal) {
 		this.list = list;
 		this.dialogWindow = dialogWindow;
 		this.listElementPropertyManager = listElementPropertyManager;
 		this.propertyHolder = propertyHolder;
 		this.isRequiredField = isRequiredField;
-		this.addingWord = addingWord;
+		this.inputGoal = inputGoal;
 	}
 
 	public ListPropertyChangeHandler(PropertyHolder propertyHolder,
 			MyList<PropertyHolder> list, DialogWindow dialogWindow,
 			ListElementPropertyManager<Property, PropertyHolder> listElementPropertyManager,
-			String defaultValue, boolean isRequiredField, boolean addingWord) {
+			String defaultValue, boolean isRequiredField, InputGoal inputGoal) {
 		this(propertyHolder, list, dialogWindow, listElementPropertyManager,
-				isRequiredField, addingWord);
+				isRequiredField, inputGoal);
 		this.defaultValue = defaultValue;
 	}
 
@@ -72,7 +73,7 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 		JTextComponent input = (JTextComponent) e.getSource();
 		Property propertyNewValue = validateAndConvertToProperty(input);
 		boolean inputValid = propertyNewValue != null;
-		if (inputValid && addingWord) {
+		if (inputValid && !inputGoal.equals(InputGoal.SEARCH)) {
 			addWordToList(input, propertyNewValue);
 		}
 		notifyValidationListeners(inputValid);

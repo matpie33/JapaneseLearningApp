@@ -7,13 +7,13 @@ import com.guimaker.options.TextAreaOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
+import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Labels;
-import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.myList.InputValidationListener;
-import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.ListRowCreator;
+import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.ListRowDataCreator;
 import com.kanji.model.WordRow;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
@@ -35,7 +35,7 @@ public class RowInKanjiRepeatingList implements ListRowCreator<Kanji> {
 
 	@Override
 	public ListRowData createListRow(Kanji kanji,
-			CommonListElements commonListElements, boolean forSearchPanel) {
+			CommonListElements commonListElements, InputGoal inputGoal) {
 		MainPanel panel = new MainPanel(null);
 		JLabel id = new JLabel("" + kanji.getId());
 		id.setForeground(Color.white);
@@ -59,10 +59,6 @@ public class RowInKanjiRepeatingList implements ListRowCreator<Kanji> {
 				.fillHorizontallySomeElements(kanjiTextArea)
 				.nextRow(kanjiId, id).setColumnToPutRowInto(1)
 				.nextRow(buttonGoToSource).fillHorizontallyEqually());
-
-		if (forSearchPanel) {
-			//TODO to be merged
-		}
 
 		ListRowDataCreator<Kanji> rowDataCreator = new ListRowDataCreator<>(
 				panel);

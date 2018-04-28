@@ -1,6 +1,7 @@
 package com.kanji.list.listRows;
 
 import com.guimaker.panels.MainPanel;
+import com.kanji.constants.enums.InputGoal;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
 import com.kanji.list.myList.InputValidationListener;
@@ -34,7 +35,7 @@ public class RowInJapaneseWordInformations
 
 	@Override
 	public ListRowData createListRow(JapaneseWord japaneseWord,
-			CommonListElements commonListElements, boolean forSearchPanel) {
+			CommonListElements commonListElements, InputGoal inputGoal) {
 		MainPanel panel = new MainPanel(null);
 		JLabel rowNumberLabel = commonListElements.getRowNumberLabel();
 		JapaneseWordPanelCreator panelCreatorToUse;
@@ -51,7 +52,7 @@ public class RowInJapaneseWordInformations
 				.setLabelsColor(commonListElements.getLabelsColor());
 		ListRowData<JapaneseWord> rowData = panelCreatorToUse
 				.addJapanesePanelToExistingPanel(panel, japaneseWord,
-						forSearchPanel, commonListElements,
+						inputGoal, commonListElements,
 						!commonListElements.isForSingleRowOnly());
 		panelCreatorToUse.focusMeaningTextfield();
 

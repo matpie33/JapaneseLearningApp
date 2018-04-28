@@ -6,6 +6,7 @@ import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
+import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
@@ -27,7 +28,7 @@ public class RowInRepeatingList implements ListRowCreator<RepeatingData> {
 
 	@Override
 	public ListRowData createListRow(RepeatingData repeatingData,
-			CommonListElements commonListElements, boolean forSearchPanel) {
+			CommonListElements commonListElements, InputGoal inputGoal) {
 		String word = repeatingData.getRepeatingRange();
 		String time = repeatingData.getTimeSpentOnRepeating();
 		LocalDateTime date1 = repeatingData.getRepeatingDate();
@@ -59,7 +60,7 @@ public class RowInRepeatingList implements ListRowCreator<RepeatingData> {
 				.nextRow(repeatedWords).nextRow(timeSpent)
 				.nextRow(FillType.NONE, delete));
 
-		if (forSearchPanel) {
+		if (!inputGoal.equals(InputGoal.EDIT)) {
 			//TODO implement it for searching repeating list to work
 		}
 
