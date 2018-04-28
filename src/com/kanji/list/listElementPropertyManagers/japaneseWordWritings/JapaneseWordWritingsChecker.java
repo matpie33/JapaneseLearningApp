@@ -85,7 +85,16 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 
 	private boolean areKanjisSame(Set<String> searchedKanji,
 			Set<String> existingKanjiWritings) {
-		if (inputGoal.equals(InputGoal.ADD)) {
+
+		if (inputGoal.equals(InputGoal.SEARCH)) {
+			if (JapaneseWritingUtilities.areKanjiWritingsEmpty(searchedKanji)) {
+				return true;
+			}
+			else {
+				return existingKanjiWritings.containsAll(searchedKanji);
+			}
+		}
+		else{
 			if (JapaneseWritingUtilities
 					.areKanjiWritingsEmpty(existingKanjiWritings)) {
 				return true;
@@ -101,14 +110,7 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 						|| searchedKanji.containsAll(existingKanjiWritings);
 			}
 		}
-		else {
-			if (JapaneseWritingUtilities.areKanjiWritingsEmpty(searchedKanji)) {
-				return true;
-			}
-			else {
-				return existingKanjiWritings.containsAll(searchedKanji);
-			}
-		}
+
 
 	}
 
