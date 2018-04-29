@@ -2,21 +2,24 @@ package com.kanji.panelsAndControllers.controllers;
 
 import com.kanji.constants.enums.SearchingDirection;
 import com.kanji.constants.enums.WordSearchOptions;
-import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.ListElement;
+import com.kanji.list.myList.InputValidationListener;
 import com.kanji.list.myList.MyList;
+import com.kanji.model.PropertyPostValidationData;
 import com.kanji.panelsAndControllers.panels.SearchWordPanel;
 
 import javax.swing.*;
-import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.Map;
 
-public class SearchWordController<Word extends ListElement> {
+public class SearchWordController<Word extends ListElement>
+		implements InputValidationListener<Word> {
 
 	private SearchWordPanel searchWordPanel;
 	private MyList<Word> list;
+	private boolean searchWasRequested = false;
+	private SearchingDirection currentSearchDirection;
+	private Component lastFocusedElement;
 
 	public SearchWordController(SearchWordPanel panel, MyList list) {
 		this.searchWordPanel = panel;
@@ -45,39 +48,35 @@ public class SearchWordController<Word extends ListElement> {
 	}
 
 	public AbstractAction createActionFindWord(
-			SearchingDirection searchingDirection) {
+			SearchingDirection searchDirection) {
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Map<JTextComponent, ListElementPropertyManager> textInputAndPropertyManagerForListElement = searchWordPanel
-						.getTextFieldsWithPropertyManagersForCurrentProperty();
-				Component c = searchWordPanel.getDialog().getContainer()
-						.getFocusOwner();
-				JTextComponent focusedTextField;
-				if (c instanceof JTextComponent) {
-					focusedTextField = (JTextComponent) c;
-				}
-				else {
-					focusedTextField = textInputAndPropertyManagerForListElement
-							.keySet().iterator().next();
-				}
-				ListElementPropertyManager propertyManager = textInputAndPropertyManagerForListElement
-						.get(focusedTextField);
-				Object property = propertyManager
-						.validateInputAndConvertToProperty(focusedTextField);
-				//TODO if focused component isn't a textfield - all inputs are valid
-				//because they lost focus, that means why just have to convert to property
-				// but not validate - separate the methods
-
-				if (property == null) {
-					KeyboardFocusManager.getCurrentKeyboardFocusManager()
-							.clearGlobalFocusOwner();
-					return;
-				}
-				list.findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(
-						propertyManager, property, searchingDirection);
+				lastFocusedElement = searchWordPanel.getDialog().getContainer().getFocusOwner();
+				validateFocusedElement();
+				currentSearchDirection = searchDirection;
+				searchWasRequested = true;
 			}
 		};
 	}
 
+	private void validateFocusedElement (){
+		KeyboardFocusManager.getCurrentKeyboardFocusManager()
+				.clearGlobalFocusOwner();
+	}
+
+	@Override
+	public <Property> void inputValidated(
+			PropertyPostValidationData<Property, Word> postValidationData) {
+		if (postValidationData.isValid() && searchWasRequested) {
+			list.findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(
+					postValidationData.getPropertyManager(),
+					postValidationData.getRecentlyValidatedProperty(),
+					currentSearchDirection);
+			lastFocusedElement.requestFocusInWindow();
+		}
+		searchWasRequested = false;
+
+
+	}
 }

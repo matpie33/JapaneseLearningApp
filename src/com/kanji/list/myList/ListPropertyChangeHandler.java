@@ -4,6 +4,7 @@ import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.ListElement;
+import com.kanji.model.PropertyPostValidationData;
 import com.kanji.model.WordInMyListExistence;
 import com.kanji.utilities.StringUtilities;
 import com.kanji.windows.DialogWindow;
@@ -58,7 +59,8 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	public void focusGained(FocusEvent e) {
 		JTextComponent textInput = (JTextComponent) e.getSource();
 		textInput.setForeground(Color.WHITE);
-		previousValueOfTextInput = textInput.getText().isEmpty()? defaultValue:
+		previousValueOfTextInput = textInput.getText().isEmpty() ?
+				defaultValue :
 				textInput.getText();
 
 	}
@@ -76,16 +78,21 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 		if (inputValid && !inputGoal.equals(InputGoal.SEARCH)) {
 			addWordToList(input, propertyNewValue);
 		}
-		notifyValidationListeners(inputValid);
+		notifyValidationListeners(inputValid, propertyNewValue);
 
 	}
 
-	private void notifyValidationListeners(boolean inputValid) {
-		validationListeners.forEach(listener -> listener
-				.inputValidated(inputValid, propertyHolder));
+	private void notifyValidationListeners(boolean inputValid,
+			Property propertyNewValue) {
+		PropertyPostValidationData<Property, PropertyHolder> postValidationData = new PropertyPostValidationData<>(
+				propertyHolder, propertyNewValue, listElementPropertyManager,
+				inputValid);
+		validationListeners.forEach(
+				listener -> listener.inputValidated(postValidationData));
 	}
 
-	private void addWordToList(JTextComponent input, Property propertyNewValue) {
+	private void addWordToList(JTextComponent input,
+			Property propertyNewValue) {
 		listElementPropertyManager
 				.setProperty(propertyHolder, propertyNewValue);
 		WordInMyListExistence<PropertyHolder> wordInMyListExistence = list

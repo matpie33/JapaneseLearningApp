@@ -100,7 +100,7 @@ public class JapanesePanelActionsCreator {
 		ListPropertyChangeHandler<?, JapaneseWord> propertyChangeHandler = new ListPropertyChangeHandler<>(
 				japaneseWord, wordsList, parentDialog, propertyManager,
 				defaultValue, requiredInput, inputGoal);
-		if (inputGoal.equals(InputGoal.ADD)){
+		if (inputGoal.equals(InputGoal.ADD) || inputGoal.equals(InputGoal.SEARCH)){
 			inputValidationListeners
 					.forEach(propertyChangeHandler::addValidationListener);
 		}

@@ -4,6 +4,7 @@ import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.myList.InputValidationListener;
 import com.kanji.list.myList.MyList;
+import com.kanji.model.PropertyPostValidationData;
 import com.kanji.model.WordInMyListExistence;
 import com.kanji.panelsAndControllers.panels.InsertWordPanel;
 import com.kanji.windows.DialogWindow;
@@ -68,17 +69,22 @@ public class InsertWordController<Word extends ListElement>
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				KeyboardFocusManager.getCurrentKeyboardFocusManager()
-						.clearGlobalFocusOwner();
+				validateFocusedElement();
 				addingWordWasRequested = true;
 			}
 		};
 
 	}
 
+	private void validateFocusedElement() {
+		KeyboardFocusManager.getCurrentKeyboardFocusManager()
+				.clearGlobalFocusOwner();
+	}
+
 	@Override
-	public void inputValidated(boolean isValid, Word validatedWord) {
-		if (addingWordWasRequested && isValid) {
+	public <WordProperty> void inputValidated(
+			PropertyPostValidationData<WordProperty, Word> postValidationData) {
+		if (addingWordWasRequested && postValidationData.isValid()) {
 			addWordIfItsNew(insertWordPanel.getWord());
 			insertWordPanel.reinitializePanel();
 		}

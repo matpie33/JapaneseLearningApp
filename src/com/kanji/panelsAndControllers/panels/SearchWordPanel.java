@@ -63,7 +63,7 @@ public class SearchWordPanel<Word extends ListElement>
 		this.cardLayout = new CardLayout();
 		searchingPanel = new JPanel(this.cardLayout);
 		searchingPanel.setOpaque(false);
-
+		searchedList.getListRowCreator().addValidationListener(searchWordController);
 		listRowData = searchedList.getListRowCreator().createListRow(
 				searchedList.getWordInitializer().initializeElement(),
 				CommonListElements.forSingleRowOnly(Color.WHITE),
