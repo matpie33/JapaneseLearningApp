@@ -98,6 +98,12 @@ public class ProblematicJapaneseWordsDisplayer
 		MainPanel panel = problematicJapaneseWordsPanel
 				.getKanjiInformationPanel();
 		panel.clear();
+		panel.addElementsInColumn(SimpleRowBuilder.createRow(FillType.NONE,
+				GuiElementsCreator.createLabel(new ComponentOptions()
+						.text(Prompts.KANJI_INFORMATIONS)))
+				.setColumnToPutRowInto(2));
+		//TODO refactor mainpanel to respect anchors when mixing elements in column and elements one by one
+
 		for (String kanji : kanjis) {
 			Kanji kanjiInformation = kanjiInformations.
 					findRowBasedOnPropertyStartingFromBeginningOfList(

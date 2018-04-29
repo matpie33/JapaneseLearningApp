@@ -101,14 +101,15 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 				.makeFocusable(japaneseEnglishDictionaryPanel.getWebPanel());
 		FocusableComponentCreator
 				.makeFocusable(englishDictionaryPanel.getWebPanel());
-		FocusableComponentCreator.makeFocusable(kanjiInformationPanel.getPanel());
-		JScrollPane scrollPaneForKanjiInformations = GuiElementsCreator.createScrollPane(
-				new ScrollPaneOptions()
+		FocusableComponentCreator
+				.makeFocusable(kanjiInformationPanel.getPanel());
+		JScrollPane scrollPaneForKanjiInformations = GuiElementsCreator
+				.createScrollPane(new ScrollPaneOptions()
 						.componentToWrap(kanjiInformationPanel.getPanel()));
 		JSplitPane wordAndKanjiInformationSplitPane = CommonGuiElementsCreator
 				.createSplitPane(SplitPaneOrientation.VERTICAL,
-						problematicWords.getPanel(),
-						scrollPaneForKanjiInformations, 0.6);
+						scrollPaneForKanjiInformations,
+						problematicWords.getPanel(), 0.2);
 		JSplitPane dictionariesSplitPane = CommonGuiElementsCreator
 				.createSplitPane(SplitPaneOrientation.VERTICAL,
 						japaneseEnglishDictionaryPanel.getSwitchingPanel(),
