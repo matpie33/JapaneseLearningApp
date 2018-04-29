@@ -191,6 +191,7 @@ public class ApplicationWindow extends DialogWindow {
 		else {
 			//TODO when no words to review for given list exist, null pointer is thrown
 			activeProblematicWordsController.initializeSpaceBarAction();
+			activeProblematicWordsController.initializeBackspaceAction();
 			createDialog(activeProblematicWordsController.getPanel(),
 					Titles.PROBLEMATIC_KANJIS_WINDOW, true, Position.CENTER);
 			activeProblematicWordsController.initializeWindowListener();

@@ -9,7 +9,7 @@ import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.JapanesePanelDisplayMode;
-import com.kanji.constants.enums.SearchingDirection;
+import com.kanji.constants.enums.MovingDirection;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Titles;
@@ -103,7 +103,7 @@ public class ProblematicJapaneseWordsDisplayer
 					findRowBasedOnPropertyStartingFromBeginningOfList(
 							new KanjiIdChecker(),
 							kanjiCharactersReader.getIdOfKanji(kanji),
-							SearchingDirection.FORWARD, false);
+							MovingDirection.FORWARD, false);
 			JLabel kanjiLabel = GuiElementsCreator.createLabel(
 					new ComponentOptions().text(kanji)
 							.font(ApplicationWindow.getKanjiFont()));

@@ -263,7 +263,7 @@ public class ApplicationController implements ApplicationStateManager {
 					.findRowBasedOnPropertyStartingFromBeginningOfList(
 							new JapaneseWordMeaningChecker(
 									WordSearchOptions.BY_FULL_EXPRESSION),
-							meaning, SearchingDirection.FORWARD, true));
+							meaning, MovingDirection.FORWARD, true));
 		}
 		return japaneseWordInformations;
 	}
@@ -273,7 +273,7 @@ public class ApplicationController implements ApplicationStateManager {
 		for (Integer i : ids) {
 			kanjis.add(getKanjiList()
 					.findRowBasedOnPropertyStartingFromBeginningOfList(
-							new KanjiIdChecker(), i, SearchingDirection.FORWARD,
+							new KanjiIdChecker(), i, MovingDirection.FORWARD,
 							true));
 		}
 		return kanjis;

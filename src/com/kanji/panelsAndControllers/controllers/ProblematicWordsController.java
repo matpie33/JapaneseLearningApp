@@ -1,6 +1,7 @@
 package com.kanji.panelsAndControllers.controllers;
 
 import com.kanji.constants.enums.ApplicationSaveableState;
+import com.kanji.constants.enums.MovingDirection;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.Kanji;
@@ -27,12 +28,14 @@ import java.util.Set;
 public class ProblematicWordsController<Element extends ListElement>
 		implements ApplicationStateManager {
 	private List<WordRow> wordsToReview;
+	private int nextWordToReview = 0;
 	//TODO 2 variables with similar names -> maybe remove WordRow class and use map ->
 	// row number to list element
 	private MyList<Element> wordsToReviewList;
 	private ApplicationController applicationController;
 	private ApplicationWindow applicationWindow;
 	private ProblematicWordsDisplayer<Element> problematicWordsDisplayer;
+	private boolean wordsReviewed = false;
 
 	public ProblematicWordsController(ApplicationWindow applicationWindow) {
 		applicationController = applicationWindow.getApplicationController();
@@ -46,6 +49,7 @@ public class ProblematicWordsController<Element extends ListElement>
 		problematicWordsDisplayer.getPanel().setMaximize(true);
 		getPanel().getDialog().maximize();
 		wordsToReviewList = problematicWordsDisplayer.getWordsToReviewList();
+
 	}
 
 	public void initialize() {
@@ -83,6 +87,7 @@ public class ProblematicWordsController<Element extends ListElement>
 			addWord(word);
 		}
 		wordsToReviewList.scrollToTop();
+		goToNextResource();
 	}
 
 	private void addWord(Element word) {
@@ -94,24 +99,20 @@ public class ProblematicWordsController<Element extends ListElement>
 	}
 
 	private void goToNextResource() {
-		WordRow row = wordsToReview.get(0);
+		WordRow row = wordsToReview.get(nextWordToReview);
 		goToSpecifiedResource(row);
 	}
 
 	public void goToSpecifiedResource(WordRow row) {
-		wordsToReview.remove(row);
 		//TODO do I really need the kanji context as separate class? theres so many already,
 		//I should reconsider some of the modelling objects
 		problematicWordsDisplayer.browseWord(row);
 		wordsToReviewList.highlightRow(row.getRowNumber());
+
 	}
 
 	public boolean haveAllWordsBeenRepeated() {
-		return wordsToReviewList.areAllWordsHighlighted();
-	}
-
-	public boolean hasWordsToReview() {
-		return !wordsToReview.isEmpty();
+		return wordsReviewed;
 	}
 
 	public void closeDialogAndManageState(DialogWindow parentDialog) {
@@ -125,21 +126,35 @@ public class ProblematicWordsController<Element extends ListElement>
 		parentDialog.getContainer().dispose();
 	}
 
-	public AbstractAction createActionShowNextWordOrCloseDialog() {
+	public AbstractAction createActionShowNextWordOrCloseDialog(
+			MovingDirection direction) {
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!problematicWordsDisplayer.isListPanelFocused()) {
 					return;
 				}
-				if (hasWordsToReview())
-					goToNextResource();
-				else {
-					problematicWordsDisplayer.getPanel().getDialog()
-							.showMessageDialog(Prompts.NO_MORE_WORDS_TO_REVIEW);
+				nextWordToReview =
+						nextWordToReview + direction.getIncrementationValue();
+				if (nextWordToReview <0){
+					nextWordToReview = 0;
+					return;
 				}
+				if (nextWordToReview == wordsToReview.size() - 1) {
+					wordsReviewed = true;
+				}
+				if (nextWordToReview == wordsToReview.size()) {
+					applicationWindow
+							.showMessageDialog(Prompts.NO_MORE_WORDS_TO_REVIEW);
+					nextWordToReview = 0;
+					wordsToReviewList.clearHighlightedWords();
+				}
+
+				goToNextResource();
+
 			}
 		};
+
 	}
 
 	public int getNumberOfRows() {
@@ -192,6 +207,8 @@ public class ProblematicWordsController<Element extends ListElement>
 			wordsToReviewList.highlightRow(i);
 			i++;
 		}
+		nextWordToReview = i;
+		goToNextResource();
 		for (Element listElement : notReviewedWords) {
 			addWord(listElement);
 		}
@@ -218,8 +235,18 @@ public class ProblematicWordsController<Element extends ListElement>
 	public void initializeSpaceBarAction() {
 
 		getPanel().addHotkey(KeyEvent.VK_SPACE,
-				createActionShowNextWordOrCloseDialog(), getPanel().getPanel(),
-				HotkeysDescriptions.SHOW_NEXT_KANJI);
+				createActionShowNextWordOrCloseDialog(MovingDirection.FORWARD),
+				getPanel().getPanel(),
+				HotkeysDescriptions.SHOW_NEXT_PROBLEMATIC_WORD);
+
+	}
+
+	public void initializeBackspaceAction() {
+
+		getPanel().addHotkey(KeyEvent.VK_BACK_SPACE,
+				createActionShowNextWordOrCloseDialog(MovingDirection.BACKWARD),
+				getPanel().getPanel(),
+				HotkeysDescriptions.SHOW_PREVIOUS_PROBLEMATIC_WORD);
 
 	}
 

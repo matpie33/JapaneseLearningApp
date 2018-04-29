@@ -10,7 +10,7 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
 import com.kanji.constants.enums.InputGoal;
-import com.kanji.constants.enums.SearchingDirection;
+import com.kanji.constants.enums.MovingDirection;
 import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
@@ -189,14 +189,14 @@ public class SearchWordPanel<Word extends ListElement>
 	private AbstractButton createButtonFindPrevious() {
 		return createButtonWithHotkey(KeyModifiers.SHIFT, KeyEvent.VK_ENTER,
 				searchWordController
-						.createActionFindWord(SearchingDirection.BACKWARD),
+						.createActionFindWord(MovingDirection.BACKWARD),
 				ButtonsNames.FIND_PREVIOUS,
 				HotkeysDescriptions.SEARCH_PREVIOUS_KANJI);
 	}
 
 	private AbstractButton createButtonFindNext() {
 		return createButtonWithHotkey(KeyEvent.VK_ENTER, searchWordController
-						.createActionFindWord(SearchingDirection.FORWARD),
+						.createActionFindWord(MovingDirection.FORWARD),
 				ButtonsNames.FIND_NEXT, HotkeysDescriptions.SEARCH_NEXT_KANJI);
 	}
 

@@ -1,12 +1,12 @@
 package com.kanji.constants.enums;
 
-public enum SearchingDirection {
+public enum MovingDirection {
 
 	FORWARD(1), BACKWARD(-1);
 
 	private int incrementationValue;
 
-	SearchingDirection(int incrementValue) {
+	MovingDirection(int incrementValue) {
 		incrementationValue = incrementValue;
 	}
 

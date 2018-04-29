@@ -1,7 +1,7 @@
 package com.kanji.list.myList;
 
 import com.kanji.constants.enums.InputGoal;
-import com.kanji.constants.enums.SearchingDirection;
+import com.kanji.constants.enums.MovingDirection;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.ListElement;
@@ -97,7 +97,7 @@ public class MyList<Word extends ListElement> {
 	public <Property> void findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(
 			ListElementPropertyManager<Property, Word> propertyChecker,
 			Property searchedPropertyValue,
-			SearchingDirection searchDirection) {
+			MovingDirection searchDirection) {
 		int rowNumber = findRowNumberBasedOnPropertyStartingFromHighlightedWord(
 				propertyChecker, searchedPropertyValue, searchDirection);
 		if (rowNumber < 0) {
@@ -110,7 +110,7 @@ public class MyList<Word extends ListElement> {
 	public <Property> Word findRowBasedOnPropertyStartingFromHighlightedWord(
 			ListElementPropertyManager<Property, Word> propertyChecker,
 			Property searchedPropertyValue,
-			SearchingDirection searchDirection) {
+			MovingDirection searchDirection) {
 		int rowNumber = findRowNumberBasedOnPropertyStartingFromHighlightedWord(
 				propertyChecker, searchedPropertyValue, searchDirection);
 		if (rowNumber != -1) {
@@ -121,7 +121,7 @@ public class MyList<Word extends ListElement> {
 
 	private <Property> int findRowNumberBasedOnProperty(
 			ListElementPropertyManager<Property, Word> propertyChecker,
-			Property searchedPropertyValue, SearchingDirection searchDirection,
+			Property searchedPropertyValue, MovingDirection searchDirection,
 			boolean checkHighlightedWordToo, boolean displayMessage) {
 
 		int lastRowToSearch = 0;
@@ -181,14 +181,14 @@ public class MyList<Word extends ListElement> {
 	public <Property> int findRowNumberBasedOnPropertyStartingFromHighlightedWord(
 			ListElementPropertyManager<Property, Word> propertyChecker,
 			Property searchedPropertyValue,
-			SearchingDirection searchDirection) {
+			MovingDirection searchDirection) {
 		return findRowNumberBasedOnProperty(propertyChecker,
 				searchedPropertyValue, searchDirection, false, true);
 	}
 
 	public <Property> Word findRowBasedOnPropertyStartingFromBeginningOfList(
 			ListElementPropertyManager<Property, Word> propertyChecker,
-			Property searchedPropertyValue, SearchingDirection searchDirection,
+			Property searchedPropertyValue, MovingDirection searchDirection,
 			boolean displayMessage) {
 		int rowNumber = findRowNumberBasedOnProperty(propertyChecker,
 				searchedPropertyValue, searchDirection, true, displayMessage);
@@ -298,5 +298,9 @@ public class MyList<Word extends ListElement> {
 
 	public void showWordsStartingFromRow(int firstRowToLoad) {
 		listController.showWordsStartingFromRow(firstRowToLoad);
+	}
+
+	public void clearHighlightedWords() {
+		listController.clearHighlightedWords();
 	}
 }

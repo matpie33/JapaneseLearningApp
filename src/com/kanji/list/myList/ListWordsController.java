@@ -146,6 +146,14 @@ public class ListWordsController<Word extends ListElement> {
 		currentlyHighlightedWord = foundWord;
 	}
 
+	public void clearHighlightedWords (){
+		for (ListRow<Word> listRow : allWordsToRowNumberMap.values()) {
+			if (listRow.isHighlighted()){
+				listPanelCreator.clearHighlightedRow(listRow.getPanel());
+			}
+		}
+	}
+
 	private void loadWordsIfNecessary(int foundWordRowNumber) {
 		for (LoadWordsForFoundWord strategyForFoundWord : strategiesForFoundWord) {
 			if (strategyForFoundWord.isApplicable(foundWordRowNumber,
