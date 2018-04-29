@@ -2,6 +2,7 @@ package com.kanji.panelsAndControllers.controllers;
 
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.Labels;
+import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.RepeatingData;
 import com.kanji.model.RangesRow;
@@ -58,6 +59,24 @@ public class LearningStartController {
 	}
 
 	private void addOrSubtractProblematicKanjisFromSum(int direction) {
+		if (applicationController.getActiveWordsList().getListElementClass()
+				.equals(Kanji.class)) {
+			updateSumBasedOnProblematicKanjis(direction);
+		}
+		else {
+			updateSumBasedOnProblematicWords(direction);
+		}
+
+	}
+
+	private void updateSumBasedOnProblematicWords(int direction) {
+		Set<JapaneseWord> problematicWords = applicationController
+				.getProblematicJapaneseWords();
+		sumOfWords += direction * problematicWords.size();
+		//TODO figure out if problematic word is or is not inside selected range
+	}
+
+	private void updateSumBasedOnProblematicKanjis(int direction) {
 		Set<Kanji> problematics = applicationController.getProblematicKanjis();
 		for (Kanji i : problematics) {
 			if (!rangesToRepeat.isValueInsideThisSet(i.getId())) {
@@ -351,8 +370,9 @@ public class LearningStartController {
 		};
 	}
 
-	public KeyAdapter createListenerForKeyTyped(AbstractButton problematicCheckbox,
-			JTextComponent from, JTextComponent to) {
+	public KeyAdapter createListenerForKeyTyped(
+			AbstractButton problematicCheckbox, JTextComponent from,
+			JTextComponent to) {
 		return new KeyAdapter() {
 
 			@Override
@@ -369,8 +389,9 @@ public class LearningStartController {
 		};
 	}
 
-	public AbstractAction createActionDeleteRow(AbstractButton problematicCheckbox,
-			JTextComponent from, JTextComponent to) {
+	public AbstractAction createActionDeleteRow(
+			AbstractButton problematicCheckbox, JTextComponent from,
+			JTextComponent to) {
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

@@ -22,6 +22,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
+	//TODO refactor needed - too much of controller in this panel
 
 	private JScrollPane scrollPane;
 	private JTextComponent sumRangeField;
