@@ -26,5 +26,8 @@ public class HotkeysDescriptions {
 	public static final String RETURN_FROM_LEARNING = "Przerywa naukę.";
 	public static final String SWITCH_WORD_TAB = "Przechodzi do kolejnej zakładki.";
 	public static final String SWITCH_SEARCH_CRITERIA = "Przełącza kryteria wyszukiwania.";
-
+	public static final String SELECT_NEXT_INPUT_IN_SAME_ROW = "Przechodzi do następnego pola tekstowego w tym samym wierszu.";
+	public static final String SELECT_PREVIOUS_INPUT_IN_SAME_ROW = "Przechodzi do następnego pola tekstowego w tym samym wierszu.";
+	public static final String SELECT_INPUT_BELOW_CURRENT = "Przechodzi do pola tekstowego poniżej zaznaczonego.";
+	public static final String SELECT_INPUT_ABOVE_CURRENT = "Przechodzi do pola tekstowego powyżej zaznaczonego.";
 }

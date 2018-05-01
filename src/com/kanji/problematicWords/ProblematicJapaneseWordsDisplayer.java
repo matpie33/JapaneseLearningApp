@@ -2,13 +2,13 @@ package com.kanji.problematicWords;
 
 import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
+import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.TextAreaOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.kanji.constants.enums.JapanesePanelDisplayMode;
 import com.kanji.constants.enums.MovingDirection;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Prompts;
@@ -81,7 +81,7 @@ public class ProblematicJapaneseWordsDisplayer
 			ApplicationWindow applicationWindow) {
 		return new JapaneseWordPanelCreator(
 				applicationWindow.getApplicationController(), applicationWindow,
-				JapanesePanelDisplayMode.VIEW);
+				PanelDisplayMode.VIEW);
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class ProblematicJapaneseWordsDisplayer
 				GuiElementsCreator.createLabel(new ComponentOptions()
 						.text(Prompts.KANJI_INFORMATIONS)))
 				.setColumnToPutRowInto(2));
-		//TODO refactor mainpanel to respect anchors when mixing elements in column and elements one by one
+		//TODO refactor main panel to respect anchors when mixing elements in column and elements one by one
 
 		for (String kanji : kanjis) {
 			Kanji kanjiInformation = kanjiInformations.
@@ -179,8 +179,9 @@ public class ProblematicJapaneseWordsDisplayer
 	}
 
 	public void searchCurrentWordInDictionary() {
-		String currentlySelectedWord = selectionHandler
-				.getCurrentlySelectedWord();
+		String currentlySelectedWord = "abc";
+		//				wordsToReviewList.getPanelWithSelectedInput()
+		//				.getText();
 		if (!currentlySelectedWord.isEmpty()) {
 			problematicJapaneseWordsPanel.searchWord(currentlySelectedWord);
 		}

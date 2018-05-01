@@ -1,5 +1,6 @@
 package com.kanji.panelsAndControllers.controllers;
 
+import com.guimaker.utilities.KeyModifiers;
 import com.kanji.constants.enums.ApplicationSaveableState;
 import com.kanji.constants.enums.MovingDirection;
 import com.kanji.constants.strings.HotkeysDescriptions;
@@ -25,16 +26,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class ProblematicWordsController<Element extends ListElement>
+public class ProblematicWordsController<Word extends ListElement>
 		implements ApplicationStateManager {
 	private List<WordRow> wordsToReview;
 	private int nextWordToReview = 0;
 	//TODO 2 variables with similar names -> maybe remove WordRow class and use map ->
 	// row number to list element
-	private MyList<Element> wordsToReviewList;
+	private MyList<Word> wordsToReviewList;
 	private ApplicationController applicationController;
 	private ApplicationWindow applicationWindow;
-	private ProblematicWordsDisplayer<Element> problematicWordsDisplayer;
+	private ProblematicWordsDisplayer<Word> problematicWordsDisplayer;
 	private boolean wordsReviewed = false;
 
 	public ProblematicWordsController(ApplicationWindow applicationWindow) {
@@ -44,7 +45,7 @@ public class ProblematicWordsController<Element extends ListElement>
 	}
 
 	public void setProblematicWordsDisplayer(
-			ProblematicWordsDisplayer<Element> problematicWordsDisplayer) {
+			ProblematicWordsDisplayer<Word> problematicWordsDisplayer) {
 		this.problematicWordsDisplayer = problematicWordsDisplayer;
 		problematicWordsDisplayer.getPanel().setMaximize(true);
 		getPanel().getDialog().maximize();
@@ -56,19 +57,19 @@ public class ProblematicWordsController<Element extends ListElement>
 		problematicWordsDisplayer.initialize();
 	}
 
-	public void createProblematicWordsList(List<Element> reviewedWords,
-			List<Element> notReviewedWords) {
+	public void createProblematicWordsList(List<Word> reviewedWords,
+			List<Word> notReviewedWords) {
 		for (int i = 0; i < reviewedWords.size(); i++) {
-			Element reviewedElement = reviewedWords.get(i);
-			wordsToReviewList.addWord(reviewedElement);
+			Word reviewedWord = reviewedWords.get(i);
+			wordsToReviewList.addWord(reviewedWord);
 
 		}
 		int firstUnreviewedWordRowNumber = reviewedWords.size();
 		for (int i = 0; i < notReviewedWords.size(); i++) {
-			Element notReviewedElement = notReviewedWords.get(i);
-			wordsToReviewList.addWord(notReviewedElement);
+			Word notReviewedWord = notReviewedWords.get(i);
+			wordsToReviewList.addWord(notReviewedWord);
 			wordsToReview.add(problematicWordsDisplayer
-					.createWordRow(notReviewedElement,
+					.createWordRow(notReviewedWord,
 							firstUnreviewedWordRowNumber + i));
 		}
 	}
@@ -79,18 +80,18 @@ public class ProblematicWordsController<Element extends ListElement>
 		}
 	}
 
-	public void addProblematicWords(Set<Element> problematicWords) {
+	public void addProblematicWords(Set<Word> problematicWords) {
 		if (wordsToReview.isEmpty()) {
 			wordsToReviewList.cleanWords();
 		}
-		for (Element word : problematicWords) {
+		for (Word word : problematicWords) {
 			addWord(word);
 		}
 		wordsToReviewList.scrollToTop();
 		goToNextResource();
 	}
 
-	private void addWord(Element word) {
+	private void addWord(Word word) {
 		boolean addedToList = wordsToReviewList.addWord(word);
 		if (addedToList) {
 			wordsToReview.add(problematicWordsDisplayer.createWordRow(word,
@@ -136,7 +137,7 @@ public class ProblematicWordsController<Element extends ListElement>
 				}
 				nextWordToReview =
 						nextWordToReview + direction.getIncrementationValue();
-				if (nextWordToReview <0){
+				if (nextWordToReview < 0) {
 					nextWordToReview = 0;
 					return;
 				}
@@ -167,7 +168,7 @@ public class ProblematicWordsController<Element extends ListElement>
 
 	@Override
 	public SavingInformation getApplicationState() {
-		ProblematicKanjisState<Element> information = new ProblematicKanjisState<>(
+		ProblematicKanjisState<Word> information = new ProblematicKanjisState<>(
 				wordsToReviewList.getHighlightedWords(),
 				wordsToReviewList.getNotHighlightedWords());
 
@@ -200,17 +201,17 @@ public class ProblematicWordsController<Element extends ListElement>
 	}
 
 	public void addProblematicWordsHighlightReviewed(
-			List<Element> reviewedWords, List<Element> notReviewedWords) {
+			List<Word> reviewedWords, List<Word> notReviewedWords) {
 		int i = 0;
-		for (Element listElement : reviewedWords) {
-			wordsToReviewList.addWord(listElement);
+		for (Word listWord : reviewedWords) {
+			wordsToReviewList.addWord(listWord);
 			wordsToReviewList.highlightRow(i);
 			i++;
 		}
 		nextWordToReview = i;
 		goToNextResource();
-		for (Element listElement : notReviewedWords) {
-			addWord(listElement);
+		for (Word listWord : notReviewedWords) {
+			addWord(listWord);
 		}
 
 	}
@@ -232,22 +233,35 @@ public class ProblematicWordsController<Element extends ListElement>
 		return problematicWordsDisplayer.getPanel();
 	}
 
-	public void initializeSpaceBarAction() {
+	public void initializeHotkeyActions() {
+		initializeActionBrowseNextWord();
+		initializeActionBrowsePreviousWord();
+		//TODO this doesn't have to be public, we can do it whenever panel is ready
+	}
 
-		getPanel().addHotkey(KeyEvent.VK_SPACE,
+	private void initializeAction(int hotkey, AbstractAction action,
+			String actionDescription) {
+		getPanel().addHotkey(hotkey, action, getPanel().getPanel(),
+				actionDescription);
+	}
+
+	private void initializeAction(KeyModifiers keyModifier, int hotkey,
+			AbstractAction action, String actionDescription) {
+		getPanel().addHotkey(hotkey, action, getPanel().getPanel(),
+				actionDescription);
+	}
+
+	private void initializeActionBrowseNextWord() {
+		initializeAction(KeyEvent.VK_SPACE,
 				createActionShowNextWordOrCloseDialog(MovingDirection.FORWARD),
-				getPanel().getPanel(),
 				HotkeysDescriptions.SHOW_NEXT_PROBLEMATIC_WORD);
 
 	}
 
-	public void initializeBackspaceAction() {
-
-		getPanel().addHotkey(KeyEvent.VK_BACK_SPACE,
+	private void initializeActionBrowsePreviousWord() {
+		initializeAction(KeyEvent.VK_BACK_SPACE,
 				createActionShowNextWordOrCloseDialog(MovingDirection.BACKWARD),
-				getPanel().getPanel(),
 				HotkeysDescriptions.SHOW_PREVIOUS_PROBLEMATIC_WORD);
-
 	}
 
 	public void initializeWindowListener() {
@@ -258,6 +272,10 @@ public class ProblematicWordsController<Element extends ListElement>
 						closeDialogAndManageState(getPanel().getDialog());
 					}
 				});
+	}
+
+	public Word getCurrentlySelectedWord (){
+		return wordsToReviewList.getWordInRow(nextWordToReview);
 	}
 
 }

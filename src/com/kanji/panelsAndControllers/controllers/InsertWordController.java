@@ -2,7 +2,7 @@ package com.kanji.panelsAndControllers.controllers;
 
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElements.ListElement;
-import com.kanji.list.myList.InputValidationListener;
+import com.kanji.list.listeners.InputValidationListener;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.PropertyPostValidationData;
 import com.kanji.model.WordInMyListExistence;

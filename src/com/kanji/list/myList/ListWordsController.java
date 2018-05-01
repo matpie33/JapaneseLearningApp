@@ -1,6 +1,8 @@
 package com.kanji.list.myList;
 
+import com.guimaker.panels.MainPanel;
 import com.kanji.constants.enums.InputGoal;
+import com.kanji.constants.enums.MovingDirection;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.ListElement;
@@ -88,7 +90,7 @@ public class ListWordsController<Word extends ListElement> {
 
 	public void remove(Word word) {
 		ListRow<Word> listRow = findListRowContainingWord(word);
-		int panelRowNumber = listPanelCreator.removeRow(listRow.getPanel());
+		int panelRowNumber = listPanelCreator.removeRow(listRow.getJPanel());
 		int listRowNumber = panelRowNumber - 1;
 		allWordsToRowNumberMap.remove(listRowNumber);
 		updateRowNumbers(listRowNumber);
@@ -140,16 +142,16 @@ public class ListWordsController<Word extends ListElement> {
 		foundWord.setHighlighted(true);
 		if (clearLastHighlightedWord && currentlyHighlightedWord != null) {
 			listPanelCreator
-					.clearHighlightedRow(currentlyHighlightedWord.getPanel());
+					.clearHighlightedRow(currentlyHighlightedWord.getJPanel());
 		}
-		listPanelCreator.highlightRowAndScroll(foundWord.getPanel());
+		listPanelCreator.highlightRowAndScroll(foundWord.getJPanel());
 		currentlyHighlightedWord = foundWord;
 	}
 
-	public void clearHighlightedWords (){
+	public void clearHighlightedWords() {
 		for (ListRow<Word> listRow : allWordsToRowNumberMap.values()) {
-			if (listRow.isHighlighted()){
-				listPanelCreator.clearHighlightedRow(listRow.getPanel());
+			if (listRow.isHighlighted()) {
+				listPanelCreator.clearHighlightedRow(listRow.getJPanel());
 			}
 		}
 	}
@@ -277,7 +279,8 @@ public class ListWordsController<Word extends ListElement> {
 		lastRowVisible++;
 		ListRow visibleRow = listPanelCreator
 				.addRow(allWordsToRowNumberMap.get(lastRowVisible).getWord(),
-						lastRowVisible + 1, true, loadNextWords, InputGoal.EDIT);
+						lastRowVisible + 1, true, loadNextWords,
+						InputGoal.EDIT);
 		allWordsToRowNumberMap.put(lastRowVisible, visibleRow);
 	}
 
@@ -308,5 +311,37 @@ public class ListWordsController<Word extends ListElement> {
 	//TODO not the best idea to pass the boolean "is for search panel" - maybe keep it as field
 	public void addNewWord(InputGoal inputGoal) {
 		add(wordInitializer.initializeElement(), inputGoal);
+	}
+
+	public MainPanel getPanelWithSelectedInput() {
+		return getRowWithSelectedInput().getWrappingPanel();
+	}
+
+	public ListRow<Word> getRowWithSelectedInput() {
+		for (ListRow<Word> listRow : allWordsToRowNumberMap.values()) {
+			if (listRow.getWrappingPanel().hasSelectedInput()) {
+				return listRow;
+			}
+		}
+		return null;
+	}
+
+	public void selectPanelBelowOrAboveSelected(
+			MovingDirection movingDirection) {
+		ListRow<Word> selectedRow = getRowWithSelectedInput();
+		int rowNumberOfSelectedPanel = selectedRow.getRowNumber();
+		int columnNumber = selectedRow.getWrappingPanel()
+				.getSelectedInputIndex();
+		MainPanel panelBelowOrAbove = null;
+		for (ListRow<Word> listRow : allWordsToRowNumberMap.values()) {
+			if (listRow.getRowNumber()
+					== rowNumberOfSelectedPanel + movingDirection
+					.getIncrementationValue()) {
+				panelBelowOrAbove = listRow.getWrappingPanel();
+			}
+		}
+		if (panelBelowOrAbove != null){
+			panelBelowOrAbove.selectInputInColumn(columnNumber);
+		}
 	}
 }

@@ -28,7 +28,7 @@ import java.net.HttpCookie;
 public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		implements ContextOwner {
 
-	private ProblematicWordsController problematicWordsController;
+	private ProblematicWordsController<JapaneseWord> problematicWordsController;
 	private MyList<JapaneseWord> problematicWords;
 	private MainPanel kanjiInformationPanel;
 	private WebPagePanel englishDictionaryPanel;
@@ -41,7 +41,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	private ProblematicJapaneseWordsDisplayer problematicJapaneseWordsDisplayer;
 
 	public ProblematicJapaneseWordsPanel(
-			ProblematicWordsController problematicWordsController,
+			ProblematicWordsController<JapaneseWord> problematicWordsController,
 			ApplicationWindow parent,
 			ProblematicJapaneseWordsDisplayer problematicWordsDisplayer) {
 		parentDialog = parent;

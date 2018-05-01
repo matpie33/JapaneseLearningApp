@@ -1,4 +1,4 @@
-package com.kanji.list.myList;
+package com.kanji.list.listeners;
 
 import com.kanji.list.listElements.ListElement;
 import com.kanji.model.PropertyPostValidationData;

@@ -1,5 +1,8 @@
 package com.kanji.panelsAndControllers.controllers;
 
+import com.guimaker.enums.MoveDirection;
+import com.guimaker.enums.PanelDisplayMode;
+import com.guimaker.utilities.HotkeyWrapper;
 import com.kanji.constants.enums.*;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.Titles;
@@ -78,7 +81,7 @@ public class ApplicationController implements ApplicationStateManager {
 
 	private JapaneseWordPanelCreator createJapanesePanelCreator() {
 		return new JapaneseWordPanelCreator(this, parent,
-				JapanesePanelDisplayMode.VIEW);
+				PanelDisplayMode.VIEW);
 		//TODO parent dialog is not needed without validation i.e. in view mode
 	}
 
@@ -123,7 +126,7 @@ public class ApplicationController implements ApplicationStateManager {
 
 	private void initializeJapaneseWordsList() {
 		JapaneseWordPanelCreator japaneseWordPanelCreator = new JapaneseWordPanelCreator(
-				this, parent, JapanesePanelDisplayMode.EDIT);
+				this, parent, PanelDisplayMode.EDIT);
 		rowInJapaneseWordInformations = new RowInJapaneseWordInformations(
 				japaneseWordPanelCreator);
 		japaneseWords = new MyList<>(parent, this,
@@ -235,10 +238,10 @@ public class ApplicationController implements ApplicationStateManager {
 		kanjiList.cleanWords();
 		kanjiRepeatingDates.cleanWords();
 
-		for (Kanji kanji: kanjiInformations){
+		for (Kanji kanji : kanjiInformations) {
 			kanjiList.addWord(kanji);
 		}
-		for (RepeatingData repeatingData: repeatingInformations){
+		for (RepeatingData repeatingData : repeatingInformations) {
 			getKanjiRepeatingDates().addWord(repeatingData);
 		}
 		setProblematicWordsAndUpdateInformation(

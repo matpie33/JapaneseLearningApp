@@ -4,6 +4,9 @@ import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
+import com.guimaker.enums.PanelDisplayMode;
+import com.guimaker.inputSelection.ListInputsSelectionManager;
+import com.guimaker.model.PanelConfiguration;
 import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.ScrollPaneOptions;
@@ -33,6 +36,7 @@ public class ListPanelCreator<Word extends ListElement>
 		extends AbstractPanelWithHotkeysInfo {
 
 	private static final Color BACKGROUND_COLOR = BasicColors.VERY_BLUE;
+	private ListInputsSelectionManager listInputsSelectionManager;
 	private ListWordsController<Word> listWordsController;
 	private MainPanel rowsPanel;
 	private JScrollPane parentScrollPane;
@@ -63,7 +67,9 @@ public class ListPanelCreator<Word extends ListElement>
 		listWordsController = controller;
 
 		isSkipTitle = listConfiguration.isSkipTitle();
-		rowsPanel = new MainPanel(null, true);
+		rowsPanel = new MainPanel(null, true, true,
+				new PanelConfiguration(PanelDisplayMode.EDIT));
+		//TODO add field - list display mode - edit or view
 		rootPanel = new MainPanel(null);
 		titleLabel = GuiElementsCreator.createLabel(new ComponentOptions());
 		loadNextWordsHandler = new LoadNextWordsHandler(listWordsController,
@@ -74,6 +80,7 @@ public class ListPanelCreator<Word extends ListElement>
 
 		navigationButtons = new ArrayList<>();
 		unwrapConfiguration(listConfiguration);
+		listInputsSelectionManager = new ListInputsSelectionManager();
 
 	}
 
@@ -87,6 +94,7 @@ public class ListPanelCreator<Word extends ListElement>
 				.isScrollBarSizeFittingContent();
 		addNavigationButtons(
 				listConfiguration.getAdditionalNavigationButtons());
+		//TODO redundant code - keep reference to list configuration instead of keep all the params in this class
 	}
 
 	public void inheritScrollPane() {
@@ -145,19 +153,24 @@ public class ListPanelCreator<Word extends ListElement>
 		CommonListElements commonListElements = new CommonListElements(remove,
 				rowNumberLabel, addNewWord, labelsColor, false);
 		rowNumberLabel.setForeground(labelsColor);
-		JComponent row = null;
+		MainPanel rowPanel = null;
 		if (shouldShowWord) {
+			rowPanel = listRow
+					.createListRow(word, commonListElements, inputGoal)
+					.getRowPanel();
 			AbstractSimpleRow abstractSimpleRow = SimpleRowBuilder
 					.createRow(FillType.HORIZONTAL, Anchor.NORTH,
-							listRow.createListRow(word, commonListElements,
-									inputGoal).getRowPanel().getPanel());
-			row = loadWordsHandler.showWord(abstractSimpleRow);
+							rowPanel.getPanel());
+			loadWordsHandler.showWord(abstractSimpleRow);
 		}
 		else if (!buttonLoadNextWords.isEnabled()) {
 			buttonLoadNextWords.setEnabled(true);
 		}
+		if (rowPanel != null) {
+			rowPanel.addManager(listInputsSelectionManager);
+		}
 		rowsPanel.updateView();
-		return new ListRow<>(word, row, rowNumberLabel);
+		return new ListRow<>(word, rowPanel, rowNumberLabel, rowNumber);
 	}
 
 	private AbstractButton createButtonAddRow(InputGoal inputGoal) {
@@ -337,5 +350,9 @@ public class ListPanelCreator<Word extends ListElement>
 
 	public void enableButtonShowPreviousWords() {
 		buttonLoadPreviousWords.setEnabled(true);
+	}
+
+	public MainPanel getRowsPanel() {
+		return rowsPanel;
 	}
 }

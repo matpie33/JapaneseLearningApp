@@ -51,6 +51,12 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 		applicationWindow = a;
 		this.mainApplicationPanel = mainApplicationPanel;
 		applicationController = a.getApplicationController();
+		tabs = new JTabbedPane();
+		wordTypeContext = new WordTypeContext();
+		startingController = new StartingController(this);
+	}
+
+	public void createListPanels() {
 		kanjiRepeatingPanel = new WordsAndRepeatingInformationsPanel(
 				applicationController.getKanjiList(),
 				applicationController.getKanjiRepeatingDates(),
@@ -59,9 +65,6 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 				applicationController.getJapaneseWords(),
 				applicationController.getJapaneseWordsRepeatingDates(),
 				TypeOfWordForRepeating.JAPANESE_WORDS);
-		tabs = new JTabbedPane();
-		wordTypeContext = new WordTypeContext();
-		startingController = new StartingController(this);
 	}
 
 	public JSplitPane getSplitPaneFor(Class listClass) {

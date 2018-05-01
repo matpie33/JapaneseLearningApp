@@ -11,7 +11,7 @@ import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElements.Kanji;
-import com.kanji.list.myList.InputValidationListener;
+import com.kanji.list.listeners.InputValidationListener;
 import com.kanji.list.myList.ListRowCreator;
 import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.ListRowDataCreator;

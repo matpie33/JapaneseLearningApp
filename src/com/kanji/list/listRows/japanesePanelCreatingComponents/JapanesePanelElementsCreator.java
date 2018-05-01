@@ -10,7 +10,7 @@ import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
-import com.kanji.list.myList.InputValidationListener;
+import com.kanji.list.listeners.InputValidationListener;
 import com.kanji.utilities.JapaneseWritingUtilities;
 import com.kanji.windows.ApplicationWindow;
 

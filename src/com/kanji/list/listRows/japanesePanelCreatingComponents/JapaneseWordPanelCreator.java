@@ -1,13 +1,13 @@
 package com.kanji.list.listRows.japanesePanelCreatingComponents;
 
 import com.guimaker.enums.FillType;
+import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.ComplexRow;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.InputGoal;
-import com.kanji.constants.enums.JapanesePanelDisplayMode;
 import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.ListPropertiesNames;
@@ -16,7 +16,11 @@ import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listRows.RowInJapaneseWritingsList;
-import com.kanji.list.myList.*;
+import com.kanji.list.listeners.InputValidationListener;
+import com.kanji.list.myList.ListConfiguration;
+import com.kanji.list.myList.ListRowData;
+import com.kanji.list.myList.ListRowDataCreator;
+import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.utilities.CommonGuiElementsCreator;
 import com.kanji.utilities.CommonListElements;
@@ -47,7 +51,7 @@ public class JapaneseWordPanelCreator {
 	private ComplexRow lastJapanesePanelMade;
 
 	public JapaneseWordPanelCreator(ApplicationController applicationController,
-			DialogWindow parentDialog, JapanesePanelDisplayMode displayMode) {
+			DialogWindow parentDialog, PanelDisplayMode displayMode) {
 		japanesePanelComponentsStore = new JapanesePanelComponentsStore(
 				applicationController, parentDialog, displayMode);
 		this.applicationController = applicationController;
@@ -72,8 +76,8 @@ public class JapaneseWordPanelCreator {
 
 	}
 
-	private void createElements(JapaneseWord japaneseWord,
-			InputGoal inputGoal, boolean inheritScrollBar) {
+	private void createElements(JapaneseWord japaneseWord, InputGoal inputGoal,
+			boolean inheritScrollBar) {
 		if (rowNumberLabel != null) {
 			rowNumberLabel.setForeground(labelsColor);
 		}
@@ -94,8 +98,7 @@ public class JapaneseWordPanelCreator {
 						.foregroundColor(labelsColor));
 	}
 
-	private void addActions(JapaneseWord japaneseWord,
-			InputGoal inputGoal) {
+	private void addActions(JapaneseWord japaneseWord, InputGoal inputGoal) {
 		JapanesePanelActionsCreator actionCreatingService = japanesePanelComponentsStore
 				.getActionCreator();
 		actionCreatingService
@@ -112,6 +115,7 @@ public class JapaneseWordPanelCreator {
 			InputGoal inputGoal, boolean inheritScrollBar) {
 		writingsList = createJapaneseWritingsList(japaneseWord,
 				inheritScrollBar);
+		parentDialog.getPanel().addNavigableByKeyboardList(writingsList);
 		if (japaneseWord.getWritings().isEmpty()) {
 			japaneseWord.addWritingsForKana("", "");
 		}
@@ -152,7 +156,8 @@ public class JapaneseWordPanelCreator {
 		japaneseWordPanel.addRowsOfElementsInColumn(lastJapanesePanelMade);
 		ListRowDataCreator<Kanji> rowDataCreator = new ListRowDataCreator<>(
 				japaneseWordPanel);
-		if (inputGoal.equals(InputGoal.ADD) || inputGoal.equals(InputGoal.SEARCH)) {
+		if (inputGoal.equals(InputGoal.ADD) || inputGoal
+				.equals(InputGoal.SEARCH)) {
 			rowDataCreator
 					.addPropertyData(ListPropertiesNames.JAPANESE_WORD_MEANING,
 							lastJapanesePanelMade.getAllRows().get(0),
@@ -197,11 +202,12 @@ public class JapaneseWordPanelCreator {
 
 	public JapaneseWordPanelCreator copy() {
 		return new JapaneseWordPanelCreator(applicationController, parentDialog,
-				JapanesePanelDisplayMode.EDIT);
+				PanelDisplayMode.EDIT);
 	}
 
 	public void addValidationListeners(
 			Set<InputValidationListener<JapaneseWord>> validationListeners) {
-		japanesePanelComponentsStore.addValidationListeners(validationListeners);
+		japanesePanelComponentsStore
+				.addValidationListeners(validationListeners);
 	}
 }

@@ -1,5 +1,6 @@
 package com.kanji.list.myList;
 
+import com.guimaker.panels.MainPanel;
 import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.MovingDirection;
 import com.kanji.constants.strings.ExceptionsMessages;
@@ -96,8 +97,7 @@ public class MyList<Word extends ListElement> {
 
 	public <Property> void findAndHighlightRowBasedOnPropertyStartingFromHighlightedWord(
 			ListElementPropertyManager<Property, Word> propertyChecker,
-			Property searchedPropertyValue,
-			MovingDirection searchDirection) {
+			Property searchedPropertyValue, MovingDirection searchDirection) {
 		int rowNumber = findRowNumberBasedOnPropertyStartingFromHighlightedWord(
 				propertyChecker, searchedPropertyValue, searchDirection);
 		if (rowNumber < 0) {
@@ -109,8 +109,7 @@ public class MyList<Word extends ListElement> {
 
 	public <Property> Word findRowBasedOnPropertyStartingFromHighlightedWord(
 			ListElementPropertyManager<Property, Word> propertyChecker,
-			Property searchedPropertyValue,
-			MovingDirection searchDirection) {
+			Property searchedPropertyValue, MovingDirection searchDirection) {
 		int rowNumber = findRowNumberBasedOnPropertyStartingFromHighlightedWord(
 				propertyChecker, searchedPropertyValue, searchDirection);
 		if (rowNumber != -1) {
@@ -180,8 +179,7 @@ public class MyList<Word extends ListElement> {
 
 	public <Property> int findRowNumberBasedOnPropertyStartingFromHighlightedWord(
 			ListElementPropertyManager<Property, Word> propertyChecker,
-			Property searchedPropertyValue,
-			MovingDirection searchDirection) {
+			Property searchedPropertyValue, MovingDirection searchDirection) {
 		return findRowNumberBasedOnProperty(propertyChecker,
 				searchedPropertyValue, searchDirection, false, true);
 	}
@@ -303,4 +301,30 @@ public class MyList<Word extends ListElement> {
 	public void clearHighlightedWords() {
 		listController.clearHighlightedWords();
 	}
+
+	public boolean hasSelectedInput() {
+		return listController.getRowWithSelectedInput() != null;
+	}
+
+	public MainPanel getPanelWithSelectedInput() {
+		return listController.getPanelWithSelectedInput();
+	}
+
+	public void selectNextInputInSameRow() {
+		getPanelWithSelectedInput().selectNextInputInSameRow();
+	}
+
+	public void selectPreviousInputInSameRow() {
+		getPanelWithSelectedInput().selectPreviousInputInSameRow();
+	}
+
+	public void selectInputBelowCurrent() {
+		listController.selectPanelBelowOrAboveSelected(MovingDirection.FORWARD);
+	}
+
+	public void selectInputAboveCurrent() {
+		listController
+				.selectPanelBelowOrAboveSelected(MovingDirection.BACKWARD);
+	}
+
 }

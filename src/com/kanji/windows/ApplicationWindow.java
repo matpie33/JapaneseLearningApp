@@ -46,10 +46,11 @@ public class ApplicationWindow extends DialogWindow {
 
 	public void initiate() {
 		applicationController = new ApplicationController(this);
-		applicationController.initializeListsElements();
 		startingPanel = new StartingPanel(this, mainApplicationPanel);
-
+		setPanel(startingPanel);
+		applicationController.initializeListsElements();
 		applicationController.initializeApplicationStateManagers();
+		startingPanel.createListPanels();
 
 		mainApplicationPanel.add(startingPanel.createPanel(),
 				ApplicationPanels.STARTING_PANEL.getPanelName());
@@ -190,8 +191,7 @@ public class ApplicationWindow extends DialogWindow {
 		}
 		else {
 			//TODO when no words to review for given list exist, null pointer is thrown
-			activeProblematicWordsController.initializeSpaceBarAction();
-			activeProblematicWordsController.initializeBackspaceAction();
+			activeProblematicWordsController.initializeHotkeyActions();
 			createDialog(activeProblematicWordsController.getPanel(),
 					Titles.PROBLEMATIC_KANJIS_WINDOW, true, Position.CENTER);
 			activeProblematicWordsController.initializeWindowListener();

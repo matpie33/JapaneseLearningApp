@@ -48,7 +48,7 @@ public class ListConfiguration {
 		return this;
 	}
 
-	public ListConfiguration scrollBarFitsContent(boolean fitsContent){
+	public ListConfiguration scrollBarFitsContent(boolean fitsContent) {
 		this.scrollBarSizeFittingContent = fitsContent;
 		return this;
 	}

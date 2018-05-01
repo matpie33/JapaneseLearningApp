@@ -1,34 +1,39 @@
 package com.kanji.model;
 
+import com.guimaker.panels.MainPanel;
+
 import javax.swing.*;
 
 public class ListRow<Word> {
 
 	private Word word;
-	private JComponent panel;
+	private MainPanel wrappingPanel;
 	private JLabel indexLabel;
 	private boolean highlighted;
+	private int rowNumber;
 
-	public ListRow(Word word, JComponent panel, JLabel indexLabel) {
+	public ListRow(Word word, MainPanel wrappingPanel, JLabel indexLabel,
+			int rowNumber) {
 		this.word = word;
-		this.panel = panel;
+		this.wrappingPanel = wrappingPanel;
 		this.indexLabel = indexLabel;
+		this.rowNumber = rowNumber;
 	}
 
 	public Word getWord() {
 		return word;
 	}
 
-	public JComponent getPanel() {
-		return panel;
+	public JComponent getJPanel() {
+		return wrappingPanel.getPanel();
+	}
+
+	public MainPanel getWrappingPanel() {
+		return wrappingPanel;
 	}
 
 	public JLabel getIndexLabel() {
 		return indexLabel;
-	}
-
-	public void setIndexLabel(JLabel label) {
-		indexLabel = label;
 	}
 
 	public boolean isHighlighted() {
@@ -39,4 +44,7 @@ public class ListRow<Word> {
 		this.highlighted = highlighted;
 	}
 
+	public int getRowNumber() {
+		return rowNumber;
+	}
 }

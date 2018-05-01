@@ -4,6 +4,7 @@ import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
+import com.guimaker.enums.MoveDirection;
 import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.ExpandablePanel;
@@ -17,6 +18,7 @@ import com.guimaker.utilities.KeyModifiers;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Titles;
+import com.kanji.list.myList.MyList;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
@@ -25,8 +27,11 @@ import javax.swing.border.Border;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public abstract class AbstractPanelWithHotkeysInfo {
 	protected MainPanel mainPanel;
@@ -39,6 +44,8 @@ public abstract class AbstractPanelWithHotkeysInfo {
 			.createBevelBorder(BevelBorder.LOWERED);
 	private Map<HotkeyWrapper, AbstractAction> hotkeysMapping = new HashMap<>();
 	private boolean isMaximized;
+	private List<MyList> navigableByKeyboardLists = new ArrayList<>();
+	private Map<MoveDirection, HotkeyWrapper> hotkeysForMovingBetweenInputs = new HashMap<>();
 
 	public AbstractPanelWithHotkeysInfo() {
 		mainPanel = new MainPanel(BasicColors.VERY_BLUE);
@@ -46,6 +53,65 @@ public abstract class AbstractPanelWithHotkeysInfo {
 		mainPanel.setBorder(defaultBorder);
 		createHotkeysPanel();
 		isMaximized = false;
+		initializeHotkeysForMovingBetweeenInputs();
+		addHotkeys(mainPanel.getPanel());
+	}
+
+	private void addHotkeys(JPanel rootPanel) {
+		for (Map.Entry<MoveDirection, HotkeyWrapper> hotkey : hotkeysForMovingBetweenInputs
+				.entrySet()) {
+
+			HotkeyWrapper hotkeyWrapper = hotkey.getValue();
+			KeyModifiers keyModifier = KeyModifiers
+					.of(hotkeyWrapper.getKeyModifier());
+			switch (hotkey.getKey()) {
+			case RIGHT:
+
+				addHotkey(keyModifier, hotkeyWrapper.getKeyEvent(),
+						wrapToAction(MyList::selectNextInputInSameRow),
+						rootPanel,
+						HotkeysDescriptions.SELECT_NEXT_INPUT_IN_SAME_ROW);
+				break;
+			case LEFT:
+
+				addHotkey(keyModifier, hotkeyWrapper.getKeyEvent(),
+						wrapToAction(MyList::selectPreviousInputInSameRow),
+						rootPanel,
+						HotkeysDescriptions.SELECT_PREVIOUS_INPUT_IN_SAME_ROW);
+				break;
+			case BELOW:
+
+				addHotkey(keyModifier, hotkeyWrapper.getKeyEvent(),
+						wrapToAction(MyList::selectInputBelowCurrent),
+						rootPanel,
+						HotkeysDescriptions.SELECT_INPUT_BELOW_CURRENT);
+				break;
+			case ABOVE:
+
+				addHotkey(keyModifier, hotkeyWrapper.getKeyEvent(),
+						wrapToAction(MyList::selectInputAboveCurrent),
+						rootPanel,
+						HotkeysDescriptions.SELECT_INPUT_ABOVE_CURRENT);
+				break;
+			}
+
+		}
+
+	}
+
+	private void initializeHotkeysForMovingBetweeenInputs() {
+		hotkeysForMovingBetweenInputs.put(MoveDirection.ABOVE,
+				new HotkeyWrapper(KeyModifiers.ALT, KeyEvent.VK_UP));
+		hotkeysForMovingBetweenInputs.put(MoveDirection.BELOW,
+				new HotkeyWrapper(KeyModifiers.ALT, KeyEvent.VK_DOWN));
+		hotkeysForMovingBetweenInputs.put(MoveDirection.RIGHT,
+				new HotkeyWrapper(KeyModifiers.ALT, KeyEvent.VK_RIGHT));
+		hotkeysForMovingBetweenInputs.put(MoveDirection.LEFT,
+				new HotkeyWrapper(KeyModifiers.ALT, KeyEvent.VK_LEFT));
+	}
+
+	public void addNavigableByKeyboardList(MyList navigableList) {
+		navigableByKeyboardLists.add(navigableList);
 	}
 
 	public void setMaximize(boolean maximized) {
@@ -128,13 +194,15 @@ public abstract class AbstractPanelWithHotkeysInfo {
 		HotkeyWrapper wrapper = new HotkeyWrapper(keyModifier, keyEvent);
 		if (hotkeysMapping.containsKey(wrapper)) {
 			throw new IllegalArgumentException(
-					"Multiple actions binded to the same key: " + KeyEvent
+					"Multiple actions binded to the same key: " + KeyModifiers
+							.of(wrapper.getKeyModifier()) + "+" + KeyEvent
 							.getKeyText(wrapper.getKeyEvent())
 							+ " in the class: " + this);
 		}
 		hotkeysMapping.put(wrapper, action);
 		CommonActionsCreator
-				.addHotkey(keyEvent, wrapper.getKeyMask(), action, component);
+				.addHotkey(keyEvent, wrapper.getKeyModifier(), action,
+						component);
 		addHotkeyInformation(hotkeyDescription, wrapper);
 	}
 
@@ -170,7 +238,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	private String createInformationAboutHotkey(HotkeyWrapper hotkey,
 			String description) {
 		return (hotkey.hasKeyModifier() ?
-				InputEvent.getModifiersExText(hotkey.getKeyMask()) + " + " :
+				InputEvent.getModifiersExText(hotkey.getKeyModifier()) + " + " :
 				"") + translateKeyText(
 				KeyEvent.getKeyText(hotkey.getKeyEvent())) + " : "
 				+ description;
@@ -222,6 +290,25 @@ public abstract class AbstractPanelWithHotkeysInfo {
 
 	public JPanel getPanel() {
 		return mainPanel.getPanel();
+	}
+
+	private AbstractAction wrapToAction(Consumer<MyList> actionOnInput) {
+		return new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MyList selectedList = getListWithSelectedInput();
+				actionOnInput.accept(selectedList);
+			}
+		};
+	}
+
+	public MyList getListWithSelectedInput() {
+		for (MyList navigableList : navigableByKeyboardLists) {
+			if (navigableList.hasSelectedInput()) {
+				return navigableList;
+			}
+		}
+		return null;
 	}
 
 }

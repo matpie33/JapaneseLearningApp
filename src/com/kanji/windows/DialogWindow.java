@@ -19,7 +19,7 @@ public class DialogWindow {
 	private boolean isAccepted;
 	private Position position;
 	private JDialog container;
-	private AbstractPanelWithHotkeysInfo panelType;
+	private AbstractPanelWithHotkeysInfo panel;
 
 	public void setCustomPositioner(CustomPositioner customPositioner) {
 		this.customPositioner = customPositioner;
@@ -100,7 +100,7 @@ public class DialogWindow {
 			if (!getContainer().isVisible()) {
 				return;
 			}
-			panelType = panelCreator;
+			panel = panelCreator;
 			childWindow = new DialogWindow(this);
 
 			if (position.equals(Position.CUSTOM)) {
@@ -122,7 +122,7 @@ public class DialogWindow {
 
 	public boolean isDialogOfSameType(
 			AbstractPanelWithHotkeysInfo panelTypeToCompare) {
-		return panelTypeToCompare.getClass().isInstance(panelType);
+		return panelTypeToCompare.getClass().isInstance(panel);
 	}
 
 	public void showReadyPanel(DialogWindow childWindow) {
@@ -171,5 +171,12 @@ public class DialogWindow {
 
 	}
 
+	public AbstractPanelWithHotkeysInfo getPanel() {
+		return panel;
+	}
+
+	public void setPanel (AbstractPanelWithHotkeysInfo panel){
+		this.panel = panel;
+	}
 
 }

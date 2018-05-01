@@ -8,7 +8,7 @@ import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordChecker;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
-import com.kanji.list.myList.InputValidationListener;
+import com.kanji.list.listeners.InputValidationListener;
 import com.kanji.list.myList.ListPropertyChangeHandler;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
@@ -161,17 +161,6 @@ public class JapanesePanelActionsCreator {
 	public JTextComponent selectableTextfield(JTextComponent textComponent,
 			TextFieldSelectionHandler selectionHandler) {
 		textComponent.setFocusable(false);
-		textComponent.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				super.mouseClicked(e);
-				if (e.getSource() instanceof JTextComponent) {
-					selectionHandler
-							.toggleSelection((JTextComponent) e.getSource());
-				}
-
-			}
-		});
 		return textComponent;
 	}
 

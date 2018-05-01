@@ -8,11 +8,12 @@ import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.InputGoal;
-import com.kanji.constants.enums.JapanesePanelDisplayMode;
+import com.guimaker.enums.PanelDisplayMode;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
+import com.kanji.list.listeners.InputValidationListener;
 import com.kanji.list.myList.*;
 import com.kanji.model.DuplicatedJapaneseWordInformation;
 import com.kanji.utilities.CommonGuiElementsCreator;
@@ -51,7 +52,7 @@ public class RowInDuplicatedImportedWordsList
 		MainPanel japaneseWordInformationPanel = new MainPanel(null);
 		new JapaneseWordPanelCreator(
 				applicationWindow.getApplicationController(), parentDialog,
-				JapanesePanelDisplayMode.EDIT)
+				PanelDisplayMode.EDIT)
 				.addJapanesePanelToExistingPanel(japaneseWordInformationPanel,
 						data.getJapaneseWord(), inputGoal,
 						commonListElements, false);
