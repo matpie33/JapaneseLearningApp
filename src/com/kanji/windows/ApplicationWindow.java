@@ -22,9 +22,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.*;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @SuppressWarnings("serial")
 public class ApplicationWindow extends DialogWindow {
@@ -36,6 +35,8 @@ public class ApplicationWindow extends DialogWindow {
 	private ApplicationController applicationController;
 	private Optional<TimeSpentHandler> timeSpentHandler;
 	private static Font kanjiFont = new Font("MS Mincho", Font.PLAIN, 100);
+	private RepeatingWordsPanel repeatingWordsPanel;
+	private Map<String, AbstractPanelWithHotkeysInfo> panelsByNames = new HashMap<>();
 
 	public ApplicationWindow() {
 		super(null);
@@ -51,14 +52,18 @@ public class ApplicationWindow extends DialogWindow {
 		applicationController.initializeListsElements();
 		applicationController.initializeApplicationStateManagers();
 		startingPanel.createListPanels();
-
+		repeatingWordsPanel = applicationController.getRepeatingWordsPanel();
 		mainApplicationPanel.add(startingPanel.createPanel(),
 				ApplicationPanels.STARTING_PANEL.getPanelName());
-		mainApplicationPanel.add(applicationController.getRepeatingWordsPanel()
-						.createPanel(),
+		mainApplicationPanel.add(repeatingWordsPanel.createPanel(),
 				ApplicationPanels.REPEATING_PANEL.getPanelName());
 
 		setWindowProperties();
+
+		panelsByNames.put(
+				ApplicationPanels.STARTING_PANEL.getPanelName(), startingPanel);
+		panelsByNames.put(
+				ApplicationPanels.REPEATING_PANEL.getPanelName(), repeatingWordsPanel);
 
 	}
 
@@ -108,6 +113,7 @@ public class ApplicationWindow extends DialogWindow {
 	public void showPanel(ApplicationPanels panel) {
 		((CardLayout) mainApplicationPanel.getLayout())
 				.show(mainApplicationPanel, panel.getPanelName());
+		setPanel(panelsByNames.get(panel.getPanelName()));
 	}
 
 	public void changeSaveStatus(SavingStatus savingStatus) {
@@ -170,6 +176,9 @@ public class ApplicationWindow extends DialogWindow {
 			Set<Element> problematicWords) {
 		activeProblematicWordsController = applicationController
 				.getProblematicWordsControllerBasedOnActiveWordList();
+		setPanel(activeProblematicWordsController.getPanel());
+		//TODO make problematic words panel in same window instead of opening
+		//it in new window
 		activeProblematicWordsController.addProblematicWords(problematicWords);
 		showProblematicWordsDialog();
 	}

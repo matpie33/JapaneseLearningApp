@@ -46,6 +46,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	private boolean isMaximized;
 	private List<MyList> navigableByKeyboardLists = new ArrayList<>();
 	private Map<MoveDirection, HotkeyWrapper> hotkeysForMovingBetweenInputs = new HashMap<>();
+	private boolean navigateBetweenInputsByHotkeys;
 
 	public AbstractPanelWithHotkeysInfo() {
 		mainPanel = new MainPanel(BasicColors.VERY_BLUE);
@@ -53,8 +54,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 		mainPanel.setBorder(defaultBorder);
 		createHotkeysPanel();
 		isMaximized = false;
-		initializeHotkeysForMovingBetweeenInputs();
-		addHotkeys(mainPanel.getPanel());
+
 	}
 
 	private void addHotkeys(JPanel rootPanel) {
@@ -112,6 +112,12 @@ public abstract class AbstractPanelWithHotkeysInfo {
 
 	public void addNavigableByKeyboardList(MyList navigableList) {
 		navigableByKeyboardLists.add(navigableList);
+		if (!navigateBetweenInputsByHotkeys){
+			navigateBetweenInputsByHotkeys = true;
+			initializeHotkeysForMovingBetweeenInputs();
+			addHotkeys(mainPanel.getPanel());
+		}
+
 	}
 
 	public void setMaximize(boolean maximized) {
@@ -297,7 +303,10 @@ public abstract class AbstractPanelWithHotkeysInfo {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MyList selectedList = getListWithSelectedInput();
-				actionOnInput.accept(selectedList);
+				if (selectedList != null){
+					actionOnInput.accept(selectedList);
+				}
+
 			}
 		};
 	}

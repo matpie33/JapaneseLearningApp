@@ -70,11 +70,6 @@ public class DialogWindow {
 
 		case NEXT_TO_PARENT:
 			setChildNextToParent(parentWindow.getContainer(), container);
-			// Point parentLocation =
-			// parentWindow.getContainer().getLocationOnScreen();
-			// Dimension parentSize = parentWindow.getContainer().getSize();
-			// container.setLocation(parentLocation.x + parentSize.width,
-			// parentLocation.y);
 			break;
 		case CUSTOM:
 			container.setLocation(customPositioner.getPosition());

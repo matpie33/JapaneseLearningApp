@@ -1,5 +1,6 @@
 package com.kanji.list.myList;
 
+import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.inputSelection.InputSelectionManager;
 import com.guimaker.inputSelection.ListInputsSelectionManager;
 
@@ -13,8 +14,18 @@ public class ListConfiguration {
 	private boolean enableWordSearching = true;
 	private boolean skipTitle = false;
 	private boolean scrollBarSizeFittingContent = false;
+	private PanelDisplayMode displayMode = PanelDisplayMode.EDIT;
 	private AbstractButton[] additionalNavigationButtons = new AbstractButton[] {};
 	private ListInputsSelectionManager allInputsSelectionManager;
+
+	public PanelDisplayMode getDisplayMode() {
+		return displayMode;
+	}
+
+	public ListConfiguration displayMode(PanelDisplayMode displayMode) {
+		this.displayMode = displayMode;
+		return this;
+	}
 
 	public boolean isSkipTitle() {
 		return skipTitle;

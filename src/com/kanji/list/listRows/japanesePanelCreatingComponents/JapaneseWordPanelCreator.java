@@ -51,9 +51,11 @@ public class JapaneseWordPanelCreator {
 	private JapanesePanelComponentsStore japanesePanelComponentsStore;
 	private ComplexRow lastJapanesePanelMade;
 	private ListInputsSelectionManager listInputsSelectionManager;
+	private PanelDisplayMode displayMode;
 
 	public JapaneseWordPanelCreator(ApplicationController applicationController,
 			DialogWindow parentDialog, PanelDisplayMode displayMode) {
+		this.displayMode = displayMode;
 		japanesePanelComponentsStore = new JapanesePanelComponentsStore(
 				applicationController, parentDialog, displayMode);
 		this.applicationController = applicationController;
@@ -132,8 +134,9 @@ public class JapaneseWordPanelCreator {
 		return new MyList<>(parentDialog, applicationController,
 				new RowInJapaneseWritingsList(
 						japanesePanelComponentsStore.getPanelCreatingService(),
-						japaneseWord), Labels.WRITING_WAYS_IN_JAPANESE,
+						japaneseWord, displayMode), Labels.WRITING_WAYS_IN_JAPANESE,
 				new ListConfiguration().enableWordAdding(false)
+						.displayMode(displayMode)
 						.inheritScrollbar(inheritScrollBar)
 						.enableWordSearching(false)
 						.showButtonsLoadNextPreviousWords(false)

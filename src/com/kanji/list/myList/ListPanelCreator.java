@@ -68,8 +68,7 @@ public class ListPanelCreator<Word extends ListElement>
 
 		isSkipTitle = listConfiguration.isSkipTitle();
 		rowsPanel = new MainPanel(null, true, true,
-				new PanelConfiguration(PanelDisplayMode.EDIT));
-		//TODO add field - list display mode - edit or view
+				new PanelConfiguration(listConfiguration.getDisplayMode()));
 		rootPanel = new MainPanel(null);
 		titleLabel = GuiElementsCreator.createLabel(new ComponentOptions());
 		loadNextWordsHandler = new LoadNextWordsHandler(listWordsController,
