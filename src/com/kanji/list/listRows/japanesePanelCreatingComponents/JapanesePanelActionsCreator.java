@@ -60,8 +60,7 @@ public class JapanesePanelActionsCreator {
 
 	public JTextComponent withJapaneseWritingValidation(
 			JTextComponent textComponent, JapaneseWriting japaneseWriting,
-			JapaneseWord japaneseWord, boolean isKana,
-			InputGoal inputGoal) {
+			JapaneseWord japaneseWord, boolean isKana, InputGoal inputGoal) {
 		JapaneseWordChecker checker = getOrCreateCheckerFor(japaneseWriting,
 				japaneseWord, inputGoal);
 		if (isKana) {
@@ -100,7 +99,8 @@ public class JapanesePanelActionsCreator {
 		ListPropertyChangeHandler<?, JapaneseWord> propertyChangeHandler = new ListPropertyChangeHandler<>(
 				japaneseWord, wordsList, parentDialog, propertyManager,
 				defaultValue, requiredInput, inputGoal);
-		if (inputGoal.equals(InputGoal.ADD) || inputGoal.equals(InputGoal.SEARCH)){
+		if (inputGoal.equals(InputGoal.ADD) || inputGoal
+				.equals(InputGoal.SEARCH)) {
 			inputValidationListeners
 					.forEach(propertyChangeHandler::addValidationListener);
 		}
@@ -156,12 +156,6 @@ public class JapanesePanelActionsCreator {
 				applicationController.saveProject();
 			}
 		});
-	}
-
-	public JTextComponent selectableTextfield(JTextComponent textComponent,
-			TextFieldSelectionHandler selectionHandler) {
-		textComponent.setFocusable(false);
-		return textComponent;
 	}
 
 	public AbstractButton updateWritingsInWordWhenDeleteWriting(

@@ -2,6 +2,7 @@ package com.kanji.list.listRows.japanesePanelCreatingComponents;
 
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.PanelDisplayMode;
+import com.guimaker.inputSelection.ListInputsSelectionManager;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
@@ -49,6 +50,7 @@ public class JapaneseWordPanelCreator {
 	private DialogWindow parentDialog;
 	private JapanesePanelComponentsStore japanesePanelComponentsStore;
 	private ComplexRow lastJapanesePanelMade;
+	private ListInputsSelectionManager listInputsSelectionManager;
 
 	public JapaneseWordPanelCreator(ApplicationController applicationController,
 			DialogWindow parentDialog, PanelDisplayMode displayMode) {
@@ -56,6 +58,7 @@ public class JapaneseWordPanelCreator {
 				applicationController, parentDialog, displayMode);
 		this.applicationController = applicationController;
 		this.parentDialog = parentDialog;
+		listInputsSelectionManager = new ListInputsSelectionManager();
 	}
 
 	public void setRowNumberLabel(JLabel label) {
@@ -135,6 +138,7 @@ public class JapaneseWordPanelCreator {
 						.enableWordSearching(false)
 						.showButtonsLoadNextPreviousWords(false)
 						.scrollBarFitsContent(!inheritScrollBar)
+						.allInputsSelectionManager(listInputsSelectionManager)
 						.skipTitle(true), JapaneseWriting.getInitializer());
 	}
 

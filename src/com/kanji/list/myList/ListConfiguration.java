@@ -1,5 +1,8 @@
 package com.kanji.list.myList;
 
+import com.guimaker.inputSelection.InputSelectionManager;
+import com.guimaker.inputSelection.ListInputsSelectionManager;
+
 import javax.swing.*;
 
 public class ListConfiguration {
@@ -11,6 +14,7 @@ public class ListConfiguration {
 	private boolean skipTitle = false;
 	private boolean scrollBarSizeFittingContent = false;
 	private AbstractButton[] additionalNavigationButtons = new AbstractButton[] {};
+	private ListInputsSelectionManager allInputsSelectionManager;
 
 	public boolean isSkipTitle() {
 		return skipTitle;
@@ -18,6 +22,16 @@ public class ListConfiguration {
 
 	public ListConfiguration skipTitle(boolean skipTitle) {
 		this.skipTitle = skipTitle;
+		return this;
+	}
+
+	public ListInputsSelectionManager getAllInputsSelectionManager() {
+		return allInputsSelectionManager;
+	}
+
+	public ListConfiguration allInputsSelectionManager(
+			ListInputsSelectionManager allInputsSelectionManager) {
+		this.allInputsSelectionManager = allInputsSelectionManager;
 		return this;
 	}
 

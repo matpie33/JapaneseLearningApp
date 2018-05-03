@@ -101,13 +101,13 @@ public abstract class AbstractPanelWithHotkeysInfo {
 
 	private void initializeHotkeysForMovingBetweeenInputs() {
 		hotkeysForMovingBetweenInputs.put(MoveDirection.ABOVE,
-				new HotkeyWrapper(KeyModifiers.ALT, KeyEvent.VK_UP));
+				new HotkeyWrapper(KeyModifiers.ALT, KeyEvent.VK_W));
 		hotkeysForMovingBetweenInputs.put(MoveDirection.BELOW,
-				new HotkeyWrapper(KeyModifiers.ALT, KeyEvent.VK_DOWN));
+				new HotkeyWrapper(KeyModifiers.ALT, KeyEvent.VK_S));
 		hotkeysForMovingBetweenInputs.put(MoveDirection.RIGHT,
-				new HotkeyWrapper(KeyModifiers.ALT, KeyEvent.VK_RIGHT));
+				new HotkeyWrapper(KeyModifiers.ALT, KeyEvent.VK_D));
 		hotkeysForMovingBetweenInputs.put(MoveDirection.LEFT,
-				new HotkeyWrapper(KeyModifiers.ALT, KeyEvent.VK_LEFT));
+				new HotkeyWrapper(KeyModifiers.ALT, KeyEvent.VK_A));
 	}
 
 	public void addNavigableByKeyboardList(MyList navigableList) {

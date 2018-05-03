@@ -34,15 +34,14 @@ public class JapanesePanelInViewModeCreator
 			CommonListElements commonListElements, JapaneseWord japaneseWord,
 			InputGoal inputGoal, MainPanel rowPanel) {
 		List<JComponent> rowElements = new ArrayList<>();
-		rowElements.add(actionsCreator.selectableTextfield(elementsMaker
-						.createKanaInputWithValidation(japaneseWriting,
-								japaneseWord, false, inputGoal, true),
-				textFieldSelectionHandler));
+		rowElements.add(elementsMaker
+				.createKanaInputWithValidation(japaneseWriting, japaneseWord,
+						false, inputGoal, true));
 		for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
-			rowElements.add(actionsCreator.selectableTextfield(elementsMaker
+			rowElements.add(elementsMaker
 					.createKanjiInputWithValidation(kanjiWriting,
-							japaneseWriting, japaneseWord,
-							inputGoal, false, true), textFieldSelectionHandler));
+							japaneseWriting, japaneseWord, inputGoal, false,
+							true));
 		}
 
 		return rowElements.toArray(new JComponent[] {});

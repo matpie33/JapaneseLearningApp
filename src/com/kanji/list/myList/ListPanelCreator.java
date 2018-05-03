@@ -80,7 +80,7 @@ public class ListPanelCreator<Word extends ListElement>
 
 		navigationButtons = new ArrayList<>();
 		unwrapConfiguration(listConfiguration);
-		listInputsSelectionManager = new ListInputsSelectionManager();
+		listInputsSelectionManager = listConfiguration.getAllInputsSelectionManager();
 
 	}
 
@@ -166,7 +166,7 @@ public class ListPanelCreator<Word extends ListElement>
 		else if (!buttonLoadNextWords.isEnabled()) {
 			buttonLoadNextWords.setEnabled(true);
 		}
-		if (rowPanel != null) {
+		if (rowPanel != null && listInputsSelectionManager != null) {
 			rowPanel.addManager(listInputsSelectionManager);
 		}
 		rowsPanel.updateView();

@@ -7,7 +7,7 @@ import com.kanji.utilities.CommonListElements;
 
 public interface ListRowCreator<Word extends ListElement> {
 
-	public ListRowData createListRow(Word word,
+	public ListRowData<Word> createListRow(Word word,
 			CommonListElements commonListElements, InputGoal inputGoal);
 
 	public void addValidationListener(

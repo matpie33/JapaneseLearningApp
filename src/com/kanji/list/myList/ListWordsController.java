@@ -22,7 +22,6 @@ import java.awt.event.ActionEvent;
 import java.util.*;
 
 public class ListWordsController<Word extends ListElement> {
-	private static final long serialVersionUID = -3144332338336535803L;
 	private Map<Integer, ListRow<Word>> allWordsToRowNumberMap = new HashMap<>();
 	private ListPanelCreator<Word> listPanelCreator;
 	private ApplicationController applicationController;
@@ -35,7 +34,7 @@ public class ListWordsController<Word extends ListElement> {
 	public ListWordsController(ListConfiguration listConfiguration,
 			ListRowCreator<Word> listRowCreator, String title,
 			ApplicationController applicationController,
-			ListElementInitializer wordInitializer) {
+			ListElementInitializer<Word> wordInitializer) {
 		this.applicationController = applicationController;
 		listPanelCreator = new ListPanelCreator<>(listConfiguration,
 				applicationController, listRowCreator, this);
@@ -138,7 +137,7 @@ public class ListWordsController<Word extends ListElement> {
 	public void highlightRowAndScroll(int rowNumber,
 			boolean clearLastHighlightedWord) {
 		loadWordsIfNecessary(rowNumber);
-		ListRow foundWord = allWordsToRowNumberMap.get(rowNumber);
+		ListRow<Word> foundWord = allWordsToRowNumberMap.get(rowNumber);
 		foundWord.setHighlighted(true);
 		if (clearLastHighlightedWord && currentlyHighlightedWord != null) {
 			listPanelCreator
@@ -171,7 +170,7 @@ public class ListWordsController<Word extends ListElement> {
 				allWordsToRowNumberMap.entrySet().stream()
 						.filter(e -> e.getValue()
 								.equals(currentlyHighlightedWord))
-						.map(e -> e.getKey()).findFirst()
+						.map(Map.Entry::getKey).findFirst()
 						.orElseThrow(IllegalArgumentException::new) :
 				-1;
 	}
@@ -206,6 +205,8 @@ public class ListWordsController<Word extends ListElement> {
 
 	public AbstractAction createDeleteRowAction(Word word) {
 		return new AbstractAction() {
+			private static final long serialVersionUID = 5946111397005824819L;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String rowSpecificPrompt = "";
@@ -242,7 +243,6 @@ public class ListWordsController<Word extends ListElement> {
 	}
 
 	public int addNextHalfOfMaximumWords(LoadWordsHandler loadWordsHandler) {
-		int i = 0;
 		double numberOfElementsToAdd =
 				(double) getMaximumWordsToShow() / (double) 2;
 		return addSuccessiveWords(loadWordsHandler, numberOfElementsToAdd);
@@ -268,7 +268,7 @@ public class ListWordsController<Word extends ListElement> {
 		//TODO lots of magic numbers
 		lastRowVisible--;
 		int rowNumber = getFirstVisibleRowNumber();
-		ListRow addedWord = listPanelCreator
+		ListRow<Word> addedWord = listPanelCreator
 				.addRow(allWordsToRowNumberMap.get(rowNumber).getWord(),
 						rowNumber + 1, true, loadPreviousWords, InputGoal.EDIT);
 		allWordsToRowNumberMap.put(rowNumber, addedWord);
@@ -277,7 +277,7 @@ public class ListWordsController<Word extends ListElement> {
 
 	public void showNextWord(LoadNextWordsHandler loadNextWords) {
 		lastRowVisible++;
-		ListRow visibleRow = listPanelCreator
+		ListRow<Word> visibleRow = listPanelCreator
 				.addRow(allWordsToRowNumberMap.get(lastRowVisible).getWord(),
 						lastRowVisible + 1, true, loadNextWords,
 						InputGoal.EDIT);
@@ -340,7 +340,7 @@ public class ListWordsController<Word extends ListElement> {
 				panelBelowOrAbove = listRow.getWrappingPanel();
 			}
 		}
-		if (panelBelowOrAbove != null){
+		if (panelBelowOrAbove != null) {
 			panelBelowOrAbove.selectInputInColumn(columnNumber);
 		}
 	}
