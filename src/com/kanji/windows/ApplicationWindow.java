@@ -60,10 +60,10 @@ public class ApplicationWindow extends DialogWindow {
 
 		setWindowProperties();
 
-		panelsByNames.put(
-				ApplicationPanels.STARTING_PANEL.getPanelName(), startingPanel);
-		panelsByNames.put(
-				ApplicationPanels.REPEATING_PANEL.getPanelName(), repeatingWordsPanel);
+		panelsByNames.put(ApplicationPanels.STARTING_PANEL.getPanelName(),
+				startingPanel);
+		panelsByNames.put(ApplicationPanels.REPEATING_PANEL.getPanelName(),
+				repeatingWordsPanel);
 
 	}
 
@@ -153,14 +153,18 @@ public class ApplicationWindow extends DialogWindow {
 		customPositioner = new PositionerOnMyList(
 				getStartingPanel().getSplitPaneFor(list.getListElementClass()));
 		AbstractPanelWithHotkeysInfo panel = new InsertWordPanel<>(list, this);
+		setPanel(panel);
 		createDialog(panel, Titles.INSERT_WORD_DIALOG, false, Position.CUSTOM);
 	}
 
 	public void showSearchWordDialog(MyList list) {
 		customPositioner = new PositionerOnMyList(
 				getStartingPanel().getSplitPaneFor(list.getListElementClass()));
-		createDialog(new SearchWordPanel(this, list), Titles.WORD_SEARCH_DIALOG,
-				false, Position.CUSTOM);
+		AbstractPanelWithHotkeysInfo panel = new SearchWordPanel(this, list);
+		setPanel(panel);
+		//TODO create japanese panel creator with different parent windows,
+		//currently all of them use application window as parent
+		createDialog(panel, Titles.WORD_SEARCH_DIALOG, false, Position.CUSTOM);
 	}
 
 	//TODO why some dialogs like problematic and search word are in application window,

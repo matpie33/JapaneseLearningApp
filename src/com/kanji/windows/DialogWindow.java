@@ -95,8 +95,8 @@ public class DialogWindow {
 			if (!getContainer().isVisible()) {
 				return;
 			}
-			panel = panelCreator;
 			childWindow = new DialogWindow(this);
+			childWindow.setPanel(panelCreator);
 
 			if (position.equals(Position.CUSTOM)) {
 				childWindow.setCustomPositioner(customPositioner);

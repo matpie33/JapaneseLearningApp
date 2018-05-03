@@ -322,6 +322,8 @@ public class ApplicationController implements ApplicationStateManager {
 		parent.updateTitle(fileToSave.toString());
 		parent.changeSaveStatus(SavingStatus.NO_CHANGES);
 
+		parent.setPanel(parent.getStartingPanel());
+
 		LoadingProjectWorker loadingProjectWorker = new LoadingProjectWorker(
 				parent, parent.showProgressDialog());
 		loadingProjectWorker
