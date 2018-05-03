@@ -25,8 +25,7 @@ public class JapanesePanelComponentsStore {
 		getPanelRowService(displayMode);
 	}
 
-	private void getPanelRowService(
-			PanelDisplayMode panelDisplayMode) {
+	private void getPanelRowService(PanelDisplayMode panelDisplayMode) {
 		switch (panelDisplayMode) {
 		case EDIT:
 			panelCreatingService = new JapanesePanelInEditModeCreator(
@@ -34,8 +33,7 @@ public class JapanesePanelComponentsStore {
 			break;
 		case VIEW:
 			panelCreatingService = new JapanesePanelInViewModeCreator(
-					elementsMaker, new TextFieldSelectionHandler(),
-					actionsCreator);
+					elementsMaker, actionsCreator);
 			break;
 		}
 	}
@@ -46,18 +44,6 @@ public class JapanesePanelComponentsStore {
 
 	public JapanesePanelElementsCreator getElementsMaker() {
 		return elementsMaker;
-	}
-
-	public TextFieldSelectionHandler getSelectionHandler() {
-		if (panelCreatingService instanceof JapanesePanelInViewModeCreator) {
-			return ((JapanesePanelInViewModeCreator) panelCreatingService)
-					.getSelectionHandler();
-		}
-		else {
-			throw new IllegalStateException(
-					"Selection handler belongs only to panel in view mode.");
-		}
-
 	}
 
 	public JapanesePanelActionsCreator getActionCreator() {

@@ -63,6 +63,10 @@ public class JapaneseWordPanelCreator {
 		listInputsSelectionManager = new ListInputsSelectionManager();
 	}
 
+	public ListInputsSelectionManager getListInputsSelectionManager() {
+		return listInputsSelectionManager;
+	}
+
 	public void setRowNumberLabel(JLabel label) {
 		rowNumberLabel = label;
 	}
@@ -134,7 +138,8 @@ public class JapaneseWordPanelCreator {
 		return new MyList<>(parentDialog, applicationController,
 				new RowInJapaneseWritingsList(
 						japanesePanelComponentsStore.getPanelCreatingService(),
-						japaneseWord, displayMode), Labels.WRITING_WAYS_IN_JAPANESE,
+						japaneseWord, displayMode),
+				Labels.WRITING_WAYS_IN_JAPANESE,
 				new ListConfiguration().enableWordAdding(false)
 						.displayMode(displayMode)
 						.inheritScrollbar(inheritScrollBar)
@@ -196,10 +201,6 @@ public class JapaneseWordPanelCreator {
 
 		}
 		return inputsWithPropertyManagers;
-	}
-
-	public TextFieldSelectionHandler getSelectionHandler() {
-		return japanesePanelComponentsStore.getSelectionHandler();
 	}
 
 	public void focusMeaningTextfield() {

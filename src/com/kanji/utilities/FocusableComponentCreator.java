@@ -12,7 +12,9 @@ import java.awt.event.MouseEvent;
 
 public class FocusableComponentCreator {
 
-	public static void makeFocusable(JComponent panelToWrap) {
+	private JComponent focusedPanel;
+
+	public void makeFocusable(JComponent panelToWrap) {
 		panelToWrap.setFocusable(true);
 		addFocusListener(panelToWrap);
 		addFocus(panelToWrap, panelToWrap);
@@ -22,36 +24,34 @@ public class FocusableComponentCreator {
 		return BorderFactory.createLineBorder(color, 3);
 	}
 
-	private static void addFocusListener(JComponent panelToSetBackground) {
+	private void clearFocusedPanel() {
+		focusedPanel.setBorder(null);
+		focusedPanel = null;
+	}
+
+	private void setFocusedPanel(JComponent panel) {
+		focusedPanel = panel;
+		focusedPanel.setBorder(createBorder(BasicColors.VERY_LIGHT_BLUE));
+		focusedPanel.requestFocusInWindow();
+	}
+
+	private void addFocusListener(JComponent panelToSetBackground) {
 		panelToSetBackground.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				panelToSetBackground.requestFocusInWindow();
+				clearFocusedPanel();
+				setFocusedPanel(panelToSetBackground);
 				super.mouseClicked(e);
-			}
-		});
-		panelToSetBackground.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				panelToSetBackground.setBorder(null);
-			}
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				panelToSetBackground.requestFocusInWindow();
-				panelToSetBackground
-						.setBorder(createBorder(BasicColors.VERY_LIGHT_BLUE));
 			}
 		});
 	}
 
-	private static void addFocus(Container container,
-			JComponent componentToFocus) {
+	private void addFocus(Container container, JComponent componentToFocus) {
 		container.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
-				componentToFocus.requestFocusInWindow();
+				setFocusedPanel(componentToFocus);
 			}
 		});
 		for (Component component : container.getComponents()) {

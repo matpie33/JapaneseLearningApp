@@ -17,16 +17,11 @@ public class JapanesePanelInViewModeCreator
 		implements JapanesePanelCreatingService {
 
 	private JapanesePanelElementsCreator elementsMaker;
-	private TextFieldSelectionHandler textFieldSelectionHandler;
-	private JapanesePanelActionsCreator actionsCreator;
 
 	public JapanesePanelInViewModeCreator(
 			JapanesePanelElementsCreator elementsMaker,
-			TextFieldSelectionHandler textFieldSelectionHandler,
 			JapanesePanelActionsCreator actionsCreator) {
 		this.elementsMaker = elementsMaker;
-		this.textFieldSelectionHandler = textFieldSelectionHandler;
-		this.actionsCreator = actionsCreator;
 	}
 
 	@Override
@@ -47,7 +42,4 @@ public class JapanesePanelInViewModeCreator
 		return rowElements.toArray(new JComponent[] {});
 	}
 
-	public TextFieldSelectionHandler getSelectionHandler() {
-		return textFieldSelectionHandler;
-	}
 }

@@ -12,6 +12,7 @@ import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 import java.util.List;
 
 public class MyList<Word extends ListElement> {
@@ -327,4 +328,7 @@ public class MyList<Word extends ListElement> {
 				.selectPanelBelowOrAboveSelected(MovingDirection.BACKWARD);
 	}
 
+	public JTextComponent getSelectedInput() {
+		return getPanelWithSelectedInput().getSelectedInput();
+	}
 }

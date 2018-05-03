@@ -96,12 +96,13 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	@Override
 	public void createElements() {
 
-		FocusableComponentCreator.makeFocusable(problematicWords.getPanel());
-		FocusableComponentCreator
+		FocusableComponentCreator focusableComponentCreator = new FocusableComponentCreator();
+		focusableComponentCreator.makeFocusable(problematicWords.getPanel());
+		focusableComponentCreator
 				.makeFocusable(japaneseEnglishDictionaryPanel.getWebPanel());
-		FocusableComponentCreator
+		focusableComponentCreator
 				.makeFocusable(englishDictionaryPanel.getWebPanel());
-		FocusableComponentCreator
+		focusableComponentCreator
 				.makeFocusable(kanjiInformationPanel.getPanel());
 		JScrollPane scrollPaneForKanjiInformations = GuiElementsCreator
 				.createScrollPane(new ScrollPaneOptions()
