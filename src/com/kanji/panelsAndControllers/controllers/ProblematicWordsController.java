@@ -208,11 +208,10 @@ public class ProblematicWordsController<Word extends ListElement>
 			wordsToReviewList.highlightRow(i);
 			i++;
 		}
-		nextWordToReview = i;
-		goToNextResource();
 		for (Word listWord : notReviewedWords) {
 			addWord(listWord);
 		}
+		goToNextResource();
 
 	}
 
