@@ -85,12 +85,26 @@ public class ApplicationWindow extends DialogWindow {
 		container.setLocationRelativeTo(null);
 		container.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		container.setVisible(true);
-		container.addWindowListener(createClosingAdapter());
+		container.addWindowListener(createActionCheckIfClosingIsSafe());
 		container.setExtendedState(
 				container.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+		container.addWindowListener(
+				createListenerSwitchToSubdialogWhenFocusGain());
 	}
 
-	private WindowAdapter createClosingAdapter() {
+	private WindowAdapter createListenerSwitchToSubdialogWhenFocusGain() {
+		return new WindowAdapter() {
+			@Override
+			public void windowActivated(WindowEvent e) {
+				if (childWindow != null && childWindow.getContainer() != null) {
+					childWindow.getContainer().toFront();
+				}
+
+			}
+		};
+	}
+
+	private WindowAdapter createActionCheckIfClosingIsSafe() {
 		return new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -147,8 +161,6 @@ public class ApplicationWindow extends DialogWindow {
 
 	}
 
-	// TODO dialogs should either be jframe or modal in order for alt tab to
-	// switch focus to the right window
 	public <Word extends ListElement> void showInsertDialog(MyList<Word> list) {
 		customPositioner = new PositionerOnMyList(
 				getStartingPanel().getSplitPaneFor(list.getListElementClass()));
