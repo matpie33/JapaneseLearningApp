@@ -35,6 +35,7 @@ import javax.swing.text.JTextComponent;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class ProblematicJapaneseWordsDisplayer
@@ -152,7 +153,7 @@ public class ProblematicJapaneseWordsDisplayer
 	}
 
 	private Set<String> extractKanjis(JapaneseWord japaneseWord) {
-		Set<String> kanjis = new HashSet<>();
+		Set<String> kanjis = new LinkedHashSet<>();
 		Set<String> kanjiWritings = japaneseWord.getKanjiWritings();
 		for (String kanjiWriting : kanjiWritings) {
 			for (int i = 0; i < kanjiWriting.length(); i++) {
