@@ -1,5 +1,6 @@
 package com.kanji.kanjiListRow;
 
+import com.guimaker.enums.PanelDisplayMode;
 import com.kanji.constants.enums.InputGoal;
 import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
 import com.kanji.list.listElementPropertyManagers.KanjiKeywordChecker;
@@ -26,16 +27,18 @@ public class KanjiActionsCreator {
 	private Set<InputValidationListener<Kanji>> validationListeners = new HashSet<>();
 	private KanjiKeywordChecker keywordChecker;
 	private KanjiIdChecker idChecker;
+	private PanelDisplayMode displayMode;
 
 	public KanjiActionsCreator(ApplicationController applicationController,
-			DialogWindow parentDialog) {
+			DialogWindow parentDialog, PanelDisplayMode panelDisplayMode) {
 		this.applicationController = applicationController;
 		this.parentDialog = parentDialog;
+		this.displayMode = panelDisplayMode;
 	}
 
 	public JTextComponent withKeywordValidation(JTextComponent keywordInput,
 			Kanji kanji, InputGoal inputGoal) {
-		if (inputGoal.equals(InputGoal.NO_INPUT)) {
+		if (displayMode.equals(PanelDisplayMode.VIEW)) {
 			return keywordInput;
 		}
 		if (!inputGoal.equals(InputGoal.SEARCH)) {
@@ -51,7 +54,7 @@ public class KanjiActionsCreator {
 
 	public JTextComponent withKanjiIdValidation(JTextComponent kanjiIdInput,
 			Kanji kanji, InputGoal inputGoal) {
-		if (inputGoal.equals(InputGoal.NO_INPUT)) {
+		if (displayMode.equals(PanelDisplayMode.VIEW)) {
 			return kanjiIdInput;
 		}
 		if (!inputGoal.equals(InputGoal.SEARCH)) {

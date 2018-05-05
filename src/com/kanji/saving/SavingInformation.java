@@ -95,7 +95,6 @@ public class SavingInformation implements Serializable {
 	}
 
 	public String getKanjiKoohiiCookiesHeaders() {
-		System.out.println(kanjiKoohiCookiesHeaders);
 		return kanjiKoohiCookiesHeaders;
 	}
 

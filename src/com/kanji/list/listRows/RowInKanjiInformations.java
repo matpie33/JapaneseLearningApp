@@ -37,7 +37,7 @@ public class RowInKanjiInformations implements ListRowCreator<Kanji> {
 		elementsCreator = new KanjiElementsCreator();
 		actionsCreator = new KanjiActionsCreator(
 				applicationWindow.getApplicationController(),
-				applicationWindow);
+				applicationWindow, displayMode);
 	}
 
 	public void setProblematicWordsController(

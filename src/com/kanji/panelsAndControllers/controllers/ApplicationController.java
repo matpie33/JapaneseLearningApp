@@ -300,7 +300,7 @@ public class ApplicationController implements ApplicationStateManager {
 			if (savingInformation.getKanjiKoohiiCookiesHeaders() != null) {
 				//TODO this should go to application controller's "restore
 				// state method along with filling the mylists"
-				problematicKanjiDisplayer.setCookies(
+				problematicKanjiDisplayer.setLoginDataCookie(
 						savingInformation.getKanjiKoohiiCookiesHeaders());
 			}
 		}
@@ -613,11 +613,11 @@ public class ApplicationController implements ApplicationStateManager {
 				getProblematicKanjis(), getProblematicJapaneseWords(),
 				japaneseWords.getWords(),
 				japaneseWordsRepeatingDates.getWords());
-		String kanjiKoohiCookiesHeaders = problematicKanjiDisplayer
-				.getKanjiKoohiCookieHeader();
-		if (!kanjiKoohiCookiesHeaders.isEmpty()) {
+		String koohiiLoginDataCookie = problematicKanjiDisplayer
+				.getKanjiKoohiLoginCookieHeader();
+		if (!koohiiLoginDataCookie.isEmpty()) {
 			savingInformation
-					.setKanjiKoohiiCookiesHeaders(kanjiKoohiCookiesHeaders);
+					.setKanjiKoohiiCookiesHeaders(koohiiLoginDataCookie);
 		}
 		return savingInformation;
 	}

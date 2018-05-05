@@ -1,7 +1,6 @@
 package com.kanji.problematicWords;
 
 import com.guimaker.enums.PanelDisplayMode;
-import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.strings.Titles;
 import com.kanji.context.ContextOwner;
 import com.kanji.context.KanjiContext;
@@ -38,6 +37,7 @@ public class ProblematicKanjiDisplayer
 	private KanjiContext kanjiContext;
 	private KanjiCharactersReader kanjiCharactersReader;
 	private MyList<Kanji> wordsToReviewList;
+	private final String KANJI_KOOHI_LOGIN_COOKIE = "RevTK";
 
 	public ProblematicKanjiDisplayer(ApplicationWindow applicationWindow,
 			ProblematicWordsController controller) {
@@ -108,28 +108,41 @@ public class ProblematicKanjiDisplayer
 	}
 
 	private boolean isLoginDataRemembered() {
-		for (HttpCookie cookies : cookieManager.getCookieStore().getCookies()) {
-			if (cookies.getName().equals("koohii")) {
+		for (HttpCookie cookie : cookieManager.getCookieStore().getCookies()) {
+			if (isCookieForLoginDataFromKoohiiPage(cookie)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public String getKanjiKoohiCookieHeader() {
+	public String getKanjiKoohiLoginCookieHeader() {
 		List<HttpCookie> cookies = cookieManager.getCookieStore().getCookies();
 		for (HttpCookie cookie : cookies) {
-			if (cookie.getName().equalsIgnoreCase("koohii")) {
+			if (isCookieForLoginDataFromKoohiiPage(cookie)) {
 				return cookie.toString();
 			}
 		}
 		return "";
 	}
 
-	public void setCookies(String cookieHeader) throws IOException {
+	private boolean isCookieForLoginDataFromKoohiiPage(HttpCookie cookie) {
+
+		return cookie.getName().equals(KANJI_KOOHI_LOGIN_COOKIE) && cookie
+				.getDomain().equals("kanji.koohii.com");
+	}
+
+	public void setLoginDataCookie(String loginDataCookie) throws IOException {
 		Map<String, List<String>> headers = new LinkedHashMap<>();
-		headers.put("Set-Cookie", Arrays.asList(cookieHeader));
+		headers.put("Set-Cookie", Arrays.asList(loginDataCookie));
+		List<HttpCookie> cookies = cookieManager.getCookieStore().getCookies();
+		for (HttpCookie cookie : cookies) {
+			if (cookie.getName().equals(KANJI_KOOHI_LOGIN_COOKIE)) {
+				return;
+			}
+		}
 		cookieManager.put(URI.create(KANJI_KOOHI_LOGIN_PAGE), headers);
+
 	}
 
 }
