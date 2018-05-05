@@ -139,8 +139,7 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	}
 
 	private Property validateAndConvertToProperty(JTextComponent input) {
-		if ((!isRequiredField && isTextFieldEmpty(input)) || input.getText()
-				.equals(previousValueOfTextInput)) {
+		if ((!isRequiredField && isTextFieldEmpty(input))) {
 			return null;
 		}
 		Property propertyNewValue = listElementPropertyManager
