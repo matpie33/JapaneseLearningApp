@@ -69,6 +69,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	}
 
 	private boolean isLoginDataRemembered() {
+		//TODO duplicated code from problematic kanji displayer
 		CookieManager cookieManager = (CookieManager) CookieHandler
 				.getDefault();
 		for (HttpCookie cookies : cookieManager.getCookieStore().getCookies()) {
@@ -104,6 +105,8 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 				.makeFocusable(englishDictionaryPanel.getWebPanel());
 		focusableComponentCreator
 				.makeFocusable(kanjiInformationPanel.getPanel());
+		focusableComponentCreator
+				.makeFocusable(kanjiKoohiWebPanel.getWebPanel());
 		JScrollPane scrollPaneForKanjiInformations = GuiElementsCreator
 				.createScrollPane(new ScrollPaneOptions()
 						.componentToWrap(kanjiInformationPanel.getPanel()));
@@ -116,18 +119,18 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 						japaneseEnglishDictionaryPanel.getSwitchingPanel(),
 						englishDictionaryPanel.getSwitchingPanel(), 0.5);
 
-		JSplitPane dictionariesWithKoohiPageSplitPane = CommonGuiElementsCreator
+		JSplitPane dictionariesWithProblematicWordsSplitPane = CommonGuiElementsCreator
 				.createSplitPane(SplitPaneOrientation.HORIZONTAL,
-						dictionariesSplitPane,
-						kanjiKoohiWebPanel.getSwitchingPanel(), 0.8);
+						dictionariesSplitPane, wordAndKanjiInformationSplitPane,
+						0.3);
 
-		JSplitPane wordAndDictionariesSplitPane = CommonGuiElementsCreator
+		JSplitPane fullSplitPane = CommonGuiElementsCreator
 				.createSplitPane(SplitPaneOrientation.HORIZONTAL,
-						wordAndKanjiInformationSplitPane,
-						dictionariesWithKoohiPageSplitPane, 0.4);
+						dictionariesWithProblematicWordsSplitPane,
+						kanjiKoohiWebPanel.getSwitchingPanel(), 0.7);
 
 		mainPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.BOTH, wordAndDictionariesSplitPane));
+				.createRow(FillType.BOTH, fullSplitPane));
 		setNavigationButtons(Anchor.WEST, createButtonClose());
 	}
 

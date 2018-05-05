@@ -34,7 +34,6 @@ import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -127,7 +126,7 @@ public class ProblematicJapaneseWordsDisplayer
 			AbstractButton goToButton = GuiElementsCreator
 					.createButtonlikeComponent(
 							new ButtonOptions(ButtonType.BUTTON)
-									.text(ButtonsNames.SEARCH),
+									.text(ButtonsNames.SHOW_KANJI_STORIES),
 							new AbstractAction() {
 								@Override
 								public void actionPerformed(ActionEvent e) {
