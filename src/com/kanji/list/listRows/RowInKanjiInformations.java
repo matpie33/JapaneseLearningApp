@@ -1,99 +1,110 @@
 package com.kanji.list.listRows;
 
 import com.guimaker.enums.FillType;
-import com.guimaker.options.ComponentOptions;
-import com.guimaker.panels.GuiElementsCreator;
+import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.ComplexRow;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.InputGoal;
-import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.ListPropertiesNames;
-import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
-import com.kanji.list.listElementPropertyManagers.KanjiKeywordChecker;
+import com.kanji.kanjiListRow.KanjiActionsCreator;
+import com.kanji.kanjiListRow.KanjiElementsCreator;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listeners.InputValidationListener;
-import com.kanji.list.myList.*;
-import com.kanji.utilities.CommonGuiElementsCreator;
+import com.kanji.list.myList.ListRowCreator;
+import com.kanji.list.myList.ListRowData;
+import com.kanji.list.myList.ListRowDataCreator;
+import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.utilities.CommonListElements;
 import com.kanji.utilities.Pair;
 import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
-import java.awt.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 public class RowInKanjiInformations implements ListRowCreator<Kanji> {
-	private ApplicationWindow applicationWindow;
-	private Set<InputValidationListener<Kanji>> validationListeners = new HashSet<>();
+	private KanjiElementsCreator elementsCreator;
+	private KanjiActionsCreator actionsCreator;
+	private PanelDisplayMode displayMode;
+	private Optional<ProblematicWordsController<Kanji>> problematicWordsController;
 
-	public RowInKanjiInformations(ApplicationWindow applicationWindow) {
-		this.applicationWindow = applicationWindow;
+	public RowInKanjiInformations(ApplicationWindow applicationWindow,
+			PanelDisplayMode displayMode) {
+		this.displayMode = displayMode;
+		elementsCreator = new KanjiElementsCreator();
+		actionsCreator = new KanjiActionsCreator(
+				applicationWindow.getApplicationController(),
+				applicationWindow);
+	}
+
+	public void setProblematicWordsController(
+			ProblematicWordsController<Kanji> problematicWordsController) {
+		this.problematicWordsController = Optional
+				.of(problematicWordsController);
 	}
 
 	@Override
 	public ListRowData createListRow(Kanji kanji,
 			CommonListElements commonListElements, InputGoal inputGoal) {
+		elementsCreator.setLabelsColor(commonListElements.getLabelsColor());
 		MainPanel panel = new MainPanel(null);
-		//TODO do it like in rowInJapaneseWordInformations
-		Color labelsColor = commonListElements.getLabelsColor();
-		JLabel kanjiKeyword = GuiElementsCreator.createLabel(
-				new ComponentOptions().text(Labels.KANJI_KEYWORD_LABEL)
-						.foregroundColor(labelsColor));
-		JLabel kanjiId = GuiElementsCreator.createLabel(
-				new ComponentOptions().text(Labels.KANJI_ID_LABEL)
-						.foregroundColor(labelsColor));
-		String text = kanji.getKeyword();
-		int ID = kanji.getId();
-		JTextComponent keywordInput = CommonGuiElementsCreator
-				.createKanjiWordInput(text);
-		KanjiKeywordChecker keywordChecker = new KanjiKeywordChecker();
-		keywordChecker.setWordSearchOptions(WordSearchOptions.BY_WORD_FRAGMENT);
-		ListPropertyChangeHandler<String, Kanji> keywordChangeHandler = new ListPropertyChangeHandler<>(
-				kanji,
-				applicationWindow.getApplicationController().getKanjiList(),
-				applicationWindow, keywordChecker, true, inputGoal);
-		validationListeners.forEach(keywordChangeHandler::addValidationListener);
-		keywordInput.addFocusListener(keywordChangeHandler);
-		JTextComponent idInput = CommonGuiElementsCreator.createKanjiIdInput();
-		idInput.setText(ID > 0 ? Integer.toString(ID) : "");
-		KanjiIdChecker idChecker = new KanjiIdChecker();
-		ListPropertyChangeHandler<Integer, Kanji> idChangeListener = new ListPropertyChangeHandler<>(
-				kanji,
-				applicationWindow.getApplicationController().getKanjiList(),
-				applicationWindow, idChecker, true, inputGoal);
-		validationListeners.forEach(idChangeListener::addValidationListener);
-		idInput.addFocusListener(idChangeListener);
-		AbstractButton remove = commonListElements.getButtonDelete();
-		JLabel rowNumberLabel = commonListElements.getRowNumberLabel();
+		JLabel keywordLabel = elementsCreator
+				.createLabel(Labels.KANJI_KEYWORD_LABEL);
+		JLabel idLabel = elementsCreator.createLabel(Labels.KANJI_ID_LABEL);
+		JTextComponent keywordInput = actionsCreator.withKeywordValidation(
+				elementsCreator.createKanjiKeywordInput(kanji.getKeyword(),
+						displayMode), kanji, inputGoal);
+		JTextComponent idInput = actionsCreator.withKanjiIdValidation(
+				elementsCreator.createKanjiIdInput(kanji.getId(), displayMode),
+				kanji, inputGoal);
+		AbstractButton buttonDependingOnInputGoal = getButtonDependingOnInputGoal(
+				kanji, commonListElements);
 		ComplexRow panelRows = SimpleRowBuilder
 				.createRowStartingFromColumn(0, FillType.HORIZONTAL,
-						rowNumberLabel, kanjiKeyword, keywordInput)
-				.fillHorizontallySomeElements(keywordInput)
-				.nextRow(kanjiId, idInput).setColumnToPutRowInto(1)
-				.nextRow(remove);
+						commonListElements.getRowNumberLabel(), keywordLabel,
+						keywordInput).fillHorizontallySomeElements(keywordInput)
+				.nextRow(idLabel, idInput).setColumnToPutRowInto(1)
+				.nextRow(buttonDependingOnInputGoal);
 		panel.addRowsOfElementsInColumn(panelRows);
 		ListRowDataCreator<Kanji> rowDataCreator = new ListRowDataCreator<>(
 				panel);
 
-		if (inputGoal.equals(InputGoal.ADD) || inputGoal.equals(InputGoal.SEARCH)) {
+		if (inputGoal.equals(InputGoal.ADD) || inputGoal
+				.equals(InputGoal.SEARCH)) {
 			rowDataCreator.addPropertyData(ListPropertiesNames.KANJI_KEYWORD,
 					panelRows.getAllRows().get(0),
-					Pair.of(keywordInput, keywordChecker));
+					Pair.of(keywordInput, actionsCreator.getKeywordChecker()));
 			rowDataCreator.addPropertyData(ListPropertiesNames.KANJI_ID,
-					panelRows.getAllRows().get(1), Pair.of(idInput, idChecker));
+					panelRows.getAllRows().get(1),
+					Pair.of(idInput, actionsCreator.getIdChecker()));
 		}
 
 		return rowDataCreator.getListRowData();
 
 	}
 
+	private AbstractButton getButtonDependingOnInputGoal(Kanji kanji,
+			CommonListElements commonListElements) {
+		return displayMode.equals(PanelDisplayMode.EDIT) ?
+				commonListElements.getButtonDelete() :
+				actionsCreator.withActionShowKanjiStories(
+						elementsCreator.createButtonShowKanjiStories(),
+						problematicWordsController
+								.orElseThrow(throwIllegalStateException()),
+						kanji);
+	}
+
+	private Supplier<IllegalStateException> throwIllegalStateException() {
+		return () -> new IllegalStateException(
+				"Problematic words controller was not initialized for view mode");
+	}
+
 	@Override
 	public void addValidationListener(
 			InputValidationListener<Kanji> inputValidationListener) {
-		validationListeners.add(inputValidationListener);
+		actionsCreator.addValidationListener(inputValidationListener);
 	}
 }

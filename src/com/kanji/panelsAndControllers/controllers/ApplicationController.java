@@ -1,8 +1,6 @@
 package com.kanji.panelsAndControllers.controllers;
 
-import com.guimaker.enums.MoveDirection;
 import com.guimaker.enums.PanelDisplayMode;
-import com.guimaker.utilities.HotkeyWrapper;
 import com.kanji.constants.enums.*;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.Titles;
@@ -354,8 +352,8 @@ public class ApplicationController implements ApplicationStateManager {
 
 	private void initializeKanjiList() {
 		kanjiList = new MyList<>(parent, this,
-				new RowInKanjiInformations(parent), Titles.KANJI_LIST,
-				Kanji.getInitializer());
+				new RowInKanjiInformations(parent, PanelDisplayMode.EDIT),
+				Titles.KANJI_LIST, Kanji.getInitializer());
 
 		for (int i = 1; i <= 510; i++) {
 			kanjiList.addWord(new Kanji("Word no. " + i, i));

@@ -1,10 +1,12 @@
 package com.kanji.problematicWords;
 
+import com.guimaker.enums.PanelDisplayMode;
+import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.strings.Titles;
 import com.kanji.context.ContextOwner;
 import com.kanji.context.KanjiContext;
 import com.kanji.list.listElements.Kanji;
-import com.kanji.list.listRows.RowInKanjiRepeatingList;
+import com.kanji.list.listRows.RowInKanjiInformations;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.WordRow;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
@@ -48,9 +50,12 @@ public class ProblematicKanjiDisplayer
 		kanjiContext = KanjiContext.emptyContext();
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		kanjiCharactersReader.loadKanjisIfNeeded();
+		RowInKanjiInformations rowInKanjiInformations = new RowInKanjiInformations(
+				applicationWindow, PanelDisplayMode.VIEW);
+		rowInKanjiInformations.setProblematicWordsController(controller);
 		wordsToReviewList = new MyList<>(applicationWindow, null,
-				new RowInKanjiRepeatingList(controller),
-				Titles.PROBLEMATIC_KANJIS, Kanji.getInitializer());
+				rowInKanjiInformations, Titles.PROBLEMATIC_KANJIS,
+				Kanji.getInitializer());
 		controller.setProblematicWordsDisplayer(this);
 	}
 
