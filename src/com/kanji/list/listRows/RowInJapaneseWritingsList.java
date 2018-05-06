@@ -16,6 +16,8 @@ import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.ListRowDataCreator;
 import com.kanji.utilities.CommonListElements;
 
+import javax.swing.*;
+
 public class RowInJapaneseWritingsList
 		implements ListRowCreator<JapaneseWriting> {
 
@@ -36,10 +38,15 @@ public class RowInJapaneseWritingsList
 			CommonListElements commonListElements, InputGoal inputGoal) {
 		MainPanel rowPanel = new MainPanel(null, false, true,
 				new PanelConfiguration(displayMode));
-		rowPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE,
-				japanesePanelCreatingService
-						.addWritingsRow(japaneseWriting, commonListElements,
-								wordContainingWritings, inputGoal, rowPanel)));
+		JComponent[] components = japanesePanelCreatingService
+				.addWritingsRow(japaneseWriting, commonListElements,
+						wordContainingWritings, inputGoal, rowPanel);
+		rowPanel.addRow(
+				SimpleRowBuilder.createRow(FillType.HORIZONTAL, components));
+		if (japaneseWriting.isEmpty()) {
+			SwingUtilities
+					.invokeLater(() -> components[0].requestFocusInWindow());
+		}
 		ListRowDataCreator<Kanji> rowDataCreator = new ListRowDataCreator<>(
 				rowPanel);
 		return rowDataCreator.getListRowData();
