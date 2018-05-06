@@ -1,8 +1,9 @@
 package com.kanji.list.myList;
 
+import com.guimaker.enums.MoveDirection;
+import com.guimaker.listeners.SwitchBetweenInputsFailListener;
 import com.guimaker.panels.MainPanel;
 import com.kanji.constants.enums.InputGoal;
-import com.kanji.constants.enums.MovingDirection;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.ListElement;
@@ -30,6 +31,8 @@ public class ListWordsController<Word extends ListElement> {
 	private final List<LoadWordsForFoundWord> strategiesForFoundWord = new ArrayList<>();
 	private ListRow<Word> currentlyHighlightedWord;
 	private ListElementInitializer<Word> wordInitializer;
+	private List<SwitchBetweenInputsFailListener> switchBetweenInputsFailListeners = new ArrayList<>();
+	//TODO switchBetweenInputsFailListeners should be deleted from here
 
 	public ListWordsController(ListConfiguration listConfiguration,
 			ListRowCreator<Word> listRowCreator, String title,
@@ -317,6 +320,15 @@ public class ListWordsController<Word extends ListElement> {
 		return getRowWithSelectedInput().getWrappingPanel();
 	}
 
+	public void addSwitchBetweenInputsFailListener(
+			SwitchBetweenInputsFailListener listener) {
+		switchBetweenInputsFailListeners.add(listener);
+		for (ListRow<Word> listRow : allWordsToRowNumberMap.values()) {
+			listRow.getWrappingPanel()
+					.addSwitchBetweenInputsFailedListener(listener);
+		}
+	}
+
 	public ListRow<Word> getRowWithSelectedInput() {
 		for (ListRow<Word> listRow : allWordsToRowNumberMap.values()) {
 			if (listRow.getWrappingPanel().hasSelectedInput()) {
@@ -326,8 +338,10 @@ public class ListWordsController<Word extends ListElement> {
 		return null;
 	}
 
-	public void selectPanelBelowOrAboveSelected(
-			MovingDirection movingDirection) {
+	public void selectPanelBelowOrAboveSelected(MoveDirection moveDirection) {
+		//TODO this should also be handled in main panel in his selection manager
+		// -> in order for this to be possible, all list rows should be contained in one
+		// main panel, currently for each row theres new main panel created
 		ListRow<Word> selectedRow = getRowWithSelectedInput();
 		int rowNumberOfSelectedPanel = selectedRow.getRowNumber();
 		int columnNumber = selectedRow.getWrappingPanel()
@@ -335,13 +349,19 @@ public class ListWordsController<Word extends ListElement> {
 		MainPanel panelBelowOrAbove = null;
 		for (ListRow<Word> listRow : allWordsToRowNumberMap.values()) {
 			if (listRow.getRowNumber()
-					== rowNumberOfSelectedPanel + movingDirection
-					.getIncrementationValue()) {
+					== rowNumberOfSelectedPanel + moveDirection
+					.getIncrementValue()) {
 				panelBelowOrAbove = listRow.getWrappingPanel();
 			}
 		}
 		if (panelBelowOrAbove != null) {
 			panelBelowOrAbove.selectInputInColumn(columnNumber);
+		}
+		else {
+			switchBetweenInputsFailListeners.forEach(listener -> listener
+					.switchBetweenInputsFailed(
+							selectedRow.getWrappingPanel().getSelectedInput(),
+							moveDirection));
 		}
 	}
 }

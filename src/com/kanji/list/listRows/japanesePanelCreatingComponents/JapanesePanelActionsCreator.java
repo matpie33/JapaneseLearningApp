@@ -6,6 +6,7 @@ import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordChecker;
+import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordWritingsChecker;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listeners.InputValidationListener;
@@ -13,8 +14,8 @@ import com.kanji.list.myList.ListPropertyChangeHandler;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.utilities.JapaneseWritingUtilities;
+import com.kanji.utilities.Pair;
 import com.kanji.windows.DialogWindow;
-import javafx.util.Pair;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -47,11 +48,11 @@ public class JapanesePanelActionsCreator {
 	public Map<JTextComponent, ListElementPropertyManager> getInputManagersForInputs() {
 		Map<JTextComponent, ListElementPropertyManager> propertyManagersForInputs = new HashMap<>();
 		for (Pair<JapaneseWord, JapaneseWordChecker> japaneseWordChecker : checkersForJapaneseWords) {
-			InputGoal checkerInputGoal = japaneseWordChecker.getValue()
+			InputGoal checkerInputGoal = japaneseWordChecker.getRight()
 					.getInputGoal();
 			if (checkerInputGoal.equals(InputGoal.SEARCH) || checkerInputGoal
 					.equals(InputGoal.ADD)) {
-				propertyManagersForInputs.putAll(japaneseWordChecker.getValue()
+				propertyManagersForInputs.putAll(japaneseWordChecker.getRight()
 						.getInputToCheckerMap());
 			}
 		}
@@ -81,8 +82,8 @@ public class JapanesePanelActionsCreator {
 			JapaneseWord word, InputGoal inputGoal) {
 
 		for (Pair<JapaneseWord, JapaneseWordChecker> checkerForJapaneseWord : checkersForJapaneseWords) {
-			if (checkerForJapaneseWord.getKey().containsWriting(writing)) {
-				return checkerForJapaneseWord.getValue();
+			if (checkerForJapaneseWord.getLeft().containsWriting(writing)) {
+				return checkerForJapaneseWord.getRight();
 			}
 		}
 		JapaneseWordChecker checker = new JapaneseWordChecker(inputGoal);
@@ -184,4 +185,15 @@ public class JapanesePanelActionsCreator {
 		return textInput;
 	}
 
+	public Pair<JapaneseWriting, JapaneseWordWritingsChecker> getWritingForInput(
+			JTextComponent input) {
+		for (Pair<JapaneseWord, JapaneseWordChecker> wordToChecker : checkersForJapaneseWords) {
+			Pair<JapaneseWriting, JapaneseWordWritingsChecker> writingToChecker = wordToChecker
+					.getRight().getWritingForInput(input);
+			if (writingToChecker != null) {
+				return writingToChecker;
+			}
+		}
+		return null;
+	}
 }

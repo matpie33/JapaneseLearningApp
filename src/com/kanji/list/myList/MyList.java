@@ -1,5 +1,7 @@
 package com.kanji.list.myList;
 
+import com.guimaker.enums.MoveDirection;
+import com.guimaker.listeners.SwitchBetweenInputsFailListener;
 import com.guimaker.panels.MainPanel;
 import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.MovingDirection;
@@ -44,6 +46,11 @@ public class MyList<Word extends ListElement> {
 			ListElementInitializer wordInitializer) {
 		this(parentDialog, applicationController, listRowCreator, title,
 				new ListConfiguration(), wordInitializer);
+	}
+
+	public void addSwitchBetweenInputsFailListener(
+			SwitchBetweenInputsFailListener listener) {
+		listController.addSwitchBetweenInputsFailListener(listener);
 	}
 
 	public ListElementInitializer<Word> getWordInitializer() {
@@ -320,12 +327,12 @@ public class MyList<Word extends ListElement> {
 	}
 
 	public void selectInputBelowCurrent() {
-		listController.selectPanelBelowOrAboveSelected(MovingDirection.FORWARD);
+		listController.selectPanelBelowOrAboveSelected(MoveDirection.BELOW);
 	}
 
 	public void selectInputAboveCurrent() {
 		listController
-				.selectPanelBelowOrAboveSelected(MovingDirection.BACKWARD);
+				.selectPanelBelowOrAboveSelected(MoveDirection.ABOVE);
 	}
 
 	public JTextComponent getSelectedInput() {

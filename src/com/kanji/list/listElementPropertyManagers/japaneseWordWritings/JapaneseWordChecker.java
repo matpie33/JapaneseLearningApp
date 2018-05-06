@@ -5,6 +5,7 @@ import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
+import com.kanji.utilities.Pair;
 
 import javax.swing.text.JTextComponent;
 import java.util.*;
@@ -27,6 +28,16 @@ public class JapaneseWordChecker implements
 				writingContainingThisKana);
 		checkerForWriting.setKanaInput(kanaInput);
 		remember(kanaInput, writingContainingThisKana, checkerForWriting);
+	}
+
+	public Pair <JapaneseWriting, JapaneseWordWritingsChecker> getWritingForInput(JTextComponent input) {
+		for (Map.Entry<JTextComponent, JapaneseWriting> inputWithWriting : inputToWritingMap
+				.entrySet()) {
+			if (inputWithWriting.getKey().equals(input)) {
+				return new Pair<>(inputWithWriting.getValue(),
+						writingToCheckerMap.get(inputWithWriting.getValue()));
+			}
+		} return null;
 	}
 
 	private void remember(JTextComponent input,
@@ -98,9 +109,9 @@ public class JapaneseWordChecker implements
 	}
 
 	private Set<JapaneseWriting> filterNotEmptyWritings() {
-		Set <JapaneseWriting> writings = new HashSet<>();
+		Set<JapaneseWriting> writings = new HashSet<>();
 		for (JapaneseWriting writing : writingToCheckerMap.keySet()) {
-			if (!writing.isEmpty()){
+			if (!writing.isEmpty()) {
 				writings.add(writing);
 			}
 		}

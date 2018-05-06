@@ -1,18 +1,22 @@
 package com.kanji.list.listRows.japanesePanelCreatingComponents;
 
 import com.guimaker.enums.FillType;
+import com.guimaker.enums.MoveDirection;
 import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.inputSelection.ListInputsSelectionManager;
+import com.guimaker.listeners.SwitchBetweenInputsFailListener;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.ComplexRow;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.InputGoal;
+import com.kanji.constants.enums.MovingDirection;
 import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.ListPropertiesNames;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
+import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordWritingsChecker;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listElements.Kanji;
@@ -31,12 +35,11 @@ import com.kanji.windows.DialogWindow;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-public class JapaneseWordPanelCreator {
+public class JapaneseWordPanelCreator
+		implements SwitchBetweenInputsFailListener {
 
 	private JComboBox partOfSpeechCombobox;
 	private JTextComponent wordMeaningText;
@@ -44,7 +47,7 @@ public class JapaneseWordPanelCreator {
 	private JLabel partOfSpeechLabel;
 	private JLabel writingsLabel;
 	private JLabel rowNumberLabel;
-	private MyList<JapaneseWriting> writingsList;
+	private MyList<JapaneseWriting> lastWritingsListCreated;
 	private ApplicationController applicationController;
 	private Color labelsColor = Color.WHITE;
 	private DialogWindow parentDialog;
@@ -52,6 +55,7 @@ public class JapaneseWordPanelCreator {
 	private ComplexRow lastJapanesePanelMade;
 	private ListInputsSelectionManager listInputsSelectionManager;
 	private PanelDisplayMode displayMode;
+	private Map<JapaneseWord, MyList<JapaneseWriting>> writingsLists = new HashMap<>();
 
 	public JapaneseWordPanelCreator(ApplicationController applicationController,
 			DialogWindow parentDialog, PanelDisplayMode displayMode) {
@@ -100,7 +104,7 @@ public class JapaneseWordPanelCreator {
 						.foregroundColor(labelsColor));
 		partOfSpeechCombobox = japanesePanelComponentsStore.getElementsMaker()
 				.createComboboxForPartOfSpeech(japaneseWord.getPartOfSpeech());
-		writingsList = createWritingsList(japaneseWord, inputGoal,
+		lastWritingsListCreated = createWritingsList(japaneseWord, inputGoal,
 				inheritScrollBar);
 		writingsLabel = GuiElementsCreator.createLabel(
 				new ComponentOptions().text(Labels.WRITING_WAYS_IN_JAPANESE)
@@ -122,15 +126,33 @@ public class JapaneseWordPanelCreator {
 
 	public MyList<JapaneseWriting> createWritingsList(JapaneseWord japaneseWord,
 			InputGoal inputGoal, boolean inheritScrollBar) {
-		writingsList = createJapaneseWritingsList(japaneseWord,
+		lastWritingsListCreated = createJapaneseWritingsList(japaneseWord,
 				inheritScrollBar);
-		parentDialog.getPanel().addNavigableByKeyboardList(writingsList);
+		writingsLists.put(japaneseWord, lastWritingsListCreated);
+		lastWritingsListCreated.addSwitchBetweenInputsFailListener(this);
+		parentDialog.getPanel()
+				.addNavigableByKeyboardList(lastWritingsListCreated);
 		if (japaneseWord.getWritings().isEmpty()) {
 			japaneseWord.addWritingsForKana("", "");
 		}
-		japaneseWord.getWritings().stream()
-				.forEach(word -> writingsList.addWord(word, inputGoal));
-		return writingsList;
+		japaneseWord.getWritings().stream().forEach(
+				word -> lastWritingsListCreated.addWord(word, inputGoal));
+		return lastWritingsListCreated;
+	}
+
+	@Override
+	public void switchBetweenInputsFailed(JTextComponent input,
+			MoveDirection direction) {
+		if (direction.equals(MoveDirection.BELOW)) {
+			Pair<JapaneseWriting, JapaneseWordWritingsChecker> writing = japanesePanelComponentsStore
+					.getActionCreator().getWritingForInput(input);
+			JapaneseWord wordContainingInput = applicationController.getJapaneseWords()
+					.findRowBasedOnPropertyStartingFromBeginningOfList(
+							writing.getRight(), writing.getLeft(),
+							MovingDirection.FORWARD, false);
+			writingsLists.get(wordContainingInput).addWord(
+					JapaneseWriting.getInitializer().initializeElement());
+		}
 	}
 
 	private MyList<JapaneseWriting> createJapaneseWritingsList(
@@ -153,7 +175,7 @@ public class JapaneseWordPanelCreator {
 	private ListRowData<JapaneseWord> addElementsToPanel(
 			MainPanel japaneseWordPanel, CommonListElements commonListElements,
 			InputGoal inputGoal) {
-		JPanel writingsListPanel = writingsList.getPanel();
+		JPanel writingsListPanel = lastWritingsListCreated.getPanel();
 		lastJapanesePanelMade = SimpleRowBuilder
 				.createRowStartingFromColumn(0, FillType.BOTH,
 						commonListElements.getRowNumberLabel(),
