@@ -81,7 +81,7 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 		Property propertyNewValue = validateAndConvertToProperty(input);
 		boolean inputValid = propertyNewValue != null;
 		if (inputValid && !inputGoal.equals(InputGoal.SEARCH)) {
-			addWordToList(input, propertyNewValue);
+			inputValid = addWordToList(input, propertyNewValue);
 		}
 		notifyValidationListeners(inputValid, propertyNewValue);
 
@@ -96,7 +96,7 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 				listener -> listener.inputValidated(postValidationData));
 	}
 
-	private void addWordToList(JTextComponent input,
+	private boolean addWordToList(JTextComponent input,
 			Property propertyNewValue) {
 		listElementPropertyManager
 				.setProperty(propertyHolder, propertyNewValue);
@@ -112,11 +112,12 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 					duplicateRowNumber);
 			list.highlightRow(duplicateRowNumber - 1, true);
 			dialogWindow.showMessageDialog(exceptionMessage);
-			return;
+			return false;
 		}
 		else {
 			previousValueOfTextInput = null;
 			list.save();
+			return true;
 		}
 	}
 
