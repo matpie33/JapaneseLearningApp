@@ -41,4 +41,5 @@ public class ExceptionsMessages {
 	public static final String EXCEPTION_WHILE_LOADING_KANJI_PROJECT = "Wystąpił błąd przy wczytywaniu: %s.";
 	public static final String ROW_FOR_DUPLICATED_PROPERTY = "Duplikat występuje w wierszu nr %s.";
 	public static final String DUPLICATED_WRITINGS_IN_WORD = "Wpisano identyczne zapisy słowa w dwóch wierszach.";
+	public static final String KANA_INPUT_EMPTY = "Pole \"kana\" musi być wypełnione." ;
 }

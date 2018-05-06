@@ -94,7 +94,7 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 				return existingKanjiWritings.containsAll(searchedKanji);
 			}
 		}
-		else{
+		else {
 			if (JapaneseWritingUtilities
 					.areKanjiWritingsEmpty(existingKanjiWritings)) {
 				return true;
@@ -137,6 +137,12 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 					writingToAdd = japaneseWritingToCheck;
 				}
 				else {
+					if (!inputGoal.equals(InputGoal.SEARCH)
+							&& JapaneseWritingUtilities.isInputEmpty(
+							japaneseWritingToCheck.getKanaWriting(), true)) {
+						errorDetails = ExceptionsMessages.KANA_INPUT_EMPTY;
+						return null;
+					}
 					boolean isNewWriting = writingsInputManager
 							.addKanjiInput(valueToConvert);
 					if (!isNewWriting) {
