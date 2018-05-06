@@ -1,5 +1,6 @@
 package com.kanji.panelsAndControllers.controllers;
 
+import com.guimaker.enums.MoveDirection;
 import com.guimaker.enums.PanelDisplayMode;
 import com.kanji.constants.enums.*;
 import com.kanji.constants.strings.Labels;
@@ -264,7 +265,7 @@ public class ApplicationController implements ApplicationStateManager {
 					.findRowBasedOnPropertyStartingFromBeginningOfList(
 							new JapaneseWordMeaningChecker(
 									WordSearchOptions.BY_FULL_EXPRESSION),
-							meaning, MovingDirection.FORWARD, true));
+							meaning, MoveDirection.BELOW, true));
 		}
 		return japaneseWordInformations;
 	}
@@ -274,7 +275,7 @@ public class ApplicationController implements ApplicationStateManager {
 		for (Integer i : ids) {
 			kanjis.add(getKanjiList()
 					.findRowBasedOnPropertyStartingFromBeginningOfList(
-							new KanjiIdChecker(), i, MovingDirection.FORWARD,
+							new KanjiIdChecker(), i, MoveDirection.BELOW,
 							true));
 		}
 		return kanjis;

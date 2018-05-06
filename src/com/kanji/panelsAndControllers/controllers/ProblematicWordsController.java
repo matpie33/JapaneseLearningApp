@@ -1,8 +1,8 @@
 package com.kanji.panelsAndControllers.controllers;
 
+import com.guimaker.enums.MoveDirection;
 import com.guimaker.utilities.KeyModifiers;
 import com.kanji.constants.enums.ApplicationSaveableState;
-import com.kanji.constants.enums.MovingDirection;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.Kanji;
@@ -128,7 +128,7 @@ public class ProblematicWordsController<Word extends ListElement>
 	}
 
 	public AbstractAction createActionShowNextWordOrCloseDialog(
-			MovingDirection direction) {
+			MoveDirection direction) {
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -136,7 +136,7 @@ public class ProblematicWordsController<Word extends ListElement>
 					return;
 				}
 				nextWordToReview =
-						nextWordToReview + direction.getIncrementationValue();
+						nextWordToReview + direction.getIncrementValue();
 				if (nextWordToReview < 0) {
 					nextWordToReview = 0;
 					return;
@@ -252,14 +252,14 @@ public class ProblematicWordsController<Word extends ListElement>
 
 	private void initializeActionBrowseNextWord() {
 		initializeAction(KeyEvent.VK_SPACE,
-				createActionShowNextWordOrCloseDialog(MovingDirection.FORWARD),
+				createActionShowNextWordOrCloseDialog(MoveDirection.BELOW),
 				HotkeysDescriptions.SHOW_NEXT_PROBLEMATIC_WORD);
 
 	}
 
 	private void initializeActionBrowsePreviousWord() {
 		initializeAction(KeyEvent.VK_BACK_SPACE,
-				createActionShowNextWordOrCloseDialog(MovingDirection.BACKWARD),
+				createActionShowNextWordOrCloseDialog(MoveDirection.BELOW),
 				HotkeysDescriptions.SHOW_PREVIOUS_PROBLEMATIC_WORD);
 	}
 

@@ -1,6 +1,6 @@
 package com.kanji.panelsAndControllers.controllers;
 
-import com.kanji.constants.enums.MovingDirection;
+import com.guimaker.enums.MoveDirection;
 import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listeners.InputValidationListener;
@@ -18,7 +18,7 @@ public class SearchWordController<Word extends ListElement>
 	private SearchWordPanel searchWordPanel;
 	private MyList<Word> list;
 	private boolean searchWasRequested = false;
-	private MovingDirection currentSearchDirection;
+	private MoveDirection currentSearchDirection;
 	private Component lastFocusedElement;
 
 	public SearchWordController(SearchWordPanel panel, MyList list) {
@@ -48,7 +48,7 @@ public class SearchWordController<Word extends ListElement>
 	}
 
 	public AbstractAction createActionFindWord(
-			MovingDirection searchDirection) {
+			MoveDirection searchDirection) {
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

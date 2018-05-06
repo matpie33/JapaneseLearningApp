@@ -11,7 +11,6 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.ComplexRow;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.InputGoal;
-import com.kanji.constants.enums.MovingDirection;
 import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.ListPropertiesNames;
@@ -149,7 +148,7 @@ public class JapaneseWordPanelCreator
 			JapaneseWord wordContainingInput = applicationController.getJapaneseWords()
 					.findRowBasedOnPropertyStartingFromBeginningOfList(
 							writing.getRight(), writing.getLeft(),
-							MovingDirection.FORWARD, false);
+							MoveDirection.BELOW, false);
 			writingsLists.get(wordContainingInput).addWord(
 					JapaneseWriting.getInitializer().initializeElement());
 		}

@@ -2,6 +2,7 @@ package com.kanji.problematicWords;
 
 import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
+import com.guimaker.enums.MoveDirection;
 import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComponentOptions;
@@ -10,7 +11,6 @@ import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
-import com.kanji.constants.enums.MovingDirection;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Prompts;
@@ -111,7 +111,7 @@ public class ProblematicJapaneseWordsDisplayer
 					findRowBasedOnPropertyStartingFromBeginningOfList(
 							new KanjiIdChecker(),
 							kanjiCharactersReader.getIdOfKanji(kanji),
-							MovingDirection.FORWARD, false);
+							MoveDirection.BELOW, false);
 			JLabel kanjiLabel = GuiElementsCreator.createLabel(
 					new ComponentOptions().text(kanji)
 							.font(ApplicationWindow.getKanjiFont()));
