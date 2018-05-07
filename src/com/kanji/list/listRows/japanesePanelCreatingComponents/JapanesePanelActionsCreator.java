@@ -185,13 +185,13 @@ public class JapanesePanelActionsCreator {
 		return textInput;
 	}
 
-	public Pair<JapaneseWriting, JapaneseWordWritingsChecker> getWritingForInput(
+	public JapaneseWord getWordContainingInput(
 			JTextComponent input) {
 		for (Pair<JapaneseWord, JapaneseWordChecker> wordToChecker : checkersForJapaneseWords) {
 			Pair<JapaneseWriting, JapaneseWordWritingsChecker> writingToChecker = wordToChecker
 					.getRight().getWritingForInput(input);
 			if (writingToChecker != null) {
-				return writingToChecker;
+				return wordToChecker.getLeft();
 			}
 		}
 		return null;

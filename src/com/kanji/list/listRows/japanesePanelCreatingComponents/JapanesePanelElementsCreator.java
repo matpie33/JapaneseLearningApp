@@ -92,8 +92,8 @@ public class JapanesePanelElementsCreator {
 			public void actionPerformed(ActionEvent e) {
 				rowPanel.insertElementInPlaceOfElement(
 						createKanjiInputWithValidation("", japaneseWriting,
-								japaneseWord, inputGoal, editMode,
-								selectable), button);
+								japaneseWord, inputGoal, editMode, selectable),
+						button);
 			}
 		});
 		return button;

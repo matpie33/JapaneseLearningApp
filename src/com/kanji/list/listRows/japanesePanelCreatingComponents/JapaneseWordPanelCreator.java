@@ -15,7 +15,6 @@ import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.ListPropertiesNames;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
-import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordWritingsChecker;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listElements.Kanji;
@@ -34,8 +33,10 @@ import com.kanji.windows.DialogWindow;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class JapaneseWordPanelCreator
 		implements SwitchBetweenInputsFailListener {
@@ -54,7 +55,7 @@ public class JapaneseWordPanelCreator
 	private ComplexRow lastJapanesePanelMade;
 	private ListInputsSelectionManager listInputsSelectionManager;
 	private PanelDisplayMode displayMode;
-	private Map<JapaneseWord, MyList<JapaneseWriting>> writingsLists = new HashMap<>();
+	private List<Pair<JapaneseWord, MyList<JapaneseWriting>>> writingsLists = new ArrayList<>();
 
 	public JapaneseWordPanelCreator(ApplicationController applicationController,
 			DialogWindow parentDialog, PanelDisplayMode displayMode) {
@@ -127,7 +128,7 @@ public class JapaneseWordPanelCreator
 			InputGoal inputGoal, boolean inheritScrollBar) {
 		lastWritingsListCreated = createJapaneseWritingsList(japaneseWord,
 				inheritScrollBar);
-		writingsLists.put(japaneseWord, lastWritingsListCreated);
+		writingsLists.add(new Pair<>(japaneseWord, lastWritingsListCreated));
 		lastWritingsListCreated.addSwitchBetweenInputsFailListener(this);
 		parentDialog.getPanel()
 				.addNavigableByKeyboardList(lastWritingsListCreated);
@@ -143,14 +144,24 @@ public class JapaneseWordPanelCreator
 	public void switchBetweenInputsFailed(JTextComponent input,
 			MoveDirection direction) {
 		if (direction.equals(MoveDirection.BELOW)) {
-			Pair<JapaneseWriting, JapaneseWordWritingsChecker> writing = japanesePanelComponentsStore
-					.getActionCreator().getWritingForInput(input);
-			JapaneseWord wordContainingInput = applicationController.getJapaneseWords()
-					.findRowBasedOnPropertyStartingFromBeginningOfList(
-							writing.getRight(), writing.getLeft(),
-							MoveDirection.BELOW, false);
-			writingsLists.get(wordContainingInput).addWord(
+			JapaneseWord wordContainingInput = japanesePanelComponentsStore
+					.getActionCreator().getWordContainingInput(input);
+			MyList<JapaneseWriting> writingsListToAddWriting = null;
+			if (wordContainingInput != null) {
+				for (Pair<JapaneseWord, MyList<JapaneseWriting>> wordWithWritings : writingsLists) {
+					if (wordWithWritings.getLeft().equals(wordContainingInput)){
+						writingsListToAddWriting = wordWithWritings.getRight();
+						break;
+					}
+				}
+			}
+			else {
+				writingsListToAddWriting = lastWritingsListCreated;
+			}
+
+			writingsListToAddWriting.addWord(
 					JapaneseWriting.getInitializer().initializeElement());
+			writingsListToAddWriting.scrollToBottom();
 		}
 	}
 

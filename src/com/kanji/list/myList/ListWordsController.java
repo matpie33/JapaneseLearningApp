@@ -356,6 +356,7 @@ public class ListWordsController<Word extends ListElement> {
 		}
 		if (panelBelowOrAbove != null) {
 			panelBelowOrAbove.selectInputInColumn(columnNumber);
+			listPanelCreator.scrollTo(panelBelowOrAbove.getPanel());
 		}
 		else {
 			switchBetweenInputsFailListeners.forEach(listener -> listener

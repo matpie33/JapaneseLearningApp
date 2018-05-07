@@ -307,6 +307,9 @@ public class ListPanelCreator<Word extends ListElement>
 	}
 
 	public void scrollTo(JComponent panel) {
+		if (isScrollBarInherited){
+			return;
+		}
 		SwingUtilities.invokeLater(() -> {
 			int r = panel.getY();
 			this.parentScrollPane.getViewport()
@@ -315,11 +318,15 @@ public class ListPanelCreator<Word extends ListElement>
 	}
 
 	public void scrollToBottom() {
+		if (isScrollBarInherited){
+			return;
+		}
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				// TODO swing utilities
+
 				JScrollBar scrollBar = parentScrollPane.getVerticalScrollBar();
 				scrollBar.setValue(scrollBar.getMaximum());
 			}
