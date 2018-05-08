@@ -1,12 +1,10 @@
 package com.kanji.list.listElements;
 
-import com.kanji.constants.enums.AdditionalInformationTag;
-import com.kanji.constants.enums.InputGoal;
-import com.kanji.constants.enums.PartOfSpeech;
-import com.kanji.constants.enums.WordSearchOptions;
+import com.kanji.constants.enums.*;
 import com.kanji.list.listElementAdditionalInformations.AdditionalInformation;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
 import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordWritingsChecker;
+import com.kanji.model.WordParticlesData;
 import com.kanji.utilities.StringUtilities;
 
 import java.io.Serializable;
@@ -27,6 +25,9 @@ public class JapaneseWord implements ListElement, Serializable {
 	private String meaning;
 	private PartOfSpeech partOfSpeech;
 	private Set<AdditionalInformation> additionalInformations = new HashSet<>();
+	private WordParticlesData takenParticles = WordParticlesData
+			.initializeEmpty();
+
 	private static JapaneseWordMeaningChecker meaningChecker = new JapaneseWordMeaningChecker(
 			WordSearchOptions.BY_FULL_EXPRESSION);
 
@@ -203,4 +204,17 @@ public class JapaneseWord implements ListElement, Serializable {
 		}
 		return false;
 	}
+
+	public WordParticlesData getTakenParticles() {
+		return takenParticles;
+	}
+
+	public void addTakenParticle(JapaneseParticle particle,
+			String... additionalInformation) {
+		String mergedAdditionalInformations = StringUtilities
+				.concatenateStrings(Arrays.asList(additionalInformation));
+		takenParticles
+				.addParticleInformation(particle, mergedAdditionalInformations);
+	}
+
 }

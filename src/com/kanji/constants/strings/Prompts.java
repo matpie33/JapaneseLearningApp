@@ -38,5 +38,5 @@ public class Prompts {
 	public static final String ROW_NUMBER = "Nr wiersza: ";
 	public static final String NO_KANJI_INFORMATION_AVAILABLE = "Brak informacji";
 	public static final String KANJI_INFORMATIONS = "Informacje o znakach";
-
+	public static final String PARTICLES_TAKEN = "Przyjmowane partykuły";
 }

@@ -21,7 +21,8 @@ public class JapanesePanelComponentsStore {
 			DialogWindow parentDialog, PanelDisplayMode displayMode) {
 		actionsCreator = new JapanesePanelActionsCreator(parentDialog,
 				applicationController);
-		elementsMaker = new JapanesePanelElementsCreator(actionsCreator);
+		elementsMaker = new JapanesePanelElementsCreator(actionsCreator,
+				applicationController, parentDialog);
 		getPanelRowService(displayMode);
 	}
 

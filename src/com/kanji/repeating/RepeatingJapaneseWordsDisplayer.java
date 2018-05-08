@@ -1,6 +1,7 @@
 package com.kanji.repeating;
 
 import com.guimaker.enums.FillType;
+import com.guimaker.options.ComboboxOptions;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
@@ -71,7 +72,8 @@ public class RepeatingJapaneseWordsDisplayer
 	}
 
 	private void initializeGuiElements() {
-		partOfSpeechCombobox = new JComboBox<>();
+		partOfSpeechCombobox = GuiElementsCreator
+				.createCombobox(new ComboboxOptions());
 		partOfSpeechCombobox.setFocusable(false);
 		Arrays.stream(PartOfSpeech.values()).forEach(
 				partOfSpeech -> partOfSpeechCombobox

@@ -365,4 +365,8 @@ public class ListWordsController<Word extends ListElement> {
 							moveDirection));
 		}
 	}
+
+	public void toggleEnabledState() {
+		listPanelCreator.toggleEnabledState();
+	}
 }

@@ -337,4 +337,8 @@ public class MyList<Word extends ListElement> {
 	public JTextComponent getSelectedInput() {
 		return getPanelWithSelectedInput().getSelectedInput();
 	}
+
+	public void toggleEnabledState() {
+		listController.toggleEnabledState();
+	}
 }

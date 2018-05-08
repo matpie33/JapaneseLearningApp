@@ -12,6 +12,7 @@ import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listeners.InputValidationListener;
 import com.kanji.list.myList.ListPropertyChangeHandler;
 import com.kanji.list.myList.MyList;
+import com.kanji.model.WordParticlesData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.utilities.JapaneseWritingUtilities;
 import com.kanji.utilities.Pair;
@@ -195,5 +196,16 @@ public class JapanesePanelActionsCreator {
 			}
 		}
 		return null;
+	}
+
+	public AbstractButton withActionToggleListEnabledState(
+			AbstractButton checkbox, MyList<WordParticlesData> particlesData) {
+		checkbox.addActionListener(new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				particlesData.toggleEnabledState();
+			}
+		});
+		return checkbox;
 	}
 }

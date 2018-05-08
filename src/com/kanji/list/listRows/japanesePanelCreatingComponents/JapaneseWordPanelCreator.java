@@ -24,6 +24,7 @@ import com.kanji.list.myList.ListConfiguration;
 import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.ListRowDataCreator;
 import com.kanji.list.myList.MyList;
+import com.kanji.model.WordParticlesData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.utilities.CommonGuiElementsCreator;
 import com.kanji.utilities.CommonListElements;
@@ -56,6 +57,10 @@ public class JapaneseWordPanelCreator
 	private ListInputsSelectionManager listInputsSelectionManager;
 	private PanelDisplayMode displayMode;
 	private List<Pair<JapaneseWord, MyList<JapaneseWriting>>> writingsLists = new ArrayList<>();
+	private AbstractButton checkboxParticlesTaken;
+	private MyList<WordParticlesData> particlesTakenList;
+	//TODO it's the second place where map did not fit due to mutable keys,
+	//can we do better than list of pairs?
 
 	public JapaneseWordPanelCreator(ApplicationController applicationController,
 			DialogWindow parentDialog, PanelDisplayMode displayMode) {
@@ -102,6 +107,9 @@ public class JapaneseWordPanelCreator
 		partOfSpeechLabel = GuiElementsCreator.createLabel(
 				new ComponentOptions().text(Labels.PART_OF_SPEECH)
 						.foregroundColor(labelsColor));
+		createParticlesTakenList(japaneseWord);
+		checkboxParticlesTaken = japanesePanelComponentsStore.getElementsMaker()
+				.createCheckboxParticlesTaken(particlesTakenList);
 		partOfSpeechCombobox = japanesePanelComponentsStore.getElementsMaker()
 				.createComboboxForPartOfSpeech(japaneseWord.getPartOfSpeech());
 		lastWritingsListCreated = createWritingsList(japaneseWord, inputGoal,
@@ -109,6 +117,11 @@ public class JapaneseWordPanelCreator
 		writingsLabel = GuiElementsCreator.createLabel(
 				new ComponentOptions().text(Labels.WRITING_WAYS_IN_JAPANESE)
 						.foregroundColor(labelsColor));
+	}
+
+	private void createParticlesTakenList(JapaneseWord japaneseWord) {
+		particlesTakenList = japanesePanelComponentsStore.getElementsMaker()
+				.createParticlesDataList(japaneseWord);
 	}
 
 	private void addActions(JapaneseWord japaneseWord, InputGoal inputGoal) {
@@ -149,7 +162,8 @@ public class JapaneseWordPanelCreator
 			MyList<JapaneseWriting> writingsListToAddWriting = null;
 			if (wordContainingInput != null) {
 				for (Pair<JapaneseWord, MyList<JapaneseWriting>> wordWithWritings : writingsLists) {
-					if (wordWithWritings.getLeft().equals(wordContainingInput)){
+					if (wordWithWritings.getLeft()
+							.equals(wordContainingInput)) {
 						writingsListToAddWriting = wordWithWritings.getRight();
 						break;
 					}
@@ -191,6 +205,9 @@ public class JapaneseWordPanelCreator
 						commonListElements.getRowNumberLabel(),
 						wordMeaningLabel, wordMeaningText)
 				.fillHorizontallySomeElements(wordMeaningText)
+				.nextRow(checkboxParticlesTaken)
+				.setColumnToPutRowInto(2)//
+				.nextRow(particlesTakenList.getPanel())//
 				.nextRow(partOfSpeechLabel, partOfSpeechCombobox)
 				.setColumnToPutRowInto(1)
 				.fillHorizontallySomeElements(partOfSpeechCombobox)

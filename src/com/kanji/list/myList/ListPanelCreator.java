@@ -4,7 +4,6 @@ import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
-import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.inputSelection.ListInputsSelectionManager;
 import com.guimaker.model.PanelConfiguration;
 import com.guimaker.options.ButtonOptions;
@@ -79,7 +78,8 @@ public class ListPanelCreator<Word extends ListElement>
 
 		navigationButtons = new ArrayList<>();
 		unwrapConfiguration(listConfiguration);
-		listInputsSelectionManager = listConfiguration.getAllInputsSelectionManager();
+		listInputsSelectionManager = listConfiguration
+				.getAllInputsSelectionManager();
 
 	}
 
@@ -307,7 +307,8 @@ public class ListPanelCreator<Word extends ListElement>
 	}
 
 	public void scrollTo(JComponent panel) {
-		if (isScrollBarInherited){
+		if (isScrollBarInherited) {
+			//TODO keep reference to the inherited scrollbar and use it to scroll
 			return;
 		}
 		SwingUtilities.invokeLater(() -> {
@@ -318,7 +319,7 @@ public class ListPanelCreator<Word extends ListElement>
 	}
 
 	public void scrollToBottom() {
-		if (isScrollBarInherited){
+		if (isScrollBarInherited) {
 			return;
 		}
 
@@ -360,5 +361,9 @@ public class ListPanelCreator<Word extends ListElement>
 
 	public MainPanel getRowsPanel() {
 		return rowsPanel;
+	}
+
+	public void toggleEnabledState() {
+		rowsPanel.toggleEnabledState();
 	}
 }
