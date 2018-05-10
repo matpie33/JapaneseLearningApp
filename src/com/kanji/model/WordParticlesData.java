@@ -21,8 +21,10 @@ public class WordParticlesData implements ListElement, Serializable {
 		return particleWithAdditionalInformation;
 	}
 
-	public static WordParticlesData initializeEmpty(){
-		return new WordParticlesData();
+	public static WordParticlesData initializeEmpty() {
+		WordParticlesData wordParticlesData = new WordParticlesData();
+		wordParticlesData.addParticleInformation(JapaneseParticle.DE, "");
+		return wordParticlesData;
 	}
 
 	@Override

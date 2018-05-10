@@ -1,8 +1,6 @@
 package com.kanji.list.listRows;
 
 import com.guimaker.enums.FillType;
-import com.guimaker.enums.PanelDisplayMode;
-import com.guimaker.model.PanelConfiguration;
 import com.guimaker.options.ComboboxOptions;
 import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
@@ -24,11 +22,6 @@ import java.util.stream.Collectors;
 
 public class RowInParticlesInformation
 		implements ListRowCreator<WordParticlesData> {
-	private PanelDisplayMode panelDisplayMode;
-
-	public RowInParticlesInformation(PanelDisplayMode displayMode) {
-		this.panelDisplayMode = displayMode;
-	}
 
 	@Override
 	public ListRowData<WordParticlesData> createListRow(
@@ -38,17 +31,12 @@ public class RowInParticlesInformation
 				.stream(JapaneseParticle.values())
 				.map(JapaneseParticle::getDisplayedValue)
 				.collect(Collectors.toList());
-		MainPanel panel = new MainPanel(null, false, true,
-				new PanelConfiguration(panelDisplayMode));
+		MainPanel panel = new MainPanel(null);
 		for (Map.Entry<JapaneseParticle, String> particleWithInformation : wordParticlesData
 				.getParticleWithAdditionalInformation().entrySet()) {
 			addRowForParticle(possibleParticles, panel,
 					particleWithInformation.getKey(),
 					particleWithInformation.getValue(), commonListElements);
-		}
-		if (wordParticlesData.isEmpty()) {
-			addRowForParticle(possibleParticles, panel, JapaneseParticle.DE, "",
-					commonListElements);
 		}
 
 		ListRowData<WordParticlesData> rowData = new ListRowData<>(panel);

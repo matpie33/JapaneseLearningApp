@@ -17,6 +17,7 @@ import com.guimaker.utilities.KeyModifiers;
 import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
+import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.model.ListRow;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
@@ -68,6 +69,7 @@ public class ListPanelCreator<Word extends ListElement>
 		isSkipTitle = listConfiguration.isSkipTitle();
 		rowsPanel = new MainPanel(null, true, true,
 				new PanelConfiguration(listConfiguration.getDisplayMode()));
+		addElementsForEmptyList();
 		rootPanel = new MainPanel(null);
 		titleLabel = GuiElementsCreator.createLabel(new ComponentOptions());
 		loadNextWordsHandler = new LoadNextWordsHandler(listWordsController,
@@ -81,6 +83,13 @@ public class ListPanelCreator<Word extends ListElement>
 		listInputsSelectionManager = listConfiguration
 				.getAllInputsSelectionManager();
 
+	}
+
+	private void addElementsForEmptyList() {
+		rowsPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE,
+				GuiElementsCreator.createLabel(
+						new ComponentOptions().text(Prompts.EMPTY_LIST)),
+				createButtonAddRow(InputGoal.EDIT)));
 	}
 
 	private void unwrapConfiguration(ListConfiguration listConfiguration) {
@@ -143,6 +152,9 @@ public class ListPanelCreator<Word extends ListElement>
 	public ListRow<Word> addRow(Word word, int rowNumber,
 			boolean shouldShowWord, LoadWordsHandler loadWordsHandler,
 			InputGoal inputGoal) {
+		if (listWordsController.getWords().isEmpty()) {
+			rowsPanel.removeRow(0);
+		}
 		JLabel rowNumberLabel = new JLabel(createTextForRowNumber(rowNumber));
 		AbstractButton remove = GuiElementsCreator.createButtonlikeComponent(
 				new ButtonOptions(ButtonType.BUTTON)

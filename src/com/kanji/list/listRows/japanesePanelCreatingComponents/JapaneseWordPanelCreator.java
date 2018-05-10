@@ -57,8 +57,8 @@ public class JapaneseWordPanelCreator
 	private ListInputsSelectionManager listInputsSelectionManager;
 	private PanelDisplayMode displayMode;
 	private List<Pair<JapaneseWord, MyList<JapaneseWriting>>> writingsLists = new ArrayList<>();
-	private AbstractButton checkboxParticlesTaken;
 	private MyList<WordParticlesData> particlesTakenList;
+	private JLabel particlesTakenLabel;
 	//TODO it's the second place where map did not fit due to mutable keys,
 	//can we do better than list of pairs?
 
@@ -108,14 +108,15 @@ public class JapaneseWordPanelCreator
 				new ComponentOptions().text(Labels.PART_OF_SPEECH)
 						.foregroundColor(labelsColor));
 		createParticlesTakenList(japaneseWord);
-		checkboxParticlesTaken = japanesePanelComponentsStore.getElementsMaker()
-				.createCheckboxParticlesTaken(particlesTakenList);
 		partOfSpeechCombobox = japanesePanelComponentsStore.getElementsMaker()
 				.createComboboxForPartOfSpeech(japaneseWord.getPartOfSpeech());
 		lastWritingsListCreated = createWritingsList(japaneseWord, inputGoal,
 				inheritScrollBar);
 		writingsLabel = GuiElementsCreator.createLabel(
 				new ComponentOptions().text(Labels.WRITING_WAYS_IN_JAPANESE)
+						.foregroundColor(labelsColor));
+		particlesTakenLabel = GuiElementsCreator.createLabel(
+				new ComponentOptions().text(Labels.TAKING_PARTICLE)
 						.foregroundColor(labelsColor));
 	}
 
@@ -205,11 +206,9 @@ public class JapaneseWordPanelCreator
 						commonListElements.getRowNumberLabel(),
 						wordMeaningLabel, wordMeaningText)
 				.fillHorizontallySomeElements(wordMeaningText)
-				.nextRow(checkboxParticlesTaken)
-				.setColumnToPutRowInto(2)//
-				.nextRow(particlesTakenList.getPanel())//
 				.nextRow(partOfSpeechLabel, partOfSpeechCombobox)
 				.setColumnToPutRowInto(1)
+				.nextRow(particlesTakenLabel, particlesTakenList.getPanel())
 				.fillHorizontallySomeElements(partOfSpeechCombobox)
 				.nextRow(writingsLabel, writingsListPanel)
 				.fillHorizontallySomeElements(writingsListPanel)

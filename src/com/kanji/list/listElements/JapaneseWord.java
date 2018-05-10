@@ -25,8 +25,7 @@ public class JapaneseWord implements ListElement, Serializable {
 	private String meaning;
 	private PartOfSpeech partOfSpeech;
 	private Set<AdditionalInformation> additionalInformations = new HashSet<>();
-	private WordParticlesData takenParticles = WordParticlesData
-			.initializeEmpty();
+	private WordParticlesData takenParticles = new WordParticlesData();
 
 	private static JapaneseWordMeaningChecker meaningChecker = new JapaneseWordMeaningChecker(
 			WordSearchOptions.BY_FULL_EXPRESSION);

@@ -80,11 +80,12 @@ public class MyList<Word extends ListElement> {
 	}
 
 	public boolean addWord(Word word) {
-		return listController.add(word, InputGoal.EDIT);
+		return addWord(word, InputGoal.EDIT);
 	}
 
 	public boolean addWord(Word word, InputGoal inputGoal) {
-		return listController.add(word, inputGoal);
+		return word != null && !word.isEmpty() && listController
+				.add(word, inputGoal);
 	}
 
 	public Word createWord() {
@@ -330,8 +331,7 @@ public class MyList<Word extends ListElement> {
 	}
 
 	public void selectInputAboveCurrent() {
-		listController
-				.selectPanelBelowOrAboveSelected(MoveDirection.ABOVE);
+		listController.selectPanelBelowOrAboveSelected(MoveDirection.ABOVE);
 	}
 
 	public JTextComponent getSelectedInput() {
