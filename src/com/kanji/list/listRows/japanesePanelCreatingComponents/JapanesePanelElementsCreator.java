@@ -7,6 +7,7 @@ import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.kanji.constants.enums.InputGoal;
+import com.kanji.constants.enums.JapaneseParticle;
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.list.listElements.JapaneseWord;
@@ -55,12 +56,14 @@ public class JapanesePanelElementsCreator {
 	public MyList<WordParticlesData> createParticlesDataList(
 			JapaneseWord japaneseWord) {
 		MyList<WordParticlesData> particlesList = new MyList<>(dialogWindow,
-				applicationController, new RowInParticlesInformation(), "",
+				applicationController,
+				new RowInParticlesInformation(japaneseWord,
+						applicationController), "",
 				new ListConfiguration().showButtonsLoadNextPreviousWords(false)
 						.enableWordAdding(false).enableWordSearching(false)
 						.scrollBarFitsContent(true).inheritScrollbar(true),
-				WordParticlesData::initializeEmpty);
-		particlesList.addWord(japaneseWord.getTakenParticles());
+				()-> WordParticlesData.createParticleNotIncludedInWord(japaneseWord));
+		japaneseWord.getTakenParticles().forEach(particlesList::addWord);
 		return particlesList;
 	}
 
@@ -101,7 +104,8 @@ public class JapanesePanelElementsCreator {
 		JComboBox<String> comboBox = GuiElementsCreator.createCombobox(
 				new ComboboxOptions().setComboboxValues(
 						Arrays.stream(PartOfSpeech.values())
-								.map(p -> p.getPolishMeaning())
+								.filter(p -> !p.equals(JapaneseParticle.EMPTY))
+								.map(PartOfSpeech::getPolishMeaning)
 								.collect(Collectors.toList())));
 		comboBox.setSelectedItem(partOfSpeechToSelect.getPolishMeaning());
 		return comboBox;

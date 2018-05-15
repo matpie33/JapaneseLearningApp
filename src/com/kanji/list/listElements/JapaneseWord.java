@@ -25,7 +25,7 @@ public class JapaneseWord implements ListElement, Serializable {
 	private String meaning;
 	private PartOfSpeech partOfSpeech;
 	private Set<AdditionalInformation> additionalInformations = new HashSet<>();
-	private WordParticlesData takenParticles = new WordParticlesData();
+	private Set<WordParticlesData> takenParticles = new HashSet<>();
 
 	private static JapaneseWordMeaningChecker meaningChecker = new JapaneseWordMeaningChecker(
 			WordSearchOptions.BY_FULL_EXPRESSION);
@@ -153,6 +153,7 @@ public class JapaneseWord implements ListElement, Serializable {
 		builder.append("\nWord type: ");
 		builder.append(partOfSpeech.getPolishMeaning());
 		builder.append("\nWord meaning: " + meaning);
+		builder.append("\nParticles: " + getTakenParticles());
 
 		return builder.toString();
 	}
@@ -204,7 +205,7 @@ public class JapaneseWord implements ListElement, Serializable {
 		return false;
 	}
 
-	public WordParticlesData getTakenParticles() {
+	public Set<WordParticlesData> getTakenParticles() {
 		return takenParticles;
 	}
 
@@ -212,8 +213,26 @@ public class JapaneseWord implements ListElement, Serializable {
 			String... additionalInformation) {
 		String mergedAdditionalInformations = StringUtilities
 				.concatenateStrings(Arrays.asList(additionalInformation));
-		takenParticles
-				.addParticleInformation(particle, mergedAdditionalInformations);
+		takenParticles.add(new WordParticlesData(particle)
+				.setAdditionalInformation(mergedAdditionalInformations));
 	}
 
+	public void removeParticle(JapaneseParticle particle) {
+		WordParticlesData particleDataToRemove = null;
+		for (WordParticlesData existingParticle : getTakenParticles()) {
+			if (existingParticle.getJapaneseParticle().equals(particle)) {
+				particleDataToRemove = existingParticle;
+				break;
+			}
+		}
+		getTakenParticles().remove(particleDataToRemove);
+	}
+
+	public boolean addParticleData(WordParticlesData particleData) {
+		return getTakenParticles().add(particleData);
+	}
+
+	public boolean hasParticle(JapaneseParticle particle) {
+		return getTakenParticles().contains(new WordParticlesData(particle));
+	}
 }
