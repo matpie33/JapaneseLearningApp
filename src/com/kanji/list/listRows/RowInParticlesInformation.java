@@ -18,6 +18,9 @@ import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.utilities.CommonListElements;
 
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Arrays;
@@ -51,7 +54,7 @@ public class RowInParticlesInformation
 				.removeParticle(wordParticlesData.getJapaneseParticle()));
 		addRowForParticle(possibleParticles, panel, wordParticlesData,
 				commonListElements);
-
+		applicationController.saveProject();
 		return new ListRowData<>(panel);
 	}
 
@@ -63,14 +66,27 @@ public class RowInParticlesInformation
 				wordParticlesData);
 		panel.addRow(SimpleRowBuilder
 				.createRow(FillType.HORIZONTAL, particleCombobox,
-						GuiElementsCreator.createTextField(
-								new TextComponentOptions()
-										.text(wordParticlesData
-												.getAdditionalInformation())
-										.promptWhenEmpty(
-												Prompts.ADDITIONAL_INFORMATION)),
+						createAdditionalInformationInput(wordParticlesData),
 						commonListElements.getButtonAddRow(),
 						commonListElements.getButtonDelete()));
+	}
+
+	private JTextComponent createAdditionalInformationInput(
+			WordParticlesData wordParticlesData) {
+		JTextComponent input = GuiElementsCreator.createTextField(
+				new TextComponentOptions()
+						.text(wordParticlesData.getAdditionalInformation())
+						.promptWhenEmpty(Prompts.ADDITIONAL_INFORMATION));
+		input.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				super.focusLost(e);
+				JTextComponent input = (JTextComponent) e.getSource();
+				wordParticlesData.setAdditionalInformation(input.getText());
+				applicationController.saveProject();
+			}
+		});
+		return input;
 	}
 
 	private JComboBox createComboboxForJapaneseParticle(
