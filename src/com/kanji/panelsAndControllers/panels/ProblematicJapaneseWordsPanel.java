@@ -35,9 +35,6 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	private WebPagePanel japaneseEnglishDictionaryPanel;
 	private WebPagePanel kanjiKoohiWebPanel;
 	private static final String TANGORIN_URL = "http://www.tangorin.com/";
-	private final String KANJI_KOOHI_LOGIN_PAGE = "https://kanji.koohii.com/account";
-	private final String KANJI_KOOHI_MAIN_PAGE = "https://kanji.koohii.com/study";
-	private final String KANJI_KOOHI_REVIEW_BASE_PAGE = "https://kanji.koohii.com/study/kanji/";
 	private ProblematicJapaneseWordsDisplayer problematicJapaneseWordsDisplayer;
 
 	public ProblematicJapaneseWordsPanel(
@@ -60,10 +57,10 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		englishDictionaryPanel.showPage(Urls.DICTIONARY_PL_EN_MAIN_PAGE);
 		String pageToRender = "";
 		if (isLoginDataRemembered()) {
-			pageToRender = KANJI_KOOHI_MAIN_PAGE;
+			pageToRender = Urls.KANJI_KOOHI_MAIN_PAGE;
 		}
 		else {
-			pageToRender = KANJI_KOOHI_LOGIN_PAGE;
+			pageToRender = Urls.KANJI_KOOHI_LOGIN_PAGE;
 		}
 		kanjiKoohiWebPanel.showPageWithoutGrabbingFocus(pageToRender);
 	}
@@ -145,7 +142,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	}
 
 	public void showKoohiPage(String kanjiData) {
-		String uriText = KANJI_KOOHI_REVIEW_BASE_PAGE;
+		String uriText = Urls.KANJI_KOOHI_REVIEW_BASE_PAGE;
 		uriText += kanjiData;
 		kanjiKoohiWebPanel.showPageWithoutGrabbingFocus(uriText);
 	}

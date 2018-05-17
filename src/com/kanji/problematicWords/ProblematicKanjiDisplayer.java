@@ -2,6 +2,7 @@ package com.kanji.problematicWords;
 
 import com.guimaker.enums.PanelDisplayMode;
 import com.kanji.constants.strings.Titles;
+import com.kanji.constants.strings.Urls;
 import com.kanji.context.ContextOwner;
 import com.kanji.context.KanjiContext;
 import com.kanji.list.listElements.Kanji;
@@ -29,10 +30,6 @@ public class ProblematicKanjiDisplayer
 		ContextOwner<KanjiContext> {
 
 	private ProblematicKanjiPanel problematicKanjiPanel;
-	private final String KANJI_KOOHI_LOGIN_PAGE = "https://kanji.koohii.com/account";
-	private final String KANJI_KOOHI_MAIN_PAGE = "https://kanji.koohii.com/study";
-	private final String KANJI_KOOHI_REVIEW_BASE_PAGE = "http://kanji.koohii.com/study/kanji/";
-	//TODO duplicated urls in problematic japanese words panel
 	private CookieManager cookieManager;
 	private KanjiContext kanjiContext;
 	private KanjiCharactersReader kanjiCharactersReader;
@@ -66,7 +63,7 @@ public class ProblematicKanjiDisplayer
 
 	@Override
 	public void browseWord(WordRow<Kanji> wordRow) {
-		String uriText = KANJI_KOOHI_REVIEW_BASE_PAGE;
+		String uriText = Urls.KANJI_KOOHI_REVIEW_BASE_PAGE;
 		uriText += wordRow.getListElement().getId();
 		problematicKanjiPanel.showPageInKoohi(uriText);
 		kanjiContext = new KanjiContext(kanjiCharactersReader
@@ -88,10 +85,10 @@ public class ProblematicKanjiDisplayer
 	public void initialize() {
 		String pageToRender = "";
 		if (isLoginDataRemembered()) {
-			pageToRender = KANJI_KOOHI_MAIN_PAGE;
+			pageToRender = Urls.KANJI_KOOHI_MAIN_PAGE;
 		}
 		else {
-			pageToRender = KANJI_KOOHI_LOGIN_PAGE;
+			pageToRender = Urls.KANJI_KOOHI_LOGIN_PAGE;
 		}
 		problematicKanjiPanel.showPageInKoohi(pageToRender);
 		problematicKanjiPanel.initialize();
@@ -141,7 +138,7 @@ public class ProblematicKanjiDisplayer
 				return;
 			}
 		}
-		cookieManager.put(URI.create(KANJI_KOOHI_LOGIN_PAGE), headers);
+		cookieManager.put(URI.create(Urls.KANJI_KOOHI_LOGIN_PAGE), headers);
 
 	}
 
