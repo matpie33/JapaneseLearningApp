@@ -66,6 +66,7 @@ public class LoadingProjectWorker {
 							interruptedException.getMessage()));
 				}
 				finally {
+					applicationWindow.getStartingPanel().refreshAllTabs();
 					list.scrollToBottom();
 					swingWorkers.remove(this);
 					if (swingWorkers.isEmpty()) {

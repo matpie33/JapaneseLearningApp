@@ -29,6 +29,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +67,6 @@ public class ListPanelCreator<Word extends ListElement>
 			ListWordsController<Word> controller) {
 		this.applicationController = applicationController;
 		listWordsController = controller;
-
 		isSkipTitle = listConfiguration.isSkipTitle();
 		rowsPanel = new MainPanel(null, true, true,
 				new PanelConfiguration(listConfiguration.getDisplayMode()));
@@ -339,7 +340,6 @@ public class ListPanelCreator<Word extends ListElement>
 			@Override
 			public void run() {
 				// TODO swing utilities
-
 				JScrollBar scrollBar = parentScrollPane.getVerticalScrollBar();
 				scrollBar.setValue(scrollBar.getMaximum());
 			}

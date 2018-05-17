@@ -63,7 +63,10 @@ public class JapanesePanelElementsCreator {
 						.enableWordAdding(false).enableWordSearching(false)
 						.scrollBarFitsContent(true).inheritScrollbar(true),
 				()-> WordParticlesData.createParticleNotIncludedInWord(japaneseWord));
-		japaneseWord.getTakenParticles().forEach(particlesList::addWord);
+		if (japaneseWord.getTakenParticles() != null){
+			japaneseWord.getTakenParticles().forEach(particlesList::addWord);
+		}
+
 		return particlesList;
 	}
 

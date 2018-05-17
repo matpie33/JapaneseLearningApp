@@ -299,5 +299,9 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 		}
 	}
 
+	public void refreshAllTabs() {
+		tabs.repaint();
+		tabs.revalidate();
+	}
 }
 
