@@ -84,8 +84,7 @@ public class MyList<Word extends ListElement> {
 	}
 
 	public boolean addWord(Word word, InputGoal inputGoal) {
-		return word != null && !word.isEmpty() && listController
-				.add(word, inputGoal);
+		return word != null && listController.add(word, inputGoal);
 	}
 
 	public Word createWord() {

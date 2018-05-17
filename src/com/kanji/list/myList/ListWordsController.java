@@ -69,7 +69,7 @@ public class ListWordsController<Word extends ListElement> {
 	}
 
 	public boolean add(Word r, InputGoal inputGoal) {
-		if (!r.isEmpty() && !isWordDefined(r).exists()) {
+		if (!isWordDefined(r).exists()) {
 			boolean canNewWordBeDisplayed = canNewWordBeDisplayed();
 			ListRow<Word> newWord = listPanelCreator
 					.addRow(r, allWordsToRowNumberMap.size() + 1,

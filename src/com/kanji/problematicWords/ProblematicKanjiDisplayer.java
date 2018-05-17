@@ -40,7 +40,7 @@ public class ProblematicKanjiDisplayer
 			ProblematicWordsController controller) {
 
 		problematicKanjiPanel = new ProblematicKanjiPanel(
-				applicationWindow.getKanjiFont(), applicationWindow, controller,
+				ApplicationWindow.getKanjiFont(), applicationWindow, controller,
 				this);
 		cookieManager = new CookieManager();
 		CookieHandler.setDefault(cookieManager);
@@ -83,7 +83,7 @@ public class ProblematicKanjiDisplayer
 
 	@Override
 	public void initialize() {
-		String pageToRender = "";
+		String pageToRender;
 		if (isLoginDataRemembered()) {
 			pageToRender = Urls.KANJI_KOOHI_MAIN_PAGE;
 		}
