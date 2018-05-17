@@ -74,8 +74,7 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	@Override
 	public void focusLost(FocusEvent e) {
 		JTextComponent input = (JTextComponent) e.getSource();
-		if (input.getText().equals(previousValueOfTextInput) && !inputGoal
-				.equals(InputGoal.SEARCH)) {
+		if (isTextFieldEmpty(input)){
 			return;
 		}
 		Property propertyNewValue = validateAndConvertToProperty(input);
