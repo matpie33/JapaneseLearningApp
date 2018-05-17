@@ -36,8 +36,8 @@ public class RowInKanjiInformations implements ListRowCreator<Kanji> {
 		this.displayMode = displayMode;
 		elementsCreator = new KanjiElementsCreator();
 		actionsCreator = new KanjiActionsCreator(
-				applicationWindow.getApplicationController(),
-				applicationWindow, displayMode);
+				applicationWindow.getApplicationController(), applicationWindow,
+				displayMode);
 	}
 
 	public void setProblematicWordsController(
@@ -75,10 +75,10 @@ public class RowInKanjiInformations implements ListRowCreator<Kanji> {
 		if (inputGoal.equals(InputGoal.ADD) || inputGoal
 				.equals(InputGoal.SEARCH)) {
 			rowDataCreator.addPropertyData(ListPropertiesNames.KANJI_KEYWORD,
-					panelRows.getAllRows().get(0),
+					panelRows.getRowContainingComponent(keywordLabel),
 					Pair.of(keywordInput, actionsCreator.getKeywordChecker()));
 			rowDataCreator.addPropertyData(ListPropertiesNames.KANJI_ID,
-					panelRows.getAllRows().get(1),
+					panelRows.getRowContainingComponent(idLabel),
 					Pair.of(idInput, actionsCreator.getIdChecker()));
 		}
 

@@ -208,9 +208,8 @@ public class JapaneseWordPanelCreator
 				.fillHorizontallySomeElements(wordMeaningText)
 				.nextRow(partOfSpeechLabel, partOfSpeechCombobox)
 				.setColumnToPutRowInto(1)
-				.nextRow(particlesTakenLabel, particlesTakenList.getPanel())
-				.fillHorizontallySomeElements(partOfSpeechCombobox)
 				.nextRow(writingsLabel, writingsListPanel)
+				.nextRow(particlesTakenLabel, particlesTakenList.getPanel())
 				.fillHorizontallySomeElements(writingsListPanel)
 				.nextRow(commonListElements.getButtonDelete());
 		japaneseWordPanel.addRowsOfElementsInColumn(lastJapanesePanelMade);
@@ -220,8 +219,8 @@ public class JapaneseWordPanelCreator
 				.equals(InputGoal.SEARCH)) {
 			rowDataCreator
 					.addPropertyData(ListPropertiesNames.JAPANESE_WORD_MEANING,
-							lastJapanesePanelMade.getAllRows().get(0),
-							Pair.of(wordMeaningText,
+							lastJapanesePanelMade.getRowContainingComponent(
+									wordMeaningLabel), Pair.of(wordMeaningText,
 									japanesePanelComponentsStore
 											.getActionCreator()
 											.getWordMeaningChecker()));
@@ -229,7 +228,8 @@ public class JapaneseWordPanelCreator
 
 			rowDataCreator
 					.addPropertyData(ListPropertiesNames.JAPANESE_WORD_WRITINGS,
-							lastJapanesePanelMade.getAllRows().get(2),
+							lastJapanesePanelMade
+									.getRowContainingComponent(writingsLabel),
 							inputsWithPropertyManagersForJapaneseWritings
 									.toArray(new Pair[] {}));
 		}

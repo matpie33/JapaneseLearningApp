@@ -39,7 +39,7 @@ public class WordParticlesData implements ListElement, Serializable {
 				return new WordParticlesData(particle);
 			}
 		}
-		return new WordParticlesData(JapaneseParticle.EMPTY);
+		return null;
 	}
 
 	@Override
