@@ -108,7 +108,7 @@ public class JapaneseWordPanelCreator
 				new ComponentOptions().text(Labels.PART_OF_SPEECH)
 						.foregroundColor(labelsColor));
 		createParticlesTakenList(japaneseWord);
-		partOfSpeechCombobox = japanesePanelComponentsStore.getElementsMaker()
+		partOfSpeechCombobox = japanesePanelComponentsStore.getElementsCreator()
 				.createComboboxForPartOfSpeech(japaneseWord.getPartOfSpeech());
 		lastWritingsListCreated = createWritingsList(japaneseWord, inputGoal,
 				inheritScrollBar);
@@ -121,8 +121,8 @@ public class JapaneseWordPanelCreator
 	}
 
 	private void createParticlesTakenList(JapaneseWord japaneseWord) {
-		particlesTakenList = japanesePanelComponentsStore.getElementsMaker()
-				.createParticlesDataList(japaneseWord);
+		particlesTakenList = japanesePanelComponentsStore.getElementsCreator()
+				.createParticlesDataList(japaneseWord, displayMode);
 	}
 
 	private void addActions(JapaneseWord japaneseWord, InputGoal inputGoal) {
@@ -210,6 +210,8 @@ public class JapaneseWordPanelCreator
 				.setColumnToPutRowInto(1)
 				.nextRow(writingsLabel, writingsListPanel)
 				.nextRow(particlesTakenLabel, particlesTakenList.getPanel())
+				.onlyAddIf(!displayMode.equals(PanelDisplayMode.VIEW)
+						|| particlesTakenList.getNumberOfWords() > 0)
 				.fillHorizontallySomeElements(writingsListPanel)
 				.nextRow(commonListElements.getButtonDelete());
 		japaneseWordPanel.addRowsOfElementsInColumn(lastJapanesePanelMade);

@@ -6,7 +6,6 @@ import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapanesePanelActionsCreator;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapanesePanelElementsCreator;
-import com.kanji.list.listRows.japanesePanelCreatingComponents.TextFieldSelectionHandler;
 import com.kanji.utilities.CommonListElements;
 
 import javax.swing.*;
@@ -17,11 +16,13 @@ public class JapanesePanelInViewModeCreator
 		implements JapanesePanelCreatingService {
 
 	private JapanesePanelElementsCreator elementsMaker;
+	private JapanesePanelActionsCreator actionsCreator;
 
 	public JapanesePanelInViewModeCreator(
 			JapanesePanelElementsCreator elementsMaker,
 			JapanesePanelActionsCreator actionsCreator) {
 		this.elementsMaker = elementsMaker;
+		this.actionsCreator = actionsCreator;
 	}
 
 	@Override
@@ -29,14 +30,14 @@ public class JapanesePanelInViewModeCreator
 			CommonListElements commonListElements, JapaneseWord japaneseWord,
 			InputGoal inputGoal, MainPanel rowPanel) {
 		List<JComponent> rowElements = new ArrayList<>();
-		rowElements.add(elementsMaker
-				.createKanaInputWithValidation(japaneseWriting, japaneseWord,
-						false, inputGoal, true));
+		rowElements.add(actionsCreator.switchToHandCursorOnMouseEnter(
+				elementsMaker.createKanaInputWithValidation(japaneseWriting,
+						japaneseWord, false, inputGoal, true)));
 		for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
-			rowElements.add(elementsMaker
-					.createKanjiInputWithValidation(kanjiWriting,
+			rowElements.add(actionsCreator.switchToHandCursorOnMouseEnter(
+					elementsMaker.createKanjiInputWithValidation(kanjiWriting,
 							japaneseWriting, japaneseWord, inputGoal, false,
-							true));
+							true)));
 		}
 
 		return rowElements.toArray(new JComponent[] {});

@@ -1,7 +1,11 @@
 package com.kanji.constants.enums;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public enum JapaneseParticle {
-	TO("To"), NI("Ni"), DE("De"), EMPTY ("");
+	TO("To"), NI("Ni"), DE("De"), EMPTY("");
 
 	private String displayedValue;
 
@@ -20,6 +24,14 @@ public enum JapaneseParticle {
 			}
 		}
 		throw new IllegalArgumentException("Value not found: " + value);
+	}
+
+	public static List<String> getPossibleParticles() {
+		return Arrays.stream(JapaneseParticle.values())
+				.filter(p -> !p.equals(JapaneseParticle.EMPTY))
+				.map(JapaneseParticle::getDisplayedValue)
+				.collect(Collectors.toList());
+
 	}
 
 }

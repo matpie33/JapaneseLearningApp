@@ -43,7 +43,7 @@ public class JapanesePanelComponentsStore {
 		return panelCreatingService;
 	}
 
-	public JapanesePanelElementsCreator getElementsMaker() {
+	public JapanesePanelElementsCreator getElementsCreator() {
 		return elementsMaker;
 	}
 

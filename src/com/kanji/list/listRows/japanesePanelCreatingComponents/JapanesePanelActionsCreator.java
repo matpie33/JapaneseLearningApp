@@ -12,7 +12,6 @@ import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listeners.InputValidationListener;
 import com.kanji.list.myList.ListPropertyChangeHandler;
 import com.kanji.list.myList.MyList;
-import com.kanji.model.WordParticlesData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.utilities.JapaneseWritingUtilities;
 import com.kanji.utilities.Pair;
@@ -20,8 +19,10 @@ import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
+import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 
 public class JapanesePanelActionsCreator {
 
@@ -44,6 +45,27 @@ public class JapanesePanelActionsCreator {
 
 	public JapaneseWordMeaningChecker getWordMeaningChecker() {
 		return wordMeaningChecker;
+	}
+
+	public JTextComponent switchToHandCursorOnMouseEnter(
+			JTextComponent textComponent) {
+		textComponent.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				super.mouseEntered(e);
+				parentDialog.getPanel().getPanel()
+						.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				super.mouseEntered(e);
+				parentDialog.getPanel().getPanel()
+						.setCursor(Cursor.getDefaultCursor());
+			}
+		});
+		return textComponent;
 	}
 
 	public Map<JTextComponent, ListElementPropertyManager> getInputManagersForInputs() {
@@ -186,8 +208,7 @@ public class JapanesePanelActionsCreator {
 		return textInput;
 	}
 
-	public JapaneseWord getWordContainingInput(
-			JTextComponent input) {
+	public JapaneseWord getWordContainingInput(JTextComponent input) {
 		for (Pair<JapaneseWord, JapaneseWordChecker> wordToChecker : checkersForJapaneseWords) {
 			Pair<JapaneseWriting, JapaneseWordWritingsChecker> writingToChecker = wordToChecker
 					.getRight().getWritingForInput(input);

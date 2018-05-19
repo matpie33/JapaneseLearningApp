@@ -1,4 +1,4 @@
-package com.kanji.list.listElementAdditionalInformations;
+package com.kanji.model;
 
 import com.kanji.constants.enums.AdditionalInformationTag;
 

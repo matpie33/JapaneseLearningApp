@@ -18,6 +18,7 @@ import com.kanji.list.listRows.RowInRepeatingList;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
 import com.kanji.list.myList.ListConfiguration;
 import com.kanji.list.myList.MyList;
+import com.kanji.model.WordParticlesData;
 import com.kanji.model.WordsAndRepeatingInfo;
 import com.kanji.panelsAndControllers.panels.RepeatingWordsPanel;
 import com.kanji.problematicWords.ProblematicJapaneseWordsDisplayer;
@@ -134,8 +135,9 @@ public class ApplicationController implements ApplicationStateManager {
 
 		JapaneseWord cat = new JapaneseWord(PartOfSpeech.NOUN, "kot");
 		cat.addWritingsForKana("ねこ", "頭骨");
-		japaneseWords.addWord(cat);
+		cat.addParticleData(new WordParticlesData(JapaneseParticle.DE));
 		cat.setPartOfSpeech(PartOfSpeech.NOUN);
+		japaneseWords.addWord(cat);
 		JapaneseWord dog2 = new JapaneseWord(PartOfSpeech.NOUN, "pies");
 		dog2.addWritingsForKana("いぬ", "二", "三", "四");
 		japaneseWords.addWord(dog2);

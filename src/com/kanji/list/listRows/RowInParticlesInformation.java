@@ -1,14 +1,11 @@
 package com.kanji.list.listRows;
 
 import com.guimaker.enums.FillType;
-import com.guimaker.options.ComboboxOptions;
-import com.guimaker.options.TextComponentOptions;
-import com.guimaker.panels.GuiElementsCreator;
+import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.InputGoal;
-import com.kanji.constants.enums.JapaneseParticle;
-import com.kanji.constants.strings.Prompts;
+import com.kanji.japaneseParticlesPanel.*;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listeners.InputValidationListener;
 import com.kanji.list.myList.ListRowCreator;
@@ -17,111 +14,50 @@ import com.kanji.model.WordParticlesData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.utilities.CommonListElements;
 
-import javax.swing.*;
-import javax.swing.text.JTextComponent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class RowInParticlesInformation
 		implements ListRowCreator<WordParticlesData> {
 
 	private JapaneseWord japaneseWord;
 	private ApplicationController applicationController;
+	private JapaneseParticleRowCreatingService japaneseParticleRowCreatingService;
 
 	public RowInParticlesInformation(JapaneseWord japaneseWord,
-			ApplicationController applicationController) {
+			ApplicationController applicationController,
+			PanelDisplayMode displayMode) {
 		this.japaneseWord = japaneseWord;
 		this.applicationController = applicationController;
+		getRowCreatingService(displayMode);
+	}
+
+	private void getRowCreatingService(PanelDisplayMode displayMode) {
+		switch (displayMode) {
+		case VIEW:
+			japaneseParticleRowCreatingService = new JapaneseParticleRowInViewMode();
+			break;
+		case EDIT:
+			japaneseParticleRowCreatingService = new JapaneseParticleRowInEditMode(
+					applicationController);
+			break;
+		}
 	}
 
 	@Override
 	public ListRowData<WordParticlesData> createListRow(
 			WordParticlesData wordParticlesData,
 			CommonListElements commonListElements, InputGoal inputGoal) {
-		List<String> possibleParticles = Arrays
-				.stream(JapaneseParticle.values())
-				.filter(p -> !p.equals(JapaneseParticle.EMPTY))
-				.map(JapaneseParticle::getDisplayedValue)
-				.collect(Collectors.toList());
-		japaneseWord.addParticleData(wordParticlesData);
+
 		MainPanel panel = new MainPanel(null);
-		commonListElements.getButtonDelete().addActionListener(e -> japaneseWord
-				.removeParticle(wordParticlesData.getJapaneseParticle()));
-		addRowForParticle(possibleParticles, panel, wordParticlesData,
-				commonListElements);
-		applicationController.saveProject();
+		panel.addRow(SimpleRowBuilder.createRow(FillType.HORIZONTAL,
+				japaneseParticleRowCreatingService
+						.createRowElements(wordParticlesData, japaneseWord,
+								commonListElements)));
+
 		return new ListRowData<>(panel);
-	}
-
-	private void addRowForParticle(List<String> possibleParticles,
-			MainPanel panel, WordParticlesData wordParticlesData,
-			CommonListElements commonListElements) {
-		JComboBox particleCombobox = createComboboxForJapaneseParticle(
-				possibleParticles, wordParticlesData.getJapaneseParticle(),
-				wordParticlesData);
-		panel.addRow(SimpleRowBuilder
-				.createRow(FillType.HORIZONTAL, particleCombobox,
-						createAdditionalInformationInput(wordParticlesData),
-						commonListElements.getButtonAddRow(),
-						commonListElements.getButtonDelete()));
-	}
-
-	private JTextComponent createAdditionalInformationInput(
-			WordParticlesData wordParticlesData) {
-		JTextComponent input = GuiElementsCreator.createTextField(
-				new TextComponentOptions()
-						.text(wordParticlesData.getAdditionalInformation())
-						.promptWhenEmpty(Prompts.ADDITIONAL_INFORMATION));
-		input.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				super.focusLost(e);
-				JTextComponent input = (JTextComponent) e.getSource();
-				wordParticlesData.setAdditionalInformation(input.getText());
-				applicationController.saveProject();
-			}
-		});
-		return input;
-	}
-
-	private JComboBox createComboboxForJapaneseParticle(
-			List<String> possibleParticles, JapaneseParticle particle,
-			WordParticlesData wordParticlesData) {
-		//TODO duplicated code for creating this combobox
-		JComboBox particleCombobox = GuiElementsCreator.createCombobox(
-				new ComboboxOptions().setComboboxValues(possibleParticles));
-		particleCombobox.setSelectedItem(particle.getDisplayedValue());
-		particleCombobox.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				JapaneseParticle particleByComboboxValue = getParticleByComboboxValue(
-						e);
-				if (e.getStateChange() == ItemEvent.DESELECTED) {
-					japaneseWord.removeParticle(particleByComboboxValue);
-				}
-				else if (e.getStateChange() == ItemEvent.SELECTED) {
-					wordParticlesData.setParticle(particleByComboboxValue);
-					japaneseWord.addParticleData(wordParticlesData);
-					applicationController.saveProject();
-				}
-			}
-		});
-		return particleCombobox;
-	}
-
-	private JapaneseParticle getParticleByComboboxValue(ItemEvent e) {
-		return JapaneseParticle.getByString((String) e.getItem());
 	}
 
 	@Override
 	public void addValidationListener(
 			InputValidationListener<WordParticlesData> inputValidationListener) {
-
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.kanji.list.listRows.japanesePanelCreatingComponents;
 
 import com.guimaker.enums.ButtonType;
+import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComboboxOptions;
 import com.guimaker.options.TextComponentOptions;
@@ -54,11 +55,11 @@ public class JapanesePanelElementsCreator {
 	}
 
 	public MyList<WordParticlesData> createParticlesDataList(
-			JapaneseWord japaneseWord) {
+			JapaneseWord japaneseWord, PanelDisplayMode displayMode) {
 		MyList<WordParticlesData> particlesList = new MyList<>(dialogWindow,
 				applicationController,
 				new RowInParticlesInformation(japaneseWord,
-						applicationController), "",
+						applicationController, displayMode), "",
 				new ListConfiguration().showButtonsLoadNextPreviousWords(false)
 						.enableWordAdding(false).enableWordSearching(false)
 						.scrollBarFitsContent(true).inheritScrollbar(true),
