@@ -1,9 +1,6 @@
 package com.kanji.problematicWords;
 
-import com.guimaker.enums.ButtonType;
-import com.guimaker.enums.FillType;
-import com.guimaker.enums.MoveDirection;
-import com.guimaker.enums.PanelDisplayMode;
+import com.guimaker.enums.*;
 import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.TextAreaOptions;
@@ -100,11 +97,9 @@ public class ProblematicJapaneseWordsDisplayer
 		MainPanel panel = problematicJapaneseWordsPanel
 				.getKanjiInformationPanel();
 		panel.clear();
-		panel.addElementsInColumn(SimpleRowBuilder.createRow(FillType.NONE,
+		panel.addRow(SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER,
 				GuiElementsCreator.createLabel(new ComponentOptions()
-						.text(Prompts.KANJI_INFORMATIONS)))
-				.setColumnToPutRowInto(2));
-		//TODO refactor main panel to respect anchors when mixing elements in column and elements one by one
+						.text(Prompts.KANJI_INFORMATIONS))));
 
 		for (String kanji : kanjis) {
 			Kanji kanjiInformation = kanjiInformations.

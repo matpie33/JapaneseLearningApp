@@ -1,5 +1,6 @@
 package com.kanji.list.listRows.japanesePanelCreatingComponents;
 
+import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.MoveDirection;
 import com.guimaker.enums.PanelDisplayMode;
@@ -202,7 +203,7 @@ public class JapaneseWordPanelCreator
 			InputGoal inputGoal) {
 		JPanel writingsListPanel = lastWritingsListCreated.getPanel();
 		lastJapanesePanelMade = SimpleRowBuilder
-				.createRowStartingFromColumn(0, FillType.BOTH,
+				.createRowStartingFromColumn(0, FillType.BOTH, Anchor.WEST,
 						commonListElements.getRowNumberLabel(),
 						wordMeaningLabel, wordMeaningText)
 				.fillHorizontallySomeElements(wordMeaningText)
