@@ -259,7 +259,7 @@ public class ProblematicWordsController<Word extends ListElement>
 
 	private void initializeActionBrowsePreviousWord() {
 		initializeAction(KeyEvent.VK_BACK_SPACE,
-				createActionShowNextWordOrCloseDialog(MoveDirection.BELOW),
+				createActionShowNextWordOrCloseDialog(MoveDirection.ABOVE),
 				HotkeysDescriptions.SHOW_PREVIOUS_PROBLEMATIC_WORD);
 	}
 
