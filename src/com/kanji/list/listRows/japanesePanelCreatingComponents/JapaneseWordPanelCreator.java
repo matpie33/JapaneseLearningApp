@@ -144,7 +144,10 @@ public class JapaneseWordPanelCreator
 		lastWritingsListCreated = createJapaneseWritingsList(japaneseWord,
 				inheritScrollBar);
 		writingsLists.add(new Pair<>(japaneseWord, lastWritingsListCreated));
-		lastWritingsListCreated.addSwitchBetweenInputsFailListener(this);
+		if (!displayMode.equals(PanelDisplayMode.VIEW)){
+			lastWritingsListCreated.addSwitchBetweenInputsFailListener(this);
+		}
+
 		parentDialog.getPanel()
 				.addNavigableByKeyboardList(lastWritingsListCreated);
 		if (japaneseWord.getWritings().isEmpty()) {
