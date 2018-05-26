@@ -96,6 +96,9 @@ public class ListWordsController<Word extends ListElement> {
 		int listRowNumber = panelRowNumber - 1;
 		allWordsToRowNumberMap.remove(listRowNumber);
 		updateRowNumbers(listRowNumber);
+		if (allWordsToRowNumberMap.isEmpty()){
+			listPanelCreator.addElementsForEmptyList();
+		}
 
 	}
 

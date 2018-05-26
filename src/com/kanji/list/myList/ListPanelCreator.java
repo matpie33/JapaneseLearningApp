@@ -70,7 +70,7 @@ public class ListPanelCreator<Word extends ListElement>
 		isSkipTitle = listConfiguration.isSkipTitle();
 		rowsPanel = new MainPanel(null, true, true,
 				new PanelConfiguration(listConfiguration.getDisplayMode()));
-		addElementsForEmptyList();
+
 		rootPanel = new MainPanel(null);
 		titleLabel = GuiElementsCreator.createLabel(new ComponentOptions());
 		loadNextWordsHandler = new LoadNextWordsHandler(listWordsController,
@@ -86,8 +86,8 @@ public class ListPanelCreator<Word extends ListElement>
 
 	}
 
-	private void addElementsForEmptyList() {
-		rowsPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE,
+	public void addElementsForEmptyList() {
+		rowsPanel.insertRow(1,SimpleRowBuilder.createRow(FillType.NONE,
 				GuiElementsCreator.createLabel(
 						new ComponentOptions().text(Prompts.EMPTY_LIST)),
 				createButtonAddRow(InputGoal.EDIT)));
@@ -154,7 +154,7 @@ public class ListPanelCreator<Word extends ListElement>
 			boolean shouldShowWord, LoadWordsHandler loadWordsHandler,
 			InputGoal inputGoal) {
 		if (listWordsController.getWords().isEmpty()) {
-			rowsPanel.removeRow(0);
+			rowsPanel.removeRow(1);
 		}
 		JLabel rowNumberLabel = new JLabel(createTextForRowNumber(rowNumber));
 		AbstractButton remove = GuiElementsCreator.createButtonlikeComponent(
@@ -231,6 +231,7 @@ public class ListPanelCreator<Word extends ListElement>
 	public void createElements() {
 		createRootPanel();
 		createAndAddButtonsShowNextAndPrevious();
+		addElementsForEmptyList();
 
 		if (!isSkipTitle) {
 			rootPanel.addRow(SimpleRowBuilder
