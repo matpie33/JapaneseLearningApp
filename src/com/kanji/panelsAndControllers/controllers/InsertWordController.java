@@ -5,8 +5,8 @@ import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listeners.InputValidationListener;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.PropertyPostValidationData;
-import com.kanji.model.WordInMyListExistence;
 import com.kanji.panelsAndControllers.panels.InsertWordPanel;
+import com.kanji.utilities.ThreadUtilities;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
@@ -40,29 +40,27 @@ public class InsertWordController<Word extends ListElement>
 					.showMessageDialog(ExceptionsMessages.NO_INPUT_SUPPLIED);
 			return;
 		}
-		boolean addedWord = addWordToList(word);
-		if (addedWord) {
-			applicationController.saveProject();
-		}
+		ThreadUtilities.callOnOtherThread(()-> {
+			boolean addedWord = addWordToList(word);
+			if (addedWord) {
+				applicationController.saveProject();
+			}
+		});
 	}
 
 	private boolean addWordToList(Word word) {
-		WordInMyListExistence<Word> doesWordExistInMyList = list
-				.isWordDefined(word);
-		if (!doesWordExistInMyList.exists()) {
-			list.addWord(word);
+		boolean addedWord = list.addWord(word);
+		if (addedWord) {
 			list.scrollToBottom();
 			//TODO remove from this method show message - it should just add word and return boolean
 		}
 		else {
-			list.highlightRow(list.get1BasedRowNumberOfWord(
-					doesWordExistInMyList.getWord()) - 1, true);
+			list.highlightRow(list.get1BasedRowNumberOfWord(word) - 1, true);
 			parentDialog.showMessageDialog(
 					String.format(ExceptionsMessages.WORD_ALREADY_EXISTS,
-							list.get1BasedRowNumberOfWord(
-									doesWordExistInMyList.getWord())));
+							list.get1BasedRowNumberOfWord(word)));
 		}
-		return !doesWordExistInMyList.exists();
+		return addedWord;
 	}
 
 	public AbstractAction createActionValidateFocusedElement() {

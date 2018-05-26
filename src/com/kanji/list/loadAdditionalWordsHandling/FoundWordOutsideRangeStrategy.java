@@ -29,7 +29,6 @@ public class FoundWordOutsideRangeStrategy implements LoadWordsForFoundWord {
 
 	@Override
 	public void execute() {
-		listWordsController.clearVisibleRows();
 		listWordsController.showWordsStartingFromRow(foundWordRowNumber);
 	}
 }

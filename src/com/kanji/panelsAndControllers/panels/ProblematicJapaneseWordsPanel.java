@@ -43,7 +43,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 			ProblematicJapaneseWordsDisplayer problematicWordsDisplayer) {
 		parentDialog = parent;
 		this.problematicWordsController = problematicWordsController;
-		kanjiInformationPanel = new MainPanel(BasicColors.MEDIUM_BLUE, true);
+		kanjiInformationPanel = new MainPanel(BasicColors.MEDIUM_BLUE);
 		englishDictionaryPanel = new WebPagePanel(this, null);
 		japaneseEnglishDictionaryPanel = new WebPagePanel(this, null);
 		kanjiKoohiWebPanel = new WebPagePanel(this, null);

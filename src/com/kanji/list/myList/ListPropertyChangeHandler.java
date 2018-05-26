@@ -8,6 +8,7 @@ import com.kanji.list.listeners.InputValidationListener;
 import com.kanji.model.PropertyPostValidationData;
 import com.kanji.model.WordInMyListExistence;
 import com.kanji.utilities.StringUtilities;
+import com.kanji.utilities.ThreadUtilities;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.text.JTextComponent;
@@ -74,16 +75,20 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	@Override
 	public void focusLost(FocusEvent e) {
 		JTextComponent input = (JTextComponent) e.getSource();
-		if (isTextFieldEmpty(input)){
+		if (isTextFieldEmpty(input)) {
 			return;
 		}
 		Property propertyNewValue = validateAndConvertToProperty(input);
-		boolean inputValid = propertyNewValue != null;
-		if (inputValid && !inputGoal.equals(InputGoal.SEARCH)) {
-			inputValid = addWordToList(input, propertyNewValue);
-		}
-		notifyValidationListeners(inputValid, propertyNewValue);
 
+		ThreadUtilities.callOnOtherThread(() -> {
+			boolean inputValid = propertyNewValue != null;
+			boolean addedWord = false;
+			if (inputValid && !inputGoal.equals(InputGoal.SEARCH)) {
+				addedWord = addWordToList(input, propertyNewValue);
+			}
+			notifyValidationListeners(inputValid && addedWord,
+					propertyNewValue);
+		});
 	}
 
 	private void notifyValidationListeners(boolean inputValid,
@@ -109,8 +114,13 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 					.getOneBasedRowNumber();
 			String exceptionMessage = getExceptionForDuplicate(propertyNewValue,
 					duplicateRowNumber);
+			dialogWindow.showMessageDialog(exceptionMessage, false);
+			//TODO performance of displaying just 200 words is terrible low, which
+			//forces me to show message dialog before highlighting row (which loads words
+			// if necessary)
+			//TODO also think of a way how to display modal dialog while painting the
+			//loaded words
 			list.highlightRow(duplicateRowNumber - 1, true);
-			dialogWindow.showMessageDialog(exceptionMessage);
 			return false;
 		}
 		else {
