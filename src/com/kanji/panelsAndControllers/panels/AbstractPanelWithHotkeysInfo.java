@@ -57,37 +57,32 @@ public abstract class AbstractPanelWithHotkeysInfo {
 
 	}
 
-	private void addHotkeys(JPanel rootPanel) {
+	private void addHotkeys(JComponent rootPanel) {
 		for (Map.Entry<MoveDirection, HotkeyWrapper> hotkey : hotkeysForMovingBetweenInputs
 				.entrySet()) {
-
 			HotkeyWrapper hotkeyWrapper = hotkey.getValue();
 			KeyModifiers keyModifier = KeyModifiers
 					.of(hotkeyWrapper.getKeyModifier());
 			switch (hotkey.getKey()) {
 			case RIGHT:
-
 				addHotkey(keyModifier, hotkeyWrapper.getKeyEvent(),
 						wrapToAction(MyList::selectNextInputInSameRow),
 						rootPanel,
 						HotkeysDescriptions.SELECT_NEXT_INPUT_IN_SAME_ROW);
 				break;
 			case LEFT:
-
 				addHotkey(keyModifier, hotkeyWrapper.getKeyEvent(),
 						wrapToAction(MyList::selectPreviousInputInSameRow),
 						rootPanel,
 						HotkeysDescriptions.SELECT_PREVIOUS_INPUT_IN_SAME_ROW);
 				break;
 			case BELOW:
-
 				addHotkey(keyModifier, hotkeyWrapper.getKeyEvent(),
 						wrapToAction(MyList::selectInputBelowCurrent),
 						rootPanel,
 						HotkeysDescriptions.SELECT_INPUT_BELOW_CURRENT);
 				break;
 			case ABOVE:
-
 				addHotkey(keyModifier, hotkeyWrapper.getKeyEvent(),
 						wrapToAction(MyList::selectInputAboveCurrent),
 						rootPanel,
@@ -112,10 +107,10 @@ public abstract class AbstractPanelWithHotkeysInfo {
 
 	public void addNavigableByKeyboardList(MyList navigableList) {
 		navigableByKeyboardLists.add(navigableList);
-		if (!navigateBetweenInputsByHotkeys){
+		if (!navigateBetweenInputsByHotkeys) {
 			navigateBetweenInputsByHotkeys = true;
 			initializeHotkeysForMovingBetweeenInputs();
-			addHotkeys(mainPanel.getPanel());
+			addHotkeys(getPanel());
 		}
 
 	}
@@ -167,15 +162,9 @@ public abstract class AbstractPanelWithHotkeysInfo {
 			panelForHotkeys.insertRow(hotkeysPanelIndex, row);
 		}
 		if (navigationButtons != null)
-			panelForHotkeys.addRow( // TODO fix in gui maker: if putting rows as
-					// highest
-					// as
-					// possible, then west
-					// should be as highest as possible, but now I need
-					// to
-					// use northwest
-					SimpleRowBuilder.createRow(FillType.NONE, buttonsAnchor,
-							navigationButtons).disableBorder().setNotOpaque());
+			panelForHotkeys.addRow(SimpleRowBuilder
+					.createRow(FillType.NONE, buttonsAnchor, navigationButtons)
+					.disableBorder().setNotOpaque());
 
 	}
 
@@ -303,12 +292,26 @@ public abstract class AbstractPanelWithHotkeysInfo {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MyList selectedList = getListWithSelectedInput();
-				if (selectedList != null){
-					actionOnInput.accept(selectedList);
+				if (selectedList == null ||
+						selectedList.getPanel().getVisibleRect().getSize()
+								.getHeight() != selectedList.getPanel().getSize()
+								.getHeight()) {
+					selectedList = findFirstVisibleList();
 				}
+				actionOnInput.accept(selectedList);
 
 			}
 		};
+	}
+
+	private MyList findFirstVisibleList() {
+		for (MyList navigableList : navigableByKeyboardLists) {
+			if (navigableList.getPanel().getVisibleRect().getSize().getHeight()
+					== navigableList.getPanel().getSize().getHeight()) {
+				return navigableList;
+			}
+		}
+		return null;
 	}
 
 	public MyList getListWithSelectedInput() {

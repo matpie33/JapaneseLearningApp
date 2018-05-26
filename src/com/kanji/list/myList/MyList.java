@@ -318,7 +318,15 @@ public class MyList<Word extends ListElement> {
 	}
 
 	public void selectNextInputInSameRow() {
-		getPanelWithSelectedInput().selectNextInputInSameRow();
+		MainPanel panelWithSelectedInput = getPanelWithSelectedInput();
+		if (panelWithSelectedInput == null){
+			panelWithSelectedInput = findFirstVisiblePanelInScrollpane();
+		}
+		panelWithSelectedInput.selectNextInputInSameRow();
+	}
+
+	private MainPanel findFirstVisiblePanelInScrollpane() {
+		return listController.findFirstVisiblePanelInScrollPane();
 	}
 
 	public void selectPreviousInputInSameRow() {

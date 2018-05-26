@@ -320,7 +320,13 @@ public class ListWordsController<Word extends ListElement> {
 	}
 
 	public MainPanel getPanelWithSelectedInput() {
-		return getRowWithSelectedInput().getWrappingPanel();
+		ListRow<Word> rowWithSelectedInput = getRowWithSelectedInput();
+		if (rowWithSelectedInput != null){
+			return rowWithSelectedInput.getWrappingPanel();
+		}
+		else{
+			return findFirstVisiblePanelInScrollPane();
+		}
 	}
 
 	public void addSwitchBetweenInputsFailListener(
@@ -346,6 +352,11 @@ public class ListWordsController<Word extends ListElement> {
 		// -> in order for this to be possible, all list rows should be contained in one
 		// main panel, currently for each row theres new main panel created
 		ListRow<Word> selectedRow = getRowWithSelectedInput();
+		if (selectedRow == null){
+			MainPanel firstVisiblePanel = findFirstVisiblePanelInScrollPane();
+			firstVisiblePanel.selectNextInputInSameRow();
+			return;
+		}
 		int rowNumberOfSelectedPanel = selectedRow.getRowNumber();
 		int columnNumber = selectedRow.getWrappingPanel()
 				.getSelectedInputIndex();
@@ -371,5 +382,15 @@ public class ListWordsController<Word extends ListElement> {
 
 	public void toggleEnabledState() {
 		listPanelCreator.toggleEnabledState();
+	}
+
+	public MainPanel findFirstVisiblePanelInScrollPane() {
+		for (ListRow<Word> row : allWordsToRowNumberMap.values()) {
+			MainPanel wrappingPanel = row.getWrappingPanel();
+			if (!wrappingPanel.getPanel().getVisibleRect().isEmpty()){
+				return wrappingPanel;
+			}
+		}
+		return null;
 	}
 }
