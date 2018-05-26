@@ -89,7 +89,7 @@ public class DialogWindow {
 	}
 
 	public void showMessageDialog(String message, boolean modal) {
-		createDialog(new MessagePanel(message), Titles.MESSAGE_DIALOG, true,
+		createDialog(new MessagePanel(message), Titles.MESSAGE_DIALOG, modal,
 				Position.CENTER);
 	}
 

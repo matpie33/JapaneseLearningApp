@@ -58,7 +58,7 @@ public class InsertWordController<Word extends ListElement>
 			list.highlightRow(list.get1BasedRowNumberOfWord(word) - 1, true);
 			parentDialog.showMessageDialog(
 					String.format(ExceptionsMessages.WORD_ALREADY_EXISTS,
-							list.get1BasedRowNumberOfWord(word)));
+							list.get1BasedRowNumberOfWord(word)), false);
 		}
 		return addedWord;
 	}
