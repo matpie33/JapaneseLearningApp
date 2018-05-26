@@ -25,14 +25,14 @@ public class JapaneseParticleElementsCreator {
 		JComboBox particleCombobox = GuiElementsCreator.createCombobox(
 				new ComboboxOptions().setComboboxValues(
 						JapaneseParticle.getPossibleParticles()));
-		particleCombobox
-				.setSelectedItem(wordParticlesData.getJapaneseParticle());
+		particleCombobox.setSelectedItem(
+				wordParticlesData.getJapaneseParticle().getDisplayedValue());
 		return particleCombobox;
 	}
 
 	public JLabel createLabel(String text) {
-		return GuiElementsCreator.createLabel(new ComponentOptions()
-				.text(text));
+		return GuiElementsCreator
+				.createLabel(new ComponentOptions().text(text));
 	}
 
 }

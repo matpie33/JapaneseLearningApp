@@ -206,6 +206,9 @@ public class JapaneseWord implements ListElement, Serializable {
 	}
 
 	public Set<WordParticlesData> getTakenParticles() {
+		if (takenParticles == null){
+			takenParticles = new HashSet<>();
+		}
 		return takenParticles;
 	}
 

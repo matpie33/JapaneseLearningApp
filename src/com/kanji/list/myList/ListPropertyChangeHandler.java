@@ -86,8 +86,8 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 			if (inputValid && !inputGoal.equals(InputGoal.SEARCH)) {
 				addedWord = addWordToList(input, propertyNewValue);
 			}
-			notifyValidationListeners(inputValid && addedWord,
-					propertyNewValue);
+			notifyValidationListeners(inputValid && (addedWord || inputGoal
+					.equals(InputGoal.SEARCH)), propertyNewValue);
 		});
 	}
 
