@@ -14,7 +14,7 @@ public class PanelSwitchingHandler {
 		return panels;
 	}
 
-	public void addPanel(JComponent panel) {
+	public void registerPanel(JComponent panel) {
 		panels.add(panel);
 	}
 

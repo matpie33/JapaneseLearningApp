@@ -15,7 +15,7 @@ import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.problematicWords.ProblematicJapaneseWordsDisplayer;
 import com.kanji.utilities.CommonGuiElementsCreator;
-import com.kanji.panelSwitching.FocusableComponentCreator;
+import com.kanji.panelSwitching.FocusableComponentsManager;
 import com.kanji.webPanel.WebPagePanel;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
@@ -94,16 +94,16 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	@Override
 	public void createElements() {
 
-		FocusableComponentCreator focusableComponentCreator = new FocusableComponentCreator(
+		FocusableComponentsManager focusableComponentsManager = new FocusableComponentsManager(
 				mainPanel.getPanel());
-		focusableComponentCreator.makeFocusable(problematicWords.getPanel());
-		focusableComponentCreator
+		focusableComponentsManager.makeFocusable(problematicWords.getPanel());
+		focusableComponentsManager
 				.makeFocusable(japaneseEnglishDictionaryPanel.getWebPanel());
-		focusableComponentCreator
+		focusableComponentsManager
 				.makeFocusable(englishDictionaryPanel.getWebPanel());
-		focusableComponentCreator
+		focusableComponentsManager
 				.makeFocusable(kanjiInformationPanel.getPanel());
-		focusableComponentCreator
+		focusableComponentsManager
 				.makeFocusable(kanjiKoohiWebPanel.getWebPanel());
 		JScrollPane scrollPaneForKanjiInformations = GuiElementsCreator
 				.createScrollPane(new ScrollPaneOptions()

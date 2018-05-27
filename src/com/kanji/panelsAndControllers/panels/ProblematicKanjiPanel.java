@@ -16,12 +16,11 @@ import com.kanji.context.KanjiContext;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.utilities.CommonGuiElementsCreator;
-import com.kanji.panelSwitching.FocusableComponentCreator;
+import com.kanji.panelSwitching.FocusableComponentsManager;
 import com.kanji.webPanel.ConnectionFailKanjiOfflinePage;
 import com.kanji.webPanel.WebPagePanel;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
-import javafx.embed.swing.JFXPanel;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -76,12 +75,12 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiOfflineDisplayingPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.CENTER, kanjiTextPane));
 
-		FocusableComponentCreator focusableComponentCreator = new FocusableComponentCreator(
+		FocusableComponentsManager focusableComponentsManager = new FocusableComponentsManager(
 				mainPanel.getPanel());
-		focusableComponentCreator.makeFocusable(wordsToReviewList.getPanel());
-		focusableComponentCreator
+		focusableComponentsManager.makeFocusable(wordsToReviewList.getPanel());
+		focusableComponentsManager
 				.makeFocusable(dictionaryWebPanel.getWebPanel());
-		focusableComponentCreator.makeFocusable(kanjiWebPanel.getWebPanel());
+		focusableComponentsManager.makeFocusable(kanjiWebPanel.getWebPanel());
 
 		JSplitPane wordsAndDictionaryPane = CommonGuiElementsCreator
 				.createSplitPane(SplitPaneOrientation.VERTICAL,
