@@ -15,7 +15,7 @@ import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.problematicWords.ProblematicJapaneseWordsDisplayer;
 import com.kanji.utilities.CommonGuiElementsCreator;
-import com.kanji.utilities.FocusableComponentCreator;
+import com.kanji.panelSwitching.FocusableComponentCreator;
 import com.kanji.webPanel.WebPagePanel;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
@@ -94,7 +94,8 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	@Override
 	public void createElements() {
 
-		FocusableComponentCreator focusableComponentCreator = new FocusableComponentCreator();
+		FocusableComponentCreator focusableComponentCreator = new FocusableComponentCreator(
+				mainPanel.getPanel());
 		focusableComponentCreator.makeFocusable(problematicWords.getPanel());
 		focusableComponentCreator
 				.makeFocusable(japaneseEnglishDictionaryPanel.getWebPanel());

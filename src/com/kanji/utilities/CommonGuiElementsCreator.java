@@ -50,6 +50,7 @@ public class CommonGuiElementsCreator {
 		splitPane.setLeftComponent(leftOrUpperComponent);
 		splitPane.setRightComponent(rightOrDownComponent);
 		splitPane.setResizeWeight(splittingWeight);
+		splitPane.setBorder(null);
 		return splitPane;
 	}
 

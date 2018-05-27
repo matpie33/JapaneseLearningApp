@@ -16,7 +16,7 @@ import com.kanji.context.KanjiContext;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.utilities.CommonGuiElementsCreator;
-import com.kanji.utilities.FocusableComponentCreator;
+import com.kanji.panelSwitching.FocusableComponentCreator;
 import com.kanji.webPanel.ConnectionFailKanjiOfflinePage;
 import com.kanji.webPanel.WebPagePanel;
 import com.kanji.windows.ApplicationWindow;
@@ -30,7 +30,6 @@ import java.awt.*;
 public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
 	private ProblematicWordsController controller;
-	private JFXPanel kanjiOnlineDisplayingPanel;
 	private JTextComponent kanjiTextPane;
 	private MainPanel kanjiOfflineDisplayingPanel;
 	private Font messageFont;
@@ -44,7 +43,6 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 			ContextOwner<KanjiContext> kanjiContextContextOwner) {
 		this.parentDialog = parentDialog;
 		this.controller = controller;
-		kanjiOnlineDisplayingPanel = new JFXPanel();
 		kanjiOfflineDisplayingPanel = new MainPanel(BasicColors.VERY_BLUE);
 		messageFont = new JLabel().getFont().deriveFont(15f);
 		dictionaryWebPanel = new WebPagePanel(kanjiContextContextOwner, null);
@@ -74,17 +72,16 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiTextPane.setFont(messageFont);
 
 		AbstractButton buttonClose = createButtonClose();
-		kanjiOnlineDisplayingPanel.setBorder(getDefaultBorder());
-		kanjiOnlineDisplayingPanel.setBackground(Color.white);
 
 		kanjiOfflineDisplayingPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.CENTER, kanjiTextPane));
 
-		FocusableComponentCreator focusableComponentCreatorc = new FocusableComponentCreator();
-		focusableComponentCreatorc.makeFocusable(wordsToReviewList.getPanel());
-		focusableComponentCreatorc
+		FocusableComponentCreator focusableComponentCreator = new FocusableComponentCreator(
+				mainPanel.getPanel());
+		focusableComponentCreator.makeFocusable(wordsToReviewList.getPanel());
+		focusableComponentCreator
 				.makeFocusable(dictionaryWebPanel.getWebPanel());
-		focusableComponentCreatorc.makeFocusable(kanjiWebPanel.getWebPanel());
+		focusableComponentCreator.makeFocusable(kanjiWebPanel.getWebPanel());
 
 		JSplitPane wordsAndDictionaryPane = CommonGuiElementsCreator
 				.createSplitPane(SplitPaneOrientation.VERTICAL,
