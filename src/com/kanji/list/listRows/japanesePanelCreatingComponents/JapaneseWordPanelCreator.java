@@ -144,9 +144,6 @@ public class JapaneseWordPanelCreator
 		lastWritingsListCreated = createJapaneseWritingsList(japaneseWord,
 				inheritScrollBar);
 		writingsLists.add(new Pair<>(japaneseWord, lastWritingsListCreated));
-		if (!displayMode.equals(PanelDisplayMode.VIEW)){
-			lastWritingsListCreated.addSwitchBetweenInputsFailListener(this);
-		}
 
 		parentDialog.getPanel()
 				.addNavigableByKeyboardList(lastWritingsListCreated);
@@ -155,6 +152,7 @@ public class JapaneseWordPanelCreator
 		}
 		japaneseWord.getWritings().stream().forEach(
 				word -> lastWritingsListCreated.addWord(word, inputGoal));
+		lastWritingsListCreated.addSwitchBetweenInputsFailListener(this);
 		return lastWritingsListCreated;
 	}
 
@@ -162,26 +160,38 @@ public class JapaneseWordPanelCreator
 	public void switchBetweenInputsFailed(JTextComponent input,
 			MoveDirection direction) {
 		if (direction.equals(MoveDirection.BELOW)) {
-			JapaneseWord wordContainingInput = japanesePanelComponentsStore
-					.getActionCreator().getWordContainingInput(input);
-			MyList<JapaneseWriting> writingsListToAddWriting = null;
-			if (wordContainingInput != null) {
-				for (Pair<JapaneseWord, MyList<JapaneseWriting>> wordWithWritings : writingsLists) {
-					if (wordWithWritings.getLeft()
-							.equals(wordContainingInput)) {
-						writingsListToAddWriting = wordWithWritings.getRight();
-						break;
-					}
-				}
-			}
-			else {
-				writingsListToAddWriting = lastWritingsListCreated;
-			}
-
+			MyList<JapaneseWriting> writingsListToAddWriting = findListThatFailedInSwitchingBetweenInputs(
+					input);
 			writingsListToAddWriting.addWord(
 					JapaneseWriting.getInitializer().initializeElement());
 			writingsListToAddWriting.scrollToBottom();
 		}
+		if ((direction.equals(MoveDirection.LEFT) || direction
+				.equals(MoveDirection.RIGHT)) && displayMode
+				.equals(PanelDisplayMode.VIEW)) {
+			MyList<JapaneseWriting> listThatFailed = findListThatFailedInSwitchingBetweenInputs(
+					input);
+			listThatFailed.getPanelWithSelectedInput().clearSelectedInput();
+		}
+	}
+
+	private MyList<JapaneseWriting> findListThatFailedInSwitchingBetweenInputs(
+			JTextComponent input) {
+		JapaneseWord wordContainingInput = japanesePanelComponentsStore
+				.getActionCreator().getWordContainingInput(input);
+		MyList<JapaneseWriting> writingsListToAddWriting = null;
+		if (wordContainingInput != null) {
+			for (Pair<JapaneseWord, MyList<JapaneseWriting>> wordWithWritings : writingsLists) {
+				if (wordWithWritings.getLeft().equals(wordContainingInput)) {
+					writingsListToAddWriting = wordWithWritings.getRight();
+					break;
+				}
+			}
+		}
+		else {
+			writingsListToAddWriting = lastWritingsListCreated;
+		}
+		return writingsListToAddWriting;
 	}
 
 	private MyList<JapaneseWriting> createJapaneseWritingsList(
