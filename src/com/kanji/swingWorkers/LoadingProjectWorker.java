@@ -1,5 +1,6 @@
 package com.kanji.swingWorkers;
 
+import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.myList.MyList;
@@ -25,7 +26,7 @@ public class LoadingProjectWorker {
 	}
 
 	public <Element extends ListElement> void load(MyList<Element> list,
-			List<Element> elements) {
+			List<Element> words) {
 		SwingWorker s = new SwingWorker<Void, Integer>() {
 
 			private JProgressBar progressBar = loadingPanel
@@ -34,17 +35,19 @@ public class LoadingProjectWorker {
 			@Override
 			public Void doInBackground() throws Exception {
 				list.cleanWords();
-				progressBar.setMaximum(elements.size());
+
 				int maximumDisplayedWords = list.getMaximumDisplayedWords();
 				int firstRowToLoad = Math
-						.max(0, elements.size() - maximumDisplayedWords);
-				for (int i = 0; i < elements.size(); i++) {
-					list.addWord(elements.get(i));
-					//TODO create methods add list of words: it would not have update view in it
-					// and method addWord should use updateView
-					progressBar.setValue(i + 1);
-				}
+						.max(0, words.size() - maximumDisplayedWords);
+				int numberOfWordsToLoad = words.size() - firstRowToLoad - 1;
+				int stepsToExecute = words.size() + numberOfWordsToLoad;
+				ProgressUpdater progressUpdater = list.getProgressUpdater();
+				progressUpdater.startLongProcess(progressBar, stepsToExecute);
+				list.addWords(words, InputGoal.EDIT, false);
 				list.showWordsStartingFromRow(firstRowToLoad);
+				//TODO create methods add list of words: it would not have update view in it
+				// and method addWord should use updateView
+
 				return null;
 			}
 

@@ -31,7 +31,6 @@ public class ConnectionFailMessagePage implements ConnectionFailPageHandler {
 		messagePanel.addRow(SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.CENTER, buttonReload));
 
-		System.out.println("button rel: " + buttonReload);
 	}
 
 	@Override

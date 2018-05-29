@@ -38,7 +38,6 @@ public class DuplicatedImportedJapaneseWordsPanel
 				Titles.DUPLICATED_WORDS_PANEL, null, null);
 		for (DuplicatedJapaneseWordInformation word : duplicatedImportedJapaneseWordsPanelList) {
 			dup.addWord(word);
-			System.out.println("adding: " + word);
 		}
 		mainPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.BOTH, dup.getPanel()));

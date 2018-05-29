@@ -17,6 +17,7 @@ import com.kanji.model.ListRow;
 import com.kanji.model.WordInMyListExistence;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.range.Range;
+import com.kanji.swingWorkers.ProgressUpdater;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -32,12 +33,14 @@ public class ListWordsController<Word extends ListElement> {
 	private ListRow<Word> currentlyHighlightedWord;
 	private ListElementInitializer<Word> wordInitializer;
 	private List<SwitchBetweenInputsFailListener> switchBetweenInputsFailListeners = new ArrayList<>();
+	private ProgressUpdater progressUpdater;
 	//TODO switchBetweenInputsFailListeners should be deleted from here
 
 	public ListWordsController(ListConfiguration listConfiguration,
 			ListRowCreator<Word> listRowCreator, String title,
 			ApplicationController applicationController,
 			ListElementInitializer<Word> wordInitializer) {
+		progressUpdater = new ProgressUpdater();
 		this.applicationController = applicationController;
 		listPanelCreator = new ListPanelCreator<>(listConfiguration,
 				applicationController, listRowCreator, this);
@@ -68,12 +71,12 @@ public class ListWordsController<Word extends ListElement> {
 		return MAXIMUM_WORDS_TO_SHOW;
 	}
 
-	public boolean add(Word r, InputGoal inputGoal) {
+	public boolean add(Word r, InputGoal inputGoal, boolean tryToShowWord) {
 		if (r != null && !isWordDefined(r).exists()) {
 			boolean canNewWordBeDisplayed = canNewWordBeDisplayed();
 			ListRow<Word> newWord = listPanelCreator
 					.addRow(r, allWordsToRowNumberMap.size() + 1,
-							canNewWordBeDisplayed,
+							canNewWordBeDisplayed && tryToShowWord,
 							listPanelCreator.getLoadNextWordsHandler(),
 							inputGoal);
 			allWordsToRowNumberMap.put(allWordsToRowNumberMap.size(), newWord);
@@ -96,7 +99,7 @@ public class ListWordsController<Word extends ListElement> {
 		int listRowNumber = panelRowNumber - 1;
 		allWordsToRowNumberMap.remove(listRowNumber);
 		updateRowNumbers(listRowNumber);
-		if (allWordsToRowNumberMap.isEmpty()){
+		if (allWordsToRowNumberMap.isEmpty()) {
 			listPanelCreator.addElementsForEmptyList();
 		}
 
@@ -295,14 +298,16 @@ public class ListWordsController<Word extends ListElement> {
 		if (firstRowToLoad > 0) {
 			listPanelCreator.enableButtonShowPreviousWords();
 		}
-		lastRowVisible = Math.max(firstRowToLoad - getMaximumWordsToShow(), -1);
+		lastRowVisible = Math.max(firstRowToLoad, -1);
 		LoadNextWordsHandler loadNextWordsHandler = listPanelCreator
 				.getLoadNextWordsHandler();
 		for (int i = 0; i < getMaximumWordsToShow() && loadNextWordsHandler
 				.shouldContinue(lastRowVisible,
 						allWordsToRowNumberMap.size() - 1); i++) {
 			showNextWord(loadNextWordsHandler);
+			progressUpdater.updateProgress();
 		}
+
 	}
 
 	public void clearVisibleRows() {
@@ -316,15 +321,15 @@ public class ListWordsController<Word extends ListElement> {
 
 	//TODO not the best idea to pass the boolean "is for search panel" - maybe keep it as field
 	public void addNewWord(InputGoal inputGoal) {
-		add(wordInitializer.initializeElement(), inputGoal);
+		add(wordInitializer.initializeElement(), inputGoal, true);
 	}
 
 	public MainPanel getPanelWithSelectedInput() {
 		ListRow<Word> rowWithSelectedInput = getRowWithSelectedInput();
-		if (rowWithSelectedInput != null){
+		if (rowWithSelectedInput != null) {
 			return rowWithSelectedInput.getWrappingPanel();
 		}
-		else{
+		else {
 			return findFirstVisiblePanelInScrollPane();
 		}
 	}
@@ -352,7 +357,7 @@ public class ListWordsController<Word extends ListElement> {
 		// -> in order for this to be possible, all list rows should be contained in one
 		// main panel, currently for each row theres new main panel created
 		ListRow<Word> selectedRow = getRowWithSelectedInput();
-		if (selectedRow == null){
+		if (selectedRow == null) {
 			MainPanel firstVisiblePanel = findFirstVisiblePanelInScrollPane();
 			firstVisiblePanel.selectNextInputInSameRow();
 			return;
@@ -387,10 +392,22 @@ public class ListWordsController<Word extends ListElement> {
 	public MainPanel findFirstVisiblePanelInScrollPane() {
 		for (ListRow<Word> row : allWordsToRowNumberMap.values()) {
 			MainPanel wrappingPanel = row.getWrappingPanel();
-			if (!wrappingPanel.getPanel().getVisibleRect().isEmpty()){
+			if (!wrappingPanel.getPanel().getVisibleRect().isEmpty()) {
 				return wrappingPanel;
 			}
 		}
 		return null;
+	}
+
+	public void addWords(List<Word> words, InputGoal inputGoal,
+			boolean tryToShowWords) {
+		for (Word word : words) {
+			add(word, inputGoal, tryToShowWords);
+			progressUpdater.updateProgress();
+		}
+	}
+
+	public ProgressUpdater getProgressUpdater() {
+		return progressUpdater;
 	}
 }

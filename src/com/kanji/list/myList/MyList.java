@@ -10,6 +10,7 @@ import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listElements.ListElementInitializer;
 import com.kanji.model.WordInMyListExistence;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
+import com.kanji.swingWorkers.ProgressUpdater;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
@@ -80,11 +81,22 @@ public class MyList<Word extends ListElement> {
 	}
 
 	public boolean addWord(Word word) {
-		return addWord(word, InputGoal.EDIT);
+		return addWord(word, InputGoal.EDIT, true);
 	}
 
 	public boolean addWord(Word word, InputGoal inputGoal) {
-		return word != null && listController.add(word, inputGoal);
+		return word != null && listController.add(word, inputGoal, true);
+	}
+
+	public boolean addWord(Word word, InputGoal inputGoal,
+			boolean tryToShowWord) {
+		return word != null && listController
+				.add(word, inputGoal, tryToShowWord);
+	}
+
+	public void addWords(List<Word> words, InputGoal inputGoal,
+			boolean tryToShowWords) {
+		listController.addWords(words, inputGoal, tryToShowWords);
 	}
 
 	public Word createWord() {
@@ -319,7 +331,7 @@ public class MyList<Word extends ListElement> {
 
 	public void selectNextInputInSameRow() {
 		MainPanel panelWithSelectedInput = getPanelWithSelectedInput();
-		if (panelWithSelectedInput == null){
+		if (panelWithSelectedInput == null) {
 			panelWithSelectedInput = findFirstVisiblePanelInScrollpane();
 		}
 		panelWithSelectedInput.selectNextInputInSameRow();
@@ -347,5 +359,9 @@ public class MyList<Word extends ListElement> {
 
 	public void toggleEnabledState() {
 		listController.toggleEnabledState();
+	}
+
+	public ProgressUpdater getProgressUpdater() {
+		return listController.getProgressUpdater();
 	}
 }
