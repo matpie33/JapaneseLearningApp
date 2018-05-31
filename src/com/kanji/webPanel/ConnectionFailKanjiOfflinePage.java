@@ -4,12 +4,13 @@ import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.TextAlignment;
+import com.guimaker.model.WebContext;
 import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.kanji.constants.strings.Prompts;
-import com.kanji.context.KanjiContext;
+import com.guimaker.strings.Prompts;
+import com.guimaker.webPanel.ConnectionFailPageHandler;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -39,13 +40,13 @@ public class ConnectionFailKanjiOfflinePage
 	}
 
 	@Override
-	public void modifyConnectionFailPage(KanjiContext context) {
+	public void modifyConnectionFailPage(WebContext context) {
 		if (context.isEmpty()) {
-			kanjiTextPane.setText(Prompts.NO_KANJI_TO_DISPLAY);
+			kanjiTextPane.setText(context.getNoContentMessage());
 			setFontSize(messageFontSize);
 		}
 		else {
-			kanjiTextPane.setText(context.getKanjiCharacter());
+			kanjiTextPane.setText(context.getContent());
 			setFontSize(kanjiFontSize);
 		}
 

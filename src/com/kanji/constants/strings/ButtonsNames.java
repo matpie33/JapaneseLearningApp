@@ -27,7 +27,7 @@ public class ButtonsNames {
 	public static final String REJECT = "Nie";
 	public static final String SEARCH_IN_DICTIONARY = "Szukaj w słowniku";
 	public static final String ADD_KANJI_WRITING = "Dodaj zapis kanji";
-	public static final String RELOAD_PAGE = "Odswież";
+
 	public static final String SHOW_KANJI_STORIES = "Przejdź do historyjki";
 	public static final String SHOW_NEXT_WORDS_ON_LIST = "Pokaż kolejne słowa";
 	public static final String SHOW_PREVIOUS_WORDS_ON_LIST = "Pokaż poprzednie słowa";

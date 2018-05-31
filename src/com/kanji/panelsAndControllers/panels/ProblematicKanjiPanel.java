@@ -11,14 +11,13 @@ import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.SplitPaneOrientation;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Urls;
-import com.kanji.context.ContextOwner;
-import com.kanji.context.KanjiContext;
+import com.guimaker.webPanel.ContextOwner;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.utilities.CommonGuiElementsCreator;
 import com.kanji.panelSwitching.FocusableComponentsManager;
 import com.kanji.webPanel.ConnectionFailKanjiOfflinePage;
-import com.kanji.webPanel.WebPagePanel;
+import com.guimaker.webPanel.WebPagePanel;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
 
@@ -39,7 +38,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
 	public ProblematicKanjiPanel(Font kanjiFont, ApplicationWindow parentDialog,
 			ProblematicWordsController controller,
-			ContextOwner<KanjiContext> kanjiContextContextOwner) {
+			ContextOwner kanjiContextContextOwner) {
 		this.parentDialog = parentDialog;
 		this.controller = controller;
 		kanjiOfflineDisplayingPanel = new MainPanel(BasicColors.VERY_BLUE);

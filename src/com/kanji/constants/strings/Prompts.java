@@ -31,8 +31,7 @@ public class Prompts {
 	public static final String EXIT_LEARNING = "Czy na pewno chcesz przerwać naukę?";
 	public static final String CLOSE_APPLICATION = "Czy na pewno chcesz zamknąć aplikację?";
 	public static final String UNFINISHED_REPEATING = "Wykryto powtórki, które zostały przerwane. Wznawiam powtarzanie.";
-	public static final String CONNECTION_ERROR = "Problem z połączeniem internetowym.";
-	public static final String LOADING_PAGE = "Wczytuję stronę, proszę czekać ...";
+
 	public static final String KANJI_TEXT = "Kanji";
 	public static final String KANA_TEXT = "Kana";
 	public static final String ROW_NUMBER = "Nr wiersza: ";

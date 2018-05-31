@@ -1,9 +1,11 @@
 package com.kanji.problematicWords;
 
 import com.guimaker.enums.PanelDisplayMode;
+import com.guimaker.model.WebContext;
+import com.guimaker.webPanel.ContextOwner;
+import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Titles;
 import com.kanji.constants.strings.Urls;
-import com.kanji.context.ContextOwner;
 import com.kanji.context.KanjiContext;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listRows.RowInKanjiInformations;
@@ -26,8 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ProblematicKanjiDisplayer
-		implements ProblematicWordsDisplayer<Kanji>,
-		ContextOwner<KanjiContext> {
+		implements ProblematicWordsDisplayer<Kanji>, ContextOwner {
 
 	private ProblematicKanjiPanel problematicKanjiPanel;
 	private CookieManager cookieManager;
@@ -77,8 +78,9 @@ public class ProblematicKanjiDisplayer
 	}
 
 	@Override
-	public KanjiContext getContext() {
-		return kanjiContext;
+	public WebContext getContext() {
+		return new WebContext(kanjiContext.getKanjiCharacter(),
+				Prompts.NO_KANJI_TO_DISPLAY);
 	}
 
 	@Override

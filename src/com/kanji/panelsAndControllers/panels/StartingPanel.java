@@ -12,7 +12,6 @@ import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Prompts;
-import com.kanji.context.ContextOwner;
 import com.kanji.context.WordTypeContext;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
@@ -30,8 +29,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.*;
 
-public class StartingPanel extends AbstractPanelWithHotkeysInfo
-		implements ContextOwner<WordTypeContext> {
+public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 
 	private JTabbedPane tabs;
 	private WordsAndRepeatingInformationsPanel kanjiRepeatingPanel;
@@ -283,11 +281,6 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo
 	public MyList getActiveRepeatingList() {
 		return listToTabLabel.get(tabs.getTitleAt(tabs.getSelectedIndex()))
 				.getRepeatingList();
-	}
-
-	@Override
-	public WordTypeContext getContext() {
-		return wordTypeContext;
 	}
 
 	public void updateWordTypeContext(String newTabName) {

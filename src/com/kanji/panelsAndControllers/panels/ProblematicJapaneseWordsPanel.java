@@ -3,20 +3,21 @@ package com.kanji.panelsAndControllers.panels;
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
+import com.guimaker.model.WebContext;
 import com.guimaker.options.ScrollPaneOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.SplitPaneOrientation;
 import com.kanji.constants.strings.Urls;
-import com.kanji.context.ContextOwner;
+import com.guimaker.webPanel.ContextOwner;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.problematicWords.ProblematicJapaneseWordsDisplayer;
 import com.kanji.utilities.CommonGuiElementsCreator;
 import com.kanji.panelSwitching.FocusableComponentsManager;
-import com.kanji.webPanel.WebPagePanel;
+import com.guimaker.webPanel.WebPagePanel;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
 
@@ -133,9 +134,8 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	}
 
 	@Override
-	public Object getContext() {
-		return null; //TODO this should not be needed
-		// TODO - its wrong that web panel requires kanji context owner
+	public WebContext getContext() {
+		return null; //TODO implement it to return kanji tried to retrieve
 	}
 
 	public void showKoohiPage(int kanjiID) {
