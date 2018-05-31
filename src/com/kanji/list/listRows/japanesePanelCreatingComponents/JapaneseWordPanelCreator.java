@@ -159,7 +159,8 @@ public class JapaneseWordPanelCreator
 	@Override
 	public void switchBetweenInputsFailed(JTextComponent input,
 			MoveDirection direction) {
-		if (direction.equals(MoveDirection.BELOW)) {
+		if (direction.equals(MoveDirection.BELOW) && !displayMode
+				.equals(PanelDisplayMode.VIEW)) {
 			MyList<JapaneseWriting> writingsListToAddWriting = findListThatFailedInSwitchingBetweenInputs(
 					input);
 			writingsListToAddWriting.addWord(
