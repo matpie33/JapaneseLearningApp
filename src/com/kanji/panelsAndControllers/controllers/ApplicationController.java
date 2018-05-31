@@ -20,6 +20,7 @@ import com.kanji.list.myList.ListConfiguration;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.WordParticlesData;
 import com.kanji.model.WordsAndRepeatingInfo;
+import com.kanji.panelsAndControllers.panels.LoadingPanel;
 import com.kanji.panelsAndControllers.panels.RepeatingWordsPanel;
 import com.kanji.problematicWords.ProblematicJapaneseWordsDisplayer;
 import com.kanji.problematicWords.ProblematicKanjiDisplayer;
@@ -36,10 +37,12 @@ import com.kanji.utilities.WordsListReadWrite;
 import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.List;
 
 public class ApplicationController implements ApplicationStateManager {
 
@@ -326,8 +329,9 @@ public class ApplicationController implements ApplicationStateManager {
 
 		parent.setPanel(parent.getStartingPanel());
 
+		LoadingPanel loadingPanel = parent.showProgressDialog();
 		LoadingProjectWorker loadingProjectWorker = new LoadingProjectWorker(
-				parent, parent.showProgressDialog());
+				parent, loadingPanel);
 		loadingProjectWorker
 				.load(japaneseWords, savingInformation.getJapaneseWords());
 		loadingProjectWorker.load(kanjiList, savingInformation.getKanjiWords());
@@ -335,6 +339,13 @@ public class ApplicationController implements ApplicationStateManager {
 				savingInformation.getJapaneseWordsRepeatingInformations());
 		loadingProjectWorker.load(kanjiRepeatingDates,
 				savingInformation.getRepeatingList());
+		recalculateLoadDialogPositionAndSize(loadingPanel);
+	}
+
+	private void recalculateLoadDialogPositionAndSize(LoadingPanel loadingPanel) {
+		Window container = loadingPanel.getDialog().getContainer();
+		container.pack();
+		container.setLocationRelativeTo(null);
 	}
 
 	private ApplicationStateManager getStateManagerForHandlingState(

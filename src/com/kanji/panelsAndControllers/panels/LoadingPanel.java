@@ -30,15 +30,11 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 	public void createElements() {
 
 		//TODO add method in gui maker to enable connecting one row with another or create a separate row
-		progressBarsPanel = new MainPanel(BasicColors.MEDIUM_BLUE, false);
-		JScrollPane scrollPane = GuiElementsCreator.createScrollPane(
-				new ScrollPaneOptions()
-						.componentToWrap(progressBarsPanel.getPanel())
-						.preferredSize(new Dimension(350, 200)).opaque(false));
+		progressBarsPanel = new MainPanel(BasicColors.MEDIUM_BLUE, true);
 		progressBarsPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.NONE, Anchor.CENTER, GuiElementsCreator.createLabel(
-						new ComponentOptions().text(message))));
-		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, scrollPane));
+				.createRow(FillType.NONE, Anchor.CENTER, GuiElementsCreator
+						.createLabel(new ComponentOptions().text(message))));
+		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, progressBarsPanel.getPanel()));
 		buttonClose = createButtonClose();
 		setNavigationButtons(Anchor.CENTER, buttonClose);
 
