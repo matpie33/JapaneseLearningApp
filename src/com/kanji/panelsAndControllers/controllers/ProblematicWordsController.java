@@ -16,6 +16,7 @@ import com.kanji.saving.ProblematicKanjisState;
 import com.kanji.saving.SavingInformation;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
+import javafx.application.Platform;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -200,8 +201,8 @@ public class ProblematicWordsController<Word extends ListElement>
 				savingInformation.getProblematicKanjisState());
 	}
 
-	public void addProblematicWordsHighlightReviewed(
-			List<Word> reviewedWords, List<Word> notReviewedWords) {
+	public void addProblematicWordsHighlightReviewed(List<Word> reviewedWords,
+			List<Word> notReviewedWords) {
 		int i = 0;
 		for (Word listWord : reviewedWords) {
 			wordsToReviewList.addWord(listWord);
@@ -274,7 +275,7 @@ public class ProblematicWordsController<Word extends ListElement>
 				});
 	}
 
-	public Word getCurrentlySelectedWord (){
+	public Word getCurrentlySelectedWord() {
 		return wordsToReviewList.getWordInRow(nextWordToReview);
 	}
 

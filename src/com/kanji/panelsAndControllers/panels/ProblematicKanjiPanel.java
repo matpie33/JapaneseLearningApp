@@ -8,18 +8,19 @@ import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
+import com.guimaker.webPanel.ContextOwner;
+import com.guimaker.webPanel.WebPagePanel;
 import com.kanji.constants.enums.SplitPaneOrientation;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Urls;
-import com.guimaker.webPanel.ContextOwner;
 import com.kanji.list.myList.MyList;
+import com.kanji.panelSwitching.FocusableComponentsManager;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.utilities.CommonGuiElementsCreator;
-import com.kanji.panelSwitching.FocusableComponentsManager;
 import com.kanji.webPanel.ConnectionFailKanjiOfflinePage;
-import com.guimaker.webPanel.WebPagePanel;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
+import javafx.application.Platform;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -52,6 +53,8 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		dictionaryWebPanel
 				.showPageWithoutGrabbingFocus(Urls.DICTIONARY_PL_EN_MAIN_PAGE);
 		wordsToReviewList = controller.getWordsToReviewList();
+		Platform.runLater(
+				() -> wordsToReviewList.getPanel().requestFocusInWindow());
 	}
 
 	@Override
