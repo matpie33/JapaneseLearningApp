@@ -298,7 +298,7 @@ public class ListWordsController<Word extends ListElement> {
 		if (firstRowToLoad > 0) {
 			listPanelCreator.enableButtonShowPreviousWords();
 		}
-		lastRowVisible = Math.max(firstRowToLoad, -1);
+		lastRowVisible = Math.max(firstRowToLoad - 1, -1);
 		LoadNextWordsHandler loadNextWordsHandler = listPanelCreator
 				.getLoadNextWordsHandler();
 		for (int i = 0; i < getMaximumWordsToShow() && loadNextWordsHandler
