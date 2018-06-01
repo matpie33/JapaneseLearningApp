@@ -27,7 +27,7 @@ public class ListWordsController<Word extends ListElement> {
 	private Map<Integer, ListRow<Word>> allWordsToRowNumberMap = new HashMap<>();
 	private ListPanelCreator<Word> listPanelCreator;
 	private ApplicationController applicationController;
-	private final int MAXIMUM_WORDS_TO_SHOW = 200;
+	private final int MAXIMUM_WORDS_TO_SHOW = 201;
 	private int lastRowVisible;
 	private final List<LoadWordsForFoundWord> strategiesForFoundWord = new ArrayList<>();
 	private ListRow<Word> currentlyHighlightedWord;
@@ -72,8 +72,19 @@ public class ListWordsController<Word extends ListElement> {
 	}
 
 	public boolean add(Word r, InputGoal inputGoal, boolean tryToShowWord) {
+
 		if (r != null && !isWordDefined(r).exists()) {
 			boolean canNewWordBeDisplayed = canNewWordBeDisplayed();
+			if (tryToShowWord) {
+				if (!lastWordIsVisible()) {
+					loadLastWord();
+				}
+				else if (!canNewWordBeDisplayed) {
+					removeFirstRow();
+					canNewWordBeDisplayed = true;
+				}
+			}
+
 			ListRow<Word> newWord = listPanelCreator
 					.addRow(r, allWordsToRowNumberMap.size() + 1,
 							canNewWordBeDisplayed && tryToShowWord,
@@ -87,6 +98,19 @@ public class ListWordsController<Word extends ListElement> {
 			return true;
 		}
 		return false;
+	}
+
+	private void removeFirstRow() {
+		listPanelCreator.removeRow(allWordsToRowNumberMap.get(getFirstVisibleRowNumber()).getJPanel());
+	}
+
+	private void loadLastWord() {
+		showWordsStartingFromRow(
+				allWordsToRowNumberMap.size() - 1 - getMaximumWordsToShow());
+	}
+
+	private boolean lastWordIsVisible() {
+		return lastRowVisible == allWordsToRowNumberMap.size() - 1;
 	}
 
 	private boolean canNewWordBeDisplayed() {

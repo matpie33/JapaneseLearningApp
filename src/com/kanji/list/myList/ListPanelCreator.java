@@ -85,7 +85,7 @@ public class ListPanelCreator<Word extends ListElement>
 	}
 
 	public void addElementsForEmptyList() {
-		rowsPanel.insertRow(1,SimpleRowBuilder.createRow(FillType.NONE,
+		rowsPanel.insertRow(1, SimpleRowBuilder.createRow(FillType.NONE,
 				GuiElementsCreator.createLabel(
 						new ComponentOptions().text(Prompts.EMPTY_LIST)),
 				createButtonAddRow(InputGoal.EDIT)));
@@ -206,8 +206,9 @@ public class ListPanelCreator<Word extends ListElement>
 					removeWordsFromRangeInclusive(loadWordsHandler
 							.getRangeOfWordsToRemove(numberOfAddedWords));
 				}
-				boolean hasMoreWordsToShow = numberOfAddedWords
-						== listWordsController.getMaximumWordsToShow() / 2;
+				boolean hasMoreWordsToShow = numberOfAddedWords == Math
+						.ceil((double) listWordsController
+								.getMaximumWordsToShow() / 2);
 				loadWordsHandler
 						.enableOrDisableLoadWordsButtons(buttonLoadNextWords,
 								buttonLoadPreviousWords, hasMoreWordsToShow);
