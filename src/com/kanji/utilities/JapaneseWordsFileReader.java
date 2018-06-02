@@ -7,6 +7,7 @@ import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.exception.IncorrectJapaneseWordsListInputException;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.ListElement;
+import com.kanji.model.AdditionalInformation;
 import com.kanji.model.DuplicatedJapaneseWordInformation;
 
 import java.io.*;
@@ -159,8 +160,7 @@ public class JapaneseWordsFileReader {
 			wordRepresentation = wordRepresentation.replace("+", "");
 			wordRepresentation = wordRepresentation.replace(particle + "", "");
 			wordRepresentation = wordRepresentation.replace(",", "");
-			japaneseWord.addAditionalInformation(
-					AdditionalInformationTag.TAKING_PARTICLE, "" + particle);
+
 		}
 
 		return wordRepresentation;
@@ -242,11 +242,6 @@ public class JapaneseWordsFileReader {
 					&& lastCharacterOfNextWord
 					!= lastCharacterOfWordToCompare) {
 				if (!foundVerbConjugationType) {
-					japaneseWord.addAditionalInformation(
-							AdditionalInformationTag.VERB_CONJUGATION,
-							determineVerbConjugationType(
-									nextWord.charAt(nextWord.length() - 2))
-									.getDisplayedText());
 					foundVerbConjugationType = true;
 				}
 			}

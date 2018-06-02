@@ -1,6 +1,8 @@
 package com.kanji.utilities;
 
-public class Pair <Left, Right> {
+import java.io.Serializable;
+
+public class Pair<Left, Right> implements Serializable {
 
 	private Left left;
 	private Right right;
@@ -18,8 +20,8 @@ public class Pair <Left, Right> {
 		return right;
 	}
 
-	public static  <A, B> Pair of(A left, B right){
-		return new Pair (left, right);
+	public static <A, B> Pair of(A left, B right) {
+		return new Pair(left, right);
 	}
 
 }

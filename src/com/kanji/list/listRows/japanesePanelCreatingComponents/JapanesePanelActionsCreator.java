@@ -1,5 +1,6 @@
 package com.kanji.list.listRows.japanesePanelCreatingComponents;
 
+import com.kanji.constants.enums.AdditionalInformationTag;
 import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.enums.WordSearchOptions;
@@ -12,6 +13,7 @@ import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listeners.InputValidationListener;
 import com.kanji.list.myList.ListPropertyChangeHandler;
 import com.kanji.list.myList.MyList;
+import com.kanji.model.AdditionalInformation;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.utilities.JapaneseWritingUtilities;
 import com.kanji.utilities.Pair;
@@ -166,22 +168,6 @@ public class JapanesePanelActionsCreator {
 		return textComponent;
 	}
 
-	public void addSavingOnSelectionListener(JComboBox partOfSpeechCombobox,
-			JapaneseWord japaneseWord) {
-		partOfSpeechCombobox.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() != ItemEvent.SELECTED) {
-					return;
-				}
-				String newValue = (String) e.getItem();
-				japaneseWord.setPartOfSpeech(
-						PartOfSpeech.getPartOfSpeachByPolishMeaning(newValue));
-				applicationController.saveProject();
-			}
-		});
-	}
-
 	public AbstractButton updateWritingsInWordWhenDeleteWriting(
 			AbstractButton buttonDelete, JapaneseWord japaneseWord,
 			JapaneseWriting writing, InputGoal inputGoal) {
@@ -217,6 +203,64 @@ public class JapanesePanelActionsCreator {
 			}
 		}
 		return null;
+	}
+
+	public JComboBox changeAdditionalInformationOnComboboxChange(
+			JComboBox comboBox, JapaneseWord japaneseWord) {
+		comboBox.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() != ItemEvent.SELECTED) {
+					return;
+				}
+				String newValue = (String) comboBox.getSelectedItem();
+				japaneseWord.getAdditionalInformation().setValue(newValue);
+				applicationController.saveProject();
+			}
+		});
+		return comboBox;
+
+	}
+
+	public JComboBox<String> addAdditionalInformationOnPartOfSpeechChange(
+			JComboBox additionalInformationValue,
+			JLabel additionalInformationLabel, JComboBox partOfSpeechCombobox,
+			JapaneseWord japaneseWord) {
+		partOfSpeechCombobox.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() != ItemEvent.SELECTED) {
+					return;
+				}
+				String newValue = (String) e.getItem();
+				PartOfSpeech newPartOfSpeech = PartOfSpeech
+						.getPartOfSpeachByPolishMeaning(newValue);
+
+				if (newPartOfSpeech.equals(japaneseWord.getPartOfSpeech())) {
+					return;
+				}
+				japaneseWord.setPartOfSpeech(newPartOfSpeech);
+
+				String[] possibleValues = newPartOfSpeech.getPossibleValues();
+				boolean hasAdditionalInformation = possibleValues.length > 0;
+				additionalInformationLabel.setEnabled(hasAdditionalInformation);
+				additionalInformationValue.setEnabled(hasAdditionalInformation);
+				additionalInformationValue.removeAllItems();
+				if (hasAdditionalInformation) {
+					AdditionalInformationTag additionalInformationTag = newPartOfSpeech
+							.getAdditionalInformationTag();
+					additionalInformationLabel
+							.setText(additionalInformationTag.getLabel());
+					AdditionalInformation additionalInformation = new AdditionalInformation(
+							additionalInformationTag, possibleValues);
+					japaneseWord
+							.setAdditionalInformation(additionalInformation);
+					Arrays.stream(possibleValues)
+							.forEach(additionalInformationValue::addItem);
+				}
+			}
+		});
+		return partOfSpeechCombobox;
 	}
 
 }

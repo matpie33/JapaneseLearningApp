@@ -43,7 +43,7 @@ import java.util.Set;
 public class JapaneseWordPanelCreator
 		implements SwitchBetweenInputsFailListener {
 
-	private JComboBox partOfSpeechCombobox;
+	private JComboBox<String> partOfSpeechCombobox;
 	private JTextComponent wordMeaningText;
 	private JLabel wordMeaningLabel;
 	private JLabel partOfSpeechLabel;
@@ -60,6 +60,8 @@ public class JapaneseWordPanelCreator
 	private List<Pair<JapaneseWord, MyList<JapaneseWriting>>> writingsLists = new ArrayList<>();
 	private MyList<WordParticlesData> particlesTakenList;
 	private JLabel particlesTakenLabel;
+	private JLabel additionalInformationLabel;
+	private JComboBox additionalInformationValue;
 	//TODO it's the second place where map did not fit due to mutable keys,
 	//can we do better than list of pairs?
 
@@ -105,12 +107,23 @@ public class JapaneseWordPanelCreator
 						.foregroundColor(labelsColor));
 		wordMeaningText = CommonGuiElementsCreator
 				.createShortInput(japaneseWord.getMeaning());
+
 		partOfSpeechLabel = GuiElementsCreator.createLabel(
 				new ComponentOptions().text(Labels.PART_OF_SPEECH)
 						.foregroundColor(labelsColor));
 		createParticlesTakenList(japaneseWord);
+
+		additionalInformationLabel = japanesePanelComponentsStore
+				.getElementsCreator()
+				.createAdditionalInformationLabel(japaneseWord, labelsColor);
+		additionalInformationValue = japanesePanelComponentsStore
+				.getElementsCreator()
+				.createComboboxForAdditionalInformation(japaneseWord);
 		partOfSpeechCombobox = japanesePanelComponentsStore.getElementsCreator()
-				.createComboboxForPartOfSpeech(japaneseWord.getPartOfSpeech());
+				.createComboboxForPartOfSpeech(japaneseWord.getPartOfSpeech(),
+						additionalInformationLabel, additionalInformationValue,
+						japaneseWord);
+
 		lastWritingsListCreated = createWritingsList(japaneseWord, inputGoal,
 				inheritScrollBar);
 		writingsLabel = GuiElementsCreator.createLabel(
@@ -135,8 +148,6 @@ public class JapaneseWordPanelCreator
 								WordSearchOptions.BY_WORD_FRAGMENT :
 								WordSearchOptions.BY_FULL_EXPRESSION,
 						inputGoal);
-		actionCreatingService.addSavingOnSelectionListener(partOfSpeechCombobox,
-				japaneseWord);
 	}
 
 	public MyList<JapaneseWriting> createWritingsList(JapaneseWord japaneseWord,
@@ -150,7 +161,7 @@ public class JapaneseWordPanelCreator
 		if (japaneseWord.getWritings().isEmpty()) {
 			japaneseWord.addWritingsForKana("", "");
 		}
-		japaneseWord.getWritings().stream().forEach(
+		japaneseWord.getWritings().forEach(
 				word -> lastWritingsListCreated.addWord(word, inputGoal));
 		lastWritingsListCreated.addSwitchBetweenInputsFailListener(this);
 		return lastWritingsListCreated;
@@ -223,6 +234,7 @@ public class JapaneseWordPanelCreator
 				.fillHorizontallySomeElements(wordMeaningText)
 				.nextRow(partOfSpeechLabel, partOfSpeechCombobox)
 				.setColumnToPutRowInto(1)
+				.nextRow(additionalInformationLabel, additionalInformationValue)
 				.nextRow(writingsLabel, writingsListPanel)
 				.nextRow(particlesTakenLabel, particlesTakenList.getPanel())
 				.onlyAddIf(!displayMode.equals(PanelDisplayMode.VIEW)

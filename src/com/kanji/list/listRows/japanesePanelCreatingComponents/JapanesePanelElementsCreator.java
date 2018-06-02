@@ -4,11 +4,11 @@ import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComboboxOptions;
+import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.kanji.constants.enums.InputGoal;
-import com.kanji.constants.enums.JapaneseParticle;
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.list.listElements.JapaneseWord;
@@ -17,6 +17,7 @@ import com.kanji.list.listRows.RowInParticlesInformation;
 import com.kanji.list.listeners.InputValidationListener;
 import com.kanji.list.myList.ListConfiguration;
 import com.kanji.list.myList.MyList;
+import com.kanji.model.AdditionalInformation;
 import com.kanji.model.WordParticlesData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.utilities.JapaneseWritingUtilities;
@@ -25,8 +26,10 @@ import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -63,8 +66,9 @@ public class JapanesePanelElementsCreator {
 				new ListConfiguration().showButtonsLoadNextPreviousWords(false)
 						.enableWordAdding(false).enableWordSearching(false)
 						.scrollBarFitsContent(true).inheritScrollbar(true),
-				()-> WordParticlesData.createParticleNotIncludedInWord(japaneseWord));
-		if (japaneseWord.getTakenParticles() != null){
+				() -> WordParticlesData
+						.createParticleNotIncludedInWord(japaneseWord));
+		if (japaneseWord.getTakenParticles() != null) {
 			japaneseWord.getTakenParticles().forEach(particlesList::addWord);
 		}
 
@@ -104,13 +108,19 @@ public class JapanesePanelElementsCreator {
 	}
 
 	public JComboBox<String> createComboboxForPartOfSpeech(
-			PartOfSpeech partOfSpeechToSelect) {
-		JComboBox<String> comboBox = GuiElementsCreator.createCombobox(
-				new ComboboxOptions().setComboboxValues(
-						Arrays.stream(PartOfSpeech.values())
-								.filter(p -> !p.equals(JapaneseParticle.EMPTY))
-								.map(PartOfSpeech::getPolishMeaning)
-								.collect(Collectors.toList())));
+			PartOfSpeech partOfSpeechToSelect,
+			JLabel additionalInformationLabel,
+			JComboBox additionalInformationValue, JapaneseWord japaneseWord) {
+		JComboBox<String> comboBox = actionsCreator
+				.addAdditionalInformationOnPartOfSpeechChange(
+						additionalInformationValue, additionalInformationLabel,
+						GuiElementsCreator.createCombobox(new ComboboxOptions()
+								.setComboboxValues(
+										Arrays.stream(PartOfSpeech.values())
+												.map(PartOfSpeech::getPolishMeaning)
+												.collect(Collectors.toList()))),
+						japaneseWord);
+
 		comboBox.setSelectedItem(partOfSpeechToSelect.getPolishMeaning());
 		return comboBox;
 	}
@@ -143,5 +153,33 @@ public class JapanesePanelElementsCreator {
 	public void addValidationListeners(
 			Set<InputValidationListener<JapaneseWord>> validationListeners) {
 		actionsCreator.setInputValidationListeners(validationListeners);
+	}
+
+	public JComboBox createComboboxForAdditionalInformation(
+			JapaneseWord japaneseWord) {
+		AdditionalInformation additionalInformation = japaneseWord
+				.getAdditionalInformation();
+		List<String> possibleValues = additionalInformation.getPossibleValues();
+		JComboBox comboBox = actionsCreator
+				.changeAdditionalInformationOnComboboxChange(GuiElementsCreator
+								.createCombobox(new ComboboxOptions()
+										.setComboboxValues(possibleValues)
+										.setEnabled(!additionalInformation.isEmpty())),
+						japaneseWord);
+		if (additionalInformation.getValue() != null) {
+			comboBox.setSelectedItem(additionalInformation.getValue());
+		}
+
+		return comboBox;
+	}
+
+	public JLabel createAdditionalInformationLabel(JapaneseWord japaneseWord,
+			Color labelColor) {
+		AdditionalInformation additionalInformation = japaneseWord
+				.getAdditionalInformation();
+		return GuiElementsCreator.createLabel(new ComponentOptions()
+				.text(additionalInformation.getTag().getLabel())
+				.foregroundColor(labelColor)
+				.setEnabled(!additionalInformation.isEmpty()));
 	}
 }

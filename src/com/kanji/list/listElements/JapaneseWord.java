@@ -1,10 +1,14 @@
 package com.kanji.list.listElements;
 
-import com.kanji.constants.enums.*;
-import com.kanji.model.AdditionalInformation;
+import com.kanji.constants.enums.InputGoal;
+import com.kanji.constants.enums.JapaneseParticle;
+import com.kanji.constants.enums.PartOfSpeech;
+import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
 import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordWritingsChecker;
+import com.kanji.model.AdditionalInformation;
 import com.kanji.model.WordParticlesData;
+import com.kanji.utilities.Pair;
 import com.kanji.utilities.StringUtilities;
 
 import java.io.Serializable;
@@ -23,15 +27,15 @@ public class JapaneseWord implements ListElement, Serializable {
 	private static final String JAPANESE_WRITING = "zapis";
 	private Set<JapaneseWriting> japaneseWritings;
 	private String meaning;
-	private PartOfSpeech partOfSpeech;
-	private Set<AdditionalInformation> additionalInformations = new HashSet<>();
+	private Pair<PartOfSpeech, AdditionalInformation> partOfSpeechWithInformation;
 	private Set<WordParticlesData> takenParticles = new HashSet<>();
 
 	private static JapaneseWordMeaningChecker meaningChecker = new JapaneseWordMeaningChecker(
 			WordSearchOptions.BY_FULL_EXPRESSION);
 
 	public JapaneseWord(PartOfSpeech partOfSpeech, String meaning) {
-		this.partOfSpeech = partOfSpeech;
+		partOfSpeechWithInformation = new Pair<>(partOfSpeech,
+				AdditionalInformation.empty());
 		this.meaning = meaning;
 		japaneseWritings = new HashSet<>();
 	}
@@ -63,11 +67,6 @@ public class JapaneseWord implements ListElement, Serializable {
 		this.meaning = meaning;
 	}
 
-	public void addAditionalInformation(AdditionalInformationTag tag,
-			String value) {
-		additionalInformations.add(new AdditionalInformation(tag, value));
-	}
-
 	public static ListElementInitializer<JapaneseWord> getInitializer() {
 		return () -> {
 			JapaneseWord japaneseWord = new JapaneseWord(PartOfSpeech.NOUN, "");
@@ -80,25 +79,16 @@ public class JapaneseWord implements ListElement, Serializable {
 	}
 
 	public PartOfSpeech getPartOfSpeech() {
-		return partOfSpeech;
+		return partOfSpeechWithInformation.getLeft();
+	}
+
+	public AdditionalInformation getAdditionalInformation() {
+		return partOfSpeechWithInformation.getRight();
 	}
 
 	public void setPartOfSpeech(PartOfSpeech partOfSpeech) {
-		this.partOfSpeech = partOfSpeech;
-	}
-
-	public boolean hasAdditionalVerbConjugationInformation() {
-		return getVerbConjugationInformation().isEmpty() ? false : true;
-	}
-
-	public String getVerbConjugationInformation() {
-		for (AdditionalInformation additionalInformation : additionalInformations) {
-			if (additionalInformation.getTag()
-					.equals(AdditionalInformationTag.VERB_CONJUGATION)) {
-				return additionalInformation.getValue();
-			}
-		}
-		return "";
+		partOfSpeechWithInformation = new Pair<>(partOfSpeech,
+				AdditionalInformation.empty());
 	}
 
 	public Set<String> getKanjiWritings() {
@@ -144,14 +134,14 @@ public class JapaneseWord implements ListElement, Serializable {
 		builder.append("\nKana to kanji");
 		builder.append(getWritings());
 		builder.append("\nAdditionalInformations");
-		for (AdditionalInformation additionalInformation : additionalInformations) {
-			builder.append(additionalInformation.getTag());
-			builder.append(" ");
-			builder.append(additionalInformation.getValue());
-		}
+		AdditionalInformation additionalInformation = partOfSpeechWithInformation
+				.getRight();
+		builder.append(
+				additionalInformation.getTag() + ", " + additionalInformation
+						.getValue());
 
 		builder.append("\nWord type: ");
-		builder.append(partOfSpeech.getPolishMeaning());
+		builder.append(getPartOfSpeech().getPolishMeaning());
 		builder.append("\nWord meaning: " + meaning);
 		builder.append("\nParticles: " + getTakenParticles());
 
@@ -206,7 +196,7 @@ public class JapaneseWord implements ListElement, Serializable {
 	}
 
 	public Set<WordParticlesData> getTakenParticles() {
-		if (takenParticles == null){
+		if (takenParticles == null) {
 			takenParticles = new HashSet<>();
 		}
 		return takenParticles;
@@ -237,5 +227,11 @@ public class JapaneseWord implements ListElement, Serializable {
 
 	public boolean hasParticle(JapaneseParticle particle) {
 		return getTakenParticles().contains(new WordParticlesData(particle));
+	}
+
+	public void setAdditionalInformation(
+			AdditionalInformation additionalInformation) {
+		this.partOfSpeechWithInformation = new Pair<>(
+				partOfSpeechWithInformation.getLeft(), additionalInformation);
 	}
 }

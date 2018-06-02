@@ -14,13 +14,16 @@ public class Labels {
 	public static final String PROBLEMATIC_KANJI_OPTION = "Problematyczne";
 	public static final String TIME_LABEL = "Czas: ";
 
-	public static final String ALTERNATIVE_KANA_WRITING = "Inne zapisy kaną";
-	public static final String ALTERNATIVE_KANJI_WRITING = "Inne zapisy kanji";
 	public static final String VERB_CONJUGATION = "Rodzaj odmiany";
 
 	public static final String VERB_CONJUGATION_ICHIDAN = "Z końcówką -た";
 	public static final String VERB_CONJUGATION_GODAN = "Z końcówką -った";
 	public static final String TAKING_PARTICLE = "Łączy się z partykułami: ";
 	public static final String WRITING_WAYS_IN_JAPANESE = "Sposoby zapisu: ";
+	public static final String TAKING_SURU_SUFFIX = "Łączy się z suru: ";
 
+	public static final String YES = "tak";
+	public static final String NO = "nie";
+	public static final String ADDITIONAL_INFORMATION_GENERAL_TAG =
+			"Dodatkowe informacje";
 }

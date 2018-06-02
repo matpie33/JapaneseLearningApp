@@ -1,15 +1,30 @@
 package com.kanji.constants.enums;
 
+import com.kanji.constants.strings.Labels;
+
 public enum PartOfSpeech {
 
-	VERB("Czasownik"), NOUN("rzeczownik"), I_ADJECTIVE(
-			"i-przymiotnik"), NA_ADJECTIVE("na-przymiotnik"), EXPRESSION(
-			"Wyrażenie");
+	VERB("Czasownik", AdditionalInformationTag.VERB_CONJUGATION,
+			new String[] { Labels.VERB_CONJUGATION_GODAN,
+					Labels.VERB_CONJUGATION_ICHIDAN }), NOUN("rzeczownik",
+			AdditionalInformationTag.TAKING_SURU,
+			new String[] { Labels.NO, Labels.YES }), I_ADJECTIVE(
+			"i-przymiotnik", AdditionalInformationTag.OTHER,
+			new String[] {}), NA_ADJECTIVE("na-przymiotnik",
+			AdditionalInformationTag.OTHER, new String[] {}), EXPRESSION(
+			"Wyrażenie", AdditionalInformationTag.OTHER, new String[] {});
 
 	private String polishMeaning;
 
-	private PartOfSpeech(String polishMeaning) {
+	private AdditionalInformationTag additionalInformationTag;
+	private String[] possibleValues;
+
+	private PartOfSpeech(String polishMeaning,
+			AdditionalInformationTag additionalInformationTag,
+			String[] possibleValues) {
 		this.polishMeaning = polishMeaning;
+		this.possibleValues = possibleValues;
+		this.additionalInformationTag = additionalInformationTag;
 	}
 
 	public String getPolishMeaning() {
@@ -28,4 +43,11 @@ public enum PartOfSpeech {
 						+ polishMeaning);
 	}
 
+	public String[] getPossibleValues() {
+		return possibleValues;
+	}
+
+	public AdditionalInformationTag getAdditionalInformationTag() {
+		return additionalInformationTag;
+	}
 }

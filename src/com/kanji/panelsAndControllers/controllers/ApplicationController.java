@@ -139,7 +139,7 @@ public class ApplicationController implements ApplicationStateManager {
 		JapaneseWord cat = new JapaneseWord(PartOfSpeech.NOUN, "kot");
 		cat.addWritingsForKana("ねこ", "頭骨");
 		cat.addParticleData(new WordParticlesData(JapaneseParticle.DE));
-		cat.setPartOfSpeech(PartOfSpeech.NOUN);
+		cat.setPartOfSpeech(PartOfSpeech.EXPRESSION);
 		japaneseWords.addWord(cat);
 		JapaneseWord dog2 = new JapaneseWord(PartOfSpeech.NOUN, "pies");
 		dog2.addWritingsForKana("いぬ", "二", "三", "四");
@@ -147,8 +147,6 @@ public class ApplicationController implements ApplicationStateManager {
 		JapaneseWord verb = new JapaneseWord(PartOfSpeech.VERB, "otwierać");
 		verb.addWritingsForKana("あける", "開ける", "空ける", "明ける");
 		verb.addWritingsForKana("ひらける", "開ける", "空ける", "明ける");
-		verb.addAditionalInformation(AdditionalInformationTag.VERB_CONJUGATION,
-				Labels.VERB_CONJUGATION_GODAN);
 		JapaneseWord japaneseWord = new JapaneseWord(PartOfSpeech.NOUN, "Test");
 		japaneseWord.addWritingsForKana("らけ", "務");
 		japaneseWords.addWord(japaneseWord);
