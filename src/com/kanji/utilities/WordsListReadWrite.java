@@ -146,7 +146,7 @@ public class WordsListReadWrite {
 		p.write(REPEATING_DATES_HEADER);
 		p.newLine();
 		for (RepeatingData repeatingDate : repeatingData) {
-			p.write(repeatingDate.getRepeatingRange() + SEPARATOR
+			p.write(repeatingDate.getRepeatingRange().replace("\n", "") + SEPARATOR
 					+ repeatingDate.getRepeatingDate() + SEPARATOR
 					+ repeatingDate.getTimeSpentOnRepeating() + SEPARATOR);
 			p.newLine();
