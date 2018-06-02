@@ -98,7 +98,7 @@ public class WordsListReadWrite {
 					String[] kanjis = kanaAndKanjis[1].split(KANJI_SEPARATOR);
 					wordInformation.addWritingsForKana(kana, kanjis);
 				}
-				else{
+				else {
 					wordInformation.addWritingsForKana(kana, "");
 				}
 			}
@@ -177,8 +177,8 @@ public class WordsListReadWrite {
 		p.write(REPEATING_DATES_HEADER);
 		p.newLine();
 		for (RepeatingData repeatingDate : repeatingData) {
-			p.write(repeatingDate.getRepeatingRange() + SEPARATOR
-					+ repeatingDate.getRepeatingDate() + SEPARATOR
+			p.write(repeatingDate.getRepeatingRange().replace("\n", "")
+					+ SEPARATOR + repeatingDate.getRepeatingDate() + SEPARATOR
 					+ repeatingDate.getTimeSpentOnRepeating() + SEPARATOR);
 			p.newLine();
 		}
