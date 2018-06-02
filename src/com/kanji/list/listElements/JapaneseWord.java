@@ -34,8 +34,7 @@ public class JapaneseWord implements ListElement, Serializable {
 			WordSearchOptions.BY_FULL_EXPRESSION);
 
 	public JapaneseWord(PartOfSpeech partOfSpeech, String meaning) {
-		partOfSpeechWithInformation = new Pair<>(partOfSpeech,
-				AdditionalInformation.empty());
+		setPartOfSpeech(partOfSpeech);
 		this.meaning = meaning;
 		japaneseWritings = new HashSet<>();
 	}
@@ -88,7 +87,8 @@ public class JapaneseWord implements ListElement, Serializable {
 
 	public void setPartOfSpeech(PartOfSpeech partOfSpeech) {
 		partOfSpeechWithInformation = new Pair<>(partOfSpeech,
-				AdditionalInformation.empty());
+				new AdditionalInformation(partOfSpeech.getAdditionalInformationTag(),
+						partOfSpeech.getPossibleValues()));
 	}
 
 	public Set<String> getKanjiWritings() {

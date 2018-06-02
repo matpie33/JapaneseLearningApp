@@ -160,14 +160,19 @@ public class JapanesePanelElementsCreator {
 		AdditionalInformation additionalInformation = japaneseWord
 				.getAdditionalInformation();
 		List<String> possibleValues = additionalInformation.getPossibleValues();
+		boolean hasPossibleAdditionalInformation = !additionalInformation
+				.getPossibleValues().isEmpty();
 		JComboBox comboBox = actionsCreator
 				.changeAdditionalInformationOnComboboxChange(GuiElementsCreator
 								.createCombobox(new ComboboxOptions()
 										.setComboboxValues(possibleValues)
-										.setEnabled(!additionalInformation.isEmpty())),
+										.setEnabled(hasPossibleAdditionalInformation)),
 						japaneseWord);
-		if (additionalInformation.getValue() != null) {
-			comboBox.setSelectedItem(additionalInformation.getValue());
+
+		if (hasPossibleAdditionalInformation) {
+			String value = additionalInformation.getValue();
+			comboBox.setSelectedItem(
+					value != null ? value : possibleValues.get(0));
 		}
 
 		return comboBox;

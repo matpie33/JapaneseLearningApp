@@ -12,7 +12,8 @@ public enum PartOfSpeech {
 			"i-przymiotnik", AdditionalInformationTag.OTHER,
 			new String[] {}), NA_ADJECTIVE("na-przymiotnik",
 			AdditionalInformationTag.OTHER, new String[] {}), EXPRESSION(
-			"Wyrażenie", AdditionalInformationTag.OTHER, new String[] {});
+			"Wyrażenie", AdditionalInformationTag.TAKING_SURU,
+			new String[] { Labels.NO, Labels.YES });
 
 	private String polishMeaning;
 
