@@ -67,6 +67,7 @@ public class ApplicationController implements ApplicationStateManager {
 	private ProblematicKanjiDisplayer problematicKanjiDisplayer;
 	private ProblematicJapaneseWordsDisplayer problematicJapaneseWordsDisplayer;
 	private RowInJapaneseWordInformations rowInJapaneseWordInformations;
+	private boolean loadingInProgress = false;
 
 	public ApplicationController(ApplicationWindow parent) {
 		problematicKanjis = new HashSet<>();
@@ -314,6 +315,8 @@ public class ApplicationController implements ApplicationStateManager {
 			parent.showMessageDialog("Error setting cookies");
 		}
 
+		loadingInProgress = true;
+
 		kanjiList.cleanWords();
 		japaneseWords.cleanWords();
 		japaneseWordsRepeatingDates.cleanWords();
@@ -361,6 +364,7 @@ public class ApplicationController implements ApplicationStateManager {
 					getApplicationSaveableState())
 					.restoreState(savingInformation);
 		}
+		loadingInProgress = false;
 	}
 
 	private void initializeKanjiList() {
@@ -461,7 +465,7 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	public void saveProject() {
-		if (!loadingAndSaving.hasFileToSave()) {
+		if (!loadingAndSaving.hasFileToSave() || loadingInProgress) {
 			return;
 		}
 		parent.changeSaveStatus(SavingStatus.SAVING);

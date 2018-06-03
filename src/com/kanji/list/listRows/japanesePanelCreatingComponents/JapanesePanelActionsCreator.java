@@ -258,7 +258,7 @@ public class JapanesePanelActionsCreator {
 					Arrays.stream(possibleValues)
 							.forEach(additionalInformationValue::addItem);
 				}
-				else{
+				else {
 					applicationController.saveProject();
 				}
 			}

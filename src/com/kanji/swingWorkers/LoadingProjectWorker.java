@@ -40,10 +40,10 @@ public class LoadingProjectWorker {
 				int firstRowToLoad = Math
 						.max(0, words.size() - maximumDisplayedWords);
 				int numberOfWordsToLoad = words.size() - firstRowToLoad - 1;
-				int stepsToExecute = words.size() + numberOfWordsToLoad;
+				int stepsToExecute = numberOfWordsToLoad;
+				list.addWords(words, InputGoal.EDIT, false, false);
 				ProgressUpdater progressUpdater = list.getProgressUpdater();
 				progressUpdater.startLongProcess(progressBar, stepsToExecute);
-				list.addWords(words, InputGoal.EDIT, false);
 				list.showWordsStartingFromRow(firstRowToLoad);
 				//TODO create methods add list of words: it would not have update view in it
 				// and method addWord should use updateView

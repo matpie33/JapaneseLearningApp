@@ -95,8 +95,8 @@ public class MyList<Word extends ListElement> {
 	}
 
 	public void addWords(List<Word> words, InputGoal inputGoal,
-			boolean tryToShowWords) {
-		listController.addWords(words, inputGoal, tryToShowWords);
+			boolean tryToShowWords, boolean validate) {
+		listController.addWords(words, inputGoal, tryToShowWords, validate);
 	}
 
 	public Word createWord() {

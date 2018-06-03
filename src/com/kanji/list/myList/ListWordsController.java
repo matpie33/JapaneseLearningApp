@@ -71,9 +71,15 @@ public class ListWordsController<Word extends ListElement> {
 		return MAXIMUM_WORDS_TO_SHOW;
 	}
 
-	public boolean add(Word r, InputGoal inputGoal, boolean tryToShowWord) {
+	public boolean add(Word r, InputGoal inputGoal, boolean tryToShowWord){
+		return add(r, inputGoal, tryToShowWord, true);
+	}
 
-		if (r != null && !isWordDefined(r).exists()) {
+	public boolean add(Word r, InputGoal inputGoal, boolean tryToShowWord,
+			boolean validate) {
+
+		boolean valid = !validate || !isWordDefined(r).exists();
+		if (r != null && valid) {
 			boolean canNewWordBeDisplayed = canNewWordBeDisplayed();
 			if (tryToShowWord) {
 				if (!lastWordIsVisible()) {
@@ -101,7 +107,9 @@ public class ListWordsController<Word extends ListElement> {
 	}
 
 	private void removeFirstRow() {
-		listPanelCreator.removeRow(allWordsToRowNumberMap.get(getFirstVisibleRowNumber()).getJPanel());
+		listPanelCreator.removeRow(
+				allWordsToRowNumberMap.get(getFirstVisibleRowNumber())
+						.getJPanel());
 	}
 
 	private void loadLastWord() {
@@ -424,10 +432,9 @@ public class ListWordsController<Word extends ListElement> {
 	}
 
 	public void addWords(List<Word> words, InputGoal inputGoal,
-			boolean tryToShowWords) {
+			boolean tryToShowWords, boolean validate) {
 		for (Word word : words) {
-			add(word, inputGoal, tryToShowWords);
-			progressUpdater.updateProgress();
+			add(word, inputGoal, tryToShowWords, validate);
 		}
 	}
 
