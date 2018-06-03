@@ -195,9 +195,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 							+ " in the class: " + this);
 		}
 		hotkeysMapping.put(wrapper, action);
-		CommonActionsCreator
-				.addHotkey(keyEvent, wrapper.getKeyModifier(), action,
-						component);
+		CommonActionsCreator.addHotkey(wrapper, action, component);
 		addHotkeyInformation(hotkeyDescription, wrapper);
 	}
 
@@ -294,8 +292,8 @@ public abstract class AbstractPanelWithHotkeysInfo {
 				MyList selectedList = getListWithSelectedInput();
 				if (selectedList == null ||
 						selectedList.getPanel().getVisibleRect().getSize()
-								.getHeight() != selectedList.getPanel().getSize()
-								.getHeight()) {
+								.getHeight() != selectedList.getPanel()
+								.getSize().getHeight()) {
 					selectedList = findFirstVisibleList();
 				}
 				actionOnInput.accept(selectedList);
