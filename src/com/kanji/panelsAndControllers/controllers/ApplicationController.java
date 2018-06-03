@@ -525,11 +525,15 @@ public class ApplicationController implements ApplicationStateManager {
 			return;
 		}
 		Class wordClass = problematicWords.iterator().next().getClass();
+
+
 		if (wordClass.equals(Kanji.class)) {
+			problematicKanjis.clear();
 			problematicKanjis.addAll((Set<Kanji>) problematicWords);
 			//TODO ugly solution
 		}
 		else if (wordClass.equals(JapaneseWord.class)) {
+			problematicJapaneseWords.clear();
 			problematicJapaneseWords
 					.addAll((Set<JapaneseWord>) problematicWords);
 		}
