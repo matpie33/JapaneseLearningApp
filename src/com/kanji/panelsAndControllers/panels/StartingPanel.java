@@ -103,7 +103,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 			}
 		});
 
-		addHotkey(KeyModifiers.SHIFT, KeyEvent.VK_PERIOD, new AbstractAction() {
+		addHotkey(KeyModifiers.CONTROL, KeyEvent.VK_W, new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (tabs.getSelectedIndex() == tabs.getTabCount() - 1) {
