@@ -40,7 +40,7 @@ public class WordsAndRepeatingInformationsPanel
 	private void createSplitPane(MyList wordsList, MyList repeatingList) {
 		listsSplitPane = CommonGuiElementsCreator
 				.createSplitPane(SplitPaneOrientation.HORIZONTAL,
-						wordsList.getPanel(), repeatingList.getPanel(), 0.5);
+						wordsList.getPanel(), repeatingList.getPanel(), 0.8);
 	}
 
 	public MyList getRepeatingList() {
