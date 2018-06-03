@@ -13,7 +13,8 @@ public class ProgressUpdater {
 	}
 
 	public void updateProgress() {
-		progressBar.setValue(stepsExecuted++);
+		if (progressBar != null)
+			progressBar.setValue(stepsExecuted++);
 	}
 
 }
