@@ -228,10 +228,9 @@ public class JapaneseWordPanelCreator
 			InputGoal inputGoal) {
 		JPanel writingsListPanel = lastWritingsListCreated.getPanel();
 		lastJapanesePanelMade = SimpleRowBuilder
-				.createRowStartingFromColumn(0, FillType.BOTH, Anchor.WEST,
+				.createRowStartingFromColumn(0, FillType.NONE, Anchor.WEST,
 						commonListElements.getRowNumberLabel(),
 						wordMeaningLabel, wordMeaningText)
-				.fillHorizontallySomeElements(wordMeaningText)
 				.nextRow(partOfSpeechLabel, partOfSpeechCombobox)
 				.setColumnToPutRowInto(1)
 				.nextRow(additionalInformationLabel, additionalInformationValue)
