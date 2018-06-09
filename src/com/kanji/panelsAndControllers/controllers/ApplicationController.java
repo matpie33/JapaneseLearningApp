@@ -3,6 +3,7 @@ package com.kanji.panelsAndControllers.controllers;
 import com.guimaker.enums.MoveDirection;
 import com.guimaker.enums.PanelDisplayMode;
 import com.kanji.constants.enums.*;
+import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.Titles;
 import com.kanji.exception.DuplicatedWordException;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
@@ -32,7 +33,6 @@ import com.kanji.saving.LoadingAndSaving;
 import com.kanji.saving.SavingInformation;
 import com.kanji.swingWorkers.LoadingProjectWorker;
 import com.kanji.utilities.JapaneseWordsFileReader;
-import com.kanji.utilities.ThreadUtilities;
 import com.kanji.utilities.WordsListReadWrite;
 import com.kanji.windows.ApplicationWindow;
 
@@ -67,7 +67,7 @@ public class ApplicationController implements ApplicationStateManager {
 	private ProblematicKanjiDisplayer problematicKanjiDisplayer;
 	private ProblematicJapaneseWordsDisplayer problematicJapaneseWordsDisplayer;
 	private RowInJapaneseWordInformations rowInJapaneseWordInformations;
-	private int numberOfListsLoadingInProgress = 0;
+	private boolean loadingInProgress = false;
 
 	public ApplicationController(ApplicationWindow parent) {
 		problematicKanjis = new HashSet<>();
@@ -315,6 +315,8 @@ public class ApplicationController implements ApplicationStateManager {
 			parent.showMessageDialog("Error setting cookies");
 		}
 
+		loadingInProgress = true;
+
 		kanjiList.cleanWords();
 		japaneseWords.cleanWords();
 		japaneseWordsRepeatingDates.cleanWords();
@@ -341,8 +343,7 @@ public class ApplicationController implements ApplicationStateManager {
 		recalculateLoadDialogPositionAndSize(loadingPanel);
 	}
 
-	private void recalculateLoadDialogPositionAndSize(
-			LoadingPanel loadingPanel) {
+	private void recalculateLoadDialogPositionAndSize(LoadingPanel loadingPanel) {
 		Window container = loadingPanel.getDialog().getContainer();
 		container.pack();
 		container.setLocationRelativeTo(null);
@@ -363,6 +364,7 @@ public class ApplicationController implements ApplicationStateManager {
 					getApplicationSaveableState())
 					.restoreState(savingInformation);
 		}
+		loadingInProgress = false;
 	}
 
 	private void initializeKanjiList() {
@@ -463,15 +465,9 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	public void saveProject() {
-		if (!loadingAndSaving.hasFileToSave()
-				|| numberOfListsLoadingInProgress > 0) {
+		if (!loadingAndSaving.hasFileToSave() || loadingInProgress) {
 			return;
 		}
-		ThreadUtilities.callOnOtherThread(this::save);
-
-	}
-
-	private void save() {
 		parent.changeSaveStatus(SavingStatus.SAVING);
 		SavingInformation savingInformation = applicationStateManager
 				.getApplicationState();
@@ -529,6 +525,7 @@ public class ApplicationController implements ApplicationStateManager {
 			return;
 		}
 		Class wordClass = problematicWords.iterator().next().getClass();
+
 
 		if (wordClass.equals(Kanji.class)) {
 			problematicKanjis.clear();
@@ -675,19 +672,6 @@ public class ApplicationController implements ApplicationStateManager {
 
 	public void switchToList(Class listType) {
 		parent.getStartingPanel().switchToList(listType);
-	}
-
-	public void loadingListRequested() {
-		numberOfListsLoadingInProgress++;
-	}
-
-	public void loadingListFinished() {
-		numberOfListsLoadingInProgress--;
-		if (numberOfListsLoadingInProgress < 0) {
-			throw new IllegalStateException(
-					"Number of loading lists has gone negative: "
-							+ numberOfListsLoadingInProgress);
-		}
 	}
 
 }

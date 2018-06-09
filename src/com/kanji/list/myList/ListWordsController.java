@@ -327,7 +327,6 @@ public class ListWordsController<Word extends ListElement> {
 	}
 
 	public void showWordsStartingFromRow(int firstRowToLoad) {
-		applicationController.loadingListRequested();
 		listPanelCreator.clear();
 		if (firstRowToLoad > 0) {
 			listPanelCreator.enableButtonShowPreviousWords();
@@ -342,7 +341,6 @@ public class ListWordsController<Word extends ListElement> {
 			progressUpdater.updateProgress();
 		}
 
-		applicationController.loadingListFinished();
 	}
 
 	public void clearVisibleRows() {

@@ -37,7 +37,6 @@ public class RowInJapaneseWordInformations
 	public ListRowData createListRow(JapaneseWord japaneseWord,
 			CommonListElements commonListElements, InputGoal inputGoal) {
 		MainPanel panel = new MainPanel(null);
-		panel.setGapsBetweenColumns(5);
 		JLabel rowNumberLabel = commonListElements.getRowNumberLabel();
 		JapaneseWordPanelCreator panelCreatorToUse;
 		if (commonListElements.isForSingleRowOnly()){

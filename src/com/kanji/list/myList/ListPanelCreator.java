@@ -123,25 +123,25 @@ public class ListPanelCreator<Word extends ListElement>
 	}
 
 	private void createAndAddButtonsShowNextAndPrevious() {
-		buttonLoadNextWords = createButtonLoadWords(
+		buttonLoadNextWords = createAndAddButtonLoadWords(
 				ButtonsNames.SHOW_NEXT_WORDS_ON_LIST);
-		buttonLoadPreviousWords = createButtonLoadWords(
+		buttonLoadPreviousWords = createAndAddButtonLoadWords(
 				ButtonsNames.SHOW_PREVIOUS_WORDS_ON_LIST);
 		buttonLoadNextWords.addActionListener(
 				createButtonShowNextOrPreviousWords(loadNextWordsHandler));
 		buttonLoadPreviousWords.addActionListener(
 				createButtonShowNextOrPreviousWords(loadPreviousWordsHandler));
 		rowsPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.NONE, buttonLoadPreviousWords));
+				.createRow(FillType.HORIZONTAL, buttonLoadPreviousWords));
 		rowsPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.NONE, buttonLoadNextWords));
+				.createRow(FillType.HORIZONTAL, buttonLoadNextWords));
 		if (!showButtonsNextAndPrevious) {
 			buttonLoadPreviousWords.setVisible(false);
 			buttonLoadNextWords.setVisible(false);
 		}
 	}
 
-	private AbstractButton createButtonLoadWords(String buttonName) {
+	private AbstractButton createAndAddButtonLoadWords(String buttonName) {
 		AbstractButton button = GuiElementsCreator.createButtonlikeComponent(
 				new ButtonOptions(ButtonType.BUTTON).text(buttonName), null);
 		button.setEnabled(false);
