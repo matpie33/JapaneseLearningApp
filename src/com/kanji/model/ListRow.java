@@ -47,4 +47,8 @@ public class ListRow<Word> {
 	public int getRowNumber() {
 		return rowNumber;
 	}
+
+	public void decrementRowNumber() {
+		rowNumber--;
+	}
 }

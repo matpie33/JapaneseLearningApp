@@ -21,10 +21,11 @@ import com.kanji.swingWorkers.ProgressUpdater;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ListWordsController<Word extends ListElement> {
-	private Map<Integer, ListRow<Word>> allWordsToRowNumberMap = new HashMap<>();
+	private List<ListRow<Word>> allWordsToRowNumberMap = new ArrayList<>();
 	private ListPanelCreator<Word> listPanelCreator;
 	private ApplicationController applicationController;
 	private final int MAXIMUM_WORDS_TO_SHOW = 201;
@@ -71,7 +72,7 @@ public class ListWordsController<Word extends ListElement> {
 		return MAXIMUM_WORDS_TO_SHOW;
 	}
 
-	public boolean add(Word r, InputGoal inputGoal, boolean tryToShowWord){
+	public boolean add(Word r, InputGoal inputGoal, boolean tryToShowWord) {
 		return add(r, inputGoal, tryToShowWord, true);
 	}
 
@@ -96,7 +97,7 @@ public class ListWordsController<Word extends ListElement> {
 							canNewWordBeDisplayed && tryToShowWord,
 							listPanelCreator.getLoadNextWordsHandler(),
 							inputGoal);
-			allWordsToRowNumberMap.put(allWordsToRowNumberMap.size(), newWord);
+			allWordsToRowNumberMap.add(newWord);
 			if (canNewWordBeDisplayed) {
 				lastRowVisible = allWordsToRowNumberMap.size() - 1;
 			}
@@ -127,10 +128,13 @@ public class ListWordsController<Word extends ListElement> {
 
 	public void remove(Word word) {
 		ListRow<Word> listRow = findListRowContainingWord(word);
-		int panelRowNumber = listPanelCreator.removeRow(listRow.getJPanel());
-		int listRowNumber = panelRowNumber - 1;
-		allWordsToRowNumberMap.remove(listRowNumber);
-		updateRowNumbers(listRowNumber);
+		listPanelCreator.removeRow(listRow.getJPanel());
+		int indexOfRemovedWord = allWordsToRowNumberMap.indexOf(listRow);
+		allWordsToRowNumberMap.remove(listRow);
+		updateRowNumbers(indexOfRemovedWord);
+		if (currentlyHighlightedWord == listRow){
+			currentlyHighlightedWord = null;
+		}
 		if (allWordsToRowNumberMap.isEmpty()) {
 			listPanelCreator.addElementsForEmptyList();
 		}
@@ -138,13 +142,12 @@ public class ListWordsController<Word extends ListElement> {
 	}
 
 	private void updateRowNumbers(int startingIndex) {
-		for (int i = startingIndex + 1;
-			 i <= allWordsToRowNumberMap.size(); i++) {
+		for (int i = startingIndex;
+			 i < allWordsToRowNumberMap.size(); i++) {
 			ListRow<Word> listRow = allWordsToRowNumberMap.get(i);
+			listRow.decrementRowNumber();
 			JLabel label = listRow.getIndexLabel();
-			label.setText(listPanelCreator.createTextForRowNumber(i));
-			allWordsToRowNumberMap.remove(i);
-			allWordsToRowNumberMap.put(i - 1, listRow);
+			label.setText(listPanelCreator.createTextForRowNumber(i + 1));
 		}
 
 	}
@@ -161,7 +164,7 @@ public class ListWordsController<Word extends ListElement> {
 
 	public List<Word> getWords() {
 		List<Word> words = new ArrayList<>();
-		for (ListRow<Word> listRow : allWordsToRowNumberMap.values()) {
+		for (ListRow<Word> listRow : allWordsToRowNumberMap) {
 			words.add(listRow.getWord());
 		}
 		return words;
@@ -189,7 +192,7 @@ public class ListWordsController<Word extends ListElement> {
 	}
 
 	public void clearHighlightedWords() {
-		for (ListRow<Word> listRow : allWordsToRowNumberMap.values()) {
+		for (ListRow<Word> listRow : allWordsToRowNumberMap) {
 			if (listRow.isHighlighted()) {
 				listPanelCreator.clearHighlightedRow(listRow.getJPanel());
 			}
@@ -208,10 +211,9 @@ public class ListWordsController<Word extends ListElement> {
 
 	public Integer getHighlightedRowNumber() {
 		return currentlyHighlightedWord != null ?
-				allWordsToRowNumberMap.entrySet().stream()
-						.filter(e -> e.getValue()
-								.equals(currentlyHighlightedWord))
-						.map(Map.Entry::getKey).findFirst()
+				allWordsToRowNumberMap.stream()
+						.filter(e -> e.equals(currentlyHighlightedWord))
+						.map(e -> allWordsToRowNumberMap.indexOf(e)).findFirst()
 						.orElseThrow(IllegalArgumentException::new) :
 				-1;
 	}
@@ -232,13 +234,12 @@ public class ListWordsController<Word extends ListElement> {
 	}
 
 	public WordInMyListExistence<Word> isWordDefined(Word word) {
-		Iterator<ListRow<Word>> iterator = allWordsToRowNumberMap.values()
-				.iterator();
-		for (int indexOfWord = 0; iterator.hasNext(); indexOfWord++) {
-			ListRow<Word> listRow = iterator.next();
+
+		for (int i = 0; i < allWordsToRowNumberMap.size(); i++) {
+			ListRow<Word> listRow = allWordsToRowNumberMap.get(i);
 			if (listRow.getWord().equals(word)) {
 				return new WordInMyListExistence<>(true, listRow.getWord(),
-						indexOfWord + 1);
+						i + 1);
 			}
 		}
 		return new WordInMyListExistence<>(false, null, -1);
@@ -271,7 +272,7 @@ public class ListWordsController<Word extends ListElement> {
 
 	public List<Word> getWordsByHighlight(boolean highlighted) {
 		List<Word> highlightedWords = new ArrayList<>();
-		for (ListRow<Word> word : allWordsToRowNumberMap.values()) {
+		for (ListRow<Word> word : allWordsToRowNumberMap) {
 			if (word.isHighlighted() == highlighted) {
 				highlightedWords.add(word.getWord());
 			}
@@ -312,7 +313,7 @@ public class ListWordsController<Word extends ListElement> {
 		ListRow<Word> addedWord = listPanelCreator
 				.addRow(allWordsToRowNumberMap.get(rowNumber).getWord(),
 						rowNumber + 1, true, loadPreviousWords, InputGoal.EDIT);
-		allWordsToRowNumberMap.put(rowNumber, addedWord);
+		allWordsToRowNumberMap.set(rowNumber, addedWord);
 
 	}
 
@@ -322,7 +323,7 @@ public class ListWordsController<Word extends ListElement> {
 				.addRow(allWordsToRowNumberMap.get(lastRowVisible).getWord(),
 						lastRowVisible + 1, true, loadNextWords,
 						InputGoal.EDIT);
-		allWordsToRowNumberMap.put(lastRowVisible, visibleRow);
+		allWordsToRowNumberMap.set(lastRowVisible, visibleRow);
 	}
 
 	public void showWordsStartingFromRow(int firstRowToLoad) {
@@ -371,14 +372,14 @@ public class ListWordsController<Word extends ListElement> {
 	public void addSwitchBetweenInputsFailListener(
 			SwitchBetweenInputsFailListener listener) {
 		switchBetweenInputsFailListeners.add(listener);
-		for (ListRow<Word> listRow : allWordsToRowNumberMap.values()) {
+		for (ListRow<Word> listRow : allWordsToRowNumberMap) {
 			listRow.getWrappingPanel()
 					.addSwitchBetweenInputsFailedListener(listener);
 		}
 	}
 
 	public ListRow<Word> getRowWithSelectedInput() {
-		for (ListRow<Word> listRow : allWordsToRowNumberMap.values()) {
+		for (ListRow<Word> listRow : allWordsToRowNumberMap) {
 			if (listRow.getWrappingPanel().hasSelectedInput()) {
 				return listRow;
 			}
@@ -400,7 +401,7 @@ public class ListWordsController<Word extends ListElement> {
 		int columnNumber = selectedRow.getWrappingPanel()
 				.getSelectedInputIndex();
 		MainPanel panelBelowOrAbove = null;
-		for (ListRow<Word> listRow : allWordsToRowNumberMap.values()) {
+		for (ListRow<Word> listRow : allWordsToRowNumberMap) {
 			if (listRow.getRowNumber()
 					== rowNumberOfSelectedPanel + moveDirection
 					.getIncrementValue()) {
@@ -424,7 +425,7 @@ public class ListWordsController<Word extends ListElement> {
 	}
 
 	public MainPanel findFirstVisiblePanelInScrollPane() {
-		for (ListRow<Word> row : allWordsToRowNumberMap.values()) {
+		for (ListRow<Word> row : allWordsToRowNumberMap) {
 			MainPanel wrappingPanel = row.getWrappingPanel();
 			if (!wrappingPanel.getPanel().getVisibleRect().isEmpty()) {
 				return wrappingPanel;
