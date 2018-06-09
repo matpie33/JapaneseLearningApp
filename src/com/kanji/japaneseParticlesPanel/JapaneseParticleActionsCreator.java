@@ -4,6 +4,7 @@ import com.kanji.constants.enums.JapaneseParticle;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.model.WordParticlesData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
+import com.kanji.utilities.ThreadUtilities;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -56,7 +57,10 @@ public class JapaneseParticleActionsCreator {
 				else if (e.getStateChange() == ItemEvent.SELECTED) {
 					wordParticlesData.setParticle(particleByComboboxValue);
 					japaneseWord.addParticleData(wordParticlesData);
-					applicationController.saveProject();
+					ThreadUtilities.callOnOtherThread(()->{
+						applicationController.saveProject();
+					});
+
 				}
 			}
 		});

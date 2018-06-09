@@ -20,8 +20,7 @@ public class CommonGuiElementsCreator {
 
 	public static JTextComponent createShortInput(String defaultContent) {
 		return GuiElementsCreator.createTextField(
-				new TextComponentOptions().text(defaultContent)
-						.rowsAndColumns(1, 6));
+				new TextComponentOptions().text(defaultContent));
 	}
 
 	public static JTextComponent createTextField(String defaultContent) {
@@ -37,8 +36,9 @@ public class CommonGuiElementsCreator {
 	}
 
 	public static JLabel createErrorLabel(String message) {
-		return GuiElementsCreator.createLabel(new ComponentOptions().text(message)
-				.foregroundColor(Color.RED));
+		return GuiElementsCreator.createLabel(
+				new ComponentOptions().text(message)
+						.foregroundColor(Color.RED));
 	}
 
 	public static JSplitPane createSplitPane(

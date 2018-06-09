@@ -132,9 +132,9 @@ public class ListPanelCreator<Word extends ListElement>
 		buttonLoadPreviousWords.addActionListener(
 				createButtonShowNextOrPreviousWords(loadPreviousWordsHandler));
 		rowsPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.HORIZONTAL, buttonLoadPreviousWords));
+				.createRow(FillType.NONE, buttonLoadPreviousWords));
 		rowsPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.HORIZONTAL, buttonLoadNextWords));
+				.createRow(FillType.NONE, buttonLoadNextWords));
 		if (!showButtonsNextAndPrevious) {
 			buttonLoadPreviousWords.setVisible(false);
 			buttonLoadNextWords.setVisible(false);

@@ -17,6 +17,7 @@ import com.kanji.model.AdditionalInformation;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.utilities.JapaneseWritingUtilities;
 import com.kanji.utilities.Pair;
+import com.kanji.utilities.ThreadUtilities;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
@@ -215,7 +216,8 @@ public class JapanesePanelActionsCreator {
 				}
 				String newValue = (String) comboBox.getSelectedItem();
 				japaneseWord.getAdditionalInformation().setValue(newValue);
-				applicationController.saveProject();
+				ThreadUtilities
+						.callOnOtherThread(applicationController::saveProject);
 			}
 		});
 		return comboBox;
@@ -259,7 +261,9 @@ public class JapanesePanelActionsCreator {
 							.forEach(additionalInformationValue::addItem);
 				}
 				else {
-					applicationController.saveProject();
+					ThreadUtilities.callOnOtherThread(
+							applicationController::saveProject);
+
 				}
 			}
 		});
