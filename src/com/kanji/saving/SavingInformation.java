@@ -21,6 +21,7 @@ public class SavingInformation implements Serializable {
 	private String kanjiKoohiCookiesHeaders;
 	private List<JapaneseWord> japaneseWords;
 	private List<RepeatingData> japaneseWordsRepeatingLists;
+	private int lastBackupFileNumber;
 
 	public SavingInformation(List<Kanji> kanjiWords,
 			List<RepeatingData> repeatingList, Set<Kanji> problematicKanjis,
@@ -109,4 +110,18 @@ public class SavingInformation implements Serializable {
 	public Set<JapaneseWord> getProblematicJapaneseWords() {
 		return problematicJapaneseWords;
 	}
+
+	public int getLastBackupFileNumber() {
+		return lastBackupFileNumber;
+	}
+
+	public void setLastBackupFileNumber(int lastBackupFileNumber) {
+		this.lastBackupFileNumber = lastBackupFileNumber;
+	}
+
+	public void clearApplicationState(){
+		applicationSaveableState = null;
+	}
+
+
 }

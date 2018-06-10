@@ -3,7 +3,6 @@ package com.kanji.panelsAndControllers.controllers;
 import com.guimaker.enums.MoveDirection;
 import com.guimaker.enums.PanelDisplayMode;
 import com.kanji.constants.enums.*;
-import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.Titles;
 import com.kanji.exception.DuplicatedWordException;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
@@ -29,7 +28,7 @@ import com.kanji.repeating.RepeatingJapaneseWordsDisplayer;
 import com.kanji.repeating.RepeatingKanjiDisplayer;
 import com.kanji.repeating.RepeatingWordDisplayer;
 import com.kanji.saving.ApplicationStateManager;
-import com.kanji.saving.LoadingAndSaving;
+import com.kanji.saving.FileSavingManager;
 import com.kanji.saving.SavingInformation;
 import com.kanji.swingWorkers.LoadingProjectWorker;
 import com.kanji.utilities.JapaneseWordsFileReader;
@@ -52,7 +51,6 @@ public class ApplicationController implements ApplicationStateManager {
 	private MyList<RepeatingData> kanjiRepeatingDates;
 	private MyList<RepeatingData> japaneseWordsRepeatingDates;
 	private MyList<JapaneseWord> japaneseWords;
-	private LoadingAndSaving loadingAndSaving;
 	private Set<Kanji> problematicKanjis;
 	private Set<JapaneseWord> problematicJapaneseWords;
 	private boolean isClosingSafe;
@@ -69,6 +67,8 @@ public class ApplicationController implements ApplicationStateManager {
 	private RowInJapaneseWordInformations rowInJapaneseWordInformations;
 	private boolean loadingInProgress = false;
 
+	private FileSavingManager fileSavingManager;
+
 	public ApplicationController(ApplicationWindow parent) {
 		problematicKanjis = new HashSet<>();
 		problematicJapaneseWords = new HashSet<>();
@@ -76,11 +76,12 @@ public class ApplicationController implements ApplicationStateManager {
 		isClosingSafe = true;
 		applicationStateManager = this;
 		applicationStateToManagerMap = new HashMap<>();
-		loadingAndSaving = new LoadingAndSaving();
+
 		japaneseWordsFileReader = new JapaneseWordsFileReader();
 		repeatingJapaneseWordsDisplayer = new RepeatingJapaneseWordsDisplayer(
 				createJapanesePanelCreator());
 		kanjiWordDisplayer = new RepeatingKanjiDisplayer(parent.getKanjiFont());
+		fileSavingManager = new FileSavingManager();
 	}
 
 	private JapaneseWordPanelCreator createJapanesePanelCreator() {
@@ -292,16 +293,23 @@ public class ApplicationController implements ApplicationStateManager {
 			return;
 
 		try {
-			savingInformation = loadingAndSaving.load(fileToSave);
+			savingInformation = fileSavingManager.load(fileToSave);
 		}
 		catch (Exception e1) {
 			parent.showMessageDialog("Exception loading from file.");
 			e1.printStackTrace();
 			return;
 		}
-		loadingAndSaving.setFileToSave(fileToSave);
-		//		rowInJapaneseWordInformations.getJapaneseWordPanelCreator().clear();
-		//TODO reimplement
+
+
+		try {
+			fileSavingManager.doBackupFile(fileToSave, savingInformation);
+		}
+		catch (IOException e1) {
+			parent.showMessageDialog("Exception while saving.");
+			e1.printStackTrace();
+		}
+
 		try {
 			if (savingInformation.getKanjiKoohiiCookiesHeaders() != null) {
 				//TODO this should go to application controller's "restore
@@ -343,7 +351,8 @@ public class ApplicationController implements ApplicationStateManager {
 		recalculateLoadDialogPositionAndSize(loadingPanel);
 	}
 
-	private void recalculateLoadDialogPositionAndSize(LoadingPanel loadingPanel) {
+	private void recalculateLoadDialogPositionAndSize(
+			LoadingPanel loadingPanel) {
 		Window container = loadingPanel.getDialog().getContainer();
 		container.pack();
 		container.setLocationRelativeTo(null);
@@ -465,7 +474,7 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	public void saveProject() {
-		if (!loadingAndSaving.hasFileToSave() || loadingInProgress) {
+		if (!fileSavingManager.hasFileToSave() || loadingInProgress) {
 			return;
 		}
 		parent.changeSaveStatus(SavingStatus.SAVING);
@@ -473,11 +482,10 @@ public class ApplicationController implements ApplicationStateManager {
 				.getApplicationState();
 
 		try {
-			loadingAndSaving.save(savingInformation);
+			fileSavingManager.saveFile(savingInformation);
 		}
-		catch (IOException e1) {
-			parent.showMessageDialog("Exception while saving.");
-			e1.printStackTrace();
+		catch (IOException e) {
+			e.printStackTrace();
 		}
 		parent.changeSaveStatus(SavingStatus.SAVED);
 	}
@@ -507,12 +515,12 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	public void showSaveDialog() {
-		if (!loadingAndSaving.hasFileToSave()) {
+		if (!fileSavingManager.hasFileToSave()) {
 			JFileChooser fileChooser = createFileChooser();
 			int option = fileChooser.showSaveDialog(this.parent.getContainer());
 			if (option == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();
-				loadingAndSaving.setFileToSave(file);
+				fileSavingManager.setFileToSave(file);
 				saveProject();
 			}
 		}
@@ -525,7 +533,6 @@ public class ApplicationController implements ApplicationStateManager {
 			return;
 		}
 		Class wordClass = problematicWords.iterator().next().getClass();
-
 
 		if (wordClass.equals(Kanji.class)) {
 			problematicKanjis.clear();
@@ -634,8 +641,12 @@ public class ApplicationController implements ApplicationStateManager {
 				getProblematicKanjis(), getProblematicJapaneseWords(),
 				japaneseWords.getWords(),
 				japaneseWordsRepeatingDates.getWords());
+		savingInformation.setLastBackupFileNumber(
+				fileSavingManager.getLastBackupFileNumber());
 		String koohiiLoginDataCookie = problematicKanjiDisplayer
 				.getKanjiKoohiLoginCookieHeader();
+		savingInformation.clearApplicationState();
+
 		if (!koohiiLoginDataCookie.isEmpty()) {
 			savingInformation
 					.setKanjiKoohiiCookiesHeaders(koohiiLoginDataCookie);
