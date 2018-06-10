@@ -20,7 +20,7 @@ public class CommonGuiElementsCreator {
 
 	public static JTextComponent createShortInput(String defaultContent) {
 		return GuiElementsCreator.createTextField(
-				new TextComponentOptions().text(defaultContent));
+				new TextComponentOptions().text(defaultContent).rowsAndColumns(1, 35));
 	}
 
 	public static JTextComponent createTextField(String defaultContent) {
