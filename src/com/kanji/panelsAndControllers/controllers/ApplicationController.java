@@ -31,6 +31,7 @@ import com.kanji.saving.ApplicationStateManager;
 import com.kanji.saving.FileSavingManager;
 import com.kanji.saving.SavingInformation;
 import com.kanji.swingWorkers.LoadingProjectWorker;
+import com.kanji.utilities.JapaneseWordsAdjuster;
 import com.kanji.utilities.JapaneseWordsFileReader;
 import com.kanji.utilities.WordsListReadWrite;
 import com.kanji.windows.ApplicationWindow;
@@ -66,6 +67,7 @@ public class ApplicationController implements ApplicationStateManager {
 	private ProblematicJapaneseWordsDisplayer problematicJapaneseWordsDisplayer;
 	private RowInJapaneseWordInformations rowInJapaneseWordInformations;
 	private boolean loadingInProgress = false;
+	private boolean adjustJapaneseWords = false;
 
 	private FileSavingManager fileSavingManager;
 
@@ -301,7 +303,6 @@ public class ApplicationController implements ApplicationStateManager {
 			return;
 		}
 
-
 		try {
 			fileSavingManager.doBackupFile(fileToSave, savingInformation);
 		}
@@ -324,6 +325,12 @@ public class ApplicationController implements ApplicationStateManager {
 		}
 
 		loadingInProgress = true;
+		if (adjustJapaneseWords) {
+			new JapaneseWordsAdjuster()
+					.replaceSuruInMeaningToAdditionalInformation(
+							savingInformation.getJapaneseWords());
+			saveProject();
+		}
 
 		kanjiList.cleanWords();
 		japaneseWords.cleanWords();
