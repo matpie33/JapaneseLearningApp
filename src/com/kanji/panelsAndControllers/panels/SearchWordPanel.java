@@ -5,6 +5,7 @@ import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.MoveDirection;
 import com.guimaker.options.ButtonOptions;
+import com.guimaker.options.ComboboxOptions;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
@@ -63,7 +64,8 @@ public class SearchWordPanel<Word extends ListElement>
 		this.cardLayout = new CardLayout();
 		searchingPanel = new JPanel(this.cardLayout);
 		searchingPanel.setOpaque(false);
-		searchedList.getListRowCreator().addValidationListener(searchWordController);
+		searchedList.getListRowCreator()
+				.addValidationListener(searchWordController);
 		listRowData = searchedList.getListRowCreator().createListRow(
 				searchedList.getWordInitializer().initializeElement(),
 				CommonListElements.forSingleRowOnly(Color.WHITE),
@@ -145,7 +147,8 @@ public class SearchWordPanel<Word extends ListElement>
 	}
 
 	private JComboBox<String> createComboboxForSearchedProperty() {
-		JComboBox<String> comboBox = new JComboBox<>();
+		JComboBox<String> comboBox = GuiElementsCreator
+				.createCombobox(new ComboboxOptions());
 		listRowData.getRowPropertiesData().keySet().forEach(comboBox::addItem);
 		comboBox.addActionListener(
 				searchWordController.createActionSwitchSearchingByOption());
@@ -188,15 +191,14 @@ public class SearchWordPanel<Word extends ListElement>
 
 	private AbstractButton createButtonFindPrevious() {
 		return createButtonWithHotkey(KeyModifiers.SHIFT, KeyEvent.VK_ENTER,
-				searchWordController
-						.createActionFindWord(MoveDirection.ABOVE),
+				searchWordController.createActionFindWord(MoveDirection.ABOVE),
 				ButtonsNames.FIND_PREVIOUS,
 				HotkeysDescriptions.SEARCH_PREVIOUS_KANJI);
 	}
 
 	private AbstractButton createButtonFindNext() {
-		return createButtonWithHotkey(KeyEvent.VK_ENTER, searchWordController
-						.createActionFindWord(MoveDirection.BELOW),
+		return createButtonWithHotkey(KeyEvent.VK_ENTER,
+				searchWordController.createActionFindWord(MoveDirection.BELOW),
 				ButtonsNames.FIND_NEXT, HotkeysDescriptions.SEARCH_NEXT_KANJI);
 	}
 

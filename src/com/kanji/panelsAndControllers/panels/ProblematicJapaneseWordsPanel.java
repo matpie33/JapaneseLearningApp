@@ -8,6 +8,7 @@ import com.guimaker.options.ScrollPaneOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
+import com.kanji.constants.Colors;
 import com.kanji.constants.enums.SplitPaneOrientation;
 import com.kanji.constants.strings.Urls;
 import com.guimaker.webPanel.ContextOwner;
@@ -44,7 +45,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 			ProblematicJapaneseWordsDisplayer problematicWordsDisplayer) {
 		parentDialog = parent;
 		this.problematicWordsController = problematicWordsController;
-		kanjiInformationPanel = new MainPanel(BasicColors.MEDIUM_BLUE, true);
+		kanjiInformationPanel = new MainPanel(null, true);
 		englishDictionaryPanel = new WebPagePanel(this, null);
 		japaneseEnglishDictionaryPanel = new WebPagePanel(this, null);
 		kanjiKoohiWebPanel = new WebPagePanel(this, null);

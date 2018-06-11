@@ -15,6 +15,7 @@ import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.CommonActionsCreator;
 import com.guimaker.utilities.HotkeyWrapper;
 import com.guimaker.utilities.KeyModifiers;
+import com.kanji.constants.Colors;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Titles;
@@ -49,8 +50,8 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	private boolean navigateBetweenInputsByHotkeys;
 
 	public AbstractPanelWithHotkeysInfo() {
-		mainPanel = new MainPanel(BasicColors.VERY_BLUE);
-		mainPanel.setRowColor(BasicColors.MEDIUM_BLUE);
+		mainPanel = new MainPanel(Colors.BACKGROUND_PANEL_COLOR);
+		mainPanel.setRowColor(Colors.CONTENT_PANEL_COLOR);
 		mainPanel.setBorder(defaultBorder);
 		createHotkeysPanel();
 		isMaximized = false;

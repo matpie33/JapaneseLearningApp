@@ -66,6 +66,7 @@ public class ListPanelCreator<Word extends ListElement>
 		this.applicationController = applicationController;
 		listWordsController = controller;
 		isSkipTitle = listConfiguration.isSkipTitle();
+
 		rowsPanel = new MainPanel(null, true, true,
 				new PanelConfiguration(listConfiguration.getDisplayMode()));
 
@@ -246,6 +247,9 @@ public class ListPanelCreator<Word extends ListElement>
 		}
 		if (enableWordSearching) {
 			navigationButtons.add(createButtonFindWord());
+		}
+		if (!enableWordSearching && !enableWordAdding){
+			mainPanel.getPanel().setOpaque(false);
 		}
 
 		setNavigationButtons(

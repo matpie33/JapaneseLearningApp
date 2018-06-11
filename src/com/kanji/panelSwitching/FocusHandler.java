@@ -10,7 +10,7 @@ import java.awt.*;
 public class FocusHandler {
 
 	private static final Color UNFOCUSED_PANEL_COLOR = Color.WHITE;
-	private static final Color FOCUSED_PANEL_COLOR = BasicColors.VERY_LIGHT_BLUE;
+	private static final Color FOCUSED_PANEL_COLOR = Color.BLACK;
 	private static final Color SELECTABLE_PANEL_COLOR = BasicColors.DARK_GREEN;
 	private static final Color SELECTED_PANEL_COLOR = Color.ORANGE;
 	private boolean switchingModeEnabled;

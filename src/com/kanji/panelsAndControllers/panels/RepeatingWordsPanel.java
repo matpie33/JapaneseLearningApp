@@ -10,6 +10,7 @@ import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
+import com.kanji.constants.Colors;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Labels;
@@ -27,7 +28,6 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private AbstractButton showKanjiOrRecognizeWord;
 	private AbstractButton notRecognizedWord;
 	private MainPanel repeatingPanel;
-	private final Color repeatingBackgroundColor = BasicColors.MEDIUM_BLUE;
 	private AbstractButton showPreviousWord;
 	private JLabel time;
 	private MainPanel centerPanel;
@@ -40,8 +40,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private final static String WORD_FULL_INFORMATION_PANEL_NAME = "Word full information";
 
 	public RepeatingWordsPanel(RepeatingWordsController controller) {
-		centerPanel = new MainPanel(BasicColors.MEDIUM_BLUE);
-		repeatingPanel = new MainPanel(this.repeatingBackgroundColor);
+		centerPanel = new MainPanel(null);
+		repeatingPanel = new MainPanel(Colors.BACKGROUND_PANEL_COLOR);
 		repeatingPanel.setBorder(getDefaultBorder());
 		this.repeatingWordsController = controller;
 		initializeWordInformationPanel();
@@ -49,7 +49,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
 	private void initializeWordInformationPanel() {
 		wordInformationPanel = new JPanel(new CardLayout());
-		wordInformationPanel.setBackground(BasicColors.MEDIUM_BLUE);
+		wordInformationPanel.setBackground(null);
 		addWordInformationPanelCards(new JPanel(), new JPanel());
 	}
 
@@ -124,6 +124,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 		wordTextArea = GuiElementsCreator.createTextPane(
 				new TextPaneOptions().textAlignment(TextAlignment.CENTERED)
 						.text("").editable(false).fontSize(30f)
+						.backgroundColor(Colors.CONTENT_PANEL_COLOR)
 						.font(ApplicationWindow.getKanjiFont()));
 	}
 
