@@ -17,6 +17,7 @@ public class HotkeysDescriptions {
 	public static final String OPEN_LOAD_KANJI_DIALOG = "Wczytuje projekt kanji";
 	public static final String START_LEARNING = "Ropoczyna powtarzanie kanji";
 	public static final String ADD_WORD = "Dodaje nowe kanji";
+	public static final String EDIT_WORD = "Edytuje słowo";
 	public static final String SAVE_PROJECT = "Zapisuje projekt";
 	public static final String EXPORT_LIST = "Exportuje listę kanji";
 	public static final String REVIEW_PROBLEMATIC_KANJIS = "Pokazuje listę problematycznych kanji z ostatniej powtórki";

@@ -50,10 +50,13 @@ public class ProblematicJapaneseWordsDisplayer
 				controller, applicationWindow, this);
 		japaneseWordPanelCreator = createJapanesePanelCreator(
 				applicationWindow);
-		this.wordsToReviewList = new MyList<>(applicationWindow, null,
+		this.wordsToReviewList = new MyList<>(
+				problematicJapaneseWordsPanel.getDialog(),
+				applicationWindow.getApplicationController(),
 				new RowInJapaneseWordInformations(japaneseWordPanelCreator),
 				Titles.PROBLEMATIC_KANJIS,
 				new ListConfiguration().enableWordAdding(false)
+						.showButtonsLoadNextPreviousWords(false)
 						.withAdditionalNavigationButtons(
 								createButtonSearchWord()),
 				JapaneseWord.getInitializer());

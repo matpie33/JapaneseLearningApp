@@ -3,6 +3,7 @@ package com.kanji.constants.strings;
 public class ButtonsNames {
 
 	public static final String ADD = "Dodaj słówko";
+	public static final String EDIT = "Edytuj";
 	public static final String START_LEARNING = "Start";
 	public static final String CLOSE_WINDOW = "Zamknij";
 	public static final String FIND_NEXT = "Następny";

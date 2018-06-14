@@ -156,13 +156,11 @@ public class ListPanelCreator<Word extends ListElement>
 			rowsPanel.removeRow(1);
 		}
 		JLabel rowNumberLabel = new JLabel(createTextForRowNumber(rowNumber));
-		AbstractButton remove = GuiElementsCreator.createButtonlikeComponent(
-				new ButtonOptions(ButtonType.BUTTON)
-						.text(ButtonsNames.REMOVE_ROW),
-				listWordsController.createDeleteRowAction(word));
+		AbstractButton remove = createButtonRemoveWord(word);
 		AbstractButton addNewWord = createButtonAddRow(inputGoal);
+		AbstractButton editWord = createButtonEditWord(word);
 		CommonListElements commonListElements = new CommonListElements(remove,
-				rowNumberLabel, addNewWord, labelsColor, false);
+				rowNumberLabel, addNewWord, labelsColor, editWord, false);
 		rowNumberLabel.setForeground(labelsColor);
 		MainPanel rowPanel = null;
 		if (shouldShowWord) {
@@ -182,6 +180,13 @@ public class ListPanelCreator<Word extends ListElement>
 		}
 		rowsPanel.updateView();
 		return new ListRow<>(word, rowPanel, rowNumberLabel, rowNumber);
+	}
+
+	private AbstractButton createButtonRemoveWord(Word word) {
+		return GuiElementsCreator.createButtonlikeComponent(
+				new ButtonOptions(ButtonType.BUTTON)
+						.text(ButtonsNames.REMOVE_ROW),
+				listWordsController.createDeleteRowAction(word));
 	}
 
 	private AbstractButton createButtonAddRow(InputGoal inputGoal) {
@@ -248,7 +253,7 @@ public class ListPanelCreator<Word extends ListElement>
 		if (enableWordSearching) {
 			navigationButtons.add(createButtonFindWord());
 		}
-		if (!enableWordSearching && !enableWordAdding){
+		if (!enableWordSearching && !enableWordAdding) {
 			mainPanel.getPanel().setOpaque(false);
 		}
 
@@ -275,6 +280,13 @@ public class ListPanelCreator<Word extends ListElement>
 	public void removeWordsFromRangeInclusive(Range range) {
 		rowsPanel.removeRowsInclusive(range.getRangeStart(),
 				range.getRangeEnd());
+	}
+
+	private AbstractButton createButtonEditWord(Word word) {
+
+		return GuiElementsCreator.createButtonlikeComponent(
+				new ButtonOptions(ButtonType.BUTTON).text(ButtonsNames.EDIT),
+				listWordsController.createEditWordAction(word));
 	}
 
 	private AbstractButton createButtonAddWord() {

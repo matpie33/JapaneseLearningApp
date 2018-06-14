@@ -239,7 +239,10 @@ public class JapaneseWordPanelCreator
 				.onlyAddIf(!displayMode.equals(PanelDisplayMode.VIEW)
 						|| particlesTakenList.getNumberOfWords() > 0)
 				.fillHorizontallySomeElements(writingsListPanel)
-				.nextRow(commonListElements.getButtonDelete());
+				.nextRow(commonListElements.getButtonDelete())
+				.onlyAddIf(!displayMode.equals(PanelDisplayMode.VIEW))
+				.nextRow(commonListElements.getButtonEdit())
+				.onlyAddIf(displayMode.equals(PanelDisplayMode.VIEW));
 		japaneseWordPanel.addRowsOfElementsInColumn(lastJapanesePanelMade);
 		ListRowDataCreator<Kanji> rowDataCreator = new ListRowDataCreator<>(
 				japaneseWordPanel);

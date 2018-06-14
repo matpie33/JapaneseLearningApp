@@ -442,4 +442,13 @@ public class ListWordsController<Word extends ListElement> {
 	public ProgressUpdater getProgressUpdater() {
 		return progressUpdater;
 	}
+
+	public AbstractAction createEditWordAction(Word word) {
+		return new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				applicationController.showInsertWordDialog();
+			}
+		};
+	}
 }
