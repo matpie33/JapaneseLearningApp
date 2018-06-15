@@ -2,6 +2,7 @@ package com.kanji.panelsAndControllers.controllers;
 
 import com.guimaker.enums.MoveDirection;
 import com.guimaker.utilities.KeyModifiers;
+import com.kanji.constants.enums.ApplicationPanels;
 import com.kanji.constants.enums.ApplicationSaveableState;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Prompts;
@@ -16,7 +17,6 @@ import com.kanji.saving.ProblematicKanjisState;
 import com.kanji.saving.SavingInformation;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
-import javafx.application.Platform;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -117,15 +117,19 @@ public class ProblematicWordsController<Word extends ListElement>
 		return wordsReviewed;
 	}
 
-	public void closeDialogAndManageState(DialogWindow parentDialog) {
-		assert (parentDialog.getParent() instanceof ApplicationWindow);
-		ApplicationWindow parent = (ApplicationWindow) parentDialog.getParent();
-		parent.addButtonIcon();
-		if (haveAllWordsBeenRepeated()) {
-			applicationController.finishedRepeating();
-			applicationController.saveProject();
-		}
-		parentDialog.getContainer().dispose();
+	public AbstractAction closeDialogAndManageState() {
+		return new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				applicationWindow.addButtonIcon();
+				if (haveAllWordsBeenRepeated()) {
+					applicationController.finishedRepeating();
+					applicationController.saveProject();
+				}
+				applicationWindow.showPanel(ApplicationPanels.STARTING_PANEL);
+			}
+		};
+
 	}
 
 	public AbstractAction createActionShowNextWordOrCloseDialog(
@@ -270,7 +274,7 @@ public class ProblematicWordsController<Word extends ListElement>
 				.addWindowListener(new WindowAdapter() {
 					@Override
 					public void windowClosed(WindowEvent e) {
-						closeDialogAndManageState(getPanel().getDialog());
+						closeDialogAndManageState();
 					}
 				});
 	}

@@ -1,6 +1,5 @@
 package com.kanji.panelsAndControllers.panels;
 
-import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.model.WebContext;
@@ -8,21 +7,24 @@ import com.guimaker.options.ScrollPaneOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.kanji.constants.Colors;
-import com.kanji.constants.enums.SplitPaneOrientation;
-import com.kanji.constants.strings.Urls;
+import com.guimaker.utilities.KeyModifiers;
 import com.guimaker.webPanel.ContextOwner;
+import com.guimaker.webPanel.WebPagePanel;
+import com.kanji.constants.enums.SplitPaneOrientation;
+import com.kanji.constants.strings.ButtonsNames;
+import com.kanji.constants.strings.HotkeysDescriptions;
+import com.kanji.constants.strings.Urls;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.myList.MyList;
+import com.kanji.panelSwitching.FocusableComponentsManager;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.problematicWords.ProblematicJapaneseWordsDisplayer;
 import com.kanji.utilities.CommonGuiElementsCreator;
-import com.kanji.panelSwitching.FocusableComponentsManager;
-import com.guimaker.webPanel.WebPagePanel;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
+import java.awt.event.KeyEvent;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.HttpCookie;
@@ -131,7 +133,14 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 
 		mainPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.BOTH, fullSplitPane));
-		setNavigationButtons(Anchor.WEST, createButtonClose());
+		setNavigationButtons(Anchor.WEST, createButtonReturn());
+	}
+
+	private AbstractButton createButtonReturn() {
+		return createButtonWithHotkey(KeyModifiers.ALT, KeyEvent.VK_H,
+				problematicWordsController.closeDialogAndManageState(),
+				ButtonsNames.GO_BACK, HotkeysDescriptions.RETURN_FROM_LEARNING);
+
 	}
 
 	@Override

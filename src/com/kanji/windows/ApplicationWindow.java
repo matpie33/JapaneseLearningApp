@@ -37,6 +37,7 @@ public class ApplicationWindow extends DialogWindow {
 	private static Font kanjiFont = new Font("MS Mincho", Font.PLAIN, 100);
 	private RepeatingWordsPanel repeatingWordsPanel;
 	private Map<String, AbstractPanelWithHotkeysInfo> panelsByNames = new HashMap<>();
+	private JPanel problematicWordsPanel;
 
 	public ApplicationWindow() {
 		super(null);
@@ -47,6 +48,7 @@ public class ApplicationWindow extends DialogWindow {
 
 	public void initiate() {
 		applicationController = new ApplicationController(this);
+		problematicWordsPanel = new JPanel(new BorderLayout());
 		startingPanel = new StartingPanel(this, mainApplicationPanel);
 		setPanel(startingPanel);
 		applicationController.initializeListsElements();
@@ -57,6 +59,8 @@ public class ApplicationWindow extends DialogWindow {
 				ApplicationPanels.STARTING_PANEL.getPanelName());
 		mainApplicationPanel.add(repeatingWordsPanel.createPanel(),
 				ApplicationPanels.REPEATING_PANEL.getPanelName());
+		mainApplicationPanel.add(problematicWordsPanel,
+				ApplicationPanels.PROBLEMATIC_WORDS_PANEL.getPanelName());
 
 		setWindowProperties();
 
@@ -193,8 +197,6 @@ public class ApplicationWindow extends DialogWindow {
 		activeProblematicWordsController = applicationController
 				.getProblematicWordsControllerBasedOnActiveWordList();
 		setPanel(activeProblematicWordsController.getPanel());
-		//TODO make problematic words panel in same window instead of opening
-		//it in new window
 		activeProblematicWordsController.addProblematicWords(problematicWords);
 		showProblematicWordsDialog();
 	}
@@ -211,19 +213,25 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void showProblematicWordsDialog() {
-		if (activeProblematicWordsController.isDialogHidden()) {
-			showReadyPanel(activeProblematicWordsController.getDialog());
-		}
-		else {
-			//TODO when no words to review for given list exist, null pointer is thrown
-			activeProblematicWordsController.initializeHotkeyActions();
-			createDialog(activeProblematicWordsController.getPanel(),
-					Titles.PROBLEMATIC_KANJIS_WINDOW, true, Position.CENTER);
-			activeProblematicWordsController.initializeWindowListener();
+		//TODO when no words to review for given list exist, null pointer is thrown
 
+		AbstractPanelWithHotkeysInfo problematicWordsPanel = activeProblematicWordsController
+				.getPanel();
+		if (!problematicWordsPanel.isReady()) {
+			activeProblematicWordsController.initializeHotkeyActions();
+			activeProblematicWordsController.initializeWindowListener();
+			panelsByNames.put(ApplicationPanels.PROBLEMATIC_WORDS_PANEL
+					.getPanelName(), problematicWordsPanel);
+			//TODO the approach with enum (application panels) is not extensible
 		}
+		this.problematicWordsPanel.removeAll();
+		JPanel panel = problematicWordsPanel.createPanel();
+		this.problematicWordsPanel.add(panel);
+		showPanel(ApplicationPanels.PROBLEMATIC_WORDS_PANEL);
 		applicationController
 				.switchStateManager(activeProblematicWordsController);
+
+
 	}
 
 	public void showDuplicatedJapaneseWordsDialog(

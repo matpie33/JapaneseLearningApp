@@ -8,9 +8,12 @@ import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
+import com.guimaker.utilities.KeyModifiers;
 import com.guimaker.webPanel.ContextOwner;
 import com.guimaker.webPanel.WebPagePanel;
 import com.kanji.constants.enums.SplitPaneOrientation;
+import com.kanji.constants.strings.ButtonsNames;
+import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Urls;
 import com.kanji.list.myList.MyList;
@@ -25,6 +28,7 @@ import javafx.application.Platform;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
@@ -72,8 +76,6 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiTextPane.setText(Prompts.NO_KANJI_TO_DISPLAY);
 		kanjiTextPane.setFont(messageFont);
 
-		AbstractButton buttonClose = createButtonClose();
-
 		kanjiOfflineDisplayingPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.CENTER, kanjiTextPane));
 
@@ -97,7 +99,16 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		mainPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.BOTH, mainSplitPane));
 
-		setNavigationButtons(Anchor.WEST, buttonClose);
+		AbstractButton buttonReturn = createButtonReturn();
+
+		setNavigationButtons(Anchor.WEST, buttonReturn);
+	}
+
+	private AbstractButton createButtonReturn() {
+		return createButtonWithHotkey(KeyModifiers.ALT, KeyEvent.VK_H,
+				controller.closeDialogAndManageState(),
+				ButtonsNames.GO_BACK, HotkeysDescriptions.RETURN_FROM_LEARNING);
+
 	}
 
 	public void showPageInKoohi(String url) {

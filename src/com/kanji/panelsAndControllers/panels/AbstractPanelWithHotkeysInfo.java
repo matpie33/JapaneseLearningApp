@@ -48,6 +48,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	private List<MyList> navigableByKeyboardLists = new ArrayList<>();
 	private Map<MoveDirection, HotkeyWrapper> hotkeysForMovingBetweenInputs = new HashMap<>();
 	private boolean navigateBetweenInputsByHotkeys;
+	private boolean isReady;
 
 	public AbstractPanelWithHotkeysInfo() {
 		mainPanel = new MainPanel(Colors.BACKGROUND_PANEL_COLOR);
@@ -56,6 +57,10 @@ public abstract class AbstractPanelWithHotkeysInfo {
 		createHotkeysPanel();
 		isMaximized = false;
 
+	}
+
+	public boolean isReady() {
+		return isReady;
 	}
 
 	private void addHotkeys(JComponent rootPanel) {
@@ -252,8 +257,11 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	}
 
 	public JPanel createPanel() {
-		createElements();
-		addHotkeysPanel();
+		if (!isReady){
+			createElements();
+			addHotkeysPanel();
+			isReady = true;
+		}
 		return mainPanel.getPanel();
 	}
 
