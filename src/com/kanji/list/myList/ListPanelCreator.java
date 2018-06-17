@@ -14,6 +14,7 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.AbstractSimpleRow;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
+import com.kanji.constants.Colors;
 import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
@@ -326,7 +327,7 @@ public class ListPanelCreator<Word extends ListElement>
 
 	public void highlightRowAndScroll(JComponent row) {
 		int rowNumber = rowsPanel.getIndexOfPanel(row);
-		changePanelColor(rowNumber, BasicColors.WATER_BLUE);
+		changePanelColor(rowNumber, Colors.LIST_ROW_HIGHLIGHT_COLOR);
 		scrollTo(rowsPanel.getRows().get(rowNumber));
 		this.rowsPanel.getPanel().repaint();
 	}

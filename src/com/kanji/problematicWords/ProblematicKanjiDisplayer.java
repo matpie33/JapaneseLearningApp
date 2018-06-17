@@ -9,6 +9,7 @@ import com.kanji.constants.strings.Urls;
 import com.kanji.context.KanjiContext;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listRows.RowInKanjiInformations;
+import com.kanji.list.myList.ListConfiguration;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.WordRow;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
@@ -53,6 +54,7 @@ public class ProblematicKanjiDisplayer
 		rowInKanjiInformations.setProblematicWordsController(controller);
 		wordsToReviewList = new MyList<>(applicationWindow, null,
 				rowInKanjiInformations, Titles.PROBLEMATIC_KANJIS,
+				new ListConfiguration().showButtonsLoadNextPreviousWords(false),
 				Kanji.getInitializer());
 		controller.setProblematicWordsDisplayer(this);
 	}
