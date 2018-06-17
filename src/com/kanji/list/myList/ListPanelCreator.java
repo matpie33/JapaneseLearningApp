@@ -36,7 +36,7 @@ import java.util.List;
 public class ListPanelCreator<Word extends ListElement>
 		extends AbstractPanelWithHotkeysInfo {
 
-	private static final Color BACKGROUND_COLOR = BasicColors.VERY_BLUE;
+	private static final Color BACKGROUND_COLOR = BasicColors.BLUE_DARK_1;
 	private ListInputsSelectionManager listInputsSelectionManager;
 	private ListWordsController<Word> listWordsController;
 	private MainPanel rowsPanel;

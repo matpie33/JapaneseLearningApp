@@ -11,7 +11,7 @@ public class FocusHandler {
 
 	private static final Color UNFOCUSED_PANEL_COLOR = Color.WHITE;
 	private static final Color FOCUSED_PANEL_COLOR = Color.BLACK;
-	private static final Color SELECTABLE_PANEL_COLOR = BasicColors.DARK_GREEN;
+	private static final Color SELECTABLE_PANEL_COLOR = BasicColors.GREEN_NORMAL_1;
 	private static final Color SELECTED_PANEL_COLOR = Color.ORANGE;
 	private boolean switchingModeEnabled;
 	private JComponent focusedPanel;

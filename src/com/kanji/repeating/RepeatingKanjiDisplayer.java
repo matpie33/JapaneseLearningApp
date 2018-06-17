@@ -35,7 +35,7 @@ public class RepeatingKanjiDisplayer implements RepeatingWordDisplayer<Kanji> {
 		wordTextArea = GuiElementsCreator.createTextPane(
 				new TextPaneOptions().textAlignment(TextAlignment.JUSTIFIED)
 						.text("").editable(false).border(BorderFactory
-						.createLineBorder(BasicColors.NAVY_BLUE)));
+						.createLineBorder(BasicColors.BLUE_DARK_2)));
 		wordTextArea.setFont(kanjiFont);
 		fullWordInformationPanel = new MainPanel(null);
 		fullWordInformationPanel.addRow(SimpleRowBuilder

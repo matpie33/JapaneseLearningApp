@@ -9,7 +9,6 @@ import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.guimaker.strings.Prompts;
 import com.guimaker.webPanel.ConnectionFailPageHandler;
 
 import javax.swing.*;
@@ -29,7 +28,7 @@ public class ConnectionFailKanjiOfflinePage
 				new TextPaneOptions().border(null).editable(false)
 						.textAlignment(TextAlignment.CENTERED).text(""));
 		kanjiTextPane.setFont(kanjiFont.deriveFont(kanjiFontSize));
-		mainPanel = new MainPanel(BasicColors.VERY_BLUE);
+		mainPanel = new MainPanel(BasicColors.BLUE_DARK_1);
 		mainPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.CENTER, kanjiTextPane));
 	}

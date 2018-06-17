@@ -42,7 +42,7 @@ public class RowInRepeatingList implements ListRowCreator<RepeatingData> {
 				.text(Prompts.REPEATING_DATE + sdf.format(date1))
 				.foregroundColor(labelsColor));
 
-		date.setForeground(BasicColors.OCEAN_BLUE);
+		date.setForeground(BasicColors.BLUE_NORMAL_2);
 		JLabel timeSpent = null;
 
 		if (time != null) {

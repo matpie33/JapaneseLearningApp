@@ -258,7 +258,7 @@ public class ApplicationWindow extends DialogWindow {
 
 	private JMenuBar createMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
-		menuBar.setBackground(BasicColors.OCEAN_BLUE);
+		menuBar.setBackground(BasicColors.BLUE_NORMAL_2);
 		JMenu menu = new JMenu(MenuTexts.MENU_BAR_FILE);
 		menuBar.add(menu);
 		JMenuItem item = new JMenuItem(MenuTexts.MENU_OPEN);

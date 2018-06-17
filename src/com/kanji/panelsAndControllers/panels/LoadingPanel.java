@@ -4,13 +4,11 @@ import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.options.ComponentOptions;
-import com.guimaker.options.ScrollPaneOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +28,7 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 	public void createElements() {
 
 		//TODO add method in gui maker to enable connecting one row with another or create a separate row
-		progressBarsPanel = new MainPanel(BasicColors.MEDIUM_BLUE, true);
+		progressBarsPanel = new MainPanel(BasicColors.BLUE_DARK_3, true);
 		progressBarsPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.CENTER, GuiElementsCreator
 						.createLabel(new ComponentOptions().text(message))));

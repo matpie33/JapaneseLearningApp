@@ -147,7 +147,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	}
 
 	private void createHotkeysPanel() {
-		hotkeysPanel = new ExpandablePanel(BasicColors.VERY_LIGHT_BLUE,
+		hotkeysPanel = new ExpandablePanel(BasicColors.BLUE_BRIGHT_1,
 				Titles.HOTKEYS);
 		hotkeysPanelIndex = -1;
 	}

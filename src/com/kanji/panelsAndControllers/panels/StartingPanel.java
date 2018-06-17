@@ -93,7 +93,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 					listAndTabLabel.getValue().createPanel());
 		}
 		for (int i = 0; i < tabs.getTabCount(); i++) {
-			tabs.setBackgroundAt(i, BasicColors.LIGHT_BLUE);
+			tabs.setBackgroundAt(i, BasicColors.BLUE_NORMAL_1);
 		}
 
 		tabs.addChangeListener(new ChangeListener() {

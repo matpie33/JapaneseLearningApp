@@ -46,7 +46,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 			ContextOwner kanjiContextContextOwner) {
 		this.parentDialog = parentDialog;
 		this.controller = controller;
-		kanjiOfflineDisplayingPanel = new MainPanel(BasicColors.VERY_BLUE);
+		kanjiOfflineDisplayingPanel = new MainPanel(BasicColors.BLUE_DARK_1);
 		messageFont = new JLabel().getFont().deriveFont(15f);
 		dictionaryWebPanel = new WebPagePanel(kanjiContextContextOwner, null);
 		kanjiWebPanel = new WebPagePanel(kanjiContextContextOwner,
