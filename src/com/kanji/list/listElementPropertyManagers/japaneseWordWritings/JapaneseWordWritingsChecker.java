@@ -122,9 +122,14 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 		JapaneseWriting writingToAdd;
 		if (JapaneseWritingUtilities.isInputEmpty(newValue, isKana)) {
 			writingToAdd = japaneseWritingToCheck;
-			japaneseWritingToCheck
-					.replaceKanji(findKanjiPreviousValue(),
-							"");
+			if (!isKana) {
+				japaneseWritingToCheck
+						.replaceKanji(findKanjiPreviousValue(), "");
+			}
+			else {
+				japaneseWritingToCheck.setKanaWriting("");
+			}
+
 		}
 		else {
 			if (!JapaneseWritingUtilities.isInputValid(newValue, isKana)) {

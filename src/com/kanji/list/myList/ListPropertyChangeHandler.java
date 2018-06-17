@@ -75,9 +75,8 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	@Override
 	public void focusLost(FocusEvent e) {
 		JTextComponent input = (JTextComponent) e.getSource();
-		if (isTextFieldEmpty(input) || (
-				input.getText().equals(previousValueOfTextInput) && inputGoal
-						.equals(InputGoal.EDIT))) {
+		if (input.getText().equals(previousValueOfTextInput) && !inputGoal
+				.equals(InputGoal.SEARCH)) {
 			return;
 		}
 		Property propertyNewValue = validateAndConvertToProperty(input);
@@ -157,9 +156,6 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	}
 
 	private Property validateAndConvertToProperty(JTextComponent input) {
-		if ((!isRequiredField && isTextFieldEmpty(input))) {
-			return null;
-		}
 		Property propertyNewValue = listElementPropertyManager
 				.validateInputAndConvertToProperty(input);
 		if (propertyNewValue == null && !input.getText().isEmpty()) {
