@@ -67,11 +67,11 @@ public class InsertWordPanel<Word extends ListElement>
 		MainPanel addWordPanel = listRowData.getRowPanel();
 		mainPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.BOTH, addWordPanel.getPanel())
-				.useAllExtraVerticalSpace());
+				.fillAllVertically().fillHorizontallyEqually());
 	}
 
 	public void reinitializePanel() {
-		mainPanel.clear();
+		clear();
 		createPanel();
 		mainPanel.updateView();
 	}

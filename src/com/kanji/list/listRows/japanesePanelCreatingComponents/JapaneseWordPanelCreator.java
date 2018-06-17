@@ -218,7 +218,7 @@ public class JapaneseWordPanelCreator
 						.inheritScrollbar(inheritScrollBar)
 						.enableWordSearching(false)
 						.showButtonsLoadNextPreviousWords(false)
-						.scrollBarFitsContent(!inheritScrollBar)
+						.scrollBarFitsContent(false)
 						.allInputsSelectionManager(listInputsSelectionManager)
 						.skipTitle(true), JapaneseWriting.getInitializer());
 	}
@@ -228,7 +228,7 @@ public class JapaneseWordPanelCreator
 			InputGoal inputGoal) {
 		JPanel writingsListPanel = lastWritingsListCreated.getPanel();
 		lastJapanesePanelMade = SimpleRowBuilder
-				.createRowStartingFromColumn(0, FillType.NONE, Anchor.WEST,
+				.createRowStartingFromColumn(0, FillType.NONE, Anchor.NORTHWEST,
 						commonListElements.getRowNumberLabel(),
 						wordMeaningLabel, wordMeaningText)
 				.nextRow(partOfSpeechLabel, partOfSpeechCombobox)
@@ -238,7 +238,6 @@ public class JapaneseWordPanelCreator
 				.nextRow(particlesTakenLabel, particlesTakenList.getPanel())
 				.onlyAddIf(!displayMode.equals(PanelDisplayMode.VIEW)
 						|| particlesTakenList.getNumberOfWords() > 0)
-				.fillHorizontallySomeElements(writingsListPanel)
 				.nextRow(commonListElements.getButtonDelete())
 				.onlyAddIf(!displayMode.equals(PanelDisplayMode.VIEW))
 				.nextRow(commonListElements.getButtonEdit())

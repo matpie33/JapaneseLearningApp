@@ -256,6 +256,11 @@ public abstract class AbstractPanelWithHotkeysInfo {
 		parentDialog = parent;
 	}
 
+	public void clear (){
+		isReady = false;
+		mainPanel.clear();
+	}
+
 	public JPanel createPanel() {
 		if (!isReady){
 			createElements();

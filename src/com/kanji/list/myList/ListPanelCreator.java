@@ -36,12 +36,11 @@ import java.util.List;
 public class ListPanelCreator<Word extends ListElement>
 		extends AbstractPanelWithHotkeysInfo {
 
-	private static final Color BACKGROUND_COLOR = BasicColors.BLUE_DARK_1;
 	private ListInputsSelectionManager listInputsSelectionManager;
 	private ListWordsController<Word> listWordsController;
 	private MainPanel rowsPanel;
 	private JScrollPane parentScrollPane;
-	private final Dimension scrollPanesSize = new Dimension(350, 100);
+	private final Dimension scrollPanesSize = new Dimension(550, 100);
 	private JLabel titleLabel;
 	private ListRowCreator<Word> listRow;
 	private ApplicationController applicationController;
