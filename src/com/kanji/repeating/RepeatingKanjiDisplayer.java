@@ -8,6 +8,7 @@ import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
+import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.RepeatingData;
 import com.kanji.saving.RepeatingState;
@@ -61,6 +62,11 @@ public class RepeatingKanjiDisplayer implements RepeatingWordDisplayer<Kanji> {
 	}
 
 	@Override
+	public void setCurrentProblematicWords(Set<Kanji> currentProblematicWords) {
+		this.currentProblematicKanjis = currentProblematicWords;
+	}
+
+	@Override
 	public void showRecognizingWordPanel() {
 
 	}
@@ -101,7 +107,8 @@ public class RepeatingKanjiDisplayer implements RepeatingWordDisplayer<Kanji> {
 	public RepeatingState getRepeatingState(TimeSpent timeSpent,
 			RepeatingData repeatingData, Set<Kanji> words) {
 		RepeatingState<Kanji> kanjiRepeatingState = new RepeatingState<>(
-				timeSpent, repeatingData, currentProblematicKanjis, words);
+				timeSpent, repeatingData, currentProblematicKanjis, words,
+				TypeOfWordForRepeating.KANJIS);
 		return kanjiRepeatingState;
 	}
 

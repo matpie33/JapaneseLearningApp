@@ -9,6 +9,7 @@ import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.ElementCopier;
 import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.PartOfSpeech;
+import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.enums.VerbConjugationType;
 import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElements.JapaneseWord;
@@ -149,7 +150,8 @@ public class RepeatingJapaneseWordsDisplayer
 	public RepeatingState getRepeatingState(TimeSpent timeSpent,
 			RepeatingData repeatingData, Set<JapaneseWord> words) {
 		RepeatingState<JapaneseWord> kanjiRepeatingState = new RepeatingState<>(
-				timeSpent, repeatingData, currentProblematicWords, words);
+				timeSpent, repeatingData, currentProblematicWords, words,
+				TypeOfWordForRepeating.JAPANESE_WORDS);
 		return kanjiRepeatingState;
 	}
 
@@ -166,6 +168,12 @@ public class RepeatingJapaneseWordsDisplayer
 	@Override
 	public void setAllProblematicWords(Set<JapaneseWord> problematicWords) {
 		problematicJapaneseWords = problematicWords;
+	}
+
+	@Override
+	public void setCurrentProblematicWords(
+			Set<JapaneseWord> currentProblematicWords) {
+		this.currentProblematicWords = currentProblematicWords;
 	}
 
 }

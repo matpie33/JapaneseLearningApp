@@ -187,15 +187,19 @@ public class ApplicationWindow extends DialogWindow {
 	// and the others are in application controller?
 
 	public void showProblematicWordsDialogForCurrentList() {
+		MyList activeWordList = getStartingPanel().getActiveWordsList();
+		Class listElementsClass = activeWordList.getListElementClass();
 		activeProblematicWordsController = applicationController
-				.getProblematicWordsControllerBasedOnActiveWordList();
+				.getProblematicWordsControllerBasedOnWordType(
+						listElementsClass);
 		showProblematicWordsDialog();
 	}
 
 	public <Element extends ListElement> void showProblematicWordsDialog(
 			Set<Element> problematicWords) {
 		activeProblematicWordsController = applicationController
-				.getProblematicWordsControllerBasedOnActiveWordList();
+				.getProblematicWordsControllerBasedOnWordType(
+						problematicWords.iterator().next().getClass());
 		setPanel(activeProblematicWordsController.getPanel());
 		activeProblematicWordsController.addProblematicWords(problematicWords);
 		showProblematicWordsDialog();
@@ -205,7 +209,9 @@ public class ApplicationWindow extends DialogWindow {
 			ProblematicKanjisState<Element> problematicWordsState) {
 		displayMessageAboutUnfinishedRepeating();
 		activeProblematicWordsController = applicationController
-				.getProblematicWordsControllerBasedOnActiveWordList();
+				.getProblematicWordsControllerBasedOnWordType(
+						problematicWordsState.getNotReviewedWords().get(0)
+								.getClass());
 		activeProblematicWordsController.addProblematicWordsHighlightReviewed(
 				problematicWordsState.getReviewedWords(),
 				problematicWordsState.getNotReviewedWords());
@@ -230,7 +236,6 @@ public class ApplicationWindow extends DialogWindow {
 		showPanel(ApplicationPanels.PROBLEMATIC_WORDS_PANEL);
 		applicationController
 				.switchStateManager(activeProblematicWordsController);
-
 
 	}
 

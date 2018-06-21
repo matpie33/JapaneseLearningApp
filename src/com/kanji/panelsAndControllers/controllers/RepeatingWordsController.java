@@ -106,6 +106,8 @@ public class RepeatingWordsController
 		repeatInfo = repeatingState.getRepeatingData();
 		repeatInfo.setRepeatingDate(LocalDateTime.now());
 		timeSpentHandler.resumeTime(repeatingState.getTimeSpent());
+		applicationWindow.getStartingPanel()
+				.switchToList(repeatingState.getTypeOfWordForRepeating());
 	}
 
 	private void removePreviousWordAndPickNextOrFinishRepeating() {
@@ -348,6 +350,11 @@ public class RepeatingWordsController
 
 	@Override
 	public void restoreState(SavingInformation savingInformation) {
+		setWordDisplayer(applicationWindow.getApplicationController()
+				.getWordDisplayerForWordType(
+						savingInformation.getRepeatingState()
+								.getTypeOfWordForRepeating()));
+
 		reset();
 		resumeUnfinishedRepeating(savingInformation.getRepeatingState());
 		parent.displayMessageAboutUnfinishedRepeating();

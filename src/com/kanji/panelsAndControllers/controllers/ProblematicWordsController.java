@@ -211,9 +211,11 @@ public class ProblematicWordsController<Word extends ListElement>
 		for (Word listWord : reviewedWords) {
 			wordsToReviewList.addWord(listWord);
 			wordsToReviewList.highlightRow(i);
+			wordsToReview.add(problematicWordsDisplayer.createWordRow(listWord,
+					wordsToReviewList.getNumberOfWords() - 1));
 			i++;
 		}
-		i--;
+		nextWordToReview = i;
 		for (Word listWord : notReviewedWords) {
 			addWord(listWord);
 		}

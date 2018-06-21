@@ -132,11 +132,11 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 				.createRow(FillType.HORIZONTAL, bottomPanel.getPanel()));
 	}
 
-	public void switchToList(Class listType) {
-		if (listType.equals(Kanji.class)) {
+	public void switchToList(TypeOfWordForRepeating wordType) {
+		if (wordType.equals(TypeOfWordForRepeating.KANJIS)) {
 			tabs.setSelectedIndex(0);
 		}
-		else if (listType.equals(JapaneseWord.class)) {
+		else if (wordType.equals(TypeOfWordForRepeating.JAPANESE_WORDS)) {
 			tabs.setSelectedIndex(1);
 			//TODO use enum instead of class checking, and tab index to enum and use it instead of
 			// listToLabel map

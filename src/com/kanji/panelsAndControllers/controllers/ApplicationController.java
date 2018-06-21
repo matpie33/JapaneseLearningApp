@@ -619,10 +619,22 @@ public class ApplicationController implements ApplicationStateManager {
 	private RepeatingWordDisplayer getWordDisplayerForCurrentWordList() {
 		MyList currentList = parent.getStartingPanel().getActiveWordsList();
 		Class listClass = currentList.getListElementClass();
+		TypeOfWordForRepeating typeOfWordForRepeating = null;
 		if (listClass.equals(Kanji.class)) {
-			return kanjiWordDisplayer;
+			typeOfWordForRepeating = TypeOfWordForRepeating.KANJIS;
 		}
 		else if (listClass.equals(JapaneseWord.class)) {
+			typeOfWordForRepeating = TypeOfWordForRepeating.JAPANESE_WORDS;
+		}
+		return getWordDisplayerForWordType(typeOfWordForRepeating);
+	}
+
+	public RepeatingWordDisplayer getWordDisplayerForWordType(
+			TypeOfWordForRepeating wordType) {
+		if (wordType.equals(TypeOfWordForRepeating.KANJIS)) {
+			return kanjiWordDisplayer;
+		}
+		else if (wordType.equals(TypeOfWordForRepeating.JAPANESE_WORDS)) {
 			return repeatingJapaneseWordsDisplayer;
 		}
 		return null;
@@ -671,12 +683,6 @@ public class ApplicationController implements ApplicationStateManager {
 		isClosingSafe = false;
 	}
 
-	public ProblematicWordsController getProblematicWordsControllerBasedOnActiveWordList() {
-		MyList activeWordList = parent.getStartingPanel().getActiveWordsList();
-		Class listElementsClass = activeWordList.getListElementClass();
-		return getProblematicWordsControllerBasedOnWordType(listElementsClass);
-	}
-
 	public ProblematicWordsController getProblematicWordsControllerBasedOnWordType(
 			Class wordType) {
 		if (wordType.equals(Kanji.class)) {
@@ -689,7 +695,9 @@ public class ApplicationController implements ApplicationStateManager {
 	}
 
 	public void switchToList(Class listType) {
-		parent.getStartingPanel().switchToList(listType);
+		parent.getStartingPanel().switchToList(listType.equals(Kanji.class) ?
+				TypeOfWordForRepeating.KANJIS :
+				TypeOfWordForRepeating.JAPANESE_WORDS);
 	}
 
 }
