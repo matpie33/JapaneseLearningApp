@@ -42,7 +42,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	public RepeatingWordsPanel(RepeatingWordsController controller) {
 		centerPanel = new MainPanel(null);
 		repeatingPanel = new MainPanel(Colors.BACKGROUND_PANEL_COLOR);
-		repeatingPanel.setBorder(getDefaultBorder());
+		repeatingPanel.setRowsBorder(getDefaultBorder());
 		this.repeatingWordsController = controller;
 		initializeWordInformationPanel();
 	}
