@@ -1,5 +1,6 @@
 package com.kanji.repeating;
 
+import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.options.ComboboxOptions;
 import com.guimaker.options.ComponentOptions;
@@ -56,9 +57,6 @@ public class RepeatingJapaneseWordsDisplayer
 		currentProblematicWords = new HashSet<>();
 		initializeHintTypeValues();
 		initializeGuiElements();
-		recognizingWordPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE,
-				ElementCopier.copyLabel(partOfSpeechLabel),
-				partOfSpeechCombobox));
 		this.japaneseWordPanelCreator = japaneseWordPanelCreator;
 
 	}
@@ -94,7 +92,7 @@ public class RepeatingJapaneseWordsDisplayer
 				.addJapanesePanelToExistingPanel(fullWordInformationPanel,
 						japaneseWord, InputGoal.NO_INPUT,
 						CommonListElements.forSingleRowOnly(Color.WHITE),
-						false);
+						true);
 	}
 
 	@Override

@@ -23,10 +23,10 @@ public class JapanesePanelComponentsStore {
 				applicationController);
 		elementsMaker = new JapanesePanelElementsCreator(actionsCreator,
 				applicationController, parentDialog);
-		getPanelRowService(displayMode);
+		initializePanelRowService(displayMode);
 	}
 
-	private void getPanelRowService(PanelDisplayMode panelDisplayMode) {
+	private void initializePanelRowService(PanelDisplayMode panelDisplayMode) {
 		switch (panelDisplayMode) {
 		case EDIT:
 			panelCreatingService = new JapanesePanelInEditModeCreator(
