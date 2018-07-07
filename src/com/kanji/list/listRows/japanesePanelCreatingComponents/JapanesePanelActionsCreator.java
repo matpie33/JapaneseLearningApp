@@ -72,7 +72,7 @@ public class JapanesePanelActionsCreator {
 	}
 
 	public Map<JTextComponent, ListElementPropertyManager> getInputManagersForInputs() {
-		Map<JTextComponent, ListElementPropertyManager> propertyManagersForInputs = new HashMap<>();
+		Map<JTextComponent, ListElementPropertyManager> propertyManagersForInputs = new LinkedHashMap<>();
 		for (Pair<JapaneseWord, JapaneseWordChecker> japaneseWordChecker : checkersForJapaneseWords) {
 			InputGoal checkerInputGoal = japaneseWordChecker.getRight()
 					.getInputGoal();
@@ -208,18 +208,21 @@ public class JapanesePanelActionsCreator {
 
 	public JComboBox changeAdditionalInformationOnComboboxChange(
 			JComboBox comboBox, JapaneseWord japaneseWord) {
-		comboBox.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() != ItemEvent.SELECTED) {
-					return;
+		SwingUtilities.invokeLater(()->{
+			comboBox.addItemListener(new ItemListener() {
+				@Override
+				public void itemStateChanged(ItemEvent e) {
+					if (e.getStateChange() != ItemEvent.SELECTED) {
+						return;
+					}
+					String newValue = (String) comboBox.getSelectedItem();
+					japaneseWord.getAdditionalInformation().setValue(newValue);
+					ThreadUtilities
+							.callOnOtherThread(applicationController::saveProject);
 				}
-				String newValue = (String) comboBox.getSelectedItem();
-				japaneseWord.getAdditionalInformation().setValue(newValue);
-				ThreadUtilities
-						.callOnOtherThread(applicationController::saveProject);
-			}
+			});
 		});
+
 		return comboBox;
 
 	}

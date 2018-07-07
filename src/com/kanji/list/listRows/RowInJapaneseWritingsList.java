@@ -43,10 +43,6 @@ public class RowInJapaneseWritingsList
 						wordContainingWritings, inputGoal, rowPanel);
 		rowPanel.addRow(
 				SimpleRowBuilder.createRow(FillType.HORIZONTAL, components));
-		if (japaneseWriting.isEmpty()) {
-			SwingUtilities
-					.invokeLater(() -> components[0].requestFocusInWindow());
-		}
 		ListRowDataCreator<Kanji> rowDataCreator = new ListRowDataCreator<>(
 				rowPanel);
 		return rowDataCreator.getListRowData();

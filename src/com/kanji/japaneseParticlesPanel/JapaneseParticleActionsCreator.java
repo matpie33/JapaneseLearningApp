@@ -46,24 +46,27 @@ public class JapaneseParticleActionsCreator {
 
 	public JComboBox saveParticleWhenChanged(JComboBox particleCombobox,
 			JapaneseWord japaneseWord, WordParticlesData wordParticlesData) {
-		particleCombobox.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				JapaneseParticle particleByComboboxValue = JapaneseParticle
-						.getByString((String) e.getItem());
-				if (e.getStateChange() == ItemEvent.DESELECTED) {
-					japaneseWord.removeParticle(particleByComboboxValue);
-				}
-				else if (e.getStateChange() == ItemEvent.SELECTED) {
-					wordParticlesData.setParticle(particleByComboboxValue);
-					japaneseWord.addParticleData(wordParticlesData);
-					ThreadUtilities.callOnOtherThread(()->{
-						applicationController.saveProject();
-					});
+		SwingUtilities.invokeLater(() -> {
+			particleCombobox.addItemListener(new ItemListener() {
+				@Override
+				public void itemStateChanged(ItemEvent e) {
+					JapaneseParticle particleByComboboxValue = JapaneseParticle
+							.getByString((String) e.getItem());
+					if (e.getStateChange() == ItemEvent.DESELECTED) {
+						japaneseWord.removeParticle(particleByComboboxValue);
+					}
+					else if (e.getStateChange() == ItemEvent.SELECTED) {
+						wordParticlesData.setParticle(particleByComboboxValue);
+						japaneseWord.addParticleData(wordParticlesData);
+						ThreadUtilities.callOnOtherThread(() -> {
+							applicationController.saveProject();
+						});
 
+					}
 				}
-			}
+			});
 		});
+
 		return particleCombobox;
 	}
 

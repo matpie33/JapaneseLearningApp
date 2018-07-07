@@ -13,7 +13,7 @@ import java.util.*;
 public class JapaneseWordChecker implements
 		ListElementPropertyManager<Set<JapaneseWriting>, JapaneseWord> {
 
-	private Map<JTextComponent, JapaneseWriting> inputToWritingMap = new HashMap<>();
+	private Map<JTextComponent, JapaneseWriting> inputToWritingMap = new LinkedHashMap<>();
 	private Map<JapaneseWriting, JapaneseWordWritingsChecker> writingToCheckerMap = new HashMap<>();
 	private InputGoal inputGoal;
 	private String invalidPropertyReason;
@@ -146,7 +146,7 @@ public class JapaneseWordChecker implements
 	}
 
 	public Map<JTextComponent, ListElementPropertyManager> getInputToCheckerMap() {
-		Map<JTextComponent, ListElementPropertyManager> inputToChecker = new HashMap<>();
+		Map<JTextComponent, ListElementPropertyManager> inputToChecker = new LinkedHashMap<>();
 		for (JTextComponent input : inputToWritingMap.keySet()) {
 			inputToChecker.put(input, this);
 		}
