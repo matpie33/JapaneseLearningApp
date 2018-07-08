@@ -87,7 +87,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 
 	public void searchWord(String word) {
 		japaneseEnglishDictionaryPanel
-				.showPage(TANGORIN_URL + "/general/" + word);
+				.showPageWithoutGrabbingFocus(TANGORIN_URL + "/general/" + word);
 	}
 
 	@Override
@@ -137,10 +137,9 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	}
 
 	private AbstractButton createButtonReturn() {
-		return createButtonWithHotkey(KeyModifiers.ALT, KeyEvent.VK_Q,
+		return createButtonWithHotkey(KeyModifiers.CONTROL, KeyEvent.VK_E,
 				problematicWordsController.closeDialogAndManageState(),
 				ButtonsNames.GO_BACK, HotkeysDescriptions.RETURN_FROM_LEARNING);
-
 	}
 
 	@Override

@@ -166,7 +166,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private AbstractButton createReturnButton() {
-		return createButtonWithHotkey(KeyModifiers.ALT, KeyEvent.VK_H,
+		return createButtonWithHotkey(KeyModifiers.CONTROL, KeyEvent.VK_E,
 				repeatingWordsController.createActionExit(),
 				ButtonsNames.GO_BACK, HotkeysDescriptions.RETURN_FROM_LEARNING);
 	}
