@@ -51,4 +51,8 @@ public class ListRow<Word> {
 	public void decrementRowNumber() {
 		rowNumber--;
 	}
+
+	public void setPanel(MainPanel panel) {
+		this.wrappingPanel = panel;
+	}
 }

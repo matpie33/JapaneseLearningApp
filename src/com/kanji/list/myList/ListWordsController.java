@@ -35,6 +35,7 @@ public class ListWordsController<Word extends ListElement> {
 	private ListElementInitializer<Word> wordInitializer;
 	private List<SwitchBetweenInputsFailListener> switchBetweenInputsFailListeners = new ArrayList<>();
 	private ProgressUpdater progressUpdater;
+	private List<MyList<Word>> observers = new ArrayList<>();
 	//TODO switchBetweenInputsFailListeners should be deleted from here
 
 	public ListWordsController(ListConfiguration listConfiguration,
@@ -49,7 +50,6 @@ public class ListWordsController<Word extends ListElement> {
 		this.listPanelCreator.setTitle(title);
 		this.wordInitializer = wordInitializer;
 		initializeFoundWordStrategies();
-
 	}
 
 	public void inheritScrollPane() {
@@ -127,12 +127,13 @@ public class ListWordsController<Word extends ListElement> {
 	}
 
 	public void remove(Word word) {
+		observers.forEach(list -> list.remove(word));
 		ListRow<Word> listRow = findListRowContainingWord(word);
 		listPanelCreator.removeRow(listRow.getJPanel());
 		int indexOfRemovedWord = allWordsToRowNumberMap.indexOf(listRow);
 		allWordsToRowNumberMap.remove(listRow);
 		updateRowNumbers(indexOfRemovedWord);
-		if (currentlyHighlightedWord == listRow){
+		if (currentlyHighlightedWord == listRow) {
 			currentlyHighlightedWord = null;
 		}
 		if (allWordsToRowNumberMap.isEmpty()) {
@@ -142,8 +143,7 @@ public class ListWordsController<Word extends ListElement> {
 	}
 
 	private void updateRowNumbers(int startingIndex) {
-		for (int i = startingIndex;
-			 i < allWordsToRowNumberMap.size(); i++) {
+		for (int i = startingIndex; i < allWordsToRowNumberMap.size(); i++) {
 			ListRow<Word> listRow = allWordsToRowNumberMap.get(i);
 			listRow.decrementRowNumber();
 			JLabel label = listRow.getIndexLabel();
@@ -450,5 +450,20 @@ public class ListWordsController<Word extends ListElement> {
 				applicationController.showInsertWordDialog();
 			}
 		};
+	}
+
+	public void addObserver(MyList<Word> observer) {
+		observers.add(observer);
+	}
+
+	public void updateObservers(Word word) {
+		observers.forEach(observer -> observer.repaint(word));
+	}
+
+	public void repaint(Word word) {
+		ListRow<Word> listRow = findListRowContainingWord(word);
+		MainPanel panel = listPanelCreator
+				.repaintWord(word, listRow.getRowNumber(), listRow.getJPanel());
+		listRow.setPanel(panel);
 	}
 }

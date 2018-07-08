@@ -1,6 +1,5 @@
 package com.kanji.list.myList;
 
-import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
@@ -58,6 +57,7 @@ public class ListPanelCreator<Word extends ListElement>
 	private boolean isSkipTitle;
 	private Color labelsColor = Color.WHITE;
 	private boolean scrollBarSizeFittingContent;
+	private InputGoal inputGoal;
 
 	public ListPanelCreator(ListConfiguration listConfiguration,
 			ApplicationController applicationController,
@@ -155,13 +155,9 @@ public class ListPanelCreator<Word extends ListElement>
 		if (listWordsController.getWords().isEmpty()) {
 			rowsPanel.removeRow(1);
 		}
-		JLabel rowNumberLabel = new JLabel(createTextForRowNumber(rowNumber));
-		AbstractButton remove = createButtonRemoveWord(word);
-		AbstractButton addNewWord = createButtonAddRow(inputGoal);
-		AbstractButton editWord = createButtonEditWord(word);
-		CommonListElements commonListElements = new CommonListElements(remove,
-				rowNumberLabel, addNewWord, labelsColor, editWord, false);
-		rowNumberLabel.setForeground(labelsColor);
+		this.inputGoal = inputGoal;
+		CommonListElements commonListElements = createCommonListElements(word,
+				inputGoal, rowNumber);
 		MainPanel rowPanel = null;
 		if (shouldShowWord) {
 			rowPanel = listRow
@@ -179,7 +175,26 @@ public class ListPanelCreator<Word extends ListElement>
 			rowPanel.addManager(listInputsSelectionManager);
 		}
 		rowsPanel.updateView();
-		return new ListRow<>(word, rowPanel, rowNumberLabel, rowNumber);
+		return new ListRow<>(word, rowPanel,
+				commonListElements.getRowNumberLabel(), rowNumber);
+	}
+
+	private MainPanel createRowPanel(Word word,
+			CommonListElements commonListElements, InputGoal inputGoal) {
+		return listRow.createListRow(word, commonListElements, inputGoal)
+				.getRowPanel();
+	}
+
+	private CommonListElements createCommonListElements(Word word,
+			InputGoal inputGoal, int rowNumber) {
+		JLabel rowNumberLabel = new JLabel(createTextForRowNumber(rowNumber));
+		rowNumberLabel.setForeground(labelsColor);
+		AbstractButton remove = createButtonRemoveWord(word);
+		AbstractButton addNewWord = createButtonAddRow(inputGoal);
+		AbstractButton editWord = createButtonEditWord(word);
+		return new CommonListElements(remove, rowNumberLabel, addNewWord,
+				labelsColor, editWord, false);
+
 	}
 
 	private AbstractButton createButtonRemoveWord(Word word) {
@@ -395,4 +410,13 @@ public class ListPanelCreator<Word extends ListElement>
 		rowsPanel.toggleEnabledState();
 	}
 
+	public MainPanel repaintWord(Word word, int rowNumber, JComponent oldPanel) {
+		CommonListElements commonListElements = createCommonListElements(word,
+				inputGoal, rowNumber);
+		MainPanel newPanel = listRow
+				.createListRow(word, commonListElements, inputGoal)
+				.getRowPanel();
+		rowsPanel.replacePanel(oldPanel, newPanel.getPanel());
+		return newPanel;
+	}
 }

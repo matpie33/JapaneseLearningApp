@@ -60,6 +60,9 @@ public class ProblematicJapaneseWordsDisplayer
 						.withAdditionalNavigationButtons(
 								createButtonSearchWord()),
 				JapaneseWord.getInitializer());
+		MyList<JapaneseWord> japaneseWords = applicationWindow
+				.getApplicationController().getJapaneseWords();
+		japaneseWords.addObserver(wordsToReviewList);
 		controller.setProblematicWordsDisplayer(this);
 		kanjiInformations = applicationWindow.getApplicationController()
 				.getKanjiList();

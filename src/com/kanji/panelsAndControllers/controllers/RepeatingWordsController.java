@@ -142,7 +142,6 @@ public class RepeatingWordsController
 
 		parent.getApplicationController().addWordToRepeatingList(repeatInfo);
 		applicationWindow.updateProblematicWordsAmount();
-		parent.showPanel(ApplicationPanels.STARTING_PANEL);
 
 		parent.scrollToBottom();
 
@@ -153,6 +152,7 @@ public class RepeatingWordsController
 					wordDisplayer.getProblematicWords());
 		}
 		else {
+			parent.showPanel(ApplicationPanels.STARTING_PANEL);
 			parent.getApplicationController().finishedRepeating();
 		}
 

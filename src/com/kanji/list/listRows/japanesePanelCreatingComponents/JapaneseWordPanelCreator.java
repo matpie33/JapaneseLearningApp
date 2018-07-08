@@ -106,7 +106,7 @@ public class JapaneseWordPanelCreator
 				new ComponentOptions().text(Labels.WORD_MEANING)
 						.foregroundColor(labelsColor));
 		wordMeaningText = CommonGuiElementsCreator
-				.createShortInput(japaneseWord.getMeaning());
+				.createShortInput(japaneseWord.getMeaning(), displayMode);
 
 		partOfSpeechLabel = GuiElementsCreator.createLabel(
 				new ComponentOptions().text(Labels.PART_OF_SPEECH)
@@ -142,6 +142,9 @@ public class JapaneseWordPanelCreator
 	private void addActions(JapaneseWord japaneseWord, InputGoal inputGoal) {
 		JapanesePanelActionsCreator actionCreatingService = japanesePanelComponentsStore
 				.getActionCreator();
+		if (displayMode.equals(PanelDisplayMode.VIEW)){
+			return;
+		}
 		actionCreatingService
 				.addWordMeaningPropertyChangeListener(wordMeaningText,
 						japaneseWord, inputGoal.equals(InputGoal.SEARCH) ?

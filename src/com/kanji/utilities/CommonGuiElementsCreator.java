@@ -1,5 +1,6 @@
 package com.kanji.utilities;
 
+import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.TextAreaOptions;
 import com.guimaker.options.TextComponentOptions;
@@ -18,9 +19,11 @@ public class CommonGuiElementsCreator {
 						.moveToNextComponentWhenTabbed(true));
 	}
 
-	public static JTextComponent createShortInput(String defaultContent) {
-		return GuiElementsCreator.createTextField(
-				new TextComponentOptions().text(defaultContent).rowsAndColumns(1, 35));
+	public static JTextComponent createShortInput(String defaultContent,
+			PanelDisplayMode displayMode) {
+		return GuiElementsCreator.createTextField(new TextComponentOptions()
+				.editable(displayMode.equals(PanelDisplayMode.EDIT))
+				.text(defaultContent).rowsAndColumns(1, 35));
 	}
 
 	public static JTextComponent createTextField(String defaultContent) {

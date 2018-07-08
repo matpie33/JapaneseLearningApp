@@ -48,6 +48,10 @@ public class MyList<Word extends ListElement> {
 				new ListConfiguration(), wordInitializer);
 	}
 
+	public void addObserver(MyList<Word> observer){
+		listController.addObserver(observer);
+	}
+
 	public void addSwitchBetweenInputsFailListener(
 			SwitchBetweenInputsFailListener listener) {
 		listController.addSwitchBetweenInputsFailListener(listener);
@@ -363,5 +367,17 @@ public class MyList<Word extends ListElement> {
 
 	public ProgressUpdater getProgressUpdater() {
 		return listController.getProgressUpdater();
+	}
+
+	public void remove(Word word) {
+		listController.remove(word);
+	}
+
+	public void updateWords(Word word) {
+		listController.updateObservers(word);
+	}
+
+	public void repaint(Word word) {
+		listController.repaint(word);
 	}
 }
