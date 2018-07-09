@@ -9,7 +9,6 @@ import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listeners.InputValidationListener;
 import com.kanji.list.myList.ListPropertyChangeHandler;
-import com.kanji.list.myList.MyList;
 import com.kanji.model.WordRow;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
@@ -86,7 +85,7 @@ public class KanjiActionsCreator {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				problematicWordsController
-						.goToSpecifiedResource(new WordRow(kanji, rowNumber));
+						.showResource(new WordRow(kanji, rowNumber));
 			}
 		});
 

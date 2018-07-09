@@ -4,11 +4,13 @@ import com.guimaker.enums.MoveDirection;
 import com.guimaker.listeners.SwitchBetweenInputsFailListener;
 import com.guimaker.panels.MainPanel;
 import com.kanji.constants.enums.InputGoal;
+import com.kanji.constants.enums.ListElementModificationType;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listElements.ListElementInitializer;
 import com.kanji.list.listElements.RepeatingData;
+import com.kanji.list.listObserver.ListObserver;
 import com.kanji.list.loadAdditionalWordsHandling.FoundWordInsideVisibleRangePlusMaximumWordsStrategy;
 import com.kanji.list.loadAdditionalWordsHandling.FoundWordInsideVisibleRangeStrategy;
 import com.kanji.list.loadAdditionalWordsHandling.FoundWordOutsideRangeStrategy;
@@ -35,7 +37,7 @@ public class ListWordsController<Word extends ListElement> {
 	private ListElementInitializer<Word> wordInitializer;
 	private List<SwitchBetweenInputsFailListener> switchBetweenInputsFailListeners = new ArrayList<>();
 	private ProgressUpdater progressUpdater;
-	private List<MyList<Word>> observers = new ArrayList<>();
+	private List<ListObserver<Word>> observers = new ArrayList<>();
 	//TODO switchBetweenInputsFailListeners should be deleted from here
 
 	public ListWordsController(ListConfiguration listConfiguration,
@@ -127,7 +129,7 @@ public class ListWordsController<Word extends ListElement> {
 	}
 
 	public void remove(Word word) {
-		observers.forEach(list -> list.remove(word));
+		observers.forEach(list -> list.update(word, ListElementModificationType.DELETE));
 		ListRow<Word> listRow = findListRowContainingWord(word);
 		listPanelCreator.removeRow(listRow.getJPanel());
 		int indexOfRemovedWord = allWordsToRowNumberMap.indexOf(listRow);
@@ -452,12 +454,13 @@ public class ListWordsController<Word extends ListElement> {
 		};
 	}
 
-	public void addObserver(MyList<Word> observer) {
-		observers.add(observer);
+	public void addObserver(ListObserver<Word> listObserver) {
+		observers.add(listObserver);
 	}
 
-	public void updateObservers(Word word) {
-		observers.forEach(observer -> observer.repaint(word));
+	public void updateObservers(Word word, ListElementModificationType modificationType) {
+		observers.forEach(observer -> observer.update(word,
+				modificationType));
 	}
 
 	public void repaint(Word word) {

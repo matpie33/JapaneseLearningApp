@@ -4,10 +4,12 @@ import com.guimaker.enums.MoveDirection;
 import com.guimaker.listeners.SwitchBetweenInputsFailListener;
 import com.guimaker.panels.MainPanel;
 import com.kanji.constants.enums.InputGoal;
+import com.kanji.constants.enums.ListElementModificationType;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listElements.ListElementInitializer;
+import com.kanji.list.listObserver.ListObserver;
 import com.kanji.model.WordInMyListExistence;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.swingWorkers.ProgressUpdater;
@@ -17,7 +19,7 @@ import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.util.List;
 
-public class MyList<Word extends ListElement> {
+public class MyList<Word extends ListElement>  implements ListObserver<Word> {
 	private DialogWindow parent;
 	private ApplicationController applicationController;
 	private ListWordsController<Word> listController;
@@ -48,8 +50,8 @@ public class MyList<Word extends ListElement> {
 				new ListConfiguration(), wordInitializer);
 	}
 
-	public void addObserver(MyList<Word> observer){
-		listController.addObserver(observer);
+	public void addObserver(ListObserver<Word> listObserver){
+		listController.addObserver(listObserver);
 	}
 
 	public void addSwitchBetweenInputsFailListener(
@@ -373,11 +375,18 @@ public class MyList<Word extends ListElement> {
 		listController.remove(word);
 	}
 
-	public void updateWords(Word word) {
-		listController.updateObservers(word);
+	public void updateWords(Word word, ListElementModificationType modificationType) {
+		listController.updateObservers(word, modificationType);
 	}
 
-	public void repaint(Word word) {
-		listController.repaint(word);
+	@Override
+	public void update(Word word, ListElementModificationType modificationType) {
+		if (modificationType.equals(ListElementModificationType.EDIT)) {
+			listController.repaint(word);
+		}
+		else{
+			listController.remove(word);
+		}
+
 	}
 }

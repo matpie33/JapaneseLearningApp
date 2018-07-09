@@ -4,10 +4,12 @@ import com.guimaker.enums.MoveDirection;
 import com.guimaker.utilities.KeyModifiers;
 import com.kanji.constants.enums.ApplicationPanels;
 import com.kanji.constants.enums.ApplicationSaveableState;
+import com.kanji.constants.enums.ListElementModificationType;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.ListElement;
+import com.kanji.list.listObserver.ListObserver;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.WordRow;
 import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
@@ -28,11 +30,11 @@ import java.util.List;
 import java.util.Set;
 
 public class ProblematicWordsController<Word extends ListElement>
-		implements ApplicationStateManager {
-	private List<WordRow> wordsToReview;
+		implements ApplicationStateManager, ListObserver<Word> {
+	private List<WordRow> notReviewedWords;
 	private int nextWordToReview = 0;
-	//TODO 2 variables with similar names -> maybe remove WordRow class and use map ->
-	// row number to list element
+	//TODO change notReviewedWords variable to keep ListElement objects,
+	// add to my list a method: get row number of word
 	private MyList<Word> wordsToReviewList;
 	private ApplicationController applicationController;
 	private ApplicationWindow applicationWindow;
@@ -41,8 +43,9 @@ public class ProblematicWordsController<Word extends ListElement>
 
 	public ProblematicWordsController(ApplicationWindow applicationWindow) {
 		applicationController = applicationWindow.getApplicationController();
+
 		this.applicationWindow = applicationWindow;
-		wordsToReview = new ArrayList<>();
+		notReviewedWords = new ArrayList<>();
 	}
 
 	public void setProblematicWordsDisplayer(
@@ -69,7 +72,7 @@ public class ProblematicWordsController<Word extends ListElement>
 		for (int i = 0; i < notReviewedWords.size(); i++) {
 			Word notReviewedWord = notReviewedWords.get(i);
 			wordsToReviewList.addWord(notReviewedWord);
-			wordsToReview.add(problematicWordsDisplayer
+			this.notReviewedWords.add(problematicWordsDisplayer
 					.createWordRow(notReviewedWord,
 							firstUnreviewedWordRowNumber + i));
 		}
@@ -82,7 +85,14 @@ public class ProblematicWordsController<Word extends ListElement>
 	}
 
 	public void addProblematicWords(Set<Word> problematicWords) {
-		if (wordsToReview.isEmpty()) {
+		Class<? extends ListElement> wordClass = problematicWords.iterator()
+				.next().getClass();
+		if (wordClass.equals(Kanji.class)) {
+			applicationController.getKanjiList()
+					.addObserver((ListObserver<Kanji>) wordsToReviewList);
+		}
+
+		if (notReviewedWords.isEmpty()) {
 			wordsToReviewList.cleanWords();
 		}
 		for (Word word : problematicWords) {
@@ -95,21 +105,23 @@ public class ProblematicWordsController<Word extends ListElement>
 	private void addWord(Word word) {
 		boolean addedToList = wordsToReviewList.addWord(word);
 		if (addedToList) {
-			wordsToReview.add(problematicWordsDisplayer.createWordRow(word,
+			notReviewedWords.add(problematicWordsDisplayer.createWordRow(word,
 					wordsToReviewList.getNumberOfWords() - 1));
 		}
 	}
 
 	private void goToNextResource() {
-		WordRow row = wordsToReview.get(nextWordToReview);
-		goToSpecifiedResource(row);
+		WordRow row = notReviewedWords.get(nextWordToReview);
+		showResource(row);
 	}
 
-	public void goToSpecifiedResource(WordRow row) {
+	public void showResource(WordRow<Word> row) {
 		//TODO do I really need the kanji context as separate class? theres so many already,
 		//I should reconsider some of the modelling objects
 		problematicWordsDisplayer.browseWord(row);
-		wordsToReviewList.highlightRow(row.getRowNumber());
+		wordsToReviewList.highlightRow(
+				wordsToReviewList.get1BasedRowNumberOfWord(row.getListElement())
+						- 1);
 
 	}
 
@@ -140,27 +152,30 @@ public class ProblematicWordsController<Word extends ListElement>
 				if (!problematicWordsDisplayer.isListPanelFocused()) {
 					return;
 				}
-				nextWordToReview =
-						nextWordToReview + direction.getIncrementValue();
-				if (nextWordToReview < 0) {
-					nextWordToReview = 0;
-					return;
-				}
-				if (nextWordToReview == wordsToReview.size() - 1) {
-					wordsReviewed = true;
-				}
-				if (nextWordToReview == wordsToReview.size()) {
-					applicationWindow
-							.showMessageDialog(Prompts.NO_MORE_WORDS_TO_REVIEW);
-					nextWordToReview = 0;
-					wordsToReviewList.clearHighlightedWords();
-				}
-
-				goToNextResource();
-
+				changeResource(direction);
 			}
 		};
 
+	}
+
+	private void changeResource(MoveDirection direction) {
+
+		nextWordToReview = nextWordToReview + direction.getIncrementValue();
+		if (nextWordToReview < 0) {
+			nextWordToReview = 0;
+			return;
+		}
+		if (nextWordToReview == notReviewedWords.size() - 1) {
+			wordsReviewed = true;
+		}
+		if (nextWordToReview == notReviewedWords.size()) {
+			applicationWindow
+					.showMessageDialog(Prompts.NO_MORE_WORDS_TO_REVIEW);
+			nextWordToReview = 0;
+			wordsToReviewList.clearHighlightedWords();
+		}
+
+		goToNextResource();
 	}
 
 	public int getNumberOfRows() {
@@ -180,7 +195,7 @@ public class ProblematicWordsController<Word extends ListElement>
 		SavingInformation savingInformation = applicationController
 				.getApplicationState();
 		savingInformation.setProblematicKanjisState(information,
-				wordsToReview.get(0).getListElement().getClass()
+				notReviewedWords.get(0).getListElement().getClass()
 						.equals(Kanji.class) ?
 						ApplicationSaveableState.REVIEWING_PROBLEMATIC_KANJIS :
 						ApplicationSaveableState.REVIEWING_PROBLEMATIC_JAPANESE_WORDS);
@@ -211,8 +226,9 @@ public class ProblematicWordsController<Word extends ListElement>
 		for (Word listWord : reviewedWords) {
 			wordsToReviewList.addWord(listWord);
 			wordsToReviewList.highlightRow(i);
-			wordsToReview.add(problematicWordsDisplayer.createWordRow(listWord,
-					wordsToReviewList.getNumberOfWords() - 1));
+			this.notReviewedWords.add(problematicWordsDisplayer
+					.createWordRow(listWord,
+							wordsToReviewList.getNumberOfWords() - 1));
 			i++;
 		}
 		nextWordToReview = i;
@@ -285,4 +301,26 @@ public class ProblematicWordsController<Word extends ListElement>
 		return wordsToReviewList.getWordInRow(nextWordToReview);
 	}
 
+	@Override
+	public void update(Word word,
+			ListElementModificationType modificationType) {
+		wordsToReviewList.update(word, modificationType);
+		if (modificationType.equals(ListElementModificationType.DELETE)) {
+			if (wordsToReviewList.getWords().contains(word)) {
+				removeFromNotReviewed(word);
+				if (nextWordToReview >= notReviewedWords.size()) {
+					nextWordToReview = 0;
+				}
+				goToNextResource();
+			}
+
+		}
+	}
+
+	private void removeFromNotReviewed(Word word) {
+		notReviewedWords.removeIf(
+				notReviewedWord -> notReviewedWord.getListElement()
+						.equals(word));
+
+	}
 }

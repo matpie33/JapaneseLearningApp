@@ -11,6 +11,7 @@ import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listElements.RepeatingData;
+import com.kanji.list.listObserver.ListObserver;
 import com.kanji.list.listRows.RowInJapaneseWordInformations;
 import com.kanji.list.listRows.RowInKanjiInformations;
 import com.kanji.list.listRows.RowInRepeatingList;
@@ -44,7 +45,8 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
 
-public class ApplicationController implements ApplicationStateManager {
+public class ApplicationController implements ApplicationStateManager,
+		ListObserver {
 
 	private RepeatingWordsController repeatingWordsPanelController;
 	private ApplicationWindow parent;
@@ -104,6 +106,9 @@ public class ApplicationController implements ApplicationStateManager {
 		problematicKanjisController = new ProblematicWordsController<>(parent);
 		problematicJapaneseWordsController = new ProblematicWordsController<>(
 				parent);
+		getJapaneseWords().addObserver(problematicJapaneseWordsController);
+		getJapaneseWords().addObserver(this);
+		getKanjiList().addObserver(problematicKanjisController);
 		problematicKanjiDisplayer = new ProblematicKanjiDisplayer(parent,
 				problematicKanjisController);
 		problematicJapaneseWordsDisplayer = new ProblematicJapaneseWordsDisplayer(
@@ -700,4 +705,19 @@ public class ApplicationController implements ApplicationStateManager {
 				TypeOfWordForRepeating.JAPANESE_WORDS);
 	}
 
+	@Override
+	public void update(ListElement changedListElement,
+			ListElementModificationType modificationType) {
+		if (changedListElement.getClass().equals(Kanji.class)){
+
+		}
+		else{
+			if (modificationType.equals(ListElementModificationType.DELETE)){
+				getProblematicJapaneseWords().remove(changedListElement);
+				parent.updateProblematicWordsAmount();
+
+			}
+
+		}
+	}
 }

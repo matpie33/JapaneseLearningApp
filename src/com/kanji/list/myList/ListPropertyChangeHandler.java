@@ -1,6 +1,7 @@
 package com.kanji.list.myList;
 
 import com.kanji.constants.enums.InputGoal;
+import com.kanji.constants.enums.ListElementModificationType;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.ListElement;
@@ -128,7 +129,7 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 		}
 		else {
 			previousValueOfTextInput = null;
-			list.updateWords(propertyHolder);
+			list.updateWords(propertyHolder, ListElementModificationType.EDIT);
 			list.save();
 			return true;
 		}
