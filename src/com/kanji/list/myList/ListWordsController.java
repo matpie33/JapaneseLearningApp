@@ -465,6 +465,9 @@ public class ListWordsController<Word extends ListElement> {
 
 	public void repaint(Word word) {
 		ListRow<Word> listRow = findListRowContainingWord(word);
+		if (listRow == null){
+			return;
+		}
 		MainPanel panel = listPanelCreator
 				.repaintWord(word, listRow.getRowNumber(), listRow.getJPanel());
 		listRow.setPanel(panel);
