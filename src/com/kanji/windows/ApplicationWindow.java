@@ -221,6 +221,7 @@ public class ApplicationWindow extends DialogWindow {
 	public void showProblematicWordsDialog() {
 		//TODO when no words to review for given list exist, null pointer is thrown
 
+
 		AbstractPanelWithHotkeysInfo problematicWordsPanel = activeProblematicWordsController
 				.getPanel();
 		if (!problematicWordsPanel.isReady()) {
@@ -230,10 +231,11 @@ public class ApplicationWindow extends DialogWindow {
 					.getPanelName(), problematicWordsPanel);
 			//TODO the approach with enum (application panels) is not extensible
 		}
+		showPanel(ApplicationPanels.PROBLEMATIC_WORDS_PANEL);
 		this.problematicWordsPanel.removeAll();
 		JPanel panel = problematicWordsPanel.createPanel();
 		this.problematicWordsPanel.add(panel);
-		showPanel(ApplicationPanels.PROBLEMATIC_WORDS_PANEL);
+
 		applicationController
 				.switchStateManager(activeProblematicWordsController);
 
