@@ -97,7 +97,7 @@ public class RepeatingJapaneseWordsDisplayer
 
 	@Override
 	public JPanel getFullInformationPanel() {
-		return fullWordInformationPanel.getPanel();
+		return fullWordInformationPanel.getRootPanel();
 	}
 
 	@Override
