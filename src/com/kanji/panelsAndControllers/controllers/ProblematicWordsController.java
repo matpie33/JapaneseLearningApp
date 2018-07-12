@@ -306,19 +306,20 @@ public class ProblematicWordsController<Word extends ListElement>
 			ListElementModificationType modificationType) {
 		wordsToReviewList.update(word, modificationType);
 		if (modificationType.equals(ListElementModificationType.DELETE)) {
-			if (wordsToReviewList.getWords().contains(word)) {
-				removeFromNotReviewed(word);
-				if (nextWordToReview >= notReviewedWords.size()) {
-					nextWordToReview = 0;
-				}
+			boolean removed = removeFromNotReviewed(word);
+			if (removed && nextWordToReview >= notReviewedWords.size()) {
+				nextWordToReview = 0;
+			}
+			if (removed){
 				goToNextResource();
 			}
 
 		}
+
 	}
 
-	private void removeFromNotReviewed(Word word) {
-		notReviewedWords.removeIf(
+	private boolean removeFromNotReviewed(Word word) {
+		return notReviewedWords.removeIf(
 				notReviewedWord -> notReviewedWord.getListElement()
 						.equals(word));
 
