@@ -29,6 +29,15 @@ public class FoundWordOutsideRangeStrategy implements LoadWordsForFoundWord {
 
 	@Override
 	public void execute() {
-		listWordsController.showWordsStartingFromRow(foundWordRowNumber);
+		int indexOfFirstWordToLoad;
+		int lastWordMinusMaximumWordsToShow =
+				listWordsController.getNumberOfWords() - maximumWordsDisplayed;
+		if (foundWordRowNumber < lastWordMinusMaximumWordsToShow) {
+			indexOfFirstWordToLoad = foundWordRowNumber;
+		}
+		else {
+			indexOfFirstWordToLoad = lastWordMinusMaximumWordsToShow;
+		}
+		listWordsController.showWordsStartingFromRow(indexOfFirstWordToLoad);
 	}
 }

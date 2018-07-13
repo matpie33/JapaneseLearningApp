@@ -131,6 +131,9 @@ public class ListWordsController<Word extends ListElement> {
 	public void remove(Word word) {
 		observers.forEach(list -> list.update(word, ListElementModificationType.DELETE));
 		ListRow<Word> listRow = findListRowContainingWord(word);
+		if (listRow == null){
+			return;
+		}
 		listPanelCreator.removeRow(listRow.getJPanel());
 		int indexOfRemovedWord = allWordsToRowNumberMap.indexOf(listRow);
 		allWordsToRowNumberMap.remove(listRow);
