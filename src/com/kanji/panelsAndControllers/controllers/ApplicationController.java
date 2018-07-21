@@ -349,12 +349,7 @@ public class ApplicationController
 		parent.changeSaveStatus(SavingStatus.NO_CHANGES);
 
 		parent.setPanel(parent.getStartingPanel());
-		savingInformation.getJapaneseWords().forEach(word -> {
-			if (problematicJapaneseWords.isEmpty()) {
-				savingInformation.getJapaneseWords().remove(word);
-			}
-
-		});
+		savingInformation.getJapaneseWords().removeIf(JapaneseWord::isEmpty);
 		LoadingPanel loadingPanel = parent.showProgressDialog();
 		LoadingProjectWorker loadingProjectWorker = new LoadingProjectWorker(
 				parent, loadingPanel);
