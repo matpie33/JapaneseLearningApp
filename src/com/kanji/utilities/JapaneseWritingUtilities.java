@@ -6,6 +6,10 @@ import java.util.Set;
 
 public class JapaneseWritingUtilities {
 
+	public static boolean isKanaEmpty (String kanaValue){
+		return isInputEmpty(kanaValue, true);
+	}
+
 	public static boolean isInputEmpty(String inputText, boolean isKana) {
 		String defaultValue = getDefaultValueForWriting(isKana);
 		return inputText.isEmpty() || inputText.equals(defaultValue);

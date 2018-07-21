@@ -43,73 +43,12 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 	@Override
 	public boolean isPropertyFound(JapaneseWriting searchedWriting,
 			JapaneseWord word) {
-		//TODO try to define the logic in japanese writing equals method/
-		// otherwise we duplicate code
-		//the only problem is how to put there boolean of whether we add or search for word
 		boolean japaneseWordContainsTheseWritings = false;
 		for (JapaneseWriting writing : word.getWritings()) {
-			Set<String> searchedKanjiWritings = searchedWriting
-					.getKanjiWritings();
-			String searchedKanaWriting = searchedWriting.getKanaWriting();
-			if (kanaWritingsAreEqualAndKanjiWritingsContainAllOtherKanjiWritings(
-					searchedKanaWriting, writing.getKanaWriting(),
-					searchedKanjiWritings, writing.getKanjiWritings())) {
-				japaneseWordContainsTheseWritings = true;
-				break;
-			}
-		}
-		if (!japaneseWordContainsTheseWritings) {
-			return false;
+			return areWritingsEqual(writing, searchedWriting, inputGoal);
 		}
 
 		return true;
-	}
-
-	private boolean kanaWritingsAreEqualAndKanjiWritingsContainAllOtherKanjiWritings(
-			String searchedKana, String existingWordKana,
-			Set<String> searchedKanji, Set<String> existingKanjiWritings) {
-
-		if (JapaneseWritingUtilities.isInputEmpty(searchedKana, true)) {
-			return areKanjisSame(searchedKanji, existingKanjiWritings);
-		}
-		else {
-			if (searchedKana.equals(existingWordKana)) {
-				return areKanjisSame(searchedKanji, existingKanjiWritings);
-			}
-			else {
-				return false;
-			}
-		}
-
-	}
-
-	private boolean areKanjisSame(Set<String> searchedKanji,
-			Set<String> existingKanjiWritings) {
-
-		if (inputGoal.equals(InputGoal.SEARCH)) {
-			if (JapaneseWritingUtilities.areKanjiWritingsEmpty(searchedKanji)) {
-				return true;
-			}
-			else {
-				return existingKanjiWritings.containsAll(searchedKanji);
-			}
-		}
-		else {
-			if (JapaneseWritingUtilities
-					.areKanjiWritingsEmpty(existingKanjiWritings)) {
-				return true;
-			}
-			else if (!JapaneseWritingUtilities
-					.areKanjiWritingsEmpty(existingKanjiWritings)
-					&& JapaneseWritingUtilities
-					.areKanjiWritingsEmpty(searchedKanji)) {
-				return false;
-			}
-			else {
-				return existingKanjiWritings.containsAll(searchedKanji)
-						|| searchedKanji.containsAll(existingKanjiWritings);
-			}
-		}
 	}
 
 	@Override
@@ -214,4 +153,72 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 				.format(ExceptionsMessages.DUPLICATED_KANJI_WRITING_WITHIN_ROW,
 						writing.getDisplayedText());
 	}
+
+	public static boolean areWritingsEqual(JapaneseWriting searchedWriting,
+			JapaneseWriting writing, InputGoal inputGoal) {
+		Set<String> searchedKanjiWritings = searchedWriting.getKanjiWritings();
+		String searchedKanaWriting = searchedWriting.getKanaWriting();
+		return kanaWritingsAreEqualAndKanjiWritingsContainAllOtherKanjiWritings(
+				searchedKanaWriting, writing.getKanaWriting(),
+				searchedKanjiWritings, writing.getKanjiWritings(), inputGoal);
+
+	}
+
+	private static boolean kanaWritingsAreEqualAndKanjiWritingsContainAllOtherKanjiWritings(
+			String searchedKana, String existingWordKana,
+			Set<String> searchedKanji, Set<String> existingKanjiWritings,
+			InputGoal inputGoal) {
+
+		if (JapaneseWritingUtilities.isKanaEmpty(searchedKana)
+				&& JapaneseWritingUtilities.isKanaEmpty(existingWordKana)) {
+			return false;
+		}
+
+		if (JapaneseWritingUtilities.isInputEmpty(searchedKana, true)) {
+			return areKanjisSame(searchedKanji, existingKanjiWritings,
+					inputGoal);
+		}
+		else {
+			if (searchedKana.equals(existingWordKana)) {
+				return areKanjisSame(searchedKanji, existingKanjiWritings,
+						inputGoal);
+			}
+			else {
+				return false;
+			}
+		}
+
+	}
+
+	private static boolean areKanjisSame(Set<String> searchedKanji,
+			Set<String> existingKanjiWritings, InputGoal inputGoal) {
+
+		if (inputGoal.equals(InputGoal.SEARCH)) {
+			if (JapaneseWritingUtilities.areKanjiWritingsEmpty(searchedKanji)) {
+				return true;
+			}
+			else {
+				return existingKanjiWritings.containsAll(searchedKanji);
+			}
+		}
+		else {
+			if (JapaneseWritingUtilities
+					.areKanjiWritingsEmpty(existingKanjiWritings)
+					&& JapaneseWritingUtilities
+					.areKanjiWritingsEmpty(searchedKanji)) {
+				return true;
+			}
+			else if (JapaneseWritingUtilities
+					.areKanjiWritingsEmpty(existingKanjiWritings)
+					!= JapaneseWritingUtilities
+					.areKanjiWritingsEmpty(searchedKanji)) {
+				return false;
+			}
+			else {
+				return existingKanjiWritings.containsAll(searchedKanji)
+						|| searchedKanji.containsAll(existingKanjiWritings);
+			}
+		}
+	}
+
 }

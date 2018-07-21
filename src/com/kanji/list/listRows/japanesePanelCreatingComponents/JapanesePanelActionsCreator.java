@@ -108,7 +108,7 @@ public class JapanesePanelActionsCreator {
 			JapaneseWord word, InputGoal inputGoal) {
 
 		for (Pair<JapaneseWord, JapaneseWordChecker> checkerForJapaneseWord : checkersForJapaneseWords) {
-			if (checkerForJapaneseWord.getLeft().containsWriting(writing)) {
+			if (checkerForJapaneseWord.getLeft().equals(word)) {
 				return checkerForJapaneseWord.getRight();
 			}
 		}

@@ -30,14 +30,16 @@ public class JapaneseWordChecker implements
 		remember(kanaInput, writingContainingThisKana, checkerForWriting);
 	}
 
-	public Pair <JapaneseWriting, JapaneseWordWritingsChecker> getWritingForInput(JTextComponent input) {
+	public Pair<JapaneseWriting, JapaneseWordWritingsChecker> getWritingForInput(
+			JTextComponent input) {
 		for (Map.Entry<JTextComponent, JapaneseWriting> inputWithWriting : inputToWritingMap
 				.entrySet()) {
 			if (inputWithWriting.getKey().equals(input)) {
 				return new Pair<>(inputWithWriting.getValue(),
 						writingToCheckerMap.get(inputWithWriting.getValue()));
 			}
-		} return null;
+		}
+		return null;
 	}
 
 	private void remember(JTextComponent input,
@@ -74,13 +76,16 @@ public class JapaneseWordChecker implements
 	@Override
 	public boolean isPropertyFound(Set<JapaneseWriting> property,
 			JapaneseWord japaneseWord) {
-		for (JapaneseWriting writing : property) {
-			if (!writingToCheckerMap.get(writing).
-					isPropertyFound(writing, japaneseWord)) {
-				return false;
+		for (JapaneseWriting writing : japaneseWord.getWritings()) {
+			for (JapaneseWriting propertyWriting : property) {
+				if (JapaneseWordWritingsChecker
+						.areWritingsEqual(propertyWriting, writing,
+								inputGoal)) {
+					return true;
+				}
 			}
 		}
-		return true;
+		return false;
 	}
 
 	@Override

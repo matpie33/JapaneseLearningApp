@@ -1,5 +1,7 @@
 package com.kanji.list.listElements;
 
+import com.kanji.constants.enums.InputGoal;
+import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordWritingsChecker;
 import com.kanji.utilities.JapaneseWritingUtilities;
 import com.kanji.utilities.StringUtilities;
 
@@ -58,13 +60,9 @@ public class JapaneseWriting implements ListElement, Serializable {
 			return false;
 		}
 		JapaneseWriting otherWriting = (JapaneseWriting) element;
-		return !JapaneseWritingUtilities.isInputEmpty(getKanaWriting(), true)
-				&& otherWriting.getKanaWriting().equals(getKanaWriting())
-				&& getKanjiWritings()
-				.containsAll(otherWriting.getKanjiWritings());
+		return JapaneseWordWritingsChecker
+				.areWritingsEqual(otherWriting, this, InputGoal.ADD);
 	}
-
-
 
 	@Override
 	public String getDisplayedText() {
