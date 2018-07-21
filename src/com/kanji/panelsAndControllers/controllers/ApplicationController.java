@@ -45,8 +45,8 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
 
-public class ApplicationController implements ApplicationStateManager,
-		ListObserver {
+public class ApplicationController
+		implements ApplicationStateManager, ListObserver {
 
 	private RepeatingWordsController repeatingWordsPanelController;
 	private ApplicationWindow parent;
@@ -349,7 +349,12 @@ public class ApplicationController implements ApplicationStateManager,
 		parent.changeSaveStatus(SavingStatus.NO_CHANGES);
 
 		parent.setPanel(parent.getStartingPanel());
+		savingInformation.getJapaneseWords().forEach(word -> {
+			if (problematicJapaneseWords.isEmpty()) {
+				savingInformation.getJapaneseWords().remove(word);
+			}
 
+		});
 		LoadingPanel loadingPanel = parent.showProgressDialog();
 		LoadingProjectWorker loadingProjectWorker = new LoadingProjectWorker(
 				parent, loadingPanel);
@@ -708,11 +713,11 @@ public class ApplicationController implements ApplicationStateManager,
 	@Override
 	public void update(ListElement changedListElement,
 			ListElementModificationType modificationType) {
-		if (changedListElement.getClass().equals(Kanji.class)){
+		if (changedListElement.getClass().equals(Kanji.class)) {
 
 		}
-		else{
-			if (modificationType.equals(ListElementModificationType.DELETE)){
+		else {
+			if (modificationType.equals(ListElementModificationType.DELETE)) {
 				getProblematicJapaneseWords().remove(changedListElement);
 				parent.updateProblematicWordsAmount();
 
