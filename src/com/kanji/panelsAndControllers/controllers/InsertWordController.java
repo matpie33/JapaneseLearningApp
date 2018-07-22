@@ -10,6 +10,7 @@ import com.kanji.utilities.ThreadUtilities;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
@@ -67,8 +68,14 @@ public class InsertWordController<Word extends ListElement>
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				validateFocusedElement();
-				addingWordWasRequested = true;
+				Component focusOwner = FocusManager.getCurrentManager().getFocusOwner();
+				if (focusOwner instanceof JTextComponent){
+					validateFocusedElement();
+					addingWordWasRequested = true;
+				}
+				else{
+					addWord();
+				}
 			}
 		};
 
@@ -83,9 +90,13 @@ public class InsertWordController<Word extends ListElement>
 	public <WordProperty> void inputValidated(
 			PropertyPostValidationData<WordProperty, Word> postValidationData) {
 		if (addingWordWasRequested && postValidationData.isValid()) {
-			addWordIfItsNew(insertWordPanel.getWord());
-			insertWordPanel.reinitializePanel();
+			addWord();
 		}
 		addingWordWasRequested = false;
+	}
+
+	private void addWord() {
+		addWordIfItsNew(insertWordPanel.getWord());
+		insertWordPanel.reinitializePanel();
 	}
 }
