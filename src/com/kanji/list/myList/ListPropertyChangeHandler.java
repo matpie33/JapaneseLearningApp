@@ -129,7 +129,7 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 		}
 		else {
 			previousValueOfTextInput = null;
-			list.updateWords(propertyHolder, ListElementModificationType.EDIT);
+			list.updateObservers(propertyHolder, ListElementModificationType.EDIT);
 			list.save();
 			return true;
 		}

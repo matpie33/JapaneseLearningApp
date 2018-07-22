@@ -1,9 +1,6 @@
 package com.kanji.list.listRows.japanesePanelCreatingComponents;
 
-import com.kanji.constants.enums.AdditionalInformationTag;
-import com.kanji.constants.enums.InputGoal;
-import com.kanji.constants.enums.PartOfSpeech;
-import com.kanji.constants.enums.WordSearchOptions;
+import com.kanji.constants.enums.*;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordChecker;
@@ -208,7 +205,7 @@ public class JapanesePanelActionsCreator {
 
 	public JComboBox changeAdditionalInformationOnComboboxChange(
 			JComboBox comboBox, JapaneseWord japaneseWord) {
-		SwingUtilities.invokeLater(()->{
+		SwingUtilities.invokeLater(() -> {
 			comboBox.addItemListener(new ItemListener() {
 				@Override
 				public void itemStateChanged(ItemEvent e) {
@@ -217,8 +214,11 @@ public class JapanesePanelActionsCreator {
 					}
 					String newValue = (String) comboBox.getSelectedItem();
 					japaneseWord.getAdditionalInformation().setValue(newValue);
-					ThreadUtilities
-							.callOnOtherThread(applicationController::saveProject);
+					ThreadUtilities.callOnOtherThread(
+							applicationController::saveProject);
+					applicationController.getJapaneseWords()
+							.updateObservers(japaneseWord,
+									ListElementModificationType.EDIT);
 				}
 			});
 		});
@@ -268,6 +268,9 @@ public class JapanesePanelActionsCreator {
 							applicationController::saveProject);
 
 				}
+				applicationController.getJapaneseWords()
+						.updateObservers(japaneseWord,
+								ListElementModificationType.EDIT);
 			}
 		});
 		return partOfSpeechCombobox;

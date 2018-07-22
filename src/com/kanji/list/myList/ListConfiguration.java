@@ -1,8 +1,9 @@
 package com.kanji.list.myList;
 
 import com.guimaker.enums.PanelDisplayMode;
-import com.guimaker.inputSelection.InputSelectionManager;
 import com.guimaker.inputSelection.ListInputsSelectionManager;
+import com.kanji.list.listElements.ListElement;
+import com.kanji.utilities.Pair;
 
 import javax.swing.*;
 
@@ -17,6 +18,7 @@ public class ListConfiguration {
 	private PanelDisplayMode displayMode = PanelDisplayMode.EDIT;
 	private AbstractButton[] additionalNavigationButtons = new AbstractButton[] {};
 	private ListInputsSelectionManager allInputsSelectionManager;
+	private Pair<MyList, ListElement> parentListAndWordContainingThisList;
 
 	public PanelDisplayMode getDisplayMode() {
 		return displayMode;
@@ -24,6 +26,17 @@ public class ListConfiguration {
 
 	public ListConfiguration displayMode(PanelDisplayMode displayMode) {
 		this.displayMode = displayMode;
+		return this;
+	}
+
+	public Pair<MyList, ListElement> getParentListAndWordContainingThisList() {
+		return parentListAndWordContainingThisList;
+	}
+
+	public ListConfiguration parentListAndWordContainingThisList(MyList parentList,
+			ListElement parentWordContainingThisList) {
+		parentListAndWordContainingThisList = new Pair<>(parentList,
+				parentWordContainingThisList);
 		return this;
 	}
 

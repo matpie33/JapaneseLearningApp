@@ -20,6 +20,7 @@ import com.kanji.model.WordInMyListExistence;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.range.Range;
 import com.kanji.swingWorkers.ProgressUpdater;
+import com.kanji.utilities.Pair;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -38,12 +39,15 @@ public class ListWordsController<Word extends ListElement> {
 	private List<SwitchBetweenInputsFailListener> switchBetweenInputsFailListeners = new ArrayList<>();
 	private ProgressUpdater progressUpdater;
 	private List<ListObserver<Word>> observers = new ArrayList<>();
+	private Pair<MyList, ListElement> parentListAndWord;
 	//TODO switchBetweenInputsFailListeners should be deleted from here
 
 	public ListWordsController(ListConfiguration listConfiguration,
 			ListRowCreator<Word> listRowCreator, String title,
 			ApplicationController applicationController,
 			ListElementInitializer<Word> wordInitializer) {
+		parentListAndWord = listConfiguration
+				.getParentListAndWordContainingThisList();
 		progressUpdater = new ProgressUpdater();
 		this.applicationController = applicationController;
 		listPanelCreator = new ListPanelCreator<>(listConfiguration,
@@ -129,9 +133,22 @@ public class ListWordsController<Word extends ListElement> {
 	}
 
 	public void remove(Word word) {
-		observers.forEach(list -> list.update(word, ListElementModificationType.DELETE));
+		if (!observers.isEmpty() && parentListAndWord != null) {
+			throw new IllegalStateException(
+					"A child list cannot have observers, "
+							+ "only parent list is allowed to have them");
+		}
+		if (parentListAndWord != null) {
+			parentListAndWord.getLeft()
+					.updateObservers(parentListAndWord.getRight(), ListElementModificationType.EDIT);
+		}
+		else {
+			observers.forEach(list -> list
+					.update(word, ListElementModificationType.DELETE));
+		}
+
 		ListRow<Word> listRow = findListRowContainingWord(word);
-		if (listRow == null){
+		if (listRow == null) {
 			return;
 		}
 		listPanelCreator.removeRow(listRow.getJPanel());
@@ -360,6 +377,10 @@ public class ListWordsController<Word extends ListElement> {
 	//TODO not the best idea to pass the boolean "is for search panel" - maybe keep it as field
 	public void addNewWord(InputGoal inputGoal) {
 		add(wordInitializer.initializeElement(), inputGoal, true);
+		if (parentListAndWord != null) {
+			parentListAndWord.getLeft()
+					.updateObservers(parentListAndWord.getRight(), ListElementModificationType.EDIT);
+		}
 	}
 
 	public MainPanel getPanelWithSelectedInput() {
@@ -461,14 +482,14 @@ public class ListWordsController<Word extends ListElement> {
 		observers.add(listObserver);
 	}
 
-	public void updateObservers(Word word, ListElementModificationType modificationType) {
-		observers.forEach(observer -> observer.update(word,
-				modificationType));
+	public void updateObservers(Word word,
+			ListElementModificationType modificationType) {
+		observers.forEach(observer -> observer.update(word, modificationType));
 	}
 
 	public void repaint(Word word) {
 		ListRow<Word> listRow = findListRowContainingWord(word);
-		if (listRow == null){
+		if (listRow == null) {
 			return;
 		}
 		MainPanel panel = listPanelCreator

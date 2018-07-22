@@ -123,7 +123,6 @@ public class JapaneseWordPanelCreator
 				.createComboboxForPartOfSpeech(japaneseWord.getPartOfSpeech(),
 						additionalInformationLabel, additionalInformationValue,
 						japaneseWord);
-
 		lastWritingsListCreated = createWritingsList(japaneseWord, inputGoal,
 				inheritScrollBar);
 		writingsLabel = GuiElementsCreator.createLabel(
@@ -142,7 +141,7 @@ public class JapaneseWordPanelCreator
 	private void addActions(JapaneseWord japaneseWord, InputGoal inputGoal) {
 		JapanesePanelActionsCreator actionCreatingService = japanesePanelComponentsStore
 				.getActionCreator();
-		if (displayMode.equals(PanelDisplayMode.VIEW)){
+		if (displayMode.equals(PanelDisplayMode.VIEW)) {
 			return;
 		}
 		actionCreatingService
@@ -220,6 +219,9 @@ public class JapaneseWordPanelCreator
 						.displayMode(displayMode)
 						.inheritScrollbar(inheritScrollBar)
 						.enableWordSearching(false)
+						.parentListAndWordContainingThisList(
+								applicationController.getJapaneseWords(),
+								japaneseWord)
 						.showButtonsLoadNextPreviousWords(false)
 						.scrollBarFitsContent(false)
 						.allInputsSelectionManager(listInputsSelectionManager)

@@ -65,9 +65,11 @@ public class JapanesePanelElementsCreator {
 						applicationController, displayMode), "",
 				new ListConfiguration().showButtonsLoadNextPreviousWords(false)
 						.enableWordAdding(false).enableWordSearching(false)
-						.scrollBarFitsContent(true).inheritScrollbar(true),
-				() -> WordParticlesData
-						.createParticleNotIncludedInWord(japaneseWord));
+						.scrollBarFitsContent(true).inheritScrollbar(true)
+						.parentListAndWordContainingThisList(
+								applicationController.getJapaneseWords(),
+								japaneseWord), () -> WordParticlesData
+				.createParticleNotIncludedInWord(japaneseWord));
 		if (japaneseWord.getTakenParticles() != null) {
 			japaneseWord.getTakenParticles().forEach(particlesList::addWord);
 		}

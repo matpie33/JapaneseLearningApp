@@ -375,7 +375,7 @@ public class MyList<Word extends ListElement>  implements ListObserver<Word> {
 		listController.remove(word);
 	}
 
-	public void updateWords(Word word, ListElementModificationType modificationType) {
+	public void updateObservers(Word word, ListElementModificationType modificationType) {
 		listController.updateObservers(word, modificationType);
 	}
 

@@ -1,6 +1,7 @@
 package com.kanji.japaneseParticlesPanel;
 
 import com.kanji.constants.enums.JapaneseParticle;
+import com.kanji.constants.enums.ListElementModificationType;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.model.WordParticlesData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
@@ -61,8 +62,11 @@ public class JapaneseParticleActionsCreator {
 						ThreadUtilities.callOnOtherThread(() -> {
 							applicationController.saveProject();
 						});
-
 					}
+					applicationController.getJapaneseWords()
+							.updateObservers(japaneseWord,
+									ListElementModificationType.EDIT);
+
 				}
 			});
 		});
