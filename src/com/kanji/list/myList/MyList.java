@@ -10,6 +10,9 @@ import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listElements.ListElementInitializer;
 import com.kanji.list.listObserver.ListObserver;
+import com.kanji.list.listObserver.ObservableList;
+import com.kanji.list.listeners.InputValidationListener;
+import com.kanji.model.PropertyPostValidationData;
 import com.kanji.model.WordInMyListExistence;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.swingWorkers.ProgressUpdater;
@@ -19,7 +22,9 @@ import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.util.List;
 
-public class MyList<Word extends ListElement>  implements ListObserver<Word> {
+public class MyList<Word extends ListElement>
+		implements ObservableList<Word>, InputValidationListener<Word> {
+
 	private DialogWindow parent;
 	private ApplicationController applicationController;
 	private ListWordsController<Word> listController;
@@ -37,7 +42,8 @@ public class MyList<Word extends ListElement>  implements ListObserver<Word> {
 		this.applicationController = applicationController;
 		this.parent = parentDialog;
 		listController = new ListWordsController<>(listConfiguration,
-				listRowCreator, title, applicationController, wordInitializer);
+				listRowCreator, title, applicationController, wordInitializer,
+				this);
 		this.wordInitializer = wordInitializer;
 		this.title = title;
 	}
@@ -50,7 +56,8 @@ public class MyList<Word extends ListElement>  implements ListObserver<Word> {
 				new ListConfiguration(), wordInitializer);
 	}
 
-	public void addObserver(ListObserver<Word> listObserver){
+	@Override
+	public void addListObserver(ListObserver<Word> listObserver) {
 		listController.addObserver(listObserver);
 	}
 
@@ -296,7 +303,7 @@ public class MyList<Word extends ListElement>  implements ListObserver<Word> {
 	}
 
 	public int get1BasedRowNumberOfWord(Word word) {
-		return getWords().indexOf(word) + 1;
+		return listController.get0BasedRowNumberOfWord(word) + 1;
 	}
 
 	public WordInMyListExistence<Word> isWordDefined(Word word) {
@@ -375,18 +382,26 @@ public class MyList<Word extends ListElement>  implements ListObserver<Word> {
 		listController.remove(word);
 	}
 
-	public void updateObservers(Word word, ListElementModificationType modificationType) {
+	public void updateObservers(Word word,
+			ListElementModificationType modificationType) {
+
 		listController.updateObservers(word, modificationType);
 	}
 
-	@Override
-	public void update(Word word, ListElementModificationType modificationType) {
+	public void update(Word word,
+			ListElementModificationType modificationType) {
 		if (modificationType.equals(ListElementModificationType.EDIT)) {
 			listController.repaint(word);
 		}
-		else{
+		else {
 			listController.remove(word);
 		}
 
+	}
+
+	@Override
+	public <WordProperty> void inputValidated(
+			PropertyPostValidationData<WordProperty, Word> postValidationData) {
+		listController.inputValidated(postValidationData);
 	}
 }

@@ -4,6 +4,7 @@ import com.guimaker.enums.MoveDirection;
 import com.guimaker.utilities.KeyModifiers;
 import com.kanji.constants.enums.ApplicationPanels;
 import com.kanji.constants.enums.ApplicationSaveableState;
+import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.ListElementModificationType;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Prompts;
@@ -26,6 +27,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -40,6 +42,7 @@ public class ProblematicWordsController<Word extends ListElement>
 	private ApplicationWindow applicationWindow;
 	private ProblematicWordsDisplayer<Word> problematicWordsDisplayer;
 	private boolean wordsReviewed = false;
+	private Set<ListObserver<Word>> listObservers = new HashSet<>();
 
 	public ProblematicWordsController(ApplicationWindow applicationWindow) {
 		applicationController = applicationWindow.getApplicationController();
@@ -89,7 +92,8 @@ public class ProblematicWordsController<Word extends ListElement>
 				.next().getClass();
 		if (wordClass.equals(Kanji.class)) {
 			applicationController.getKanjiList()
-					.addObserver((ListObserver<Kanji>) wordsToReviewList);
+					.addListObserver((ListObserver<Kanji>) wordsToReviewList);
+
 		}
 
 		if (notReviewedWords.isEmpty()) {
@@ -103,7 +107,8 @@ public class ProblematicWordsController<Word extends ListElement>
 	}
 
 	private void addWord(Word word) {
-		boolean addedToList = wordsToReviewList.addWord(word);
+		boolean addedToList = wordsToReviewList
+				.addWord(word, InputGoal.NO_INPUT);
 		if (addedToList) {
 			notReviewedWords.add(problematicWordsDisplayer.createWordRow(word,
 					wordsToReviewList.getNumberOfWords() - 1));
@@ -310,10 +315,16 @@ public class ProblematicWordsController<Word extends ListElement>
 			if (removed && nextWordToReview >= notReviewedWords.size()) {
 				nextWordToReview = 0;
 			}
-			if (removed){
+			if (removed) {
 				goToNextResource();
 			}
 
+		}
+		else {
+			if (!notReviewedWords.contains(word)) {
+				wordsToReviewList.highlightRow(
+						wordsToReviewList.get1BasedRowNumberOfWord(word) - 1);
+			}
 		}
 
 	}
@@ -322,6 +333,6 @@ public class ProblematicWordsController<Word extends ListElement>
 		return notReviewedWords.removeIf(
 				notReviewedWord -> notReviewedWord.getListElement()
 						.equals(word));
-
 	}
+
 }

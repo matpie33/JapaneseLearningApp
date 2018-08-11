@@ -6,41 +6,40 @@ import com.kanji.list.listRows.japanesePanelCreatingService.JapanesePanelCreatin
 import com.kanji.list.listRows.japanesePanelCreatingService.JapanesePanelInEditModeCreator;
 import com.kanji.list.listRows.japanesePanelCreatingService.JapanesePanelInViewModeCreator;
 import com.kanji.list.listeners.InputValidationListener;
+import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.windows.DialogWindow;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public class JapanesePanelComponentsStore {
-	private JapanesePanelCreatingService panelCreatingService;
 	private JapanesePanelElementsCreator elementsMaker;
 	private JapanesePanelActionsCreator actionsCreator;
+	private Map<PanelDisplayMode, JapanesePanelCreatingService> panelCreatingServicesForDisplayModes = new HashMap<>();
 
 	public JapanesePanelComponentsStore(
 			ApplicationController applicationController,
-			DialogWindow parentDialog, PanelDisplayMode displayMode) {
+			DialogWindow parentDialog) {
 		actionsCreator = new JapanesePanelActionsCreator(parentDialog,
 				applicationController);
 		elementsMaker = new JapanesePanelElementsCreator(actionsCreator,
 				applicationController, parentDialog);
-		initializePanelRowService(displayMode);
+		initializePanelRowServices();
 	}
 
-	private void initializePanelRowService(PanelDisplayMode panelDisplayMode) {
-		switch (panelDisplayMode) {
-		case EDIT:
-			panelCreatingService = new JapanesePanelInEditModeCreator(
-					elementsMaker);
-			break;
-		case VIEW:
-			panelCreatingService = new JapanesePanelInViewModeCreator(
-					elementsMaker, actionsCreator);
-			break;
-		}
+	private void initializePanelRowServices() {
+		panelCreatingServicesForDisplayModes.put(PanelDisplayMode.EDIT,
+				new JapanesePanelInEditModeCreator(elementsMaker));
+		panelCreatingServicesForDisplayModes.put(PanelDisplayMode.VIEW,
+				new JapanesePanelInViewModeCreator(elementsMaker,
+						actionsCreator));
 	}
 
-	public JapanesePanelCreatingService getPanelCreatingService() {
-		return panelCreatingService;
+	public JapanesePanelCreatingService getPanelCreatingService(
+			PanelDisplayMode panelDisplayMode) {
+		return panelCreatingServicesForDisplayModes.get(panelDisplayMode);
 	}
 
 	public JapanesePanelElementsCreator getElementsCreator() {
@@ -55,4 +54,9 @@ public class JapanesePanelComponentsStore {
 			Set<InputValidationListener<JapaneseWord>> validationListeners) {
 		elementsMaker.addValidationListeners(validationListeners);
 	}
+
+	public void setWordsList(MyList<JapaneseWord> list){
+		actionsCreator.setWordsList(list);
+	}
+
 }

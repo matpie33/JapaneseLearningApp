@@ -1,6 +1,7 @@
 package com.kanji.list.listRows;
 
 import com.guimaker.panels.MainPanel;
+import com.kanji.constants.Colors;
 import com.kanji.constants.enums.InputGoal;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
@@ -39,20 +40,19 @@ public class RowInJapaneseWordInformations
 		MainPanel panel = new MainPanel(null);
 		JLabel rowNumberLabel = commonListElements.getRowNumberLabel();
 		JapaneseWordPanelCreator panelCreatorToUse;
-		if (commonListElements.isForSingleRowOnly()){
-			panelCreatorToUse = searchOrAddDialogPanelCreator.orElse(
-					newWordsPanelCreator.copy());
+		if (commonListElements.isForSingleRowOnly()) {
+			panelCreatorToUse = searchOrAddDialogPanelCreator
+					.orElse(newWordsPanelCreator.copy());
 		}
-		else{
+		else {
 			panelCreatorToUse = newWordsPanelCreator;
 		}
-		panelCreatorToUse.addValidationListeners (validationListeners);
+		panelCreatorToUse.addValidationListeners(validationListeners);
 		panelCreatorToUse.setRowNumberLabel(rowNumberLabel);
-		panelCreatorToUse
-				.setLabelsColor(commonListElements.getLabelsColor());
+		panelCreatorToUse.setLabelsColor(commonListElements.getLabelsColor());
 		ListRowData<JapaneseWord> rowData = panelCreatorToUse
-				.addJapanesePanelToExistingPanel(panel, japaneseWord,
-						inputGoal, commonListElements,
+				.addJapanesePanelToExistingPanel(panel, japaneseWord, inputGoal,
+						commonListElements,
 						!commonListElements.isForSingleRowOnly());
 		panelCreatorToUse.focusMeaningTextfield();
 

@@ -1,13 +1,9 @@
 package com.kanji.repeating;
 
-import com.guimaker.enums.Anchor;
-import com.guimaker.enums.FillType;
 import com.guimaker.options.ComboboxOptions;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
-import com.guimaker.row.SimpleRowBuilder;
-import com.guimaker.utilities.ElementCopier;
 import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
@@ -91,8 +87,7 @@ public class RepeatingJapaneseWordsDisplayer
 		japaneseWordPanelCreator
 				.addJapanesePanelToExistingPanel(fullWordInformationPanel,
 						japaneseWord, InputGoal.NO_INPUT,
-						CommonListElements.forSingleRowOnly(Color.WHITE),
-						true);
+						CommonListElements.forSingleRowOnly(Color.WHITE), true);
 	}
 
 	@Override

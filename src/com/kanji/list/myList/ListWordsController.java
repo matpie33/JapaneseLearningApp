@@ -16,6 +16,7 @@ import com.kanji.list.loadAdditionalWordsHandling.FoundWordInsideVisibleRangeStr
 import com.kanji.list.loadAdditionalWordsHandling.FoundWordOutsideRangeStrategy;
 import com.kanji.list.loadAdditionalWordsHandling.LoadWordsForFoundWord;
 import com.kanji.model.ListRow;
+import com.kanji.model.PropertyPostValidationData;
 import com.kanji.model.WordInMyListExistence;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.range.Range;
@@ -23,9 +24,14 @@ import com.kanji.swingWorkers.ProgressUpdater;
 import com.kanji.utilities.Pair;
 
 import javax.swing.*;
+import javax.swing.FocusManager;
+import javax.swing.text.JTextComponent;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ListWordsController<Word extends ListElement> {
 	private List<ListRow<Word>> allWordsToRowNumberMap = new ArrayList<>();
@@ -38,14 +44,17 @@ public class ListWordsController<Word extends ListElement> {
 	private ListElementInitializer<Word> wordInitializer;
 	private List<SwitchBetweenInputsFailListener> switchBetweenInputsFailListeners = new ArrayList<>();
 	private ProgressUpdater progressUpdater;
-	private List<ListObserver<Word>> observers = new ArrayList<>();
+	private Set<ListObserver<Word>> observers = new HashSet<>();
 	private Pair<MyList, ListElement> parentListAndWord;
+	private boolean finishEditActionRequested;
+	private boolean isInEditMode;
 	//TODO switchBetweenInputsFailListeners should be deleted from here
 
 	public ListWordsController(ListConfiguration listConfiguration,
 			ListRowCreator<Word> listRowCreator, String title,
 			ApplicationController applicationController,
-			ListElementInitializer<Word> wordInitializer) {
+			ListElementInitializer<Word> wordInitializer, MyList<Word> myList) {
+
 		parentListAndWord = listConfiguration
 				.getParentListAndWordContainingThisList();
 		progressUpdater = new ProgressUpdater();
@@ -140,7 +149,8 @@ public class ListWordsController<Word extends ListElement> {
 		}
 		if (parentListAndWord != null) {
 			parentListAndWord.getLeft()
-					.updateObservers(parentListAndWord.getRight(), ListElementModificationType.EDIT);
+					.updateObservers(parentListAndWord.getRight(),
+							ListElementModificationType.EDIT);
 		}
 		else {
 			observers.forEach(list -> list
@@ -379,7 +389,8 @@ public class ListWordsController<Word extends ListElement> {
 		add(wordInitializer.initializeElement(), inputGoal, true);
 		if (parentListAndWord != null) {
 			parentListAndWord.getLeft()
-					.updateObservers(parentListAndWord.getRight(), ListElementModificationType.EDIT);
+					.updateObservers(parentListAndWord.getRight(),
+							ListElementModificationType.EDIT);
 		}
 	}
 
@@ -473,9 +484,41 @@ public class ListWordsController<Word extends ListElement> {
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				applicationController.showInsertWordDialog();
+				isInEditMode = true;
+				repaint(word, InputGoal.EDIT_TEMPORARILY);
 			}
 		};
+	}
+
+	public AbstractAction createFinishEditAction(Word word) {
+		return new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				isInEditMode = false;
+				Component focusOwner = FocusManager.getCurrentManager()
+						.getFocusOwner();
+				if (focusOwner instanceof JTextComponent) {
+					KeyboardFocusManager.getCurrentKeyboardFocusManager()
+							.clearGlobalFocusOwner();
+					finishEditActionRequested = true;
+				}
+				else {
+					repaintWordAndHighlightIfNeeded(word);
+				}
+
+			}
+		};
+	}
+
+	private void repaintWordAndHighlightIfNeeded(Word word) {
+		repaint(word);
+		if (getWordsByHighlight(true).contains(word)) {
+			highlightRowAndScroll(get0BasedRowNumberOfWord(word), false);
+		}
+	}
+
+	public int get0BasedRowNumberOfWord(Word word) {
+		return getWords().indexOf(word);
 	}
 
 	public void addObserver(ListObserver<Word> listObserver) {
@@ -488,12 +531,26 @@ public class ListWordsController<Word extends ListElement> {
 	}
 
 	public void repaint(Word word) {
+		repaint(word, isInEditMode ? InputGoal.EDIT_TEMPORARILY : null);
+	}
+
+	public void repaint(Word word, InputGoal inputGoal) {
 		ListRow<Word> listRow = findListRowContainingWord(word);
 		if (listRow == null) {
 			return;
 		}
 		MainPanel panel = listPanelCreator
-				.repaintWord(word, listRow.getRowNumber(), listRow.getJPanel());
+				.repaintWord(word, listRow.getRowNumber(), listRow.getJPanel(),
+						inputGoal);
+
 		listRow.setPanel(panel);
+	}
+
+	public <WordProperty> void inputValidated(
+			PropertyPostValidationData<WordProperty, Word> postValidationData) {
+		if (finishEditActionRequested && postValidationData.isValid()) {
+			repaintWordAndHighlightIfNeeded(postValidationData.getValidatedWord());
+		}
+		finishEditActionRequested = false;
 	}
 }

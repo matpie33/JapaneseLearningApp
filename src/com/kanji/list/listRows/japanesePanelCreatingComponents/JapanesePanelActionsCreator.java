@@ -31,11 +31,16 @@ public class JapanesePanelActionsCreator {
 	private ApplicationController applicationController;
 	private JapaneseWordMeaningChecker wordMeaningChecker;
 	private Set<InputValidationListener<JapaneseWord>> inputValidationListeners = new HashSet<>();
+	private MyList<JapaneseWord> wordsList;
 
 	public JapanesePanelActionsCreator(DialogWindow parentDialog,
 			ApplicationController applicationController) {
 		this.parentDialog = parentDialog;
 		this.applicationController = applicationController;
+	}
+
+	public void setWordsList(MyList<JapaneseWord> wordsList) {
+		this.wordsList = wordsList;
 	}
 
 	public void setInputValidationListeners(
@@ -84,7 +89,8 @@ public class JapanesePanelActionsCreator {
 
 	public JTextComponent withJapaneseWritingValidation(
 			JTextComponent textComponent, JapaneseWriting japaneseWriting,
-			JapaneseWord japaneseWord, boolean isKana, InputGoal inputGoal) {
+			JapaneseWord japaneseWord, boolean isKana, InputGoal inputGoal,
+			boolean enabled) {
 		JapaneseWordChecker checker = getOrCreateCheckerFor(japaneseWriting,
 				japaneseWord, inputGoal);
 		if (isKana) {
@@ -93,11 +99,13 @@ public class JapanesePanelActionsCreator {
 		else {
 			checker.addKanjiInput(textComponent, japaneseWriting);
 		}
-		addPropertyChangeHandler(textComponent, japaneseWord,
-				!inputGoal.equals(InputGoal.SEARCH) && isKana,
-				JapaneseWritingUtilities.getDefaultValueForWriting(isKana),
-				checker, parentDialog, applicationController.getJapaneseWords(),
-				inputGoal);
+		if (enabled) {
+			addPropertyChangeHandler(textComponent, japaneseWord,
+					!inputGoal.equals(InputGoal.SEARCH) && isKana,
+					JapaneseWritingUtilities.getDefaultValueForWriting(isKana),
+					checker, parentDialog, wordsList, inputGoal);
+		}
+
 		return textComponent;
 	}
 
@@ -128,6 +136,7 @@ public class JapanesePanelActionsCreator {
 			inputValidationListeners
 					.forEach(propertyChangeHandler::addValidationListener);
 		}
+		propertyChangeHandler.addValidationListener(wordsList);
 
 		textComponent.addFocusListener(propertyChangeHandler);
 
@@ -139,8 +148,7 @@ public class JapanesePanelActionsCreator {
 		wordMeaningChecker = new JapaneseWordMeaningChecker(
 				meaningSearchOptions);
 		addPropertyChangeHandler(wordMeaningTextField, japaneseWord, true, "",
-				wordMeaningChecker, parentDialog,
-				applicationController.getJapaneseWords(), inputGoal);
+				wordMeaningChecker, parentDialog, wordsList, inputGoal);
 	}
 
 	public JTextComponent withSwitchToJapaneseActionOnClick(
@@ -216,9 +224,8 @@ public class JapanesePanelActionsCreator {
 					japaneseWord.getAdditionalInformation().setValue(newValue);
 					ThreadUtilities.callOnOtherThread(
 							applicationController::saveProject);
-					applicationController.getJapaneseWords()
-							.updateObservers(japaneseWord,
-									ListElementModificationType.EDIT);
+					wordsList.updateObservers(japaneseWord,
+							ListElementModificationType.EDIT);
 				}
 			});
 		});
@@ -268,12 +275,16 @@ public class JapanesePanelActionsCreator {
 							applicationController::saveProject);
 
 				}
-				applicationController.getJapaneseWords()
-						.updateObservers(japaneseWord,
-								ListElementModificationType.EDIT);
+				wordsList.updateObservers(japaneseWord,
+						ListElementModificationType.EDIT);
 			}
 		});
 		return partOfSpeechCombobox;
+	}
+
+	public void clearMappingForWordIfExists(JapaneseWord japaneseWord) {
+		checkersForJapaneseWords
+				.removeIf(pair -> pair.getLeft().equals(japaneseWord));
 	}
 
 }

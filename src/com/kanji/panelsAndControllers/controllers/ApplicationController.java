@@ -70,6 +70,7 @@ public class ApplicationController
 	private RowInJapaneseWordInformations rowInJapaneseWordInformations;
 	private boolean loadingInProgress = false;
 	private boolean adjustJapaneseWords = false;
+	private Set<ListObserver> listObservers = new HashSet<>();
 
 	private FileSavingManager fileSavingManager;
 
@@ -106,9 +107,8 @@ public class ApplicationController
 		problematicKanjisController = new ProblematicWordsController<>(parent);
 		problematicJapaneseWordsController = new ProblematicWordsController<>(
 				parent);
-		getJapaneseWords().addObserver(problematicJapaneseWordsController);
-		getJapaneseWords().addObserver(this);
-		getKanjiList().addObserver(problematicKanjisController);
+		getJapaneseWords().addListObserver(problematicJapaneseWordsController);
+		getKanjiList().addListObserver(problematicKanjisController);
 		problematicKanjiDisplayer = new ProblematicKanjiDisplayer(parent,
 				problematicKanjisController);
 		problematicJapaneseWordsDisplayer = new ProblematicJapaneseWordsDisplayer(
@@ -144,6 +144,7 @@ public class ApplicationController
 		japaneseWords = new MyList<>(parent, this,
 				rowInJapaneseWordInformations, Titles.JAPANESE_WORDS_LIST,
 				JapaneseWord.getInitializer());
+		japaneseWordPanelCreator.setWordsList(japaneseWords);
 
 		JapaneseWord cat = new JapaneseWord(PartOfSpeech.NOUN, "kot");
 		cat.addWritingsForKana("ねこ", "頭骨");
@@ -716,6 +717,10 @@ public class ApplicationController
 				getProblematicJapaneseWords().remove(changedListElement);
 				parent.updateProblematicWordsAmount();
 
+			}
+			else {
+				getJapaneseWords().update((JapaneseWord) changedListElement,
+						ListElementModificationType.EDIT);
 			}
 
 		}

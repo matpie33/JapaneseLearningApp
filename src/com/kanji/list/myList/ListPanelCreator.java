@@ -12,6 +12,7 @@ import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.AbstractSimpleRow;
 import com.guimaker.row.SimpleRowBuilder;
+import com.guimaker.utilities.HotkeyWrapper;
 import com.guimaker.utilities.KeyModifiers;
 import com.kanji.constants.Colors;
 import com.kanji.constants.enums.InputGoal;
@@ -192,8 +193,9 @@ public class ListPanelCreator<Word extends ListElement>
 		AbstractButton remove = createButtonRemoveWord(word);
 		AbstractButton addNewWord = createButtonAddRow(inputGoal);
 		AbstractButton editWord = createButtonEditWord(word);
+		AbstractButton finishEditing = createButtonFinishEditing(word);
 		return new CommonListElements(remove, rowNumberLabel, addNewWord,
-				labelsColor, editWord, false);
+				labelsColor, editWord, finishEditing, false);
 
 	}
 
@@ -297,8 +299,15 @@ public class ListPanelCreator<Word extends ListElement>
 				range.getRangeEnd());
 	}
 
-	private AbstractButton createButtonEditWord(Word word) {
+	private AbstractButton createButtonFinishEditing(Word word) {
+		return GuiElementsCreator.createButtonlikeComponent(
+				new ButtonOptions(ButtonType.BUTTON)
+						.text(ButtonsNames.FINISH_EDITING),
+				listWordsController.createFinishEditAction(word),
+				new HotkeyWrapper(KeyEvent.VK_ENTER));
+	}
 
+	private AbstractButton createButtonEditWord(Word word) {
 		return GuiElementsCreator.createButtonlikeComponent(
 				new ButtonOptions(ButtonType.BUTTON).text(ButtonsNames.EDIT),
 				listWordsController.createEditWordAction(word));
@@ -410,13 +419,19 @@ public class ListPanelCreator<Word extends ListElement>
 		rowsPanel.toggleEnabledState();
 	}
 
-	public MainPanel repaintWord(Word word, int rowNumber, JComponent oldPanel) {
+	public MainPanel repaintWord(Word word, int rowNumber, JComponent oldPanel,
+			InputGoal customInputGoal) {
 		CommonListElements commonListElements = createCommonListElements(word,
-				inputGoal, rowNumber);
-		MainPanel newPanel = listRow
-				.createListRow(word, commonListElements, inputGoal)
+				this.inputGoal, rowNumber);
+		MainPanel newPanel = listRow.createListRow(word, commonListElements,
+				customInputGoal == null ? this.inputGoal : customInputGoal)
 				.getRowPanel();
+		if (customInputGoal != null && customInputGoal.equals(InputGoal.EDIT_TEMPORARILY)){
+			newPanel.setBackground(Colors.LIST_ROW_EDIT_TEMPORARILY_COLOR);
+			newPanel.updateView();
+		}
 		rowsPanel.replacePanel(oldPanel, newPanel.getPanel());
+		rowsPanel.updateView();
 		return newPanel;
 	}
 }

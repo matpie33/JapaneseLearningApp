@@ -54,7 +54,7 @@ public class JapanesePanelElementsCreator {
 		return actionsCreator.withJapaneseWritingValidation(
 				createWritingsInput(japaneseWriting.getKanaWriting(), true,
 						enabled, selectable), japaneseWriting, japaneseWord,
-				true, inputGoal);
+				true, inputGoal, enabled);
 	}
 
 	public MyList<WordParticlesData> createParticlesDataList(
@@ -82,7 +82,7 @@ public class JapanesePanelElementsCreator {
 			InputGoal inputGoal, boolean enabled, boolean selectable) {
 		return actionsCreator.withJapaneseWritingValidation(
 				createWritingsInput(text, false, enabled, selectable),
-				japaneseWriting, japaneseWord, false, inputGoal);
+				japaneseWriting, japaneseWord, false, inputGoal, enabled);
 	}
 
 	public JTextComponent createWritingsInput(String initialValue,
@@ -144,9 +144,9 @@ public class JapanesePanelElementsCreator {
 		return button;
 	}
 
-	public JComponent updateWritingsInWordCheckerWhenDeleteWriting(
-			AbstractButton buttonDelete, JapaneseWord japaneseWord,
-			JapaneseWriting writing, InputGoal inputGoal) {
+	public JComponent createButonDelete(AbstractButton buttonDelete,
+			JapaneseWord japaneseWord, JapaneseWriting writing,
+			InputGoal inputGoal) {
 		return actionsCreator
 				.updateWritingsInWordWhenDeleteWriting(buttonDelete,
 						japaneseWord, writing, inputGoal);

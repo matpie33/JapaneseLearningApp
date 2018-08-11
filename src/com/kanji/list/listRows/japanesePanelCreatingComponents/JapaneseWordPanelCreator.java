@@ -62,6 +62,7 @@ public class JapaneseWordPanelCreator
 	private JLabel particlesTakenLabel;
 	private JLabel additionalInformationLabel;
 	private JComboBox additionalInformationValue;
+	private MyList<JapaneseWord> list;
 	//TODO it's the second place where map did not fit due to mutable keys,
 	//can we do better than list of pairs?
 
@@ -69,7 +70,7 @@ public class JapaneseWordPanelCreator
 			DialogWindow parentDialog, PanelDisplayMode displayMode) {
 		this.displayMode = displayMode;
 		japanesePanelComponentsStore = new JapanesePanelComponentsStore(
-				applicationController, parentDialog, displayMode);
+				applicationController, parentDialog);
 		this.applicationController = applicationController;
 		this.parentDialog = parentDialog;
 		listInputsSelectionManager = new ListInputsSelectionManager();
@@ -91,6 +92,12 @@ public class JapaneseWordPanelCreator
 			MainPanel existingPanel, JapaneseWord japaneseWord,
 			InputGoal inputGoal, CommonListElements commonListElements,
 			boolean inheritScrollBar) {
+		if (inputGoal.equals(InputGoal.NO_INPUT)) {
+			displayMode = PanelDisplayMode.VIEW;
+		}
+		else {
+			displayMode = PanelDisplayMode.EDIT;
+		}
 		createElements(japaneseWord, inputGoal, inheritScrollBar);
 		addActions(japaneseWord, inputGoal);
 		return addElementsToPanel(existingPanel, commonListElements, inputGoal);
@@ -102,6 +109,8 @@ public class JapaneseWordPanelCreator
 		if (rowNumberLabel != null) {
 			rowNumberLabel.setForeground(labelsColor);
 		}
+		japanesePanelComponentsStore.getActionCreator()
+				.clearMappingForWordIfExists(japaneseWord);
 		wordMeaningLabel = GuiElementsCreator.createLabel(
 				new ComponentOptions().text(Labels.WORD_MEANING)
 						.foregroundColor(labelsColor));
@@ -211,10 +220,9 @@ public class JapaneseWordPanelCreator
 	private MyList<JapaneseWriting> createJapaneseWritingsList(
 			JapaneseWord japaneseWord, boolean inheritScrollBar) {
 		return new MyList<>(parentDialog, applicationController,
-				new RowInJapaneseWritingsList(
-						japanesePanelComponentsStore.getPanelCreatingService(),
-						japaneseWord, displayMode),
-				Labels.WRITING_WAYS_IN_JAPANESE,
+				new RowInJapaneseWritingsList(japanesePanelComponentsStore
+						.getPanelCreatingService(displayMode), japaneseWord,
+						displayMode), Labels.WRITING_WAYS_IN_JAPANESE,
 				new ListConfiguration().enableWordAdding(false)
 						.displayMode(displayMode)
 						.inheritScrollbar(inheritScrollBar)
@@ -246,7 +254,9 @@ public class JapaneseWordPanelCreator
 				.nextRow(commonListElements.getButtonDelete())
 				.onlyAddIf(!displayMode.equals(PanelDisplayMode.VIEW))
 				.nextRow(commonListElements.getButtonEdit())
-				.onlyAddIf(displayMode.equals(PanelDisplayMode.VIEW));
+				.onlyAddIf(displayMode.equals(PanelDisplayMode.VIEW))
+				.nextRow(commonListElements.getFinishEditing())
+				.onlyAddIf(inputGoal.equals(InputGoal.EDIT_TEMPORARILY));
 		japaneseWordPanel.addRowsOfElementsInColumn(lastJapanesePanelMade);
 		ListRowDataCreator<Kanji> rowDataCreator = new ListRowDataCreator<>(
 				japaneseWordPanel);
@@ -300,5 +310,9 @@ public class JapaneseWordPanelCreator
 			Set<InputValidationListener<JapaneseWord>> validationListeners) {
 		japanesePanelComponentsStore
 				.addValidationListeners(validationListeners);
+	}
+
+	public void setWordsList(MyList<JapaneseWord> list) {
+		japanesePanelComponentsStore.setWordsList(list);
 	}
 }

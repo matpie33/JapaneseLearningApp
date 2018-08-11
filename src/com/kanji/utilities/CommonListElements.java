@@ -5,6 +5,7 @@ import java.awt.*;
 
 public class CommonListElements {
 
+	private AbstractButton finishEditing;
 	private AbstractButton buttonDelete;
 	private AbstractButton buttonEdit;
 	private JLabel rowNumberLabel;
@@ -15,13 +16,14 @@ public class CommonListElements {
 	public CommonListElements(AbstractButton buttonDelete,
 			JLabel rowNumberLabel, AbstractButton buttonAddRow,
 			Color labelsColor, AbstractButton buttonEdit,
-			boolean forSingleRowOnly) {
+			AbstractButton finishEditing, boolean forSingleRowOnly) {
 		this.buttonDelete = buttonDelete;
 		this.rowNumberLabel = rowNumberLabel;
 		this.buttonAddRow = buttonAddRow;
 		this.labelsColor = labelsColor;
 		this.forSingleRowOnly = forSingleRowOnly;
 		this.buttonEdit = buttonEdit;
+		this.finishEditing = finishEditing;
 	}
 
 	public AbstractButton getButtonEdit() {
@@ -48,8 +50,12 @@ public class CommonListElements {
 		return buttonAddRow;
 	}
 
+	public AbstractButton getFinishEditing() {
+		return finishEditing;
+	}
+
 	public static CommonListElements forSingleRowOnly(Color labelsColor) {
-		return new CommonListElements(null, null, null, labelsColor, null,
+		return new CommonListElements(null, null, null, labelsColor, null, null,
 				true);
 	}
 

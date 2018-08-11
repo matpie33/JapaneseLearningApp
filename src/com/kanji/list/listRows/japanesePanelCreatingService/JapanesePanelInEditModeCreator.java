@@ -41,9 +41,9 @@ public class JapanesePanelInEditModeCreator
 				.createButtonAddKanjiWriting(rowPanel, japaneseWriting,
 						japaneseWord, inputGoal, true, false));
 		rowElements.add(commonListElements.getButtonAddRow());
-		rowElements.add(elementsMaker.updateWritingsInWordCheckerWhenDeleteWriting(
-				commonListElements.getButtonDelete(), japaneseWord,
-				japaneseWriting, inputGoal));
+		rowElements.add(elementsMaker
+				.createButonDelete(commonListElements.getButtonDelete(),
+						japaneseWord, japaneseWriting, inputGoal));
 
 		return rowElements.toArray(new JComponent[] {});
 	}
