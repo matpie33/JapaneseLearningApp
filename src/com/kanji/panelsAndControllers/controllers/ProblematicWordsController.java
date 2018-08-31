@@ -311,6 +311,9 @@ public class ProblematicWordsController<Word extends ListElement>
 	@Override
 	public void update(Word word,
 			ListElementModificationType modificationType) {
+		if (!hasWords()){
+			return;
+		}
 		wordsToReviewList.update(word, modificationType);
 		if (modificationType.equals(ListElementModificationType.DELETE)) {
 			boolean removed = removeFromNotReviewed(word);
@@ -329,6 +332,10 @@ public class ProblematicWordsController<Word extends ListElement>
 			}
 		}
 
+	}
+
+	private boolean hasWords() {
+		return !wordsToReviewList.getWords().isEmpty();
 	}
 
 	private boolean notReviewedWordsContainWord(Word word) {
