@@ -8,6 +8,7 @@ import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.ListElementModificationType;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Prompts;
+import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listObserver.ListObserver;
@@ -102,17 +103,20 @@ public class ProblematicWordsController<Word extends ListElement>
 		for (Word word : problematicWords) {
 			addWord(word);
 		}
+		if (wordClass.equals(JapaneseWord.class)) {
+			wordsToReviewList.addWords(
+					(List<Word>) applicationController.getJapaneseWords()
+							.getWords(), InputGoal.NO_INPUT, false, true);
+		}
+
 		wordsToReviewList.scrollToTop();
 		goToNextResource();
 	}
 
 	private void addWord(Word word) {
-		boolean addedToList = wordsToReviewList
-				.addWord(word, InputGoal.NO_INPUT);
-		if (addedToList) {
-			notReviewedWords.add(problematicWordsDisplayer.createWordRow(word,
-					wordsToReviewList.getNumberOfWords() - 1));
-		}
+		wordsToReviewList.addWord(word, InputGoal.NO_INPUT);
+		notReviewedWords.add(problematicWordsDisplayer
+				.createWordRow(word, wordsToReviewList.getNumberOfWords() - 1));
 	}
 
 	private void goToNextResource() {
@@ -121,8 +125,6 @@ public class ProblematicWordsController<Word extends ListElement>
 	}
 
 	public void showResource(WordRow<Word> row) {
-		//TODO do I really need the kanji context as separate class? theres so many already,
-		//I should reconsider some of the modelling objects
 		problematicWordsDisplayer.browseWord(row);
 		wordsToReviewList.highlightRow(
 				wordsToReviewList.get1BasedRowNumberOfWord(row.getListElement())
@@ -321,12 +323,21 @@ public class ProblematicWordsController<Word extends ListElement>
 
 		}
 		else {
-			if (!notReviewedWords.contains(word)) {
+			if (!notReviewedWordsContainWord(word)) {
 				wordsToReviewList.highlightRow(
 						wordsToReviewList.get1BasedRowNumberOfWord(word) - 1);
 			}
 		}
 
+	}
+
+	private boolean notReviewedWordsContainWord(Word word) {
+		for (WordRow notReviewedWord : notReviewedWords) {
+			if (notReviewedWord.getListElement().equals(word)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private boolean removeFromNotReviewed(Word word) {

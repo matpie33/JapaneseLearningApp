@@ -40,6 +40,10 @@ public class ListRow<Word> {
 		return highlighted;
 	}
 
+	public boolean isShowing() {
+		return wrappingPanel != null;
+	}
+
 	public void setHighlighted(boolean highlighted) {
 		this.highlighted = highlighted;
 	}

@@ -94,8 +94,11 @@ public class ListWordsController<Word extends ListElement> {
 	public boolean add(Word r, InputGoal inputGoal, boolean tryToShowWord,
 			boolean validate) {
 
+		if (r == null) {
+			return false;
+		}
 		boolean valid = !validate || !isWordDefined(r).exists();
-		if (r != null && valid) {
+		if (valid) {
 			boolean canNewWordBeDisplayed = canNewWordBeDisplayed();
 			if (tryToShowWord) {
 				if (!lastWordIsVisible()) {
@@ -121,6 +124,7 @@ public class ListWordsController<Word extends ListElement> {
 		}
 		return false;
 	}
+
 
 	private void removeFirstRow() {
 		listPanelCreator.removeRow(
@@ -214,6 +218,9 @@ public class ListWordsController<Word extends ListElement> {
 			boolean clearLastHighlightedWord) {
 		loadWordsIfNecessary(rowNumber);
 		ListRow<Word> foundWord = allWordsToRowNumberMap.get(rowNumber);
+		if (!foundWord.isShowing()) {
+			return;
+		}
 		foundWord.setHighlighted(true);
 		if (clearLastHighlightedWord && currentlyHighlightedWord != null) {
 			listPanelCreator
@@ -549,8 +556,10 @@ public class ListWordsController<Word extends ListElement> {
 	public <WordProperty> void inputValidated(
 			PropertyPostValidationData<WordProperty, Word> postValidationData) {
 		if (finishEditActionRequested && postValidationData.isValid()) {
-			repaintWordAndHighlightIfNeeded(postValidationData.getValidatedWord());
+			repaintWordAndHighlightIfNeeded(
+					postValidationData.getValidatedWord());
 		}
 		finishEditActionRequested = false;
 	}
+
 }

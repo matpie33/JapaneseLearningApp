@@ -8,6 +8,7 @@ import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
+import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Prompts;
@@ -60,8 +61,8 @@ public class ProblematicJapaneseWordsDisplayer
 						.withAdditionalNavigationButtons(
 								createButtonSearchWord()),
 				JapaneseWord.getInitializer());
-		wordsToReviewList.addListObserver(
-				applicationWindow.getApplicationController());
+		wordsToReviewList
+				.addListObserver(applicationWindow.getApplicationController());
 		japaneseWordPanelCreator.setWordsList(wordsToReviewList);
 
 		controller.setProblematicWordsDisplayer(this);
