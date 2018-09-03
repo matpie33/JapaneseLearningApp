@@ -116,7 +116,7 @@ public class ListWordsController<Word extends ListElement> {
 							listPanelCreator.getLoadNextWordsHandler(),
 							inputGoal);
 			allWordsToRowNumberMap.add(newWord);
-			if (canNewWordBeDisplayed) {
+			if (canNewWordBeDisplayed && tryToShowWord) {
 				lastRowVisible = allWordsToRowNumberMap.size() - 1;
 			}
 
@@ -125,11 +125,11 @@ public class ListWordsController<Word extends ListElement> {
 		return false;
 	}
 
-
 	private void removeFirstRow() {
-		listPanelCreator.removeRow(
-				allWordsToRowNumberMap.get(getFirstVisibleRowNumber())
-						.getJPanel());
+		ListRow<Word> rowToRemove = allWordsToRowNumberMap
+				.get(getFirstVisibleRowNumber());
+		listPanelCreator.removeRow(rowToRemove.getJPanel());
+		rowToRemove.setPanel(null);
 	}
 
 	private void loadLastWord() {
@@ -543,7 +543,7 @@ public class ListWordsController<Word extends ListElement> {
 
 	public void repaint(Word word, InputGoal inputGoal) {
 		ListRow<Word> listRow = findListRowContainingWord(word);
-		if (listRow == null) {
+		if (listRow == null || !listRow.isShowing()) {
 			return;
 		}
 		MainPanel panel = listPanelCreator

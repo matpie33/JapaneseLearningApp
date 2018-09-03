@@ -28,7 +28,6 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	private ListElementPropertyManager<Property, PropertyHolder> listElementPropertyManager;
 	private PropertyHolder propertyHolder;
 	private String defaultValue = "";
-	private boolean isRequiredField;
 	private InputGoal inputGoal;
 	private Set<InputValidationListener<PropertyHolder>> validationListeners = new HashSet<>();
 
@@ -40,7 +39,6 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 		this.dialogWindow = dialogWindow;
 		this.listElementPropertyManager = listElementPropertyManager;
 		this.propertyHolder = propertyHolder;
-		this.isRequiredField = isRequiredField;
 		this.inputGoal = inputGoal;
 	}
 
@@ -55,7 +53,10 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 
 	public void addValidationListener(
 			InputValidationListener<PropertyHolder> validationListener) {
-		validationListeners.add(validationListener);
+		if (validationListener != null) {
+			validationListeners.add(validationListener);
+		}
+
 	}
 
 	@Override
@@ -76,8 +77,9 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	@Override
 	public void focusLost(FocusEvent e) {
 		JTextComponent input = (JTextComponent) e.getSource();
-		if (isTextFieldEmpty(input) && input.getText()
-				.equals(previousValueOfTextInput)) {
+		boolean somethingHasChanged = !input.getText()
+				.equals(previousValueOfTextInput);
+		if (isTextFieldEmpty(input) && !somethingHasChanged) {
 			return;
 		}
 		Property propertyNewValue = validateAndConvertToProperty(input);
@@ -85,7 +87,8 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 		ThreadUtilities.callOnOtherThread(() -> {
 			boolean inputValid = propertyNewValue != null;
 			boolean addedWord = false;
-			if (inputValid && !inputGoal.equals(InputGoal.SEARCH)) {
+			if (somethingHasChanged && inputValid && !inputGoal
+					.equals(InputGoal.SEARCH)) {
 				addedWord = addWordToList(input, propertyNewValue);
 			}
 			notifyValidationListeners(inputValid && (addedWord || inputGoal
@@ -129,7 +132,8 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 		}
 		else {
 			previousValueOfTextInput = null;
-			list.updateObservers(propertyHolder, ListElementModificationType.EDIT);
+			list.updateObservers(propertyHolder,
+					ListElementModificationType.EDIT);
 			list.save();
 			return true;
 		}
