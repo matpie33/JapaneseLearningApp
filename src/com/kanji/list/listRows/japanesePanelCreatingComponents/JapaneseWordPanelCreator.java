@@ -68,6 +68,7 @@ public class JapaneseWordPanelCreator
 
 	public JapaneseWordPanelCreator(ApplicationController applicationController,
 			DialogWindow parentDialog, PanelDisplayMode displayMode) {
+		//TODO parent dialog is not needed without validation i.e. in view mode
 		this.displayMode = displayMode;
 		japanesePanelComponentsStore = new JapanesePanelComponentsStore(
 				applicationController, parentDialog);
@@ -302,8 +303,11 @@ public class JapaneseWordPanelCreator
 	}
 
 	public JapaneseWordPanelCreator copy() {
-		return new JapaneseWordPanelCreator(applicationController, parentDialog,
-				PanelDisplayMode.EDIT);
+		JapaneseWordPanelCreator wordPanelCreator = new JapaneseWordPanelCreator(
+				applicationController, parentDialog, PanelDisplayMode.EDIT);
+		wordPanelCreator
+				.setWordsList(japanesePanelComponentsStore.getWordsList());
+		return wordPanelCreator;
 	}
 
 	public void addValidationListeners(

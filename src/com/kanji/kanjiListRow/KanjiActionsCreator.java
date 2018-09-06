@@ -70,7 +70,7 @@ public class KanjiActionsCreator {
 
 		ListPropertyChangeHandler listPropertyChangeHandler = new ListPropertyChangeHandler<>(
 				kanji, applicationController.getKanjiList(), parentDialog, propertyManager,
-				!inputGoal.equals(InputGoal.SEARCH), inputGoal);
+				inputGoal);
 		validationListeners
 				.forEach(listPropertyChangeHandler::addValidationListener);
 		return listPropertyChangeHandler;

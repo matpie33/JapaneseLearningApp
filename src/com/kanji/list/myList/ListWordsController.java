@@ -552,7 +552,7 @@ public class ListWordsController<Word extends ListElement> {
 		}
 		MainPanel panel = listPanelCreator
 				.repaintWord(word, listRow.getRowNumber(), listRow.getJPanel(),
-						inputGoal);
+						inputGoal, listRow.isHighlighted());
 
 		listRow.setPanel(panel);
 	}

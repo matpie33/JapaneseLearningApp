@@ -420,12 +420,15 @@ public class ListPanelCreator<Word extends ListElement>
 	}
 
 	public MainPanel repaintWord(Word word, int rowNumber, JComponent oldPanel,
-			InputGoal customInputGoal) {
+			InputGoal customInputGoal, boolean highlighted) {
 		CommonListElements commonListElements = createCommonListElements(word,
 				this.inputGoal, rowNumber);
 		MainPanel newPanel = listRow.createListRow(word, commonListElements,
 				customInputGoal == null ? this.inputGoal : customInputGoal)
 				.getRowPanel();
+		if (highlighted){
+			newPanel.setBackground(Colors.LIST_ROW_HIGHLIGHT_COLOR);
+		}
 		if (customInputGoal != null && customInputGoal.equals(InputGoal.EDIT_TEMPORARILY)){
 			newPanel.setBackground(Colors.LIST_ROW_EDIT_TEMPORARILY_COLOR);
 			newPanel.updateView();

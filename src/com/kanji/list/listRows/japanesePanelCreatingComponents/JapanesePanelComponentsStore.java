@@ -59,4 +59,8 @@ public class JapanesePanelComponentsStore {
 		actionsCreator.setWordsList(list);
 	}
 
+	public MyList getWordsList (){
+		return actionsCreator.getWordsList();
+	}
+
 }

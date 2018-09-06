@@ -34,7 +34,7 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 	public ListPropertyChangeHandler(PropertyHolder propertyHolder,
 			MyList<PropertyHolder> list, DialogWindow dialogWindow,
 			ListElementPropertyManager<Property, PropertyHolder> listElementPropertyManager,
-			boolean isRequiredField, InputGoal inputGoal) {
+			InputGoal inputGoal) {
 		this.list = list;
 		this.dialogWindow = dialogWindow;
 		this.listElementPropertyManager = listElementPropertyManager;
@@ -47,7 +47,7 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 			ListElementPropertyManager<Property, PropertyHolder> listElementPropertyManager,
 			String defaultValue, boolean isRequiredField, InputGoal inputGoal) {
 		this(propertyHolder, list, dialogWindow, listElementPropertyManager,
-				isRequiredField, inputGoal);
+				inputGoal);
 		this.defaultValue = defaultValue;
 	}
 

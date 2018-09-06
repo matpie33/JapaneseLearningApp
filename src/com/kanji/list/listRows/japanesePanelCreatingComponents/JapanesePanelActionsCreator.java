@@ -287,4 +287,7 @@ public class JapanesePanelActionsCreator {
 				.removeIf(pair -> pair.getLeft().equals(japaneseWord));
 	}
 
+	public MyList<JapaneseWord> getWordsList() {
+		return wordsList;
+	}
 }

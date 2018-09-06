@@ -83,16 +83,9 @@ public class ApplicationController
 		applicationStateToManagerMap = new HashMap<>();
 
 		japaneseWordsFileReader = new JapaneseWordsFileReader();
-		repeatingJapaneseWordsDisplayer = new RepeatingJapaneseWordsDisplayer(
-				createJapanesePanelCreator());
+
 		kanjiWordDisplayer = new RepeatingKanjiDisplayer(parent.getKanjiFont());
 		fileSavingManager = new FileSavingManager();
-	}
-
-	private JapaneseWordPanelCreator createJapanesePanelCreator() {
-		return new JapaneseWordPanelCreator(this, parent,
-				PanelDisplayMode.VIEW);
-		//TODO parent dialog is not needed without validation i.e. in view mode
 	}
 
 	public ProblematicWordsController getProblematicKanjisController() {
@@ -145,6 +138,11 @@ public class ApplicationController
 				rowInJapaneseWordInformations, Titles.JAPANESE_WORDS_LIST,
 				JapaneseWord.getInitializer());
 		japaneseWordPanelCreator.setWordsList(japaneseWords);
+		JapaneseWordPanelCreator wordPanelCreator = new JapaneseWordPanelCreator(
+				this, parent, PanelDisplayMode.VIEW);
+		wordPanelCreator.setWordsList(japaneseWords);
+		repeatingJapaneseWordsDisplayer = new RepeatingJapaneseWordsDisplayer(
+				wordPanelCreator);
 
 		JapaneseWord cat = new JapaneseWord(PartOfSpeech.NOUN, "kot");
 		cat.addWritingsForKana("ねこ", "頭骨");
@@ -161,6 +159,7 @@ public class ApplicationController
 		japaneseWord.addWritingsForKana("らけ", "務");
 		japaneseWords.addWord(japaneseWord);
 		japaneseWords.addWord(verb);
+
 	}
 
 	private void initializeJapaneseRepeatingDates() {

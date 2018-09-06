@@ -43,7 +43,6 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 	@Override
 	public boolean isPropertyFound(JapaneseWriting searchedWriting,
 			JapaneseWord word) {
-		boolean japaneseWordContainsTheseWritings = false;
 		for (JapaneseWriting writing : word.getWritings()) {
 			return areWritingsEqual(writing, searchedWriting, inputGoal);
 		}
