@@ -103,11 +103,6 @@ public class ProblematicWordsController<Word extends ListElement>
 		for (Word word : problematicWords) {
 			addWord(word);
 		}
-		if (wordClass.equals(JapaneseWord.class)) {
-			wordsToReviewList.addWords(
-					(List<Word>) applicationController.getJapaneseWords()
-							.getWords(), InputGoal.NO_INPUT, false, true);
-		}
 
 		wordsToReviewList.scrollToTop();
 		goToNextResource();

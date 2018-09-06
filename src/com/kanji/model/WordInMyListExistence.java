@@ -26,4 +26,9 @@ public class WordInMyListExistence<Word extends ListElement> {
 	public int getOneBasedRowNumber() {
 		return oneBasedRowNumber;
 	}
+
+	public void clearRowNumber (){
+		oneBasedRowNumber = -1;
+	}
+
 }

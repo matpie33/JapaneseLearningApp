@@ -48,6 +48,7 @@ public class ListWordsController<Word extends ListElement> {
 	private Pair<MyList, ListElement> parentListAndWord;
 	private boolean finishEditActionRequested;
 	private boolean isInEditMode;
+	private MyList<Word> sourceList;
 	//TODO switchBetweenInputsFailListeners should be deleted from here
 
 	public ListWordsController(ListConfiguration listConfiguration,
@@ -216,6 +217,9 @@ public class ListWordsController<Word extends ListElement> {
 
 	public void highlightRowAndScroll(int rowNumber,
 			boolean clearLastHighlightedWord) {
+		if (rowNumber == -1) {
+			return;
+		}
 		loadWordsIfNecessary(rowNumber);
 		ListRow<Word> foundWord = allWordsToRowNumberMap.get(rowNumber);
 		if (!foundWord.isShowing()) {
@@ -562,4 +566,7 @@ public class ListWordsController<Word extends ListElement> {
 		finishEditActionRequested = false;
 	}
 
+	public void setSourceList(MyList<Word> sourceList) {
+		this.sourceList = sourceList;
+	}
 }

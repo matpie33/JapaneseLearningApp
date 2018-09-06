@@ -32,6 +32,7 @@ public class MyList<Word extends ListElement>
 	private Class listElementClass;
 	private String title;
 	private ListRowCreator<Word> listRowCreator;
+	private MyList<Word> sourceList;
 
 	public MyList(DialogWindow parentDialog,
 			ApplicationController applicationController,
@@ -46,6 +47,11 @@ public class MyList<Word extends ListElement>
 				this);
 		this.wordInitializer = wordInitializer;
 		this.title = title;
+	}
+
+	public void setSourceList(MyList<Word> sourceList) {
+		listController.setSourceList(sourceList);
+		this.sourceList = sourceList;
 	}
 
 	public MyList(DialogWindow parentDialog,
@@ -244,6 +250,13 @@ public class MyList<Word extends ListElement>
 			if (propertyManager.isPropertyFound(property, word)) {
 				return new WordInMyListExistence<>(true, word, indexOfWord + 1);
 			}
+		}
+		if (sourceList != null) {
+			WordInMyListExistence<Word> wordInSourceListExistence = sourceList
+					.doesWordWithPropertyExist(property, propertyManager,
+							wordToExclude);
+			wordInSourceListExistence.clearRowNumber();
+			return wordInSourceListExistence;
 		}
 		return new WordInMyListExistence<Word>(false, null, -1);
 	}
