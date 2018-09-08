@@ -346,7 +346,7 @@ public class ListWordsController<Word extends ListElement> {
 	}
 
 	public int getFirstVisibleRowNumber() {
-		return lastRowVisible - MAXIMUM_WORDS_TO_SHOW;
+		return lastRowVisible - MAXIMUM_WORDS_TO_SHOW + 1;
 	}
 
 	public void showPreviousWord(LoadPreviousWordsHandler loadPreviousWords) {

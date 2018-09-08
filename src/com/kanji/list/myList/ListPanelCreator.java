@@ -153,9 +153,6 @@ public class ListPanelCreator<Word extends ListElement>
 	public ListRow<Word> addRow(Word word, int rowNumber,
 			boolean shouldShowWord, LoadWordsHandler loadWordsHandler,
 			InputGoal inputGoal) {
-		if (listWordsController.getWords().isEmpty()) {
-			rowsPanel.removeRow(1);
-		}
 		this.inputGoal = inputGoal;
 		CommonListElements commonListElements = createCommonListElements(word,
 				inputGoal, rowNumber);

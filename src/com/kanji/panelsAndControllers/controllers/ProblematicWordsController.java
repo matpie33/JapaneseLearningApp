@@ -91,11 +91,6 @@ public class ProblematicWordsController<Word extends ListElement>
 	public void addProblematicWords(Set<Word> problematicWords) {
 		Class<? extends ListElement> wordClass = problematicWords.iterator()
 				.next().getClass();
-		if (wordClass.equals(Kanji.class)) {
-			applicationController.getKanjiList()
-					.addListObserver((ListObserver<Kanji>) wordsToReviewList);
-
-		}
 
 		if (notReviewedWords.isEmpty()) {
 			wordsToReviewList.cleanWords();
