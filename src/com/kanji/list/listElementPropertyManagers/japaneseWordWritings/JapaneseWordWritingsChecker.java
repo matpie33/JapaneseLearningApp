@@ -54,8 +54,14 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 	public JapaneseWriting validateInputAndConvertToProperty(
 			JTextComponent valueToConvert) {
 
-		errorDetails = "";
 		String newValue = valueToConvert.getText();
+		char lastCharacter = newValue.charAt(newValue.length() - 1);
+		if (lastCharacter == 'ｎ') {
+			newValue = newValue.replace('ｎ', 'ん');
+			valueToConvert.setText(newValue);
+		}
+
+		errorDetails = "";
 		boolean isKana = writingsInputManager.getKanaInput() == valueToConvert;
 		JapaneseWriting writingToAdd;
 		if (JapaneseWritingUtilities.isInputEmpty(newValue, isKana)) {
