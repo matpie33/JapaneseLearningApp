@@ -144,7 +144,8 @@ public class ProblematicWordsController<Word extends ListElement>
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!problematicWordsDisplayer.isListPanelFocused()) {
+				if (!problematicWordsDisplayer.isListPanelFocused()
+						|| wordsToReviewList.isInEditMode()) {
 					return;
 				}
 				changeResource(direction);

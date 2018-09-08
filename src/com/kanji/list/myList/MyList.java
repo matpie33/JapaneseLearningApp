@@ -417,4 +417,8 @@ public class MyList<Word extends ListElement>
 			PropertyPostValidationData<WordProperty, Word> postValidationData) {
 		listController.inputValidated(postValidationData);
 	}
+
+	public boolean isInEditMode() {
+		return listController.isInEditMode();
+	}
 }

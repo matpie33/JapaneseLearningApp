@@ -569,4 +569,9 @@ public class ListWordsController<Word extends ListElement> {
 	public void setSourceList(MyList<Word> sourceList) {
 		this.sourceList = sourceList;
 	}
+
+	public boolean isInEditMode (){
+		return isInEditMode;
+	}
+
 }
