@@ -53,12 +53,11 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 				new ConnectionFailKanjiOfflinePage(kanjiFont));
 	}
 
-	public void initialize() {
+	public void initialize(String pageToRender) {
 		dictionaryWebPanel
 				.showPageWithoutGrabbingFocus(Urls.DICTIONARY_PL_EN_MAIN_PAGE);
 		wordsToReviewList = controller.getWordsToReviewList();
-		Platform.runLater(
-				() -> wordsToReviewList.getPanel().requestFocusInWindow());
+		showPageInKoohi(pageToRender);
 	}
 
 	@Override
@@ -106,8 +105,8 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
 	private AbstractButton createButtonReturn() {
 		return createButtonWithHotkey(KeyModifiers.CONTROL, KeyEvent.VK_E,
-				controller.closeDialogAndManageState(),
-				ButtonsNames.GO_BACK, HotkeysDescriptions.RETURN_FROM_LEARNING);
+				controller.closeDialogAndManageState(), ButtonsNames.GO_BACK,
+				HotkeysDescriptions.RETURN_FROM_LEARNING);
 
 	}
 

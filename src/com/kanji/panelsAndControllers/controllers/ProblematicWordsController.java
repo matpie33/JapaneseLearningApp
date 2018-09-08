@@ -8,7 +8,6 @@ import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.ListElementModificationType;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Prompts;
-import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listObserver.ListObserver;
@@ -89,9 +88,6 @@ public class ProblematicWordsController<Word extends ListElement>
 	}
 
 	public void addProblematicWords(Set<Word> problematicWords) {
-		Class<? extends ListElement> wordClass = problematicWords.iterator()
-				.next().getClass();
-
 		if (notReviewedWords.isEmpty()) {
 			wordsToReviewList.cleanWords();
 		}
@@ -101,6 +97,8 @@ public class ProblematicWordsController<Word extends ListElement>
 
 		wordsToReviewList.scrollToTop();
 		goToNextResource();
+		SwingUtilities.invokeLater(
+				() -> wordsToReviewList.getPanel().requestFocusInWindow());
 	}
 
 	private void addWord(Word word) {
@@ -301,7 +299,7 @@ public class ProblematicWordsController<Word extends ListElement>
 	@Override
 	public void update(Word word,
 			ListElementModificationType modificationType) {
-		if (!hasWords()){
+		if (!hasWords()) {
 			return;
 		}
 		wordsToReviewList.update(word, modificationType);

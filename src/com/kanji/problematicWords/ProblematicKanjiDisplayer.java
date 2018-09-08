@@ -94,8 +94,7 @@ public class ProblematicKanjiDisplayer
 		else {
 			pageToRender = Urls.KANJI_KOOHI_LOGIN_PAGE;
 		}
-		problematicKanjiPanel.showPageInKoohi(pageToRender);
-		problematicKanjiPanel.initialize();
+		problematicKanjiPanel.initialize(pageToRender);
 	}
 
 	@Override
