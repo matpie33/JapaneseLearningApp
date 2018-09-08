@@ -341,4 +341,7 @@ public class ProblematicWordsController<Word extends ListElement>
 						.equals(word));
 	}
 
+	public void focusPreviouslyFocusedElement() {
+		problematicWordsDisplayer.focusPreviouslyFocusedElement();
+	}
 }

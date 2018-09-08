@@ -41,6 +41,8 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	private WebPagePanel kanjiWebPanel;
 	private MyList wordsToReviewList;
 
+	private FocusableComponentsManager focusableComponentsManager;
+
 	public ProblematicKanjiPanel(Font kanjiFont, ApplicationWindow parentDialog,
 			ProblematicWordsController controller,
 			ContextOwner kanjiContextContextOwner) {
@@ -78,7 +80,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiOfflineDisplayingPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.CENTER, kanjiTextPane));
 
-		FocusableComponentsManager focusableComponentsManager = new FocusableComponentsManager(
+		focusableComponentsManager = new FocusableComponentsManager(
 				mainPanel.getPanel());
 		focusableComponentsManager.makeFocusable(wordsToReviewList.getPanel());
 		focusableComponentsManager
@@ -120,7 +122,10 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public boolean isListPanelFocused() {
-		return wordsToReviewList.getPanel().hasFocus();
+		return focusableComponentsManager.getFocusedComponent().equals(wordsToReviewList.getPanel());
 	}
 
+	public void focusPreviouslyFocusedElement() {
+		focusableComponentsManager.focusPreviouslyFocusedElement();
+	}
 }

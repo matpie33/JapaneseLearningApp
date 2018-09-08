@@ -84,4 +84,12 @@ public class FocusHandler {
 	public void registerPanel(JComponent panel) {
 		panelSwitchingHandler.registerPanel(panel);
 	}
+
+	public JComponent getFocusedElement() {
+		return focusedPanel;
+	}
+
+	public void focusPreviouslyFocusedElement() {
+		SwingUtilities.invokeLater(() -> focusedPanel.requestFocusInWindow());
+	}
 }

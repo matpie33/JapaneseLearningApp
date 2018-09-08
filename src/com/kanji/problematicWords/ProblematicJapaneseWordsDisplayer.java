@@ -199,7 +199,11 @@ public class ProblematicJapaneseWordsDisplayer
 
 	@Override
 	public boolean isListPanelFocused() {
-		return wordsToReviewList.getPanel().hasFocus();
+		return problematicJapaneseWordsPanel.isListPanelFocused();
 	}
 
+	@Override
+	public void focusPreviouslyFocusedElement() {
+		problematicJapaneseWordsPanel.focusPreviouslyFocusedElement();
+	}
 }

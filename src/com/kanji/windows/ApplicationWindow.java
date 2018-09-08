@@ -231,6 +231,9 @@ public class ApplicationWindow extends DialogWindow {
 					.getPanelName(), problematicWordsPanel);
 			//TODO the approach with enum (application panels) is not extensible
 		}
+		else{
+			activeProblematicWordsController.focusPreviouslyFocusedElement();
+		}
 		showPanel(ApplicationPanels.PROBLEMATIC_WORDS_PANEL);
 		this.problematicWordsPanel.removeAll();
 		JPanel panel = problematicWordsPanel.createPanel();

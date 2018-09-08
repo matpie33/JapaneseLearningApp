@@ -19,4 +19,5 @@ public interface ProblematicWordsDisplayer<Element extends ListElement> {
 
 	public boolean isListPanelFocused();
 
+	public void focusPreviouslyFocusedElement();
 }

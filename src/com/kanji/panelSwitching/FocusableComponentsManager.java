@@ -7,6 +7,7 @@ import com.guimaker.utilities.HotkeyWrapper;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 
 public class FocusableComponentsManager {
 
@@ -91,5 +92,12 @@ public class FocusableComponentsManager {
 
 	}
 
+	public JComponent getFocusedComponent() {
+		return focusHandler.getFocusedElement();
+	}
+
+	public void focusPreviouslyFocusedElement() {
+		focusHandler.focusPreviouslyFocusedElement();
+	}
 }
 

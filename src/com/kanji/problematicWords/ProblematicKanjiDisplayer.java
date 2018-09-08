@@ -145,4 +145,8 @@ public class ProblematicKanjiDisplayer
 
 	}
 
+	@Override
+	public void focusPreviouslyFocusedElement() {
+		problematicKanjiPanel.focusPreviouslyFocusedElement();
+	}
 }

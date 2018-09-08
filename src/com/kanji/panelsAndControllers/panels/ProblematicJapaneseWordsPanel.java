@@ -39,7 +39,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	private WebPagePanel japaneseEnglishDictionaryPanel;
 	private WebPagePanel kanjiKoohiWebPanel;
 	private static final String TANGORIN_URL = "http://www.tangorin.com/";
-	private ProblematicJapaneseWordsDisplayer problematicJapaneseWordsDisplayer;
+	private FocusableComponentsManager focusableComponentsManager;
 
 	public ProblematicJapaneseWordsPanel(
 			ProblematicWordsController<JapaneseWord> problematicWordsController,
@@ -51,7 +51,6 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		englishDictionaryPanel = new WebPagePanel(this, null);
 		japaneseEnglishDictionaryPanel = new WebPagePanel(this, null);
 		kanjiKoohiWebPanel = new WebPagePanel(this, null);
-		this.problematicJapaneseWordsDisplayer = problematicWordsDisplayer;
 	}
 
 	public void initialize() {
@@ -86,8 +85,8 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	}
 
 	public void searchWord(String word) {
-		japaneseEnglishDictionaryPanel
-				.showPageWithoutGrabbingFocus(TANGORIN_URL + "/general/" + word);
+		japaneseEnglishDictionaryPanel.showPageWithoutGrabbingFocus(
+				TANGORIN_URL + "/general/" + word);
 	}
 
 	@Override
@@ -98,7 +97,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	@Override
 	public void createElements() {
 
-		FocusableComponentsManager focusableComponentsManager = new FocusableComponentsManager(
+		focusableComponentsManager = new FocusableComponentsManager(
 				mainPanel.getPanel());
 		focusableComponentsManager.makeFocusable(problematicWords.getPanel());
 		focusableComponentsManager
@@ -157,4 +156,12 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		kanjiKoohiWebPanel.showPageWithoutGrabbingFocus(uriText);
 	}
 
+	public boolean isListPanelFocused() {
+		return focusableComponentsManager.getFocusedComponent()
+				.equals(problematicWords.getPanel());
+	}
+
+	public void focusPreviouslyFocusedElement() {
+		focusableComponentsManager.focusPreviouslyFocusedElement();
+	}
 }
