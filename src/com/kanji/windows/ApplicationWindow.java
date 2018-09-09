@@ -219,9 +219,10 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void showProblematicWordsDialog() {
-		//TODO when no words to review for given list exist, null pointer is thrown
 
-
+		if (!activeProblematicWordsController.hasProblematicWords()){
+			return;
+		}
 		AbstractPanelWithHotkeysInfo problematicWordsPanel = activeProblematicWordsController
 				.getPanel();
 		if (!problematicWordsPanel.isReady()) {

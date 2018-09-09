@@ -300,7 +300,7 @@ public class ProblematicWordsController<Word extends ListElement>
 	@Override
 	public void update(Word word,
 			ListElementModificationType modificationType) {
-		if (!hasWords()) {
+		if (!hasProblematicWords()) {
 			return;
 		}
 		wordsToReviewList.update(word, modificationType);
@@ -323,7 +323,7 @@ public class ProblematicWordsController<Word extends ListElement>
 
 	}
 
-	private boolean hasWords() {
+	public boolean hasProblematicWords() {
 		return !wordsToReviewList.getWords().isEmpty();
 	}
 
