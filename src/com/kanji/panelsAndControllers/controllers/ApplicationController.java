@@ -156,8 +156,28 @@ public class ApplicationController
 		verb.addWritingsForKana("あける", "開ける", "空ける", "明ける");
 		verb.addWritingsForKana("ひらける", "開ける", "空ける", "明ける");
 		JapaneseWord japaneseWord = new JapaneseWord(PartOfSpeech.NOUN, "Test");
-		japaneseWord.addWritingsForKana("らけ", "務");
+		japaneseWord.addWritingsForKana("らけ1", "務");
 		japaneseWords.addWord(japaneseWord);
+		JapaneseWord japaneseWord2 = new JapaneseWord(PartOfSpeech.NOUN,
+				"trykot");
+		japaneseWord2.addWritingsForKana("らけ2", "務");
+		japaneseWords.addWord(japaneseWord2);
+		JapaneseWord japaneseWord3 = new JapaneseWord(PartOfSpeech.NOUN,
+				"splot");
+		japaneseWord3.addWritingsForKana("らけ3", "務");
+		japaneseWords.addWord(japaneseWord3);
+		JapaneseWord japaneseWord4 = new JapaneseWord(PartOfSpeech.NOUN,
+				"przykazanie");
+		japaneseWord4.addWritingsForKana("らけ4", "務");
+		japaneseWords.addWord(japaneseWord4);
+		JapaneseWord japaneseWord5 = new JapaneseWord(PartOfSpeech.NOUN,
+				"opowieść, historia, legenda");
+		japaneseWord5.addWritingsForKana("らけ5", "務");
+		japaneseWords.addWord(japaneseWord5);
+		JapaneseWord japaneseWord6 = new JapaneseWord(PartOfSpeech.NOUN,
+				"pies z kotem");
+		japaneseWord6.addWritingsForKana("らけ6", "務");
+		japaneseWords.addWord(japaneseWord6);
 		japaneseWords.addWord(verb);
 
 	}

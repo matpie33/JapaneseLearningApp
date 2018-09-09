@@ -1,10 +1,10 @@
 package com.kanji.utilities;
 
 import com.kanji.constants.enums.WordSearchOptions;
+import com.kanji.list.listElements.JapaneseWord;
+import com.kanji.model.ListRow;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class WordSearching {
 
@@ -77,6 +77,43 @@ public class WordSearching {
 	private static boolean doesPhraseContainSearchedCharacterChain(
 			String phrase, String characterChain) {
 		return phrase.toLowerCase().contains(characterChain.toLowerCase());
+	}
+
+	public static <Word extends Object> List<ListRow<Word>> filterWords(
+			List<ListRow<Word>> allWords, String filterText) {
+
+		List<ListRow<Word>> filteredWords = new ArrayList<>();
+		for (ListRow<Word> listRow : allWords) {
+			Word word = listRow.getWord();
+			JapaneseWord japaneseWord = (JapaneseWord) word;
+			String meaning = removeDiacritics(japaneseWord.getMeaning());
+			filterText = removeDiacritics(filterText);
+
+			String[] meaningWords = divideToWords(meaning);
+			String[] filterWords = divideToWords(filterText);
+
+			int filterWordToCheck = 0;
+			for (String meaningWord : meaningWords) {
+				if (meaningWord.contains(filterWords[filterWordToCheck])) {
+					filterWordToCheck++;
+					if (filterWordToCheck > filterWords.length - 1) {
+						break;
+					}
+				}
+
+			}
+			if (filterWordToCheck == filterWords.length) {
+				filteredWords.add(listRow);
+			}
+
+		}
+
+		return filteredWords;
+
+	}
+
+	private static String[] divideToWords(String word) {
+		return word.split("\\W+");
 	}
 
 }

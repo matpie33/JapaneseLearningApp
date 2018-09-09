@@ -1,6 +1,7 @@
 package com.kanji.constants.strings;
 
 public class Labels {
+	public static final String FILTER_WORDS = "Filtrowanie";
 	public static final String RANGE_FROM_LABEL = "Od: ";
 	public static final String RANGE_TO_LABEL = "do: ";
 	public static final String KANJI_ID_LABEL = "Kanji id: ";

@@ -1,10 +1,14 @@
 package com.kanji.list.myList;
 
+import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.MoveDirection;
 import com.guimaker.listeners.SwitchBetweenInputsFailListener;
+import com.guimaker.options.ButtonOptions;
+import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.ListElementModificationType;
+import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.ListElement;
@@ -22,6 +26,7 @@ import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.range.Range;
 import com.kanji.swingWorkers.ProgressUpdater;
 import com.kanji.utilities.Pair;
+import com.kanji.utilities.WordSearching;
 
 import javax.swing.*;
 import javax.swing.FocusManager;
@@ -48,13 +53,13 @@ public class ListWordsController<Word extends ListElement> {
 	private Pair<MyList, ListElement> parentListAndWord;
 	private boolean finishEditActionRequested;
 	private boolean isInEditMode;
-	private MyList<Word> sourceList;
+	private final int numberOfWordsToDisplayByFilter = 10;
 	//TODO switchBetweenInputsFailListeners should be deleted from here
 
 	public ListWordsController(ListConfiguration listConfiguration,
 			ListRowCreator<Word> listRowCreator, String title,
 			ApplicationController applicationController,
-			ListElementInitializer<Word> wordInitializer, MyList<Word> myList) {
+			ListElementInitializer<Word> wordInitializer) {
 
 		parentListAndWord = listConfiguration
 				.getParentListAndWordContainingThisList();
@@ -205,6 +210,15 @@ public class ListWordsController<Word extends ListElement> {
 			words.add(listRow.getWord());
 		}
 		return words;
+	}
+
+	private List<ListRow<Word>> getWordsWithDetails() {
+		List<ListRow<Word>> listRows = new ArrayList<>();
+		for (ListRow<Word> listRow : allWordsToRowNumberMap) {
+			listRows.add(listRow);
+		}
+		return listRows;
+
 	}
 
 	public int getNumberOfWords() {
@@ -381,6 +395,7 @@ public class ListWordsController<Word extends ListElement> {
 				.shouldContinue(lastRowVisible,
 						allWordsToRowNumberMap.size() - 1); i++) {
 			showNextWord(loadNextWordsHandler);
+			//TODO do not pass around load words handler, use some enum: next/previous word
 			progressUpdater.updateProgress();
 		}
 
@@ -566,12 +581,35 @@ public class ListWordsController<Word extends ListElement> {
 		finishEditActionRequested = false;
 	}
 
-	public void setSourceList(MyList<Word> sourceList) {
-		this.sourceList = sourceList;
-	}
-
-	public boolean isInEditMode (){
+	public boolean isInEditMode() {
 		return isInEditMode;
 	}
 
+	public AbstractButton createButtonFilter(JTextComponent component) {
+		return GuiElementsCreator.createButtonlikeComponent(
+				new ButtonOptions(ButtonType.BUTTON).text(ButtonsNames.FILTER),
+				new AbstractAction() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						List<ListRow<Word>> words = WordSearching
+								.filterWords(getWordsWithDetails(),
+										component.getText());
+						listPanelCreator.clear();
+
+						int newRowNumber = 1;
+						for (ListRow<Word> listRow : words) {
+							if (newRowNumber > numberOfWordsToDisplayByFilter) {
+								break;
+							}
+							int rowNumber = listRow.getRowNumber() - 1;
+							listPanelCreator.addRow(allWordsToRowNumberMap
+											.get(rowNumber).getWord(), newRowNumber++,
+									true,
+									listPanelCreator.getLoadNextWordsHandler(),
+									InputGoal.EDIT);
+						}
+
+					}
+				});
+	}
 }

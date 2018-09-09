@@ -62,9 +62,6 @@ public class ProblematicJapaneseWordsDisplayer
 				JapaneseWord.getInitializer());
 		wordsToReviewList
 				.addListObserver(applicationWindow.getApplicationController());
-		wordsToReviewList.setSourceList(
-				applicationWindow.getApplicationController()
-						.getJapaneseWords());
 		japaneseWordPanelCreator.setWordsList(wordsToReviewList);
 
 		controller.setProblematicWordsDisplayer(this);

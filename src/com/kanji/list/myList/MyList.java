@@ -43,16 +43,11 @@ public class MyList<Word extends ListElement>
 		this.applicationController = applicationController;
 		this.parent = parentDialog;
 		listController = new ListWordsController<>(listConfiguration,
-				listRowCreator, title, applicationController, wordInitializer,
-				this);
+				listRowCreator, title, applicationController, wordInitializer);
 		this.wordInitializer = wordInitializer;
 		this.title = title;
 	}
 
-	public void setSourceList(MyList<Word> sourceList) {
-		listController.setSourceList(sourceList);
-		this.sourceList = sourceList;
-	}
 
 	public MyList(DialogWindow parentDialog,
 			ApplicationController applicationController,

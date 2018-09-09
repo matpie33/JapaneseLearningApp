@@ -8,6 +8,7 @@ import com.guimaker.model.PanelConfiguration;
 import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.ScrollPaneOptions;
+import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.AbstractSimpleRow;
@@ -19,6 +20,7 @@ import com.kanji.constants.Colors;
 import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
+import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.model.ListRow;
@@ -73,11 +75,10 @@ public class ListPanelCreator<Word extends ListElement>
 				listConfiguration.getParentListAndWordContainingThisList()
 						!= null;
 
-
 		rowsPanel = new MainPanel(null, true, true,
 				new PanelConfiguration(listConfiguration.getDisplayMode()));
 		rootPanel = new MainPanel(null);
-		if (hasParentList){
+		if (hasParentList) {
 			mainPanel.setRowColor(ColorChanger.makeLighter(getContentColor()));
 			rootPanel.setRowColor(ColorChanger.makeLighter(getContentColor()));
 		}
@@ -265,6 +266,19 @@ public class ListPanelCreator<Word extends ListElement>
 		createRootPanel();
 		createAndAddButtonsShowNextAndPrevious();
 		addElementsForEmptyList();
+		if (enableWordAdding) {
+			navigationButtons.add(createButtonAddWord());
+		}
+		if (enableWordSearching) {
+			navigationButtons.add(createButtonFindWord());
+			JTextField filterTextField = GuiElementsCreator.createTextField(
+					new TextComponentOptions().rowsAndColumns(1, 10));
+			rootPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE,
+					GuiElementsCreator.createLabel(
+							new ComponentOptions().text(Labels.FILTER_WORDS)),
+					filterTextField,
+					listWordsController.createButtonFilter(filterTextField)));
+		}
 
 		if (!isSkipTitle) {
 			rootPanel.addRow(SimpleRowBuilder
@@ -275,12 +289,7 @@ public class ListPanelCreator<Word extends ListElement>
 		mainPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.BOTH, rootPanel.getPanel()));
 
-		if (enableWordAdding) {
-			navigationButtons.add(createButtonAddWord());
-		}
-		if (enableWordSearching) {
-			navigationButtons.add(createButtonFindWord());
-		}
+
 		if (!enableWordSearching && !enableWordAdding) {
 			mainPanel.getPanel().setOpaque(false);
 		}

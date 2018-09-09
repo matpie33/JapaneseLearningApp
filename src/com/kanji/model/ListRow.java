@@ -59,4 +59,10 @@ public class ListRow<Word> {
 	public void setPanel(MainPanel panel) {
 		this.wrappingPanel = panel;
 	}
+
+	@Override
+	public String toString (){
+		return word.toString();
+	}
+
 }
