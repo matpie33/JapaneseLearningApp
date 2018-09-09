@@ -602,11 +602,11 @@ public class ListWordsController<Word extends ListElement> {
 								break;
 							}
 							int rowNumber = listRow.getRowNumber() - 1;
-							listPanelCreator.addRow(allWordsToRowNumberMap
+							listRow.setPanel(listPanelCreator.addRow(allWordsToRowNumberMap
 											.get(rowNumber).getWord(), newRowNumber++,
 									true,
 									listPanelCreator.getLoadNextWordsHandler(),
-									InputGoal.EDIT);
+									InputGoal.EDIT).getWrappingPanel());
 						}
 
 					}
