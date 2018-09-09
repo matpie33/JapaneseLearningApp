@@ -25,6 +25,7 @@ import com.kanji.windows.DialogWindow;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -49,6 +50,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	private Map<MoveDirection, HotkeyWrapper> hotkeysForMovingBetweenInputs = new HashMap<>();
 	private boolean navigateBetweenInputsByHotkeys;
 	private boolean isReady;
+	private Color contentColor;
 
 	public AbstractPanelWithHotkeysInfo() {
 		mainPanel = new MainPanel(Colors.BACKGROUND_PANEL_COLOR);
@@ -56,7 +58,12 @@ public abstract class AbstractPanelWithHotkeysInfo {
 		mainPanel.setRowsBorder(defaultBorder);
 		createHotkeysPanel();
 		isMaximized = false;
+		contentColor = Colors.CONTENT_PANEL_COLOR;
 
+	}
+
+	public Color getContentColor() {
+		return contentColor;
 	}
 
 	public boolean isReady() {

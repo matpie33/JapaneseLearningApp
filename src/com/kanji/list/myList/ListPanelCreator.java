@@ -12,6 +12,7 @@ import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.AbstractSimpleRow;
 import com.guimaker.row.SimpleRowBuilder;
+import com.guimaker.utilities.ColorChanger;
 import com.guimaker.utilities.HotkeyWrapper;
 import com.guimaker.utilities.KeyModifiers;
 import com.kanji.constants.Colors;
@@ -59,6 +60,7 @@ public class ListPanelCreator<Word extends ListElement>
 	private Color labelsColor = Color.WHITE;
 	private boolean scrollBarSizeFittingContent;
 	private InputGoal inputGoal;
+	private boolean hasParentList;
 
 	public ListPanelCreator(ListConfiguration listConfiguration,
 			ApplicationController applicationController,
@@ -67,11 +69,19 @@ public class ListPanelCreator<Word extends ListElement>
 		this.applicationController = applicationController;
 		listWordsController = controller;
 		isSkipTitle = listConfiguration.isSkipTitle();
+		hasParentList =
+				listConfiguration.getParentListAndWordContainingThisList()
+						!= null;
+
 
 		rowsPanel = new MainPanel(null, true, true,
 				new PanelConfiguration(listConfiguration.getDisplayMode()));
-
 		rootPanel = new MainPanel(null);
+		if (hasParentList){
+			mainPanel.setRowColor(ColorChanger.makeLighter(getContentColor()));
+			rootPanel.setRowColor(ColorChanger.makeLighter(getContentColor()));
+		}
+
 		titleLabel = GuiElementsCreator.createLabel(new ComponentOptions());
 		loadNextWordsHandler = new LoadNextWordsHandler(listWordsController,
 				rowsPanel);
@@ -164,6 +174,10 @@ public class ListPanelCreator<Word extends ListElement>
 			AbstractSimpleRow abstractSimpleRow = SimpleRowBuilder
 					.createRow(FillType.HORIZONTAL, Anchor.NORTH,
 							rowPanel.getPanel());
+			if (hasParentList) {
+				rowPanel.setBackground(
+						ColorChanger.makeLighter(getContentColor()));
+			}
 			loadWordsHandler.showWord(abstractSimpleRow);
 		}
 		else if (!buttonLoadNextWords.isEnabled()) {
@@ -423,10 +437,11 @@ public class ListPanelCreator<Word extends ListElement>
 		MainPanel newPanel = listRow.createListRow(word, commonListElements,
 				customInputGoal == null ? this.inputGoal : customInputGoal)
 				.getRowPanel();
-		if (highlighted){
+		if (highlighted) {
 			newPanel.setBackground(Colors.LIST_ROW_HIGHLIGHT_COLOR);
 		}
-		if (customInputGoal != null && customInputGoal.equals(InputGoal.EDIT_TEMPORARILY)){
+		if (customInputGoal != null && customInputGoal
+				.equals(InputGoal.EDIT_TEMPORARILY)) {
 			newPanel.setBackground(Colors.LIST_ROW_EDIT_TEMPORARILY_COLOR);
 			newPanel.updateView();
 		}
