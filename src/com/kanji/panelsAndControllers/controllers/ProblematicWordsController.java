@@ -175,7 +175,9 @@ public class ProblematicWordsController<Word extends ListElement>
 	}
 
 	public int getNumberOfRows() {
-		return wordsToReviewList.getNumberOfWords();
+		return wordsToReviewList == null ?
+				0 :
+				wordsToReviewList.getNumberOfWords();
 	}
 
 	public MyList getWordsToReviewList() {

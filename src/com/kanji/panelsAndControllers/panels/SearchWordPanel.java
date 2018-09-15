@@ -91,10 +91,8 @@ public class SearchWordPanel<Word extends ListElement>
 		addHotkeyForSwitchingComboboxValue(comboBox);
 
 		MainPanel searchPanel = new MainPanel(null);
-		JLabel prompt = GuiElementsCreator
-				.createLabel(new ComponentOptions().text(
-
-						Prompts.SEARCH_DIALOG));
+		JLabel prompt = GuiElementsCreator.createLabel(
+				new ComponentOptions().text(Prompts.SEARCH_DIALOG));
 		searchPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.CENTER, prompt));
 		searchPanel.addRow(SimpleRowBuilder

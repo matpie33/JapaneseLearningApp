@@ -60,7 +60,7 @@ public class ListWordsController<Word extends ListElement> {
 			ListRowCreator<Word> listRowCreator, String title,
 			ApplicationController applicationController,
 			ListElementInitializer<Word> wordInitializer) {
-
+		this.wordInitializer = wordInitializer;
 		parentListAndWord = listConfiguration
 				.getParentListAndWordContainingThisList();
 		progressUpdater = new ProgressUpdater();
@@ -69,8 +69,12 @@ public class ListWordsController<Word extends ListElement> {
 				applicationController, listRowCreator, this);
 		listPanelCreator.createPanel();
 		this.listPanelCreator.setTitle(title);
-		this.wordInitializer = wordInitializer;
+
 		initializeFoundWordStrategies();
+	}
+
+	public ListElementInitializer<Word> getWordInitializer() {
+		return wordInitializer;
 	}
 
 	public void inheritScrollPane() {
@@ -585,7 +589,8 @@ public class ListWordsController<Word extends ListElement> {
 		return isInEditMode;
 	}
 
-	public AbstractButton createButtonFilter(JTextComponent component) {
+	public AbstractButton createButtonFilter(
+			ListSearchPanelCreator<Word> listSearchPanelCreator) {
 		return GuiElementsCreator.createButtonlikeComponent(
 				new ButtonOptions(ButtonType.BUTTON).text(ButtonsNames.FILTER),
 				new AbstractAction() {
@@ -593,7 +598,9 @@ public class ListWordsController<Word extends ListElement> {
 					public void actionPerformed(ActionEvent e) {
 						List<ListRow<Word>> words = WordSearching
 								.filterWords(getWordsWithDetails(),
-										component.getText());
+										listSearchPanelCreator
+												.getFirstTextComponent()
+												.getText());
 						listPanelCreator.clear();
 
 						int newRowNumber = 1;
@@ -602,11 +609,13 @@ public class ListWordsController<Word extends ListElement> {
 								break;
 							}
 							int rowNumber = listRow.getRowNumber() - 1;
-							listRow.setPanel(listPanelCreator.addRow(allWordsToRowNumberMap
-											.get(rowNumber).getWord(), newRowNumber++,
-									true,
-									listPanelCreator.getLoadNextWordsHandler(),
-									InputGoal.EDIT).getWrappingPanel());
+							listRow.setPanel(listPanelCreator
+									.addRow(allWordsToRowNumberMap
+													.get(rowNumber).getWord(),
+											newRowNumber++, true,
+											listPanelCreator
+													.getLoadNextWordsHandler(),
+											InputGoal.EDIT).getWrappingPanel());
 						}
 
 					}

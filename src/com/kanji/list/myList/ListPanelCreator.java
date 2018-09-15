@@ -8,7 +8,6 @@ import com.guimaker.model.PanelConfiguration;
 import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.ScrollPaneOptions;
-import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.AbstractSimpleRow;
@@ -20,7 +19,6 @@ import com.kanji.constants.Colors;
 import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
-import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.model.ListRow;
@@ -63,11 +61,13 @@ public class ListPanelCreator<Word extends ListElement>
 	private boolean scrollBarSizeFittingContent;
 	private InputGoal inputGoal;
 	private boolean hasParentList;
+	private ListSearchPanelCreator<Word> listSearchPanelCreator;
 
 	public ListPanelCreator(ListConfiguration listConfiguration,
 			ApplicationController applicationController,
 			ListRowCreator<Word> listRow,
 			ListWordsController<Word> controller) {
+		listSearchPanelCreator = new ListSearchPanelCreator<>();
 		this.applicationController = applicationController;
 		listWordsController = controller;
 		isSkipTitle = listConfiguration.isSkipTitle();
@@ -169,9 +169,9 @@ public class ListPanelCreator<Word extends ListElement>
 				inputGoal, rowNumber);
 		MainPanel rowPanel = null;
 		if (shouldShowWord) {
-			rowPanel = listRow
-					.createListRow(word, commonListElements, inputGoal)
-					.getRowPanel();
+			ListRowData<Word> listRow = this.listRow
+					.createListRow(word, commonListElements, inputGoal);
+			rowPanel = listRow.getRowPanel();
 			AbstractSimpleRow abstractSimpleRow = SimpleRowBuilder
 					.createRow(FillType.HORIZONTAL, Anchor.NORTH,
 							rowPanel.getPanel());
@@ -270,14 +270,22 @@ public class ListPanelCreator<Word extends ListElement>
 			navigationButtons.add(createButtonAddWord());
 		}
 		if (enableWordSearching) {
-			navigationButtons.add(createButtonFindWord());
-			JTextField filterTextField = GuiElementsCreator.createTextField(
-					new TextComponentOptions().rowsAndColumns(1, 10));
-			rootPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE,
-					GuiElementsCreator.createLabel(
-							new ComponentOptions().text(Labels.FILTER_WORDS)),
-					filterTextField,
-					listWordsController.createButtonFilter(filterTextField)));
+			ListRowData<Word> listRow = this.listRow.createListRow(
+					listWordsController.getWordInitializer()
+							.initializeElement(),
+					CommonListElements.forSingleRowOnly(Color.WHITE),
+					InputGoal.SEARCH);
+			if (!listRow.isEmpty()) {
+				rootPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE,
+						listSearchPanelCreator.createPanel(listRow)));
+				navigationButtons.add(createButtonFindWord());
+				addHotkey(KeyModifiers.CONTROL, KeyEvent.VK_SPACE,
+						listSearchPanelCreator.createActionSwitchComboboxValue(),
+						mainPanel.getPanel(),
+						HotkeysDescriptions.SWITCH_SEARCH_CRITERIA);
+			}
+			//			JTextField filterTextField = GuiElementsCreator.createTextField(
+			//					new TextComponentOptions().rowsAndColumns(1, 10));
 		}
 
 		if (!isSkipTitle) {
@@ -288,7 +296,6 @@ public class ListPanelCreator<Word extends ListElement>
 				.createRow(FillType.BOTH, listElementsPanel));
 		mainPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.BOTH, rootPanel.getPanel()));
-
 
 		if (!enableWordSearching && !enableWordAdding) {
 			mainPanel.getPanel().setOpaque(false);

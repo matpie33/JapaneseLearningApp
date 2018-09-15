@@ -242,7 +242,7 @@ public class JapaneseWordPanelCreator
 			InputGoal inputGoal) {
 		JPanel writingsListPanel = lastWritingsListCreated.getPanel();
 		lastJapanesePanelMade = SimpleRowBuilder
-				.createRowStartingFromColumn(0, FillType.NONE, Anchor.NORTH,
+				.createRowStartingFromColumn(0, FillType.NONE, Anchor.WEST,
 						commonListElements.getRowNumberLabel(),
 						wordMeaningLabel, wordMeaningText)
 				.nextRow(partOfSpeechLabel, partOfSpeechCombobox)
@@ -261,24 +261,21 @@ public class JapaneseWordPanelCreator
 		japaneseWordPanel.addRowsOfElementsInColumn(lastJapanesePanelMade);
 		ListRowDataCreator<Kanji> rowDataCreator = new ListRowDataCreator<>(
 				japaneseWordPanel);
-		if (inputGoal.equals(InputGoal.ADD) || inputGoal
-				.equals(InputGoal.SEARCH)) {
-			rowDataCreator
-					.addPropertyData(ListPropertiesNames.JAPANESE_WORD_MEANING,
-							lastJapanesePanelMade.getRowContainingComponent(
-									wordMeaningLabel), Pair.of(wordMeaningText,
-									japanesePanelComponentsStore
-											.getActionCreator()
-											.getWordMeaningChecker()));
-			List<Pair<JTextComponent, ListElementPropertyManager<?, JapaneseWord>>> inputsWithPropertyManagersForJapaneseWritings = getWritingsInputsWithManagers();
+		rowDataCreator
+				.addPropertyData(ListPropertiesNames.JAPANESE_WORD_MEANING,
+						lastJapanesePanelMade
+								.getRowContainingComponent(wordMeaningLabel),
+						Pair.of(wordMeaningText,
+								japanesePanelComponentsStore.getActionCreator()
+										.getWordMeaningChecker()));
+		List<Pair<JTextComponent, ListElementPropertyManager<?, JapaneseWord>>> inputsWithPropertyManagersForJapaneseWritings = getWritingsInputsWithManagers();
 
-			rowDataCreator
-					.addPropertyData(ListPropertiesNames.JAPANESE_WORD_WRITINGS,
-							lastJapanesePanelMade
-									.getRowContainingComponent(writingsLabel),
-							inputsWithPropertyManagersForJapaneseWritings
-									.toArray(new Pair[] {}));
-		}
+		rowDataCreator
+				.addPropertyData(ListPropertiesNames.JAPANESE_WORD_WRITINGS,
+						lastJapanesePanelMade
+								.getRowContainingComponent(writingsLabel),
+						inputsWithPropertyManagersForJapaneseWritings
+								.toArray(new Pair[] {}));
 		return rowDataCreator.getListRowData();
 	}
 

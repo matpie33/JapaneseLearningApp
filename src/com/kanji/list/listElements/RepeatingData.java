@@ -68,7 +68,7 @@ public class RepeatingData implements Serializable, ListElement {
 	}
 
 	public static ListElementInitializer<RepeatingData> getInitializer() {
-		return () -> new RepeatingData("", null, false);
+		return () -> new RepeatingData("", LocalDateTime.now(), false);
 	}
 
 	@Override

@@ -27,4 +27,8 @@ public class ListRowData<Word extends ListElement> {
 	public MainPanel getRowPanel() {
 		return rowPanel;
 	}
+
+	public boolean isEmpty() {
+		return rowPropertiesData.isEmpty();
+	}
 }

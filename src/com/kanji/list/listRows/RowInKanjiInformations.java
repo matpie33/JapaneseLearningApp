@@ -72,15 +72,12 @@ public class RowInKanjiInformations implements ListRowCreator<Kanji> {
 		ListRowDataCreator<Kanji> rowDataCreator = new ListRowDataCreator<>(
 				panel);
 
-		if (inputGoal.equals(InputGoal.ADD) || inputGoal
-				.equals(InputGoal.SEARCH)) {
-			rowDataCreator.addPropertyData(ListPropertiesNames.KANJI_KEYWORD,
-					panelRows.getRowContainingComponent(keywordLabel),
-					Pair.of(keywordInput, actionsCreator.getKeywordChecker()));
-			rowDataCreator.addPropertyData(ListPropertiesNames.KANJI_ID,
-					panelRows.getRowContainingComponent(idLabel),
-					Pair.of(idInput, actionsCreator.getIdChecker()));
-		}
+		rowDataCreator.addPropertyData(ListPropertiesNames.KANJI_KEYWORD,
+				panelRows.getRowContainingComponent(keywordLabel),
+				Pair.of(keywordInput, actionsCreator.getKeywordChecker()));
+		rowDataCreator.addPropertyData(ListPropertiesNames.KANJI_ID,
+				panelRows.getRowContainingComponent(idLabel),
+				Pair.of(idInput, actionsCreator.getIdChecker()));
 
 		return rowDataCreator.getListRowData();
 
