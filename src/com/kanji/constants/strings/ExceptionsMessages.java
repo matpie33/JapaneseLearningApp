@@ -33,13 +33,14 @@ public class ExceptionsMessages {
 	public static final String JAPANESE_WORD_WRITINGS_ALREADY_DEFINED = "Słowo z takimi zapisami: %s już istnieje.";
 	public static final String DUPLICATED_WORD_MEANING = "Słowo o znaczeniu \"%s\" już istnieje.";
 	public static final String KANA_WRITING_INCORRECT = "Niepoprawny zapis kaną: %s. Powinien zawierać tylko hiraganę lub katakanę.";
-	public static final String KANJI_WRITING_INCORRECT =
-			"Niepoprawny zapis kanji: %s. Powinien zawierać tylko hiraganę lub katakanę "
-					+ "i co najmniej jeden znak kanji.";
+	public static final String KANJI_WRITING_INCORRECT = "Niepoprawny zapis kanji: %s. Powinien zawierać kanji i hiraganę lub katakanę.";
+	public static final String KANA_OR_KANJI_WRITING_INCORRECT =
+			"Niepoprawny zapis kany lub kanji. Powinien zawierać hiraganę lub katakanę "
+					+ "lub kanji.";
 	public static final String DUPLICATED_KANJI_WRITING_WITHIN_ROW = "Kanji %s już wystepuje w tym wierszu.";
 	public static final String WORD_ALREADY_EXISTS = "Takie slowo już istnieje w wierszu %d.";
 	public static final String EXCEPTION_WHILE_LOADING_KANJI_PROJECT = "Wystąpił błąd przy wczytywaniu: %s.";
 	public static final String ROW_FOR_DUPLICATED_PROPERTY = "Duplikat występuje w wierszu nr %s.";
 	public static final String DUPLICATED_WRITINGS_IN_WORD = "Wpisano identyczne zapisy słowa w dwóch wierszach.";
-	public static final String KANA_INPUT_EMPTY = "Pole \"kana\" musi być wypełnione." ;
+	public static final String KANA_INPUT_EMPTY = "Pole \"kana\" musi być wypełnione.";
 }

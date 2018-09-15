@@ -1,6 +1,7 @@
 package com.kanji.list.listElements;
 
 import com.kanji.constants.enums.InputGoal;
+import com.kanji.constants.enums.TypeOfJapaneseWriting;
 import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordWritingsChecker;
 import com.kanji.utilities.JapaneseWritingUtilities;
 import com.kanji.utilities.StringUtilities;
@@ -29,7 +30,8 @@ public class JapaneseWriting implements ListElement, Serializable {
 
 	@Override
 	public boolean isEmpty() {
-		return JapaneseWritingUtilities.isInputEmpty(kanaWriting, true) && (
+		return JapaneseWritingUtilities
+				.isInputEmpty(kanaWriting, TypeOfJapaneseWriting.KANA) && (
 				kanjiWritings.isEmpty() || JapaneseWritingUtilities
 						.areKanjiWritingsEmpty(kanjiWritings));
 	}

@@ -1,6 +1,7 @@
 package com.kanji.list.listElementPropertyManagers.japaneseWordWritings;
 
 import com.kanji.constants.enums.InputGoal;
+import com.kanji.constants.enums.TypeOfJapaneseWriting;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElementPropertyManagers.WordSearchOptionsHolder;
@@ -37,11 +38,11 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 		writingsInputManager.addKanjiInput(kanjiInput);
 	}
 
-	public JTextComponent getAnyKanjiInput (){
+	public JTextComponent getAnyKanjiInput() {
 		List<JTextComponent> kanjiInputs = writingsInputManager
 				.getKanjiInputs();
 
-		return kanjiInputs.isEmpty()? null: kanjiInputs.get(0);
+		return kanjiInputs.isEmpty() ? null : kanjiInputs.get(0);
 	}
 
 	@Override
@@ -76,11 +77,22 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 		}
 
 		errorDetails = "";
-		boolean isKana = writingsInputManager.getKanaInput() == valueToConvert;
+		TypeOfJapaneseWriting typeOfJapaneseWriting = TypeOfJapaneseWriting.KANA_OR_KANJI;
+		if (writingsInputManager.getKanaInput() == valueToConvert) {
+			typeOfJapaneseWriting = TypeOfJapaneseWriting.KANA;
+		}
+		else if (writingsInputManager.getKanjiInputs()
+				.contains(valueToConvert)) {
+			typeOfJapaneseWriting = TypeOfJapaneseWriting.KANJI;
+		}
+		boolean isKana = typeOfJapaneseWriting.equals(TypeOfJapaneseWriting.KANA);
+
 		JapaneseWriting writingToAdd;
-		if (JapaneseWritingUtilities.isInputEmpty(newValue, isKana)) {
+
+		if (JapaneseWritingUtilities
+				.isInputEmpty(newValue, typeOfJapaneseWriting)) {
 			writingToAdd = japaneseWritingToCheck;
-			if (!isKana) {
+			if (typeOfJapaneseWriting.equals(TypeOfJapaneseWriting.KANJI)) {
 				japaneseWritingToCheck
 						.replaceKanji(findKanjiPreviousValue(), "");
 			}
@@ -90,7 +102,16 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 
 		}
 		else {
-			if (!JapaneseWritingUtilities.isInputValid(newValue, isKana)) {
+			if (typeOfJapaneseWriting
+					.equals(TypeOfJapaneseWriting.KANA_OR_KANJI)
+					&& !JapaneseWritingUtilities.isInputValid(newValue,
+					TypeOfJapaneseWriting.KANA_OR_KANJI)) {
+				String exceptionMessage = ExceptionsMessages.KANA_OR_KANJI_WRITING_INCORRECT;
+				errorDetails += String.format(exceptionMessage, newValue);
+				writingToAdd = null;
+			}
+			else if (!JapaneseWritingUtilities
+					.isInputValid(newValue, typeOfJapaneseWriting)) {
 				String exceptionMessage = isKana ?
 						ExceptionsMessages.KANA_WRITING_INCORRECT :
 						ExceptionsMessages.KANJI_WRITING_INCORRECT;
@@ -98,14 +119,16 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 				writingToAdd = null;
 			}
 			else {
-				if (isKana) {
+				if (isKana || typeOfJapaneseWriting
+						.equals(TypeOfJapaneseWriting.KANA_OR_KANJI)) {
 					japaneseWritingToCheck.setKanaWriting(newValue);
 					writingToAdd = japaneseWritingToCheck;
 				}
 				else {
 					if (!inputGoal.equals(InputGoal.SEARCH)
 							&& JapaneseWritingUtilities.isInputEmpty(
-							japaneseWritingToCheck.getKanaWriting(), true)) {
+							japaneseWritingToCheck.getKanaWriting(),
+							TypeOfJapaneseWriting.KANJI)) {
 						errorDetails = ExceptionsMessages.KANA_INPUT_EMPTY;
 						return null;
 					}
@@ -135,7 +158,8 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 	private void removeEmptyValues() {
 		Set<String> notEmptyKanjiValues = new HashSet<>();
 		for (String kanjiWriting : japaneseWritingToCheck.getKanjiWritings()) {
-			if (!JapaneseWritingUtilities.isInputEmpty(kanjiWriting, false)) {
+			if (!JapaneseWritingUtilities
+					.isInputEmpty(kanjiWriting, TypeOfJapaneseWriting.KANJI)) {
 				notEmptyKanjiValues.add(kanjiWriting);
 			}
 		}
@@ -193,7 +217,8 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 			return false;
 		}
 
-		if (JapaneseWritingUtilities.isInputEmpty(searchedKana, true)) {
+		if (JapaneseWritingUtilities
+				.isInputEmpty(searchedKana, TypeOfJapaneseWriting.KANJI)) {
 			return areKanjisSame(searchedKanji, existingKanjiWritings,
 					inputGoal);
 		}

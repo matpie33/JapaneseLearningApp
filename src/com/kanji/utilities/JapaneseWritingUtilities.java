@@ -1,36 +1,59 @@
 package com.kanji.utilities;
 
+import com.kanji.constants.enums.TypeOfJapaneseWriting;
 import com.kanji.constants.strings.Prompts;
 
 import java.util.Set;
 
 public class JapaneseWritingUtilities {
 
-	public static boolean isKanaEmpty (String kanaValue){
-		return isInputEmpty(kanaValue, true);
+	public static boolean isKanaEmpty(String kanaValue) {
+		return isInputEmpty(kanaValue, TypeOfJapaneseWriting.KANA);
 	}
 
-	public static boolean isInputEmpty(String inputText, boolean isKana) {
-		String defaultValue = getDefaultValueForWriting(isKana);
+	public static boolean isInputEmpty(String inputText,
+			TypeOfJapaneseWriting typeOfJapaneseWriting) {
+		String defaultValue = getDefaultValueForWriting(typeOfJapaneseWriting);
 		return inputText.isEmpty() || inputText.equals(defaultValue);
 	}
 
 	public static boolean areKanjiWritingsEmpty(Set<String> kanjiWritings) {
 		return kanjiWritings.isEmpty() || (kanjiWritings.size() == 1
-				&& isInputEmpty(kanjiWritings.iterator().next(), false));
+				&& isInputEmpty(kanjiWritings.iterator().next(),
+				TypeOfJapaneseWriting.KANJI));
 	}
 
-	public static boolean isInputValid(String inputText, boolean isKana) {
-		return isKana ? wordIsInKana(inputText) : wordIsInKanji(inputText);
+	public static boolean isInputValid(String inputText,
+			TypeOfJapaneseWriting typeOfJapaneseWriting) {
+		if (typeOfJapaneseWriting.equals(TypeOfJapaneseWriting.KANA)) {
+			return wordIsInKana(inputText);
+		}
+		else if (typeOfJapaneseWriting
+				.equals(TypeOfJapaneseWriting.KANJI)) {
+			return wordIsInKanji(inputText);
+		}
+		else {
+			return wordIsInKana(inputText) || wordIsInKanji(inputText);
+		}
 	}
 
-	public static String getDefaultValueForWriting(boolean isKanaWriting) {
-		return isKanaWriting ? Prompts.KANA_TEXT : Prompts.KANJI_TEXT;
+	public static String getDefaultValueForWriting(
+			TypeOfJapaneseWriting typeOfJapaneseWriting) {
+		if (typeOfJapaneseWriting.equals(TypeOfJapaneseWriting.KANA)) {
+			return Prompts.KANA_TEXT;
+		}
+		else if (typeOfJapaneseWriting
+				.equals(TypeOfJapaneseWriting.KANJI)) {
+			return Prompts.KANJI_TEXT;
+		}
+		else {
+			return Prompts.KANA_OR_KANJI_TEXT;
+		}
 	}
 
 	public static boolean characterIsKanji(char character) {
 		return Character.UnicodeBlock.of(character) == Character.UnicodeBlock.
-				CJK_UNIFIED_IDEOGRAPHS || character=='々';
+				CJK_UNIFIED_IDEOGRAPHS || character == '々';
 	}
 
 	public static boolean characterIsKana(char character) {

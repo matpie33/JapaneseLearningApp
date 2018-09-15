@@ -10,6 +10,7 @@ import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.PartOfSpeech;
+import com.kanji.constants.enums.TypeOfJapaneseWriting;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
@@ -38,6 +39,7 @@ public class JapanesePanelElementsCreator {
 	private JapanesePanelActionsCreator actionsCreator;
 	private ApplicationController applicationController;
 	private DialogWindow dialogWindow;
+	private JTextComponent kanaOrKanjiInputForFiltering;
 
 	public JapanesePanelElementsCreator(
 			JapanesePanelActionsCreator actionsCreator,
@@ -48,13 +50,32 @@ public class JapanesePanelElementsCreator {
 		this.dialogWindow = parentDialog;
 	}
 
+	public JTextComponent getKanaOrKanjiInputForFiltering() {
+		return kanaOrKanjiInputForFiltering;
+	}
+
+	public void createKanaOrKanjiInputForFiltering(
+			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
+			boolean enabled, InputGoal inputGoal, boolean selectable) {
+		if (kanaOrKanjiInputForFiltering == null) {
+			kanaOrKanjiInputForFiltering = actionsCreator
+					.withJapaneseWritingValidation(createWritingsInput(
+							japaneseWriting.getKanaWriting(),
+							TypeOfJapaneseWriting.KANA_OR_KANJI, enabled,
+							selectable), japaneseWriting, japaneseWord,
+							TypeOfJapaneseWriting.KANA, inputGoal, enabled);
+		}
+
+	}
+
 	public JTextComponent createKanaInputWithValidation(
 			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
 			boolean enabled, InputGoal inputGoal, boolean selectable) {
 		return actionsCreator.withJapaneseWritingValidation(
-				createWritingsInput(japaneseWriting.getKanaWriting(), true,
-						enabled, selectable), japaneseWriting, japaneseWord,
-				true, inputGoal, enabled);
+				createWritingsInput(japaneseWriting.getKanaWriting(),
+						TypeOfJapaneseWriting.KANA, enabled, selectable),
+				japaneseWriting, japaneseWord, TypeOfJapaneseWriting.KANA,
+				inputGoal, enabled);
 	}
 
 	public MyList<WordParticlesData> createParticlesDataList(
@@ -81,12 +102,14 @@ public class JapanesePanelElementsCreator {
 			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
 			InputGoal inputGoal, boolean enabled, boolean selectable) {
 		return actionsCreator.withJapaneseWritingValidation(
-				createWritingsInput(text, false, enabled, selectable),
-				japaneseWriting, japaneseWord, false, inputGoal, enabled);
+				createWritingsInput(text, TypeOfJapaneseWriting.KANJI,
+						enabled, selectable), japaneseWriting, japaneseWord,
+				TypeOfJapaneseWriting.KANJI, inputGoal, enabled);
 	}
 
 	public JTextComponent createWritingsInput(String initialValue,
-			boolean isKana, boolean editable, boolean selectable) {
+			TypeOfJapaneseWriting typeOfJapaneseWriting, boolean editable,
+			boolean selectable) {
 		return actionsCreator.repaintParentOnFocusLost(actionsCreator
 				.withSwitchToJapaneseActionOnClick(GuiElementsCreator
 						.createTextField(
@@ -98,7 +121,7 @@ public class JapanesePanelElementsCreator {
 										.promptWhenEmpty(
 												JapaneseWritingUtilities
 														.getDefaultValueForWriting(
-																isKana)))));
+																typeOfJapaneseWriting)))));
 	}
 
 	private AbstractButton createButton(String buttonLabel,

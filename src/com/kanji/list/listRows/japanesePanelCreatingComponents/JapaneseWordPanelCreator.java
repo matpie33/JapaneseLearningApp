@@ -267,13 +267,10 @@ public class JapaneseWordPanelCreator
 
 		rowDataCreator
 				.addPropertyData(ListPropertiesNames.JAPANESE_WORD_WRITINGS,
-						getAnyKanjiInput(), new JapaneseWordChecker(inputGoal));
+						japanesePanelComponentsStore.getElementsCreator()
+								.getKanaOrKanjiInputForFiltering(),
+						new JapaneseWordChecker(inputGoal));
 		return rowDataCreator.getListRowData();
-	}
-
-	private JTextComponent getAnyKanjiInput() {
-		return japanesePanelComponentsStore.getActionCreator()
-				.getAnyKanjiInputField();
 	}
 
 	public void focusMeaningTextfield() {

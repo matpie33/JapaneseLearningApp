@@ -79,20 +79,25 @@ public class JapanesePanelActionsCreator {
 
 	public JTextComponent withJapaneseWritingValidation(
 			JTextComponent textComponent, JapaneseWriting japaneseWriting,
-			JapaneseWord japaneseWord, boolean isKana, InputGoal inputGoal,
-			boolean enabled) {
+			JapaneseWord japaneseWord,
+			TypeOfJapaneseWriting typeOfJapaneseWriting,
+			InputGoal inputGoal, boolean enabled) {
 		JapaneseWordChecker checker = getOrCreateCheckerFor(japaneseWriting,
 				japaneseWord, inputGoal);
-		if (isKana) {
+		boolean isKana = typeOfJapaneseWriting
+				.equals(TypeOfJapaneseWriting.KANA);
+		if (typeOfJapaneseWriting.equals(TypeOfJapaneseWriting.KANA)) {
 			checker.addKanaInput(textComponent, japaneseWriting);
 		}
-		else {
+		else if (typeOfJapaneseWriting
+				.equals(TypeOfJapaneseWriting.KANJI)) {
 			checker.addKanjiInput(textComponent, japaneseWriting);
 		}
 		if (enabled) {
 			addPropertyChangeHandler(textComponent, japaneseWord,
 					!inputGoal.equals(InputGoal.SEARCH) && isKana,
-					JapaneseWritingUtilities.getDefaultValueForWriting(isKana),
+					JapaneseWritingUtilities
+							.getDefaultValueForWriting(typeOfJapaneseWriting),
 					checker, parentDialog, wordsList, inputGoal);
 		}
 
