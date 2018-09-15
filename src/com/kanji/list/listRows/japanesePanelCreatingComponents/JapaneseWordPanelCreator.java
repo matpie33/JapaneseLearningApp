@@ -15,10 +15,9 @@ import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.ListPropertiesNames;
-import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
+import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordChecker;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
-import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listRows.RowInJapaneseWritingsList;
 import com.kanji.list.listeners.InputValidationListener;
 import com.kanji.list.myList.ListConfiguration;
@@ -37,7 +36,6 @@ import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class JapaneseWordPanelCreator
@@ -259,39 +257,23 @@ public class JapaneseWordPanelCreator
 				.nextRow(commonListElements.getFinishEditing())
 				.onlyAddIf(inputGoal.equals(InputGoal.EDIT_TEMPORARILY));
 		japaneseWordPanel.addRowsOfElementsInColumn(lastJapanesePanelMade);
-		ListRowDataCreator<Kanji> rowDataCreator = new ListRowDataCreator<>(
+		ListRowDataCreator<JapaneseWord> rowDataCreator = new ListRowDataCreator<>(
 				japaneseWordPanel);
 		rowDataCreator
 				.addPropertyData(ListPropertiesNames.JAPANESE_WORD_MEANING,
-						lastJapanesePanelMade
-								.getRowContainingComponent(wordMeaningLabel),
-						Pair.of(wordMeaningText,
-								japanesePanelComponentsStore.getActionCreator()
-										.getWordMeaningChecker()));
-		List<Pair<JTextComponent, ListElementPropertyManager<?, JapaneseWord>>> inputsWithPropertyManagersForJapaneseWritings = getWritingsInputsWithManagers();
+						wordMeaningText,
+						japanesePanelComponentsStore.getActionCreator()
+								.getWordMeaningChecker());
 
 		rowDataCreator
 				.addPropertyData(ListPropertiesNames.JAPANESE_WORD_WRITINGS,
-						lastJapanesePanelMade
-								.getRowContainingComponent(writingsLabel),
-						inputsWithPropertyManagersForJapaneseWritings
-								.toArray(new Pair[] {}));
+						getAnyKanjiInput(), new JapaneseWordChecker(inputGoal));
 		return rowDataCreator.getListRowData();
 	}
 
-	private List<Pair<JTextComponent, ListElementPropertyManager<?, JapaneseWord>>> getWritingsInputsWithManagers() {
-		List<Pair<JTextComponent, ListElementPropertyManager<?, JapaneseWord>>> inputsWithPropertyManagers = new ArrayList<>();
-		for (Map.Entry<JTextComponent, ListElementPropertyManager> textFieldWithPropertyManager : japanesePanelComponentsStore
-				.getActionCreator().getInputManagersForInputs().entrySet()) {
-			if (textFieldWithPropertyManager.getKey().equals(wordMeaningText)) {
-				continue; //TODO refactor actions creator so that we dont have to exclude word meaning text
-			}
-			inputsWithPropertyManagers.add(Pair
-					.of(textFieldWithPropertyManager.getKey(),
-							textFieldWithPropertyManager.getValue()));
-
-		}
-		return inputsWithPropertyManagers;
+	private JTextComponent getAnyKanjiInput() {
+		return japanesePanelComponentsStore.getActionCreator()
+				.getAnyKanjiInputField();
 	}
 
 	public void focusMeaningTextfield() {

@@ -31,6 +31,11 @@ public class KanjiIdChecker
 	}
 
 	@Override
+	public String getPropertyValue(Kanji kanji) {
+		return "" + kanji.getId();
+	}
+
+	@Override
 	public void setProperty(Kanji kanji, Integer propertyValue) {
 		kanji.setId(propertyValue);
 	}

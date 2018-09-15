@@ -73,18 +73,8 @@ public class JapanesePanelActionsCreator {
 		return textComponent;
 	}
 
-	public Map<JTextComponent, ListElementPropertyManager> getInputManagersForInputs() {
-		Map<JTextComponent, ListElementPropertyManager> propertyManagersForInputs = new LinkedHashMap<>();
-		for (Pair<JapaneseWord, JapaneseWordChecker> japaneseWordChecker : checkersForJapaneseWords) {
-			InputGoal checkerInputGoal = japaneseWordChecker.getRight()
-					.getInputGoal();
-			if (checkerInputGoal.equals(InputGoal.SEARCH) || checkerInputGoal
-					.equals(InputGoal.ADD)) {
-				propertyManagersForInputs.putAll(japaneseWordChecker.getRight()
-						.getInputToCheckerMap());
-			}
-		}
-		return propertyManagersForInputs;
+	public JTextComponent getAnyKanjiInputField() {
+		return checkersForJapaneseWords.get(0).getRight().getAnyKanjiInput();
 	}
 
 	public JTextComponent withJapaneseWritingValidation(

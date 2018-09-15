@@ -28,6 +28,11 @@ public class JapaneseWordMeaningChecker extends WordSearchOptionsHolder
 	}
 
 	@Override
+	public String getPropertyValue (JapaneseWord japaneseWord){
+		return japaneseWord.getMeaning();
+	}
+
+	@Override
 	public String validateInputAndConvertToProperty(
 			JTextComponent valueToConvert) {
 

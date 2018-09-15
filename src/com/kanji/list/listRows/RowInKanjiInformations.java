@@ -17,7 +17,6 @@ import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.ListRowDataCreator;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.utilities.CommonListElements;
-import com.kanji.utilities.Pair;
 import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
@@ -73,11 +72,9 @@ public class RowInKanjiInformations implements ListRowCreator<Kanji> {
 				panel);
 
 		rowDataCreator.addPropertyData(ListPropertiesNames.KANJI_KEYWORD,
-				panelRows.getRowContainingComponent(keywordLabel),
-				Pair.of(keywordInput, actionsCreator.getKeywordChecker()));
-		rowDataCreator.addPropertyData(ListPropertiesNames.KANJI_ID,
-				panelRows.getRowContainingComponent(idLabel),
-				Pair.of(idInput, actionsCreator.getIdChecker()));
+				keywordInput, actionsCreator.getKeywordChecker());
+		rowDataCreator.addPropertyData(ListPropertiesNames.KANJI_ID, idInput,
+				actionsCreator.getIdChecker());
 
 		return rowDataCreator.getListRowData();
 

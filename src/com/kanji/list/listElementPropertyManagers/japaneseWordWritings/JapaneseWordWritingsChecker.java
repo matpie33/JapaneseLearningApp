@@ -7,9 +7,11 @@ import com.kanji.list.listElementPropertyManagers.WordSearchOptionsHolder;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.utilities.JapaneseWritingUtilities;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.swing.text.JTextComponent;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
@@ -35,6 +37,13 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 		writingsInputManager.addKanjiInput(kanjiInput);
 	}
 
+	public JTextComponent getAnyKanjiInput (){
+		List<JTextComponent> kanjiInputs = writingsInputManager
+				.getKanjiInputs();
+
+		return kanjiInputs.isEmpty()? null: kanjiInputs.get(0);
+	}
+
 	@Override
 	public String getInvalidPropertyReason() {
 		return errorDetails;
@@ -48,6 +57,11 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 		}
 
 		return true;
+	}
+
+	@Override
+	public String getPropertyValue(JapaneseWord japaneseWord) {
+		throw new NotImplementedException();
 	}
 
 	@Override

@@ -19,7 +19,6 @@ import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElementPropertyManagers.WordSearchOptionsHolder;
 import com.kanji.list.listElements.ListElement;
-import com.kanji.list.myList.ListPropertyInformation;
 import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.SearchWordController;
@@ -32,12 +31,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class SearchWordPanel<Word extends ListElement>
 		extends AbstractPanelWithHotkeysInfo {
+	//TODO class to remove
 
 	private CardLayout cardLayout;
 	private JPanel searchingPanel;
@@ -72,20 +73,20 @@ public class SearchWordPanel<Word extends ListElement>
 				InputGoal.SEARCH);
 		//TODO here I got to get only rows - maybe separate the calls
 		// for rows and for the textfields + property managers
-		for (Map.Entry<String, ListPropertyInformation<Word>> listPropertyData : listRowData
-				.getRowPropertiesData().entrySet()) {
-			MainPanel rowForProperty = new MainPanel(null);
-			rowForProperty
-					.addRow(listPropertyData.getValue().getRowForProperty());
-			Map<JTextComponent, ListElementPropertyManager<?, Word>> textFieldsWithPropertyManagers = listPropertyData
-					.getValue().getTextFieldsWithPropertyManagers();
-			if (textFieldsWithPropertyManagers.values().iterator()
-					.next() instanceof WordSearchOptionsHolder) {
-				addWordSearchOptions(rowForProperty);
-			}
-			searchingPanel
-					.add(listPropertyData.getKey(), rowForProperty.getPanel());
-		}
+		//		for (Map.Entry<String, ListPropertyInformation<Word>> listPropertyData : listRowData
+		//				.getRowPropertiesData().entrySet()) {
+		//			MainPanel rowForProperty = new MainPanel(null);
+		//			rowForProperty
+		//					.addRow(listPropertyData.getValue().getRowForProperty());
+		//			Map<JTextComponent, ListElementPropertyManager<?, Word>> textFieldsWithPropertyManagers = listPropertyData
+		//					.getValue().getTextFieldsWithPropertyManagers();
+		//			if (textFieldsWithPropertyManagers.values().iterator()
+		//					.next() instanceof WordSearchOptionsHolder) {
+		//				addWordSearchOptions(rowForProperty);
+		//			}
+		//			searchingPanel
+		//					.add(listPropertyData.getKey(), rowForProperty.getPanel());
+		//		}
 
 		JComboBox<String> comboBox = createComboboxForSearchedProperty();
 		addHotkeyForSwitchingComboboxValue(comboBox);
@@ -162,11 +163,11 @@ public class SearchWordPanel<Word extends ListElement>
 	}
 
 	private void focusFirstTextfieldForCurrentProperty() {
-		Map<JTextComponent, ListElementPropertyManager<?, Word>> textFieldsWithPropertyManagers = listRowData
-				.getRowPropertiesData().get(currentlySearchedProperty)
-				.getTextFieldsWithPropertyManagers();
-		textFieldsWithPropertyManagers.keySet().iterator().next()
-				.requestFocusInWindow();
+		//		Map<JTextComponent, ListElementPropertyManager<?, Word>> textFieldsWithPropertyManagers = listRowData
+		//				.getRowPropertiesData().get(currentlySearchedProperty)
+		//				.getTextFieldsWithPropertyManagers();
+		//		textFieldsWithPropertyManagers.keySet().iterator().next()
+		//				.requestFocusInWindow();
 	}
 
 	private AbstractButton createRadioButtonForSearchingOption(
@@ -211,8 +212,7 @@ public class SearchWordPanel<Word extends ListElement>
 	}
 
 	public Map<JTextComponent, ListElementPropertyManager<?, Word>> getTextFieldsWithPropertyManagersForCurrentProperty() {
-		return listRowData.getRowPropertiesData().get(currentlySearchedProperty)
-				.getTextFieldsWithPropertyManagers();
+		return new HashMap<>();
 	}
 
 }

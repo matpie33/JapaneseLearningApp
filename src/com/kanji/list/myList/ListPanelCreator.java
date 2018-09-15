@@ -277,15 +277,16 @@ public class ListPanelCreator<Word extends ListElement>
 					InputGoal.SEARCH);
 			if (!listRow.isEmpty()) {
 				rootPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE,
-						listSearchPanelCreator.createPanel(listRow)));
+						listSearchPanelCreator.createPanel(listRow,
+								listWordsController.createButtonFilter(
+										listSearchPanelCreator))));
 				navigationButtons.add(createButtonFindWord());
 				addHotkey(KeyModifiers.CONTROL, KeyEvent.VK_SPACE,
-						listSearchPanelCreator.createActionSwitchComboboxValue(),
+						listSearchPanelCreator
+								.createActionSwitchComboboxValue(),
 						mainPanel.getPanel(),
 						HotkeysDescriptions.SWITCH_SEARCH_CRITERIA);
 			}
-			//			JTextField filterTextField = GuiElementsCreator.createTextField(
-			//					new TextComponentOptions().rowsAndColumns(1, 10));
 		}
 
 		if (!isSkipTitle) {

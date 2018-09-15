@@ -599,8 +599,9 @@ public class ListWordsController<Word extends ListElement> {
 						List<ListRow<Word>> words = WordSearching
 								.filterWords(getWordsWithDetails(),
 										listSearchPanelCreator
-												.getFirstTextComponent()
-												.getText());
+												.getFilteringInput().getText(),
+										listSearchPanelCreator
+												.getPropertyManagerForInput());
 						listPanelCreator.clear();
 
 						int newRowNumber = 1;

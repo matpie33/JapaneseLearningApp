@@ -40,9 +40,7 @@ public class KanjiActionsCreator {
 		if (displayMode.equals(PanelDisplayMode.VIEW)) {
 			return keywordInput;
 		}
-		if (!inputGoal.equals(InputGoal.SEARCH)) {
-			keywordChecker = new KanjiKeywordChecker();
-		}
+		keywordChecker = new KanjiKeywordChecker();
 		keywordInput.addFocusListener(
 				createPropertyChangeHandler(kanji, keywordChecker, inputGoal));
 		//TODO keyword checker, kanji id checker are stateless - thats
@@ -56,9 +54,7 @@ public class KanjiActionsCreator {
 		if (displayMode.equals(PanelDisplayMode.VIEW)) {
 			return kanjiIdInput;
 		}
-		if (!inputGoal.equals(InputGoal.SEARCH)) {
-			idChecker = new KanjiIdChecker();
-		}
+		idChecker = new KanjiIdChecker();
 		kanjiIdInput.addFocusListener(
 				createPropertyChangeHandler(kanji, idChecker, inputGoal));
 		return kanjiIdInput;
@@ -69,8 +65,8 @@ public class KanjiActionsCreator {
 			InputGoal inputGoal) {
 
 		ListPropertyChangeHandler listPropertyChangeHandler = new ListPropertyChangeHandler<>(
-				kanji, applicationController.getKanjiList(), parentDialog, propertyManager,
-				inputGoal);
+				kanji, applicationController.getKanjiList(), parentDialog,
+				propertyManager, inputGoal);
 		validationListeners
 				.forEach(listPropertyChangeHandler::addValidationListener);
 		return listPropertyChangeHandler;

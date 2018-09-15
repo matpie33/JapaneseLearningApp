@@ -29,6 +29,11 @@ public class KanjiKeywordChecker extends WordSearchOptionsHolder
 	}
 
 	@Override
+	public String getPropertyValue(Kanji kanji) {
+		return kanji.getKeyword();
+	}
+
+	@Override
 	public void setProperty(Kanji kanji, String propertyValue) {
 		kanji.setKanjiKeyword(propertyValue);
 	}

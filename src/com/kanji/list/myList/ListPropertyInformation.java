@@ -11,24 +11,20 @@ import java.util.Map;
 
 public class ListPropertyInformation<Word extends ListElement> {
 
-	private AbstractSimpleRow rowForProperty;
-	private Map<JTextComponent, ListElementPropertyManager<?, Word>> textFieldsWithPropertyManagers;
+	private JTextComponent filteringTextComponent;
+	private ListElementPropertyManager<?, Word> filteringHandler;
 
-	public ListPropertyInformation(AbstractSimpleRow rowForProperty) {
-		textFieldsWithPropertyManagers = new LinkedHashMap<>();
-		this.rowForProperty = rowForProperty;
+	public ListPropertyInformation(JTextComponent filteringTextComponent,
+			ListElementPropertyManager<?, Word> filteringHandler) {
+		this.filteringTextComponent = filteringTextComponent;
+		this.filteringHandler = filteringHandler;
 	}
 
-	public AbstractSimpleRow getRowForProperty() {
-		return rowForProperty;
+	public JTextComponent getFilteringTextComponent() {
+		return filteringTextComponent;
 	}
 
-	public Map<JTextComponent, ListElementPropertyManager<?, Word>> getTextFieldsWithPropertyManagers() {
-		return textFieldsWithPropertyManagers;
-	}
-
-	public void addInputWithManager(JTextComponent input,
-			ListElementPropertyManager<?, Word> propertyManager) {
-		textFieldsWithPropertyManagers.put(input, propertyManager);
+	public ListElementPropertyManager<?, Word> getFilteringHandler() {
+		return filteringHandler;
 	}
 }

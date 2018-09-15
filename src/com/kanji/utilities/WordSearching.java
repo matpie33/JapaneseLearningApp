@@ -1,9 +1,12 @@
 package com.kanji.utilities;
 
 import com.kanji.constants.enums.WordSearchOptions;
-import com.kanji.list.listElements.JapaneseWord;
+import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
+import com.kanji.list.listElements.ListElement;
 import com.kanji.model.ListRow;
 
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
 import java.util.*;
 
 public class WordSearching {
@@ -79,21 +82,22 @@ public class WordSearching {
 		return phrase.toLowerCase().contains(characterChain.toLowerCase());
 	}
 
-	public static <Word extends Object> List<ListRow<Word>> filterWords(
-			List<ListRow<Word>> allWords, String filterText) {
+	public static <Word extends ListElement> List<ListRow<Word>> filterWords(
+			List<ListRow<Word>> allWords, String filterText,
+			ListElementPropertyManager<?, Word> propertyManagerForInput) {
 
 		List<ListRow<Word>> filteredWords = new ArrayList<>();
 		for (ListRow<Word> listRow : allWords) {
 			Word word = listRow.getWord();
-			JapaneseWord japaneseWord = (JapaneseWord) word;
-			String meaning = removeDiacritics(japaneseWord.getMeaning());
+			String listWordPropertyValue = removeDiacritics(
+					propertyManagerForInput.getPropertyValue(word));
 			filterText = removeDiacritics(filterText);
 
-			String[] meaningWords = divideToWords(meaning);
-			String[] filterWords = divideToWords(filterText);
+			String[] wordsInListProperty = splitWords(listWordPropertyValue);
+			String[] filterWords = splitWords(filterText);
 
 			int filterWordToCheck = 0;
-			for (String meaningWord : meaningWords) {
+			for (String meaningWord : wordsInListProperty) {
 				if (meaningWord.contains(filterWords[filterWordToCheck])) {
 					filterWordToCheck++;
 					if (filterWordToCheck > filterWords.length - 1) {
@@ -112,8 +116,17 @@ public class WordSearching {
 
 	}
 
-	private static String[] divideToWords(String word) {
-		return word.split("\\W+");
+	private static String[] splitWords(String word) {
+		CharsetEncoder charsetEncoder = Charset.forName("US-ASCII")
+				.newEncoder();
+		if (charsetEncoder.canEncode(word)){
+			return word.split("\\W+");
+		}
+		else{
+			return word.split(" ");
+		}
+
+
 	}
 
 }

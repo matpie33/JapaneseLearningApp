@@ -69,6 +69,17 @@ public class JapaneseWordChecker implements
 	}
 
 	@Override
+	public String getPropertyValue(JapaneseWord japaneseWord) {
+		StringBuilder writingsText = new StringBuilder();
+		for (JapaneseWriting japaneseWriting : japaneseWord.getWritings()) {
+			writingsText.append(japaneseWriting.getKanaWriting());
+			japaneseWriting.getKanjiWritings()
+					.forEach(kanji -> writingsText.append(" "+ kanji));
+		}
+		return writingsText.toString();
+	}
+
+	@Override
 	public String getInvalidPropertyReason() {
 		return invalidPropertyReason;
 	}
@@ -150,12 +161,9 @@ public class JapaneseWordChecker implements
 						property);
 	}
 
-	public Map<JTextComponent, ListElementPropertyManager> getInputToCheckerMap() {
+	public JTextComponent getAnyKanjiInput() {
 		Map<JTextComponent, ListElementPropertyManager> inputToChecker = new LinkedHashMap<>();
-		for (JTextComponent input : inputToWritingMap.keySet()) {
-			inputToChecker.put(input, this);
-		}
-		return inputToChecker;
+		return writingToCheckerMap.values().iterator().next().getAnyKanjiInput();
 	}
 
 	public void removeWriting(JapaneseWriting writing) {
