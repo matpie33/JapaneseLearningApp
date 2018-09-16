@@ -21,9 +21,13 @@ public class CommonGuiElementsCreator {
 
 	public static JTextComponent createShortInput(String defaultContent,
 			PanelDisplayMode displayMode) {
-		return GuiElementsCreator.createTextField(new TextComponentOptions()
+		TextComponentOptions options = new TextComponentOptions()
 				.editable(displayMode.equals(PanelDisplayMode.EDIT))
-				.text(defaultContent).rowsAndColumns(1, 35));
+				.text(defaultContent);
+		if (displayMode.equals(PanelDisplayMode.EDIT)){
+			options.rowsAndColumns(1, 35);
+		}
+		return GuiElementsCreator.createTextField(options);
 	}
 
 	public static JTextComponent createTextField(String defaultContent) {

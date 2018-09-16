@@ -1,5 +1,6 @@
 package com.kanji.repeating;
 
+import com.guimaker.colors.BasicColors;
 import com.guimaker.options.ComboboxOptions;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
@@ -19,6 +20,7 @@ import com.kanji.utilities.KanjiCharactersReader;
 import com.kanji.utilities.StringUtilities;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.util.*;
 import java.util.function.Function;
@@ -44,6 +46,10 @@ public class RepeatingJapaneseWordsDisplayer
 		kanjiCharactersReader.loadKanjisIfNeeded();
 		//TODO kanjis can be loaded just once in the "get instance" method
 		fullWordInformationPanel = new MainPanel(null, true);
+		fullWordInformationPanel.setRowColor(BasicColors.PURPLE_DARK_2);
+		fullWordInformationPanel.setRowsBorder(BorderFactory.createBevelBorder(
+				BevelBorder.LOWERED, BasicColors.BLUE_NORMAL_1, BasicColors.BLUE_NORMAL_7));
+		fullWordInformationPanel.setPadding(10);
 		recognizingWordPanel = new MainPanel(null, true);
 		recognizingWordPanel.getPanel().setPreferredSize(wordPanelsSize);
 		partOfSpeechLabel = GuiElementsCreator.createLabel(
