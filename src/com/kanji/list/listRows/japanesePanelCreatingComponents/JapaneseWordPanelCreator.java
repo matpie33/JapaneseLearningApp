@@ -248,7 +248,7 @@ public class JapaneseWordPanelCreator
 				.nextRow(additionalInformationLabel, additionalInformationValue)
 				.nextRow(writingsLabel, writingsListPanel)
 				.nextRow(particlesTakenLabel, particlesTakenList.getPanel())
-				.onlyAddIf(!displayMode.equals(PanelDisplayMode.VIEW)
+				.onlyAddIf(displayMode.equals(PanelDisplayMode.EDIT)
 						|| particlesTakenList.getNumberOfWords() > 0)
 				.nextRow(commonListElements.getButtonDelete())
 				.onlyAddIf(!displayMode.equals(PanelDisplayMode.VIEW))

@@ -1,5 +1,6 @@
 package com.kanji.list.myList;
 
+import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
@@ -276,10 +277,11 @@ public class ListPanelCreator<Word extends ListElement>
 					CommonListElements.forSingleRowOnly(Color.WHITE),
 					InputGoal.SEARCH);
 			if (!listRow.isEmpty()) {
-				rootPanel.addRow(SimpleRowBuilder.createRow(FillType.NONE,
+				mainPanel.addRow(SimpleRowBuilder.createRow(FillType.HORIZONTAL,
 						listSearchPanelCreator.createPanel(listRow,
 								listWordsController.createButtonFilter(
-										listSearchPanelCreator))));
+										listSearchPanelCreator))).setColor(
+						BasicColors.GREEN_BRIGHT_1));
 				navigationButtons.add(createButtonFindWord());
 				addHotkey(KeyModifiers.CONTROL, KeyEvent.VK_SPACE,
 						listSearchPanelCreator
