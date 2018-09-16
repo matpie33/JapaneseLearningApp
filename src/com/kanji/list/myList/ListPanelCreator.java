@@ -279,9 +279,8 @@ public class ListPanelCreator<Word extends ListElement>
 			if (!listRow.isEmpty()) {
 				mainPanel.addRow(SimpleRowBuilder.createRow(FillType.HORIZONTAL,
 						listSearchPanelCreator.createPanel(listRow,
-								listWordsController.createButtonFilter(
-										listSearchPanelCreator))).setColor(
-						BasicColors.GREEN_BRIGHT_1));
+								createButtonFilter(listSearchPanelCreator)))
+						.setColor(BasicColors.GREEN_BRIGHT_1));
 				navigationButtons.add(createButtonFindWord());
 				addHotkey(KeyModifiers.CONTROL, KeyEvent.VK_SPACE,
 						listSearchPanelCreator
@@ -306,6 +305,19 @@ public class ListPanelCreator<Word extends ListElement>
 
 		setNavigationButtons(
 				navigationButtons.toArray(new AbstractButton[] {}));
+	}
+
+	private AbstractButton createButtonFilter(
+			ListSearchPanelCreator<Word> listSearchPanelCreator) {
+		AbstractButton filterButton = GuiElementsCreator
+				.createButtonLikeComponent(new ButtonOptions(ButtonType.BUTTON)
+						.text(ButtonsNames.FILTER));
+		AbstractAction action = listWordsController
+				.createFilterAction(listSearchPanelCreator, filterButton);
+		addHotkey(KeyEvent.VK_ENTER, action, getPanel(),
+				HotkeysDescriptions.FILTER_WORDS);
+		filterButton.addActionListener(action);
+		return filterButton;
 	}
 
 	private void createRootPanel() {

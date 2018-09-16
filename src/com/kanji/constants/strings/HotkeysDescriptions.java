@@ -32,4 +32,5 @@ public class HotkeysDescriptions {
 	public static final String SELECT_INPUT_BELOW_CURRENT = "Przechodzi do pola tekstowego poniżej zaznaczonego.";
 	public static final String SELECT_INPUT_ABOVE_CURRENT = "Przechodzi do pola tekstowego powyżej zaznaczonego.";
 	public static final String SEARCH_IN_DICTIONARY = "Szuka zaznaczonego zapisu japońskiego w słowniku.";
+	public static final String FILTER_WORDS = "Filtruje słowa na podstawie wpisanego tekstu.";
 }

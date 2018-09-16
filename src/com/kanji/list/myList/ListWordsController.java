@@ -1,14 +1,10 @@
 package com.kanji.list.myList;
 
-import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.MoveDirection;
 import com.guimaker.listeners.SwitchBetweenInputsFailListener;
-import com.guimaker.options.ButtonOptions;
-import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.ListElementModificationType;
-import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.ListElement;
@@ -589,37 +585,42 @@ public class ListWordsController<Word extends ListElement> {
 		return isInEditMode;
 	}
 
-	public AbstractButton createButtonFilter(
-			ListSearchPanelCreator<Word> listSearchPanelCreator) {
-		return GuiElementsCreator.createButtonlikeComponent(
-				new ButtonOptions(ButtonType.BUTTON).text(ButtonsNames.FILTER),
-				new AbstractAction() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						List<ListRow<Word>> words = WordSearching
-								.filterWords(getWordsWithDetails(),
-										listSearchPanelCreator
-												.getFilteringInput().getText(),
-										listSearchPanelCreator
-												.getPropertyManagerForInput());
-						listPanelCreator.clear();
+	public AbstractAction createFilterAction(
+			ListSearchPanelCreator<Word> listSearchPanelCreator,
+			AbstractButton filterButton) {
+		return new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Window window = SwingUtilities
+						.getWindowAncestor(getPanel());
+				JFrame frame = (JFrame) window;
+				if (frame.getFocusOwner() != filterButton
+						&& frame.getFocusOwner() != listSearchPanelCreator
+						.getFilteringInput()) {
+					return;
+				}
+				List<ListRow<Word>> words = WordSearching
+						.filterWords(getWordsWithDetails(),
+								listSearchPanelCreator.getFilteringInput()
+										.getText(), listSearchPanelCreator
+										.getPropertyManagerForInput());
+				listPanelCreator.clear();
 
-						int newRowNumber = 1;
-						for (ListRow<Word> listRow : words) {
-							if (newRowNumber > numberOfWordsToDisplayByFilter) {
-								break;
-							}
-							int rowNumber = listRow.getRowNumber() - 1;
-							listRow.setPanel(listPanelCreator
-									.addRow(allWordsToRowNumberMap
-													.get(rowNumber).getWord(),
-											newRowNumber++, true,
-											listPanelCreator
-													.getLoadNextWordsHandler(),
-											InputGoal.EDIT).getWrappingPanel());
-						}
-
+				int newRowNumber = 1;
+				for (ListRow<Word> listRow : words) {
+					if (newRowNumber > numberOfWordsToDisplayByFilter) {
+						break;
 					}
-				});
+					int rowNumber = listRow.getRowNumber() - 1;
+					listRow.setPanel(listPanelCreator
+							.addRow(allWordsToRowNumberMap.get(rowNumber)
+											.getWord(), newRowNumber++, true,
+									listPanelCreator.getLoadNextWordsHandler(),
+									InputGoal.EDIT).getWrappingPanel());
+				}
+			}
+		};
+
 	}
+
 }

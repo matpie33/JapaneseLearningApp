@@ -25,6 +25,7 @@ public class ListSearchPanelCreator<Word extends ListElement> {
 	private ListElementPropertyManager<?, Word> listElementPropertyManager;
 	private MainPanel searchPanel;
 	private AbstractButton buttonFilter;
+	public static final String COLON = ":";
 
 	public JPanel createPanel(ListRowData<Word> listRowData,
 			AbstractButton buttonFilter) {
@@ -83,7 +84,7 @@ public class ListSearchPanelCreator<Word extends ListElement> {
 	}
 
 	public void switchToListProperty(String property) {
-		filteringProperty.setText(property);
+		filteringProperty.setText(property + COLON);
 		listElementPropertyManager = listRowData.getRowPropertiesData()
 				.get(property).getFilteringHandler();
 		filteringInput = listRowData.getRowPropertiesData().get(property)
