@@ -63,7 +63,7 @@ public class JapanesePanelElementsCreator {
 							japaneseWriting.getKanaWriting(),
 							TypeOfJapaneseWriting.KANA_OR_KANJI, enabled,
 							selectable), japaneseWriting, japaneseWord,
-							TypeOfJapaneseWriting.KANA, inputGoal, enabled);
+							TypeOfJapaneseWriting.KANA_OR_KANJI, inputGoal, enabled);
 		}
 
 	}
