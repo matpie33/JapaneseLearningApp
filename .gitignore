@@ -2,7 +2,9 @@ bin/
 *.xlsx
 .classpath
 .gitignore
-dist/
+dist/*
+!kanjis.exe
+!dist/run.bat
 .settings/
 target
 .project
