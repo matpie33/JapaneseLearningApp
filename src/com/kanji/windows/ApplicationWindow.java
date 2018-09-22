@@ -47,6 +47,10 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void initiate() {
+		//TODO put this to another class
+		UIManager.put("ComboBox.disabledBackground", BasicColors.PURPLE_DARK_1);
+		UIManager.put("Label.disabledForeground", Color.WHITE);
+
 		applicationController = new ApplicationController(this);
 		problematicWordsPanel = new JPanel(new BorderLayout());
 		startingPanel = new StartingPanel(this, mainApplicationPanel);

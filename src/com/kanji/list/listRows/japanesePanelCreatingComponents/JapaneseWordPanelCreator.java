@@ -75,6 +75,10 @@ public class JapaneseWordPanelCreator
 		listInputsSelectionManager = new ListInputsSelectionManager();
 	}
 
+	public PanelDisplayMode getDisplayMode() {
+		return displayMode;
+	}
+
 	public ListInputsSelectionManager getListInputsSelectionManager() {
 		return listInputsSelectionManager;
 	}

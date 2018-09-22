@@ -67,7 +67,6 @@ public class FocusHandler {
 	public void focusPanel(JComponent panel) {
 		focusedPanel = panel;
 		focusedPanel.setBorder(createBorder(FOCUSED_PANEL_COLOR));
-		focusedPanel.requestFocusInWindow();
 	}
 
 	public void selectNextPanelInDirectionIfInSwitchingMode(

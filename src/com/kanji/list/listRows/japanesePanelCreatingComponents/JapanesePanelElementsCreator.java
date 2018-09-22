@@ -115,6 +115,8 @@ public class JapanesePanelElementsCreator {
 						.createTextField(
 								new TextComponentOptions().text(initialValue)
 										.editable(editable)
+										//TODO editable/non editable should be handled automatically
+										// by main panel's display mode -> remove from here
 										.selectable(selectable)
 										.font(ApplicationWindow.getKanjiFont())
 										.focusable(true).fontSize(30f)

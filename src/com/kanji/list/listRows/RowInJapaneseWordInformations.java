@@ -1,7 +1,8 @@
 package com.kanji.list.listRows;
 
+import com.guimaker.enums.PanelDisplayMode;
+import com.guimaker.model.PanelConfiguration;
 import com.guimaker.panels.MainPanel;
-import com.kanji.constants.Colors;
 import com.kanji.constants.enums.InputGoal;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
@@ -37,7 +38,13 @@ public class RowInJapaneseWordInformations
 	@Override
 	public ListRowData createListRow(JapaneseWord japaneseWord,
 			CommonListElements commonListElements, InputGoal inputGoal) {
-		MainPanel panel = new MainPanel(null);
+		PanelDisplayMode displayMode = newWordsPanelCreator.getDisplayMode();
+		if (displayMode.equals(PanelDisplayMode.VIEW) && inputGoal
+				.equals(InputGoal.EDIT_TEMPORARILY)) {
+			displayMode = PanelDisplayMode.EDIT;
+		}
+		MainPanel panel = new MainPanel(null,
+				new PanelConfiguration(displayMode));
 		JLabel rowNumberLabel = commonListElements.getRowNumberLabel();
 		JapaneseWordPanelCreator panelCreatorToUse;
 		if (commonListElements.isForSingleRowOnly()) {
