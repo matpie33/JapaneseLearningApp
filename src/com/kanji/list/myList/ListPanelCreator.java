@@ -281,11 +281,19 @@ public class ListPanelCreator<Word extends ListElement>
 						listSearchPanelCreator.createPanel(listRow,
 								createButtonFilter(listSearchPanelCreator)))
 						.setColor(BasicColors.GREEN_BRIGHT_1));
-				navigationButtons.add(createButtonFindWord());
 				addHotkey(KeyModifiers.CONTROL, KeyEvent.VK_SPACE,
 						listSearchPanelCreator
 								.createActionSwitchComboboxValue(),
 						mainPanel.getPanel(),
+						HotkeysDescriptions.SWITCH_SEARCH_CRITERIA);
+				addHotkey(KeyModifiers.CONTROL, KeyEvent.VK_F,
+						new AbstractAction() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								listSearchPanelCreator.getFilteringInput()
+										.requestFocusInWindow();
+							}
+						}, mainPanel.getPanel(),
 						HotkeysDescriptions.SWITCH_SEARCH_CRITERIA);
 			}
 		}
@@ -369,21 +377,6 @@ public class ListPanelCreator<Word extends ListElement>
 		return createButtonWithHotkey(KeyModifiers.CONTROL, keyEvent, action,
 				name, hotkeyDescription);
 
-	}
-
-	private AbstractButton createButtonFindWord() {
-		String name = ButtonsNames.SEARCH;
-		//TODO differentiate between my list - kanji vs repeating list vs problematic kanjis?
-		String hotkeyDescription = HotkeysDescriptions.OPEN_SEARCH_WORD_DIALOG;
-		int keyEvent = KeyEvent.VK_F;
-		AbstractAction action = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				applicationController.showSearchWordDialog();
-			}
-		};
-		return createButtonWithHotkey(KeyModifiers.CONTROL, keyEvent, action,
-				name, hotkeyDescription);
 	}
 
 	public void clearHighlightedRow(JComponent row) {

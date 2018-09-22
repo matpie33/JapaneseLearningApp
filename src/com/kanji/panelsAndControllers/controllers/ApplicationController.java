@@ -471,11 +471,6 @@ public class ApplicationController
 		parent.showInsertDialog(parent.getStartingPanel().getActiveWordsList());
 	}
 
-	public void showSearchWordDialog() {
-		parent.showSearchWordDialog(
-				parent.getStartingPanel().getActiveWordsList());
-	}
-
 	public void showLearningStartDialog() {
 
 		repeatingWordsPanelController

@@ -173,16 +173,6 @@ public class ApplicationWindow extends DialogWindow {
 		createDialog(panel, Titles.INSERT_WORD_DIALOG, false, Position.CUSTOM);
 	}
 
-	public void showSearchWordDialog(MyList list) {
-		customPositioner = new PositionerOnMyList(
-				getStartingPanel().getSplitPaneFor(list.getListElementClass()));
-		AbstractPanelWithHotkeysInfo panel = new SearchWordPanel(this, list);
-		setPanel(panel);
-		//TODO create japanese panel creator with different parent windows,
-		//currently all of them use application window as parent
-		createDialog(panel, Titles.WORD_SEARCH_DIALOG, false, Position.CUSTOM);
-	}
-
 	//TODO why some dialogs like problematic and search word are in application window,
 	// and the others are in application controller?
 
@@ -220,7 +210,7 @@ public class ApplicationWindow extends DialogWindow {
 
 	public void showProblematicWordsDialog() {
 
-		if (!activeProblematicWordsController.hasProblematicWords()){
+		if (!activeProblematicWordsController.hasProblematicWords()) {
 			return;
 		}
 		AbstractPanelWithHotkeysInfo problematicWordsPanel = activeProblematicWordsController
@@ -232,7 +222,7 @@ public class ApplicationWindow extends DialogWindow {
 					.getPanelName(), problematicWordsPanel);
 			//TODO the approach with enum (application panels) is not extensible
 		}
-		else{
+		else {
 			activeProblematicWordsController.focusPreviouslyFocusedElement();
 		}
 		showPanel(ApplicationPanels.PROBLEMATIC_WORDS_PANEL);
