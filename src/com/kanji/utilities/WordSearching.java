@@ -33,11 +33,11 @@ public class WordSearching {
 		polishDiacriticsMap.put('Ś', 'S');
 	}
 
-	private static String removeDiacritics(String word) {
+	private static String removeDiacriticsAndCapitalLetters(String word) {
 		for (Map.Entry<Character, Character> letterAndReplacement : polishDiacriticsMap
 				.entrySet()) {
 			word = word.replace(letterAndReplacement.getKey(),
-					letterAndReplacement.getValue());
+					letterAndReplacement.getValue()).toLowerCase();
 		}
 		return word;
 	}
@@ -54,8 +54,8 @@ public class WordSearching {
 
 	public static boolean doesWordContainSearchedWord(String word,
 			String searched, WordSearchOptions options) {
-		word = removeDiacritics(word);
-		searched = removeDiacritics(searched);
+		word = removeDiacriticsAndCapitalLetters(word);
+		searched = removeDiacriticsAndCapitalLetters(searched);
 		switch (options) {
 		case BY_WORD:
 			return doesPhraseContainSearchedWords(word, searched);
@@ -89,9 +89,9 @@ public class WordSearching {
 		List<ListRow<Word>> filteredWords = new ArrayList<>();
 		for (ListRow<Word> listRow : allWords) {
 			Word word = listRow.getWord();
-			String listWordPropertyValue = removeDiacritics(
+			String listWordPropertyValue = removeDiacriticsAndCapitalLetters(
 					propertyManagerForInput.getPropertyValue(word));
-			filterText = removeDiacritics(filterText);
+			filterText = removeDiacriticsAndCapitalLetters(filterText);
 
 			String[] wordsInListProperty = splitWords(listWordPropertyValue);
 			String[] filterWords = splitWords(filterText);

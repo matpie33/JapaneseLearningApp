@@ -618,6 +618,7 @@ public class ListWordsController<Word extends ListElement> {
 									listPanelCreator.getLoadNextWordsHandler(),
 									InputGoal.EDIT).getWrappingPanel());
 				}
+				scrollToTop();
 			}
 		};
 
