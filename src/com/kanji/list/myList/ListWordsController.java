@@ -15,6 +15,7 @@ import com.kanji.list.loadAdditionalWordsHandling.FoundWordInsideVisibleRangePlu
 import com.kanji.list.loadAdditionalWordsHandling.FoundWordInsideVisibleRangeStrategy;
 import com.kanji.list.loadAdditionalWordsHandling.FoundWordOutsideRangeStrategy;
 import com.kanji.list.loadAdditionalWordsHandling.LoadWordsForFoundWord;
+import com.kanji.model.FilteredWordMatch;
 import com.kanji.model.ListRow;
 import com.kanji.model.PropertyPostValidationData;
 import com.kanji.model.WordInMyListExistence;
@@ -29,10 +30,8 @@ import javax.swing.FocusManager;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 
 public class ListWordsController<Word extends ListElement> {
 	private List<ListRow<Word>> allWordsToRowNumberMap = new ArrayList<>();
@@ -591,15 +590,14 @@ public class ListWordsController<Word extends ListElement> {
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Window window = SwingUtilities
-						.getWindowAncestor(getPanel());
+				Window window = SwingUtilities.getWindowAncestor(getPanel());
 				JFrame frame = (JFrame) window;
 				if (frame.getFocusOwner() != filterButton
 						&& frame.getFocusOwner() != listSearchPanelCreator
 						.getFilteringInput()) {
 					return;
 				}
-				List<ListRow<Word>> words = WordSearching
+				SortedMap<FilteredWordMatch, ListRow<Word>> words = WordSearching
 						.filterWords(getWordsWithDetails(),
 								listSearchPanelCreator.getFilteringInput()
 										.getText(), listSearchPanelCreator
@@ -607,7 +605,7 @@ public class ListWordsController<Word extends ListElement> {
 				listPanelCreator.clear();
 
 				int newRowNumber = 1;
-				for (ListRow<Word> listRow : words) {
+				for (ListRow<Word> listRow : words.values()) {
 					if (newRowNumber > numberOfWordsToDisplayByFilter) {
 						break;
 					}

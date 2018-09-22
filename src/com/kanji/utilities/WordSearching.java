@@ -1,8 +1,10 @@
 package com.kanji.utilities;
 
+import com.guimaker.utilities.MathUtils;
 import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.ListElement;
+import com.kanji.model.FilteredWordMatch;
 import com.kanji.model.ListRow;
 
 import java.nio.charset.Charset;
@@ -82,11 +84,12 @@ public class WordSearching {
 		return phrase.toLowerCase().contains(characterChain.toLowerCase());
 	}
 
-	public static <Word extends ListElement> List<ListRow<Word>> filterWords(
+	public static <Word extends ListElement> SortedMap<FilteredWordMatch, ListRow<Word>> filterWords(
 			List<ListRow<Word>> allWords, String filterText,
 			ListElementPropertyManager<?, Word> propertyManagerForInput) {
 
-		List<ListRow<Word>> filteredWords = new ArrayList<>();
+		SortedMap<FilteredWordMatch, ListRow<Word>> filteredWordsMatch = new TreeMap<>(
+				Collections.reverseOrder());
 		for (ListRow<Word> listRow : allWords) {
 			Word word = listRow.getWord();
 			String listWordPropertyValue = removeDiacriticsAndCapitalLetters(
@@ -97,35 +100,50 @@ public class WordSearching {
 			String[] filterWords = splitWords(filterText);
 
 			int filterWordToCheck = 0;
-			for (String meaningWord : wordsInListProperty) {
-				if (meaningWord.contains(filterWords[filterWordToCheck])) {
+			List<Double> matchForSeparateWordsInGivenRow = new ArrayList<>();
+			for (String wordInList : wordsInListProperty) {
+				if (wordInList.contains(filterWords[filterWordToCheck])) {
+					double percentMatch = calculateMatch(wordInList,
+							filterWords[filterWordToCheck]);
+					matchForSeparateWordsInGivenRow.add(percentMatch);
 					filterWordToCheck++;
 					if (filterWordToCheck > filterWords.length - 1) {
 						break;
 					}
 				}
-
 			}
 			if (filterWordToCheck == filterWords.length) {
-				filteredWords.add(listRow);
+				filteredWordsMatch.put(new FilteredWordMatch(
+								calculateTotalMatch(matchForSeparateWordsInGivenRow),
+								wordsInListProperty.length - filterWords.length),
+						listRow);
 			}
 
 		}
+		return filteredWordsMatch;
+	}
 
-		return filteredWords;
+	private static <Word extends ListElement> Double calculateTotalMatch(
+			List<Double> matchForSeparateWordsInGivenRow) {
+		return MathUtils.average(matchForSeparateWordsInGivenRow);
 
+	}
+
+	private static double calculateMatch(String wordInList,
+			String filterWordToCheck) {
+		return (double) filterWordToCheck.length() / (double) wordInList
+				.length();
 	}
 
 	private static String[] splitWords(String word) {
 		CharsetEncoder charsetEncoder = Charset.forName("US-ASCII")
 				.newEncoder();
-		if (charsetEncoder.canEncode(word)){
+		if (charsetEncoder.canEncode(word)) {
 			return word.split("\\W+");
 		}
-		else{
+		else {
 			return word.split(" ");
 		}
-
 
 	}
 
