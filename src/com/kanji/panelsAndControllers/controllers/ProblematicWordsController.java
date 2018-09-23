@@ -27,13 +27,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class ProblematicWordsController<Word extends ListElement>
 		implements ApplicationStateManager, ListObserver<Word> {
-	private List<WordRow> notReviewedWords;
+	private List<WordRow<Word>> notReviewedWords;
 	private int nextWordToReview = 0;
 	//TODO change notReviewedWords variable to keep ListElement objects,
 	// add to my list a method: get row number of word
@@ -42,7 +41,6 @@ public class ProblematicWordsController<Word extends ListElement>
 	private ApplicationWindow applicationWindow;
 	private ProblematicWordsDisplayer<Word> problematicWordsDisplayer;
 	private boolean wordsReviewed = false;
-	private Set<ListObserver<Word>> listObservers = new HashSet<>();
 
 	public ProblematicWordsController(ApplicationWindow applicationWindow) {
 		applicationController = applicationWindow.getApplicationController();
@@ -88,28 +86,44 @@ public class ProblematicWordsController<Word extends ListElement>
 	}
 
 	public void addProblematicWords(Set<Word> problematicWords) {
-		if (notReviewedWords.isEmpty()) {
+		if (haveAllWordsBeenRepeated()) {
+
 			wordsToReviewList.cleanWords();
+			notReviewedWords.clear();
 		}
+		else {
+			for (int i = 0; i < nextWordToReview; i++) {
+				wordsToReviewList
+						.remove(notReviewedWords.get(0).getListElement());
+				notReviewedWords.remove(0);
+			}
+		}
+		nextWordToReview = 0;
+
+		wordsReviewed = false;
 		for (Word word : problematicWords) {
 			addWord(word);
 		}
 
 		wordsToReviewList.scrollToTop();
-		goToNextResource();
+		goToNextResource(MoveDirection.BELOW);
 		SwingUtilities.invokeLater(
 				() -> wordsToReviewList.getPanel().requestFocusInWindow());
 	}
 
 	private void addWord(Word word) {
 		wordsToReviewList.addWord(word, InputGoal.NO_INPUT);
-		notReviewedWords.add(problematicWordsDisplayer
-				.createWordRow(word, wordsToReviewList.getNumberOfWords() - 1));
+		WordRow wordRow = problematicWordsDisplayer
+				.createWordRow(word, wordsToReviewList.getNumberOfWords() - 1);
+		if (!notReviewedWords.contains(wordRow)) {
+			notReviewedWords.add(wordRow);
+		}
 	}
 
-	private void goToNextResource() {
+	private void goToNextResource(MoveDirection direction) {
 		WordRow row = notReviewedWords.get(nextWordToReview);
 		showResource(row);
+		nextWordToReview = nextWordToReview + direction.getIncrementValue();
 	}
 
 	public void showResource(WordRow<Word> row) {
@@ -157,7 +171,6 @@ public class ProblematicWordsController<Word extends ListElement>
 
 	private void changeResource(MoveDirection direction) {
 
-		nextWordToReview = nextWordToReview + direction.getIncrementValue();
 		if (nextWordToReview < 0) {
 			nextWordToReview = 0;
 			return;
@@ -172,7 +185,8 @@ public class ProblematicWordsController<Word extends ListElement>
 			wordsToReviewList.clearHighlightedWords();
 		}
 
-		goToNextResource();
+		goToNextResource(direction);
+
 	}
 
 	public int getNumberOfRows() {
@@ -234,7 +248,7 @@ public class ProblematicWordsController<Word extends ListElement>
 		for (Word listWord : notReviewedWords) {
 			addWord(listWord);
 		}
-		goToNextResource();
+		goToNextResource(MoveDirection.BELOW);
 
 	}
 
@@ -313,7 +327,7 @@ public class ProblematicWordsController<Word extends ListElement>
 				nextWordToReview = 0;
 			}
 			if (removed) {
-				goToNextResource();
+				goToNextResource(MoveDirection.BELOW);
 			}
 
 		}
