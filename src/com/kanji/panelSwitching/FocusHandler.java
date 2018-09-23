@@ -89,6 +89,9 @@ public class FocusHandler {
 	}
 
 	public void focusPreviouslyFocusedElement() {
-		SwingUtilities.invokeLater(() -> focusedPanel.requestFocusInWindow());
+		if (focusedPanel != null) {
+			SwingUtilities
+					.invokeLater(() -> focusedPanel.requestFocusInWindow());
+		}
 	}
 }

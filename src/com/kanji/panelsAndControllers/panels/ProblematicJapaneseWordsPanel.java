@@ -51,6 +51,8 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		englishDictionaryPanel = new WebPagePanel(this, null);
 		japaneseEnglishDictionaryPanel = new WebPagePanel(this, null);
 		kanjiKoohiWebPanel = new WebPagePanel(this, null);
+		focusableComponentsManager = new FocusableComponentsManager(
+				mainPanel.getPanel());
 	}
 
 	public void initialize() {
@@ -97,8 +99,6 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	@Override
 	public void createElements() {
 
-		focusableComponentsManager = new FocusableComponentsManager(
-				mainPanel.getPanel());
 		focusableComponentsManager.makeFocusable(problematicWords.getPanel());
 		focusableComponentsManager
 				.makeFocusable(japaneseEnglishDictionaryPanel.getWebPanel());

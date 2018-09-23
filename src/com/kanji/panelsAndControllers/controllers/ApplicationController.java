@@ -739,4 +739,14 @@ public class ApplicationController
 
 		}
 	}
+
+	public ProblematicWordsController getActiveProblematicWordsController() {
+		Class listELementClass = getActiveWordsList().getListElementClass();
+		if (listELementClass.equals(Kanji.class)) {
+			return problematicKanjisController;
+		}
+		else {
+			return problematicJapaneseWordsController;
+		}
+	}
 }

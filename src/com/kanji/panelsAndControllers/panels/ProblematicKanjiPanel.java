@@ -53,6 +53,8 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		dictionaryWebPanel = new WebPagePanel(kanjiContextContextOwner, null);
 		kanjiWebPanel = new WebPagePanel(kanjiContextContextOwner,
 				new ConnectionFailKanjiOfflinePage(kanjiFont));
+		focusableComponentsManager = new FocusableComponentsManager(
+				mainPanel.getPanel());
 	}
 
 	public void initialize(String pageToRender) {
@@ -80,8 +82,6 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiOfflineDisplayingPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.CENTER, kanjiTextPane));
 
-		focusableComponentsManager = new FocusableComponentsManager(
-				mainPanel.getPanel());
 		focusableComponentsManager.makeFocusable(wordsToReviewList.getPanel());
 		focusableComponentsManager
 				.makeFocusable(dictionaryWebPanel.getWebPanel());

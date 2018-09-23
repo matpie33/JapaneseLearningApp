@@ -18,10 +18,7 @@ import com.kanji.timer.TimeSpentHandler;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 
@@ -98,6 +95,19 @@ public class ApplicationWindow extends DialogWindow {
 				container.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		container.addWindowListener(
 				createListenerSwitchToSubdialogWhenFocusGain());
+		container.addWindowListener(
+				focusLastFocusedElementWhenWindowRegainsFocus());
+	}
+
+	private WindowListener focusLastFocusedElementWhenWindowRegainsFocus() {
+		return new WindowAdapter() {
+			@Override
+			public void windowActivated(WindowEvent e) {
+				applicationController.getActiveProblematicWordsController()
+						.focusPreviouslyFocusedElement();
+
+			}
+		};
 	}
 
 	private WindowAdapter createListenerSwitchToSubdialogWhenFocusGain() {

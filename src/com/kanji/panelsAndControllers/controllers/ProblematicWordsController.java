@@ -345,6 +345,8 @@ public class ProblematicWordsController<Word extends ListElement>
 	}
 
 	public void focusPreviouslyFocusedElement() {
-		problematicWordsDisplayer.focusPreviouslyFocusedElement();
+		if (problematicWordsDisplayer != null){
+			problematicWordsDisplayer.focusPreviouslyFocusedElement();
+		}
 	}
 }
