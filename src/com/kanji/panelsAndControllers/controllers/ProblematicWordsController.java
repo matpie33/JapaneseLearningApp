@@ -145,7 +145,8 @@ public class ProblematicWordsController<Word extends ListElement>
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!problematicWordsDisplayer.isListPanelFocused()
-						|| wordsToReviewList.isInEditMode()) {
+						|| wordsToReviewList.isInEditMode() || wordsToReviewList
+						.isFilterInputFocused()) {
 					return;
 				}
 				changeResource(direction);
@@ -345,7 +346,7 @@ public class ProblematicWordsController<Word extends ListElement>
 	}
 
 	public void focusPreviouslyFocusedElement() {
-		if (problematicWordsDisplayer != null){
+		if (problematicWordsDisplayer != null) {
 			problematicWordsDisplayer.focusPreviouslyFocusedElement();
 		}
 	}

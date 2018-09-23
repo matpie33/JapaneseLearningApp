@@ -416,4 +416,8 @@ public class MyList<Word extends ListElement>
 	public boolean isInEditMode() {
 		return listController.isInEditMode();
 	}
+
+	public boolean isFilterInputFocused() {
+		return listController.isFilterInputFocused();
+	}
 }

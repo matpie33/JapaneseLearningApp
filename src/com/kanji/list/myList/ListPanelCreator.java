@@ -473,4 +473,8 @@ public class ListPanelCreator<Word extends ListElement>
 		rowsPanel.updateView();
 		return newPanel;
 	}
+
+	public boolean isFilterInputFocused() {
+		return listSearchPanelCreator.getFilteringInput().hasFocus();
+	}
 }

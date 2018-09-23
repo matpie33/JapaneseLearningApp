@@ -622,4 +622,7 @@ public class ListWordsController<Word extends ListElement> {
 
 	}
 
+	public boolean isFilterInputFocused() {
+		return listPanelCreator.isFilterInputFocused();
+	}
 }
