@@ -44,8 +44,6 @@ public class ListSearchPanelCreator<Word extends ListElement> {
 				new TextComponentOptions().rowsAndColumns(1, 15));
 
 		comboBox = createComboboxForSearchedProperty();
-
-
 		searchPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.WEST, searchOptionPrompt,
 						comboBox));

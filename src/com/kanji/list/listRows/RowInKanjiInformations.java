@@ -53,11 +53,13 @@ public class RowInKanjiInformations implements ListRowCreator<Kanji> {
 		JLabel keywordLabel = elementsCreator
 				.createLabel(Labels.KANJI_KEYWORD_LABEL);
 		JLabel idLabel = elementsCreator.createLabel(Labels.KANJI_ID_LABEL);
+		boolean enabled = inputGoal.equals(InputGoal.EDIT) || commonListElements
+				.isForSingleRowOnly();
 		JTextComponent keywordInput = actionsCreator.withKeywordValidation(
 				elementsCreator.createKanjiKeywordInput(kanji.getKeyword(),
-						displayMode), kanji, inputGoal);
+						enabled), kanji, inputGoal);
 		JTextComponent idInput = actionsCreator.withKanjiIdValidation(
-				elementsCreator.createKanjiIdInput(kanji.getId(), displayMode),
+				elementsCreator.createKanjiIdInput(kanji.getId(), enabled),
 				kanji, inputGoal);
 		AbstractButton buttonDependingOnInputGoal = getButtonDependingOnInputGoal(
 				kanji, commonListElements);

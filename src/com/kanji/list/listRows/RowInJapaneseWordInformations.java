@@ -39,8 +39,9 @@ public class RowInJapaneseWordInformations
 	public ListRowData createListRow(JapaneseWord japaneseWord,
 			CommonListElements commonListElements, InputGoal inputGoal) {
 		PanelDisplayMode displayMode = newWordsPanelCreator.getDisplayMode();
-		if (displayMode.equals(PanelDisplayMode.VIEW) && inputGoal
-				.equals(InputGoal.EDIT_TEMPORARILY)) {
+		if (displayMode.equals(PanelDisplayMode.VIEW) && (
+				inputGoal.equals(InputGoal.EDIT_TEMPORARILY)
+						|| commonListElements.isForSingleRowOnly())) {
 			displayMode = PanelDisplayMode.EDIT;
 		}
 		MainPanel panel = new MainPanel(null,

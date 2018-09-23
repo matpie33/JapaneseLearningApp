@@ -22,19 +22,18 @@ public class KanjiElementsCreator {
 	}
 
 	public JTextComponent createKanjiKeywordInput(String text,
-			PanelDisplayMode displayMode) {
+			boolean enabled) {
 		return GuiElementsCreator.createTextArea(
 				new TextAreaOptions().text(text).rowsAndColumns(2, 5)
-						.moveToNextComponentWhenTabbed(true)
-						.editable(isEditable(displayMode)));
+						.moveToNextComponentWhenTabbed(true).setEnabled(enabled));
 	}
 
 	private boolean isEditable(PanelDisplayMode displayMode) {
-		return displayMode.equals(PanelDisplayMode.EDIT) ? true : false;
+		return displayMode.equals(PanelDisplayMode.EDIT);
 	}
 
 	public JTextComponent createKanjiIdInput(int id,
-			PanelDisplayMode displayMode) {
+			boolean enabled) {
 		String inputText;
 		if (id > 0) {
 			inputText = Integer.toString(id);
@@ -44,7 +43,7 @@ public class KanjiElementsCreator {
 		}
 		return GuiElementsCreator.createTextField(
 				new TextComponentOptions().text(inputText).maximumCharacters(5)
-						.digitsOnly(true).editable(isEditable(displayMode))
+						.digitsOnly(true).setEnabled(enabled)
 						.rowsAndColumns(1, 5));
 	}
 

@@ -37,7 +37,8 @@ public class KanjiActionsCreator {
 
 	public JTextComponent withKeywordValidation(JTextComponent keywordInput,
 			Kanji kanji, InputGoal inputGoal) {
-		if (displayMode.equals(PanelDisplayMode.VIEW)) {
+		if (displayMode.equals(PanelDisplayMode.VIEW) && !inputGoal
+				.equals(InputGoal.SEARCH)) {
 			return keywordInput;
 		}
 		keywordChecker = new KanjiKeywordChecker();
@@ -51,7 +52,8 @@ public class KanjiActionsCreator {
 
 	public JTextComponent withKanjiIdValidation(JTextComponent kanjiIdInput,
 			Kanji kanji, InputGoal inputGoal) {
-		if (displayMode.equals(PanelDisplayMode.VIEW)) {
+		if (displayMode.equals(PanelDisplayMode.VIEW) && !inputGoal
+				.equals(InputGoal.SEARCH)) {
 			return kanjiIdInput;
 		}
 		idChecker = new KanjiIdChecker();
