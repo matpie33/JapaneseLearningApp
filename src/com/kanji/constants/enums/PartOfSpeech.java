@@ -10,13 +10,13 @@ public enum PartOfSpeech {
 			AdditionalInformationTag.TAKING_SURU,
 			new String[] { Labels.NO, Labels.YES }), I_ADJECTIVE(
 			"i-przymiotnik", AdditionalInformationTag.OTHER,
-			new String[] {}), NA_ADJECTIVE("na-przymiotnik",
-			AdditionalInformationTag.OTHER, new String[] {}), EXPRESSION(
+			new String[] { Labels.NO_ADDITIONAL_INFORMATION }), NA_ADJECTIVE(
+			"na-przymiotnik", AdditionalInformationTag.OTHER,
+			new String[] { Labels.NO_ADDITIONAL_INFORMATION }), EXPRESSION(
 			"Wyrażenie", AdditionalInformationTag.TAKING_SURU,
 			new String[] { Labels.NO, Labels.YES });
 
 	private String polishMeaning;
-
 	private AdditionalInformationTag additionalInformationTag;
 	private String[] possibleValues;
 

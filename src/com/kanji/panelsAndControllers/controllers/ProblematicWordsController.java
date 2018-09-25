@@ -91,8 +91,8 @@ public class ProblematicWordsController<Word extends ListElement>
 			wordsToReviewList.cleanWords();
 			notReviewedWords.clear();
 		}
-		else {
-			for (int i = 0; i < nextWordToReview; i++) {
+		else if (!notReviewedWords.isEmpty()) {
+			for (int i = 0; i < nextWordToReview + 1; i++) {
 				wordsToReviewList
 						.remove(notReviewedWords.get(0).getListElement());
 				notReviewedWords.remove(0);
@@ -106,7 +106,7 @@ public class ProblematicWordsController<Word extends ListElement>
 		}
 
 		wordsToReviewList.scrollToTop();
-		goToNextResource(MoveDirection.BELOW);
+		goToNextResource();
 		SwingUtilities.invokeLater(
 				() -> wordsToReviewList.getPanel().requestFocusInWindow());
 	}
@@ -120,10 +120,10 @@ public class ProblematicWordsController<Word extends ListElement>
 		}
 	}
 
-	private void goToNextResource(MoveDirection direction) {
+	private void goToNextResource() {
 		WordRow row = notReviewedWords.get(nextWordToReview);
 		showResource(row);
-		nextWordToReview = nextWordToReview + direction.getIncrementValue();
+
 	}
 
 	public void showResource(WordRow<Word> row) {
@@ -171,6 +171,7 @@ public class ProblematicWordsController<Word extends ListElement>
 
 	private void changeResource(MoveDirection direction) {
 
+		nextWordToReview = nextWordToReview + direction.getIncrementValue();
 		if (nextWordToReview < 0) {
 			nextWordToReview = 0;
 			return;
@@ -185,7 +186,7 @@ public class ProblematicWordsController<Word extends ListElement>
 			wordsToReviewList.clearHighlightedWords();
 		}
 
-		goToNextResource(direction);
+		goToNextResource();
 
 	}
 
@@ -248,7 +249,7 @@ public class ProblematicWordsController<Word extends ListElement>
 		for (Word listWord : notReviewedWords) {
 			addWord(listWord);
 		}
-		goToNextResource(MoveDirection.BELOW);
+		goToNextResource();
 
 	}
 
@@ -327,7 +328,7 @@ public class ProblematicWordsController<Word extends ListElement>
 				nextWordToReview = 0;
 			}
 			if (removed) {
-				goToNextResource(MoveDirection.BELOW);
+				goToNextResource();
 			}
 
 		}

@@ -1,6 +1,7 @@
 package com.kanji.list.listRows.japanesePanelCreatingComponents;
 
 import com.kanji.constants.enums.*;
+import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordChecker;
@@ -80,8 +81,8 @@ public class JapanesePanelActionsCreator {
 	public JTextComponent withJapaneseWritingValidation(
 			JTextComponent textComponent, JapaneseWriting japaneseWriting,
 			JapaneseWord japaneseWord,
-			TypeOfJapaneseWriting typeOfJapaneseWriting,
-			InputGoal inputGoal, boolean enabled) {
+			TypeOfJapaneseWriting typeOfJapaneseWriting, InputGoal inputGoal,
+			boolean enabled) {
 		JapaneseWordChecker checker = getOrCreateCheckerFor(japaneseWriting,
 				japaneseWord, inputGoal);
 		boolean isKana = typeOfJapaneseWriting
@@ -89,8 +90,7 @@ public class JapanesePanelActionsCreator {
 		if (typeOfJapaneseWriting.equals(TypeOfJapaneseWriting.KANA)) {
 			checker.addKanaInput(textComponent, japaneseWriting);
 		}
-		else if (typeOfJapaneseWriting
-				.equals(TypeOfJapaneseWriting.KANJI)) {
+		else if (typeOfJapaneseWriting.equals(TypeOfJapaneseWriting.KANJI)) {
 			checker.addKanjiInput(textComponent, japaneseWriting);
 		}
 		if (enabled) {
@@ -249,21 +249,22 @@ public class JapanesePanelActionsCreator {
 				japaneseWord.setPartOfSpeech(newPartOfSpeech);
 
 				String[] possibleValues = newPartOfSpeech.getPossibleValues();
-				boolean hasAdditionalInformation = possibleValues.length > 0;
-				additionalInformationLabel.setEnabled(hasAdditionalInformation);
+				boolean hasAdditionalInformation = !possibleValues[0]
+						.equals(Labels.NO_ADDITIONAL_INFORMATION);
 				additionalInformationValue.setEnabled(hasAdditionalInformation);
 				additionalInformationValue.removeAllItems();
+				Arrays.stream(possibleValues)
+						.forEach(additionalInformationValue::addItem);
+				AdditionalInformationTag additionalInformationTag = newPartOfSpeech
+						.getAdditionalInformationTag();
+				additionalInformationLabel
+						.setText(additionalInformationTag.getLabel());
 				if (hasAdditionalInformation) {
-					AdditionalInformationTag additionalInformationTag = newPartOfSpeech
-							.getAdditionalInformationTag();
-					additionalInformationLabel
-							.setText(additionalInformationTag.getLabel());
 					AdditionalInformation additionalInformation = new AdditionalInformation(
 							additionalInformationTag, possibleValues);
 					japaneseWord
 							.setAdditionalInformation(additionalInformation);
-					Arrays.stream(possibleValues)
-							.forEach(additionalInformationValue::addItem);
+
 				}
 				else {
 					ThreadUtilities.callOnOtherThread(
