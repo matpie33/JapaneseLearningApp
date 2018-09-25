@@ -150,7 +150,7 @@ public class ApplicationController
 		cat.setPartOfSpeech(PartOfSpeech.EXPRESSION);
 		japaneseWords.addWord(cat);
 		JapaneseWord dog2 = new JapaneseWord(PartOfSpeech.NOUN, "pies");
-		dog2.addWritingsForKana("いぬ", "二", "三", "四");
+		dog2.addWritingsForKana("いぬ" );
 		japaneseWords.addWord(dog2);
 		JapaneseWord verb = new JapaneseWord(PartOfSpeech.VERB, "otwierać");
 		verb.addWritingsForKana("あける", "開ける", "空ける", "明ける");

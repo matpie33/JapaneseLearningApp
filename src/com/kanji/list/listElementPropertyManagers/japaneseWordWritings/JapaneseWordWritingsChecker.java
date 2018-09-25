@@ -218,7 +218,7 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 		}
 
 		if (JapaneseWritingUtilities
-				.isInputEmpty(searchedKana, TypeOfJapaneseWriting.KANJI)) {
+				.isInputEmpty(searchedKana, TypeOfJapaneseWriting.KANA)) {
 			return areKanjisSame(searchedKanji, existingKanjiWritings,
 					inputGoal);
 		}
