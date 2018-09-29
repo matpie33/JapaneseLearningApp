@@ -23,7 +23,7 @@ public class Prompts {
 	public static final String DELETE_ELEMENT = "Czy jesteś pewien, że chcesz usunąć %s?";
 	public static final String KANJI_ROW = "wiersz kanji";
 	public static final String REPEATING_ELEMENT = "wiersz dotyczący powtórek";
-	public static final String KANJI_LOADING = "Trwa wczytywanie kanji...";
+	public static final String PROJECT_LOADING = "Trwa wczytywanie projektu...";
 	public static final String PROBLEMATIC_KANJIS_ADDED = "+ problematyczne";
 	public static final String PAUSE_ENABLED = "Włączono pauzę.";
 	public static final String NO_MORE_WORDS_TO_REVIEW = "Koniec słów do przejrzenia. Przechodzę na początek";

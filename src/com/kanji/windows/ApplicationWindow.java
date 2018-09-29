@@ -9,7 +9,6 @@ import com.kanji.constants.strings.Titles;
 import com.kanji.customPositioning.PositionerOnMyList;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.myList.MyList;
-import com.kanji.model.DuplicatedJapaneseWordInformation;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.panelsAndControllers.panels.*;
@@ -20,7 +19,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import java.util.List;
 
 @SuppressWarnings("serial")
 public class ApplicationWindow extends DialogWindow {
@@ -251,7 +249,7 @@ public class ApplicationWindow extends DialogWindow {
 
 
 	public LoadingPanel showProgressDialog() {
-		LoadingPanel dialog = new LoadingPanel(Prompts.KANJI_LOADING);
+		LoadingPanel dialog = new LoadingPanel(Prompts.PROJECT_LOADING);
 		createDialog(dialog, Titles.MESSAGE_DIALOG, false, Position.CENTER);
 		return dialog;
 	}

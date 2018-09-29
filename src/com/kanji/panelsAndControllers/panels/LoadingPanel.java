@@ -15,23 +15,22 @@ import java.util.List;
 public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 
 	private AbstractButton buttonClose;
-	private String message;
-	private List<JProgressBar> progressBars;
+	private String title;
 	private MainPanel progressBarsPanel;
 
-	public LoadingPanel(String message) {
-		this.message = message;
-		progressBars = new ArrayList<>();
+	public LoadingPanel(String title) {
+		this.title = title;
 	}
 
 	@Override
 	public void createElements() {
 
-		//TODO add method in gui maker to enable connecting one row with another or create a separate row
+		//TODO add method in gui maker to enable connecting one row with
+		// another or create a separate row
 		progressBarsPanel = new MainPanel(BasicColors.BLUE_DARK_3, true);
 		progressBarsPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.CENTER, GuiElementsCreator
-						.createLabel(new ComponentOptions().text(message))));
+						.createLabel(new ComponentOptions().text(title))));
 		mainPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.BOTH, progressBarsPanel.getPanel()));
 		buttonClose = createButtonClose();
@@ -43,7 +42,6 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 		JLabel label = GuiElementsCreator
 				.createLabel(new ComponentOptions().text(textLabel));
 		JProgressBar progressBar = new JProgressBar();
-		progressBars.add(progressBar);
 		progressBarsPanel.addElementsInColumn(SimpleRowBuilder
 				.createRowStartingFromColumn(0, FillType.NONE, label,
 						progressBar));
