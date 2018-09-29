@@ -251,6 +251,9 @@ public class JapanesePanelActionsCreator {
 				String[] possibleValues = newPartOfSpeech.getPossibleValues();
 				boolean hasAdditionalInformation = !possibleValues[0]
 						.equals(Labels.NO_ADDITIONAL_INFORMATION);
+				//TODO duplicated logic for has additional information in method
+				// create combobox for additional information in japanese
+				// panel elements creator
 				additionalInformationValue.setEnabled(hasAdditionalInformation);
 				additionalInformationValue.removeAllItems();
 				Arrays.stream(possibleValues)

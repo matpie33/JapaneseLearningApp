@@ -9,9 +9,11 @@ import java.util.Objects;
 
 public class AdditionalInformation implements Serializable {
 
+	private static final long serialVersionUID = -4449794531096769222L;
 	private AdditionalInformationTag tag;
 	private String value;
 	private List<String> possibleValues;
+	//TODO possible values and tag are duplicated in part of speech class
 
 	public AdditionalInformation(AdditionalInformationTag tag,
 			String... possibleValues) {

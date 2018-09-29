@@ -12,6 +12,7 @@ import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.enums.TypeOfJapaneseWriting;
 import com.kanji.constants.strings.ButtonsNames;
+import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listRows.RowInParticlesInformation;
@@ -63,7 +64,8 @@ public class JapanesePanelElementsCreator {
 							japaneseWriting.getKanaWriting(),
 							TypeOfJapaneseWriting.KANA_OR_KANJI, enabled,
 							selectable), japaneseWriting, japaneseWord,
-							TypeOfJapaneseWriting.KANA_OR_KANJI, inputGoal, enabled);
+							TypeOfJapaneseWriting.KANA_OR_KANJI, inputGoal,
+							enabled);
 		}
 
 	}
@@ -102,8 +104,8 @@ public class JapanesePanelElementsCreator {
 			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
 			InputGoal inputGoal, boolean enabled, boolean selectable) {
 		return actionsCreator.withJapaneseWritingValidation(
-				createWritingsInput(text, TypeOfJapaneseWriting.KANJI,
-						enabled, selectable), japaneseWriting, japaneseWord,
+				createWritingsInput(text, TypeOfJapaneseWriting.KANJI, enabled,
+						selectable), japaneseWriting, japaneseWord,
 				TypeOfJapaneseWriting.KANJI, inputGoal, enabled);
 	}
 
@@ -187,8 +189,9 @@ public class JapanesePanelElementsCreator {
 		AdditionalInformation additionalInformation = japaneseWord
 				.getAdditionalInformation();
 		List<String> possibleValues = additionalInformation.getPossibleValues();
-		boolean hasPossibleAdditionalInformation = !additionalInformation
-				.getPossibleValues().isEmpty();
+		boolean hasPossibleAdditionalInformation =
+				!possibleValues.isEmpty() && !possibleValues.get(0)
+						.equals(Labels.NO_ADDITIONAL_INFORMATION);
 		JComboBox comboBox = actionsCreator
 				.changeAdditionalInformationOnComboboxChange(GuiElementsCreator
 								.createCombobox(new ComboboxOptions()
