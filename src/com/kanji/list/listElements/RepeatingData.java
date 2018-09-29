@@ -81,8 +81,9 @@ public class RepeatingData implements Serializable, ListElement {
 	}
 
 	@Override
-	public int hashCode(){
-		return Objects.hash(repeatingDate, timeSpentOnRepeating, repeatingRange);
+	public int hashCode() {
+		return Objects
+				.hash(repeatingDate, timeSpentOnRepeating, repeatingRange);
 	}
 
 	@Override

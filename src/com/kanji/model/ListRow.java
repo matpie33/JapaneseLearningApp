@@ -61,7 +61,7 @@ public class ListRow<Word> {
 	}
 
 	@Override
-	public String toString (){
+	public String toString() {
 		return word.toString();
 	}
 

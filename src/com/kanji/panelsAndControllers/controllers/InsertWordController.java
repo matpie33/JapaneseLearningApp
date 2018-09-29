@@ -10,6 +10,7 @@ import com.kanji.utilities.ThreadUtilities;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
+import javax.swing.FocusManager;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -41,7 +42,7 @@ public class InsertWordController<Word extends ListElement>
 					.showMessageDialog(ExceptionsMessages.NO_INPUT_SUPPLIED);
 			return;
 		}
-		ThreadUtilities.callOnOtherThread(()-> {
+		ThreadUtilities.callOnOtherThread(() -> {
 			boolean addedWord = addWordToList(word);
 			if (addedWord) {
 				applicationController.saveProject();
@@ -68,12 +69,13 @@ public class InsertWordController<Word extends ListElement>
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Component focusOwner = FocusManager.getCurrentManager().getFocusOwner();
-				if (focusOwner instanceof JTextComponent){
+				Component focusOwner = FocusManager.getCurrentManager()
+						.getFocusOwner();
+				if (focusOwner instanceof JTextComponent) {
 					validateFocusedElement();
 					addingWordWasRequested = true;
 				}
-				else{
+				else {
 					addWord();
 				}
 			}

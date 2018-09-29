@@ -48,7 +48,6 @@ public class MyList<Word extends ListElement>
 		this.title = title;
 	}
 
-
 	public MyList(DialogWindow parentDialog,
 			ApplicationController applicationController,
 			ListRowCreator<Word> listRowCreator, String title,

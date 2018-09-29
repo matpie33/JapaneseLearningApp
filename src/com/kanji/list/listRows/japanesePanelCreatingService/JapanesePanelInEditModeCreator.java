@@ -26,8 +26,8 @@ public class JapanesePanelInEditModeCreator
 			CommonListElements commonListElements, JapaneseWord japaneseWord,
 			InputGoal inputGoal, MainPanel rowPanel) {
 		List<JComponent> rowElements = new ArrayList<>();
-		elementsMaker.createKanaOrKanjiInputForFiltering(japaneseWriting, japaneseWord,
-				true, inputGoal, false);
+		elementsMaker.createKanaOrKanjiInputForFiltering(japaneseWriting,
+				japaneseWord, true, inputGoal, false);
 		rowElements.add(elementsMaker
 				.createKanaInputWithValidation(japaneseWriting, japaneseWord,
 						true, inputGoal, false));

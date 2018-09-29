@@ -2,19 +2,22 @@ package com.kanji.list.listRows;
 
 import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
+import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.InputGoal;
-import com.guimaker.enums.PanelDisplayMode;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
 import com.kanji.list.listeners.InputValidationListener;
-import com.kanji.list.myList.*;
+import com.kanji.list.myList.ListRowCreator;
+import com.kanji.list.myList.ListRowData;
+import com.kanji.list.myList.ListRowDataCreator;
+import com.kanji.list.myList.MyList;
 import com.kanji.model.DuplicatedJapaneseWordInformation;
 import com.kanji.utilities.CommonGuiElementsCreator;
 import com.kanji.utilities.CommonListElements;
@@ -54,8 +57,8 @@ public class RowInDuplicatedImportedWordsList
 				applicationWindow.getApplicationController(), parentDialog,
 				PanelDisplayMode.EDIT)
 				.addJapanesePanelToExistingPanel(japaneseWordInformationPanel,
-						data.getJapaneseWord(), inputGoal,
-						commonListElements, false);
+						data.getJapaneseWord(), inputGoal, commonListElements,
+						false);
 		AbstractButton buttonGoToRow = createButtonGoToRow(
 				data.getDuplicatedWordRowNumber());
 		panel.addRow(SimpleRowBuilder

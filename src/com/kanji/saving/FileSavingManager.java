@@ -40,7 +40,6 @@ public class FileSavingManager {
 		saveFile(originalFile, savingInformation);
 	}
 
-
 	private int increaseBackupFileNumber(SavingInformation savingInformation) {
 		return (savingInformation.getLastBackupFileNumber() + 1)
 				% NUMBER_OF_BACKUP_FILES;

@@ -29,9 +29,10 @@ public class FilteredWordMatch implements Comparable {
 		}
 		FilteredWordMatch other = (FilteredWordMatch) o;
 
-		return Comparator.comparing(
-				FilteredWordMatch::getNumberOfUnmatchedWords).reversed()
-				.thenComparing(FilteredWordMatch::getAveragePercentageOfLettersMatched)
+		return Comparator
+				.comparing(FilteredWordMatch::getNumberOfUnmatchedWords)
+				.reversed().thenComparing(
+						FilteredWordMatch::getAveragePercentageOfLettersMatched)
 				.compare(this, other);
 	}
 }

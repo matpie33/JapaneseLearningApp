@@ -87,8 +87,7 @@ public class ListPropertyChangeHandler<Property, PropertyHolder extends ListElem
 		ThreadUtilities.callOnOtherThread(() -> {
 			boolean inputValid = propertyNewValue != null;
 			boolean addedWord = false;
-			if (inputValid && !inputGoal
-					.equals(InputGoal.SEARCH)) {
+			if (inputValid && !inputGoal.equals(InputGoal.SEARCH)) {
 				addedWord = addWordToList(input, propertyNewValue);
 			}
 			notifyValidationListeners(inputValid && (addedWord || inputGoal

@@ -24,7 +24,7 @@ public class CommonGuiElementsCreator {
 		TextComponentOptions options = new TextComponentOptions()
 				.editable(displayMode.equals(PanelDisplayMode.EDIT))
 				.text(defaultContent);
-		if (displayMode.equals(PanelDisplayMode.EDIT)){
+		if (displayMode.equals(PanelDisplayMode.EDIT)) {
 			options.rowsAndColumns(1, 35);
 		}
 		return GuiElementsCreator.createTextField(options);

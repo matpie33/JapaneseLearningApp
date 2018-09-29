@@ -36,7 +36,7 @@ public class WordRow<Element extends ListElement> {
 	}
 
 	@Override
-	public String toString (){
+	public String toString() {
 		return listElement.toString();
 	}
 }

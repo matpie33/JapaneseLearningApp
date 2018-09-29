@@ -174,7 +174,7 @@ public class DialogWindow {
 		return panel;
 	}
 
-	public void setPanel (AbstractPanelWithHotkeysInfo panel){
+	public void setPanel(AbstractPanelWithHotkeysInfo panel) {
 		this.panel = panel;
 	}
 

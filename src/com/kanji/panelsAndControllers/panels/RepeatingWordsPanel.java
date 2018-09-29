@@ -1,6 +1,5 @@
 package com.kanji.panelsAndControllers.panels;
 
-import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.TextAlignment;

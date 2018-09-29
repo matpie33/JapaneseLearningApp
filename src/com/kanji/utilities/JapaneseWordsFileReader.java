@@ -1,13 +1,11 @@
 package com.kanji.utilities;
 
-import com.kanji.constants.enums.AdditionalInformationTag;
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.enums.VerbConjugationType;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.exception.IncorrectJapaneseWordsListInputException;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.ListElement;
-import com.kanji.model.AdditionalInformation;
 import com.kanji.model.DuplicatedJapaneseWordInformation;
 
 import java.io.*;
@@ -193,7 +191,8 @@ public class JapaneseWordsFileReader {
 			JapaneseWord japaneseWord) {
 		if (kanaWritings.length == kanjiWritings.length) {
 			for (int i = 0; i < kanaWritings.length; i++) {
-				japaneseWord.addWritingsForKana(kanaWritings[i], kanjiWritings[i]);
+				japaneseWord
+						.addWritingsForKana(kanaWritings[i], kanjiWritings[i]);
 			}
 		}
 		else if (kanjiWritings.length > kanaWritings.length) {

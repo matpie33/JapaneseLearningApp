@@ -25,15 +25,15 @@ public class KanjiElementsCreator {
 			boolean enabled) {
 		return GuiElementsCreator.createTextArea(
 				new TextAreaOptions().text(text).rowsAndColumns(2, 5)
-						.moveToNextComponentWhenTabbed(true).setEnabled(enabled));
+						.moveToNextComponentWhenTabbed(true)
+						.setEnabled(enabled));
 	}
 
 	private boolean isEditable(PanelDisplayMode displayMode) {
 		return displayMode.equals(PanelDisplayMode.EDIT);
 	}
 
-	public JTextComponent createKanjiIdInput(int id,
-			boolean enabled) {
+	public JTextComponent createKanjiIdInput(int id, boolean enabled) {
 		String inputText;
 		if (id > 0) {
 			inputText = Integer.toString(id);

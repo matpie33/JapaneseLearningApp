@@ -11,8 +11,8 @@ import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.RepeatingData;
 import com.kanji.list.listeners.InputValidationListener;
-import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.ListRowCreator;
+import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.ListRowDataCreator;
 import com.kanji.utilities.CommonListElements;
 
@@ -32,9 +32,10 @@ public class RowInRepeatingList implements ListRowCreator<RepeatingData> {
 		String time = repeatingData.getTimeSpentOnRepeating();
 		LocalDateTime date1 = repeatingData.getRepeatingDate();
 
-		JLabel repeatedWords = GuiElementsCreator.createLabel(new ComponentOptions()
-				.text(Prompts.REPEATING_WORDS_RANGE + word)
-				.foregroundColor(labelsColor));
+		JLabel repeatedWords = GuiElementsCreator.createLabel(
+				new ComponentOptions()
+						.text(Prompts.REPEATING_WORDS_RANGE + word)
+						.foregroundColor(labelsColor));
 
 		DateTimeFormatter sdf = DateTimeFormatter
 				.ofPattern("dd MMMM yyyy / HH:mm");

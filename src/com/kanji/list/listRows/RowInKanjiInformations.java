@@ -56,8 +56,9 @@ public class RowInKanjiInformations implements ListRowCreator<Kanji> {
 		boolean enabled = inputGoal.equals(InputGoal.EDIT) || commonListElements
 				.isForSingleRowOnly();
 		JTextComponent keywordInput = actionsCreator.withKeywordValidation(
-				elementsCreator.createKanjiKeywordInput(kanji.getKeyword(),
-						enabled), kanji, inputGoal);
+				elementsCreator
+						.createKanjiKeywordInput(kanji.getKeyword(), enabled),
+				kanji, inputGoal);
 		JTextComponent idInput = actionsCreator.withKanjiIdValidation(
 				elementsCreator.createKanjiIdInput(kanji.getId(), enabled),
 				kanji, inputGoal);

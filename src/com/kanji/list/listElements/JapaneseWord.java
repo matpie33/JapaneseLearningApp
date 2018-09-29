@@ -87,7 +87,8 @@ public class JapaneseWord implements ListElement, Serializable {
 
 	public void setPartOfSpeech(PartOfSpeech partOfSpeech) {
 		partOfSpeechWithInformation = new Pair<>(partOfSpeech,
-				new AdditionalInformation(partOfSpeech.getAdditionalInformationTag(),
+				new AdditionalInformation(
+						partOfSpeech.getAdditionalInformationTag(),
 						partOfSpeech.getPossibleValues()));
 	}
 
@@ -107,7 +108,7 @@ public class JapaneseWord implements ListElement, Serializable {
 	@Override
 	public boolean equals(Object element) {
 		if (element instanceof JapaneseWord) {
-			if (isEmpty() || ((JapaneseWord) element).isEmpty()){
+			if (isEmpty() || ((JapaneseWord) element).isEmpty()) {
 				return false;
 			}
 			JapaneseWord otherWord = (JapaneseWord) element;

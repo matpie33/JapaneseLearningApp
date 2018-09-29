@@ -22,7 +22,7 @@ public class PanelSwitchingHandler {
 			JComponent referencePanel, MoveDirection moveDirection) {
 		JComponent closestPanel = null;
 		for (JComponent panel : panels) {
-			if (referencePanel == null){
+			if (referencePanel == null) {
 				return panel;
 			}
 			if (panel == referencePanel || !panel.isVisible()) {

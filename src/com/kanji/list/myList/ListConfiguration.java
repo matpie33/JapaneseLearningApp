@@ -33,8 +33,8 @@ public class ListConfiguration {
 		return parentListAndWordContainingThisList;
 	}
 
-	public ListConfiguration parentListAndWordContainingThisList(MyList parentList,
-			ListElement parentWordContainingThisList) {
+	public ListConfiguration parentListAndWordContainingThisList(
+			MyList parentList, ListElement parentWordContainingThisList) {
 		parentListAndWordContainingThisList = new Pair<>(parentList,
 				parentWordContainingThisList);
 		return this;

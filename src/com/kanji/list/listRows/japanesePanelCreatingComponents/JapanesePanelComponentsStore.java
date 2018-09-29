@@ -55,11 +55,11 @@ public class JapanesePanelComponentsStore {
 		elementsMaker.addValidationListeners(validationListeners);
 	}
 
-	public void setWordsList(MyList<JapaneseWord> list){
+	public void setWordsList(MyList<JapaneseWord> list) {
 		actionsCreator.setWordsList(list);
 	}
 
-	public MyList getWordsList (){
+	public MyList getWordsList() {
 		return actionsCreator.getWordsList();
 	}
 

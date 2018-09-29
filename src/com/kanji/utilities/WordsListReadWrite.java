@@ -98,7 +98,7 @@ public class WordsListReadWrite {
 					String[] kanjis = kanaAndKanjis[1].split(KANJI_SEPARATOR);
 					wordInformation.addWritingsForKana(kana, kanjis);
 				}
-				else{
+				else {
 					wordInformation.addWritingsForKana(kana, "");
 				}
 			}

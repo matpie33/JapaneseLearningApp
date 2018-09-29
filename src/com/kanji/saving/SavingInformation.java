@@ -119,9 +119,8 @@ public class SavingInformation implements Serializable {
 		this.lastBackupFileNumber = lastBackupFileNumber;
 	}
 
-	public void clearApplicationState(){
+	public void clearApplicationState() {
 		applicationSaveableState = null;
 	}
-
 
 }

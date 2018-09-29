@@ -28,8 +28,7 @@ public class JapaneseWritingUtilities {
 		if (typeOfJapaneseWriting.equals(TypeOfJapaneseWriting.KANA)) {
 			return wordIsInKana(inputText);
 		}
-		else if (typeOfJapaneseWriting
-				.equals(TypeOfJapaneseWriting.KANJI)) {
+		else if (typeOfJapaneseWriting.equals(TypeOfJapaneseWriting.KANJI)) {
 			return wordIsInKanji(inputText);
 		}
 		else {
@@ -42,8 +41,7 @@ public class JapaneseWritingUtilities {
 		if (typeOfJapaneseWriting.equals(TypeOfJapaneseWriting.KANA)) {
 			return Prompts.KANA_TEXT;
 		}
-		else if (typeOfJapaneseWriting
-				.equals(TypeOfJapaneseWriting.KANJI)) {
+		else if (typeOfJapaneseWriting.equals(TypeOfJapaneseWriting.KANJI)) {
 			return Prompts.KANJI_TEXT;
 		}
 		else {

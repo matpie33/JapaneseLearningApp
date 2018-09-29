@@ -14,5 +14,4 @@ public interface JapanesePanelCreatingService {
 			CommonListElements commonListElements, JapaneseWord japaneseWord,
 			InputGoal inputGoal, MainPanel rowPanel);
 
-
 }

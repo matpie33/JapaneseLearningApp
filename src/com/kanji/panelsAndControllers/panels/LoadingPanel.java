@@ -32,7 +32,8 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 		progressBarsPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.CENTER, GuiElementsCreator
 						.createLabel(new ComponentOptions().text(message))));
-		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, progressBarsPanel.getPanel()));
+		mainPanel.addRow(SimpleRowBuilder
+				.createRow(FillType.BOTH, progressBarsPanel.getPanel()));
 		buttonClose = createButtonClose();
 		setNavigationButtons(Anchor.CENTER, buttonClose);
 

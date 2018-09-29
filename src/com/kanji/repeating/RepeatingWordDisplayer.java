@@ -35,6 +35,6 @@ public interface RepeatingWordDisplayer<Word extends ListElement> {
 
 	public void setAllProblematicWords(Set<Word> problematicWords);
 
-	public void setCurrentProblematicWords (Set <Word> currentProblematicWords);
+	public void setCurrentProblematicWords(Set<Word> currentProblematicWords);
 
 }

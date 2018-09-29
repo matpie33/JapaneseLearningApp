@@ -9,7 +9,6 @@ public class AppStart {
 
 	public static void main(String[] args) {
 
-
 		PlatformImpl.startup(() -> {
 		});
 		MainPanel.setDefaultColor(Colors.CONTENT_PANEL_COLOR);

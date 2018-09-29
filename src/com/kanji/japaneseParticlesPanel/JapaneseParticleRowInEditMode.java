@@ -44,6 +44,6 @@ public class JapaneseParticleRowInEditMode
 		components.add(input);
 		components.add(commonListElements.getButtonAddRow());
 		components.add(commonListElements.getButtonDelete());
-		return components.toArray(new JComponent[]{});
+		return components.toArray(new JComponent[] {});
 	}
 }

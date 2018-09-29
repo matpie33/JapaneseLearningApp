@@ -23,7 +23,6 @@ import com.kanji.utilities.CommonGuiElementsCreator;
 import com.kanji.webPanel.ConnectionFailKanjiOfflinePage;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
-import javafx.application.Platform;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -122,7 +121,8 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public boolean isListPanelFocused() {
-		return focusableComponentsManager.getFocusedComponent().equals(wordsToReviewList.getPanel());
+		return focusableComponentsManager.getFocusedComponent()
+				.equals(wordsToReviewList.getPanel());
 	}
 
 	public void focusPreviouslyFocusedElement() {

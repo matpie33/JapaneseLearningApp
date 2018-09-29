@@ -211,10 +211,12 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		sumRangeField.setText(Prompts.RANGE_SUM + sumOfWords);
 	}
 
-	private AbstractButton createDeleteButton(JTextComponent from, JTextComponent to) {
-		AbstractButton delete = GuiElementsCreator.createButtonlikeComponent(new ButtonOptions(ButtonType.BUTTON).text(
-				ButtonsNames.REMOVE_ROW),controller
-				.createActionDeleteRow(problematicCheckbox, from, to));
+	private AbstractButton createDeleteButton(JTextComponent from,
+			JTextComponent to) {
+		AbstractButton delete = GuiElementsCreator.createButtonlikeComponent(
+				new ButtonOptions(ButtonType.BUTTON)
+						.text(ButtonsNames.REMOVE_ROW), controller
+						.createActionDeleteRow(problematicCheckbox, from, to));
 		return delete;
 	}
 
