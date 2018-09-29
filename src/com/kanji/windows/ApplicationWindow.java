@@ -249,13 +249,6 @@ public class ApplicationWindow extends DialogWindow {
 
 	}
 
-	public void showDuplicatedJapaneseWordsDialog(
-			List<DuplicatedJapaneseWordInformation> duplicatedJapaneseWordInformationList) {
-		DuplicatedImportedJapaneseWordsPanel dup = new DuplicatedImportedJapaneseWordsPanel(
-				this, duplicatedJapaneseWordInformationList);
-		createDialog(dup, Titles.DUPLICATED_WORDS_PANEL, false,
-				Position.CENTER);
-	}
 
 	public LoadingPanel showProgressDialog() {
 		LoadingPanel dialog = new LoadingPanel(Prompts.KANJI_LOADING);

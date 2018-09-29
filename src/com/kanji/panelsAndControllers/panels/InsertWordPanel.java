@@ -78,7 +78,7 @@ public class InsertWordPanel<Word extends ListElement>
 
 	private AbstractButton createButtonValidate() {
 		//if combobox is selected, the enter key will not work, because it has
-		//another function there - choose the current selected item
+		//another function there - choose the currently selected item
 		return createButtonWithHotkey(KeyEvent.VK_ENTER,
 				controller.createActionValidateFocusedElement(),
 				ButtonsNames.ADD, HotkeysDescriptions.ADD_WORD);

@@ -207,32 +207,6 @@ public class ApplicationController
 		return fileChooser;
 	}
 
-	private void loadJapaneseWordsList() {
-		JFileChooser fileChooser = createFileChooser();
-		fileChooser.setMultiSelectionEnabled(true);
-		int option = fileChooser.showOpenDialog(parent.getContainer());
-		if (option == JFileChooser.CANCEL_OPTION) {
-			return;
-		}
-		try {
-			japaneseWordsFileReader.readFiles(fileChooser.getSelectedFiles());
-			this.japaneseWords.cleanWords();
-
-			for (JapaneseWord japaneseWord : japaneseWordsFileReader
-					.getNewWords()) {
-				this.japaneseWords.addWord(japaneseWord);
-			}
-
-			parent.showDuplicatedJapaneseWordsDialog(
-					japaneseWordsFileReader.getDuplicatedWords());
-
-		}
-		catch (Exception e) {
-			parent.showMessageDialog(e.getMessage());
-			e.printStackTrace();
-		}
-	}
-
 	public void loadWordsFromTextFiles() {
 		JFileChooser fileChooser = createFileChooser();
 		int option = fileChooser.showOpenDialog(parent.getContainer());
