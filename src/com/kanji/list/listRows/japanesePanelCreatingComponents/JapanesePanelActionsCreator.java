@@ -87,12 +87,8 @@ public class JapanesePanelActionsCreator {
 				japaneseWord, inputGoal);
 		boolean isKana = typeOfJapaneseWriting
 				.equals(TypeOfJapaneseWriting.KANA);
-		if (typeOfJapaneseWriting.equals(TypeOfJapaneseWriting.KANA)) {
-			checker.addKanaInput(textComponent, japaneseWriting);
-		}
-		else if (typeOfJapaneseWriting.equals(TypeOfJapaneseWriting.KANJI)) {
-			checker.addKanjiInput(textComponent, japaneseWriting);
-		}
+		checker.addInput(textComponent, japaneseWriting, typeOfJapaneseWriting);
+
 		if (enabled) {
 			addPropertyChangeHandler(textComponent, japaneseWord,
 					!inputGoal.equals(InputGoal.SEARCH) && isKana,
@@ -162,8 +158,15 @@ public class JapanesePanelActionsCreator {
 			@Override
 			public void focusLost(FocusEvent e) {
 				super.focusLost(e);
-				textComponent.getInputContext()
-						.selectInputMethod(Locale.getDefault());
+				if (textComponent.getInputContext() == null) {
+					parentDialog.getContainer().getInputContext()
+							.selectInputMethod(Locale.getDefault());
+				}
+				else {
+					textComponent.getInputContext()
+							.selectInputMethod(Locale.getDefault());
+				}
+
 			}
 		});
 		return textComponent;

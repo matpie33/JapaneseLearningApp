@@ -77,15 +77,25 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 		}
 
 		errorDetails = "";
-		TypeOfJapaneseWriting typeOfJapaneseWriting = TypeOfJapaneseWriting.KANA_OR_KANJI;
-		if (writingsInputManager.getKanaInput() == valueToConvert) {
+		TypeOfJapaneseWriting typeOfJapaneseWriting;
+		if (writingsInputManager.getKanaInput() == valueToConvert
+				&& writingsInputManager.getKanjiInputs()
+				.contains(valueToConvert)) {
+			typeOfJapaneseWriting = TypeOfJapaneseWriting.KANA_OR_KANJI;
+		}
+		else if (writingsInputManager.getKanaInput() == valueToConvert) {
 			typeOfJapaneseWriting = TypeOfJapaneseWriting.KANA;
 		}
 		else if (writingsInputManager.getKanjiInputs()
 				.contains(valueToConvert)) {
 			typeOfJapaneseWriting = TypeOfJapaneseWriting.KANJI;
 		}
-		boolean isKana = typeOfJapaneseWriting.equals(TypeOfJapaneseWriting.KANA);
+		else {
+			throw new IllegalStateException(
+					"input field is not kana or kanji or even both");
+		}
+		boolean isKana = typeOfJapaneseWriting
+				.equals(TypeOfJapaneseWriting.KANA);
 
 		JapaneseWriting writingToAdd;
 
@@ -265,4 +275,19 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 		}
 	}
 
+	public void addInput(JTextComponent input,
+			TypeOfJapaneseWriting typeOfWriting) {
+		switch (typeOfWriting) {
+		case KANA:
+			setKanaInput(input);
+			break;
+		case KANJI:
+			addKanjiInput(input);
+			break;
+		case KANA_OR_KANJI:
+			setKanaInput(input);
+			addKanjiInput(input);
+			break;
+		}
+	}
 }

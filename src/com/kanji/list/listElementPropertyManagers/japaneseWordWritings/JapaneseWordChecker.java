@@ -1,6 +1,7 @@
 package com.kanji.list.listElementPropertyManagers.japaneseWordWritings;
 
 import com.kanji.constants.enums.InputGoal;
+import com.kanji.constants.enums.TypeOfJapaneseWriting;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.JapaneseWord;
@@ -22,12 +23,13 @@ public class JapaneseWordChecker implements
 		this.inputGoal = inputGoal;
 	}
 
-	public void addKanaInput(JTextComponent kanaInput,
-			JapaneseWriting writingContainingThisKana) {
+	public void addInput(JTextComponent input,
+			JapaneseWriting writingToWhichThisInputBelongs,
+			TypeOfJapaneseWriting typeOfWriting) {
 		JapaneseWordWritingsChecker checkerForWriting = getCheckerForInput(
-				writingContainingThisKana);
-		checkerForWriting.setKanaInput(kanaInput);
-		remember(kanaInput, writingContainingThisKana, checkerForWriting);
+				writingToWhichThisInputBelongs);
+		checkerForWriting.addInput(input, typeOfWriting);
+		remember(input, writingToWhichThisInputBelongs, checkerForWriting);
 	}
 
 	public Pair<JapaneseWriting, JapaneseWordWritingsChecker> getWritingForInput(
@@ -60,21 +62,13 @@ public class JapaneseWordChecker implements
 		return checkerForWriting;
 	}
 
-	public void addKanjiInput(JTextComponent kanjiInput,
-			JapaneseWriting writingContainingThisKanji) {
-		JapaneseWordWritingsChecker checkerForWriting = getCheckerForInput(
-				writingContainingThisKanji);
-		checkerForWriting.addKanjiInput(kanjiInput);
-		remember(kanjiInput, writingContainingThisKanji, checkerForWriting);
-	}
-
 	@Override
 	public String getPropertyValue(JapaneseWord japaneseWord) {
 		StringBuilder writingsText = new StringBuilder();
 		for (JapaneseWriting japaneseWriting : japaneseWord.getWritings()) {
 			writingsText.append(japaneseWriting.getKanaWriting());
 			japaneseWriting.getKanjiWritings()
-					.forEach(kanji -> writingsText.append(" "+ kanji));
+					.forEach(kanji -> writingsText.append(" " + kanji));
 		}
 		return writingsText.toString();
 	}
@@ -163,7 +157,8 @@ public class JapaneseWordChecker implements
 
 	public JTextComponent getAnyKanjiInput() {
 		Map<JTextComponent, ListElementPropertyManager> inputToChecker = new LinkedHashMap<>();
-		return writingToCheckerMap.values().iterator().next().getAnyKanjiInput();
+		return writingToCheckerMap.values().iterator().next()
+				.getAnyKanjiInput();
 	}
 
 	public void removeWriting(JapaneseWriting writing) {
