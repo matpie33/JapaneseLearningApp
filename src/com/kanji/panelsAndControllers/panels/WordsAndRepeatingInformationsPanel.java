@@ -20,7 +20,6 @@ public class WordsAndRepeatingInformationsPanel
 	public WordsAndRepeatingInformationsPanel(MyList wordsList,
 			MyList repeatingList,
 			TypeOfWordForRepeating typeOfWordForRepeating) {
-		createSplitPane(wordsList, repeatingList);
 		this.wordsList = wordsList;
 		this.repeatingList = repeatingList;
 		this.typeOfWordForRepeating = typeOfWordForRepeating;

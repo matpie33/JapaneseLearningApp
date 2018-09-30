@@ -31,7 +31,6 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 
 	public void setKanaInput(JTextComponent kanaInput) {
 		writingsInputManager.setKanaInput(kanaInput);
-		japaneseWritingToCheck.setKanaWriting(kanaInput.getText());
 	}
 
 	public void addKanjiInput(JTextComponent kanjiInput) {

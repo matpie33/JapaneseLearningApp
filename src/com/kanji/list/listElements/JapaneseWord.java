@@ -108,7 +108,10 @@ public class JapaneseWord implements ListElement, Serializable {
 	@Override
 	public boolean equals(Object element) {
 		if (element instanceof JapaneseWord) {
-			if (isEmpty() || ((JapaneseWord) element).isEmpty()) {
+			if (isEmpty() && ((JapaneseWord) element).isEmpty()) {
+				return true;
+			}
+			else if (isEmpty() || ((JapaneseWord) element).isEmpty()){
 				return false;
 			}
 			JapaneseWord otherWord = (JapaneseWord) element;
