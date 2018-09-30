@@ -1,5 +1,7 @@
 package com.kanji.panelsAndControllers.controllers;
 
+import com.guimaker.panels.MainPanel;
+import com.guimaker.row.AbstractSimpleRow;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElements.JapaneseWord;
@@ -11,9 +13,11 @@ import com.kanji.range.SetOfRanges;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
+import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.List;
 
 public class LearningStartController {
 
@@ -47,12 +51,16 @@ public class LearningStartController {
 		addOrSubtractProblematicKanjisFromSum(direction);
 		learningStartPanel.updateSumOfWordsLabel(getSumOfWords());
 		if (isProblematicKanjiCheckboxSelected) {
-			problematicLabelRow = learningStartPanel
-					.showLabelWithProblematicKanjis();
+			Component focusOwner = learningStartPanel.getDialog().getContainer()
+					.getFocusOwner();
+			problematicLabelRow = learningStartPanel.getRangesPanel()
+					.getNumberOfRows();
+			learningStartPanel.addLabelWithProblematicKanjis();
+			learningStartPanel.getRangesPanel().updateView();
+			focusOwner.requestFocusInWindow();
 		}
 		else {
-			learningStartPanel
-					.hideLabelWithProblematicKanjis(problematicLabelRow);
+			learningStartPanel.getRangesPanel().removeRow(problematicLabelRow);
 			updateRowsNumbers(problematicLabelRow - 1, -1);
 		}
 
@@ -99,8 +107,7 @@ public class LearningStartController {
 		problematicLabelRow++;
 	}
 
-	public void handleKeyTyped(KeyEvent e,
-			boolean problematicCheckboxSelected) {
+	public void handleKeyTyped(KeyEvent e) {
 		if (!(e.getKeyChar() + "").matches("\\d")) {
 			e.consume();
 		}
@@ -109,13 +116,20 @@ public class LearningStartController {
 	private void removeError(RangesRow rangesRow) {
 		int rowNumber = rangesRow.getTextFieldsRowNumber();
 		errors.remove(rowNumber);
-		learningStartPanel.removeRow(rowNumber + 1);
+		removeRow(rowNumber + 1);
 		updateRowsNumbers(rowNumber, -1);
+	}
+
+	private void removeRow(int rowNumber) {
+		learningStartPanel.getRangesPanel().removeRow(rowNumber);
+		learningStartPanel.getDialog().getContainer().getMostRecentFocusOwner()
+				.requestFocusInWindow();
 	}
 
 	private void showError(RangesRow rangesRow, String error) {
 		int rowNumber = rangesRow.getTextFieldsRowNumber();
 		learningStartPanel.showErrorOnThePanel(error, rowNumber + 1);
+		scrollRangesPanelToRow(rowNumber + 1);
 		rangesRow.setError(error);
 		updateRowsNumbers(rowNumber, 1);
 	}
@@ -234,9 +248,9 @@ public class LearningStartController {
 		int rowWithTextFieldsNumber = rowWithTextFields
 				.getTextFieldsRowNumber();
 		boolean wasError = rowWithTextFields.errorNotEmpty();
-		learningStartPanel.removeRow(rowWithTextFieldsNumber);
+		removeRow(rowWithTextFieldsNumber);
 		if (wasError) {
-			learningStartPanel.removeRow(rowWithTextFieldsNumber);
+			removeRow(rowWithTextFieldsNumber);
 		}
 
 		int decreaseBy = -1;
@@ -246,7 +260,8 @@ public class LearningStartController {
 		updateRowsNumbers(rowWithTextFieldsNumber, decreaseBy);
 		rangesRows.remove(rowWithTextFields);
 		if (getNumberOfRangesRows() == 1) {
-			learningStartPanel.changeVisibilityOfDeleteButtonInFirstRow(false);
+			learningStartPanel.getRangesPanel()
+					.changeVisibilityOfLastElementInRow(0, false);
 		}
 		recalculateSumOfKanji(problematicCheckboxSelected);
 		learningStartPanel.updateSumOfWordsLabel(getSumOfWords());
@@ -270,13 +285,15 @@ public class LearningStartController {
 		}
 		if (rangesToRepeat.toString().isEmpty()
 				&& !problematicCheckboxSelected) {
-			learningStartPanel
-					.showErrorDialog(ExceptionsMessages.NO_INPUT_SUPPLIED);
+			learningStartPanel.getDialog()
+					.showMessageDialog(ExceptionsMessages.NO_INPUT_SUPPLIED);
 			return;
 		}
 
 		addRangesToRepeatsList(problematicCheckboxSelected);
-		learningStartPanel.switchToRepeatingPanel();
+		learningStartPanel.getDialog().getContainer().dispose();
+		switchPanelAndSetWordsRangesToRepeat(
+				learningStartPanel.getProblematicWordsCheckbox().isSelected());
 	}
 
 	private void makeSureTheresNoInput(boolean problematicCheckboxSelected) {
@@ -289,7 +306,7 @@ public class LearningStartController {
 	private void addRangesToRepeatsList(boolean problematicCheckboxSelected) {
 		String repeatingInfo = "";
 		if (problematicCheckboxSelected) {
-			repeatingInfo = Labels.PROBLEMATIC_KANJI_OPTION;
+			repeatingInfo = Labels.PROBLEMATIC_WORDS_OPTION;
 			if (rangesToRepeat.getRangesAsList().size() > 0) {
 				repeatingInfo += ", ";
 			}
@@ -351,14 +368,14 @@ public class LearningStartController {
 	public void showErrorsOrStart(boolean problematicCheckboxSelected) {
 		if (gotErrors()) {
 			String errors = concatenateErrors();
-			learningStartPanel.showErrorDialog(errors);
+			learningStartPanel.getDialog().showMessageDialog(errors);
 		}
 		else {
 			validateAndStart(problematicCheckboxSelected);
 		}
 	}
 
-	public ItemListener createListenerAddProblematicKanjis(
+	public ItemListener createListenerAddProblematicWords(
 			AbstractButton problematicKanjiCheckbox) {
 		return new ItemListener() {
 			@Override
@@ -377,7 +394,7 @@ public class LearningStartController {
 
 			@Override
 			public void keyTyped(KeyEvent e) {
-				handleKeyTyped(e, problematicCheckbox.isSelected());
+				handleKeyTyped(e);
 			}
 
 			@Override
@@ -430,6 +447,75 @@ public class LearningStartController {
 				}
 			}
 		};
+	}
+
+	public void enableOrDisableProblematicCheckbox(
+			AbstractButton problematicCheckbox) {
+		if (getProblematicWordsNumber() == 0) {
+			problematicCheckbox.setEnabled(false);
+		}
+	}
+
+	public void addRowToRangesPanel(JTextComponent fieldFrom,
+			JTextComponent fieldTo, AbstractSimpleRow newRow) {
+		boolean problematicCheckboxSelected = learningStartPanel
+				.getProblematicWordsCheckbox().isSelected();
+		int nextRowNumber = learningStartPanel.getRangesPanel()
+				.getNumberOfRows();
+		if (problematicCheckboxSelected) {
+			nextRowNumber -= 1;
+		}
+		addRow(nextRowNumber, fieldFrom, fieldTo);
+
+		if (problematicCheckboxSelected) {
+			increaseProblematicLabelRowNumber();
+			learningStartPanel.getRangesPanel()
+					.insertRow(nextRowNumber, newRow);
+		}
+		else {
+			learningStartPanel.getRangesPanel().addRow(newRow);
+		}
+		learningStartPanel.getRangesPanel().updateView();
+	}
+
+	public void scrollRangesPanelToRow(int rowNumber) {
+		SwingUtilities.invokeLater(new Runnable() {
+			// TODO swing utilities
+			@Override
+			public void run() {
+				MainPanel rangesPanel = learningStartPanel.getRangesPanel();
+				rangesPanel.getPanel().scrollRectToVisible(
+						rangesPanel.getRows().get(rowNumber).getBounds());
+			}
+		});
+	}
+
+	public void updateRangesRow(JScrollPane scrollPane,
+			JTextComponent fieldFrom, AbstractButton buttonDelete) {
+		if (getNumberOfRangesRows() == 2) {
+			learningStartPanel.getRangesPanel()
+					.changeVisibilityOfLastElementInRow(0, true);
+		}
+		else if (getNumberOfRangesRows() == 1) {
+			learningStartPanel.getRangesPanel()
+					.changeVisibilityOfLastElementInRow(0, false);
+		}
+
+		scrollRangesPanelToBottom(scrollPane);
+		fieldFrom.requestFocusInWindow();
+
+	}
+
+	private void scrollRangesPanelToBottom(JScrollPane rangesPanelScrollPane) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				// TODO swing utilities
+				rangesPanelScrollPane.getVerticalScrollBar().setValue(
+						rangesPanelScrollPane.getVerticalScrollBar()
+								.getMaximum());
+			}
+		});
 	}
 
 }

@@ -14,7 +14,7 @@ public class Labels {
 			+ "całych słów.";
 	public static final String WORD_SEARCH_PERFECT_MATCH_OPTION = "Szukaj "
 			+ "pełnego wyrażenia.";
-	public static final String PROBLEMATIC_KANJI_OPTION = "Problematyczne";
+	public static final String PROBLEMATIC_WORDS_OPTION = "Problematyczne";
 	public static final String TIME_LABEL = "Czas: ";
 
 	public static final String VERB_CONJUGATION = "Rodzaj odmiany";
