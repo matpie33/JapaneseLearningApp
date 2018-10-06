@@ -26,19 +26,24 @@ public class JapanesePanelInEditModeCreator
 			CommonListElements commonListElements, JapaneseWord japaneseWord,
 			InputGoal inputGoal, MainPanel rowPanel) {
 		List<JComponent> rowElements = new ArrayList<>();
-		elementsMaker.createKanaOrKanjiInputForFiltering(japaneseWriting,
-				japaneseWord, true, inputGoal, false);
-		rowElements.add(elementsMaker
-				.createKanaInputWithValidation(japaneseWriting, japaneseWord,
-						true, inputGoal, false));
-		//TODO try to use the approach in whole application:
-		//GuiElement e = actionMaker.withAction(elementsMaker.createElement)
-		for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
-			rowElements.add(elementsMaker
-					.createKanjiInputWithValidation(kanjiWriting,
-							japaneseWriting, japaneseWord, inputGoal, true,
-							false));
+		if (inputGoal.equals(InputGoal.SEARCH)) {
+			elementsMaker.createKanaOrKanjiInputForFiltering(japaneseWriting,
+					japaneseWord, true, inputGoal, false);
 		}
+		else {
+			rowElements.add(elementsMaker
+					.createKanaInputWithValidation(japaneseWriting,
+							japaneseWord, true, inputGoal, false));
+			//TODO try to use the approach in whole application:
+			//GuiElement e = actionMaker.withAction(elementsMaker.createElement)
+			for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
+				rowElements.add(elementsMaker
+						.createKanjiInputWithValidation(kanjiWriting,
+								japaneseWriting, japaneseWord, inputGoal, true,
+								false));
+			}
+		}
+
 		rowElements.add(elementsMaker
 				.createButtonAddKanjiWriting(rowPanel, japaneseWriting,
 						japaneseWord, inputGoal, true, false));

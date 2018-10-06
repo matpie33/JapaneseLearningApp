@@ -119,7 +119,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 				HotkeysDescriptions.ADD_PROBLEMATIC_KANJIS);
 	}
 
-	public void addLabelWithProblematicKanjis() {
+	public void addLabelWithProblematicWords() {
 		JLabel label = GuiElementsCreator.createLabel(
 				new ComponentOptions().text(Prompts.PROBLEMATIC_KANJIS_ADDED));
 		rangesPanel.addRow(SimpleRowBuilder

@@ -223,7 +223,7 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 
 		if (JapaneseWritingUtilities.isKanaEmpty(searchedKana)
 				&& JapaneseWritingUtilities.isKanaEmpty(existingWordKana)) {
-			return false;
+			return true;
 		}
 
 		if (JapaneseWritingUtilities

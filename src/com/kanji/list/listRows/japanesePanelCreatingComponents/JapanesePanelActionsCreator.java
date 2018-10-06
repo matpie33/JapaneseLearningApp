@@ -33,6 +33,7 @@ public class JapanesePanelActionsCreator {
 	private JapaneseWordMeaningChecker wordMeaningChecker;
 	private Set<InputValidationListener<JapaneseWord>> inputValidationListeners = new HashSet<>();
 	private MyList<JapaneseWord> wordsList;
+	private JapaneseWordChecker wordCheckerForKanaOrKanjiFilter;
 
 	public JapanesePanelActionsCreator(DialogWindow parentDialog,
 			ApplicationController applicationController) {
@@ -78,16 +79,27 @@ public class JapanesePanelActionsCreator {
 		return checkersForJapaneseWords.get(0).getRight().getAnyKanjiInput();
 	}
 
+	public JapaneseWordChecker getWordCheckerForKanaOrKanjiFilter() {
+		return wordCheckerForKanaOrKanjiFilter;
+	}
+
 	public JTextComponent withJapaneseWritingValidation(
 			JTextComponent textComponent, JapaneseWriting japaneseWriting,
 			JapaneseWord japaneseWord,
 			TypeOfJapaneseWriting typeOfJapaneseWriting, InputGoal inputGoal,
 			boolean enabled) {
-		JapaneseWordChecker checker = getOrCreateCheckerFor(japaneseWriting,
-				japaneseWord, inputGoal);
+		JapaneseWordChecker checker = getOrCreateCheckerFor(japaneseWord,
+				inputGoal);
 		boolean isKana = typeOfJapaneseWriting
 				.equals(TypeOfJapaneseWriting.KANA);
 		checker.addInput(textComponent, japaneseWriting, typeOfJapaneseWriting);
+
+		if (typeOfJapaneseWriting.equals(TypeOfJapaneseWriting.KANA_OR_KANJI)
+				&& wordCheckerForKanaOrKanjiFilter == null) {
+			//TODO do I have to create this variable? is the usual way not
+			// enough?
+			wordCheckerForKanaOrKanjiFilter = checker;
+		}
 
 		if (enabled) {
 			addPropertyChangeHandler(textComponent, japaneseWord,
@@ -100,8 +112,8 @@ public class JapanesePanelActionsCreator {
 		return textComponent;
 	}
 
-	private JapaneseWordChecker getOrCreateCheckerFor(JapaneseWriting writing,
-			JapaneseWord word, InputGoal inputGoal) {
+	private JapaneseWordChecker getOrCreateCheckerFor(JapaneseWord word,
+			InputGoal inputGoal) {
 
 		for (Pair<JapaneseWord, JapaneseWordChecker> checkerForJapaneseWord : checkersForJapaneseWords) {
 			if (checkerForJapaneseWord.getLeft().equals(word)) {
@@ -178,7 +190,7 @@ public class JapanesePanelActionsCreator {
 		buttonDelete.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				getOrCreateCheckerFor(writing, japaneseWord, inputGoal)
+				getOrCreateCheckerFor(japaneseWord, inputGoal)
 						.removeWriting(writing);
 				japaneseWord.getWritings().remove(writing);
 				applicationController.saveProject();

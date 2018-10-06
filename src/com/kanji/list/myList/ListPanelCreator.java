@@ -193,12 +193,6 @@ public class ListPanelCreator<Word extends ListElement>
 				commonListElements.getRowNumberLabel(), rowNumber);
 	}
 
-	private MainPanel createRowPanel(Word word,
-			CommonListElements commonListElements, InputGoal inputGoal) {
-		return listRow.createListRow(word, commonListElements, inputGoal)
-				.getRowPanel();
-	}
-
 	private CommonListElements createCommonListElements(Word word,
 			InputGoal inputGoal, int rowNumber) {
 		JLabel rowNumberLabel = new JLabel(createTextForRowNumber(rowNumber));

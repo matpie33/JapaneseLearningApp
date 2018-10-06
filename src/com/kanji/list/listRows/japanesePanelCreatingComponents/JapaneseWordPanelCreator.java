@@ -15,7 +15,6 @@ import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.ListPropertiesNames;
-import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordChecker;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listRows.RowInJapaneseWritingsList;
@@ -273,7 +272,8 @@ public class JapaneseWordPanelCreator
 				.addPropertyData(ListPropertiesNames.JAPANESE_WORD_WRITINGS,
 						japanesePanelComponentsStore.getElementsCreator()
 								.getKanaOrKanjiInputForFiltering(),
-						new JapaneseWordChecker(inputGoal));
+						japanesePanelComponentsStore.getActionCreator()
+								.getWordCheckerForKanaOrKanjiFilter());
 		return rowDataCreator.getListRowData();
 	}
 

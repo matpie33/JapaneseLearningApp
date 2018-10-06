@@ -40,22 +40,22 @@ public class LearningStartController {
 		errors = new HashMap<>();
 	}
 
-	public void updateNumberOfSelectedKanjiAfterCheckboxToggle(
-			boolean isProblematicKanjiCheckboxSelected) {
+	private void updateNumberOfSelectedWordsAfterCheckboxToggle(
+			boolean isProblematicWordsCheckboxSelected) {
 		rangesToRepeat = addAllRangesToSet();
 		int direction;
-		if (isProblematicKanjiCheckboxSelected)
+		if (isProblematicWordsCheckboxSelected)
 			direction = 1;
 		else
 			direction = -1;
-		addOrSubtractProblematicKanjisFromSum(direction);
+		addOrSubtractProblematicWordsFromSum(direction);
 		learningStartPanel.updateSumOfWordsLabel(getSumOfWords());
-		if (isProblematicKanjiCheckboxSelected) {
+		if (isProblematicWordsCheckboxSelected) {
 			Component focusOwner = learningStartPanel.getDialog().getContainer()
 					.getFocusOwner();
 			problematicLabelRow = learningStartPanel.getRangesPanel()
 					.getNumberOfRows();
-			learningStartPanel.addLabelWithProblematicKanjis();
+			learningStartPanel.addLabelWithProblematicWords();
 			learningStartPanel.getRangesPanel().updateView();
 			focusOwner.requestFocusInWindow();
 		}
@@ -66,7 +66,7 @@ public class LearningStartController {
 
 	}
 
-	private void addOrSubtractProblematicKanjisFromSum(int direction) {
+	private void addOrSubtractProblematicWordsFromSum(int direction) {
 		if (applicationController.getActiveWordsList().getListElementClass()
 				.equals(Kanji.class)) {
 			updateSumBasedOnProblematicKanjis(direction);
@@ -103,11 +103,11 @@ public class LearningStartController {
 		rangesRows.add(rangesRow);
 	}
 
-	public void increaseProblematicLabelRowNumber() {
+	private void increaseProblematicLabelRowNumber() {
 		problematicLabelRow++;
 	}
 
-	public void handleKeyTyped(KeyEvent e) {
+	private void handleKeyTyped(KeyEvent e) {
 		if (!(e.getKeyChar() + "").matches("\\d")) {
 			e.consume();
 		}
@@ -144,7 +144,7 @@ public class LearningStartController {
 		return null;
 	}
 
-	public void handleKeyReleased(KeyEvent e, JTextComponent to,
+	private void handleKeyReleased(KeyEvent e, JTextComponent to,
 			JTextComponent from, boolean problematicCheckboxSelected) {
 
 		if (handleEmptyTextFields(e, to, from, problematicCheckboxSelected)) {
@@ -187,7 +187,7 @@ public class LearningStartController {
 
 			}
 		}
-		updateNumberOfSelectedKanjis(problematicCheckboxSelected);
+		updateNumberOfSelectedWords(problematicCheckboxSelected);
 	}
 
 	public void updateRowsNumbers(int fromRowNumber,
@@ -206,7 +206,7 @@ public class LearningStartController {
 			if (e.getKeyChar() == KeyEvent.VK_BACK_SPACE) {
 				RangesRow rowWithTextFields = findRowWithTextFields(from, to);
 				rowWithTextFields.setRangeValues(0, 0);
-				updateNumberOfSelectedKanjis(problematicCheckboxSelected);
+				updateNumberOfSelectedWords(problematicCheckboxSelected);
 			}
 			return true;
 		}
@@ -224,7 +224,7 @@ public class LearningStartController {
 		}
 		else if (isNumberHigherThanMaximum(rangeStart)
 				|| isNumberHigherThanMaximum(rangeEnd)) {
-			error = ExceptionsMessages.RANGE_VALUE_HIGHER_THAN_MAXIMUM_KANJI_NUMBER;
+			error = ExceptionsMessages.RANGE_VALUE_HIGHER_THAN_MAXIMUM_WORD_NUMBER;
 			error += " (" + numberOfWords + ").";
 		}
 
@@ -235,13 +235,13 @@ public class LearningStartController {
 		return number > numberOfWords;
 	}
 
-	private void updateNumberOfSelectedKanjis(
+	private void updateNumberOfSelectedWords(
 			boolean problematicCheckboxSelected) {
-		recalculateSumOfKanji(problematicCheckboxSelected);
+		recalculateSumOfWords(problematicCheckboxSelected);
 		learningStartPanel.updateSumOfWordsLabel(getSumOfWords());
 	}
 
-	public void removeRangeRow(JTextComponent from, JTextComponent to,
+	private void removeRangeRow(JTextComponent from, JTextComponent to,
 			boolean problematicCheckboxSelected) {
 
 		RangesRow rowWithTextFields = findRowWithTextFields(from, to);
@@ -263,17 +263,17 @@ public class LearningStartController {
 			learningStartPanel.getRangesPanel()
 					.changeVisibilityOfLastElementInRow(0, false);
 		}
-		recalculateSumOfKanji(problematicCheckboxSelected);
+		recalculateSumOfWords(problematicCheckboxSelected);
 		learningStartPanel.updateSumOfWordsLabel(getSumOfWords());
 	}
 
-	private void recalculateSumOfKanji(boolean problematicKanjisSelected) {
+	private void recalculateSumOfWords(boolean problematicWordsSelected) {
 		rangesToRepeat = addAllRangesToSet();
 		sumOfWords = 0;
 		this.sumOfWords += rangesToRepeat.sumRangeInclusive();
 
-		if (problematicKanjisSelected) {
-			addOrSubtractProblematicKanjisFromSum(+1);
+		if (problematicWordsSelected) {
+			addOrSubtractProblematicWordsFromSum(+1);
 		}
 	}
 
@@ -365,7 +365,7 @@ public class LearningStartController {
 		return gotError;
 	}
 
-	public void showErrorsOrStart(boolean problematicCheckboxSelected) {
+	private void showErrorsOrStart(boolean problematicCheckboxSelected) {
 		if (gotErrors()) {
 			String errors = concatenateErrors();
 			learningStartPanel.getDialog().showMessageDialog(errors);
@@ -376,12 +376,12 @@ public class LearningStartController {
 	}
 
 	public ItemListener createListenerAddProblematicWords(
-			AbstractButton problematicKanjiCheckbox) {
+			AbstractButton problematicWordsCheckbox) {
 		return new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				updateNumberOfSelectedKanjiAfterCheckboxToggle(
-						problematicKanjiCheckbox.isSelected());
+				updateNumberOfSelectedWordsAfterCheckboxToggle(
+						problematicWordsCheckbox.isSelected());
 
 			}
 		};
@@ -478,7 +478,7 @@ public class LearningStartController {
 		learningStartPanel.getRangesPanel().updateView();
 	}
 
-	public void scrollRangesPanelToRow(int rowNumber) {
+	private void scrollRangesPanelToRow(int rowNumber) {
 		SwingUtilities.invokeLater(new Runnable() {
 			// TODO swing utilities
 			@Override
