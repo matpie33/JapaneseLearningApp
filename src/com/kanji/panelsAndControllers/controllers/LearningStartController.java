@@ -4,6 +4,7 @@ import com.guimaker.row.AbstractSimpleRow;
 import com.kanji.constants.enums.IncrementSign;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.Labels;
+import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.RepeatingData;
@@ -96,25 +97,23 @@ public class LearningStartController {
 				.getProblematicWordsAmountBasedOnCurrentTab();
 	}
 
-	public void addRow(int rowNumber, JTextComponent from, JTextComponent to) {
-		RangesRow rangesRow = new RangesRow(from, to, rowNumber);
+	public void addRow(JTextComponent from, JTextComponent to) {
+		RangesRow rangesRow = new RangesRow(from, to);
 		rangesRows.add(rangesRow);
 	}
 
 	private void removeError(RangesRow rangesRow) {
-		int rowNumber = rangesRow.getTextFieldsRowNumber();
+		int rowNumber = learningStartPanel.getIndexOfRangesRow(rangesRow);
 		errors.remove(rowNumber);
 		panelUpdater.removeRow(rowNumber + 1);
-		updateRowsNumbers(rowNumber, -1);
 		rangesRow.setError("");
 	}
 
 	private void showError(RangesRow rangesRow, String error) {
-		int rowNumber = rangesRow.getTextFieldsRowNumber();
+		int rowNumber = learningStartPanel.getIndexOfRangesRow(rangesRow);
 		panelUpdater.showErrorRow(error, rowNumber + 1);
 		panelUpdater.scrollRangesPanelToRow(rowNumber + 1);
 		rangesRow.setError(error);
-		updateRowsNumbers(rowNumber, 1);
 	}
 
 	private RangesRow findRowWithTextFields(JTextComponent textFieldFrom,
@@ -157,7 +156,7 @@ public class LearningStartController {
 		String error = inputValidation.validateRangesInput(valueFrom, valueTo);
 		RangesRow rowWithTextFields = findRowWithTextFields(from, to);
 
-		if (rowWithTextFields.errorNotEmpty()) {
+		if (rowWithTextFields.hasError()) {
 			removeError(rowWithTextFields);
 		}
 		if (!error.isEmpty()) {
@@ -171,26 +170,12 @@ public class LearningStartController {
 		updateNumberOfSelectedWords();
 	}
 
-	private void updateRowsNumbers(int fromRowNumber, int updateRowNumberBy) {
-		for (RangesRow row : rangesRows) {
-			if (row.getTextFieldsRowNumber() > fromRowNumber) {
-				row.setRowNumber(
-						row.getTextFieldsRowNumber() + updateRowNumberBy);
-			}
-		}
-	}
-
 	private void updateNumberOfSelectedWords() {
 		recalculateSumOfWords();
 		panelUpdater.updateSumOfWords(getSumOfWords());
 	}
 
-	private void updateAfterRowRemoval(RangesRow rowWithTextFields) {
-		int rowWithTextFieldsNumber = rowWithTextFields
-				.getTextFieldsRowNumber();
-		int updateRowNumbersBy = rowWithTextFields.errorNotEmpty() ? -2 : -1;
-		updateRowsNumbers(rowWithTextFieldsNumber, updateRowNumbersBy);
-
+	private void updateAfterRowRemoval() {
 		if (getNumberOfRangesRows() == 1) {
 			panelUpdater.changeEnabledStateOfDeleteButtonInFirstRow(false);
 		}
@@ -198,15 +183,15 @@ public class LearningStartController {
 		panelUpdater.updateSumOfWords(getSumOfWords());
 	}
 
-	private void removeRow(RangesRow rowWithTextFields) {
-		boolean wasError = rowWithTextFields.errorNotEmpty();
-		int rowWithTextFieldsNumber = rowWithTextFields
-				.getTextFieldsRowNumber();
+	private void removeRow(RangesRow rangesRow) {
+		boolean wasError = rangesRow.hasError();
+		int rowWithTextFieldsNumber = learningStartPanel
+				.getIndexOfRangesRow(rangesRow);
 		panelUpdater.removeRow(rowWithTextFieldsNumber);
 		if (wasError) {
 			panelUpdater.removeRow(rowWithTextFieldsNumber);
 		}
-		rangesRows.remove(rowWithTextFields);
+		rangesRows.remove(rangesRow);
 	}
 
 	private void recalculateSumOfWords() {
@@ -251,11 +236,11 @@ public class LearningStartController {
 		for (RangesRow range : rangesRows) {
 			JTextComponent textFieldTo = range.getTextFieldTo();
 			JTextComponent textFieldFrom = range.getTextFieldFrom();
-			if (textFieldFrom.getText().isEmpty() || textFieldTo.getText().isEmpty()){
+			if (textFieldFrom.getText().isEmpty() || textFieldTo.getText()
+					.isEmpty()) {
 				continue;
 			}
-			processTextFieldsInputAfterKeyRelease(textFieldTo,
-					textFieldFrom);
+			processTextFieldsInputAfterKeyRelease(textFieldTo, textFieldFrom);
 		}
 	}
 
@@ -307,8 +292,9 @@ public class LearningStartController {
 	private boolean gotErrors() {
 		boolean gotError = false;
 		for (RangesRow r : rangesRows) {
-			if (r.errorNotEmpty()) {
-				errors.put(r.getTextFieldsRowNumber(), r.getError());
+			if (r.hasError()) {
+				errors.put(learningStartPanel.getIndexOfRangesRow(r),
+						r.getError());
 				gotError = true;
 			}
 		}
@@ -355,15 +341,14 @@ public class LearningStartController {
 		};
 	}
 
-	public AbstractAction createActionDeleteRow(
-			AbstractButton problematicCheckbox, JTextComponent from,
+	public AbstractAction createActionDeleteRow(JTextComponent from,
 			JTextComponent to) {
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				RangesRow rowWithTextFields = findRowWithTextFields(from, to);
 				removeRow(rowWithTextFields);
-				updateAfterRowRemoval(rowWithTextFields);
+				updateAfterRowRemoval();
 			}
 		};
 	}
@@ -413,7 +398,7 @@ public class LearningStartController {
 		if (problematicCheckboxSelected) {
 			nextRowNumber -= 1;
 		}
-		addRow(nextRowNumber, fieldFrom, fieldTo);
+		addRow(fieldFrom, fieldTo);
 
 		if (problematicCheckboxSelected) {
 			panelUpdater.insertRangeRow(nextRowNumber, newRow);
@@ -431,6 +416,18 @@ public class LearningStartController {
 		panelUpdater.scrollRangesPanelToBottom(scrollPane);
 		fieldFrom.requestFocusInWindow();
 
+	}
+
+	public String getProblematicWordsLabelText (){
+		Class wordClass =  applicationController.getActiveWordsList()
+				.getWordInitializer
+				().initializeElement().getClass();
+		if (wordClass.equals(Kanji.class)){
+			return Prompts.PROBLEMATIC_KANJI;
+		}
+		else{
+			return Prompts.PROBLEMATIC_WORDS;
+		}
 	}
 
 }

@@ -12,6 +12,7 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.AbstractSimpleRow;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.strings.*;
+import com.kanji.model.RangesRow;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.LearningStartController;
 import com.kanji.utilities.CommonGuiElementsCreator;
@@ -47,8 +48,8 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		problematicWordsCheckbox = createProblematicKanjiCheckbox();
 		JLabel numberOfProblematicKanjis = GuiElementsCreator.createLabel(
 				new ComponentOptions()
-						.text(Prompts.PROBLEMATIC_KANJI + controller
-								.getProblematicWordsNumber()));
+						.text(controller.getProblematicWordsLabelText()
+								+ controller.getProblematicWordsNumber()));
 
 		rangesPanel = new MainPanel(null, true);
 		rangesScrollPane = GuiElementsCreator.createScrollPane(
@@ -145,9 +146,8 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 		AbstractButton removeRow = GuiElementsCreator.createButtonlikeComponent(
 				new ButtonOptions(ButtonType.BUTTON)
-						.text(ButtonsNames.REMOVE_ROW), controller
-						.createActionDeleteRow(problematicWordsCheckbox,
-								inputRangeFrom, inputRangeTo));
+						.text(ButtonsNames.REMOVE_ROW),
+				controller.createActionDeleteRow(inputRangeFrom, inputRangeTo));
 
 		JLabel labelFrom = GuiElementsCreator.createLabel(
 				new ComponentOptions().text(Labels.RANGE_FROM_LABEL));
@@ -181,6 +181,12 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 	public void updateSumOfWordsLabel(int sumOfWords) {
 		sumOfWordsLabel.setText(createNumberOfSelectedWordsText(sumOfWords));
+	}
+
+	public int getIndexOfRangesRow(RangesRow rangesRow) {
+		return getRangesPanel()
+				.getIndexOfRowContainingElements(rangesRow.getTextFieldFrom(),
+						rangesRow.getTextFieldTo());
 	}
 
 	@Override

@@ -9,15 +9,12 @@ public class RangesRow {
 	private JTextComponent textFieldFrom;
 	private JTextComponent textFieldTo;
 	private String error;
-	private int rowNumber;
 	private Range range;
 
-	public RangesRow(JTextComponent textFieldFrom, JTextComponent textFieldTo,
-			int rowNumber) {
+	public RangesRow(JTextComponent textFieldFrom, JTextComponent textFieldTo) {
 		this.textFieldFrom = textFieldFrom;
 		this.textFieldTo = textFieldTo;
 		error = "";
-		this.rowNumber = rowNumber;
 		range = new Range(0, 0);
 	}
 
@@ -37,7 +34,7 @@ public class RangesRow {
 		this.error = error;
 	}
 
-	public boolean errorNotEmpty() {
+	public boolean hasError() {
 		return !error.isEmpty();
 	}
 
@@ -64,14 +61,6 @@ public class RangesRow {
 				&& this.textFieldTo == textFieldTo;
 	}
 
-	public int getTextFieldsRowNumber() {
-		return rowNumber;
-	}
-
-	public void setRowNumber(int rowNumber) {
-		this.rowNumber = rowNumber;
-	}
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(textFieldFrom.hashCode(), textFieldTo.hashCode());
@@ -79,8 +68,8 @@ public class RangesRow {
 
 	@Override
 	public String toString() {
-		return "error: " + error + " row number " + rowNumber + " start" + range
-				.getRangeStart() + " end " + range.getRangeEnd();
+		return "error: " + error + " start" + range.getRangeStart() + " end "
+				+ range.getRangeEnd();
 	}
 
 	public Range getRange() {
