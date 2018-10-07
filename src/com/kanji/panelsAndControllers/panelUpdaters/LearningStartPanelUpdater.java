@@ -41,8 +41,8 @@ public class LearningStartPanelUpdater {
 		panel.showErrorOnThePanel(error, rowNumber);
 	}
 
-	public void changeVisibilityOfDeleteButtonInFirstRow(boolean visible) {
-		panel.getRangesPanel().changeVisibilityOfLastElementInRow(0, visible);
+	public void changeEnabledStateOfDeleteButtonInFirstRow(boolean visible) {
+		panel.getRangesPanel().changeEnabledStateOfLastElementInRow(0, visible);
 	}
 
 	public void showErrorInNewDialog(String error) {

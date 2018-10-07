@@ -192,7 +192,7 @@ public class LearningStartController {
 		updateRowsNumbers(rowWithTextFieldsNumber, updateRowNumbersBy);
 
 		if (getNumberOfRangesRows() == 1) {
-			panelUpdater.changeVisibilityOfDeleteButtonInFirstRow(false);
+			panelUpdater.changeEnabledStateOfDeleteButtonInFirstRow(false);
 		}
 		recalculateSumOfWords();
 		panelUpdater.updateSumOfWords(getSumOfWords());
@@ -426,7 +426,7 @@ public class LearningStartController {
 
 	public void updateAfterAddingRangesRow(JScrollPane scrollPane,
 			JTextComponent fieldFrom) {
-		panelUpdater.changeVisibilityOfDeleteButtonInFirstRow(
+		panelUpdater.changeEnabledStateOfDeleteButtonInFirstRow(
 				getNumberOfRangesRows() != 1);
 		panelUpdater.scrollRangesPanelToBottom(scrollPane);
 		fieldFrom.requestFocusInWindow();
