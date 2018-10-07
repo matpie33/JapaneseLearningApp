@@ -1,14 +1,16 @@
 package com.kanji.panelsAndControllers.controllers;
 
-import com.guimaker.panels.MainPanel;
 import com.guimaker.row.AbstractSimpleRow;
+import com.kanji.constants.enums.IncrementSign;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.RepeatingData;
 import com.kanji.model.RangesRow;
+import com.kanji.panelsAndControllers.panelUpdaters.LearningStartPanelUpdater;
 import com.kanji.panelsAndControllers.panels.LearningStartPanel;
+import com.kanji.panelsAndControllers.validation.LearningStartPanelInputValidation;
 import com.kanji.range.SetOfRanges;
 
 import javax.swing.*;
@@ -22,73 +24,73 @@ import java.util.List;
 public class LearningStartController {
 
 	private SetOfRanges rangesToRepeat;
-	private int numberOfWords;
 	private int sumOfWords;
 	private LearningStartPanel learningStartPanel;
 	private Map<Integer, String> errors;
 	private List<RangesRow> rangesRows;
 	private int problematicLabelRow;
 	private ApplicationController applicationController;
+	private LearningStartPanelInputValidation inputValidation;
+	private LearningStartPanelUpdater panelUpdater;
 
 	public LearningStartController(int numberOfWords,
 			ApplicationController applicationController,
 			LearningStartPanel learningStartPanel) {
 		this.applicationController = applicationController;
-		this.numberOfWords = numberOfWords;
 		this.learningStartPanel = learningStartPanel;
 		rangesRows = new ArrayList<>();
 		errors = new HashMap<>();
+		inputValidation = new LearningStartPanelInputValidation(
+				numberOfWords);
+		panelUpdater = new LearningStartPanelUpdater(learningStartPanel);
 	}
 
-	private void updateNumberOfSelectedWordsAfterCheckboxToggle(
-			boolean isProblematicWordsCheckboxSelected) {
+	private void updateSumOfWords(boolean isProblematicWordsCheckboxSelected) {
 		rangesToRepeat = addAllRangesToSet();
-		int direction;
-		if (isProblematicWordsCheckboxSelected)
-			direction = 1;
-		else
-			direction = -1;
-		addOrSubtractProblematicWordsFromSum(direction);
-		learningStartPanel.updateSumOfWordsLabel(getSumOfWords());
+		IncrementSign incrementSign = isProblematicWordsCheckboxSelected ?
+				IncrementSign.PLUS :
+				IncrementSign.MINUS;
+		addOrSubtractProblematicWordsFromSum(incrementSign);
+		panelUpdater.updateSumOfWords(getSumOfWords());
+	}
+
+	private void addProblematicWordsNotification(
+			boolean isProblematicWordsCheckboxSelected) {
 		if (isProblematicWordsCheckboxSelected) {
-			Component focusOwner = learningStartPanel.getDialog().getContainer()
-					.getFocusOwner();
-			problematicLabelRow = learningStartPanel.getRangesPanel()
-					.getNumberOfRows();
-			learningStartPanel.addLabelWithProblematicWords();
-			learningStartPanel.getRangesPanel().updateView();
-			focusOwner.requestFocusInWindow();
+			panelUpdater.addProblematicWordsNotification();
 		}
 		else {
-			learningStartPanel.getRangesPanel().removeRow(problematicLabelRow);
+			panelUpdater
+					.removeProblematicWordsNotification(problematicLabelRow);
 			updateRowsNumbers(problematicLabelRow - 1, -1);
 		}
-
 	}
 
-	private void addOrSubtractProblematicWordsFromSum(int direction) {
+	private void addOrSubtractProblematicWordsFromSum(
+			IncrementSign incrementSign) {
 		if (applicationController.getActiveWordsList().getListElementClass()
 				.equals(Kanji.class)) {
-			updateSumBasedOnProblematicKanjis(direction);
+			updateSumBasedOnProblematicKanjis(incrementSign);
 		}
 		else {
-			updateSumBasedOnProblematicWords(direction);
+			updateSumBasedOnProblematicWords(incrementSign);
 		}
 
 	}
 
-	private void updateSumBasedOnProblematicWords(int direction) {
+	private void updateSumBasedOnProblematicWords(IncrementSign incrementSign) {
 		Set<JapaneseWord> problematicWords = applicationController
 				.getProblematicJapaneseWords();
-		sumOfWords += direction * problematicWords.size();
+		sumOfWords += incrementSign.getSignValue() * problematicWords.size();
 		//TODO figure out if problematic word is or is not inside selected range
 	}
 
-	private void updateSumBasedOnProblematicKanjis(int direction) {
+	private void updateSumBasedOnProblematicKanjis(
+			IncrementSign incrementSign) {
 		Set<Kanji> problematics = applicationController.getProblematicKanjis();
 		for (Kanji i : problematics) {
 			if (!rangesToRepeat.isValueInsideThisSet(i.getId())) {
-				sumOfWords += direction;
+				sumOfWords += incrementSign.getSignValue();
 			}
 		}
 	}
@@ -103,33 +105,18 @@ public class LearningStartController {
 		rangesRows.add(rangesRow);
 	}
 
-	private void increaseProblematicLabelRowNumber() {
-		problematicLabelRow++;
-	}
-
-	private void handleKeyTyped(KeyEvent e) {
-		if (!(e.getKeyChar() + "").matches("\\d")) {
-			e.consume();
-		}
-	}
-
 	private void removeError(RangesRow rangesRow) {
 		int rowNumber = rangesRow.getTextFieldsRowNumber();
 		errors.remove(rowNumber);
-		removeRow(rowNumber + 1);
+		panelUpdater.removeRow(rowNumber + 1);
 		updateRowsNumbers(rowNumber, -1);
-	}
-
-	private void removeRow(int rowNumber) {
-		learningStartPanel.getRangesPanel().removeRow(rowNumber);
-		learningStartPanel.getDialog().getContainer().getMostRecentFocusOwner()
-				.requestFocusInWindow();
+		rangesRow.setError("");
 	}
 
 	private void showError(RangesRow rangesRow, String error) {
 		int rowNumber = rangesRow.getTextFieldsRowNumber();
-		learningStartPanel.showErrorOnThePanel(error, rowNumber + 1);
-		scrollRangesPanelToRow(rowNumber + 1);
+		panelUpdater.showErrorRow(error, rowNumber + 1);
+		panelUpdater.scrollRangesPanelToRow(rowNumber + 1);
 		rangesRow.setError(error);
 		updateRowsNumbers(rowNumber, 1);
 	}
@@ -147,124 +134,88 @@ public class LearningStartController {
 	private void handleKeyReleased(KeyEvent e, JTextComponent to,
 			JTextComponent from, boolean problematicCheckboxSelected) {
 
-		if (handleEmptyTextFields(e, to, from, problematicCheckboxSelected)) {
-			return;
-		}
-		processTextFieldsInputs(to, from, problematicCheckboxSelected);
-	}
-
-	private void processTextFieldsInputs(JTextComponent to, JTextComponent from,
-			boolean problematicCheckboxSelected) {
-		boolean fromTextFieldWasFocused = from.hasFocus();
 		if (from.getText().isEmpty() || to.getText().isEmpty()) {
-			return;
-		}
-		int valueFrom = Integer.parseInt(from.getText());
-		int valueTo = Integer.parseInt(to.getText());
-		String error = validateRangesInput(valueFrom, valueTo);
-		RangesRow rowWithTextFields = findRowWithTextFields(from, to);
-		if (error.isEmpty()) {
-			rowWithTextFields.setRangeValues(valueFrom, valueTo);
-			if (rowWithTextFields.errorNotEmpty()) {
-				removeError(rowWithTextFields);
-				rowWithTextFields.setError("");
+			if (e.getKeyChar() == KeyEvent.VK_BACK_SPACE) {
+				resetRangeForRowAndUpdateSum(to, from,
+						problematicCheckboxSelected);
 			}
 		}
 		else {
-			rowWithTextFields.setRangeValues(0, 0);
-			if (rowWithTextFields.errorNotEmpty() && !rowWithTextFields
-					.getError().equals(error)) {
-				removeError(rowWithTextFields);
-			}
-			if (!rowWithTextFields.getError().equals(error)) {
-				showError(rowWithTextFields, error);
-				if (fromTextFieldWasFocused) {
-					from.requestFocusInWindow();
-				}
-				else {
-					to.requestFocusInWindow();
-				}
+			processTextFieldsInputAfterKeyRelease(to, from,
+					problematicCheckboxSelected);
+		}
 
-			}
+	}
+
+	private void resetRangeForRowAndUpdateSum(JTextComponent to,
+			JTextComponent from, boolean problematicCheckboxSelected) {
+		RangesRow rowWithTextFields = findRowWithTextFields(from, to);
+		rowWithTextFields.setRangeValues(0, 0);
+		updateNumberOfSelectedWords(problematicCheckboxSelected);
+	}
+
+	private void processTextFieldsInputAfterKeyRelease(JTextComponent to,
+			JTextComponent from, boolean problematicCheckboxSelected) {
+		Component focusedComponent = learningStartPanel.getDialog()
+				.getContainer().getFocusOwner();
+		int valueFrom = Integer.parseInt(from.getText());
+		int valueTo = Integer.parseInt(to.getText());
+		String error = inputValidation
+				.validateRangesInput(valueFrom, valueTo);
+		RangesRow rowWithTextFields = findRowWithTextFields(from, to);
+
+		if (rowWithTextFields.errorNotEmpty()) {
+			removeError(rowWithTextFields);
+		}
+		if (!error.isEmpty()) {
+			rowWithTextFields.setRangeValues(0, 0);
+			showError(rowWithTextFields, error);
+			focusedComponent.requestFocusInWindow();
+		}
+		else {
+			rowWithTextFields.setRangeValues(valueFrom, valueTo);
 		}
 		updateNumberOfSelectedWords(problematicCheckboxSelected);
 	}
 
-	public void updateRowsNumbers(int fromRowNumber,
-			int positiveOrNegativeValue) {
+	private void updateRowsNumbers(int fromRowNumber, int updateRowNumberBy) {
 		for (RangesRow row : rangesRows) {
 			if (row.getTextFieldsRowNumber() > fromRowNumber) {
 				row.setRowNumber(
-						row.getTextFieldsRowNumber() + positiveOrNegativeValue);
+						row.getTextFieldsRowNumber() + updateRowNumberBy);
 			}
 		}
-	}
-
-	private boolean handleEmptyTextFields(KeyEvent e, JTextComponent to,
-			JTextComponent from, boolean problematicCheckboxSelected) {
-		if (from.getText().isEmpty() || to.getText().isEmpty()) {
-			if (e.getKeyChar() == KeyEvent.VK_BACK_SPACE) {
-				RangesRow rowWithTextFields = findRowWithTextFields(from, to);
-				rowWithTextFields.setRangeValues(0, 0);
-				updateNumberOfSelectedWords(problematicCheckboxSelected);
-			}
-			return true;
-		}
-
-		return false;
-	}
-
-	private String validateRangesInput(int rangeStart, int rangeEnd) {
-		String error = "";
-		if (rangeStart == 0) {
-			error = ExceptionsMessages.RANGE_START_MUST_BE_POSITIVE;
-		}
-		else if (rangeEnd <= rangeStart) {
-			error = ExceptionsMessages.RANGE_TO_VALUE_LESS_THAN_RANGE_FROM_VALUE;
-		}
-		else if (isNumberHigherThanMaximum(rangeStart)
-				|| isNumberHigherThanMaximum(rangeEnd)) {
-			error = ExceptionsMessages.RANGE_VALUE_HIGHER_THAN_MAXIMUM_WORD_NUMBER;
-			error += " (" + numberOfWords + ").";
-		}
-
-		return error;
-	}
-
-	private boolean isNumberHigherThanMaximum(int number) {
-		return number > numberOfWords;
 	}
 
 	private void updateNumberOfSelectedWords(
 			boolean problematicCheckboxSelected) {
 		recalculateSumOfWords(problematicCheckboxSelected);
-		learningStartPanel.updateSumOfWordsLabel(getSumOfWords());
+		panelUpdater.updateSumOfWords(getSumOfWords());
 	}
 
-	private void removeRangeRow(JTextComponent from, JTextComponent to,
-			boolean problematicCheckboxSelected) {
-
-		RangesRow rowWithTextFields = findRowWithTextFields(from, to);
+	private void updateAfterRowRemoval(boolean problematicCheckboxSelected,
+			RangesRow rowWithTextFields) {
 		int rowWithTextFieldsNumber = rowWithTextFields
 				.getTextFieldsRowNumber();
-		boolean wasError = rowWithTextFields.errorNotEmpty();
-		removeRow(rowWithTextFieldsNumber);
-		if (wasError) {
-			removeRow(rowWithTextFieldsNumber);
-		}
+		int updateRowNumbersBy = rowWithTextFields.errorNotEmpty() ? -2 : -1;
+		updateRowsNumbers(rowWithTextFieldsNumber, updateRowNumbersBy);
 
-		int decreaseBy = -1;
-		if (wasError) {
-			decreaseBy = -2;
-		}
-		updateRowsNumbers(rowWithTextFieldsNumber, decreaseBy);
-		rangesRows.remove(rowWithTextFields);
 		if (getNumberOfRangesRows() == 1) {
-			learningStartPanel.getRangesPanel()
-					.changeVisibilityOfLastElementInRow(0, false);
+			panelUpdater.changeVisibilityOfDeleteButtonInFirstRow(false);
 		}
 		recalculateSumOfWords(problematicCheckboxSelected);
-		learningStartPanel.updateSumOfWordsLabel(getSumOfWords());
+		panelUpdater.updateSumOfWords(getSumOfWords());
+	}
+
+	private void removeRow(RangesRow rowWithTextFields) {
+		boolean wasError = rowWithTextFields.errorNotEmpty();
+		int rowWithTextFieldsNumber = rowWithTextFields
+				.getTextFieldsRowNumber();
+		panelUpdater.removeRow(rowWithTextFieldsNumber);
+		if (wasError) {
+			panelUpdater.removeRow(rowWithTextFieldsNumber);
+		}
+		rangesRows.remove(rowWithTextFields);
 	}
 
 	private void recalculateSumOfWords(boolean problematicWordsSelected) {
@@ -273,56 +224,60 @@ public class LearningStartController {
 		this.sumOfWords += rangesToRepeat.sumRangeInclusive();
 
 		if (problematicWordsSelected) {
-			addOrSubtractProblematicWordsFromSum(+1);
+			addOrSubtractProblematicWordsFromSum(IncrementSign.PLUS);
 		}
 	}
 
 	private void validateAndStart(boolean problematicCheckboxSelected) {
 
-		rangesToRepeat = addAllRangesToSet();
-		if (rangesToRepeat.toString().isEmpty()) {
-			makeSureTheresNoInput(problematicCheckboxSelected);
-		}
-		if (rangesToRepeat.toString().isEmpty()
-				&& !problematicCheckboxSelected) {
-			learningStartPanel.getDialog()
-					.showMessageDialog(ExceptionsMessages.NO_INPUT_SUPPLIED);
+		if (isInputEmptyAfterStartButtonPress(problematicCheckboxSelected))
 			return;
-		}
 
-		addRangesToRepeatsList(problematicCheckboxSelected);
-		learningStartPanel.getDialog().getContainer().dispose();
-		switchPanelAndSetWordsRangesToRepeat(
-				learningStartPanel.getProblematicWordsCheckbox().isSelected());
-	}
-
-	private void makeSureTheresNoInput(boolean problematicCheckboxSelected) {
-		for (RangesRow range : rangesRows) {
-			processTextFieldsInputs(range.getTextFieldTo(),
-					range.getTextFieldFrom(), problematicCheckboxSelected);
-		}
-	}
-
-	private void addRangesToRepeatsList(boolean problematicCheckboxSelected) {
-		String repeatingInfo = "";
-		if (problematicCheckboxSelected) {
-			repeatingInfo = Labels.PROBLEMATIC_WORDS_OPTION;
-			if (rangesToRepeat.getRangesAsList().size() > 0) {
-				repeatingInfo += ", ";
-			}
-		}
-		repeatingInfo += rangesToRepeat;
-		repeatingInfo += ".";
-		applicationController.setRepeatingInformation(
-				new RepeatingData(repeatingInfo, LocalDateTime.now(), false));
-	}
-
-	public void switchPanelAndSetWordsRangesToRepeat(
-			boolean problematicCheckboxSelected) {
+		createRepeatingInformation(problematicCheckboxSelected);
+		panelUpdater.closeLearningStartDialog();
 		applicationController.initiateWordsLists(rangesToRepeat,
 				problematicCheckboxSelected);
 		applicationController.startRepeating();
 	}
+
+	private boolean isInputEmptyAfterStartButtonPress(
+			boolean problematicCheckboxSelected) {
+		rangesToRepeat = addAllRangesToSet();
+		if (rangesToRepeat.toString().isEmpty()) {
+			makeSureTheresNoInput(problematicCheckboxSelected);
+			//TODO do it on "enter key listener", process only the currently
+			// focused row
+		}
+		if (rangesToRepeat.toString().isEmpty()
+				&& !problematicCheckboxSelected) {
+			panelUpdater
+					.showErrorInNewDialog(ExceptionsMessages.NO_INPUT_SUPPLIED);
+			return true;
+		}
+		return false;
+	}
+
+	private void makeSureTheresNoInput(boolean problematicCheckboxSelected) {
+		for (RangesRow range : rangesRows) {
+			processTextFieldsInputAfterKeyRelease(range.getTextFieldTo(),
+					range.getTextFieldFrom(), problematicCheckboxSelected);
+		}
+	}
+
+	private void createRepeatingInformation(boolean problematicCheckboxSelected) {
+		String repeatingInformation = "";
+		if (problematicCheckboxSelected) {
+			repeatingInformation = Labels.PROBLEMATIC_WORDS_OPTION;
+			if (rangesToRepeat.getRangesAsList().size() > 0) {
+				repeatingInformation += ", ";
+			}
+		}
+		repeatingInformation += rangesToRepeat;
+		repeatingInformation += ".";
+		applicationController.setRepeatingInformation(
+				new RepeatingData(repeatingInformation, LocalDateTime.now(), false));
+	}
+
 
 	private SetOfRanges addAllRangesToSet() {
 		SetOfRanges setOfRanges = new SetOfRanges();
@@ -335,26 +290,25 @@ public class LearningStartController {
 		return setOfRanges;
 	}
 
-	public int getSumOfWords() {
+	private int getSumOfWords() {
 		return sumOfWords;
 	}
 
 	private String concatenateErrors() {
 		String concatenated = "";
 		for (Map.Entry<Integer, String> error : errors.entrySet()) {
-			concatenated +=
-					"Błąd w wierszu " + (error.getKey() + 1) + ": " + error
-							.getValue();
+			concatenated += String.format(ExceptionsMessages.ERROR_IN_ROW,
+					error.getKey()+1, error.getValue());
 			concatenated += "\n\n";
 		}
 		return concatenated;
 	}
 
-	public int getNumberOfRangesRows() {
+	private int getNumberOfRangesRows() {
 		return rangesRows.size();
 	}
 
-	public boolean gotErrors() {
+	private boolean gotErrors() {
 		boolean gotError = false;
 		for (RangesRow r : rangesRows) {
 			if (r.errorNotEmpty()) {
@@ -368,7 +322,7 @@ public class LearningStartController {
 	private void showErrorsOrStart(boolean problematicCheckboxSelected) {
 		if (gotErrors()) {
 			String errors = concatenateErrors();
-			learningStartPanel.getDialog().showMessageDialog(errors);
+			panelUpdater.showErrorInNewDialog(errors);
 		}
 		else {
 			validateAndStart(problematicCheckboxSelected);
@@ -380,8 +334,13 @@ public class LearningStartController {
 		return new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				updateNumberOfSelectedWordsAfterCheckboxToggle(
-						problematicWordsCheckbox.isSelected());
+				boolean problematicWordsCheckboxSelected = problematicWordsCheckbox
+						.isSelected();
+				problematicLabelRow = learningStartPanel.getRangesPanel()
+						.getNumberOfRows();
+				updateSumOfWords(problematicWordsCheckboxSelected);
+				addProblematicWordsNotification(
+						problematicWordsCheckboxSelected);
 
 			}
 		};
@@ -394,7 +353,8 @@ public class LearningStartController {
 
 			@Override
 			public void keyTyped(KeyEvent e) {
-				handleKeyTyped(e);
+				inputValidation.
+						validateTypedKey(e);
 			}
 
 			@Override
@@ -412,7 +372,10 @@ public class LearningStartController {
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				removeRangeRow(from, to, problematicCheckbox.isSelected());
+				RangesRow rowWithTextFields = findRowWithTextFields(from, to);
+				removeRow(rowWithTextFields);
+				updateAfterRowRemoval(problematicCheckbox.isSelected(),
+						rowWithTextFields);
 			}
 		};
 	}
@@ -421,7 +384,7 @@ public class LearningStartController {
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				learningStartPanel.addRowToRangesPanel();
+				panelUpdater.createRangeRow();
 			}
 		};
 	}
@@ -468,54 +431,22 @@ public class LearningStartController {
 		addRow(nextRowNumber, fieldFrom, fieldTo);
 
 		if (problematicCheckboxSelected) {
-			increaseProblematicLabelRowNumber();
-			learningStartPanel.getRangesPanel()
-					.insertRow(nextRowNumber, newRow);
+			problematicLabelRow++;
+			panelUpdater.insertRangeRow(nextRowNumber, newRow);
 		}
 		else {
-			learningStartPanel.getRangesPanel().addRow(newRow);
+			panelUpdater.addRangeRow(newRow);
 		}
-		learningStartPanel.getRangesPanel().updateView();
+
 	}
 
-	private void scrollRangesPanelToRow(int rowNumber) {
-		SwingUtilities.invokeLater(new Runnable() {
-			// TODO swing utilities
-			@Override
-			public void run() {
-				MainPanel rangesPanel = learningStartPanel.getRangesPanel();
-				rangesPanel.getPanel().scrollRectToVisible(
-						rangesPanel.getRows().get(rowNumber).getBounds());
-			}
-		});
-	}
-
-	public void updateRangesRow(JScrollPane scrollPane,
-			JTextComponent fieldFrom, AbstractButton buttonDelete) {
-		if (getNumberOfRangesRows() == 2) {
-			learningStartPanel.getRangesPanel()
-					.changeVisibilityOfLastElementInRow(0, true);
-		}
-		else if (getNumberOfRangesRows() == 1) {
-			learningStartPanel.getRangesPanel()
-					.changeVisibilityOfLastElementInRow(0, false);
-		}
-
-		scrollRangesPanelToBottom(scrollPane);
+	public void updateAfterAddingRangesRow(JScrollPane scrollPane,
+			JTextComponent fieldFrom) {
+		panelUpdater.changeVisibilityOfDeleteButtonInFirstRow(
+				getNumberOfRangesRows() != 1);
+		panelUpdater.scrollRangesPanelToBottom(scrollPane);
 		fieldFrom.requestFocusInWindow();
 
-	}
-
-	private void scrollRangesPanelToBottom(JScrollPane rangesPanelScrollPane) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				// TODO swing utilities
-				rangesPanelScrollPane.getVerticalScrollBar().setValue(
-						rangesPanelScrollPane.getVerticalScrollBar()
-								.getMaximum());
-			}
-		});
 	}
 
 }

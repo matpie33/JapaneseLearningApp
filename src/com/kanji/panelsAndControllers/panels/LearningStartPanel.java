@@ -83,7 +83,6 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 				.nextRow(FillType.BOTH, rangesScrollPane)
 				.useAllExtraVerticalSpace()
 				.nextRow(FillType.HORIZONTAL, buttonAddRow, sumOfWordsLabel)
-				.fillVertically(sumOfWordsLabel)
 				.fillHorizontallySomeElements(sumOfWordsLabel));
 
 		mainPanel.addRow(SimpleRowBuilder
@@ -157,7 +156,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 						labelTo, inputRangeTo, removeRow);
 
 		controller.addRowToRangesPanel(inputRangeFrom, inputRangeTo, newRow);
-		controller.updateRangesRow(rangesScrollPane, inputRangeFrom, removeRow);
+		controller.updateAfterAddingRangesRow(rangesScrollPane, inputRangeFrom);
 
 	}
 

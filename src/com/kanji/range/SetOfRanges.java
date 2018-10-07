@@ -8,12 +8,7 @@ public class SetOfRanges {
 	private List<Range> ranges;
 
 	public SetOfRanges() {
-		ranges = new ArrayList<Range>();
-	}
-
-	public SetOfRanges(Range range) {
-		this();
-		ranges.add(range);
+		ranges = new ArrayList<>();
 	}
 
 	public boolean addRange(Range newRange) {
