@@ -22,8 +22,9 @@ public class LearningStartPanelUpdater {
 		focusOwner.requestFocusInWindow();
 	}
 
-	public void removeProblematicWordsNotification(int rowNumber) {
-		panel.getRangesPanel().removeRow(rowNumber);
+	public void removeProblematicWordsNotification() {
+		panel.getRangesPanel()
+				.removeRowWithElements(panel.getProblematicWordsLabel());
 	}
 
 	public void updateSumOfWords(int sumOfWords) {
@@ -61,7 +62,7 @@ public class LearningStartPanelUpdater {
 		panel.getRangesPanel().updateView();
 	}
 
-	public void addRangeRow (AbstractSimpleRow newRow){
+	public void addRangeRow(AbstractSimpleRow newRow) {
 		panel.getRangesPanel().addRow(newRow);
 		panel.getRangesPanel().updateView();
 	}
