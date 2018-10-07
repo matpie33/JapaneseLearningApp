@@ -123,12 +123,13 @@ public class LearningStartController {
 				return row;
 			}
 		}
-		return null;
+		throw new IllegalArgumentException(
+				"Row with textfields not found: " + "" + textFieldFrom.getText()
+						+ ", " + textFieldTo.getText());
 	}
 
 	private void handleKeyReleased(KeyEvent e, JTextComponent to,
 			JTextComponent from) {
-
 		if (from.getText().isEmpty() || to.getText().isEmpty()) {
 			if (e.getKeyChar() == KeyEvent.VK_BACK_SPACE) {
 				resetRangeForRowAndUpdateSum(to, from);
@@ -137,7 +138,6 @@ public class LearningStartController {
 		else {
 			processTextFieldsInputAfterKeyRelease(to, from);
 		}
-
 	}
 
 	private void resetRangeForRowAndUpdateSum(JTextComponent to,
