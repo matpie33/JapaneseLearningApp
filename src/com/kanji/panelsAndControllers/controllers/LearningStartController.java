@@ -276,10 +276,14 @@ public class LearningStartController {
 
 	private String concatenateErrors() {
 		String concatenated = "";
-		for (Map.Entry<Integer, String> error : errors.entrySet()) {
+		for (RangesRow rangesRow : rangesRows) {
+			if (!rangesRow.hasError()) {
+				continue;
+			}
+			int rowNumber = learningStartPanel.getIndexOfRangesRow(rangesRow);
 			concatenated += String
-					.format(ExceptionsMessages.ERROR_IN_ROW, error.getKey() + 1,
-							error.getValue());
+					.format(ExceptionsMessages.ERROR_IN_ROW, rowNumber + 1,
+							rangesRow.getError());
 			concatenated += "\n\n";
 		}
 		return concatenated;
@@ -289,25 +293,13 @@ public class LearningStartController {
 		return rangesRows.size();
 	}
 
-	private boolean gotErrors() {
-		boolean gotError = false;
-		for (RangesRow r : rangesRows) {
-			if (r.hasError()) {
-				errors.put(learningStartPanel.getIndexOfRangesRow(r),
-						r.getError());
-				gotError = true;
-			}
-		}
-		return gotError;
-	}
-
 	private void showErrorsOrStart() {
-		if (gotErrors()) {
-			String errors = concatenateErrors();
-			panelUpdater.showErrorInNewDialog(errors);
+		String errors = concatenateErrors();
+		if (errors.isEmpty()) {
+			validateAndStart();
 		}
 		else {
-			validateAndStart();
+			panelUpdater.showErrorInNewDialog(errors);
 		}
 	}
 
@@ -418,14 +410,13 @@ public class LearningStartController {
 
 	}
 
-	public String getProblematicWordsLabelText (){
-		Class wordClass =  applicationController.getActiveWordsList()
-				.getWordInitializer
-				().initializeElement().getClass();
-		if (wordClass.equals(Kanji.class)){
+	public String getProblematicWordsLabelText() {
+		Class wordClass = applicationController.getActiveWordsList()
+				.getWordInitializer().initializeElement().getClass();
+		if (wordClass.equals(Kanji.class)) {
 			return Prompts.PROBLEMATIC_KANJI;
 		}
-		else{
+		else {
 			return Prompts.PROBLEMATIC_WORDS;
 		}
 	}
