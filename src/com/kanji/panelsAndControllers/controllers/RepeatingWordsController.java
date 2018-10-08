@@ -91,7 +91,7 @@ public class RepeatingWordsController
 						.getProblematicWordsBasedOnCurrentTab());
 		previousWord = wordsList.createWord();
 		currentWord = wordsList.createWord();
-		panel.addWordInformationPanelCards(
+		panel.addWordDataPanelCards(
 				wordDisplayer.getRecognizingWordPanel(),
 				wordDisplayer.getFullInformationPanel());
 		timeSpentHandler.startTimer();
