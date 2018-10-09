@@ -12,7 +12,6 @@ import com.guimaker.utilities.KeyModifiers;
 import com.kanji.constants.Colors;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
-import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.Titles;
 import com.kanji.panelsAndControllers.controllers.RepeatingWordsController;
 import com.kanji.windows.ApplicationWindow;
@@ -35,8 +34,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private AbstractButton pauseButton;
 	private RepeatingWordsController repeatingWordsController;
 	private JPanel wordDataPanel;
-	private final static String RECOGNIZING_WORD_PANEL_NAME = "Recognizing word";
-	private final static String WORD_FULL_INFORMATION_PANEL_NAME = "Word full information";
+	private final static String WORD_GUESSING_PANEL_NAME = "Recognizing word";
+	private final static String WORD_ASSESSMENT_PANEL_NAME = "Word full information";
 	private JLabel titleLabel;
 	private AbstractButton returnButton;
 
@@ -53,9 +52,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	public void addWordDataPanelCards(JPanel panelForRecognizingWord,
 			JPanel wordFullInformationPanel) {
 		wordDataPanel.removeAll();
-		wordDataPanel
-				.add(RECOGNIZING_WORD_PANEL_NAME, panelForRecognizingWord);
-		wordDataPanel.add(WORD_FULL_INFORMATION_PANEL_NAME,
+		wordDataPanel.add(WORD_GUESSING_PANEL_NAME, panelForRecognizingWord);
+		wordDataPanel.add(WORD_ASSESSMENT_PANEL_NAME,
 				wordFullInformationPanel);
 	}
 
@@ -65,20 +63,26 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 				new ComponentOptions().text(Titles.REPEATING_WORDS_DIALOG));
 		timeElapsedLabel = GuiElementsCreator
 				.createLabel(new ComponentOptions());
-		remainingLabel = GuiElementsCreator.createLabel(new ComponentOptions()
-				.text(repeatingWordsController.createRemainingWordsPrompt()));
+		remainingLabel = GuiElementsCreator.createLabel(new ComponentOptions());
 		returnButton = createReturnButton();
 		createRepeatingPanelElements();
 
 		addElementsToPanels();
-		setButtonsToRecognizingState();
+		repeatingWordsController.updateRemainingWordsText();
+		repeatingWordsController.setButtonsToWordGuessingState();
 		mainPanel.getPanel().repaint();
 	}
 
-	private void setButtonsToRecognizingState() {
-		notRecognizedWordButton.setEnabled(false);
-		showPreviousWordButton
-				.setEnabled(repeatingWordsController.previousWordExists());
+	public AbstractButton getShowKanjiOrRecognizeWordButton() {
+		return showKanjiOrRecognizeWordButton;
+	}
+
+	public AbstractButton getNotRecognizedWordButton() {
+		return notRecognizedWordButton;
+	}
+
+	public AbstractButton getShowPreviousWordButton() {
+		return showPreviousWordButton;
 	}
 
 	private void createRepeatingPanelElements() {
@@ -108,8 +112,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
 		//TODO in gui maker enable me to put some element in some anchor so that remaining label can be positioned vertically center
 		mainPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.BOTH, Anchor.CENTER,
-						rootPanel.getPanel()).useAllExtraVerticalSpace());
+				.createRow(FillType.BOTH, Anchor.CENTER, rootPanel.getPanel())
+				.useAllExtraVerticalSpace());
 	}
 
 	private void createShowPreviousWordButton() {
@@ -128,13 +132,6 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 						.font(ApplicationWindow.getKanjiFont()));
 	}
 
-	public void setButtonsToRecognizing() {
-		showKanjiOrRecognizeWordButton.setText(ButtonsNames.RECOGNIZED_WORD);
-		notRecognizedWordButton.setEnabled(true);
-		showPreviousWordButton
-				.setEnabled(repeatingWordsController.previousWordExists());
-	}
-
 	private void createPauseButton() {
 		pauseButton = createButtonWithHotkey(KeyEvent.VK_P,
 				repeatingWordsController.createActionPause(),
@@ -142,8 +139,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private void createShowKanjiOrRecognizeWordButton() {
-		showKanjiOrRecognizeWordButton = createButtonWithHotkey(KeyEvent.VK_SPACE,
-				repeatingWordsController
+		showKanjiOrRecognizeWordButton = createButtonWithHotkey(
+				KeyEvent.VK_SPACE, repeatingWordsController
 						.createShowFullInformationOrMarkWordAsRecognizedAction(),
 				ButtonsNames.SHOW_KANJI,
 				HotkeysDescriptions.SHOW_KANJI_OR_SET_KANJI_AS_KNOWN_KANJI);
@@ -156,13 +153,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 				HotkeysDescriptions.SET_KANJI_AS_PROBLEMATIC);
 	}
 
-	public void setElementsToRecognizingState() {
-		showKanjiOrRecognizeWordButton.setText(ButtonsNames.SHOW_KANJI);
-		setButtonsToRecognizingState();
-	}
-
-	public void updateRemainingWordsText(String remainingKanjisPrompt) {
-		remainingLabel.setText(remainingKanjisPrompt);
+	public JLabel getRemainingLabel() {
+		return remainingLabel;
 	}
 
 	private AbstractButton createReturnButton() {
@@ -171,29 +163,24 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 				ButtonsNames.GO_BACK, HotkeysDescriptions.RETURN_FROM_LEARNING);
 	}
 
-	public void updateTime(String timePassed) {
-		timeElapsedLabel.setText(Labels.TIME_LABEL + timePassed);
+	public JLabel getTimeElapsedLabel() {
+		return timeElapsedLabel;
 	}
 
-	public void showWord(String word) {
-		wordHintTextPane.setText(word);
+	public JTextComponent getWordHintTextPane() {
+		return wordHintTextPane;
 	}
 
-	public void showCardForRecognizingWord() {
-		showPanel(RECOGNIZING_WORD_PANEL_NAME);
+	public void showWordGuessingPanel() {
+		showPanel(WORD_GUESSING_PANEL_NAME);
 	}
 
-	public void showCardWithFullInformationAboutWord() {
-		showPanel(WORD_FULL_INFORMATION_PANEL_NAME);
+	public void showWordAssessmentPanel() {
+		showPanel(WORD_ASSESSMENT_PANEL_NAME);
 	}
 
 	private void showPanel(String name) {
-		((CardLayout) wordDataPanel.getLayout())
-				.show(wordDataPanel, name);
-	}
-
-	public void toggleGoToPreviousWordButton() {
-		showPreviousWordButton.setEnabled(!showPreviousWordButton.isEnabled());
+		((CardLayout) wordDataPanel.getLayout()).show(wordDataPanel, name);
 	}
 
 }
