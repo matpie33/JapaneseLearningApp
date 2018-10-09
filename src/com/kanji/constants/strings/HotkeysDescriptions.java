@@ -7,11 +7,12 @@ public class HotkeysDescriptions {
 	public static final String MAXIMIZE_WINDOW = "Maksymalizuje okno";
 	public static final String CONFIRM_ACTION = "Akceptuje zmiany";
 	public static final String SHOW_NEXT_PROBLEMATIC_WORD = "Pokazuje następne problematyczne słowo";
-	public static final String SHOW_PREVIOUS_KANJI = "Pokazuje poprzednie kanji";
+	public static final String SHOW_PREVIOUS_WORD = "Pokazuje poprzednie "
+			+ "słówko";
 	public static final String SHOW_PREVIOUS_PROBLEMATIC_WORD = "Pokazuje poprzednie problematyczne słowo";
 	public static final String PAUSE = "Włącza pauzę";
-	public static final String SET_KANJI_AS_PROBLEMATIC = "Dodaje kanji do listy problematycznych";
-	public static final String SHOW_KANJI_OR_SET_KANJI_AS_KNOWN_KANJI = "Wyświetla kanji lub uznaje kanji jako łatwe i znane";
+	public static final String SET_WORD_AS_PROBLEMATIC = "Dodaje kanji do listy problematycznych";
+	public static final String SHOW_WORD_OR_SET_AS_RECOGNIZED = "Wyświetla kanji lub uznaje kanji jako łatwe i znane";
 	public static final String OPEN_SEARCH_WORD_DIALOG = "Szuka słowa na liście słów";
 	public static final String OPEN_START_LEARNING_DIALOG = "Rozpoczyna naukę kanji";
 	public static final String OPEN_LOAD_KANJI_DIALOG = "Wczytuje projekt kanji";

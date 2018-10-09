@@ -46,7 +46,7 @@ public class RepeatingWordsController
 		timeSpentHandler = new TimeSpentHandler(this);
 		parent.setTimeSpentHandler(timeSpentHandler);
 		this.panel = new RepeatingWordsPanel(this);
-		repeatingWordsPanelState = RepeatingWordsPanelState.RECOGNIZING_WORD;
+		repeatingWordsPanelState = RepeatingWordsPanelState.WORD_GUESSING;
 		wordsLeftToRepeat = new ArrayList<>();
 		panelUpdater = new RepeatingWordsPanelUpdater(panel);
 	}
@@ -89,8 +89,8 @@ public class RepeatingWordsController
 						.getProblematicWordsBasedOnCurrentTab());
 		previousWord = wordsList.createWord();
 		currentWord = wordsList.createWord();
-		panel.addWordDataPanelCards(wordDisplayer.getRecognizingWordPanel(),
-				wordDisplayer.getFullInformationPanel());
+		panel.addWordDataPanelCards(wordDisplayer.getWordGuessingPanel(),
+				wordDisplayer.getWordAssessmentPanel());
 		timeSpentHandler.startTimer();
 		removePreviousWordAndPickNextOrFinishRepeating();
 		showNextWord();
@@ -189,7 +189,7 @@ public class RepeatingWordsController
 
 	private void goToPreviousWord() {
 		showWord(previousWord);
-		wordDisplayer.showWordFullInformation(previousWord);
+		wordDisplayer.showWordAssessmentPanel(previousWord);
 		panel.showWordAssessmentPanel();
 		currentWord = previousWord;
 		removeWordFromCurrentProblematics();
@@ -227,7 +227,7 @@ public class RepeatingWordsController
 
 	private void showNextWord() {
 		panelUpdater.setButtonsToWordGuessState(previousWordExists());
-		repeatingWordsPanelState = RepeatingWordsPanelState.RECOGNIZING_WORD;
+		repeatingWordsPanelState = RepeatingWordsPanelState.WORD_GUESSING;
 	}
 
 	private void removeCurrentWordIfItsProblematic() {
@@ -278,7 +278,7 @@ public class RepeatingWordsController
 			public void actionPerformed(ActionEvent e) {
 				goToPreviousWord();
 				panelUpdater.toggleGoToPreviousWordButton();
-				repeatingWordsPanelState = RepeatingWordsPanelState.WORD_INFORMATION_SHOWING;
+				repeatingWordsPanelState = RepeatingWordsPanelState.WORD_ASSESSMENT;
 			}
 		};
 	}
@@ -295,16 +295,16 @@ public class RepeatingWordsController
 		return new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				if (repeatingWordsPanelState
-						== RepeatingWordsPanelState.WORD_INFORMATION_SHOWING) {
+						== RepeatingWordsPanelState.WORD_ASSESSMENT) {
 					markWordAsRecognizedAndGoToNext();
-					showRecognizingPanel();
+					showWordGuessingPanel();
 				}
 				else {
-					wordDisplayer.showWordFullInformation(currentWord);
+					wordDisplayer.showWordAssessmentPanel(currentWord);
 					panelUpdater
 							.setButtonsToWordAssessmentState(previousWordExists());
 					panel.showWordAssessmentPanel();
-					repeatingWordsPanelState = RepeatingWordsPanelState.WORD_INFORMATION_SHOWING;
+					repeatingWordsPanelState = RepeatingWordsPanelState.WORD_ASSESSMENT;
 				}
 			}
 		};
@@ -314,14 +314,14 @@ public class RepeatingWordsController
 		return new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 				markWordAsNotRecognizedAndGoToNext();
-				showRecognizingPanel();
+				showWordGuessingPanel();
 			}
 		};
 	}
 
-	private void showRecognizingPanel() {
+	private void showWordGuessingPanel() {
 		panel.showWordGuessingPanel();
-		wordDisplayer.showRecognizingWordPanel();
+		wordDisplayer.showWordGuessingPanel();
 	}
 
 	public AbstractAction createActionExit() {

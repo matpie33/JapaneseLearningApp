@@ -18,13 +18,13 @@ public class RepeatingWordsPanelUpdater {
 	public void setButtonsToWordGuessState(boolean previousWordExists) {
 		panel.getNotRecognizedWordButton().setEnabled(false);
 		panel.getShowPreviousWordButton().setEnabled(previousWordExists);
-		panel.getShowKanjiOrRecognizeWordButton()
-				.setText(ButtonsNames.SHOW_KANJI);
+		panel.getShowWordOrMarkAsRecognizedButton()
+				.setText(ButtonsNames.SHOW_WORD);
 
 	}
 
 	public void setButtonsToWordAssessmentState(boolean previousWordExists) {
-		panel.getShowKanjiOrRecognizeWordButton()
+		panel.getShowWordOrMarkAsRecognizedButton()
 				.setText(ButtonsNames.RECOGNIZED_WORD);
 		panel.getNotRecognizedWordButton().setEnabled(true);
 		panel.getShowPreviousWordButton().setEnabled(previousWordExists);

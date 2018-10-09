@@ -51,7 +51,7 @@ public class RepeatingKanjiDisplayer implements RepeatingWordDisplayer<Kanji> {
 	}
 
 	@Override
-	public void showWordFullInformation(Kanji kanji) {
+	public void showWordAssessmentPanel(Kanji kanji) {
 		wordTextArea.setText(kanjiCharactersReader.getKanjiById(kanji.getId()));
 
 	}
@@ -67,17 +67,17 @@ public class RepeatingKanjiDisplayer implements RepeatingWordDisplayer<Kanji> {
 	}
 
 	@Override
-	public void showRecognizingWordPanel() {
+	public void showWordGuessingPanel() {
 
 	}
 
 	@Override
-	public JPanel getFullInformationPanel() {
+	public JPanel getWordAssessmentPanel() {
 		return fullWordInformationPanel.getPanel();
 	}
 
 	@Override
-	public JPanel getRecognizingWordPanel() {
+	public JPanel getWordGuessingPanel() {
 		return recognizingWordPanel.getPanel();
 	}
 

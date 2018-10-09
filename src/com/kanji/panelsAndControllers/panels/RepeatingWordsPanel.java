@@ -23,7 +23,7 @@ import java.awt.event.KeyEvent;
 
 public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
-	private AbstractButton showKanjiOrRecognizeWordButton;
+	private AbstractButton showWordOrMarkAsRecognizedButton;
 	private AbstractButton notRecognizedWordButton;
 	private MainPanel repeatingDataPanel;
 	private AbstractButton showPreviousWordButton;
@@ -53,8 +53,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 			JPanel wordFullInformationPanel) {
 		wordDataPanel.removeAll();
 		wordDataPanel.add(WORD_GUESSING_PANEL_NAME, panelForRecognizingWord);
-		wordDataPanel.add(WORD_ASSESSMENT_PANEL_NAME,
-				wordFullInformationPanel);
+		wordDataPanel.add(WORD_ASSESSMENT_PANEL_NAME, wordFullInformationPanel);
 	}
 
 	@Override
@@ -73,8 +72,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 		mainPanel.getPanel().repaint();
 	}
 
-	public AbstractButton getShowKanjiOrRecognizeWordButton() {
-		return showKanjiOrRecognizeWordButton;
+	public AbstractButton getShowWordOrMarkAsRecognizedButton() {
+		return showWordOrMarkAsRecognizedButton;
 	}
 
 	public AbstractButton getNotRecognizedWordButton() {
@@ -88,7 +87,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private void createRepeatingPanelElements() {
 		createWordHintTextPane();
 		createPauseButton();
-		createShowKanjiOrRecognizeWordButton();
+		createShowWordOrMarkAsRecognizedButton();
 		createNotRecognizedWordButton();
 		createShowPreviousWordButton();
 	}
@@ -98,9 +97,9 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 				.createRow(FillType.HORIZONTAL, wordHintTextPane)
 				.nextRow(FillType.BOTH, Anchor.CENTER, wordDataPanel)
 				.nextRow(FillType.NONE, this.pauseButton,
-						showKanjiOrRecognizeWordButton, notRecognizedWordButton,
-						this.showPreviousWordButton).fillHorizontallyEqually()
-				.disableBorder());
+						showWordOrMarkAsRecognizedButton,
+						notRecognizedWordButton, this.showPreviousWordButton)
+				.fillHorizontallyEqually().disableBorder());
 
 		rootPanel.addRows(SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.NORTH, titleLabel,
@@ -119,8 +118,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private void createShowPreviousWordButton() {
 		showPreviousWordButton = createButtonWithHotkey(KeyEvent.VK_G,
 				repeatingWordsController.createActionGoToPreviousWord(),
-				ButtonsNames.PREVIOUS_WORD,
-				HotkeysDescriptions.SHOW_PREVIOUS_KANJI);
+				ButtonsNames.SHOW_PREVIOUS_WORD,
+				HotkeysDescriptions.SHOW_PREVIOUS_WORD);
 		showPreviousWordButton.setFocusable(false);
 	}
 
@@ -138,19 +137,19 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 				ButtonsNames.PAUSE, HotkeysDescriptions.PAUSE);
 	}
 
-	private void createShowKanjiOrRecognizeWordButton() {
-		showKanjiOrRecognizeWordButton = createButtonWithHotkey(
+	private void createShowWordOrMarkAsRecognizedButton() {
+		showWordOrMarkAsRecognizedButton = createButtonWithHotkey(
 				KeyEvent.VK_SPACE, repeatingWordsController
 						.createShowFullInformationOrMarkWordAsRecognizedAction(),
-				ButtonsNames.SHOW_KANJI,
-				HotkeysDescriptions.SHOW_KANJI_OR_SET_KANJI_AS_KNOWN_KANJI);
+				ButtonsNames.SHOW_WORD,
+				HotkeysDescriptions.SHOW_WORD_OR_SET_AS_RECOGNIZED);
 	}
 
 	private void createNotRecognizedWordButton() {
 		notRecognizedWordButton = createButtonWithHotkey(KeyEvent.VK_A,
 				repeatingWordsController.createNotRecognizedWordAction(),
-				ButtonsNames.NOT_RECOGNIZED,
-				HotkeysDescriptions.SET_KANJI_AS_PROBLEMATIC);
+				ButtonsNames.NOT_RECOGNIZED_WORD,
+				HotkeysDescriptions.SET_WORD_AS_PROBLEMATIC);
 	}
 
 	public JLabel getRemainingLabel() {

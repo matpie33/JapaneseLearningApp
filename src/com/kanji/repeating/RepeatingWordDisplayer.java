@@ -10,13 +10,13 @@ import java.util.Set;
 
 public interface RepeatingWordDisplayer<Word extends ListElement> {
 
-	public void showWordFullInformation(Word kanjiInformation);
+	public void showWordAssessmentPanel(Word kanjiInformation);
 
-	public void showRecognizingWordPanel();
+	public void showWordGuessingPanel();
 
-	public JPanel getFullInformationPanel();
+	public JPanel getWordAssessmentPanel();
 
-	public JPanel getRecognizingWordPanel();
+	public JPanel getWordGuessingPanel();
 
 	public void markWordAsProblematic(Word kanjiInformation);
 

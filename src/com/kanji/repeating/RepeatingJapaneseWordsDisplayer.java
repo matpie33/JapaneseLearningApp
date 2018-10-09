@@ -89,7 +89,7 @@ public class RepeatingJapaneseWordsDisplayer
 	}
 
 	@Override
-	public void showWordFullInformation(JapaneseWord japaneseWord) {
+	public void showWordAssessmentPanel(JapaneseWord japaneseWord) {
 		fullWordInformationPanel.clear();
 		japaneseWordPanelCreator
 				.addJapanesePanelToExistingPanel(fullWordInformationPanel,
@@ -98,17 +98,17 @@ public class RepeatingJapaneseWordsDisplayer
 	}
 
 	@Override
-	public JPanel getFullInformationPanel() {
+	public JPanel getWordAssessmentPanel() {
 		return fullWordInformationPanel.getRootPanel();
 	}
 
 	@Override
-	public JPanel getRecognizingWordPanel() {
+	public JPanel getWordGuessingPanel() {
 		return recognizingWordPanel.getPanel();
 	}
 
 	@Override
-	public void showRecognizingWordPanel() {
+	public void showWordGuessingPanel() {
 		partOfSpeechCombobox.setSelectedIndex(0);
 	}
 
