@@ -59,8 +59,7 @@ public class TimeSpentHandler {
 		String secondsSuffix = adjustSuffixForSeconds();
 		return hoursPassed > 0 ?
 				hoursSuffix + ", " :
-				"" + (minutesPassed > 0 ? minutesSuffix + ", " : "")
-						+ secondsSuffix + ".";
+				(minutesPassed > 0 ? minutesSuffix + ", " : "") + secondsSuffix;
 	}
 
 	private String adjustSuffixForHours() {

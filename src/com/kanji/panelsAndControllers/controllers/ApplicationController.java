@@ -586,12 +586,12 @@ public class ApplicationController
 	}
 
 	public void setRepeatingInformation(RepeatingData info) {
-		repeatingWordsPanelController.setRepeatingInformation(info);
+		repeatingWordsPanelController.setRepeatingData(info);
 	}
 
 	public void initiateWordsLists(SetOfRanges ranges,
 			boolean withProblematic) {
-		repeatingWordsPanelController.initiateWordsLists(ranges,
+		repeatingWordsPanelController.resetAndInitializeWordsLists(ranges,
 				getProblematicWordsBasedOnCurrentTab(), withProblematic);
 	}
 

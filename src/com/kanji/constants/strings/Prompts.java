@@ -14,7 +14,7 @@ public class Prompts {
 	public static final String REMAINING_WORDS = "Pozostało:";
 	public static final String KANJI = "kanji.";
 	public static final String SAVING_STATUS = "Status zapisywania: ";
-	public static final String REPEATING_TIME = "Czas powtórek wyniósł: ";
+	public static final String REPEATING_TIME = "Czas powtórek wyniósł %s.";
 	public static final String REPEATING_TIME_NOT_AVAILABLE = "nieokreślony";
 	public static final String REPEATING_WORDS_RANGE = "Powtórzono: ";
 	public static final String REPEATING_DATE = "Data powtórki: ";

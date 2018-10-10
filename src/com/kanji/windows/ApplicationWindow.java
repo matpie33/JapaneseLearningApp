@@ -161,7 +161,8 @@ public class ApplicationWindow extends DialogWindow {
 		container.setTitle(Titles.APPLICATION + "   " + update);
 	}
 
-	public void scrollToBottom() {
+	public void scrollRepeatingListToBottom() {
+		//TODO scroll the currently active repeating list
 		applicationController.getKanjiRepeatingDates().scrollToBottom();
 	}
 

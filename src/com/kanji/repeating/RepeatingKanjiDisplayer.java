@@ -57,7 +57,7 @@ public class RepeatingKanjiDisplayer implements RepeatingWordDisplayer<Kanji> {
 	}
 
 	@Override
-	public void setAllProblematicWords(Set<Kanji> problematicWords) {
+	public void setListOfAllProblematicWords(Set<Kanji> problematicWords) {
 		problematicKanjis = problematicWords;
 	}
 

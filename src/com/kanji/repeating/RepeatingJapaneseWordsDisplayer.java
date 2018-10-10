@@ -166,7 +166,7 @@ public class RepeatingJapaneseWordsDisplayer
 	}
 
 	@Override
-	public void setAllProblematicWords(Set<JapaneseWord> problematicWords) {
+	public void setListOfAllProblematicWords(Set<JapaneseWord> problematicWords) {
 		problematicJapaneseWords = problematicWords;
 	}
 
