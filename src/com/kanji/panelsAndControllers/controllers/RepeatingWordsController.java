@@ -1,16 +1,18 @@
 package com.kanji.panelsAndControllers.controllers;
 
+import com.guimaker.enums.PanelDisplayMode;
 import com.kanji.constants.enums.ApplicationPanels;
 import com.kanji.constants.enums.RepeatingWordsPanelState;
+import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listElements.RepeatingData;
-import com.kanji.list.myList.MyList;
+import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
 import com.kanji.panelsAndControllers.panelUpdaters.RepeatingWordsPanelUpdater;
 import com.kanji.panelsAndControllers.panels.RepeatingWordsPanel;
-import com.kanji.range.Range;
 import com.kanji.range.SetOfRanges;
-import com.kanji.repeating.RepeatingWordDisplayer;
+import com.kanji.repeating.RepeatingJapaneseWordsDisplayer;
+import com.kanji.repeating.RepeatingKanjiDisplayer;
 import com.kanji.saving.ApplicationStateManager;
 import com.kanji.saving.RepeatingState;
 import com.kanji.saving.SavingInformation;
@@ -21,22 +23,22 @@ import com.kanji.windows.ApplicationWindow;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class RepeatingWordsController
 		implements TimeSpentMonitor, ApplicationStateManager {
 
 	private ApplicationWindow applicationWindow;
-	private ListElement currentWord;
-	private ListElement previousWord;
-	private MyList wordsList;
 	private RepeatingWordsPanelState repeatingWordsPanelState;
 	private TimeSpentHandler timeSpentHandler;
 	private RepeatingData repeatingData;
 	private RepeatingWordsPanel panel;
-	private List<ListElement> wordsLeftToRepeat;
-	private RepeatingWordDisplayer wordDisplayer;
 	private RepeatingWordsPanelUpdater panelUpdater;
+	private Map<TypeOfWordForRepeating, WordSpecificRepeatingController<? extends ListElement>>
+			typeOfWordToControllerMap = new HashMap<>();
+	private TypeOfWordForRepeating currentTypeOfWordForRepeating;
 
 	public RepeatingWordsController(ApplicationWindow applicationWindow) {
 		this.applicationWindow = applicationWindow;
@@ -44,83 +46,64 @@ public class RepeatingWordsController
 		applicationWindow.setTimeSpentHandler(timeSpentHandler);
 		this.panel = new RepeatingWordsPanel(this);
 		repeatingWordsPanelState = RepeatingWordsPanelState.WORD_GUESSING;
-		wordsLeftToRepeat = new ArrayList<>();
 		panelUpdater = new RepeatingWordsPanelUpdater(panel);
+		initializeTypeOfWordToControllerMap();
 	}
 
-	public void setWordDisplayer(RepeatingWordDisplayer wordDisplayer) {
-		this.wordDisplayer = wordDisplayer;
+	private void initializeTypeOfWordToControllerMap() {
+		typeOfWordToControllerMap.put(TypeOfWordForRepeating.KANJIS,
+				new WordSpecificRepeatingController<>(
+						applicationWindow.getApplicationController()
+								.getKanjiList(), new RepeatingKanjiDisplayer(
+						ApplicationWindow.getKanjiFont())));
+		typeOfWordToControllerMap.put(TypeOfWordForRepeating.JAPANESE_WORDS,
+				new WordSpecificRepeatingController<>(
+						applicationWindow.getApplicationController()
+								.getJapaneseWords(),
+						new RepeatingJapaneseWordsDisplayer(
+								new JapaneseWordPanelCreator(applicationWindow
+										.getApplicationController(),
+										applicationWindow,
+										PanelDisplayMode.VIEW))));
 	}
 
 	public RepeatingWordsPanel getRepeatingWordsPanel() {
 		return panel;
 	}
 
-	private void collectSelectedWordsToList(SetOfRanges rangesOfRowNumbers) {
-		for (Range range : rangesOfRowNumbers.getRangesAsList()) {
-			if (!range.isEmpty()) {
-				for (int i = range.getRangeStart();
-					 i <= range.getRangeEnd(); i++) {
-					wordsLeftToRepeat.add(wordsList.getWordInRow(i));
-				}
-			}
-		}
-	}
-
-	private <Word extends ListElement> void addProblematicWordsToList(
-			Set<Word> problematicWords) {
-		for (ListElement word : problematicWords) {
-			if (!wordsLeftToRepeat.contains(word)) {
-				wordsLeftToRepeat.add(word);
-			}
-		}
-	}
-
 	public void startRepeating() {
-		wordDisplayer.setListOfAllProblematicWords(
+		getWordsSpecificController().setListOfAllProblematicWords(
 				applicationWindow.getApplicationController()
 						.getProblematicWordsBasedOnCurrentTab());
-		panel.addWordDataPanelCards(wordDisplayer.getWordGuessingPanel(),
-				wordDisplayer.getWordAssessmentPanel());
+		panel.addWordDataPanelCards(
+				getWordsSpecificController().getWordGuessingPanel(),
+				getWordsSpecificController().getWordAssessmentPanel());
 		timeSpentHandler.startTimer();
 		pickNextWordOrFinishRepeating();
 		setStateToWordGuessing();
 	}
 
-	private void resumeUnfinishedRepeating(
-			RepeatingState<ListElement> repeatingState) {
-		wordsLeftToRepeat.addAll(repeatingState.getCurrentlyRepeatedWords());
+	private WordSpecificRepeatingController getWordsSpecificController() {
+		return typeOfWordToControllerMap.get(currentTypeOfWordForRepeating);
+	}
+
+	private void resumeUnfinishedRepeating(RepeatingState repeatingState) {
+		getWordsSpecificController()
+				.addWordsToRepeat(repeatingState.getCurrentlyRepeatedWords());
 		repeatingData = repeatingState.getRepeatingData();
 		repeatingData.setRepeatingDate(LocalDateTime.now());
 		timeSpentHandler.resumeTime(repeatingState.getTimeSpent());
 
 	}
 
-	private void pickNextWordOrFinishRepeating() {
-		wordsLeftToRepeat.remove(currentWord);
-		updateRemainingWordsText();
-		if (!this.wordsLeftToRepeat.isEmpty()) {
-			pickRandomWord();
-		}
-		else {
-			finishRepeating();
-		}
+	private void showWordHint(ListElement word) {
+		panelUpdater
+				.setWordHint(getWordsSpecificController().getWordHint(word));
 	}
 
 	public void updateRemainingWordsText() {
-		panelUpdater.updateRemainingWordsText(this.wordsLeftToRepeat.size());
-	}
-
-	private void pickRandomWord() {
-		previousWord = currentWord;
-		Random randomizer = new Random();
-		int indexOfNextWord = randomizer.nextInt(wordsLeftToRepeat.size());
-		currentWord = wordsLeftToRepeat.get(indexOfNextWord);
-		showWordHint(currentWord);
-	}
-
-	private void showWordHint(ListElement word) {
-		panelUpdater.setWordHint(wordDisplayer.getWordHint(word));
+		panelUpdater.updateRemainingWordsText(
+				getWordsSpecificController().getNumberOfWordsLeft());
 	}
 
 	private void finishRepeating() {
@@ -134,15 +117,16 @@ public class RepeatingWordsController
 	private void updateApplicationData() {
 		repeatingData.setWasRepeated(true);
 		repeatingData.setTimeSpentOnRepeating(timeSpentHandler.getTimePassed());
-		applicationWindow.getApplicationController().addWordToRepeatingList(repeatingData);
+		applicationWindow.getApplicationController()
+				.addWordToRepeatingList(repeatingData);
 		applicationWindow.updateProblematicWordsAmount();
 		applicationWindow.scrollRepeatingListToBottom();
 	}
 
 	private void closeRepeatingPanelAndOpenProperOne() {
-		if (wordDisplayer.hasProblematicWords()) {
+		if (getWordsSpecificController().hasProblematicWords()) {
 			applicationWindow.showProblematicWordsDialog(
-					wordDisplayer.getProblematicWords());
+					getWordsSpecificController().getProblematicWords());
 		}
 		else {
 			applicationWindow.showPanel(ApplicationPanels.STARTING_PANEL);
@@ -157,9 +141,8 @@ public class RepeatingWordsController
 
 	private void reset() {
 		timeSpentHandler.reset();
-		wordDisplayer.clearRepeatingData();
-		this.wordsLeftToRepeat = new ArrayList<>();
-		wordsList = applicationWindow.getApplicationController().getActiveWordsList();
+		getWordsSpecificController().reset();
+
 	}
 
 	public void setRepeatingData(RepeatingData repeatingData) {
@@ -176,17 +159,18 @@ public class RepeatingWordsController
 	}
 
 	private void goToPreviousWord() {
+		ListElement previousWord = getWordsSpecificController()
+				.switchToPreviousWord();
 		showWordHint(previousWord);
 		showWordAssessmentPanel(previousWord);
-		currentWord = previousWord;
-		wordDisplayer.removeWordFromProblematic(currentWord);
 		panelUpdater.toggleGoToPreviousWordButton();
 	}
 
 	private void showWordAssessmentPanel(ListElement word) {
-		wordDisplayer.showWordAssessmentPanel(word);
+		getWordsSpecificController().showWordAssessmentPanel(word);
 		panel.showWordAssessmentPanel();
-		panelUpdater.setButtonsToWordAssessmentState(previousWordExists());
+		panelUpdater.setButtonsToWordAssessmentState(
+				getWordsSpecificController().previousWordExists());
 		repeatingWordsPanelState = RepeatingWordsPanelState.WORD_ASSESSMENT;
 	}
 
@@ -197,24 +181,39 @@ public class RepeatingWordsController
 	}
 
 	private void markWordAsRecognizedAndGoToNext() {
-		wordDisplayer.removeWordFromProblematic(currentWord);
+		getWordsSpecificController().markCurrentWordAsRecognized();
 		pickNextWordOrFinishRepeating();
 		setStateToWordGuessing();
 	}
 
+	private void pickNextWordOrFinishRepeating() {
+		getWordsSpecificController().removeCurrentWordFromListToRepeat();
+		updateRemainingWordsText();
+		if (getWordsSpecificController().getNumberOfWordsLeft() > 0) {
+			ListElement currentWord = getWordsSpecificController()
+					.pickRandomWord();
+			showWordHint(currentWord);
+		}
+		else {
+			finishRepeating();
+		}
+	}
+
 	private void setStateToWordGuessing() {
-		panelUpdater.setButtonsToWordGuessState(previousWordExists());
+		panelUpdater.setButtonsToWordGuessState(
+				getWordsSpecificController().previousWordExists());
 		repeatingWordsPanelState = RepeatingWordsPanelState.WORD_GUESSING;
 	}
 
 	private void markWordAsNotRecognizedAndGoToNext() {
-		wordDisplayer.markWordAsProblematic(currentWord);
+		getWordsSpecificController().markWordAsProblematic();
 		pickNextWordOrFinishRepeating();
 		setStateToWordGuessing();
 	}
 
 	private void pressedExitButton() {
-		boolean accepted = applicationWindow.showConfirmDialog(Prompts.EXIT_LEARNING);
+		boolean accepted = applicationWindow
+				.showConfirmDialog(Prompts.EXIT_LEARNING);
 		if (!accepted) {
 			return;
 		}
@@ -223,19 +222,16 @@ public class RepeatingWordsController
 		timeSpentHandler.stopTimer();
 	}
 
-	private boolean previousWordExists() {
-		return previousWord != null;
-	}
-
 	public <Word extends ListElement> void resetAndInitializeWordsLists(
 			SetOfRanges ranges, Set<Word> problematicWords,
 			boolean withProblematic) {
 		reset();
 		if (!ranges.isEmpty()) {
-			collectSelectedWordsToList(ranges);
+			getWordsSpecificController().collectSelectedWordsToList(ranges);
 		}
 		if (withProblematic) {
-			addProblematicWordsToList(problematicWords);
+			getWordsSpecificController()
+					.addProblematicWordsToList(problematicWords);
 		}
 	}
 
@@ -265,7 +261,8 @@ public class RepeatingWordsController
 					showWordGuessingPanel();
 				}
 				else {
-					showWordAssessmentPanel(currentWord);
+					showWordAssessmentPanel(
+							getWordsSpecificController().getCurrentWord());
 				}
 			}
 		};
@@ -282,7 +279,7 @@ public class RepeatingWordsController
 
 	private void showWordGuessingPanel() {
 		panel.showWordGuessingPanel();
-		wordDisplayer.showWordGuessingPanel();
+		getWordsSpecificController().showWordGuessingPanel();
 	}
 
 	public AbstractAction createActionExit() {
@@ -295,30 +292,19 @@ public class RepeatingWordsController
 
 	@Override
 	public SavingInformation getApplicationState() {
-		SavingInformation savingInformation = applicationWindow.getApplicationController()
-				.getApplicationState();
-		RepeatingState repeatingState = wordDisplayer
+		SavingInformation savingInformation = applicationWindow
+				.getApplicationController().getApplicationState();
+		RepeatingState repeatingState = getWordsSpecificController()
 				.getRepeatingState(timeSpentHandler.getTimeForSerialization(),
-						repeatingData, convertWordsListToSet());
+						repeatingData);
 		savingInformation.setRepeatingState(repeatingState);
 		return savingInformation;
 	}
 
-	private Set<ListElement> convertWordsListToSet() {
-		//TODO why don't we serialize list?
-		Set<ListElement> wordsSet = new HashSet<>();
-		for (ListElement word : wordsLeftToRepeat) {
-			wordsSet.add(word);
-		}
-		return wordsSet;
-	}
-
 	@Override
 	public void restoreState(SavingInformation savingInformation) {
-		setWordDisplayer(applicationWindow.getApplicationController()
-				.getWordDisplayerForWordType(
-						savingInformation.getRepeatingState()
-								.getTypeOfWordForRepeating()));
+		currentTypeOfWordForRepeating = savingInformation.getRepeatingState()
+				.getTypeOfWordForRepeating();
 
 		reset();
 		resumeUnfinishedRepeating(savingInformation.getRepeatingState());
@@ -330,6 +316,12 @@ public class RepeatingWordsController
 	}
 
 	public void setButtonsToWordGuessingState() {
-		panelUpdater.setButtonsToWordGuessState(previousWordExists());
+		panelUpdater.setButtonsToWordGuessState(
+				getWordsSpecificController().previousWordExists());
+	}
+
+	public void setTypeOfWordForRepeating(
+			TypeOfWordForRepeating typeOfRepeating) {
+		this.currentTypeOfWordForRepeating = typeOfRepeating;
 	}
 }

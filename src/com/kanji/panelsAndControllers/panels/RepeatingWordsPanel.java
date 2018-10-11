@@ -67,8 +67,6 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 		createRepeatingPanelElements();
 
 		addElementsToPanels();
-		repeatingWordsController.updateRemainingWordsText();
-		repeatingWordsController.setButtonsToWordGuessingState();
 		mainPanel.getPanel().repaint();
 	}
 
