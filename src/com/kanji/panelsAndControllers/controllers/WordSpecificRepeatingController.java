@@ -1,11 +1,12 @@
 package com.kanji.panelsAndControllers.controllers;
 
+import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listElements.RepeatingData;
 import com.kanji.list.myList.MyList;
 import com.kanji.range.Range;
 import com.kanji.range.SetOfRanges;
-import com.kanji.repeating.RepeatingWordDisplayer;
+import com.kanji.repeating.RepeatingWordsDisplayer;
 import com.kanji.saving.RepeatingState;
 import com.kanji.timer.TimeSpent;
 
@@ -18,13 +19,35 @@ public class WordSpecificRepeatingController<Word extends ListElement> {
 	private Word previousWord;
 	private MyList<Word> wordsList;
 	private List<Word> wordsLeftToRepeat;
-	private RepeatingWordDisplayer<Word> wordDisplayer;
+	private RepeatingWordsDisplayer<Word> wordDisplayer;
+	private Set<Word> currentProblematicWords;
+	private Set<Word> allProblematicWords;
 
 	public WordSpecificRepeatingController(MyList<Word> wordsList,
-			RepeatingWordDisplayer wordDisplayer) {
+			RepeatingWordsDisplayer<Word> wordDisplayer) {
 		wordsLeftToRepeat = new ArrayList<>();
 		this.wordsList = wordsList;
 		this.wordDisplayer = wordDisplayer;
+		allProblematicWords = new HashSet<>();
+		currentProblematicWords = new HashSet<>();
+	}
+
+	public void setListOfAllProblematicWords(Set<Word> problematicWords) {
+		this.allProblematicWords = problematicWords;
+	}
+
+	private void markWordAsProblematic(Word word) {
+		allProblematicWords.add(word);
+		currentProblematicWords.add(word);
+	}
+
+	private void removeWordFromProblematic(Word word) {
+		allProblematicWords.remove(word);
+		currentProblematicWords.remove(word);
+	}
+
+	public Set<Word> getProblematicWords() {
+		return currentProblematicWords;
 	}
 
 	public void collectSelectedWordsToList(SetOfRanges rangesOfRowNumbers) {
@@ -44,10 +67,6 @@ public class WordSpecificRepeatingController<Word extends ListElement> {
 				wordsLeftToRepeat.add(word);
 			}
 		}
-	}
-
-	public void setListOfAllProblematicWords(Set<Word> problematicWords) {
-		wordDisplayer.setListOfAllProblematicWords(problematicWords);
 	}
 
 	public JPanel getWordGuessingPanel() {
@@ -70,22 +89,14 @@ public class WordSpecificRepeatingController<Word extends ListElement> {
 		return this.wordsLeftToRepeat.size();
 	}
 
-	public boolean hasProblematicWords() {
-		return wordDisplayer.hasProblematicWords();
-	}
-
-	public Set<Word> getProblematicWords() {
-		return wordDisplayer.getProblematicWords();
-	}
-
 	public void reset() {
-		wordDisplayer.clearRepeatingData();
+		clearRepeatingData();
 		this.wordsLeftToRepeat = new ArrayList<>();
 	}
 
 	public Word switchToPreviousWord() {
 		currentWord = previousWord;
-		wordDisplayer.removeWordFromProblematic(currentWord);
+		removeWordFromProblematic(currentWord);
 		return previousWord;
 	}
 
@@ -94,7 +105,13 @@ public class WordSpecificRepeatingController<Word extends ListElement> {
 	}
 
 	public void markCurrentWordAsRecognized() {
-		wordDisplayer.removeWordFromProblematic(currentWord);
+		removeWordFromProblematic(currentWord);
+	}
+
+	private void clearRepeatingData() {
+		currentProblematicWords.clear();
+		currentWord = null;
+		previousWord = null;
 	}
 
 	public void removeCurrentWordFromListToRepeat() {
@@ -111,7 +128,7 @@ public class WordSpecificRepeatingController<Word extends ListElement> {
 	}
 
 	public void markWordAsProblematic() {
-		wordDisplayer.markWordAsProblematic(currentWord);
+		markWordAsProblematic(currentWord);
 	}
 
 	public boolean previousWordExists() {
@@ -126,20 +143,21 @@ public class WordSpecificRepeatingController<Word extends ListElement> {
 		wordDisplayer.showWordGuessingPanel();
 	}
 
-	public RepeatingState getRepeatingState(TimeSpent timeForSerialization,
-			RepeatingData repeatingData) {
-		return wordDisplayer.getRepeatingState(timeForSerialization,
-				repeatingData,
-				convertWordsListToSet());
+	public RepeatingState<Word> getRepeatingState(TimeSpent timeSpent,
+			RepeatingData repeatingData,
+			TypeOfWordForRepeating typeOfWordForRepeating) {
+		return new RepeatingState<>(
+				timeSpent, repeatingData, currentProblematicWords,
+				convertWordsListToSet(), typeOfWordForRepeating);
+	}
+
+	public boolean hasProblematicWords() {
+		return !currentProblematicWords.isEmpty();
 	}
 
 	private Set<Word> convertWordsListToSet() {
 		//TODO why don't we serialize list?
-		Set<Word> wordsSet = new HashSet<>();
-		for (Word word : wordsLeftToRepeat) {
-			wordsSet.add(word);
-		}
-		return wordsSet;
+		return new HashSet<>(wordsLeftToRepeat);
 	}
 
 }

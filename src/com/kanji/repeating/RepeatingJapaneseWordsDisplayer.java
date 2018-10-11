@@ -26,15 +26,12 @@ import java.util.*;
 import java.util.function.Function;
 
 public class RepeatingJapaneseWordsDisplayer
-		implements RepeatingWordDisplayer<JapaneseWord> {
+		implements RepeatingWordsDisplayer<JapaneseWord> {
 
 	private final Dimension wordPanelsSize = new Dimension(300, 200);
 	private MainPanel fullWordInformationPanel;
 	private MainPanel recognizingWordPanel;
 	private KanjiCharactersReader kanjiCharactersReader;
-	private Set<JapaneseWord> currentProblematicWords;
-	private Set<JapaneseWord> problematicJapaneseWords;
-	private JLabel partOfSpeechLabel;
 	private JComboBox<String> partOfSpeechCombobox;
 	private JComboBox<String> verbConjugationCombobox;
 	private Map<Integer, Function<JapaneseWord, Set<String>>> hintTypeIntValues;
@@ -53,11 +50,7 @@ public class RepeatingJapaneseWordsDisplayer
 		fullWordInformationPanel.setPadding(10);
 		recognizingWordPanel = new MainPanel(null, true);
 		recognizingWordPanel.getPanel().setPreferredSize(wordPanelsSize);
-		partOfSpeechLabel = GuiElementsCreator.createLabel(
-				new ComponentOptions().text(Labels.PART_OF_SPEECH));
 		fullWordInformationPanel.getPanel().setPreferredSize(wordPanelsSize);
-		problematicJapaneseWords = new HashSet<>();
-		currentProblematicWords = new HashSet<>();
 		initializeHintTypeValues();
 		initializeGuiElements();
 		this.japaneseWordPanelCreator = japaneseWordPanelCreator;
@@ -112,17 +105,6 @@ public class RepeatingJapaneseWordsDisplayer
 		partOfSpeechCombobox.setSelectedIndex(0);
 	}
 
-	@Override
-	public void markWordAsProblematic(JapaneseWord wordInformation) {
-		problematicJapaneseWords.add(wordInformation);
-		currentProblematicWords.add(wordInformation);
-	}
-
-	@Override
-	public void removeWordFromProblematic(JapaneseWord wordInformation) {
-		problematicJapaneseWords.remove(wordInformation);
-		currentProblematicWords.remove(wordInformation);
-	}
 
 	@Override
 	public String getWordHint(JapaneseWord kanjiInformation) {
@@ -141,39 +123,6 @@ public class RepeatingJapaneseWordsDisplayer
 				new ArrayList<>((hintGetter.apply(kanjiInformation))));
 	}
 
-	@Override
-	public Set<JapaneseWord> getProblematicWords() {
-		return currentProblematicWords;
-	}
 
-	@Override
-	public RepeatingState getRepeatingState(TimeSpent timeSpent,
-			RepeatingData repeatingData, Set<JapaneseWord> words) {
-		RepeatingState<JapaneseWord> kanjiRepeatingState = new RepeatingState<>(
-				timeSpent, repeatingData, currentProblematicWords, words,
-				TypeOfWordForRepeating.JAPANESE_WORDS);
-		return kanjiRepeatingState;
-	}
-
-	@Override
-	public boolean hasProblematicWords() {
-		return !currentProblematicWords.isEmpty();
-	}
-
-	@Override
-	public void clearRepeatingData() {
-		currentProblematicWords.clear();
-	}
-
-	@Override
-	public void setListOfAllProblematicWords(Set<JapaneseWord> problematicWords) {
-		problematicJapaneseWords = problematicWords;
-	}
-
-	@Override
-	public void setCurrentProblematicWords(
-			Set<JapaneseWord> currentProblematicWords) {
-		this.currentProblematicWords = currentProblematicWords;
-	}
 
 }

@@ -13,7 +13,7 @@ public class KanjiCharactersReader {
 	private static KanjiCharactersReader kanjiCharsReader;
 
 	private KanjiCharactersReader() {
-		words = new ArrayList<String>();
+		words = new ArrayList<>();
 
 	}
 

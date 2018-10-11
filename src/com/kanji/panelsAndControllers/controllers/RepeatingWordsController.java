@@ -36,8 +36,7 @@ public class RepeatingWordsController
 	private RepeatingData repeatingData;
 	private RepeatingWordsPanel panel;
 	private RepeatingWordsPanelUpdater panelUpdater;
-	private Map<TypeOfWordForRepeating, WordSpecificRepeatingController<? extends ListElement>>
-			typeOfWordToControllerMap = new HashMap<>();
+	private Map<TypeOfWordForRepeating, WordSpecificRepeatingController<? extends ListElement>> typeOfWordToControllerMap = new HashMap<>();
 	private TypeOfWordForRepeating currentTypeOfWordForRepeating;
 
 	public RepeatingWordsController(ApplicationWindow applicationWindow) {
@@ -296,7 +295,7 @@ public class RepeatingWordsController
 				.getApplicationController().getApplicationState();
 		RepeatingState repeatingState = getWordsSpecificController()
 				.getRepeatingState(timeSpentHandler.getTimeForSerialization(),
-						repeatingData);
+						repeatingData, currentTypeOfWordForRepeating);
 		savingInformation.setRepeatingState(repeatingState);
 		return savingInformation;
 	}

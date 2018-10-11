@@ -27,7 +27,7 @@ import com.kanji.problematicWords.ProblematicKanjiDisplayer;
 import com.kanji.range.SetOfRanges;
 import com.kanji.repeating.RepeatingJapaneseWordsDisplayer;
 import com.kanji.repeating.RepeatingKanjiDisplayer;
-import com.kanji.repeating.RepeatingWordDisplayer;
+import com.kanji.repeating.RepeatingWordsDisplayer;
 import com.kanji.saving.ApplicationStateManager;
 import com.kanji.saving.FileSavingManager;
 import com.kanji.saving.SavingInformation;
@@ -605,7 +605,6 @@ public class ApplicationController
 		}
 		parent.showPanel(ApplicationPanels.REPEATING_PANEL);
 		isClosingSafe = false;
-		kanjiWordDisplayer.addProblematicKanjis(getProblematicKanjis());
 		repeatingWordsPanelController.startRepeating();
 		applicationStateManager = repeatingWordsPanelController;
 	}
@@ -623,7 +622,7 @@ public class ApplicationController
 		return typeOfWordForRepeating;
 	}
 
-	public RepeatingWordDisplayer getWordDisplayerForWordType(
+	public RepeatingWordsDisplayer getWordDisplayerForWordType(
 			TypeOfWordForRepeating wordType) {
 		if (wordType.equals(TypeOfWordForRepeating.KANJIS)) {
 			return kanjiWordDisplayer;

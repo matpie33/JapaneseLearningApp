@@ -48,7 +48,8 @@ public class RowInRepeatingList implements ListRowCreator<RepeatingData> {
 
 		if (time != null) {
 			timeSpent = GuiElementsCreator.createLabel(
-					new ComponentOptions().text(Prompts.REPEATING_TIME + time)
+					new ComponentOptions().text(String.format(Prompts
+							.REPEATING_TIME, time))
 							.foregroundColor(labelsColor));
 		}
 
