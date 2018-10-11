@@ -59,6 +59,7 @@ public class ProblematicWordsController<Word extends ListElement>
 	}
 
 	public void initialize() {
+		wordsToReviewList.cleanWords();
 		problematicWordsDisplayer.initialize();
 	}
 
@@ -93,10 +94,11 @@ public class ProblematicWordsController<Word extends ListElement>
 		}
 		else if (!notReviewedWords.isEmpty()) {
 			for (int i = 0; i < nextWordToReview + 1; i++) {
-				wordsToReviewList
-						.remove(notReviewedWords.get(0).getListElement());
 				notReviewedWords.remove(0);
 			}
+			notReviewedWords.forEach(wordRow -> wordsToReviewList
+					.addWord(wordRow.getListElement()));
+
 		}
 		nextWordToReview = 0;
 
