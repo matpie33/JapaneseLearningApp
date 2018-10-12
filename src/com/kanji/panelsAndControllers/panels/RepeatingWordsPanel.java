@@ -1,5 +1,6 @@
 package com.kanji.panelsAndControllers.panels;
 
+import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.TextAlignment;
@@ -17,6 +18,7 @@ import com.kanji.panelsAndControllers.controllers.RepeatingWordsController;
 import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -33,27 +35,24 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private JTextComponent wordHintTextPane;
 	private AbstractButton pauseButton;
 	private RepeatingWordsController repeatingWordsController;
-	private JPanel wordDataPanel;
-	private final static String WORD_GUESSING_PANEL_NAME = "Recognizing word";
-	private final static String WORD_ASSESSMENT_PANEL_NAME = "Word full information";
 	private JLabel titleLabel;
 	private AbstractButton returnButton;
+	private MainPanel wordDataPanel;
 
 	public RepeatingWordsPanel(RepeatingWordsController controller) {
 		rootPanel = new MainPanel(null);
 		repeatingDataPanel = new MainPanel(Colors.BACKGROUND_PANEL_COLOR);
 		repeatingDataPanel.setRowsBorder(getDefaultBorder());
 		this.repeatingWordsController = controller;
-		wordDataPanel = new JPanel(new CardLayout());
-		wordDataPanel.setBackground(null);
-		addWordDataPanelCards(new JPanel(), new JPanel());
+		initializeWordDataPanel();
 	}
 
-	public void addWordDataPanelCards(JPanel panelForRecognizingWord,
-			JPanel wordFullInformationPanel) {
-		wordDataPanel.removeAll();
-		wordDataPanel.add(WORD_GUESSING_PANEL_NAME, panelForRecognizingWord);
-		wordDataPanel.add(WORD_ASSESSMENT_PANEL_NAME, wordFullInformationPanel);
+	private void initializeWordDataPanel() {
+		wordDataPanel = new MainPanel(null, true);
+		wordDataPanel.setRowColor(BasicColors.PURPLE_DARK_2);
+		wordDataPanel.setRowsBorder(BorderFactory
+				.createBevelBorder(BevelBorder.LOWERED,
+						BasicColors.BLUE_NORMAL_1, BasicColors.BLUE_NORMAL_7));
 	}
 
 	@Override
@@ -93,7 +92,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private void addElementsToPanels() {
 		repeatingDataPanel.addRows(SimpleRowBuilder
 				.createRow(FillType.HORIZONTAL, wordHintTextPane)
-				.nextRow(FillType.BOTH, Anchor.CENTER, wordDataPanel)
+				.nextRow(FillType.BOTH, Anchor.CENTER, wordDataPanel
+						.getPanel())
 				.nextRow(FillType.NONE, this.pauseButton,
 						showWordOrMarkAsRecognizedButton,
 						notRecognizedWordButton, this.showPreviousWordButton)
@@ -168,16 +168,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 		return wordHintTextPane;
 	}
 
-	public void showWordGuessingPanel() {
-		showPanel(WORD_GUESSING_PANEL_NAME);
+	public MainPanel getWordDataPanel() {
+		return wordDataPanel;
 	}
-
-	public void showWordAssessmentPanel() {
-		showPanel(WORD_ASSESSMENT_PANEL_NAME);
-	}
-
-	private void showPanel(String name) {
-		((CardLayout) wordDataPanel.getLayout()).show(wordDataPanel, name);
-	}
-
 }

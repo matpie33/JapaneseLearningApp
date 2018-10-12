@@ -28,12 +28,7 @@ import java.util.function.Function;
 public class RepeatingJapaneseWordsDisplayer
 		implements RepeatingWordsDisplayer<JapaneseWord> {
 
-	private final Dimension wordPanelsSize = new Dimension(300, 200);
-	private MainPanel fullWordInformationPanel;
-	private MainPanel recognizingWordPanel;
 	private KanjiCharactersReader kanjiCharactersReader;
-	private JComboBox<String> partOfSpeechCombobox;
-	private JComboBox<String> verbConjugationCombobox;
 	private Map<Integer, Function<JapaneseWord, Set<String>>> hintTypeIntValues;
 	private JapaneseWordPanelCreator japaneseWordPanelCreator;
 
@@ -42,19 +37,8 @@ public class RepeatingJapaneseWordsDisplayer
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		kanjiCharactersReader.loadKanjisIfNeeded();
 		//TODO kanjis can be loaded just once in the "get instance" method
-		fullWordInformationPanel = new MainPanel(null, true);
-		fullWordInformationPanel.setRowColor(BasicColors.PURPLE_DARK_2);
-		fullWordInformationPanel.setRowsBorder(BorderFactory
-				.createBevelBorder(BevelBorder.LOWERED,
-						BasicColors.BLUE_NORMAL_1, BasicColors.BLUE_NORMAL_7));
-		fullWordInformationPanel.setPadding(10);
-		recognizingWordPanel = new MainPanel(null, true);
-		recognizingWordPanel.getPanel().setPreferredSize(wordPanelsSize);
-		fullWordInformationPanel.getPanel().setPreferredSize(wordPanelsSize);
 		initializeHintTypeValues();
-		initializeGuiElements();
 		this.japaneseWordPanelCreator = japaneseWordPanelCreator;
-
 	}
 
 	private void initializeHintTypeValues() {
@@ -66,45 +50,15 @@ public class RepeatingJapaneseWordsDisplayer
 
 	}
 
-	private void initializeGuiElements() {
-		partOfSpeechCombobox = GuiElementsCreator
-				.createCombobox(new ComboboxOptions());
-		partOfSpeechCombobox.setFocusable(false);
-		Arrays.stream(PartOfSpeech.values()).forEach(
-				partOfSpeech -> partOfSpeechCombobox
-						.addItem(partOfSpeech.getPolishMeaning()));
-		verbConjugationCombobox = new JComboBox<>();
-		verbConjugationCombobox.setFocusable(false);
-		Arrays.stream(VerbConjugationType.values()).forEach(
-				verbConjugationType -> verbConjugationCombobox
-						.addItem(verbConjugationType.getDisplayedText()));
-
-	}
-
 	@Override
-	public void showWordAssessmentPanel(JapaneseWord japaneseWord) {
-		fullWordInformationPanel.clear();
+	public void showFullWordDetailsPanel(JapaneseWord japaneseWord, MainPanel
+			wordAssessmentPanel) {
+		wordAssessmentPanel.clear();
 		japaneseWordPanelCreator
-				.addJapanesePanelToExistingPanel(fullWordInformationPanel,
+				.addJapanesePanelToExistingPanel(wordAssessmentPanel,
 						japaneseWord, InputGoal.NO_INPUT,
 						CommonListElements.forSingleRowOnly(Color.WHITE), true);
 	}
-
-	@Override
-	public JPanel getWordAssessmentPanel() {
-		return fullWordInformationPanel.getRootPanel();
-	}
-
-	@Override
-	public JPanel getWordGuessingPanel() {
-		return recognizingWordPanel.getPanel();
-	}
-
-	@Override
-	public void showWordGuessingPanel() {
-		partOfSpeechCombobox.setSelectedIndex(0);
-	}
-
 
 	@Override
 	public String getWordHint(JapaneseWord kanjiInformation) {

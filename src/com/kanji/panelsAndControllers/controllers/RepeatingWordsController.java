@@ -54,7 +54,7 @@ public class RepeatingWordsController
 				new WordSpecificRepeatingController<>(
 						applicationWindow.getApplicationController()
 								.getKanjiList(), new RepeatingKanjiDisplayer(
-						ApplicationWindow.getKanjiFont())));
+						ApplicationWindow.getKanjiFont()), this));
 		typeOfWordToControllerMap.put(TypeOfWordForRepeating.JAPANESE_WORDS,
 				new WordSpecificRepeatingController<>(
 						applicationWindow.getApplicationController()
@@ -63,7 +63,7 @@ public class RepeatingWordsController
 								new JapaneseWordPanelCreator(applicationWindow
 										.getApplicationController(),
 										applicationWindow,
-										PanelDisplayMode.VIEW))));
+										PanelDisplayMode.VIEW)), this));
 	}
 
 	public RepeatingWordsPanel getRepeatingWordsPanel() {
@@ -74,9 +74,7 @@ public class RepeatingWordsController
 		getWordsSpecificController().setListOfAllProblematicWords(
 				applicationWindow.getApplicationController()
 						.getProblematicWordsBasedOnCurrentTab());
-		panel.addWordDataPanelCards(
-				getWordsSpecificController().getWordGuessingPanel(),
-				getWordsSpecificController().getWordAssessmentPanel());
+		panelUpdater.clearWordDataPanel();
 		timeSpentHandler.startTimer();
 		pickNextWordOrFinishRepeating();
 		setStateToWordGuessing();
@@ -161,13 +159,12 @@ public class RepeatingWordsController
 		ListElement previousWord = getWordsSpecificController()
 				.switchToPreviousWord();
 		showWordHint(previousWord);
-		showWordAssessmentPanel(previousWord);
+		showFullWordDetailsPanel(previousWord);
 		panelUpdater.toggleGoToPreviousWordButton();
 	}
 
-	private void showWordAssessmentPanel(ListElement word) {
-		getWordsSpecificController().showWordAssessmentPanel(word);
-		panel.showWordAssessmentPanel();
+	private void showFullWordDetailsPanel(ListElement word) {
+		getWordsSpecificController().showFullWordDetailsPanel(word);
 		panelUpdater.setButtonsToWordAssessmentState(
 				getWordsSpecificController().previousWordExists());
 		repeatingWordsPanelState = RepeatingWordsPanelState.WORD_ASSESSMENT;
@@ -260,7 +257,7 @@ public class RepeatingWordsController
 					showWordGuessingPanel();
 				}
 				else {
-					showWordAssessmentPanel(
+					showFullWordDetailsPanel(
 							getWordsSpecificController().getCurrentWord());
 				}
 			}
@@ -277,8 +274,7 @@ public class RepeatingWordsController
 	}
 
 	private void showWordGuessingPanel() {
-		panel.showWordGuessingPanel();
-		getWordsSpecificController().showWordGuessingPanel();
+		panelUpdater.clearWordDataPanel();
 	}
 
 	public AbstractAction createActionExit() {

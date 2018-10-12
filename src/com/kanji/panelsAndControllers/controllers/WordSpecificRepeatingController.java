@@ -10,7 +10,6 @@ import com.kanji.repeating.RepeatingWordsDisplayer;
 import com.kanji.saving.RepeatingState;
 import com.kanji.timer.TimeSpent;
 
-import javax.swing.*;
 import java.util.*;
 
 public class WordSpecificRepeatingController<Word extends ListElement> {
@@ -22,14 +21,17 @@ public class WordSpecificRepeatingController<Word extends ListElement> {
 	private RepeatingWordsDisplayer<Word> wordDisplayer;
 	private Set<Word> currentProblematicWords;
 	private Set<Word> allProblematicWords;
+	private RepeatingWordsController repeatingWordsController;
 
 	public WordSpecificRepeatingController(MyList<Word> wordsList,
-			RepeatingWordsDisplayer<Word> wordDisplayer) {
+			RepeatingWordsDisplayer<Word> wordDisplayer,
+			RepeatingWordsController repeatingWordsController) {
 		wordsLeftToRepeat = new ArrayList<>();
 		this.wordsList = wordsList;
 		this.wordDisplayer = wordDisplayer;
 		allProblematicWords = new HashSet<>();
 		currentProblematicWords = new HashSet<>();
+		this.repeatingWordsController = repeatingWordsController;
 	}
 
 	public void setListOfAllProblematicWords(Set<Word> problematicWords) {
@@ -69,14 +71,6 @@ public class WordSpecificRepeatingController<Word extends ListElement> {
 		}
 	}
 
-	public JPanel getWordGuessingPanel() {
-		return wordDisplayer.getWordGuessingPanel();
-	}
-
-	public JPanel getWordAssessmentPanel() {
-		return wordDisplayer.getWordAssessmentPanel();
-	}
-
 	public void addWordsToRepeat(Set<Word> currentlyRepeatedWords) {
 		wordsLeftToRepeat.addAll(currentlyRepeatedWords);
 	}
@@ -100,8 +94,9 @@ public class WordSpecificRepeatingController<Word extends ListElement> {
 		return previousWord;
 	}
 
-	public void showWordAssessmentPanel(Word word) {
-		wordDisplayer.showWordAssessmentPanel(word);
+	public void showFullWordDetailsPanel(Word word) {
+		wordDisplayer.showFullWordDetailsPanel(word, repeatingWordsController
+				.getRepeatingWordsPanel().getWordDataPanel());
 	}
 
 	public void markCurrentWordAsRecognized() {
@@ -139,16 +134,12 @@ public class WordSpecificRepeatingController<Word extends ListElement> {
 		return currentWord;
 	}
 
-	public void showWordGuessingPanel() {
-		wordDisplayer.showWordGuessingPanel();
-	}
-
 	public RepeatingState<Word> getRepeatingState(TimeSpent timeSpent,
 			RepeatingData repeatingData,
 			TypeOfWordForRepeating typeOfWordForRepeating) {
-		return new RepeatingState<>(
-				timeSpent, repeatingData, currentProblematicWords,
-				convertWordsListToSet(), typeOfWordForRepeating);
+		return new RepeatingState<>(timeSpent, repeatingData,
+				currentProblematicWords, convertWordsListToSet(),
+				typeOfWordForRepeating);
 	}
 
 	public boolean hasProblematicWords() {

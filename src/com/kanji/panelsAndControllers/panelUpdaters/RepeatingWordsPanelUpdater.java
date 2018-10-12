@@ -53,4 +53,8 @@ public class RepeatingWordsPanelUpdater {
 				.getShowPreviousWordButton();
 		showPreviousWordButton.setEnabled(!showPreviousWordButton.isEnabled());
 	}
+
+	public void clearWordDataPanel() {
+		panel.getWordDataPanel().clear();
+	}
 }
