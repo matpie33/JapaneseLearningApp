@@ -140,7 +140,7 @@ public class ProblematicWordsController<Word extends ListElement>
 		return wordsReviewed;
 	}
 
-	public AbstractAction closeDialogAndManageState() {
+	public AbstractAction goToStartingPanelAndManageState() {
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -303,7 +303,7 @@ public class ProblematicWordsController<Word extends ListElement>
 				.addWindowListener(new WindowAdapter() {
 					@Override
 					public void windowClosed(WindowEvent e) {
-						closeDialogAndManageState();
+						goToStartingPanelAndManageState();
 					}
 				});
 	}

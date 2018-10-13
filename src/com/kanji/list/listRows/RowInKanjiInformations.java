@@ -29,6 +29,8 @@ public class RowInKanjiInformations implements ListRowCreator<Kanji> {
 	private KanjiActionsCreator actionsCreator;
 	private PanelDisplayMode displayMode;
 	private Optional<ProblematicWordsController<Kanji>> problematicWordsController;
+	//TODO try to remove the dependency on problematic words controller
+
 
 	public RowInKanjiInformations(ApplicationWindow applicationWindow,
 			PanelDisplayMode displayMode) {

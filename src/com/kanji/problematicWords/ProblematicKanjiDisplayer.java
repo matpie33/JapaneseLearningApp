@@ -1,15 +1,11 @@
 package com.kanji.problematicWords;
 
-import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.model.WebContext;
 import com.guimaker.webPanel.ContextOwner;
 import com.kanji.constants.strings.Prompts;
-import com.kanji.constants.strings.Titles;
 import com.kanji.constants.strings.Urls;
 import com.kanji.context.KanjiContext;
 import com.kanji.list.listElements.Kanji;
-import com.kanji.list.listRows.RowInKanjiInformations;
-import com.kanji.list.myList.ListConfiguration;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.WordRow;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
@@ -42,20 +38,14 @@ public class ProblematicKanjiDisplayer
 			ProblematicWordsController controller) {
 
 		problematicKanjiPanel = new ProblematicKanjiPanel(
-				ApplicationWindow.getKanjiFont(), applicationWindow, controller,
+				applicationWindow, controller,
 				this);
 		cookieManager = new CookieManager();
 		CookieHandler.setDefault(cookieManager);
 		kanjiContext = KanjiContext.emptyContext();
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		kanjiCharactersReader.loadKanjisIfNeeded();
-		RowInKanjiInformations rowInKanjiInformations = new RowInKanjiInformations(
-				applicationWindow, PanelDisplayMode.VIEW);
-		rowInKanjiInformations.setProblematicWordsController(controller);
-		wordsToReviewList = new MyList<>(applicationWindow, null,
-				rowInKanjiInformations, Titles.PROBLEMATIC_KANJIS,
-				new ListConfiguration().showButtonsLoadNextPreviousWords(false),
-				Kanji.getInitializer());
+		wordsToReviewList = problematicKanjiPanel.getWordsToReviewList();
 		controller.setProblematicWordsDisplayer(this);
 	}
 
@@ -68,15 +58,16 @@ public class ProblematicKanjiDisplayer
 	public void browseWord(WordRow<Kanji> wordRow) {
 		String uriText = Urls.KANJI_KOOHI_REVIEW_BASE_PAGE;
 		uriText += wordRow.getListElement().getId();
-		problematicKanjiPanel.showPageInKoohi(uriText);
+		problematicKanjiPanel.getKanjiKoohiWebPanel()
+				.showPageWithoutGrabbingFocus(uriText);
 		kanjiContext = new KanjiContext(kanjiCharactersReader
 				.getKanjiById(wordRow.getListElement().getId()),
 				wordRow.getListElement().getId());
 	}
 
 	@Override
-	public WordRow createWordRow(Kanji listElement, int rowNumber) {
-		return new WordRow(listElement, rowNumber);
+	public WordRow<Kanji> createWordRow(Kanji listElement, int rowNumber) {
+		return new WordRow<>(listElement, rowNumber);
 	}
 
 	@Override
@@ -87,14 +78,13 @@ public class ProblematicKanjiDisplayer
 
 	@Override
 	public void initializeWebPages() {
-		String pageToRender;
-		if (isLoginDataRemembered()) {
-			pageToRender = Urls.KANJI_KOOHI_MAIN_PAGE;
-		}
-		else {
-			pageToRender = Urls.KANJI_KOOHI_LOGIN_PAGE;
-		}
-		problematicKanjiPanel.initialize(pageToRender);
+		String pageToRender = isLoginDataRemembered() ?
+				Urls.KANJI_KOOHI_MAIN_PAGE :
+				Urls.KANJI_KOOHI_LOGIN_PAGE;
+		problematicKanjiPanel.getEnglishPolishDictionaryWebPanel()
+				.showPageWithoutGrabbingFocus(Urls.DICTIONARY_PL_EN_MAIN_PAGE);
+		problematicKanjiPanel.getKanjiKoohiWebPanel()
+				.showPageWithoutGrabbingFocus(pageToRender);
 	}
 
 	@Override
@@ -104,7 +94,8 @@ public class ProblematicKanjiDisplayer
 
 	@Override
 	public boolean isListPanelFocused() {
-		return problematicKanjiPanel.isListPanelFocused();
+		return problematicKanjiPanel.getFocusableComponentsManager()
+				.getFocusedComponent().equals(wordsToReviewList.getPanel());
 	}
 
 	private boolean isLoginDataRemembered() {
@@ -147,6 +138,7 @@ public class ProblematicKanjiDisplayer
 
 	@Override
 	public void focusPreviouslyFocusedElement() {
-		problematicKanjiPanel.focusPreviouslyFocusedElement();
+		problematicKanjiPanel.getFocusableComponentsManager()
+				.focusPreviouslyFocusedElement();
 	}
 }
