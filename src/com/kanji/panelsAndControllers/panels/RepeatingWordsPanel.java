@@ -20,7 +20,6 @@ import com.kanji.windows.ApplicationWindow;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.text.JTextComponent;
-import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
@@ -31,7 +30,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private AbstractButton showPreviousWordButton;
 	private JLabel timeElapsedLabel;
 	private MainPanel rootPanel;
-	private JLabel remainingLabel;
+	private JLabel remainingWordsAmountLabel;
 	private JTextComponent wordHintTextPane;
 	private AbstractButton pauseButton;
 	private RepeatingWordsController repeatingWordsController;
@@ -61,7 +60,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 				new ComponentOptions().text(Titles.REPEATING_WORDS_DIALOG));
 		timeElapsedLabel = GuiElementsCreator
 				.createLabel(new ComponentOptions());
-		remainingLabel = GuiElementsCreator.createLabel(new ComponentOptions());
+		remainingWordsAmountLabel = GuiElementsCreator.createLabel(new ComponentOptions());
 		returnButton = createReturnButton();
 		createRepeatingPanelElements();
 
@@ -94,9 +93,9 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 				.createRow(FillType.HORIZONTAL, wordHintTextPane)
 				.nextRow(FillType.BOTH, Anchor.CENTER, wordDataPanel
 						.getPanel())
-				.nextRow(FillType.NONE, this.pauseButton,
+				.nextRow(FillType.NONE, pauseButton,
 						showWordOrMarkAsRecognizedButton,
-						notRecognizedWordButton, this.showPreviousWordButton)
+						notRecognizedWordButton, showPreviousWordButton)
 				.fillHorizontallyEqually().disableBorder());
 
 		rootPanel.addRows(SimpleRowBuilder
@@ -104,7 +103,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 						timeElapsedLabel)
 				.nextRow(FillType.BOTH, repeatingDataPanel.getPanel())
 				.setBorder(getDefaultBorder())
-				.nextRow(FillType.NONE, Anchor.CENTER, remainingLabel,
+				.nextRow(FillType.NONE, Anchor.CENTER,
+						remainingWordsAmountLabel,
 						returnButton));
 
 		//TODO in gui maker enable me to put some element in some anchor so that remaining label can be positioned vertically center
@@ -150,8 +150,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 				HotkeysDescriptions.SET_WORD_AS_PROBLEMATIC);
 	}
 
-	public JLabel getRemainingLabel() {
-		return remainingLabel;
+	public JLabel getRemainingWordsAmountLabel() {
+		return remainingWordsAmountLabel;
 	}
 
 	private AbstractButton createReturnButton() {

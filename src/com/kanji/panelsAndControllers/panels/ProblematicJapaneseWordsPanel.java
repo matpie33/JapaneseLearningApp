@@ -57,7 +57,6 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 
 	public void initialize() {
 		problematicWords = problematicWordsController.getWordsToReviewList();
-
 		japaneseEnglishDictionaryPanel.showPage(TANGORIN_URL);
 		englishDictionaryPanel.showPage(Urls.DICTIONARY_PL_EN_MAIN_PAGE);
 		String pageToRender = "";

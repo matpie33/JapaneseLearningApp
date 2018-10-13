@@ -1,6 +1,7 @@
 package com.kanji.utilities;
 
 import com.kanji.constants.enums.TypeOfJapaneseWriting;
+import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.Prompts;
 
 import java.util.Set;
@@ -83,4 +84,12 @@ public class JapaneseWritingUtilities {
 		}
 		return anyKanji;
 	}
+
+	public static String getTextForTypeOfWordForRepeating(
+			TypeOfWordForRepeating typeOfWordForRepeating) {
+		return typeOfWordForRepeating.equals(TypeOfWordForRepeating.KANJIS) ?
+				Prompts.KANJI :
+				Prompts.JAPANESE_WORD;
+	}
+
 }

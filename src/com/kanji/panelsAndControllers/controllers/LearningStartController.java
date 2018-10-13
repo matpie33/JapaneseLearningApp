@@ -2,6 +2,7 @@ package com.kanji.panelsAndControllers.controllers;
 
 import com.guimaker.row.AbstractSimpleRow;
 import com.kanji.constants.enums.IncrementSign;
+import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.Prompts;
@@ -33,15 +34,18 @@ public class LearningStartController {
 	private LearningStartPanelInputValidation inputValidation;
 	private LearningStartPanelUpdater panelUpdater;
 	private AbstractButton problematicWordsCheckbox;
+	private TypeOfWordForRepeating typeOfWordForRepeating;
 
-	public LearningStartController(int numberOfWords,
+	public LearningStartController(TypeOfWordForRepeating typeOfWordForRepeating,
 			ApplicationController applicationController,
 			LearningStartPanel learningStartPanel) {
 		this.applicationController = applicationController;
+		this.typeOfWordForRepeating = typeOfWordForRepeating;
 		this.learningStartPanel = learningStartPanel;
 		rangesRows = new ArrayList<>();
 		errors = new HashMap<>();
-		inputValidation = new LearningStartPanelInputValidation(numberOfWords);
+		inputValidation = new LearningStartPanelInputValidation
+				(applicationController.getActiveWordsList().getNumberOfWords());
 		panelUpdater = new LearningStartPanelUpdater(learningStartPanel);
 	}
 
@@ -51,7 +55,7 @@ public class LearningStartController {
 				IncrementSign.PLUS :
 				IncrementSign.MINUS;
 		addOrSubtractProblematicWordsFromSum(incrementSign);
-		panelUpdater.updateSumOfWords(getSumOfWords());
+		panelUpdater.updateSumOfWords(getSumOfWords(), typeOfWordForRepeating);
 	}
 
 	private void addProblematicWordsNotification() {
@@ -172,7 +176,7 @@ public class LearningStartController {
 
 	private void updateNumberOfSelectedWords() {
 		recalculateSumOfWords();
-		panelUpdater.updateSumOfWords(getSumOfWords());
+		panelUpdater.updateSumOfWords(getSumOfWords(), typeOfWordForRepeating);
 	}
 
 	private void updateAfterRowRemoval() {
@@ -180,7 +184,7 @@ public class LearningStartController {
 			panelUpdater.changeEnabledStateOfDeleteButtonInFirstRow(false);
 		}
 		recalculateSumOfWords();
-		panelUpdater.updateSumOfWords(getSumOfWords());
+		panelUpdater.updateSumOfWords(getSumOfWords(), typeOfWordForRepeating);
 	}
 
 	private void removeRow(RangesRow rangesRow) {
@@ -410,15 +414,8 @@ public class LearningStartController {
 
 	}
 
-	public String getProblematicWordsLabelText() {
-		Class wordClass = applicationController.getActiveWordsList()
-				.getWordInitializer().initializeElement().getClass();
-		if (wordClass.equals(Kanji.class)) {
-			return Prompts.PROBLEMATIC_KANJI;
-		}
-		else {
-			return Prompts.PROBLEMATIC_WORDS;
-		}
+	public void setProblematicWordsAmount() {
+		panelUpdater.setProblematicWordsAmountText(typeOfWordForRepeating,
+				applicationController.getProblematicWordsAmountBasedOnCurrentTab());
 	}
-
 }

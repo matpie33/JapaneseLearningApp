@@ -1,9 +1,11 @@
 package com.kanji.panelsAndControllers.panelUpdaters;
 
+import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.panelsAndControllers.panels.RepeatingWordsPanel;
+import com.kanji.utilities.JapaneseWritingUtilities;
 
 import javax.swing.*;
 
@@ -30,14 +32,18 @@ public class RepeatingWordsPanelUpdater {
 		panel.getShowPreviousWordButton().setEnabled(previousWordExists);
 	}
 
-	public void updateRemainingWordsText(int numberOfWordsRemaining) {
-		panel.getRemainingLabel()
-				.setText(createRemainingWordsText(numberOfWordsRemaining));
+	public void updateRemainingWordsText(int numberOfWordsRemaining,
+			TypeOfWordForRepeating typeOfWordForRepeating) {
+		panel.getRemainingWordsAmountLabel().setText(
+				createRemainingWordsText(numberOfWordsRemaining,
+						typeOfWordForRepeating));
 	}
 
-	public String createRemainingWordsText(int numberOfWordsRemaining) {
-		return Prompts.REMAINING_WORDS + " " + numberOfWordsRemaining + " "
-				+ Prompts.KANJI;
+	private String createRemainingWordsText(int numberOfWordsRemaining,
+			TypeOfWordForRepeating typeOfWordForRepeating) {
+		return String.format(Prompts.WORDS_LEFT_TO_REPEAT, JapaneseWritingUtilities
+						.getTextForTypeOfWordForRepeating(typeOfWordForRepeating),
+				numberOfWordsRemaining);
 	}
 
 	public void updateTime(String timePassed) {

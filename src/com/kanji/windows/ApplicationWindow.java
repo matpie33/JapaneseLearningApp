@@ -3,6 +3,7 @@ package com.kanji.windows;
 import com.guimaker.colors.BasicColors;
 import com.kanji.constants.enums.ApplicationPanels;
 import com.kanji.constants.enums.SavingStatus;
+import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.MenuTexts;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Titles;
@@ -18,7 +19,10 @@ import com.kanji.timer.TimeSpentHandler;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 @SuppressWarnings("serial")
 public class ApplicationWindow extends DialogWindow {
@@ -153,8 +157,7 @@ public class ApplicationWindow extends DialogWindow {
 
 	public void updateProblematicWordsAmount() {
 		startingPanel.updateProblematicWordsAmount(applicationController
-						.getProblematicWordsAmountBasedOnCurrentTab(),
-				startingPanel.getActiveWordsList().getListElementClass());
+				.getProblematicWordsAmountBasedOnCurrentTab());
 	}
 
 	public void updateTitle(String update) {
@@ -170,11 +173,12 @@ public class ApplicationWindow extends DialogWindow {
 		startingPanel.addProblematicKanjisButton();
 	}
 
-	public void showLearningStartDialog(int maximumNumber) {
+	public void showLearningStartDialog(
+			TypeOfWordForRepeating typeOfWordForRepeating) {
 
-		createDialog(
-				new LearningStartPanel(applicationController, maximumNumber),
-				Titles.LEARNING_START_DIALOG, false, Position.CENTER);
+		createDialog(new LearningStartPanel(applicationController,
+						typeOfWordForRepeating), Titles.LEARNING_START_DIALOG, false,
+				Position.CENTER);
 
 	}
 
@@ -247,7 +251,6 @@ public class ApplicationWindow extends DialogWindow {
 				.switchStateManager(activeProblematicWordsController);
 
 	}
-
 
 	public LoadingPanel showProgressDialog() {
 		LoadingPanel dialog = new LoadingPanel(Prompts.PROJECT_LOADING);

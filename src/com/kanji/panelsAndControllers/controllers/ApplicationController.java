@@ -447,11 +447,10 @@ public class ApplicationController
 
 	public void showLearningStartDialog() {
 
+		TypeOfWordForRepeating typeForRepeating = getActiveWordsListType();
 		repeatingWordsPanelController
-				.setTypeOfWordForRepeating(getTypeForRepeating());
-		parent.showLearningStartDialog(
-				parent.getStartingPanel().getActiveWordsList()
-						.getNumberOfWords());
+				.setTypeOfWordForRepeating(typeForRepeating);
+		parent.showLearningStartDialog(typeForRepeating);
 	}
 
 	public MyList<JapaneseWord> getJapaneseWords() {
@@ -609,7 +608,7 @@ public class ApplicationController
 		applicationStateManager = repeatingWordsPanelController;
 	}
 
-	private TypeOfWordForRepeating getTypeForRepeating() {
+	public TypeOfWordForRepeating getActiveWordsListType() {
 		MyList currentList = parent.getStartingPanel().getActiveWordsList();
 		Class listClass = currentList.getListElementClass();
 		TypeOfWordForRepeating typeOfWordForRepeating = null;

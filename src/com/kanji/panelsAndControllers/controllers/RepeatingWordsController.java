@@ -98,9 +98,9 @@ public class RepeatingWordsController
 				.setWordHint(getWordsSpecificController().getWordHint(word));
 	}
 
-	public void updateRemainingWordsText() {
+	private void updateRemainingWordsText() {
 		panelUpdater.updateRemainingWordsText(
-				getWordsSpecificController().getNumberOfWordsLeft());
+				getWordsSpecificController().getNumberOfWordsLeft(), currentTypeOfWordForRepeating);
 	}
 
 	private void finishRepeating() {

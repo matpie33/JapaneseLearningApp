@@ -2,7 +2,10 @@ package com.kanji.panelsAndControllers.panelUpdaters;
 
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.AbstractSimpleRow;
+import com.kanji.constants.enums.TypeOfWordForRepeating;
+import com.kanji.constants.strings.Prompts;
 import com.kanji.panelsAndControllers.panels.LearningStartPanel;
+import com.kanji.utilities.JapaneseWritingUtilities;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,8 +30,17 @@ public class LearningStartPanelUpdater {
 				.removeRowWithElements(panel.getProblematicWordsLabel());
 	}
 
-	public void updateSumOfWords(int sumOfWords) {
-		panel.updateSumOfWordsLabel(sumOfWords);
+	public void updateSumOfWords(int sumOfWords,
+			TypeOfWordForRepeating typeOfWordForRepeating) {
+		panel.getSumOfWordsLabel().setText(
+				createSumOfWordsText(sumOfWords, typeOfWordForRepeating));
+	}
+
+	private String createSumOfWordsText(int sumOfWords,
+			TypeOfWordForRepeating typeOfWordForRepeating) {
+		return String.format(Prompts.SUM_OF_WORDS_TO_BE_REPEATED,
+				JapaneseWritingUtilities.getTextForTypeOfWordForRepeating
+						(typeOfWordForRepeating),	sumOfWords);
 	}
 
 	public void removeRow(int rowNumber) {
@@ -91,5 +103,21 @@ public class LearningStartPanelUpdater {
 		});
 	}
 
+	public void setProblematicWordsAmountText(
+			TypeOfWordForRepeating typeOfWordForRepeating,
+			int numberOfProblematicWords) {
+		panel.getProblematicWordsAmountLabel().setText(
+				createProblematicWordsAmountText(typeOfWordForRepeating,
+						numberOfProblematicWords));
 
+	}
+
+	private String createProblematicWordsAmountText(
+			TypeOfWordForRepeating typeOfWordForRepeating,
+			int numberOfProblematicWords) {
+		return String.format(Prompts.PROBLEMATIC_WORDS_AMOUNT,
+				JapaneseWritingUtilities.getTextForTypeOfWordForRepeating(
+						typeOfWordForRepeating), numberOfProblematicWords);
+
+	}
 }

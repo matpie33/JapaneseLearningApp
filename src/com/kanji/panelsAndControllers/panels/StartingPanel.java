@@ -13,11 +13,11 @@ import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.context.WordTypeContext;
-import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.StartingController;
+import com.kanji.utilities.JapaneseWritingUtilities;
 import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
 
@@ -82,7 +82,6 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 
 	@Override
 	public void createElements() {
-		createInformationsPanel();
 
 		listToTabLabel.put("Powtórki kanji", kanjiRepeatingPanel);
 		listToTabLabel.put("Powtórki słówek", japaneseWordsRepeatingPanel);
@@ -102,6 +101,8 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 				applicationWindow.updateProblematicWordsAmount();
 			}
 		});
+
+		createInformationsPanel();
 
 		addHotkey(KeyModifiers.CONTROL, KeyEvent.VK_W, new AbstractAction() {
 			@Override
@@ -147,20 +148,13 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		saveInfo.setText(Prompts.SAVING_STATUS + savingStatus.getStatus());
 	}
 
-	public void updateProblematicWordsAmount(int problematicKanjisNumber,
-			Class activeWordsClass) {
-		String prefix;
-		if (activeWordsClass.equals(Kanji.class)) {
-			prefix = Prompts.PROBLEMATIC_KANJI;
-		}
-		else if (activeWordsClass.equals(JapaneseWord.class)) {
-			prefix = Prompts.PROBLEMATIC_WORDS;
-		}
-		else {
-			throw new IllegalArgumentException(
-					"Unknown active words class name: " + activeWordsClass);
-		}
-		problematicKanjis.setText(prefix + problematicKanjisNumber);
+	public void updateProblematicWordsAmount(int problematicKanjisNumber) {
+		String wordType = JapaneseWritingUtilities
+				.getTextForTypeOfWordForRepeating(
+						applicationController.getActiveWordsListType());
+		problematicKanjis.setText(
+				String.format(Prompts.PROBLEMATIC_WORDS_AMOUNT, wordType,
+						problematicKanjisNumber));
 	}
 
 	private List<AbstractButton> createButtons() {
@@ -253,8 +247,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		showProblematicKanjis = createShowProblematicKanjiButton();
 		changeSaveStatus(SavingStatus.NO_CHANGES);
 		updateProblematicWordsAmount(
-				applicationController.getProblematicKanjis().size(),
-				Kanji.class);
+				applicationController.getProblematicKanjis().size());
 	}
 
 	private JButton createShowProblematicKanjiButton() {

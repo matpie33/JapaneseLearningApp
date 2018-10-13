@@ -7,12 +7,13 @@ public class Prompts {
 	public static final String ADD_NUMBER = "Podaj numerek";
 	public static final String SEARCH_DIALOG = "Wpisz szukane słowo";
 	public static final String LEARNING_START = "Proszę wpisać numery słów, które chcesz powtórzyć (włącznie).";
-	public static final String RANGE_SUM = "Łączna liczba kanji: ";
-	public static final String PROBLEMATIC_KANJI = "Problematycznych kanji: ";
-	public static final String PROBLEMATIC_WORDS = "Problematycznych słów: ";
+	public static final String SUM_OF_WORDS_TO_BE_REPEATED = "Łączna liczba %s: %d";
+	public static final String PROBLEMATIC_WORDS_AMOUNT =
+			"Problematycznych " + "%s: %d";
 	public static final String REPEATING_DONE = "Koniec słów do powtórzenia.";
-	public static final String REMAINING_WORDS = "Pozostało:";
-	public static final String KANJI = "kanji.";
+	public static final String WORDS_LEFT_TO_REPEAT = "Pozostało %s: %d.";
+	public static final String KANJI = "kanji";
+	public static final String JAPANESE_WORD = "japońskich słów";
 	public static final String SAVING_STATUS = "Status zapisywania: ";
 	public static final String REPEATING_TIME = "Czas powtórek wyniósł %s.";
 	public static final String REPEATING_TIME_NOT_AVAILABLE = "nieokreślony";
