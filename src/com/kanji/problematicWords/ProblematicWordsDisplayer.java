@@ -11,7 +11,6 @@ public interface ProblematicWordsDisplayer<Element extends ListElement> {
 
 	public void browseWord(WordRow<Element> wordRow);
 
-	public WordRow<Element> createWordRow(Element listElement, int rowNumber);
 
 	public void initializeWebPages();
 

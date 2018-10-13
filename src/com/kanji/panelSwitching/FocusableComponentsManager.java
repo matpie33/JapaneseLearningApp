@@ -58,6 +58,12 @@ public class FocusableComponentsManager {
 		addFocus(panelToWrap, panelToWrap);
 	}
 
+	public void makeFocusable (JComponent... panels){
+		for (JComponent panel : panels) {
+			makeFocusable(panel);
+		}
+	}
+
 	private void addFocusAndMouseListener(Component container,
 			JComponent componentToFocus) {
 		container.addMouseListener(new MouseAdapter() {

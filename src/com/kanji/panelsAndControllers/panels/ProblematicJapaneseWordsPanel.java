@@ -107,6 +107,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 					.createRowStartingFromColumn(0, FillType.NONE, kanjiLabel,
 							keywordLabel, goToKanjiStoryButton));
 		}
+		kanjiInformationPanel.updateView();
 	}
 
 	private AbstractButton createGoToKanjiStoryButton(KanjiData kanjiData) {
@@ -120,11 +121,6 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 												kanjiData.getKanjiCharacter()));
 	}
 
-	private void markPanelsAsFocusable(JComponent... panels) {
-		for (JComponent panel : panels) {
-			focusableComponentsManager.makeFocusable(panel);
-		}
-	}
 
 	private JapaneseWordPanelCreator createJapanesePanelCreator(
 			ApplicationWindow applicationWindow) {
@@ -151,7 +147,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 
 
 
-		markPanelsAsFocusable(problematicWordsList.getPanel(),
+		focusableComponentsManager.makeFocusable(problematicWordsList.getPanel(),
 				japaneseEnglishDictionaryPanel.getWebPanel(),
 				englishPolishDictionaryPanel.getWebPanel(),
 				kanjiInformationPanel.getPanel(),

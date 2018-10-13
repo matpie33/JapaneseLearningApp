@@ -12,6 +12,7 @@ import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.panelsAndControllers.panels.ProblematicKanjiPanel;
 import com.kanji.utilities.KanjiCharactersReader;
+import com.kanji.webPanel.KanjiKoohiWebPageHandler;
 import com.kanji.windows.ApplicationWindow;
 
 import java.io.IOException;
@@ -28,25 +29,24 @@ public class ProblematicKanjiDisplayer
 		implements ProblematicWordsDisplayer<Kanji>, ContextOwner {
 
 	private ProblematicKanjiPanel problematicKanjiPanel;
-	private CookieManager cookieManager;
+
 	private KanjiContext kanjiContext;
 	private KanjiCharactersReader kanjiCharactersReader;
 	private MyList<Kanji> wordsToReviewList;
-	private final String KANJI_KOOHI_LOGIN_COOKIE = "RevTK";
+	private KanjiKoohiWebPageHandler kanjiKoohiWebPageHandler;
 
 	public ProblematicKanjiDisplayer(ApplicationWindow applicationWindow,
 			ProblematicWordsController controller) {
 
-		problematicKanjiPanel = new ProblematicKanjiPanel(
-				applicationWindow, controller,
-				this);
-		cookieManager = new CookieManager();
-		CookieHandler.setDefault(cookieManager);
+		problematicKanjiPanel = new ProblematicKanjiPanel(applicationWindow,
+				controller, this);
+
 		kanjiContext = KanjiContext.emptyContext();
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		kanjiCharactersReader.loadKanjisIfNeeded();
 		wordsToReviewList = problematicKanjiPanel.getWordsToReviewList();
 		controller.setProblematicWordsDisplayer(this);
+		kanjiKoohiWebPageHandler = KanjiKoohiWebPageHandler.getInstance();
 	}
 
 	@Override
@@ -66,11 +66,6 @@ public class ProblematicKanjiDisplayer
 	}
 
 	@Override
-	public WordRow<Kanji> createWordRow(Kanji listElement, int rowNumber) {
-		return new WordRow<>(listElement, rowNumber);
-	}
-
-	@Override
 	public WebContext getContext() {
 		return new WebContext(kanjiContext.getKanjiCharacter(),
 				Prompts.NO_KANJI_TO_DISPLAY);
@@ -78,13 +73,11 @@ public class ProblematicKanjiDisplayer
 
 	@Override
 	public void initializeWebPages() {
-		String pageToRender = isLoginDataRemembered() ?
-				Urls.KANJI_KOOHI_MAIN_PAGE :
-				Urls.KANJI_KOOHI_LOGIN_PAGE;
 		problematicKanjiPanel.getEnglishPolishDictionaryWebPanel()
 				.showPageWithoutGrabbingFocus(Urls.DICTIONARY_PL_EN_MAIN_PAGE);
 		problematicKanjiPanel.getKanjiKoohiWebPanel()
-				.showPageWithoutGrabbingFocus(pageToRender);
+				.showPageWithoutGrabbingFocus(
+						kanjiKoohiWebPageHandler.getInitialPage());
 	}
 
 	@Override
@@ -98,47 +91,19 @@ public class ProblematicKanjiDisplayer
 				.getFocusedComponent().equals(wordsToReviewList.getPanel());
 	}
 
-	private boolean isLoginDataRemembered() {
-		for (HttpCookie cookie : cookieManager.getCookieStore().getCookies()) {
-			if (isCookieForLoginDataFromKoohiiPage(cookie)) {
-				return true;
-			}
-		}
-		return false;
-	}
 
-	public String getKanjiKoohiLoginCookieHeader() {
-		List<HttpCookie> cookies = cookieManager.getCookieStore().getCookies();
-		for (HttpCookie cookie : cookies) {
-			if (isCookieForLoginDataFromKoohiiPage(cookie)) {
-				return cookie.toString();
-			}
-		}
-		return "";
-	}
-
-	private boolean isCookieForLoginDataFromKoohiiPage(HttpCookie cookie) {
-
-		return cookie.getName().equals(KANJI_KOOHI_LOGIN_COOKIE) && cookie
-				.getDomain().equals("kanji.koohii.com");
-	}
-
-	public void setLoginDataCookie(String loginDataCookie) throws IOException {
-		Map<String, List<String>> headers = new LinkedHashMap<>();
-		headers.put("Set-Cookie", Arrays.asList(loginDataCookie));
-		List<HttpCookie> cookies = cookieManager.getCookieStore().getCookies();
-		for (HttpCookie cookie : cookies) {
-			if (cookie.getName().equals(KANJI_KOOHI_LOGIN_COOKIE)) {
-				return;
-			}
-		}
-		cookieManager.put(URI.create(Urls.KANJI_KOOHI_LOGIN_PAGE), headers);
-
-	}
 
 	@Override
 	public void focusPreviouslyFocusedElement() {
 		problematicKanjiPanel.getFocusableComponentsManager()
 				.focusPreviouslyFocusedElement();
+	}
+
+	public String getKanjiKoohiLoginCookieHeader() {
+		return kanjiKoohiWebPageHandler.getKanjiKoohiLoginCookieHeader();
+	}
+
+	public void setLoginDataCookie(String loginDataCookie) throws IOException {
+		kanjiKoohiWebPageHandler.setLoginDataCookie(loginDataCookie);
 	}
 }

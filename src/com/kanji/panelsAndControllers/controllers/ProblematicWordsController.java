@@ -52,10 +52,7 @@ public class ProblematicWordsController<Word extends ListElement>
 	public void setProblematicWordsDisplayer(
 			ProblematicWordsDisplayer<Word> problematicWordsDisplayer) {
 		this.problematicWordsDisplayer = problematicWordsDisplayer;
-		problematicWordsDisplayer.getPanel().setMaximize(true);
-		getPanel().getDialog().maximize();
 		wordsToReviewList = problematicWordsDisplayer.getWordsToReviewList();
-
 	}
 
 	public void initialize() {
@@ -74,9 +71,8 @@ public class ProblematicWordsController<Word extends ListElement>
 		for (int i = 0; i < notReviewedWords.size(); i++) {
 			Word notReviewedWord = notReviewedWords.get(i);
 			wordsToReviewList.addWord(notReviewedWord);
-			this.notReviewedWords.add(problematicWordsDisplayer
-					.createWordRow(notReviewedWord,
-							firstUnreviewedWordRowNumber + i));
+			this.notReviewedWords.add(new WordRow<>(notReviewedWord,
+					firstUnreviewedWordRowNumber + i));
 		}
 	}
 
@@ -115,8 +111,8 @@ public class ProblematicWordsController<Word extends ListElement>
 
 	private void addWord(Word word) {
 		wordsToReviewList.addWord(word, InputGoal.NO_INPUT);
-		WordRow wordRow = problematicWordsDisplayer
-				.createWordRow(word, wordsToReviewList.getNumberOfWords() - 1);
+		WordRow wordRow = new WordRow<>(word,
+				wordsToReviewList.getNumberOfWords() - 1);
 		if (!notReviewedWords.contains(wordRow)) {
 			notReviewedWords.add(wordRow);
 		}
@@ -155,7 +151,7 @@ public class ProblematicWordsController<Word extends ListElement>
 
 	}
 
-	public AbstractAction createActionShowNextWordOrCloseDialog(
+	private AbstractAction createActionShowNextWord(
 			MoveDirection direction) {
 		return new AbstractAction() {
 			@Override
@@ -242,9 +238,8 @@ public class ProblematicWordsController<Word extends ListElement>
 		for (Word listWord : reviewedWords) {
 			wordsToReviewList.addWord(listWord);
 			wordsToReviewList.highlightRow(i);
-			this.notReviewedWords.add(problematicWordsDisplayer
-					.createWordRow(listWord,
-							wordsToReviewList.getNumberOfWords() - 1));
+			this.notReviewedWords.add(new WordRow<>(listWord,
+					wordsToReviewList.getNumberOfWords() - 1));
 			i++;
 		}
 		nextWordToReview = i;
@@ -287,14 +282,14 @@ public class ProblematicWordsController<Word extends ListElement>
 
 	private void initializeActionBrowseNextWord() {
 		initializeAction(KeyEvent.VK_SPACE,
-				createActionShowNextWordOrCloseDialog(MoveDirection.BELOW),
+				createActionShowNextWord(MoveDirection.BELOW),
 				HotkeysDescriptions.SHOW_NEXT_PROBLEMATIC_WORD);
 
 	}
 
 	private void initializeActionBrowsePreviousWord() {
 		initializeAction(KeyEvent.VK_BACK_SPACE,
-				createActionShowNextWordOrCloseDialog(MoveDirection.ABOVE),
+				createActionShowNextWord(MoveDirection.ABOVE),
 				HotkeysDescriptions.SHOW_PREVIOUS_PROBLEMATIC_WORD);
 	}
 

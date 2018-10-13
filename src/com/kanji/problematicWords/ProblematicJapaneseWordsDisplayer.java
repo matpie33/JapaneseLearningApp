@@ -15,6 +15,7 @@ import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.panelsAndControllers.panels.ProblematicJapaneseWordsPanel;
 import com.kanji.utilities.JapaneseWritingUtilities;
 import com.kanji.utilities.KanjiCharactersReader;
+import com.kanji.webPanel.KanjiKoohiWebPageHandler;
 import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
@@ -35,6 +36,7 @@ public class ProblematicJapaneseWordsDisplayer
 	private MyList<Kanji> kanjiList;
 	private ApplicationWindow applicationWindow;
 	private ProblematicJapaneseWordsPanelUpdater problematicJapaneseWordsPanelUpdater;
+	private KanjiKoohiWebPageHandler kanjiKoohiWebPageHandler;
 
 	public ProblematicJapaneseWordsDisplayer(
 			ApplicationWindow applicationWindow,
@@ -47,6 +49,7 @@ public class ProblematicJapaneseWordsDisplayer
 		kanjiList = applicationWindow.getApplicationController().getKanjiList();
 		problematicJapaneseWordsPanelUpdater = new ProblematicJapaneseWordsPanelUpdater(
 				problematicJapaneseWordsPanel);
+		kanjiKoohiWebPageHandler = KanjiKoohiWebPageHandler.getInstance();
 
 	}
 
@@ -89,7 +92,7 @@ public class ProblematicJapaneseWordsDisplayer
 		};
 	}
 
-	public void showKoohiPage(String kanjiData) {
+	private void showKoohiPage(String kanjiData) {
 		String uriText = Urls.KANJI_KOOHI_REVIEW_BASE_PAGE;
 		uriText += kanjiData;
 		problematicJapaneseWordsPanel.getKanjiKoohiWebPanel()
@@ -111,33 +114,14 @@ public class ProblematicJapaneseWordsDisplayer
 	}
 
 	@Override
-	public WordRow createWordRow(JapaneseWord listElement, int rowNumber) {
-		return new WordRow(listElement, rowNumber);
-	}
-
-	@Override
 	public void initializeWebPages() {
 		problematicJapaneseWordsPanel.getJapaneseEnglishDictionaryPanel()
 				.showPage(Urls.TANGORIN_URL);
 		problematicJapaneseWordsPanel.getEnglishPolishDictionaryPanel()
 				.showPage(Urls.DICTIONARY_PL_EN_MAIN_PAGE);
-		String pageToRender = isLoginDataRemembered() ?
-				Urls.KANJI_KOOHI_MAIN_PAGE :
-				Urls.KANJI_KOOHI_LOGIN_PAGE;
 		problematicJapaneseWordsPanel.getKanjiKoohiWebPanel()
-				.showPageWithoutGrabbingFocus(pageToRender);
-	}
-
-	private boolean isLoginDataRemembered() {
-		//TODO duplicated code from problematic kanji displayer
-		CookieManager cookieManager = (CookieManager) CookieHandler
-				.getDefault();
-		for (HttpCookie cookies : cookieManager.getCookieStore().getCookies()) {
-			if (cookies.getName().equals("koohii")) {
-				return true;
-			}
-		}
-		return false;
+				.showPageWithoutGrabbingFocus(
+						kanjiKoohiWebPageHandler.getInitialPage());
 	}
 
 	@Override
