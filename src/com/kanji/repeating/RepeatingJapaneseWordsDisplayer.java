@@ -44,7 +44,7 @@ public class RepeatingJapaneseWordsDisplayer
 	private void initializeHintTypeValues() {
 		hintTypeIntValues = new HashMap<>();
 		hintTypeIntValues.put(1, japaneseWordInformation -> new HashSet<>(
-				Arrays.asList(japaneseWordInformation.getMeaning())));
+				Collections.singletonList(japaneseWordInformation.getMeaning())));
 		hintTypeIntValues.put(2, JapaneseWord::getKanaWritings);
 		hintTypeIntValues.put(3, JapaneseWord::getKanjiWritings);
 

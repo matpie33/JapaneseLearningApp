@@ -8,10 +8,7 @@ import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
-import com.kanji.constants.strings.ButtonsNames;
-import com.kanji.constants.strings.HotkeysDescriptions;
-import com.kanji.constants.strings.Prompts;
-import com.kanji.constants.strings.Titles;
+import com.kanji.constants.strings.*;
 import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
@@ -31,6 +28,9 @@ import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.HttpCookie;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -41,13 +41,15 @@ public class ProblematicJapaneseWordsDisplayer
 	private ProblematicJapaneseWordsPanel problematicJapaneseWordsPanel;
 	private MyList<Kanji> kanjiInformations;
 	private JapaneseWordPanelCreator japaneseWordPanelCreator;
+	private ProblematicWordsController controller;
 
 	public ProblematicJapaneseWordsDisplayer(
 			ApplicationWindow applicationWindow,
 			ProblematicWordsController controller) {
 
+		this.controller = controller;
 		problematicJapaneseWordsPanel = new ProblematicJapaneseWordsPanel(
-				controller, applicationWindow, this);
+				controller, applicationWindow);
 		japaneseWordPanelCreator = createJapanesePanelCreator(
 				applicationWindow);
 		this.wordsToReviewList = new MyList<>(
@@ -60,6 +62,7 @@ public class ProblematicJapaneseWordsDisplayer
 						.withAdditionalNavigationButtons(
 								createButtonSearchWord()),
 				JapaneseWord.getInitializer());
+		problematicJapaneseWordsPanel.setList(wordsToReviewList);
 		wordsToReviewList
 				.addListObserver(applicationWindow.getApplicationController());
 		japaneseWordPanelCreator.setWordsList(wordsToReviewList);
@@ -132,15 +135,10 @@ public class ProblematicJapaneseWordsDisplayer
 							new AbstractAction() {
 								@Override
 								public void actionPerformed(ActionEvent e) {
-									if (kanjiInformation == null) {
-										problematicJapaneseWordsPanel
-												.showKoohiPage(kanji);
-									}
-									else {
-										problematicJapaneseWordsPanel
-												.showKoohiPage(kanjiInformation
-														.getId());
-									}
+									String text = kanjiInformation == null ?
+											kanji :
+											"" + kanjiInformation.getId();
+									showKoohiPage(text);
 
 								}
 							});
@@ -151,6 +149,13 @@ public class ProblematicJapaneseWordsDisplayer
 							keywordLabel, goToButton));
 		}
 		panel.updateView();
+	}
+
+	public void showKoohiPage(String kanjiData) {
+		String uriText = Urls.KANJI_KOOHI_REVIEW_BASE_PAGE;
+		uriText += kanjiData;
+		problematicJapaneseWordsPanel.getKanjiKoohiWebPanel()
+				.showPageWithoutGrabbingFocus(uriText);
 	}
 
 	private Set<String> extractKanjis(JapaneseWord japaneseWord) {
@@ -174,7 +179,27 @@ public class ProblematicJapaneseWordsDisplayer
 
 	@Override
 	public void initialize() {
-		problematicJapaneseWordsPanel.initialize();
+		problematicJapaneseWordsPanel.getJapaneseEnglishDictionaryPanel()
+				.showPage(Urls.TANGORIN_URL);
+		problematicJapaneseWordsPanel.getEnglishPolishDictionaryPanel()
+				.showPage(Urls.DICTIONARY_PL_EN_MAIN_PAGE);
+		String pageToRender = isLoginDataRemembered() ?
+				Urls.KANJI_KOOHI_MAIN_PAGE :
+				Urls.KANJI_KOOHI_LOGIN_PAGE;
+		problematicJapaneseWordsPanel.getKanjiKoohiWebPanel()
+				.showPageWithoutGrabbingFocus(pageToRender);
+	}
+
+	private boolean isLoginDataRemembered() {
+		//TODO duplicated code from problematic kanji displayer
+		CookieManager cookieManager = (CookieManager) CookieHandler
+				.getDefault();
+		for (HttpCookie cookies : cookieManager.getCookieStore().getCookies()) {
+			if (cookies.getName().equals("koohii")) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -187,20 +212,30 @@ public class ProblematicJapaneseWordsDisplayer
 				.getListInputsSelectionManager().getSelectedInput().getText();
 
 		if (!currentlySelectedWord.isEmpty()) {
-			problematicJapaneseWordsPanel.searchWord(currentlySelectedWord);
+			problematicJapaneseWordsPanel.getJapaneseEnglishDictionaryPanel()
+					.showPageWithoutGrabbingFocus(
+							createUrlForWordInJapaneseEnglishDictionary(
+									currentlySelectedWord));
 		}
 		else {
 			//TODO add message about not selected words
 		}
 	}
 
+	private String createUrlForWordInJapaneseEnglishDictionary(
+			String currentlySelectedWord) {
+		return Urls.TANGORIN_URL + "/general/" + currentlySelectedWord;
+	}
+
 	@Override
 	public boolean isListPanelFocused() {
-		return problematicJapaneseWordsPanel.isListPanelFocused();
+		return problematicJapaneseWordsPanel.getFocusableComponentsManager()
+				.getFocusedComponent().equals(wordsToReviewList.getPanel());
 	}
 
 	@Override
 	public void focusPreviouslyFocusedElement() {
-		problematicJapaneseWordsPanel.focusPreviouslyFocusedElement();
+		problematicJapaneseWordsPanel.getFocusableComponentsManager()
+				.focusPreviouslyFocusedElement();
 	}
 }
