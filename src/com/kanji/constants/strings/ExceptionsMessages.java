@@ -2,6 +2,9 @@ package com.kanji.constants.strings;
 
 public class ExceptionsMessages {
 
+	public static final String NO_SELECTED_WORD_TO_SEARCH_IN_DICTIONARY =
+			"Nie zaznaczono słowa, które można by wyszukać w słowniku "
+					+ "japońsko - angielskim.";
 	public static final String WORD_NOT_FOUND_EXCEPTION =
 			"Nie znaleziono podanego słowa. Być może zaznaczono złą opcję, "
 					+ "a może jest błąd we wpisanym słowie.";

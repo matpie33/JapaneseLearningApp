@@ -86,7 +86,7 @@ public class ProblematicKanjiDisplayer
 	}
 
 	@Override
-	public void initialize() {
+	public void initializeWebPages() {
 		String pageToRender;
 		if (isLoginDataRemembered()) {
 			pageToRender = Urls.KANJI_KOOHI_MAIN_PAGE;

@@ -59,8 +59,8 @@ public class ProblematicWordsController<Word extends ListElement>
 	}
 
 	public void initialize() {
-		wordsToReviewList.cleanWords();
-		problematicWordsDisplayer.initialize();
+
+		problematicWordsDisplayer.initializeWebPages();
 	}
 
 	public void createProblematicWordsList(List<Word> reviewedWords,
@@ -253,11 +253,6 @@ public class ProblematicWordsController<Word extends ListElement>
 		}
 		goToNextResource();
 
-	}
-
-	public Class getWordType() {
-		return problematicWordsDisplayer.getWordsToReviewList()
-				.getListElementClass();
 	}
 
 	public boolean isDialogHidden() {
