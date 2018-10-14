@@ -227,7 +227,7 @@ public class ApplicationWindow extends DialogWindow {
 
 	public void showProblematicWordsDialog() {
 
-		if (!activeProblematicWordsController.hasProblematicWords()) {
+		if (activeProblematicWordsController.isProblematicWordsListEmpty()) {
 			return;
 		}
 		AbstractPanelWithHotkeysInfo problematicWordsPanel = activeProblematicWordsController

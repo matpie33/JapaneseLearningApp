@@ -1,7 +1,6 @@
 package com.kanji.panelsAndControllers.controllers;
 
 import com.guimaker.enums.MoveDirection;
-import com.guimaker.utilities.KeyModifiers;
 import com.kanji.constants.enums.ApplicationPanels;
 import com.kanji.constants.enums.ApplicationSaveableState;
 import com.kanji.constants.enums.InputGoal;
@@ -19,7 +18,6 @@ import com.kanji.saving.ApplicationStateManager;
 import com.kanji.saving.ProblematicKanjisState;
 import com.kanji.saving.SavingInformation;
 import com.kanji.windows.ApplicationWindow;
-import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -56,30 +54,7 @@ public class ProblematicWordsController<Word extends ListElement>
 	}
 
 	public void initialize() {
-
 		problematicWordsDisplayer.initializeWebPages();
-	}
-
-	public void createProblematicWordsList(List<Word> reviewedWords,
-			List<Word> notReviewedWords) {
-		for (int i = 0; i < reviewedWords.size(); i++) {
-			Word reviewedWord = reviewedWords.get(i);
-			wordsToReviewList.addWord(reviewedWord);
-
-		}
-		int firstUnreviewedWordRowNumber = reviewedWords.size();
-		for (int i = 0; i < notReviewedWords.size(); i++) {
-			Word notReviewedWord = notReviewedWords.get(i);
-			wordsToReviewList.addWord(notReviewedWord);
-			this.notReviewedWords.add(new WordRow<>(notReviewedWord,
-					firstUnreviewedWordRowNumber + i));
-		}
-	}
-
-	public void highlightReviewedWords(int numberOfReviewedWords) {
-		for (int i = 0; i < numberOfReviewedWords; i++) {
-			wordsToReviewList.highlightRow(i);
-		}
 	}
 
 	public void addProblematicWords(Set<Word> problematicWords) {
@@ -132,7 +107,7 @@ public class ProblematicWordsController<Word extends ListElement>
 
 	}
 
-	public boolean haveAllWordsBeenRepeated() {
+	private boolean haveAllWordsBeenRepeated() {
 		return wordsReviewed;
 	}
 
@@ -194,9 +169,6 @@ public class ProblematicWordsController<Word extends ListElement>
 				wordsToReviewList.getNumberOfWords();
 	}
 
-	public MyList getWordsToReviewList() {
-		return wordsToReviewList;
-	}
 
 	@Override
 	public SavingInformation getApplicationState() {
@@ -250,14 +222,6 @@ public class ProblematicWordsController<Word extends ListElement>
 
 	}
 
-	public boolean isDialogHidden() {
-		return !problematicWordsDisplayer.getPanel().isDisplayable();
-	}
-
-	public DialogWindow getDialog() {
-		return problematicWordsDisplayer.getPanel().getDialog();
-	}
-
 	public AbstractPanelWithHotkeysInfo getPanel() {
 		return problematicWordsDisplayer.getPanel();
 	}
@@ -270,12 +234,6 @@ public class ProblematicWordsController<Word extends ListElement>
 
 	private void initializeAction(int hotkey, AbstractAction action,
 			String actionDescription) {
-		getPanel().addHotkey(hotkey, action, getPanel().getPanel(),
-				actionDescription);
-	}
-
-	private void initializeAction(KeyModifiers keyModifier, int hotkey,
-			AbstractAction action, String actionDescription) {
 		getPanel().addHotkey(hotkey, action, getPanel().getPanel(),
 				actionDescription);
 	}
@@ -303,14 +261,10 @@ public class ProblematicWordsController<Word extends ListElement>
 				});
 	}
 
-	public Word getCurrentlySelectedWord() {
-		return wordsToReviewList.getWordInRow(nextWordToReview);
-	}
-
 	@Override
 	public void update(Word word,
 			ListElementModificationType modificationType) {
-		if (!hasProblematicWords()) {
+		if (isProblematicWordsListEmpty()) {
 			return;
 		}
 		wordsToReviewList.update(word, modificationType);
@@ -333,8 +287,8 @@ public class ProblematicWordsController<Word extends ListElement>
 
 	}
 
-	public boolean hasProblematicWords() {
-		return !wordsToReviewList.getWords().isEmpty();
+	public boolean isProblematicWordsListEmpty() {
+		return wordsToReviewList.getWords().isEmpty();
 	}
 
 	private boolean notReviewedWordsContainWord(Word word) {

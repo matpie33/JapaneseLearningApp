@@ -29,14 +29,13 @@ public class ProblematicKanjiDisplayer
 		implements ProblematicWordsDisplayer<Kanji>, ContextOwner {
 
 	private ProblematicKanjiPanel problematicKanjiPanel;
-
 	private KanjiContext kanjiContext;
 	private KanjiCharactersReader kanjiCharactersReader;
 	private MyList<Kanji> wordsToReviewList;
 	private KanjiKoohiWebPageHandler kanjiKoohiWebPageHandler;
 
 	public ProblematicKanjiDisplayer(ApplicationWindow applicationWindow,
-			ProblematicWordsController controller) {
+			ProblematicWordsController<Kanji> controller) {
 
 		problematicKanjiPanel = new ProblematicKanjiPanel(applicationWindow,
 				controller, this);

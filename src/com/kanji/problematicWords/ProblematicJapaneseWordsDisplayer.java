@@ -45,10 +45,10 @@ public class ProblematicJapaneseWordsDisplayer
 		this.applicationWindow = applicationWindow;
 		problematicJapaneseWordsPanel = new ProblematicJapaneseWordsPanel(
 				controller, applicationWindow, this);
-		controller.setProblematicWordsDisplayer(this);
 		kanjiList = applicationWindow.getApplicationController().getKanjiList();
 		problematicJapaneseWordsPanelUpdater = new ProblematicJapaneseWordsPanelUpdater(
 				problematicJapaneseWordsPanel);
+		controller.setProblematicWordsDisplayer(this);
 		kanjiKoohiWebPageHandler = KanjiKoohiWebPageHandler.getInstance();
 
 	}
