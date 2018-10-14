@@ -225,7 +225,7 @@ public class ApplicationWindow extends DialogWindow {
 		showProblematicWordsDialog();
 	}
 
-	public void showProblematicWordsDialog() {
+	private void showProblematicWordsDialog() {
 
 		if (activeProblematicWordsController.isProblematicWordsListEmpty()) {
 			return;
@@ -233,8 +233,6 @@ public class ApplicationWindow extends DialogWindow {
 		AbstractPanelWithHotkeysInfo problematicWordsPanel = activeProblematicWordsController
 				.getPanel();
 		if (!problematicWordsPanel.isReady()) {
-			activeProblematicWordsController.initializeHotkeyActions();
-			activeProblematicWordsController.initializeWindowListener();
 			panelsByNames.put(ApplicationPanels.PROBLEMATIC_WORDS_PANEL
 					.getPanelName(), problematicWordsPanel);
 			//TODO the approach with enum (application panels) is not extensible

@@ -32,7 +32,7 @@ public class ProblematicWordsController<Word extends ListElement>
 	private ApplicationController applicationController;
 	private ApplicationWindow applicationWindow;
 	private ProblematicWordsDisplayer<Word> problematicWordsDisplayer;
-	private boolean wordsReviewed = false;
+	private boolean wordsReviewFinished = false;
 	private TypeOfWordForRepeating typeOfWordForRepeating;
 
 	public ProblematicWordsController(ApplicationWindow applicationWindow) {
@@ -42,10 +42,10 @@ public class ProblematicWordsController<Word extends ListElement>
 
 	public void setProblematicWordsDisplayer(
 			ProblematicWordsDisplayer<Word> problematicWordsDisplayer,
-			TypeOfWordForRepeating japaneseWords) {
+			TypeOfWordForRepeating typeOfWordForRepeating) {
 		this.problematicWordsDisplayer = problematicWordsDisplayer;
 		wordsToReviewList = problematicWordsDisplayer.getWordsToReviewList();
-		this.typeOfWordForRepeating = japaneseWords;
+		this.typeOfWordForRepeating = typeOfWordForRepeating;
 	}
 
 	public void initialize() {
@@ -54,7 +54,7 @@ public class ProblematicWordsController<Word extends ListElement>
 
 	public void addProblematicWordsAndHighlightFirst(
 			Set<Word> problematicWords) {
-		if (haveAllWordsBeenRepeated()) {
+		if (haveAllWordsBeenReviewed()) {
 			wordsToReviewList.cleanWords();
 		}
 		else if (!wordsToReviewList.isEmpty()) {
@@ -65,7 +65,7 @@ public class ProblematicWordsController<Word extends ListElement>
 		}
 		nextWordToReview = 0;
 
-		wordsReviewed = false;
+		wordsReviewFinished = false;
 		for (Word word : problematicWords) {
 			addWord(word);
 		}
@@ -91,8 +91,8 @@ public class ProblematicWordsController<Word extends ListElement>
 				wordsToReviewList.get1BasedRowNumberOfWord(word) - 1);
 	}
 
-	private boolean haveAllWordsBeenRepeated() {
-		return wordsReviewed;
+	private boolean haveAllWordsBeenReviewed() {
+		return wordsReviewFinished;
 	}
 
 	public AbstractAction exitProblematicWordsPanel() {
@@ -100,7 +100,7 @@ public class ProblematicWordsController<Word extends ListElement>
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				applicationWindow.enableShowProblematicWordsButton();
-				if (haveAllWordsBeenRepeated()) {
+				if (haveAllWordsBeenReviewed()) {
 					applicationController.finishedRepeating();
 					applicationController.saveProject();
 				}
@@ -110,7 +110,7 @@ public class ProblematicWordsController<Word extends ListElement>
 
 	}
 
-	private AbstractAction createActionShowNextWord(MoveDirection direction) {
+	public AbstractAction createActionShowNextWord(MoveDirection direction) {
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -133,7 +133,7 @@ public class ProblematicWordsController<Word extends ListElement>
 			return;
 		}
 		if (nextWordToReview == wordsToReviewList.getNumberOfWords() - 1) {
-			wordsReviewed = true;
+			wordsReviewFinished = true;
 		}
 		if (nextWordToReview == wordsToReviewList.getNumberOfWords()) {
 			applicationWindow
@@ -146,21 +146,15 @@ public class ProblematicWordsController<Word extends ListElement>
 
 	}
 
-	public int getNumberOfWords() {
-		return wordsToReviewList == null ?
-				0 :
-				wordsToReviewList.getNumberOfWords();
-	}
-
 	@Override
 	public SavingInformation getApplicationState() {
-		ProblematicWordsState<Word> information = new ProblematicWordsState<>(
+		ProblematicWordsState<Word> problematicWordsState = new ProblematicWordsState<>(
 				wordsToReviewList.getHighlightedWords(),
 				wordsToReviewList.getNotHighlightedWords());
 
 		SavingInformation savingInformation = applicationController
 				.getApplicationState();
-		savingInformation.setProblematicWordsState(information,
+		savingInformation.setProblematicWordsState(problematicWordsState,
 				typeOfWordForRepeating.getAssociatedSaveableState());
 
 		return savingInformation;
@@ -197,40 +191,7 @@ public class ProblematicWordsController<Word extends ListElement>
 		return problematicWordsDisplayer.getPanel();
 	}
 
-	public void initializeHotkeyActions() {
-		initializeActionBrowseNextWord();
-		initializeActionBrowsePreviousWord();
-		//TODO this doesn't have to be public, we can do it whenever panel is ready
-	}
 
-	private void initializeAction(int hotkey, AbstractAction action,
-			String actionDescription) {
-		getPanel().addHotkey(hotkey, action, getPanel().getPanel(),
-				actionDescription);
-	}
-
-	private void initializeActionBrowseNextWord() {
-		initializeAction(KeyEvent.VK_SPACE,
-				createActionShowNextWord(MoveDirection.BELOW),
-				HotkeysDescriptions.SHOW_NEXT_PROBLEMATIC_WORD);
-
-	}
-
-	private void initializeActionBrowsePreviousWord() {
-		initializeAction(KeyEvent.VK_BACK_SPACE,
-				createActionShowNextWord(MoveDirection.ABOVE),
-				HotkeysDescriptions.SHOW_PREVIOUS_PROBLEMATIC_WORD);
-	}
-
-	public void initializeWindowListener() {
-		getPanel().getDialog().getContainer()
-				.addWindowListener(new WindowAdapter() {
-					@Override
-					public void windowClosed(WindowEvent e) {
-						exitProblematicWordsPanel();
-					}
-				});
-	}
 
 	@Override
 	public void update(Word word,

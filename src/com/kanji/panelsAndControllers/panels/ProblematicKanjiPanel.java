@@ -34,25 +34,24 @@ import java.awt.event.KeyEvent;
 
 public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
-	private ProblematicWordsController<Kanji> controller;
 	private WebPagePanel englishPolishDictionaryWebPanel;
 	private WebPagePanel kanjiKoohiWebPanel;
 	private MyList<Kanji> wordsToReviewList;
 	private FocusableComponentsManager focusableComponentsManager;
+	private ProblematicWordsController<Kanji> controller;
 
 	public ProblematicKanjiPanel(ApplicationWindow parentDialog,
 			ProblematicWordsController<Kanji> controller,
 			ContextOwner kanjiContextContextOwner) {
-		this.parentDialog = parentDialog;
-		this.controller = controller;
 
+		focusableComponentsManager = new FocusableComponentsManager(getPanel());
+		this.controller = controller;
 		englishPolishDictionaryWebPanel = new WebPagePanel(
 				kanjiContextContextOwner, null);
 		kanjiKoohiWebPanel = new WebPagePanel(kanjiContextContextOwner,
 				new ConnectionFailKanjiOfflinePage(
 						ApplicationWindow.getKanjiFont()));
-		focusableComponentsManager = new FocusableComponentsManager(
-				mainPanel.getPanel());
+
 		RowInKanjiInformations rowInKanjiInformations = new RowInKanjiInformations(
 				parentDialog, PanelDisplayMode.VIEW);
 		rowInKanjiInformations.setProblematicWordsController(controller);
@@ -97,22 +96,15 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 						englishPolishDictionaryWebPanel.getSwitchingPanel(),
 						wordsToReviewList.getPanel(), 0.7);
 
-		JSplitPane mainSplitPane = CommonGuiElementsCreator
+		JSplitPane splitPane = CommonGuiElementsCreator
 				.createSplitPane(SplitPaneOrientation.HORIZONTAL,
 						wordsAndDictionaryPane,
 						kanjiKoohiWebPanel.getSwitchingPanel(), 0.2);
 
-		mainPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.BOTH, mainSplitPane));
+		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, splitPane));
 
-		AbstractButton buttonReturn = createButtonReturn();
-		setNavigationButtons(Anchor.WEST, buttonReturn);
-	}
-
-	private AbstractButton createButtonReturn() {
-		return createButtonWithHotkey(KeyModifiers.CONTROL, KeyEvent.VK_E,
-				controller.exitProblematicWordsPanel(),
-				ButtonsNames.GO_BACK, HotkeysDescriptions.RETURN_FROM_LEARNING);
+		new ProblematicWordsPanelCommonPart(this, controller)
+				.addCommonPartToPanel();
 
 	}
 
@@ -123,4 +115,5 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	public MyList<Kanji> getWordsToReviewList() {
 		return wordsToReviewList;
 	}
+
 }
