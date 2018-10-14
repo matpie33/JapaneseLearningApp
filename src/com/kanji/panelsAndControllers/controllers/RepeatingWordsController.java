@@ -1,18 +1,14 @@
 package com.kanji.panelsAndControllers.controllers;
 
-import com.guimaker.enums.PanelDisplayMode;
 import com.kanji.constants.enums.ApplicationPanels;
 import com.kanji.constants.enums.RepeatingWordsPanelState;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listElements.RepeatingData;
-import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
 import com.kanji.panelsAndControllers.panelUpdaters.RepeatingWordsPanelUpdater;
 import com.kanji.panelsAndControllers.panels.RepeatingWordsPanel;
 import com.kanji.range.SetOfRanges;
-import com.kanji.repeating.RepeatingJapaneseWordsDisplayer;
-import com.kanji.repeating.RepeatingKanjiDisplayer;
 import com.kanji.saving.ApplicationStateManager;
 import com.kanji.saving.RepeatingState;
 import com.kanji.saving.SavingInformation;
@@ -23,11 +19,9 @@ import com.kanji.windows.ApplicationWindow;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
-public class RepeatingWordsController
+public class RepeatingWordsController<Word extends ListElement>
 		implements TimeSpentMonitor, ApplicationStateManager {
 
 	private ApplicationWindow applicationWindow;
@@ -36,10 +30,12 @@ public class RepeatingWordsController
 	private RepeatingData repeatingData;
 	private RepeatingWordsPanel panel;
 	private RepeatingWordsPanelUpdater panelUpdater;
-	private Map<TypeOfWordForRepeating, WordSpecificRepeatingController<? extends ListElement>> typeOfWordToControllerMap = new HashMap<>();
+	private WordSpecificRepeatingController<Word> wordSpecificRepeatingController;
 	private TypeOfWordForRepeating currentTypeOfWordForRepeating;
 
-	public RepeatingWordsController(ApplicationWindow applicationWindow) {
+	public RepeatingWordsController(ApplicationWindow applicationWindow,
+			WordSpecificRepeatingController<Word> wordSpecificRepeatingController) {
+		this.wordSpecificRepeatingController = wordSpecificRepeatingController;
 		this.applicationWindow = applicationWindow;
 		timeSpentHandler = new TimeSpentHandler(this);
 		applicationWindow.setTimeSpentHandler(timeSpentHandler);
@@ -50,20 +46,7 @@ public class RepeatingWordsController
 	}
 
 	private void initializeTypeOfWordToControllerMap() {
-		typeOfWordToControllerMap.put(TypeOfWordForRepeating.KANJIS,
-				new WordSpecificRepeatingController<>(
-						applicationWindow.getApplicationController()
-								.getKanjiList(), new RepeatingKanjiDisplayer(
-						ApplicationWindow.getKanjiFont()), this));
-		typeOfWordToControllerMap.put(TypeOfWordForRepeating.JAPANESE_WORDS,
-				new WordSpecificRepeatingController<>(
-						applicationWindow.getApplicationController()
-								.getJapaneseWords(),
-						new RepeatingJapaneseWordsDisplayer(
-								new JapaneseWordPanelCreator(applicationWindow
-										.getApplicationController(),
-										applicationWindow,
-										PanelDisplayMode.VIEW)), this));
+
 	}
 
 	public RepeatingWordsPanel getRepeatingWordsPanel() {
@@ -81,7 +64,7 @@ public class RepeatingWordsController
 	}
 
 	private WordSpecificRepeatingController getWordsSpecificController() {
-		return typeOfWordToControllerMap.get(currentTypeOfWordForRepeating);
+		return wordSpecificRepeatingController;
 	}
 
 	private void resumeUnfinishedRepeating(RepeatingState repeatingState) {
@@ -100,7 +83,8 @@ public class RepeatingWordsController
 
 	private void updateRemainingWordsText() {
 		panelUpdater.updateRemainingWordsText(
-				getWordsSpecificController().getNumberOfWordsLeft(), currentTypeOfWordForRepeating);
+				getWordsSpecificController().getNumberOfWordsLeft(),
+				currentTypeOfWordForRepeating);
 	}
 
 	private void finishRepeating() {
@@ -164,7 +148,7 @@ public class RepeatingWordsController
 	}
 
 	private void showFullWordDetailsPanel(ListElement word) {
-		getWordsSpecificController().showFullWordDetailsPanel(word);
+		getWordsSpecificController().showFullWordDetailsPanel(word, panel.getWordDataPanel());
 		panelUpdater.setButtonsToWordAssessmentState(
 				getWordsSpecificController().previousWordExists());
 		repeatingWordsPanelState = RepeatingWordsPanelState.WORD_ASSESSMENT;

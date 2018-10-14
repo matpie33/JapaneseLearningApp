@@ -7,11 +7,17 @@ public class DuplicatedJapaneseWordInformation implements ListElement {
 
 	private JapaneseWord japaneseWord;
 	private int duplicatedWordRowNumber;
+	public static final String MEANINGFUL_NAME = "Duplikat japońskiego słowa";
 
 	public DuplicatedJapaneseWordInformation(JapaneseWord japaneseWord,
 			int duplicatedWordRowNumber) {
 		this.japaneseWord = japaneseWord;
 		this.duplicatedWordRowNumber = duplicatedWordRowNumber;
+	}
+
+	@Override
+	public String getMeaningfulName() {
+		return MEANINGFUL_NAME;
 	}
 
 	public JapaneseWord getJapaneseWord() {

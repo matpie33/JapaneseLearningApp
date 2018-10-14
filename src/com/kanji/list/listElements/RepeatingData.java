@@ -15,6 +15,7 @@ public class RepeatingData implements Serializable, ListElement {
 	private LocalDateTime repeatingDate;
 	private boolean wasRepeated;
 	private String timeSpentOnRepeating;
+	public static final String MEANINGFUL_NAME = "Powtórki";
 
 	public RepeatingData(String repeatingRange, LocalDateTime repeatingDate,
 			boolean wasRepeated) {
@@ -27,6 +28,11 @@ public class RepeatingData implements Serializable, ListElement {
 		this.repeatingDate = repeatingDate;
 		this.wasRepeated = wasRepeated;
 		this.timeSpentOnRepeating = timeSpentOnRepeating;
+	}
+
+	@Override
+	public String getMeaningfulName() {
+		return MEANINGFUL_NAME;
 	}
 
 	public String getTimeSpentOnRepeating() {

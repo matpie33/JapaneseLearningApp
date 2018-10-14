@@ -1,6 +1,7 @@
 package com.kanji.problematicWords;
 
 import com.guimaker.enums.MoveDirection;
+import com.guimaker.model.WebContext;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.Urls;
@@ -34,26 +35,36 @@ public class ProblematicJapaneseWordsDisplayer
 	private ApplicationWindow applicationWindow;
 	private ProblematicJapaneseWordsPanelUpdater problematicJapaneseWordsPanelUpdater;
 	private KanjiKoohiWebPageHandler kanjiKoohiWebPageHandler;
+	private  ProblematicWordsController<JapaneseWord> controller;
+	private MyList <JapaneseWord> wordsToReviewList;
 
 	public ProblematicJapaneseWordsDisplayer(
-			ApplicationWindow applicationWindow,
-			ProblematicWordsController<JapaneseWord> controller) {
+			ApplicationWindow applicationWindow) {
 
 		this.applicationWindow = applicationWindow;
+		controller = new ProblematicWordsController<>(applicationWindow, this);
 		problematicJapaneseWordsPanel = new ProblematicJapaneseWordsPanel(
 				applicationWindow, this, controller);
 		kanjiList = applicationWindow.getApplicationController().getKanjiList();
 		problematicJapaneseWordsPanelUpdater = new ProblematicJapaneseWordsPanelUpdater(
 				problematicJapaneseWordsPanel);
-		controller.setProblematicWordsDisplayer(this, TypeOfWordForRepeating
-				.JAPANESE_WORDS);
 		kanjiKoohiWebPageHandler = KanjiKoohiWebPageHandler.getInstance();
+		wordsToReviewList = problematicJapaneseWordsPanel.getWordsList();
 
+	}
+
+	public ProblematicWordsController<JapaneseWord> getController() {
+		return controller;
+	}
+
+	@Override
+	public WebContext getContext() {
+		return null; //TODO implement it
 	}
 
 	@Override
 	public MyList<JapaneseWord> getWordsToReviewList() {
-		return problematicJapaneseWordsPanel.getWordsList();
+		return wordsToReviewList;
 	}
 
 	@Override
@@ -73,6 +84,11 @@ public class ProblematicJapaneseWordsDisplayer
 
 		problematicJapaneseWordsPanelUpdater
 				.addInformationAboutKanjisForGivenWord(kanjiDataList);
+	}
+
+	@Override
+	public String getKanjiKoohiLoginCookieHeader() {
+		return kanjiKoohiWebPageHandler.getKanjiKoohiLoginCookieHeader();
 	}
 
 	public AbstractAction createActionShowKanjiDetailsInKoohiPage(

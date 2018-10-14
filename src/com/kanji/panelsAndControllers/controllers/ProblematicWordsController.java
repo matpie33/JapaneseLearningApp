@@ -35,20 +35,20 @@ public class ProblematicWordsController<Word extends ListElement>
 	private boolean wordsReviewFinished = false;
 	private TypeOfWordForRepeating typeOfWordForRepeating;
 
-	public ProblematicWordsController(ApplicationWindow applicationWindow) {
+	public ProblematicWordsController(ApplicationWindow applicationWindow,
+			ProblematicWordsDisplayer<Word> problematicWordsDisplayer) {
 		applicationController = applicationWindow.getApplicationController();
 		this.applicationWindow = applicationWindow;
+		this.problematicWordsDisplayer = problematicWordsDisplayer;
+
 	}
 
-	public void setProblematicWordsDisplayer(
-			ProblematicWordsDisplayer<Word> problematicWordsDisplayer,
-			TypeOfWordForRepeating typeOfWordForRepeating) {
-		this.problematicWordsDisplayer = problematicWordsDisplayer;
-		wordsToReviewList = problematicWordsDisplayer.getWordsToReviewList();
-		this.typeOfWordForRepeating = typeOfWordForRepeating;
+	public ProblematicWordsDisplayer<Word> getProblematicWordsDisplayer() {
+		return problematicWordsDisplayer;
 	}
 
 	public void initialize() {
+		wordsToReviewList = problematicWordsDisplayer.getWordsToReviewList();
 		problematicWordsDisplayer.initializeWebPages();
 	}
 

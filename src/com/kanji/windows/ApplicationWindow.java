@@ -195,20 +195,18 @@ public class ApplicationWindow extends DialogWindow {
 
 	public void showProblematicWordsDialogForCurrentList() {
 		MyList activeWordList = getStartingPanel().getActiveWordsList();
-		Class listElementsClass = activeWordList.getListElementClass();
 		activeProblematicWordsController = applicationController
-				.getProblematicWordsControllerBasedOnWordType(
-						listElementsClass);
+				.getActiveProblematicWordsController();
 		showProblematicWordsDialog();
 	}
 
 	public <Element extends ListElement> void showProblematicWordsDialog(
 			Set<Element> problematicWords) {
 		activeProblematicWordsController = applicationController
-				.getProblematicWordsControllerBasedOnWordType(
-						problematicWords.iterator().next().getClass());
+				.getActiveProblematicWordsController();
 		setPanel(activeProblematicWordsController.getPanel());
-		activeProblematicWordsController.addProblematicWordsAndHighlightFirst(problematicWords);
+		activeProblematicWordsController
+				.addProblematicWordsAndHighlightFirst(problematicWords);
 		showProblematicWordsDialog();
 	}
 
@@ -216,9 +214,7 @@ public class ApplicationWindow extends DialogWindow {
 			ProblematicWordsState<Element> problematicWordsState) {
 		displayMessageAboutUnfinishedRepeating();
 		activeProblematicWordsController = applicationController
-				.getProblematicWordsControllerBasedOnWordType(
-						problematicWordsState.getNotReviewedWords().get(0)
-								.getClass());
+				.getActiveProblematicWordsController();
 		activeProblematicWordsController.addProblematicWordsHighlightReviewed(
 				problematicWordsState.getReviewedWords(),
 				problematicWordsState.getNotReviewedWords());

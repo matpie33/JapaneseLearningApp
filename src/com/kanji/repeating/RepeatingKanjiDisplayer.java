@@ -10,6 +10,7 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.utilities.KanjiCharactersReader;
+import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -20,12 +21,13 @@ public class RepeatingKanjiDisplayer implements RepeatingWordsDisplayer<Kanji> {
 	private JTextComponent wordTextArea;
 	private KanjiCharactersReader kanjiCharactersReader;
 
-	public RepeatingKanjiDisplayer(Font kanjiFont) {
+	public RepeatingKanjiDisplayer() {
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		kanjiCharactersReader.loadKanjisIfNeeded();
 		wordTextArea = GuiElementsCreator.createTextPane(
 				new TextPaneOptions().textAlignment(TextAlignment.JUSTIFIED)
-						.text("").editable(false).font(kanjiFont)
+						.text("").editable(false).font(ApplicationWindow
+						.getKanjiFont())
 						.border(BorderFactory
 								.createLineBorder(BasicColors.BLUE_DARK_2)));
 	}

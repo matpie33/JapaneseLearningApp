@@ -1,5 +1,6 @@
 package com.kanji.panelsAndControllers.controllers;
 
+import com.guimaker.panels.MainPanel;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listElements.RepeatingData;
@@ -21,17 +22,14 @@ public class WordSpecificRepeatingController<Word extends ListElement> {
 	private RepeatingWordsDisplayer<Word> wordDisplayer;
 	private Set<Word> currentProblematicWords;
 	private Set<Word> allProblematicWords;
-	private RepeatingWordsController repeatingWordsController;
 
 	public WordSpecificRepeatingController(MyList<Word> wordsList,
-			RepeatingWordsDisplayer<Word> wordDisplayer,
-			RepeatingWordsController repeatingWordsController) {
+			RepeatingWordsDisplayer<Word> wordDisplayer) {
 		wordsLeftToRepeat = new ArrayList<>();
 		this.wordsList = wordsList;
 		this.wordDisplayer = wordDisplayer;
 		allProblematicWords = new HashSet<>();
 		currentProblematicWords = new HashSet<>();
-		this.repeatingWordsController = repeatingWordsController;
 	}
 
 	public void setListOfAllProblematicWords(Set<Word> problematicWords) {
@@ -94,9 +92,8 @@ public class WordSpecificRepeatingController<Word extends ListElement> {
 		return previousWord;
 	}
 
-	public void showFullWordDetailsPanel(Word word) {
-		wordDisplayer.showFullWordDetailsPanel(word, repeatingWordsController
-				.getRepeatingWordsPanel().getWordDataPanel());
+	public void showFullWordDetailsPanel(Word word, MainPanel wordDataPanel) {
+		wordDisplayer.showFullWordDetailsPanel(word, wordDataPanel);
 	}
 
 	public void markCurrentWordAsRecognized() {

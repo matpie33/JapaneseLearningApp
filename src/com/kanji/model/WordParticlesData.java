@@ -10,8 +10,10 @@ import java.util.Objects;
 
 public class WordParticlesData implements ListElement, Serializable {
 
+	private static final long serialVersionUID = -3606244668613031057L;
 	private JapaneseParticle japaneseParticle;
 	private String additionalInformation = "";
+	public final static String MEANINGFUL_NAME ="Partykuły";
 
 	public WordParticlesData(JapaneseParticle japaneseParticle) {
 		this.japaneseParticle = japaneseParticle;
@@ -21,6 +23,11 @@ public class WordParticlesData implements ListElement, Serializable {
 			String additionalInformation) {
 		this.additionalInformation = additionalInformation;
 		return this;
+	}
+
+	@Override
+	public String getMeaningfulName() {
+		return MEANINGFUL_NAME;
 	}
 
 	public JapaneseParticle getJapaneseParticle() {

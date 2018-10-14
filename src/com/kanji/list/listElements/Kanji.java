@@ -12,6 +12,7 @@ public class Kanji implements Serializable, ListElement {
 	private static final String ID = "numer";
 	private String keyword;
 	private int id;
+	public final static String MEANINGFUL_NAME = "Kanji";
 
 	public Kanji(String keyword, int iD) {
 		this.keyword = keyword;
@@ -24,6 +25,11 @@ public class Kanji implements Serializable, ListElement {
 
 	public void setKanjiKeyword(String kanjiKeyword) {
 		this.keyword = kanjiKeyword;
+	}
+
+	@Override
+	public String getMeaningfulName() {
+		return MEANINGFUL_NAME;
 	}
 
 	public int getId() {

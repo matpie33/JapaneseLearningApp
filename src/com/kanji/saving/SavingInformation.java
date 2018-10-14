@@ -62,7 +62,17 @@ public class SavingInformation implements Serializable {
 
 	public void setRepeatingState(RepeatingState state) {
 		this.repeatingState = state;
-		applicationSaveableState = ApplicationSaveableState.REPEATING_WORDS;
+		Class<?> aClass = state.getCurrentlyRepeatedWords().iterator().next()
+				.getClass();
+		ApplicationSaveableState saveableState;
+		//TODO do it better
+		if (aClass.equals(Kanji.class)) {
+			saveableState = ApplicationSaveableState.REPEATING_KANJI;
+		}
+		else {
+			saveableState = ApplicationSaveableState.REPEATING_JAPANESE_WORDS;
+		}
+		applicationSaveableState = saveableState;
 	}
 
 	public ProblematicWordsState getProblematicWordsState() {

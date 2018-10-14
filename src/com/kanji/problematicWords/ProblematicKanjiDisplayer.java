@@ -1,8 +1,6 @@
 package com.kanji.problematicWords;
 
 import com.guimaker.model.WebContext;
-import com.guimaker.webPanel.ContextOwner;
-import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Urls;
 import com.kanji.context.KanjiContext;
@@ -18,27 +16,30 @@ import com.kanji.windows.ApplicationWindow;
 import java.io.IOException;
 
 public class ProblematicKanjiDisplayer
-		implements ProblematicWordsDisplayer<Kanji>, ContextOwner {
+		implements ProblematicWordsDisplayer<Kanji> {
 
 	private ProblematicKanjiPanel problematicKanjiPanel;
 	private KanjiContext kanjiContext;
 	private KanjiCharactersReader kanjiCharactersReader;
 	private MyList<Kanji> wordsToReviewList;
 	private KanjiKoohiWebPageHandler kanjiKoohiWebPageHandler;
+	private ProblematicWordsController<Kanji> problematicWordsController;
 
-	public ProblematicKanjiDisplayer(ApplicationWindow applicationWindow,
-			ProblematicWordsController<Kanji> controller) {
+	public ProblematicKanjiDisplayer(ApplicationWindow applicationWindow) {
 
-		problematicKanjiPanel = new ProblematicKanjiPanel(applicationWindow,
-				controller, this);
-
+		problematicWordsController = new
+				ProblematicWordsController<>(applicationWindow, this);
+		problematicKanjiPanel = new ProblematicKanjiPanel(
+				applicationWindow, problematicWordsController, this);
 		kanjiContext = KanjiContext.emptyContext();
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		kanjiCharactersReader.loadKanjisIfNeeded();
 		wordsToReviewList = problematicKanjiPanel.getWordsToReviewList();
-		controller.setProblematicWordsDisplayer(this,
-				TypeOfWordForRepeating.KANJIS);
 		kanjiKoohiWebPageHandler = KanjiKoohiWebPageHandler.getInstance();
+	}
+
+	public ProblematicWordsController<Kanji> getProblematicWordsController() {
+		return problematicWordsController;
 	}
 
 	@Override

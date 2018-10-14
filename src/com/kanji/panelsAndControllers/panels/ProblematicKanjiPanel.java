@@ -42,13 +42,13 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
 	public ProblematicKanjiPanel(ApplicationWindow parentDialog,
 			ProblematicWordsController<Kanji> controller,
-			ContextOwner kanjiContextContextOwner) {
+			ContextOwner kanjiContextOwner) {
 
 		focusableComponentsManager = new FocusableComponentsManager(getPanel());
 		this.controller = controller;
 		englishPolishDictionaryWebPanel = new WebPagePanel(
-				kanjiContextContextOwner, null);
-		kanjiKoohiWebPanel = new WebPagePanel(kanjiContextContextOwner,
+				kanjiContextOwner, null);
+		kanjiKoohiWebPanel = new WebPagePanel(kanjiContextOwner,
 				new ConnectionFailKanjiOfflinePage(
 						ApplicationWindow.getKanjiFont()));
 

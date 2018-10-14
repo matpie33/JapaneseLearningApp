@@ -29,6 +29,7 @@ public class JapaneseWord implements ListElement, Serializable {
 	private String meaning;
 	private Pair<PartOfSpeech, AdditionalInformation> partOfSpeechWithInformation;
 	private Set<WordParticlesData> takenParticles = new HashSet<>();
+	public final static String MEANINGFUL_NAME = "Japońskie słowo";
 
 	private static JapaneseWordMeaningChecker meaningChecker = new JapaneseWordMeaningChecker(
 			WordSearchOptions.BY_FULL_EXPRESSION);
@@ -37,6 +38,11 @@ public class JapaneseWord implements ListElement, Serializable {
 		setPartOfSpeech(partOfSpeech);
 		this.meaning = meaning;
 		japaneseWritings = new HashSet<>();
+	}
+
+	@Override
+	public String getMeaningfulName() {
+		return MEANINGFUL_NAME;
 	}
 
 	public void addWritingsForKana(String kanaWriting,

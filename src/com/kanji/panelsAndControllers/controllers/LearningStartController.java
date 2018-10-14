@@ -216,7 +216,7 @@ public class LearningStartController {
 		createRepeatingInformation();
 		panelUpdater.closeLearningStartDialog();
 		applicationController.initiateWordsLists(rangesToRepeat,
-				problematicWordsCheckbox.isSelected());
+				problematicWordsCheckbox.isSelected(), typeOfWordForRepeating);
 		applicationController.startRepeating();
 	}
 
@@ -260,7 +260,7 @@ public class LearningStartController {
 		repeatingInformation += ".";
 		applicationController.setRepeatingInformation(
 				new RepeatingData(repeatingInformation, LocalDateTime.now(),
-						false));
+						false), typeOfWordForRepeating);
 	}
 
 	private SetOfRanges addAllRangesToSet() {

@@ -18,6 +18,7 @@ public class JapaneseWriting implements ListElement, Serializable {
 	private static final long serialVersionUID = -7397611423482201633L;
 	private String kanaWriting;
 	private Set<String> kanjiWritings;
+	public static final String MEANINGFUL_NAME = "Zapis słowa japońskiego";
 
 	public JapaneseWriting(String kanaWriting, Set<String> kanjiWritings) {
 		this.kanaWriting = kanaWriting;
@@ -26,6 +27,11 @@ public class JapaneseWriting implements ListElement, Serializable {
 
 	public JapaneseWriting(String kanaWriting, String... kanjiWritings) {
 		this(kanaWriting, new HashSet<>(Arrays.asList(kanjiWritings)));
+	}
+
+	@Override
+	public String getMeaningfulName() {
+		return MEANINGFUL_NAME;
 	}
 
 	@Override
