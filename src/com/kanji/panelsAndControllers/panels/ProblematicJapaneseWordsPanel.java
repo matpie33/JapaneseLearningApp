@@ -200,7 +200,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 
 	private AbstractButton createButtonReturn() {
 		return createButtonWithHotkey(KeyModifiers.CONTROL, KeyEvent.VK_E,
-				problematicWordsController.goToStartingPanelAndManageState(),
+				problematicWordsController.exitProblematicWordsPanel(),
 				ButtonsNames.GO_BACK, HotkeysDescriptions.RETURN_FROM_LEARNING);
 	}
 

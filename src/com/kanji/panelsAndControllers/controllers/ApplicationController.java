@@ -686,10 +686,9 @@ public class ApplicationController
 		return null;
 	}
 
-	public void switchToList(Class listType) {
-		parent.getStartingPanel().switchToList(listType.equals(Kanji.class) ?
-				TypeOfWordForRepeating.KANJIS :
-				TypeOfWordForRepeating.JAPANESE_WORDS);
+	public void switchToList(TypeOfWordForRepeating typeOfWordForRepeating) {
+		parent.getStartingPanel().switchToList(
+				typeOfWordForRepeating);
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package com.kanji.problematicWords;
 
 import com.guimaker.model.WebContext;
 import com.guimaker.webPanel.ContextOwner;
+import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Urls;
 import com.kanji.context.KanjiContext;
@@ -16,14 +17,6 @@ import com.kanji.webPanel.KanjiKoohiWebPageHandler;
 import com.kanji.windows.ApplicationWindow;
 
 import java.io.IOException;
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.HttpCookie;
-import java.net.URI;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 public class ProblematicKanjiDisplayer
 		implements ProblematicWordsDisplayer<Kanji>, ContextOwner {
@@ -44,7 +37,8 @@ public class ProblematicKanjiDisplayer
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		kanjiCharactersReader.loadKanjisIfNeeded();
 		wordsToReviewList = problematicKanjiPanel.getWordsToReviewList();
-		controller.setProblematicWordsDisplayer(this);
+		controller.setProblematicWordsDisplayer(this,
+				TypeOfWordForRepeating.KANJIS);
 		kanjiKoohiWebPageHandler = KanjiKoohiWebPageHandler.getInstance();
 	}
 

@@ -13,7 +13,7 @@ import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.panelsAndControllers.panels.*;
-import com.kanji.saving.ProblematicKanjisState;
+import com.kanji.saving.ProblematicWordsState;
 import com.kanji.timer.TimeSpentHandler;
 
 import javax.swing.*;
@@ -169,8 +169,8 @@ public class ApplicationWindow extends DialogWindow {
 		applicationController.getKanjiRepeatingDates().scrollToBottom();
 	}
 
-	public void addButtonIcon() {
-		startingPanel.addProblematicKanjisButton();
+	public void enableShowProblematicWordsButton() {
+		startingPanel.enableShowProblematicWordsButton();
 	}
 
 	public void showLearningStartDialog(
@@ -208,12 +208,12 @@ public class ApplicationWindow extends DialogWindow {
 				.getProblematicWordsControllerBasedOnWordType(
 						problematicWords.iterator().next().getClass());
 		setPanel(activeProblematicWordsController.getPanel());
-		activeProblematicWordsController.addProblematicWords(problematicWords);
+		activeProblematicWordsController.addProblematicWordsAndHighlightFirst(problematicWords);
 		showProblematicWordsDialog();
 	}
 
 	public <Element extends ListElement> void showProblematicWordsDialog(
-			ProblematicKanjisState<Element> problematicWordsState) {
+			ProblematicWordsState<Element> problematicWordsState) {
 		displayMessageAboutUnfinishedRepeating();
 		activeProblematicWordsController = applicationController
 				.getProblematicWordsControllerBasedOnWordType(

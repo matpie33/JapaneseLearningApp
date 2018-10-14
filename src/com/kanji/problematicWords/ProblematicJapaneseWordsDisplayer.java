@@ -1,6 +1,7 @@
 package com.kanji.problematicWords;
 
 import com.guimaker.enums.MoveDirection;
+import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.Urls;
 import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
@@ -48,7 +49,8 @@ public class ProblematicJapaneseWordsDisplayer
 		kanjiList = applicationWindow.getApplicationController().getKanjiList();
 		problematicJapaneseWordsPanelUpdater = new ProblematicJapaneseWordsPanelUpdater(
 				problematicJapaneseWordsPanel);
-		controller.setProblematicWordsDisplayer(this);
+		controller.setProblematicWordsDisplayer(this, TypeOfWordForRepeating
+				.JAPANESE_WORDS);
 		kanjiKoohiWebPageHandler = KanjiKoohiWebPageHandler.getInstance();
 
 	}

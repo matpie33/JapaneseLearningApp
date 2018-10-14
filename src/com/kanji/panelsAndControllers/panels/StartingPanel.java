@@ -37,7 +37,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	private MainPanel bottomPanel;
 	private JLabel problematicKanjis;
 	private JLabel saveInfo;
-	private AbstractButton showProblematicKanjis;
+	private AbstractButton showProblematicWordsButton;
 	private ApplicationController applicationController;
 	private Map<String, WordsAndRepeatingInformationsPanel> listToTabLabel = new LinkedHashMap<>();
 	private WordTypeContext wordTypeContext;
@@ -232,8 +232,8 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 			AbstractButton button = createButtonWithHotkey(KeyModifiers.CONTROL,
 					keyEvent, action, name, hotkeyDescription);
 			if (name.equals(ButtonsNames.SHOW_PROBLEMATIC_KANJIS)) {
-				showProblematicKanjis = button;
-				showProblematicKanjis.setEnabled(false);
+				showProblematicWordsButton = button;
+				showProblematicWordsButton.setEnabled(false);
 			}
 			buttons.add(button);
 		}
@@ -244,7 +244,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		saveInfo = GuiElementsCreator.createLabel(new ComponentOptions());
 		problematicKanjis = GuiElementsCreator
 				.createLabel(new ComponentOptions());
-		showProblematicKanjis = createShowProblematicKanjiButton();
+		showProblematicWordsButton = createShowProblematicKanjiButton();
 		changeSaveStatus(SavingStatus.NO_CHANGES);
 		updateProblematicWordsAmount(
 				applicationController.getProblematicKanjis().size());
@@ -262,8 +262,8 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		return problematicKanjiButton;
 	}
 
-	public void addProblematicKanjisButton() {
-		showProblematicKanjis.setEnabled(true);
+	public void enableShowProblematicWordsButton() {
+		showProblematicWordsButton.setEnabled(true);
 	}
 
 	public MyList getActiveWordsList() {

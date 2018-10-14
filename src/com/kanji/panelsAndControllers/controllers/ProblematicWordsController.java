@@ -2,12 +2,11 @@ package com.kanji.panelsAndControllers.controllers;
 
 import com.guimaker.enums.MoveDirection;
 import com.kanji.constants.enums.ApplicationPanels;
-import com.kanji.constants.enums.ApplicationSaveableState;
 import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.ListElementModificationType;
+import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Prompts;
-import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listObserver.ListObserver;
 import com.kanji.list.myList.MyList;
@@ -15,7 +14,7 @@ import com.kanji.model.WordRow;
 import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.problematicWords.ProblematicWordsDisplayer;
 import com.kanji.saving.ApplicationStateManager;
-import com.kanji.saving.ProblematicKanjisState;
+import com.kanji.saving.ProblematicWordsState;
 import com.kanji.saving.SavingInformation;
 import com.kanji.windows.ApplicationWindow;
 
@@ -39,27 +38,29 @@ public class ProblematicWordsController<Word extends ListElement>
 	private ApplicationWindow applicationWindow;
 	private ProblematicWordsDisplayer<Word> problematicWordsDisplayer;
 	private boolean wordsReviewed = false;
+	private TypeOfWordForRepeating typeOfWordForRepeating;
 
 	public ProblematicWordsController(ApplicationWindow applicationWindow) {
 		applicationController = applicationWindow.getApplicationController();
-
 		this.applicationWindow = applicationWindow;
 		notReviewedWords = new ArrayList<>();
 	}
 
 	public void setProblematicWordsDisplayer(
-			ProblematicWordsDisplayer<Word> problematicWordsDisplayer) {
+			ProblematicWordsDisplayer<Word> problematicWordsDisplayer,
+			TypeOfWordForRepeating japaneseWords) {
 		this.problematicWordsDisplayer = problematicWordsDisplayer;
 		wordsToReviewList = problematicWordsDisplayer.getWordsToReviewList();
+		this.typeOfWordForRepeating = japaneseWords;
 	}
 
 	public void initialize() {
 		problematicWordsDisplayer.initializeWebPages();
 	}
 
-	public void addProblematicWords(Set<Word> problematicWords) {
+	public void addProblematicWordsAndHighlightFirst(
+			Set<Word> problematicWords) {
 		if (haveAllWordsBeenRepeated()) {
-
 			wordsToReviewList.cleanWords();
 			notReviewedWords.clear();
 		}
@@ -86,7 +87,7 @@ public class ProblematicWordsController<Word extends ListElement>
 
 	private void addWord(Word word) {
 		wordsToReviewList.addWord(word, InputGoal.NO_INPUT);
-		WordRow wordRow = new WordRow<>(word,
+		WordRow<Word> wordRow = new WordRow<>(word,
 				wordsToReviewList.getNumberOfWords() - 1);
 		if (!notReviewedWords.contains(wordRow)) {
 			notReviewedWords.add(wordRow);
@@ -94,9 +95,8 @@ public class ProblematicWordsController<Word extends ListElement>
 	}
 
 	private void goToNextResource() {
-		WordRow row = notReviewedWords.get(nextWordToReview);
+		WordRow<Word> row = notReviewedWords.get(nextWordToReview);
 		showResource(row);
-
 	}
 
 	public void showResource(WordRow<Word> row) {
@@ -104,18 +104,17 @@ public class ProblematicWordsController<Word extends ListElement>
 		wordsToReviewList.highlightRow(
 				wordsToReviewList.get1BasedRowNumberOfWord(row.getListElement())
 						- 1);
-
 	}
 
 	private boolean haveAllWordsBeenRepeated() {
 		return wordsReviewed;
 	}
 
-	public AbstractAction goToStartingPanelAndManageState() {
+	public AbstractAction exitProblematicWordsPanel() {
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				applicationWindow.addButtonIcon();
+				applicationWindow.enableShowProblematicWordsButton();
 				if (haveAllWordsBeenRepeated()) {
 					applicationController.finishedRepeating();
 					applicationController.saveProject();
@@ -126,8 +125,7 @@ public class ProblematicWordsController<Word extends ListElement>
 
 	}
 
-	private AbstractAction createActionShowNextWord(
-			MoveDirection direction) {
+	private AbstractAction createActionShowNextWord(MoveDirection direction) {
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -136,13 +134,13 @@ public class ProblematicWordsController<Word extends ListElement>
 						.isFilterInputFocused()) {
 					return;
 				}
-				changeResource(direction);
+				moveToNextWord(direction);
 			}
 		};
 
 	}
 
-	private void changeResource(MoveDirection direction) {
+	private void moveToNextWord(MoveDirection direction) {
 
 		nextWordToReview = nextWordToReview + direction.getIncrementValue();
 		if (nextWordToReview < 0) {
@@ -163,26 +161,22 @@ public class ProblematicWordsController<Word extends ListElement>
 
 	}
 
-	public int getNumberOfRows() {
+	public int getNumberOfWords() {
 		return wordsToReviewList == null ?
 				0 :
 				wordsToReviewList.getNumberOfWords();
 	}
 
-
 	@Override
 	public SavingInformation getApplicationState() {
-		ProblematicKanjisState<Word> information = new ProblematicKanjisState<>(
+		ProblematicWordsState<Word> information = new ProblematicWordsState<>(
 				wordsToReviewList.getHighlightedWords(),
 				wordsToReviewList.getNotHighlightedWords());
 
 		SavingInformation savingInformation = applicationController
 				.getApplicationState();
-		savingInformation.setProblematicKanjisState(information,
-				notReviewedWords.get(0).getListElement().getClass()
-						.equals(Kanji.class) ?
-						ApplicationSaveableState.REVIEWING_PROBLEMATIC_KANJIS :
-						ApplicationSaveableState.REVIEWING_PROBLEMATIC_JAPANESE_WORDS);
+		savingInformation.setProblematicWordsState(information,
+				typeOfWordForRepeating.getAssociatedSaveableState());
 
 		return savingInformation;
 	}
@@ -191,30 +185,24 @@ public class ProblematicWordsController<Word extends ListElement>
 	public void restoreState(SavingInformation savingInformation) {
 		if (savingInformation.containsProblematicJapaneseWords()
 				|| savingInformation.containsProblematicKanji()) {
-			Class wordType = savingInformation.getProblematicKanjisState()
-					.getReviewedWords().isEmpty() ?
-					savingInformation.getProblematicKanjisState()
-							.getNotReviewedWords().get(0).getClass() :
-					savingInformation.getProblematicKanjisState()
-							.getReviewedWords().get(0).getClass();
-			applicationController.switchToList(wordType);
+			applicationController.switchToList(typeOfWordForRepeating);
 			initialize();
 		}
 		applicationWindow.showProblematicWordsDialog(
-				savingInformation.getProblematicKanjisState());
+				savingInformation.getProblematicWordsState());
 	}
 
 	public void addProblematicWordsHighlightReviewed(List<Word> reviewedWords,
 			List<Word> notReviewedWords) {
-		int i = 0;
-		for (Word listWord : reviewedWords) {
+		for (int i = 0; i < reviewedWords.size(); i++) {
+			Word listWord = reviewedWords.get(i);
 			wordsToReviewList.addWord(listWord);
 			wordsToReviewList.highlightRow(i);
 			this.notReviewedWords.add(new WordRow<>(listWord,
 					wordsToReviewList.getNumberOfWords() - 1));
-			i++;
+			nextWordToReview = i;
 		}
-		nextWordToReview = i;
+
 		for (Word listWord : notReviewedWords) {
 			addWord(listWord);
 		}
@@ -256,7 +244,7 @@ public class ProblematicWordsController<Word extends ListElement>
 				.addWindowListener(new WindowAdapter() {
 					@Override
 					public void windowClosed(WindowEvent e) {
-						goToStartingPanelAndManageState();
+						exitProblematicWordsPanel();
 					}
 				});
 	}
@@ -279,7 +267,7 @@ public class ProblematicWordsController<Word extends ListElement>
 
 		}
 		else {
-			if (!notReviewedWordsContainWord(word)) {
+			if (!notReviewedWordsContainsWord(word)) {
 				wordsToReviewList.highlightRow(
 						wordsToReviewList.get1BasedRowNumberOfWord(word) - 1);
 			}
@@ -291,7 +279,7 @@ public class ProblematicWordsController<Word extends ListElement>
 		return wordsToReviewList.getWords().isEmpty();
 	}
 
-	private boolean notReviewedWordsContainWord(Word word) {
+	private boolean notReviewedWordsContainsWord(Word word) {
 		for (WordRow notReviewedWord : notReviewedWords) {
 			if (notReviewedWord.getListElement().equals(word)) {
 				return true;

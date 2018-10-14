@@ -111,7 +111,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
 	private AbstractButton createButtonReturn() {
 		return createButtonWithHotkey(KeyModifiers.CONTROL, KeyEvent.VK_E,
-				controller.goToStartingPanelAndManageState(),
+				controller.exitProblematicWordsPanel(),
 				ButtonsNames.GO_BACK, HotkeysDescriptions.RETURN_FROM_LEARNING);
 
 	}

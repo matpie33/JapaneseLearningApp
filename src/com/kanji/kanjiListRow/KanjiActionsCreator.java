@@ -78,7 +78,7 @@ public class KanjiActionsCreator {
 			AbstractButton abstractButton,
 			ProblematicWordsController problematicWordsController,
 			ListElement kanji) {
-		int rowNumber = problematicWordsController.getNumberOfRows();
+		int rowNumber = problematicWordsController.getNumberOfWords();
 		abstractButton.addActionListener(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

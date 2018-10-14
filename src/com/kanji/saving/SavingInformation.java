@@ -16,7 +16,7 @@ public class SavingInformation implements Serializable {
 	private Set<Kanji> problematicKanjis;
 	private Set<JapaneseWord> problematicJapaneseWords;
 	private RepeatingState repeatingState;
-	private ProblematicKanjisState problematicKanjisState;
+	private ProblematicWordsState problematicWordsState;
 	private ApplicationSaveableState applicationSaveableState;
 	private String kanjiKoohiCookiesHeaders;
 	private List<JapaneseWord> japaneseWords;
@@ -65,12 +65,12 @@ public class SavingInformation implements Serializable {
 		applicationSaveableState = ApplicationSaveableState.REPEATING_WORDS;
 	}
 
-	public ProblematicKanjisState getProblematicKanjisState() {
-		return problematicKanjisState;
+	public ProblematicWordsState getProblematicWordsState() {
+		return problematicWordsState;
 	}
 
-	public void setProblematicKanjisState(
-			ProblematicKanjisState problematicKanjisState,
+	public void setProblematicWordsState(
+			ProblematicWordsState problematicWordsState,
 			ApplicationSaveableState state) {
 		if (!state
 				.equals(ApplicationSaveableState.REVIEWING_PROBLEMATIC_JAPANESE_WORDS)
@@ -79,7 +79,7 @@ public class SavingInformation implements Serializable {
 			throw new IllegalArgumentException(
 					"Only reviewing state can be used here");
 		}
-		this.problematicKanjisState = problematicKanjisState;
+		this.problematicWordsState = problematicWordsState;
 		applicationSaveableState = state;
 	}
 
