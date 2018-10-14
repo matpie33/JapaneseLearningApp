@@ -9,7 +9,6 @@ import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.KanjiData;
-import com.kanji.model.WordRow;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.panelsAndControllers.panelUpdaters.ProblematicJapaneseWordsPanelUpdater;
 import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
@@ -22,9 +21,6 @@ import com.kanji.windows.ApplicationWindow;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.event.ActionEvent;
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -61,8 +57,7 @@ public class ProblematicJapaneseWordsDisplayer
 	}
 
 	@Override
-	public void browseWord(WordRow<JapaneseWord> wordRow) {
-		JapaneseWord japaneseWord = wordRow.getListElement();
+	public void browseWord(JapaneseWord japaneseWord) {
 		KanjiCharactersReader kanjiCharactersReader = KanjiCharactersReader
 				.getInstance();
 		Set<String> kanjis = extractKanjis(japaneseWord);

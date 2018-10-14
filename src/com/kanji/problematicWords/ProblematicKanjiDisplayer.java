@@ -8,7 +8,6 @@ import com.kanji.constants.strings.Urls;
 import com.kanji.context.KanjiContext;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.myList.MyList;
-import com.kanji.model.WordRow;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.panelsAndControllers.panels.ProblematicKanjiPanel;
@@ -48,14 +47,14 @@ public class ProblematicKanjiDisplayer
 	}
 
 	@Override
-	public void browseWord(WordRow<Kanji> wordRow) {
+	public void browseWord(Kanji kanji) {
 		String uriText = Urls.KANJI_KOOHI_REVIEW_BASE_PAGE;
-		uriText += wordRow.getListElement().getId();
+		uriText += kanji.getId();
 		problematicKanjiPanel.getKanjiKoohiWebPanel()
 				.showPageWithoutGrabbingFocus(uriText);
-		kanjiContext = new KanjiContext(kanjiCharactersReader
-				.getKanjiById(wordRow.getListElement().getId()),
-				wordRow.getListElement().getId());
+		kanjiContext = new KanjiContext(
+				kanjiCharactersReader.getKanjiById(kanji.getId()),
+				kanji.getId());
 	}
 
 	@Override
@@ -83,8 +82,6 @@ public class ProblematicKanjiDisplayer
 		return problematicKanjiPanel.getFocusableComponentsManager()
 				.getFocusedComponent().equals(wordsToReviewList.getPanel());
 	}
-
-
 
 	@Override
 	public void focusPreviouslyFocusedElement() {

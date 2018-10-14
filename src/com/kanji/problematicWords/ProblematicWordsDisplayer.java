@@ -2,14 +2,13 @@ package com.kanji.problematicWords;
 
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.myList.MyList;
-import com.kanji.model.WordRow;
 import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
 
-public interface ProblematicWordsDisplayer<Element extends ListElement> {
+public interface ProblematicWordsDisplayer<Word extends ListElement> {
 
-	public MyList<Element> getWordsToReviewList();
+	public MyList<Word> getWordsToReviewList();
 
-	public void browseWord(WordRow<Element> wordRow);
+	public void browseWord(Word word);
 
 
 	public void initializeWebPages();

@@ -10,7 +10,6 @@ import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listObserver.ListObserver;
 import com.kanji.list.myList.MyList;
-import com.kanji.model.WordRow;
 import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.problematicWords.ProblematicWordsDisplayer;
 import com.kanji.saving.ApplicationStateManager;
@@ -23,16 +22,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 public class ProblematicWordsController<Word extends ListElement>
 		implements ApplicationStateManager, ListObserver<Word> {
-	private List<WordRow<Word>> notReviewedWords;
 	private int nextWordToReview = 0;
-	//TODO change notReviewedWords variable to keep ListElement objects,
-	// add to my list a method: get row number of word
 	private MyList<Word> wordsToReviewList;
 	private ApplicationController applicationController;
 	private ApplicationWindow applicationWindow;
@@ -43,7 +38,6 @@ public class ProblematicWordsController<Word extends ListElement>
 	public ProblematicWordsController(ApplicationWindow applicationWindow) {
 		applicationController = applicationWindow.getApplicationController();
 		this.applicationWindow = applicationWindow;
-		notReviewedWords = new ArrayList<>();
 	}
 
 	public void setProblematicWordsDisplayer(
@@ -62,14 +56,11 @@ public class ProblematicWordsController<Word extends ListElement>
 			Set<Word> problematicWords) {
 		if (haveAllWordsBeenRepeated()) {
 			wordsToReviewList.cleanWords();
-			notReviewedWords.clear();
 		}
-		else if (!notReviewedWords.isEmpty()) {
+		else if (!wordsToReviewList.isEmpty()) {
 			for (int i = 0; i < nextWordToReview + 1; i++) {
-				notReviewedWords.remove(0);
+				wordsToReviewList.removeWordInRow(0);
 			}
-			notReviewedWords.forEach(wordRow -> wordsToReviewList
-					.addWord(wordRow.getListElement()));
 
 		}
 		nextWordToReview = 0;
@@ -87,23 +78,17 @@ public class ProblematicWordsController<Word extends ListElement>
 
 	private void addWord(Word word) {
 		wordsToReviewList.addWord(word, InputGoal.NO_INPUT);
-		WordRow<Word> wordRow = new WordRow<>(word,
-				wordsToReviewList.getNumberOfWords() - 1);
-		if (!notReviewedWords.contains(wordRow)) {
-			notReviewedWords.add(wordRow);
-		}
 	}
 
 	private void goToNextResource() {
-		WordRow<Word> row = notReviewedWords.get(nextWordToReview);
-		showResource(row);
+		Word word = wordsToReviewList.getWordInRow(nextWordToReview + 1);
+		showResource(word);
 	}
 
-	public void showResource(WordRow<Word> row) {
-		problematicWordsDisplayer.browseWord(row);
+	public void showResource(Word word) {
+		problematicWordsDisplayer.browseWord(word);
 		wordsToReviewList.highlightRow(
-				wordsToReviewList.get1BasedRowNumberOfWord(row.getListElement())
-						- 1);
+				wordsToReviewList.get1BasedRowNumberOfWord(word) - 1);
 	}
 
 	private boolean haveAllWordsBeenRepeated() {
@@ -147,10 +132,10 @@ public class ProblematicWordsController<Word extends ListElement>
 			nextWordToReview = 0;
 			return;
 		}
-		if (nextWordToReview == notReviewedWords.size() - 1) {
+		if (nextWordToReview == wordsToReviewList.getNumberOfWords() - 1) {
 			wordsReviewed = true;
 		}
-		if (nextWordToReview == notReviewedWords.size()) {
+		if (nextWordToReview == wordsToReviewList.getNumberOfWords()) {
 			applicationWindow
 					.showMessageDialog(Prompts.NO_MORE_WORDS_TO_REVIEW);
 			nextWordToReview = 0;
@@ -195,11 +180,9 @@ public class ProblematicWordsController<Word extends ListElement>
 	public void addProblematicWordsHighlightReviewed(List<Word> reviewedWords,
 			List<Word> notReviewedWords) {
 		for (int i = 0; i < reviewedWords.size(); i++) {
-			Word listWord = reviewedWords.get(i);
-			wordsToReviewList.addWord(listWord);
+			Word word = reviewedWords.get(i);
+			wordsToReviewList.addWord(word);
 			wordsToReviewList.highlightRow(i);
-			this.notReviewedWords.add(new WordRow<>(listWord,
-					wordsToReviewList.getNumberOfWords() - 1));
 			nextWordToReview = i;
 		}
 
@@ -255,43 +238,21 @@ public class ProblematicWordsController<Word extends ListElement>
 		if (isProblematicWordsListEmpty()) {
 			return;
 		}
+		boolean hasWord = wordsToReviewList.containsWord(word);
 		wordsToReviewList.update(word, modificationType);
 		if (modificationType.equals(ListElementModificationType.DELETE)) {
-			boolean removed = removeFromNotReviewed(word);
-			if (removed && nextWordToReview >= notReviewedWords.size()) {
+			if (hasWord && nextWordToReview >= wordsToReviewList
+					.getNumberOfWords()) {
 				nextWordToReview = 0;
 			}
-			if (removed) {
+			if (hasWord) {
 				goToNextResource();
 			}
-
 		}
-		else {
-			if (!notReviewedWordsContainsWord(word)) {
-				wordsToReviewList.highlightRow(
-						wordsToReviewList.get1BasedRowNumberOfWord(word) - 1);
-			}
-		}
-
 	}
 
 	public boolean isProblematicWordsListEmpty() {
 		return wordsToReviewList.getWords().isEmpty();
-	}
-
-	private boolean notReviewedWordsContainsWord(Word word) {
-		for (WordRow notReviewedWord : notReviewedWords) {
-			if (notReviewedWord.getListElement().equals(word)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private boolean removeFromNotReviewed(Word word) {
-		return notReviewedWords.removeIf(
-				notReviewedWord -> notReviewedWord.getListElement()
-						.equals(word));
 	}
 
 	public void focusPreviouslyFocusedElement() {

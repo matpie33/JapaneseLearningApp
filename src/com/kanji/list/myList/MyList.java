@@ -300,6 +300,10 @@ public class MyList<Word extends ListElement>
 		return listController.getNumberOfWords();
 	}
 
+	public boolean isEmpty() {
+		return getNumberOfWords() == 0;
+	}
+
 	public boolean areAllWordsHighlighted() {
 		return listController.getWordsByHighlight(true).size()
 				== getNumberOfWords();
@@ -389,6 +393,10 @@ public class MyList<Word extends ListElement>
 		listController.remove(word);
 	}
 
+	public void removeWordInRow(int rowNumber0Based) {
+		listController.remove(getWordInRow(rowNumber0Based + 1));
+	}
+
 	public void updateObservers(Word word,
 			ListElementModificationType modificationType) {
 
@@ -418,5 +426,9 @@ public class MyList<Word extends ListElement>
 
 	public boolean isFilterInputFocused() {
 		return listController.isFilterInputFocused();
+	}
+
+	public boolean containsWord(Word word) {
+		return getWords().contains(word);
 	}
 }

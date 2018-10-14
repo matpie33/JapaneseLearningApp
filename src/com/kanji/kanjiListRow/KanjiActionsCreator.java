@@ -9,7 +9,6 @@ import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listeners.InputValidationListener;
 import com.kanji.list.myList.ListPropertyChangeHandler;
-import com.kanji.model.WordRow;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.windows.DialogWindow;
@@ -76,14 +75,12 @@ public class KanjiActionsCreator {
 
 	public AbstractButton withActionShowKanjiStories(
 			AbstractButton abstractButton,
-			ProblematicWordsController problematicWordsController,
-			ListElement kanji) {
-		int rowNumber = problematicWordsController.getNumberOfWords();
+			ProblematicWordsController<Kanji> problematicWordsController,
+			Kanji kanji) {
 		abstractButton.addActionListener(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				problematicWordsController
-						.showResource(new WordRow(kanji, rowNumber));
+				problematicWordsController.showResource(kanji);
 			}
 		});
 
