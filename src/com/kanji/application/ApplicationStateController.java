@@ -2,7 +2,6 @@ package com.kanji.application;
 
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
-import com.kanji.list.listElements.ListElement;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.panelsAndControllers.controllers.RepeatingWordsController;
@@ -68,8 +67,7 @@ public class ApplicationStateController {
 						problematicKanjiController));
 	}
 
-	public <Word extends ListElement> WordStateController getController(
-			String meaningfulName) {
+	public WordStateController getController(String meaningfulName) {
 		return wordStateControllerByMeaningfulNameMap.get(meaningfulName);
 	}
 

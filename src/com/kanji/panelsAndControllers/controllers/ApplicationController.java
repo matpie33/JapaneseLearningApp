@@ -23,7 +23,6 @@ import com.kanji.list.myList.MyList;
 import com.kanji.model.WordParticlesData;
 import com.kanji.model.WordsAndRepeatingInfo;
 import com.kanji.panelsAndControllers.panels.LoadingPanel;
-import com.kanji.panelsAndControllers.panels.RepeatingWordsPanel;
 import com.kanji.problematicWords.ProblematicKanjiDisplayer;
 import com.kanji.problematicWords.ProblematicWordsDisplayer;
 import com.kanji.range.SetOfRanges;
@@ -71,9 +70,16 @@ public class ApplicationController
 		fileSavingManager = new FileSavingManager();
 	}
 
-	public RepeatingWordsPanel getRepeatingWordsPanel() {
-		return applicationStateController.getController(Kanji.MEANINGFUL_NAME)
-				.getRepeatingWordsController().getRepeatingWordsPanel();
+	public JPanel getRepeatingWordsPanel(String meaningfulName) {
+		return applicationStateController.getController(meaningfulName)
+				.getRepeatingWordsController().getRepeatingWordsPanel()
+				.createPanel();
+	}
+
+	public JPanel getProblematicWordsPanel(String meaningfulName) {
+
+		return applicationStateController.getController(meaningfulName)
+				.getProblematicWordsController().getPanel().createPanel();
 	}
 
 	public void initializeApplicationStateManagers() {
@@ -580,11 +586,14 @@ public class ApplicationController
 	}
 
 	public void startRepeating() {
+		TypeOfWordForRepeating activeWordsListType = getActiveWordsListType();
 		WordStateController wordStateController = applicationStateController
-				.getController(
-						getActiveWordsListType().getAssociatedSaveableState()
-								.getMeaningfulName());
-		parent.showPanel(ApplicationPanels.REPEATING_PANEL);
+				.getController(activeWordsListType.getAssociatedSaveableState()
+						.getMeaningfulName());
+		parent.showPanel(
+				activeWordsListType.equals(TypeOfWordForRepeating.KANJIS) ?
+						ApplicationPanels.REPEATING_KANJI_PANEL :
+						ApplicationPanels.REPEATING_JAPANESE_WORDS_PANEL);
 		isClosingSafe = false;
 		wordStateController.getRepeatingWordsController().startRepeating();
 		applicationStateManager = wordStateController

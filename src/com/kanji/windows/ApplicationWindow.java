@@ -8,6 +8,8 @@ import com.kanji.constants.strings.MenuTexts;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Titles;
 import com.kanji.customPositioning.PositionerOnMyList;
+import com.kanji.list.listElements.JapaneseWord;
+import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
@@ -19,12 +21,9 @@ import com.kanji.timer.TimeSpentHandler;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-@SuppressWarnings("serial")
 public class ApplicationWindow extends DialogWindow {
 
 	private JPanel mainApplicationPanel;
@@ -34,9 +33,6 @@ public class ApplicationWindow extends DialogWindow {
 	private ApplicationController applicationController;
 	private Optional<TimeSpentHandler> timeSpentHandler;
 	private static Font kanjiFont = new Font("MS Mincho", Font.PLAIN, 100);
-	private RepeatingWordsPanel repeatingWordsPanel;
-	private Map<String, AbstractPanelWithHotkeysInfo> panelsByNames = new HashMap<>();
-	private JPanel problematicWordsPanel;
 
 	public ApplicationWindow() {
 		super(null);
@@ -51,27 +47,29 @@ public class ApplicationWindow extends DialogWindow {
 		UIManager.put("Label.disabledForeground", Color.WHITE);
 
 		applicationController = new ApplicationController(this);
-		problematicWordsPanel = new JPanel(new BorderLayout());
 		startingPanel = new StartingPanel(this, mainApplicationPanel);
 		setPanel(startingPanel);
 		applicationController.initializeListsElements();
 		applicationController.initializeApplicationStateManagers();
 		startingPanel.createListPanels();
-		repeatingWordsPanel = applicationController.getRepeatingWordsPanel();
 		mainApplicationPanel.add(startingPanel.createPanel(),
 				ApplicationPanels.STARTING_PANEL.getPanelName());
-		mainApplicationPanel.add(repeatingWordsPanel.createPanel(),
-				ApplicationPanels.REPEATING_PANEL.getPanelName());
-		mainApplicationPanel.add(problematicWordsPanel,
-				ApplicationPanels.PROBLEMATIC_WORDS_PANEL.getPanelName());
-
+		mainApplicationPanel.add(applicationController
+						.getRepeatingWordsPanel(Kanji.MEANINGFUL_NAME),
+				ApplicationPanels.REPEATING_KANJI_PANEL.getPanelName());
+		mainApplicationPanel.add(applicationController
+						.getRepeatingWordsPanel(JapaneseWord.MEANINGFUL_NAME),
+				ApplicationPanels.REPEATING_JAPANESE_WORDS_PANEL
+						.getPanelName());
+		mainApplicationPanel.add(applicationController
+						.getProblematicWordsPanel(Kanji.MEANINGFUL_NAME),
+				ApplicationPanels.PROBLEMATIC_KANJI_PANEL.getPanelName());
+		mainApplicationPanel.add(applicationController
+						.getProblematicWordsPanel(JapaneseWord.MEANINGFUL_NAME),
+				ApplicationPanels.PROBLEMATIC_JAPANESE_WORDS_PANEL
+						.getPanelName());
+		setPanel(mainApplicationPanel);
 		setWindowProperties();
-
-		panelsByNames.put(ApplicationPanels.STARTING_PANEL.getPanelName(),
-				startingPanel);
-		panelsByNames.put(ApplicationPanels.REPEATING_PANEL.getPanelName(),
-				repeatingWordsPanel);
-
 	}
 
 	public static Font getKanjiFont() {
@@ -147,7 +145,6 @@ public class ApplicationWindow extends DialogWindow {
 	public void showPanel(ApplicationPanels panel) {
 		((CardLayout) mainApplicationPanel.getLayout())
 				.show(mainApplicationPanel, panel.getPanelName());
-		setPanel(panelsByNames.get(panel.getPanelName()));
 	}
 
 	public void changeSaveStatus(SavingStatus savingStatus) {
@@ -228,18 +225,15 @@ public class ApplicationWindow extends DialogWindow {
 		}
 		AbstractPanelWithHotkeysInfo problematicWordsPanel = activeProblematicWordsController
 				.getPanel();
-		if (!problematicWordsPanel.isReady()) {
-			panelsByNames.put(ApplicationPanels.PROBLEMATIC_WORDS_PANEL
-					.getPanelName(), problematicWordsPanel);
-			//TODO the approach with enum (application panels) is not extensible
-		}
-		else {
+		if (problematicWordsPanel.isReady()) {
 			activeProblematicWordsController.focusPreviouslyFocusedElement();
 		}
-		showPanel(ApplicationPanels.PROBLEMATIC_WORDS_PANEL);
-		this.problematicWordsPanel.removeAll();
-		JPanel panel = problematicWordsPanel.createPanel();
-		this.problematicWordsPanel.add(panel);
+		TypeOfWordForRepeating activeWordsListType = applicationController
+				.getActiveWordsListType();
+
+		showPanel(activeWordsListType.equals(TypeOfWordForRepeating.KANJIS) ?
+				ApplicationPanels.PROBLEMATIC_KANJI_PANEL :
+				ApplicationPanels.PROBLEMATIC_JAPANESE_WORDS_PANEL);
 
 		applicationController
 				.switchStateManager(activeProblematicWordsController);

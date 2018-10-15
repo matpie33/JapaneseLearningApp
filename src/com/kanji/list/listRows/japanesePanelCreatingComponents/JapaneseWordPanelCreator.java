@@ -163,7 +163,8 @@ public class JapaneseWordPanelCreator
 						inputGoal);
 	}
 
-	public MyList<JapaneseWriting> createWritingsList(JapaneseWord japaneseWord,
+	private MyList<JapaneseWriting> createWritingsList(JapaneseWord
+			japaneseWord,
 			InputGoal inputGoal, boolean inheritScrollBar) {
 		lastWritingsListCreated = createJapaneseWritingsList(japaneseWord,
 				inheritScrollBar);
