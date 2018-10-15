@@ -53,21 +53,23 @@ public class ApplicationWindow extends DialogWindow {
 		applicationController.initializeApplicationStateManagers();
 		startingPanel.createListPanels();
 		mainApplicationPanel.add(startingPanel.createPanel(),
-				ApplicationPanels.STARTING_PANEL.getPanelName());
-		mainApplicationPanel.add(applicationController
-						.getRepeatingWordsPanel(Kanji.MEANINGFUL_NAME),
-				ApplicationPanels.REPEATING_KANJI_PANEL.getPanelName());
-		mainApplicationPanel.add(applicationController
-						.getRepeatingWordsPanel(JapaneseWord.MEANINGFUL_NAME),
-				ApplicationPanels.REPEATING_JAPANESE_WORDS_PANEL
-						.getPanelName());
-		mainApplicationPanel.add(applicationController
-						.getProblematicWordsPanel(Kanji.MEANINGFUL_NAME),
-				ApplicationPanels.PROBLEMATIC_KANJI_PANEL.getPanelName());
-		mainApplicationPanel.add(applicationController
-						.getProblematicWordsPanel(JapaneseWord.MEANINGFUL_NAME),
-				ApplicationPanels.PROBLEMATIC_JAPANESE_WORDS_PANEL
-						.getPanelName());
+				startingPanel.getUniqueName());
+		RepeatingWordsPanel repeatingKanjiPanel = applicationController
+				.getRepeatingWordsPanel(Kanji.MEANINGFUL_NAME);
+		mainApplicationPanel.add(repeatingKanjiPanel.createPanel(),
+				repeatingKanjiPanel.getUniqueName());
+		RepeatingWordsPanel repeatingJapaneseWordsPanel = applicationController
+				.getRepeatingWordsPanel(JapaneseWord.MEANINGFUL_NAME);
+		mainApplicationPanel.add(repeatingJapaneseWordsPanel.createPanel(),
+				repeatingJapaneseWordsPanel.getUniqueName());
+		AbstractPanelWithHotkeysInfo problematicWordsPanel = applicationController
+				.getProblematicWordsPanel(Kanji.MEANINGFUL_NAME);
+		mainApplicationPanel.add(problematicWordsPanel.createPanel(),
+				problematicWordsPanel.getUniqueName());
+		AbstractPanelWithHotkeysInfo problematicJapaneseWordsPanel = applicationController
+				.getProblematicWordsPanel(JapaneseWord.MEANINGFUL_NAME);
+		mainApplicationPanel.add(problematicJapaneseWordsPanel.createPanel(),
+				problematicJapaneseWordsPanel.getUniqueName());
 		setPanel(mainApplicationPanel);
 		setWindowProperties();
 	}
@@ -142,9 +144,10 @@ public class ApplicationWindow extends DialogWindow {
 		};
 	}
 
-	public void showPanel(ApplicationPanels panel) {
+
+	public void showPanel(String name) {
 		((CardLayout) mainApplicationPanel.getLayout())
-				.show(mainApplicationPanel, panel.getPanelName());
+				.show(mainApplicationPanel, name);
 	}
 
 	public void changeSaveStatus(SavingStatus savingStatus) {
@@ -228,12 +231,9 @@ public class ApplicationWindow extends DialogWindow {
 		if (problematicWordsPanel.isReady()) {
 			activeProblematicWordsController.focusPreviouslyFocusedElement();
 		}
-		TypeOfWordForRepeating activeWordsListType = applicationController
-				.getActiveWordsListType();
 
-		showPanel(activeWordsListType.equals(TypeOfWordForRepeating.KANJIS) ?
-				ApplicationPanels.PROBLEMATIC_KANJI_PANEL :
-				ApplicationPanels.PROBLEMATIC_JAPANESE_WORDS_PANEL);
+		showPanel(applicationController.getActiveProblematicWordsController()
+				.getPanel().getUniqueName());
 
 		applicationController
 				.switchStateManager(activeProblematicWordsController);

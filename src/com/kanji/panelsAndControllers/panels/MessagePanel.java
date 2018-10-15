@@ -14,6 +14,7 @@ import java.awt.*;
 
 public class MessagePanel extends AbstractPanelWithHotkeysInfo {
 
+	private static final String UNIQUE_NAME = "Message panel";
 	private String message;
 	protected AbstractButton buttonClose;
 
@@ -36,6 +37,11 @@ public class MessagePanel extends AbstractPanelWithHotkeysInfo {
 						new ScrollPaneOptions().opaque(false));
 		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, scrollPane));
 		setNavigationButtons(Anchor.CENTER, buttonClose);
+	}
+
+	@Override
+	public String getUniqueName() {
+		return UNIQUE_NAME;
 	}
 
 }

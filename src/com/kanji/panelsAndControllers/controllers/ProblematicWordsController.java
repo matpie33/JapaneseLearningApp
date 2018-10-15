@@ -98,7 +98,8 @@ public class ProblematicWordsController<Word extends ListElement>
 					applicationController.finishedRepeating();
 					applicationController.saveProject();
 				}
-				applicationWindow.showPanel(ApplicationPanels.STARTING_PANEL);
+				applicationWindow.showPanel(applicationWindow
+						.getStartingPanel().getUniqueName());
 			}
 		};
 

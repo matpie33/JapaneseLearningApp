@@ -26,6 +26,7 @@ import java.awt.event.KeyEvent;
 
 public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
+	private static final String UNIQUE_NAME = "Learning start panel";
 	private JScrollPane rangesScrollPane;
 	private JLabel sumOfWordsLabel;
 	private AbstractButton problematicWordsCheckbox;
@@ -193,6 +194,11 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 	@Override
 	public void afterVisible() {
 		firstTextFieldInRow.requestFocusInWindow();
+	}
+
+	@Override
+	public String getUniqueName() {
+		return UNIQUE_NAME;
 	}
 
 }

@@ -1,6 +1,5 @@
 package com.kanji.panelsAndControllers.controllers;
 
-import com.kanji.constants.enums.ApplicationPanels;
 import com.kanji.constants.enums.RepeatingWordsPanelState;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.Prompts;
@@ -33,6 +32,7 @@ public class RepeatingWordsController<Word extends ListElement>
 	private WordSpecificRepeatingController<Word> wordSpecificRepeatingController;
 	private TypeOfWordForRepeating currentTypeOfWordForRepeating;
 
+
 	public RepeatingWordsController(ApplicationWindow applicationWindow,
 			WordSpecificRepeatingController<Word> wordSpecificRepeatingController) {
 		this.wordSpecificRepeatingController = wordSpecificRepeatingController;
@@ -42,11 +42,10 @@ public class RepeatingWordsController<Word extends ListElement>
 		this.panel = new RepeatingWordsPanel(this);
 		repeatingWordsPanelState = RepeatingWordsPanelState.WORD_GUESSING;
 		panelUpdater = new RepeatingWordsPanelUpdater(panel);
-		initializeTypeOfWordToControllerMap();
 	}
 
-	private void initializeTypeOfWordToControllerMap() {
-
+	public WordSpecificRepeatingController<Word> getWordSpecificRepeatingController() {
+		return wordSpecificRepeatingController;
 	}
 
 	public RepeatingWordsPanel getRepeatingWordsPanel() {
@@ -110,7 +109,8 @@ public class RepeatingWordsController<Word extends ListElement>
 					getWordsSpecificController().getProblematicWords());
 		}
 		else {
-			applicationWindow.showPanel(ApplicationPanels.STARTING_PANEL);
+			applicationWindow.showPanel(
+					applicationWindow.getStartingPanel().getUniqueName());
 			applicationWindow.getApplicationController().finishedRepeating();
 		}
 	}
@@ -148,7 +148,8 @@ public class RepeatingWordsController<Word extends ListElement>
 	}
 
 	private void showFullWordDetailsPanel(ListElement word) {
-		getWordsSpecificController().showFullWordDetailsPanel(word, panel.getWordDataPanel());
+		getWordsSpecificController()
+				.showFullWordDetailsPanel(word, panel.getWordDataPanel());
 		panelUpdater.setButtonsToWordAssessmentState(
 				getWordsSpecificController().previousWordExists());
 		repeatingWordsPanelState = RepeatingWordsPanelState.WORD_ASSESSMENT;
@@ -197,7 +198,8 @@ public class RepeatingWordsController<Word extends ListElement>
 		if (!accepted) {
 			return;
 		}
-		applicationWindow.showPanel(ApplicationPanels.STARTING_PANEL);
+		applicationWindow.showPanel(
+				applicationWindow.getStartingPanel().getUniqueName());
 		applicationWindow.getApplicationController().finishedRepeating();
 		timeSpentHandler.stopTimer();
 	}

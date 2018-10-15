@@ -14,9 +14,15 @@ import java.util.List;
 
 public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 
+	private static final String UNIQUE_NAME = "Loading panel";
 	private AbstractButton buttonClose;
 	private String title;
 	private MainPanel progressBarsPanel;
+
+	@Override
+	public String getUniqueName() {
+		return UNIQUE_NAME;
+	}
 
 	public LoadingPanel(String title) {
 		this.title = title;

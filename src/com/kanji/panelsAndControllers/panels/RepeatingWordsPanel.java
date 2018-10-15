@@ -37,6 +37,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private JLabel titleLabel;
 	private AbstractButton returnButton;
 	private MainPanel wordDataPanel;
+	private static final String UNIQUE_NAME = "repeating words panel";
 
 	public RepeatingWordsPanel(RepeatingWordsController controller) {
 		rootPanel = new MainPanel(null);
@@ -66,6 +67,12 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
 		addElementsToPanels();
 		mainPanel.getPanel().repaint();
+	}
+
+	@Override
+	public String getUniqueName() {
+		return repeatingWordsController.getWordSpecificRepeatingController()
+				.getWordDisplayer().getUniqueName();
 	}
 
 	public AbstractButton getShowWordOrMarkAsRecognizedButton() {

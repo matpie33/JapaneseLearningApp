@@ -32,6 +32,10 @@ public class WordSpecificRepeatingController<Word extends ListElement> {
 		currentProblematicWords = new HashSet<>();
 	}
 
+	public RepeatingWordsDisplayer<Word> getWordDisplayer() {
+		return wordDisplayer;
+	}
+
 	public void setListOfAllProblematicWords(Set<Word> problematicWords) {
 		this.allProblematicWords = problematicWords;
 	}

@@ -20,6 +20,7 @@ public class RepeatingJapaneseWordsDisplayer
 	private KanjiCharactersReader kanjiCharactersReader;
 	private Map<Integer, Function<JapaneseWord, Set<String>>> hintTypeIntValues;
 	private JapaneseWordPanelCreator japaneseWordPanelCreator;
+	private String UNIQUE_NAME = "Repeating japanese words";
 
 	public RepeatingJapaneseWordsDisplayer(
 			ApplicationWindow applicationWindow) {
@@ -51,6 +52,11 @@ public class RepeatingJapaneseWordsDisplayer
 				.addJapanesePanelToExistingPanel(wordAssessmentPanel,
 						japaneseWord, InputGoal.NO_INPUT,
 						CommonListElements.forSingleRowOnly(Color.WHITE), true);
+	}
+
+	@Override
+	public String getUniqueName() {
+		return UNIQUE_NAME;
 	}
 
 	@Override

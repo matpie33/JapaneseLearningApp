@@ -18,6 +18,7 @@ import java.awt.*;
 
 public class RepeatingKanjiDisplayer implements RepeatingWordsDisplayer<Kanji> {
 
+	private static final String UNIQUE_NAME = "Repeating kanji";
 	private JTextComponent wordTextArea;
 	private KanjiCharactersReader kanjiCharactersReader;
 
@@ -30,6 +31,11 @@ public class RepeatingKanjiDisplayer implements RepeatingWordsDisplayer<Kanji> {
 						.getKanjiFont())
 						.border(BorderFactory
 								.createLineBorder(BasicColors.BLUE_DARK_2)));
+	}
+
+	@Override
+	public String getUniqueName() {
+		return UNIQUE_NAME;
 	}
 
 	@Override

@@ -15,6 +15,8 @@ public interface RepeatingWordsDisplayer<Word extends ListElement> {
 
 	public String getWordHint(Word word);
 
+	public String getUniqueName();
+
 
 
 }

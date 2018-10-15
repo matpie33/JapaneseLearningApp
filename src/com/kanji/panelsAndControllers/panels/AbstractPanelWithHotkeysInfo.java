@@ -333,7 +333,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 		return null;
 	}
 
-	public MyList getListWithSelectedInput() {
+	private MyList getListWithSelectedInput() {
 		for (MyList navigableList : navigableByKeyboardLists) {
 			if (navigableList.hasSelectedInput()) {
 				return navigableList;
@@ -341,5 +341,8 @@ public abstract class AbstractPanelWithHotkeysInfo {
 		}
 		return null;
 	}
+
+	public abstract String getUniqueName();
+
 
 }

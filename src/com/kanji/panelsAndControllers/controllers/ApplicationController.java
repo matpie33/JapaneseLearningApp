@@ -22,7 +22,9 @@ import com.kanji.list.myList.ListConfiguration;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.WordParticlesData;
 import com.kanji.model.WordsAndRepeatingInfo;
+import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.panelsAndControllers.panels.LoadingPanel;
+import com.kanji.panelsAndControllers.panels.RepeatingWordsPanel;
 import com.kanji.problematicWords.ProblematicKanjiDisplayer;
 import com.kanji.problematicWords.ProblematicWordsDisplayer;
 import com.kanji.range.SetOfRanges;
@@ -70,16 +72,16 @@ public class ApplicationController
 		fileSavingManager = new FileSavingManager();
 	}
 
-	public JPanel getRepeatingWordsPanel(String meaningfulName) {
+	public RepeatingWordsPanel getRepeatingWordsPanel(String meaningfulName) {
 		return applicationStateController.getController(meaningfulName)
-				.getRepeatingWordsController().getRepeatingWordsPanel()
-				.createPanel();
+				.getRepeatingWordsController().getRepeatingWordsPanel();
 	}
 
-	public JPanel getProblematicWordsPanel(String meaningfulName) {
+	public AbstractPanelWithHotkeysInfo getProblematicWordsPanel(
+			String meaningfulName) {
 
 		return applicationStateController.getController(meaningfulName)
-				.getProblematicWordsController().getPanel().createPanel();
+				.getProblematicWordsController().getPanel();
 	}
 
 	public void initializeApplicationStateManagers() {
@@ -586,18 +588,12 @@ public class ApplicationController
 	}
 
 	public void startRepeating() {
-		TypeOfWordForRepeating activeWordsListType = getActiveWordsListType();
-		WordStateController wordStateController = applicationStateController
-				.getController(activeWordsListType.getAssociatedSaveableState()
-						.getMeaningfulName());
+		RepeatingWordsController activeRepeatingWordsController = getActiveRepeatingWordsController();
 		parent.showPanel(
-				activeWordsListType.equals(TypeOfWordForRepeating.KANJIS) ?
-						ApplicationPanels.REPEATING_KANJI_PANEL :
-						ApplicationPanels.REPEATING_JAPANESE_WORDS_PANEL);
+				activeRepeatingWordsController.getPanel().getUniqueName());
 		isClosingSafe = false;
-		wordStateController.getRepeatingWordsController().startRepeating();
-		applicationStateManager = wordStateController
-				.getRepeatingWordsController();
+		activeRepeatingWordsController.startRepeating();
+		applicationStateManager = activeRepeatingWordsController;
 	}
 
 	public TypeOfWordForRepeating getActiveWordsListType() {
@@ -663,6 +659,12 @@ public class ApplicationController
 		return applicationStateController.getController(
 				getActiveWordsListType().getAssociatedSaveableState()
 						.getMeaningfulName()).getProblematicWordsController();
+	}
+
+	public RepeatingWordsController getActiveRepeatingWordsController() {
+		return applicationStateController.getController(
+				getActiveWordsListType().getAssociatedSaveableState()
+						.getMeaningfulName()).getRepeatingWordsController();
 	}
 
 	public void switchToList(TypeOfWordForRepeating typeOfWordForRepeating) {

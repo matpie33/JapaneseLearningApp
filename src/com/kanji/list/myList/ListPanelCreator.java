@@ -63,6 +63,7 @@ public class ListPanelCreator<Word extends ListElement>
 	private InputGoal inputGoal;
 	private boolean hasParentList;
 	private ListSearchPanelCreator<Word> listSearchPanelCreator;
+	private final static String UNIQUE_NAME = "list panel creator";
 
 	public ListPanelCreator(ListConfiguration listConfiguration,
 			ApplicationController applicationController,
@@ -470,5 +471,10 @@ public class ListPanelCreator<Word extends ListElement>
 
 	public boolean isFilterInputFocused() {
 		return listSearchPanelCreator.getFilteringInput().hasFocus();
+	}
+
+	@Override
+	public String getUniqueName() {
+		return UNIQUE_NAME;
 	}
 }

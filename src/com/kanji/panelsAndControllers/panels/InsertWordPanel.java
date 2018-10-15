@@ -16,6 +16,7 @@ import java.awt.event.KeyEvent;
 public class InsertWordPanel<Word extends ListElement>
 		extends AbstractPanelWithHotkeysInfo {
 
+	private static final String UNIQUE_NAME = "Insert word panel" ;
 	private InsertWordController<Word> controller;
 	private Color labelsColor = Color.WHITE;
 
@@ -41,6 +42,11 @@ public class InsertWordPanel<Word extends ListElement>
 		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH,
 				controller.createListRowPanel().getPanel()).fillAllVertically()
 				.fillHorizontallyEqually());
+	}
+
+	@Override
+	public String getUniqueName() {
+		return UNIQUE_NAME;
 	}
 
 	public void reinitializePanel() {

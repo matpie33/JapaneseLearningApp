@@ -12,6 +12,7 @@ import javax.swing.*;
 public class WordsAndRepeatingInformationsPanel
 		extends AbstractPanelWithHotkeysInfo {
 
+	private static final String UNIQUE_NAME = "Words and repeating information panel";
 	private JSplitPane listsSplitPane;
 	private MyList wordsList;
 	private MyList repeatingList;
@@ -52,5 +53,11 @@ public class WordsAndRepeatingInformationsPanel
 
 	public TypeOfWordForRepeating getTypeOfWordForRepeating() {
 		return typeOfWordForRepeating;
+	}
+
+	@Override
+	public String getUniqueName() {
+
+		return UNIQUE_NAME;
 	}
 }

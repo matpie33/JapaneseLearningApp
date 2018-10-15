@@ -34,6 +34,7 @@ import java.awt.event.KeyEvent;
 
 public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
+	private static final String UNIQUE_NAME = "Problematic kanji panel";
 	private WebPagePanel englishPolishDictionaryWebPanel;
 	private WebPagePanel kanjiKoohiWebPanel;
 	private MyList<Kanji> wordsToReviewList;
@@ -106,6 +107,11 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		new ProblematicWordsPanelCommonPart(this, controller)
 				.addCommonPartToPanel();
 
+	}
+
+	@Override
+	public String getUniqueName() {
+		return UNIQUE_NAME;
 	}
 
 	public FocusableComponentsManager getFocusableComponentsManager() {

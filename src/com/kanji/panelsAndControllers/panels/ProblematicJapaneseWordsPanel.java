@@ -40,6 +40,7 @@ import java.util.List;
 public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		implements ContextOwner {
 
+	private static final String UNIQUE_NAME = "Problematic japanese words panel";
 	private MyList<JapaneseWord> problematicWordsList;
 	private MainPanel kanjiInformationPanel;
 	private WebPagePanel englishPolishDictionaryPanel;
@@ -206,5 +207,10 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 
 	public MyList<JapaneseWord> getWordsList() {
 		return problematicWordsList;
+	}
+
+	@Override
+	public String getUniqueName() {
+		return UNIQUE_NAME;
 	}
 }

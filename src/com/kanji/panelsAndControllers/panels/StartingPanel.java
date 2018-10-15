@@ -31,6 +31,7 @@ import java.util.*;
 
 public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 
+	private static final String UNIQUE_NAME = "Starting panel";
 	private JTabbedPane tabs;
 	private WordsAndRepeatingInformationsPanel kanjiRepeatingPanel;
 	private WordsAndRepeatingInformationsPanel japaneseWordsRepeatingPanel;
@@ -288,6 +289,11 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	public void refreshAllTabs() {
 		tabs.repaint();
 		tabs.revalidate();
+	}
+
+	@Override
+	public String getUniqueName() {
+		return UNIQUE_NAME;
 	}
 }
 
