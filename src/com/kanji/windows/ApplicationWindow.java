@@ -1,7 +1,6 @@
 package com.kanji.windows;
 
 import com.guimaker.colors.BasicColors;
-import com.kanji.constants.enums.ApplicationPanels;
 import com.kanji.constants.enums.SavingStatus;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.MenuTexts;
