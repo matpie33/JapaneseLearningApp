@@ -584,7 +584,6 @@ public class ApplicationController
 				.getController(
 						getActiveWordsListType().getAssociatedSaveableState()
 								.getMeaningfulName());
-		wordStateController.getProblematicWordsController().initialize();
 		parent.showPanel(ApplicationPanels.REPEATING_PANEL);
 		isClosingSafe = false;
 		wordStateController.getRepeatingWordsController().startRepeating();

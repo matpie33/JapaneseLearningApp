@@ -20,6 +20,7 @@ public class WordStateController<Word extends ListElement> {
 			ProblematicWordsController<Word> problematicWordsController) {
 		this.repeatingWordsController = repeatingWordsController;
 		this.problematicWordsController = problematicWordsController;
+		problematicWordsController.initialize();
 	}
 
 	public RepeatingWordsController<Word> getRepeatingWordsController() {

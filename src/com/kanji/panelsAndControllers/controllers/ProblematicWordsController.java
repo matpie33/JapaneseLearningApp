@@ -4,8 +4,6 @@ import com.guimaker.enums.MoveDirection;
 import com.kanji.constants.enums.ApplicationPanels;
 import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.ListElementModificationType;
-import com.kanji.constants.enums.TypeOfWordForRepeating;
-import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listObserver.ListObserver;
@@ -19,9 +17,6 @@ import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.Set;
 
@@ -33,7 +28,6 @@ public class ProblematicWordsController<Word extends ListElement>
 	private ApplicationWindow applicationWindow;
 	private ProblematicWordsDisplayer<Word> problematicWordsDisplayer;
 	private boolean wordsReviewFinished = false;
-	private TypeOfWordForRepeating typeOfWordForRepeating;
 
 	public ProblematicWordsController(ApplicationWindow applicationWindow,
 			ProblematicWordsDisplayer<Word> problematicWordsDisplayer) {
@@ -155,7 +149,8 @@ public class ProblematicWordsController<Word extends ListElement>
 		SavingInformation savingInformation = applicationController
 				.getApplicationState();
 		savingInformation.setProblematicWordsState(problematicWordsState,
-				typeOfWordForRepeating.getAssociatedSaveableState());
+				applicationController.getActiveWordsListType()
+						.getAssociatedSaveableState());
 
 		return savingInformation;
 	}
@@ -164,8 +159,8 @@ public class ProblematicWordsController<Word extends ListElement>
 	public void restoreState(SavingInformation savingInformation) {
 		if (savingInformation.containsProblematicJapaneseWords()
 				|| savingInformation.containsProblematicKanji()) {
-			applicationController.switchToList(typeOfWordForRepeating);
-			initialize();
+			applicationController.switchToList(
+					applicationController.getActiveWordsListType());
 		}
 		applicationWindow.showProblematicWordsDialog(
 				savingInformation.getProblematicWordsState());
@@ -190,8 +185,6 @@ public class ProblematicWordsController<Word extends ListElement>
 	public AbstractPanelWithHotkeysInfo getPanel() {
 		return problematicWordsDisplayer.getPanel();
 	}
-
-
 
 	@Override
 	public void update(Word word,
