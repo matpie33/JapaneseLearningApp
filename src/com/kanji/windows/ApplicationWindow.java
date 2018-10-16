@@ -83,20 +83,9 @@ public class ApplicationWindow extends DialogWindow {
 				container.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		container.addWindowListener(
 				createListenerSwitchToSubdialogWhenFocusGain());
-		container.addWindowListener(
-				focusLastFocusedElementWhenWindowRegainsFocus());
 	}
 
-	private WindowListener focusLastFocusedElementWhenWindowRegainsFocus() {
-		return new WindowAdapter() {
-			@Override
-			public void windowActivated(WindowEvent e) {
-				applicationController.getActiveProblematicWordsController()
-						.focusPreviouslyFocusedElement();
 
-			}
-		};
-	}
 
 	private WindowAdapter createListenerSwitchToSubdialogWhenFocusGain() {
 		return new WindowAdapter() {
@@ -140,11 +129,6 @@ public class ApplicationWindow extends DialogWindow {
 		container.repaint();
 	}
 
-	public void updateProblematicWordsAmount() {
-		startingPanel.updateProblematicWordsAmount(applicationController
-				.getProblematicWordsAmountBasedOnCurrentTab());
-	}
-
 	public void updateTitle(String update) {
 		container.setTitle(Titles.APPLICATION + "   " + update);
 	}
@@ -160,7 +144,6 @@ public class ApplicationWindow extends DialogWindow {
 
 	public void showLearningStartDialog(
 			TypeOfWordForRepeating typeOfWordForRepeating) {
-
 		createDialog(new LearningStartPanel(applicationController,
 						typeOfWordForRepeating), Titles.LEARNING_START_DIALOG, false,
 				Position.CENTER);
@@ -265,11 +248,11 @@ public class ApplicationWindow extends DialogWindow {
 		this.timeSpentHandler = Optional.of(timeSpentHandler);
 	}
 
-	public void stopTimeMeasuring() {
+	private void stopTimeMeasuring() {
 		timeSpentHandler.ifPresent(TimeSpentHandler::stopTimer);
 	}
 
-	public void resumeTimeMeasuring() {
+	private void resumeTimeMeasuring() {
 		timeSpentHandler.ifPresent(TimeSpentHandler::startTimer);
 	}
 

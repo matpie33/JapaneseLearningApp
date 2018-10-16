@@ -39,6 +39,9 @@ import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -62,13 +65,13 @@ public class ApplicationController
 	private boolean loadingInProgress = false;
 	private FileSavingManager fileSavingManager;
 	private ApplicationStateController applicationStateController;
+	private StartingPanel startingPanel;
 
 	public ApplicationController() {
 		problematicKanjis = new HashSet<>();
 		problematicJapaneseWords = new HashSet<>();
-		StartingPanel startingPanel = new StartingPanel();
-		this.applicationWindow = new ApplicationWindow(this,
-				startingPanel);
+		startingPanel = new StartingPanel();
+		this.applicationWindow = new ApplicationWindow(this, startingPanel);
 		isClosingSafe = true;
 		applicationStateManager = this;
 		applicationStateController = new ApplicationStateController();
@@ -81,7 +84,13 @@ public class ApplicationController
 		initializeListsElements();
 		initializeApplicationStateManagers();
 		initializePanels();
+		initializeAdditionalWindowListeners();
 
+	}
+
+	private void initializeAdditionalWindowListeners() {
+		applicationWindow.getContainer().addWindowListener(
+				focusLastFocusedElementWhenWindowRegainsFocus());
 	}
 
 	private void initializePanels() {
@@ -108,12 +117,23 @@ public class ApplicationController
 		}
 	}
 
-	public RepeatingWordsPanel getRepeatingWordsPanel(String meaningfulName) {
+	private WindowListener focusLastFocusedElementWhenWindowRegainsFocus() {
+		return new WindowAdapter() {
+			@Override
+			public void windowActivated(WindowEvent e) {
+				getActiveProblematicWordsController()
+						.focusPreviouslyFocusedElement();
+
+			}
+		};
+	}
+
+	private RepeatingWordsPanel getRepeatingWordsPanel(String meaningfulName) {
 		return applicationStateController.getController(meaningfulName)
 				.getRepeatingWordsController().getRepeatingWordsPanel();
 	}
 
-	public AbstractPanelWithHotkeysInfo getProblematicWordsPanel(
+	private AbstractPanelWithHotkeysInfo getProblematicWordsPanel(
 			String meaningfulName) {
 
 		return applicationStateController.getController(meaningfulName)
@@ -502,23 +522,6 @@ public class ApplicationController
 		return kanjiRepeatingDates;
 	}
 
-	public void saveProject() {
-		if (!fileSavingManager.hasFileToSave() || loadingInProgress) {
-			return;
-		}
-		applicationWindow.changeSaveStatus(SavingStatus.SAVING);
-		SavingInformation savingInformation = applicationStateManager
-				.getApplicationState();
-
-		try {
-			fileSavingManager.saveFile(savingInformation);
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		applicationWindow.changeSaveStatus(SavingStatus.SAVED);
-	}
-
 	public void saveList() {
 		JFileChooser fileChooser = createFileChooser();
 
@@ -580,7 +583,7 @@ public class ApplicationController
 					"Invalid active words class name: " + wordClass);
 		}
 		if (wordClass.equals(getActiveWordsList().getListElementClass())) {
-			applicationWindow.updateProblematicWordsAmount();
+			updateProblematicWordsAmount();
 		}
 
 	}
@@ -665,6 +668,23 @@ public class ApplicationController
 		return isClosingSafe;
 	}
 
+	public void saveProject() {
+		if (!fileSavingManager.hasFileToSave() || loadingInProgress) {
+			return;
+		}
+		applicationWindow.changeSaveStatus(SavingStatus.SAVING);
+		SavingInformation savingInformation = applicationStateManager
+				.getApplicationState();
+
+		try {
+			fileSavingManager.saveFile(savingInformation);
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		applicationWindow.changeSaveStatus(SavingStatus.SAVED);
+	}
+
 	@Override
 	public SavingInformation getApplicationState() {
 		SavingInformation savingInformation = new SavingInformation(
@@ -704,7 +724,7 @@ public class ApplicationController
 						.getMeaningfulName()).getProblematicWordsController();
 	}
 
-	public RepeatingWordsController getActiveRepeatingWordsController() {
+	private RepeatingWordsController getActiveRepeatingWordsController() {
 		return applicationStateController.getController(
 				getActiveWordsListType().getAssociatedSaveableState()
 						.getMeaningfulName()).getRepeatingWordsController();
@@ -724,7 +744,7 @@ public class ApplicationController
 		else {
 			if (modificationType.equals(ListElementModificationType.DELETE)) {
 				getProblematicJapaneseWords().remove(changedListElement);
-				applicationWindow.updateProblematicWordsAmount();
+				updateProblematicWordsAmount();
 
 			}
 			else {
@@ -735,4 +755,8 @@ public class ApplicationController
 		}
 	}
 
+	public void updateProblematicWordsAmount() {
+		startingPanel.updateProblematicWordsAmount(
+				getProblematicWordsAmountBasedOnCurrentTab());
+	}
 }

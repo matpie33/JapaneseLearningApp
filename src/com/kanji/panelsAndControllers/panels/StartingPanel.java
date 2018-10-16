@@ -101,7 +101,8 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		tabs.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				applicationWindow.updateProblematicWordsAmount();
+				applicationWindow.getApplicationController()
+						.updateProblematicWordsAmount();
 			}
 		});
 
