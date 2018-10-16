@@ -44,15 +44,17 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	private WordTypeContext wordTypeContext;
 	private StartingController startingController;
 	private ApplicationWindow applicationWindow;
-	private JPanel mainApplicationPanel;
 
-	public StartingPanel(ApplicationWindow a, JPanel mainApplicationPanel) {
-		applicationWindow = a;
-		this.mainApplicationPanel = mainApplicationPanel;
-		applicationController = a.getApplicationController();
+	public StartingPanel() {
 		tabs = new JTabbedPane();
 		wordTypeContext = new WordTypeContext();
 		startingController = new StartingController(this);
+	}
+
+	public void setApplicationWindow(ApplicationWindow applicationWindow) {
+		//TODO add it in constructor
+		this.applicationWindow = applicationWindow;
+		applicationController = applicationWindow.getApplicationController();
 	}
 
 	public void createListPanels() {
@@ -116,7 +118,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 				}
 
 			}
-		}, mainApplicationPanel, HotkeysDescriptions.SWITCH_WORD_TAB);
+		}, getPanel(), HotkeysDescriptions.SWITCH_WORD_TAB);
 
 		tabs.setSelectedIndex(0);
 		tabs.addChangeListener(startingController.createTabChangeListener());

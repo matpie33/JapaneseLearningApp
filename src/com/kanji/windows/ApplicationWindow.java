@@ -7,8 +7,6 @@ import com.kanji.constants.strings.MenuTexts;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Titles;
 import com.kanji.customPositioning.PositionerOnMyList;
-import com.kanji.list.listElements.JapaneseWord;
-import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
@@ -20,6 +18,7 @@ import com.kanji.timer.TimeSpentHandler;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 
@@ -33,43 +32,31 @@ public class ApplicationWindow extends DialogWindow {
 	private Optional<TimeSpentHandler> timeSpentHandler;
 	private static Font kanjiFont = new Font("MS Mincho", Font.PLAIN, 100);
 
-	public ApplicationWindow() {
+	public ApplicationWindow(ApplicationController applicationController,
+			StartingPanel startingPanel) {
 		super(null);
+		this.startingPanel = startingPanel;
+		this.applicationController = applicationController;
 		container = new JFrame();
 		mainApplicationPanel = new JPanel(new CardLayout());
 		timeSpentHandler = Optional.empty();
+		setPanel(mainApplicationPanel);
+		setPanel(startingPanel);
+		startingPanel.setApplicationWindow(this);
+
 	}
 
-	public void initiate() {
+	public void initiate( AbstractPanelWithHotkeysInfo... panels) {
 		//TODO put this to another class
 		UIManager.put("ComboBox.disabledBackground", BasicColors.PURPLE_DARK_1);
 		UIManager.put("Label.disabledForeground", Color.WHITE);
-
-		applicationController = new ApplicationController(this);
-		startingPanel = new StartingPanel(this, mainApplicationPanel);
-		setPanel(startingPanel);
-		applicationController.initializeListsElements();
-		applicationController.initializeApplicationStateManagers();
 		startingPanel.createListPanels();
+
 		mainApplicationPanel.add(startingPanel.createPanel(),
 				startingPanel.getUniqueName());
-		RepeatingWordsPanel repeatingKanjiPanel = applicationController
-				.getRepeatingWordsPanel(Kanji.MEANINGFUL_NAME);
-		mainApplicationPanel.add(repeatingKanjiPanel.createPanel(),
-				repeatingKanjiPanel.getUniqueName());
-		RepeatingWordsPanel repeatingJapaneseWordsPanel = applicationController
-				.getRepeatingWordsPanel(JapaneseWord.MEANINGFUL_NAME);
-		mainApplicationPanel.add(repeatingJapaneseWordsPanel.createPanel(),
-				repeatingJapaneseWordsPanel.getUniqueName());
-		AbstractPanelWithHotkeysInfo problematicWordsPanel = applicationController
-				.getProblematicWordsPanel(Kanji.MEANINGFUL_NAME);
-		mainApplicationPanel.add(problematicWordsPanel.createPanel(),
-				problematicWordsPanel.getUniqueName());
-		AbstractPanelWithHotkeysInfo problematicJapaneseWordsPanel = applicationController
-				.getProblematicWordsPanel(JapaneseWord.MEANINGFUL_NAME);
-		mainApplicationPanel.add(problematicJapaneseWordsPanel.createPanel(),
-				problematicJapaneseWordsPanel.getUniqueName());
-		setPanel(mainApplicationPanel);
+		Arrays.stream(panels).forEach(panel -> mainApplicationPanel
+				.add(panel.createPanel(), panel.getUniqueName()));
+
 		setWindowProperties();
 	}
 
@@ -142,7 +129,6 @@ public class ApplicationWindow extends DialogWindow {
 			}
 		};
 	}
-
 
 	public void showPanel(String name) {
 		((CardLayout) mainApplicationPanel.getLayout())

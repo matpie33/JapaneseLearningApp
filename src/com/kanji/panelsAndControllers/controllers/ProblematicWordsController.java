@@ -1,7 +1,6 @@
 package com.kanji.panelsAndControllers.controllers;
 
 import com.guimaker.enums.MoveDirection;
-import com.kanji.constants.enums.ApplicationPanels;
 import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.ListElementModificationType;
 import com.kanji.constants.strings.Prompts;
