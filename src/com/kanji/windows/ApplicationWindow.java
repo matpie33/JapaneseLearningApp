@@ -151,53 +151,6 @@ public class ApplicationWindow extends DialogWindow {
 	//TODO why some dialogs like problematic and search word are in application window,
 	// and the others are in application controller?
 
-	public void showProblematicWordsDialogForCurrentList() {
-		MyList activeWordList = getStartingPanel().getActiveWordsList();
-		activeProblematicWordsController = applicationController
-				.getActiveProblematicWordsController();
-		showProblematicWordsDialog();
-	}
-
-	public <Element extends ListElement> void showProblematicWordsDialog(
-			Set<Element> problematicWords) {
-		activeProblematicWordsController = applicationController
-				.getActiveProblematicWordsController();
-		setPanel(activeProblematicWordsController.getPanel());
-		activeProblematicWordsController
-				.addProblematicWordsAndHighlightFirst(problematicWords);
-		showProblematicWordsDialog();
-	}
-
-	public <Element extends ListElement> void showProblematicWordsDialog(
-			ProblematicWordsState<Element> problematicWordsState) {
-		displayMessageAboutUnfinishedRepeating();
-		activeProblematicWordsController = applicationController
-				.getActiveProblematicWordsController();
-		activeProblematicWordsController.addProblematicWordsHighlightReviewed(
-				problematicWordsState.getReviewedWords(),
-				problematicWordsState.getNotReviewedWords());
-		showProblematicWordsDialog();
-	}
-
-	private void showProblematicWordsDialog() {
-
-		if (activeProblematicWordsController.isProblematicWordsListEmpty()) {
-			return;
-		}
-		AbstractPanelWithHotkeysInfo problematicWordsPanel = activeProblematicWordsController
-				.getPanel();
-		if (problematicWordsPanel.isReady()) {
-			activeProblematicWordsController.focusPreviouslyFocusedElement();
-		}
-
-		showPanel(applicationController.getActiveProblematicWordsController()
-				.getPanel().getUniqueName());
-
-		applicationController
-				.switchStateManager(activeProblematicWordsController);
-
-	}
-
 	public void closeDialog() {
 		childWindow.getContainer().dispose();
 	}
@@ -223,8 +176,6 @@ public class ApplicationWindow extends DialogWindow {
 		timeSpentHandler.ifPresent(TimeSpentHandler::startTimer);
 	}
 
-	public void displayMessageAboutUnfinishedRepeating() {
-		showMessageDialog(Prompts.UNFINISHED_REPEATING);
-	}
+
 
 }

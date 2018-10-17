@@ -151,7 +151,7 @@ public class ProblematicWordsController<Word extends ListElement>
 				.getApplicationState();
 		savingInformation.setProblematicWordsState(problematicWordsState,
 				applicationController.getActiveWordsListType()
-						.getAssociatedSaveableState());
+						.getAssociatedReviewingWordsState());
 
 		return savingInformation;
 	}
@@ -163,7 +163,7 @@ public class ProblematicWordsController<Word extends ListElement>
 			applicationController.switchToList(
 					applicationController.getActiveWordsListType());
 		}
-		applicationWindow.showProblematicWordsDialog(
+		applicationController.showProblematicWordsDialog(
 				savingInformation.getProblematicWordsState());
 	}
 

@@ -103,9 +103,8 @@ public class RepeatingWordsController<Word extends ListElement>
 
 	private void closeRepeatingPanelAndOpenProperOne() {
 		if (getWordsSpecificController().hasProblematicWords()) {
-			applicationController.getApplicationWindow()
-					.showProblematicWordsDialog(
-							getWordsSpecificController().getProblematicWords());
+			applicationController.showProblematicWordsDialog(
+					getWordsSpecificController().getProblematicWords());
 		}
 		else {
 			applicationController.getApplicationWindow().showPanel(
@@ -291,10 +290,10 @@ public class RepeatingWordsController<Word extends ListElement>
 
 		reset();
 		resumeUnfinishedRepeating(savingInformation.getRepeatingState());
-		applicationController.getApplicationWindow().getStartingPanel().switchToList(
-				savingInformation.getRepeatingState()
+		applicationController.getApplicationWindow().getStartingPanel()
+				.switchToList(savingInformation.getRepeatingState()
 						.getTypeOfWordForRepeating());
-		applicationController.getApplicationWindow().displayMessageAboutUnfinishedRepeating();
+		applicationController.displayMessageAboutUnfinishedRepeating();
 		applicationController.startRepeating();
 	}
 

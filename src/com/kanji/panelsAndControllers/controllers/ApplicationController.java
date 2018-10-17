@@ -7,6 +7,7 @@ import com.kanji.application.ApplicationStateController;
 import com.kanji.application.WordStateController;
 import com.kanji.constants.enums.*;
 import com.kanji.constants.strings.MenuTexts;
+import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Titles;
 import com.kanji.customPositioning.CustomPositioner;
 import com.kanji.customPositioning.PositionerOnRightPartOfSplitPane;
@@ -32,6 +33,7 @@ import com.kanji.problematicWords.ProblematicWordsDisplayer;
 import com.kanji.range.SetOfRanges;
 import com.kanji.saving.ApplicationStateManager;
 import com.kanji.saving.FileSavingManager;
+import com.kanji.saving.ProblematicWordsState;
 import com.kanji.saving.SavingInformation;
 import com.kanji.swingWorkers.LoadingProjectWorker;
 import com.kanji.utilities.JapaneseWordsAdjuster;
@@ -508,12 +510,62 @@ public class ApplicationController
 	public void showInsertWordDialog() {
 		MyList activeWordsList = applicationWindow.getStartingPanel()
 				.getActiveWordsList();
-		CustomPositioner customPositioner = new PositionerOnRightPartOfSplitPane(startingPanel
-				.getSplitPaneFor(activeWordsList.getListElementClass()));
+		CustomPositioner customPositioner = new PositionerOnRightPartOfSplitPane(
+				startingPanel.getSplitPaneFor(
+						activeWordsList.getListElementClass()));
 		AbstractPanelWithHotkeysInfo panel = new InsertWordPanel<>(
 				activeWordsList, this);
 		applicationWindow.createPanel(panel, Titles.INSERT_WORD_DIALOG, false,
 				customPositioner);
+	}
+
+	public void showProblematicWordsDialogForCurrentList() {
+		showProblematicWordsDialog();
+	}
+
+	public <Element extends ListElement> void showProblematicWordsDialog(
+			Set<Element> problematicWords) {
+
+		ProblematicWordsController activeProblematicWordsController = getActiveProblematicWordsController();
+		applicationWindow.setPanel(activeProblematicWordsController.getPanel());
+		activeProblematicWordsController
+				.addProblematicWordsAndHighlightFirst(problematicWords);
+		showProblematicWordsDialog();
+	}
+
+	public <Element extends ListElement> void showProblematicWordsDialog(
+			ProblematicWordsState<Element> problematicWordsState) {
+		displayMessageAboutUnfinishedRepeating();
+
+		getActiveProblematicWordsController()
+				.addProblematicWordsHighlightReviewed(
+						problematicWordsState.getReviewedWords(),
+						problematicWordsState.getNotReviewedWords());
+		showProblematicWordsDialog();
+	}
+
+	public void displayMessageAboutUnfinishedRepeating() {
+		applicationWindow.showMessageDialog(Prompts.UNFINISHED_REPEATING);
+	}
+
+	private void showProblematicWordsDialog() {
+
+		ProblematicWordsController activeProblematicWordsController = getActiveProblematicWordsController();
+		if (activeProblematicWordsController.isProblematicWordsListEmpty()) {
+			return;
+		}
+		AbstractPanelWithHotkeysInfo problematicWordsPanel = activeProblematicWordsController
+				.getPanel();
+		if (problematicWordsPanel.isReady()) {
+			activeProblematicWordsController.focusPreviouslyFocusedElement();
+		}
+
+		applicationWindow.showPanel(
+				getActiveProblematicWordsController().getPanel()
+						.getUniqueName());
+
+		switchStateManager(activeProblematicWordsController);
+
 	}
 
 	public void showLearningStartDialog() {
@@ -531,7 +583,7 @@ public class ApplicationController
 			TypeOfWordForRepeating typeForRepeating) {
 
 		WordStateController wordStateController = applicationStateController
-				.getController(typeForRepeating.getAssociatedSaveableState()
+				.getController(typeForRepeating.getAssociatedRepeatingWordsState()
 						.getMeaningfulName());
 		//TODO use method: get active words list type; replace all ocurrences
 		return wordStateController.getRepeatingWordsController();
@@ -734,7 +786,7 @@ public class ApplicationController
 		savingInformation.setLastBackupFileNumber(
 				fileSavingManager.getLastBackupFileNumber());
 		String koohiiLoginDataCookie = applicationStateController.getController(
-				getActiveWordsListType().getAssociatedSaveableState()
+				getActiveWordsListType().getAssociatedRepeatingWordsState()
 						.getMeaningfulName()).getProblematicWordsController()
 				.getProblematicWordsDisplayer()
 				.getKanjiKoohiLoginCookieHeader();
@@ -759,13 +811,13 @@ public class ApplicationController
 
 	public ProblematicWordsController getActiveProblematicWordsController() {
 		return applicationStateController.getController(
-				getActiveWordsListType().getAssociatedSaveableState()
+				getActiveWordsListType().getAssociatedRepeatingWordsState()
 						.getMeaningfulName()).getProblematicWordsController();
 	}
 
 	private RepeatingWordsController getActiveRepeatingWordsController() {
 		return applicationStateController.getController(
-				getActiveWordsListType().getAssociatedSaveableState()
+				getActiveWordsListType().getAssociatedRepeatingWordsState()
 						.getMeaningfulName()).getRepeatingWordsController();
 	}
 

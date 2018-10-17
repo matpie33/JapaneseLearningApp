@@ -1,7 +1,9 @@
 package com.kanji.panelsAndControllers.panels;
 
 import com.guimaker.colors.BasicColors;
+import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
+import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
@@ -26,9 +28,11 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 
@@ -226,7 +230,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 				action = new AbstractAction() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						applicationWindow
+						applicationController
 								.showProblematicWordsDialogForCurrentList();
 					}
 				};
@@ -249,21 +253,16 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		saveInfo = GuiElementsCreator.createLabel(new ComponentOptions());
 		problematicKanjis = GuiElementsCreator
 				.createLabel(new ComponentOptions());
-		showProblematicWordsButton = createShowProblematicKanjiButton();
+		showProblematicWordsButton = createShowProblematicWordsButton();
 		changeSaveStatus(SavingStatus.NO_CHANGES);
 		updateProblematicWordsAmount(
 				applicationController.getProblematicKanjis().size());
 	}
 
-	private JButton createShowProblematicKanjiButton() {
-		JButton problematicKanjiButton = new JButton(
-				ButtonsNames.SHOW_PROBLEMATIC_KANJIS);
-		problematicKanjiButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				applicationWindow.showProblematicWordsDialog(new HashSet<>());
-			}
-		});
+	private AbstractButton createShowProblematicWordsButton() {
+		AbstractButton problematicKanjiButton = GuiElementsCreator
+				.createButtonLikeComponent(new ButtonOptions(ButtonType.BUTTON)
+						.text(ButtonsNames.SHOW_PROBLEMATIC_KANJIS));
 		return problematicKanjiButton;
 	}
 

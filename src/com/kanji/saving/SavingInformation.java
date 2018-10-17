@@ -87,7 +87,7 @@ public class SavingInformation implements Serializable {
 				&& !state
 				.equals(ApplicationSaveableState.REVIEWING_PROBLEMATIC_KANJIS)) {
 			throw new IllegalArgumentException(
-					"Only reviewing state can be used here");
+					"Only reviewing state can be used here but was: " + state);
 		}
 		this.problematicWordsState = problematicWordsState;
 		applicationSaveableState = state;

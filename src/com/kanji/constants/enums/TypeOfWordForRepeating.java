@@ -1,21 +1,26 @@
 package com.kanji.constants.enums;
 
 public enum TypeOfWordForRepeating {
-	KANJIS(ApplicationSaveableState.REPEATING_KANJI), JAPANESE_WORDS(
-			ApplicationSaveableState.REPEATING_JAPANESE_WORDS);
+	KANJIS(ApplicationSaveableState.REPEATING_KANJI,
+			ApplicationSaveableState.REVIEWING_PROBLEMATIC_KANJIS), JAPANESE_WORDS(
+			ApplicationSaveableState.REPEATING_JAPANESE_WORDS,
+			ApplicationSaveableState.REVIEWING_PROBLEMATIC_JAPANESE_WORDS);
 
-	private ApplicationSaveableState associatedSaveableState;
+	private ApplicationSaveableState associatedRepeatingWordsState;
+	private ApplicationSaveableState associatedReviewingWordsState;
 
-
-
-	private TypeOfWordForRepeating(ApplicationSaveableState
-			associatedSaveableState) {
-
-		this.associatedSaveableState = associatedSaveableState;
+	TypeOfWordForRepeating(
+			ApplicationSaveableState associatedRepeatingWordsState,
+			ApplicationSaveableState associatedReviewingWordsState) {
+		this.associatedRepeatingWordsState = associatedRepeatingWordsState;
+		this.associatedReviewingWordsState = associatedReviewingWordsState;
 	}
 
-	public ApplicationSaveableState getAssociatedSaveableState() {
-		return associatedSaveableState;
+	public ApplicationSaveableState getAssociatedRepeatingWordsState() {
+		return associatedRepeatingWordsState;
 	}
 
+	public ApplicationSaveableState getAssociatedReviewingWordsState() {
+		return associatedReviewingWordsState;
+	}
 }
