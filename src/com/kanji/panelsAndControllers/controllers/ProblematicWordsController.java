@@ -28,10 +28,11 @@ public class ProblematicWordsController<Word extends ListElement>
 	private ProblematicWordsDisplayer<Word> problematicWordsDisplayer;
 	private boolean wordsReviewFinished = false;
 
-	public ProblematicWordsController(ApplicationWindow applicationWindow,
+	public ProblematicWordsController(
+			ApplicationController applicationController,
 			ProblematicWordsDisplayer<Word> problematicWordsDisplayer) {
-		applicationController = applicationWindow.getApplicationController();
-		this.applicationWindow = applicationWindow;
+		this.applicationController = applicationController;
+		this.applicationWindow = applicationController.getApplicationWindow();
 		this.problematicWordsDisplayer = problematicWordsDisplayer;
 
 	}
@@ -97,8 +98,8 @@ public class ProblematicWordsController<Word extends ListElement>
 					applicationController.finishedRepeating();
 					applicationController.saveProject();
 				}
-				applicationWindow.showPanel(applicationWindow
-						.getStartingPanel().getUniqueName());
+				applicationWindow.showPanel(
+						applicationWindow.getStartingPanel().getUniqueName());
 			}
 		};
 

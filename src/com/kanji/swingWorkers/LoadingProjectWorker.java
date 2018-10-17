@@ -4,6 +4,7 @@ import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.myList.MyList;
+import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.panels.LoadingPanel;
 import com.kanji.windows.ApplicationWindow;
 
@@ -15,13 +16,13 @@ import java.util.concurrent.ExecutionException;
 public class LoadingProjectWorker {
 
 	private List<SwingWorker> swingWorkers;
-	private ApplicationWindow applicationWindow;
+	private ApplicationController applicationController;
 	private LoadingPanel loadingPanel;
 
-	public LoadingProjectWorker(ApplicationWindow applicationController,
+	public LoadingProjectWorker(ApplicationController applicationController,
 			LoadingPanel loadingPanel) {
 		swingWorkers = new ArrayList<>();
-		this.applicationWindow = applicationController;
+		this.applicationController = applicationController;
 		this.loadingPanel = loadingPanel;
 	}
 
@@ -53,6 +54,8 @@ public class LoadingProjectWorker {
 
 			@Override
 			public void done() {
+				ApplicationWindow applicationWindow = applicationController
+						.getApplicationWindow();
 				try {
 					get();
 				}
@@ -73,7 +76,7 @@ public class LoadingProjectWorker {
 					list.scrollToBottom();
 					swingWorkers.remove(this);
 					if (swingWorkers.isEmpty()) {
-						applicationWindow.getApplicationController()
+						applicationController
 								.finishedLoadingProject();
 					}
 				}

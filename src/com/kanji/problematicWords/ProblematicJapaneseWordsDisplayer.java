@@ -2,7 +2,6 @@ package com.kanji.problematicWords;
 
 import com.guimaker.enums.MoveDirection;
 import com.guimaker.model.WebContext;
-import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.Urls;
 import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
@@ -10,6 +9,7 @@ import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.KanjiData;
+import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.panelsAndControllers.panelUpdaters.ProblematicJapaneseWordsPanelUpdater;
 import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
@@ -35,17 +35,18 @@ public class ProblematicJapaneseWordsDisplayer
 	private ApplicationWindow applicationWindow;
 	private ProblematicJapaneseWordsPanelUpdater problematicJapaneseWordsPanelUpdater;
 	private KanjiKoohiWebPageHandler kanjiKoohiWebPageHandler;
-	private  ProblematicWordsController<JapaneseWord> controller;
-	private MyList <JapaneseWord> wordsToReviewList;
+	private ProblematicWordsController<JapaneseWord> controller;
+	private MyList<JapaneseWord> wordsToReviewList;
 
 	public ProblematicJapaneseWordsDisplayer(
-			ApplicationWindow applicationWindow) {
+			ApplicationController applicationController) {
 
-		this.applicationWindow = applicationWindow;
-		controller = new ProblematicWordsController<>(applicationWindow, this);
+		this.applicationWindow = applicationController.getApplicationWindow();
+		controller = new ProblematicWordsController<>(applicationController,
+				this);
 		problematicJapaneseWordsPanel = new ProblematicJapaneseWordsPanel(
-				applicationWindow, this, controller);
-		kanjiList = applicationWindow.getApplicationController().getKanjiList();
+				applicationController, this, controller);
+		kanjiList = applicationController.getKanjiList();
 		problematicJapaneseWordsPanelUpdater = new ProblematicJapaneseWordsPanelUpdater(
 				problematicJapaneseWordsPanel);
 		kanjiKoohiWebPageHandler = KanjiKoohiWebPageHandler.getInstance();

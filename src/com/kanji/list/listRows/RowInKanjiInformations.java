@@ -15,6 +15,7 @@ import com.kanji.list.listeners.InputValidationListener;
 import com.kanji.list.myList.ListRowCreator;
 import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.ListRowDataCreator;
+import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.utilities.CommonListElements;
 import com.kanji.windows.ApplicationWindow;
@@ -32,12 +33,12 @@ public class RowInKanjiInformations implements ListRowCreator<Kanji> {
 	//TODO try to remove the dependency on problematic words controller
 
 
-	public RowInKanjiInformations(ApplicationWindow applicationWindow,
+	public RowInKanjiInformations(ApplicationController applicationController,
 			PanelDisplayMode displayMode) {
 		this.displayMode = displayMode;
 		elementsCreator = new KanjiElementsCreator();
 		actionsCreator = new KanjiActionsCreator(
-				applicationWindow.getApplicationController(), applicationWindow,
+				applicationController, applicationController.getApplicationWindow(),
 				displayMode);
 	}
 

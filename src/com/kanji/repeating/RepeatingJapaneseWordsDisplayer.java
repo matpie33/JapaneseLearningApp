@@ -5,10 +5,10 @@ import com.guimaker.panels.MainPanel;
 import com.kanji.constants.enums.InputGoal;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
+import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.utilities.CommonListElements;
 import com.kanji.utilities.KanjiCharactersReader;
 import com.kanji.utilities.StringUtilities;
-import com.kanji.windows.ApplicationWindow;
 
 import java.awt.*;
 import java.util.*;
@@ -23,9 +23,10 @@ public class RepeatingJapaneseWordsDisplayer
 	private String UNIQUE_NAME = "Repeating japanese words";
 
 	public RepeatingJapaneseWordsDisplayer(
-			ApplicationWindow applicationWindow) {
+			ApplicationController applicationController) {
 		japaneseWordPanelCreator = new JapaneseWordPanelCreator(
-				applicationWindow.getApplicationController(), applicationWindow,
+				applicationController,
+				applicationController.getApplicationWindow(),
 				PanelDisplayMode.VIEW);
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		kanjiCharactersReader.loadKanjisIfNeeded();

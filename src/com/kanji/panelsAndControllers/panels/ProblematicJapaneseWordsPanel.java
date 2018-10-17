@@ -27,6 +27,7 @@ import com.kanji.list.myList.ListConfiguration;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.KanjiData;
 import com.kanji.panelSwitching.FocusableComponentsManager;
+import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.problematicWords.ProblematicJapaneseWordsDisplayer;
 import com.kanji.utilities.CommonGuiElementsCreator;
@@ -50,13 +51,16 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	private JapaneseWordPanelCreator japanesePanelCreator;
 	private FocusableComponentsManager focusableComponentsManager;
 	private ProblematicWordsController<JapaneseWord> problematicWordsController;
+	private ApplicationController applicationController;
 
-	public ProblematicJapaneseWordsPanel(ApplicationWindow applicationWindow,
+	public ProblematicJapaneseWordsPanel(
+			ApplicationController applicationController,
 			ProblematicJapaneseWordsDisplayer problematicJapaneseWordsDisplayer,
 			ProblematicWordsController<JapaneseWord> problematicWordsController) {
+		this.applicationController = applicationController;
 		focusableComponentsManager = new FocusableComponentsManager(getPanel());
 		this.problematicWordsController = problematicWordsController;
-		this.parentDialog = applicationWindow;
+		this.parentDialog = applicationController.getApplicationWindow();
 		this.problematicJapaneseWordsDisplayer = problematicJapaneseWordsDisplayer;
 		kanjiInformationPanel = new MainPanel(null, true);
 		englishPolishDictionaryPanel = new WebPagePanel(this, null);
@@ -121,9 +125,8 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 
 	private JapaneseWordPanelCreator createJapanesePanelCreator(
 			ApplicationWindow applicationWindow) {
-		return new JapaneseWordPanelCreator(
-				applicationWindow.getApplicationController(), applicationWindow,
-				PanelDisplayMode.VIEW);
+		return new JapaneseWordPanelCreator(applicationController,
+				applicationWindow, PanelDisplayMode.VIEW);
 	}
 
 	private AbstractButton createButtonSearchWord() {
@@ -181,9 +184,8 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	private void createProblematicWordsList() {
 		japanesePanelCreator = createJapanesePanelCreator(
 				(ApplicationWindow) parentDialog);
-		this.problematicWordsList = new MyList<>(
-				(ApplicationWindow) parentDialog,
-				((ApplicationWindow) parentDialog).getApplicationController(),
+		this.problematicWordsList = new MyList<>(parentDialog,
+				applicationController,
 				new RowInJapaneseWordInformations(japanesePanelCreator),
 				Titles.PROBLEMATIC_KANJIS,
 				new ListConfiguration().enableWordAdding(false)
@@ -192,8 +194,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 								createButtonSearchWord()),
 				JapaneseWord.getInitializer());
 		japanesePanelCreator.setWordsList(problematicWordsList);
-		problematicWordsList.addListObserver(
-				((ApplicationWindow) parentDialog).getApplicationController());
+		problematicWordsList.addListObserver(applicationController);
 	}
 
 	@Override

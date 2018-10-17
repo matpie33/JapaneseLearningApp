@@ -6,8 +6,8 @@ import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.myList.MyList;
+import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.InsertWordController;
-import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,14 +16,14 @@ import java.awt.event.KeyEvent;
 public class InsertWordPanel<Word extends ListElement>
 		extends AbstractPanelWithHotkeysInfo {
 
-	private static final String UNIQUE_NAME = "Insert word panel" ;
+	private static final String UNIQUE_NAME = "Insert word panel";
 	private InsertWordController<Word> controller;
 	private Color labelsColor = Color.WHITE;
 
 	public InsertWordPanel(MyList<Word> list,
-			ApplicationWindow applicationWindow) {
-		controller = new InsertWordController<>(list,
-				applicationWindow.getApplicationController(), this);
+			ApplicationController applicationController) {
+		controller = new InsertWordController<>(list, applicationController,
+				this);
 		initializeOneTimeOnlyElements();
 	}
 

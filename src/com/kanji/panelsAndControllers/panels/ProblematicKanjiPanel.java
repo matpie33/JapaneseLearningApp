@@ -22,6 +22,7 @@ import com.kanji.list.listRows.RowInKanjiInformations;
 import com.kanji.list.myList.ListConfiguration;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelSwitching.FocusableComponentsManager;
+import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.utilities.CommonGuiElementsCreator;
 import com.kanji.webPanel.ConnectionFailKanjiOfflinePage;
@@ -41,7 +42,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	private FocusableComponentsManager focusableComponentsManager;
 	private ProblematicWordsController<Kanji> controller;
 
-	public ProblematicKanjiPanel(ApplicationWindow parentDialog,
+	public ProblematicKanjiPanel(ApplicationController applicationController,
 			ProblematicWordsController<Kanji> controller,
 			ContextOwner kanjiContextOwner) {
 
@@ -54,7 +55,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 						ApplicationWindow.getKanjiFont()));
 
 		RowInKanjiInformations rowInKanjiInformations = new RowInKanjiInformations(
-				parentDialog, PanelDisplayMode.VIEW);
+				applicationController, PanelDisplayMode.VIEW);
 		rowInKanjiInformations.setProblematicWordsController(controller);
 		wordsToReviewList = new MyList<>(parentDialog, null,
 				rowInKanjiInformations, Titles.PROBLEMATIC_KANJIS,

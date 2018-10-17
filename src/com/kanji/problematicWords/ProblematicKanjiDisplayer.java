@@ -6,6 +6,7 @@ import com.kanji.constants.strings.Urls;
 import com.kanji.context.KanjiContext;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.myList.MyList;
+import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.panelsAndControllers.panels.ProblematicKanjiPanel;
@@ -25,12 +26,12 @@ public class ProblematicKanjiDisplayer
 	private KanjiKoohiWebPageHandler kanjiKoohiWebPageHandler;
 	private ProblematicWordsController<Kanji> problematicWordsController;
 
-	public ProblematicKanjiDisplayer(ApplicationWindow applicationWindow) {
+	public ProblematicKanjiDisplayer(ApplicationController applicationController) {
 
 		problematicWordsController = new
-				ProblematicWordsController<>(applicationWindow, this);
+				ProblematicWordsController<>(applicationController, this);
 		problematicKanjiPanel = new ProblematicKanjiPanel(
-				applicationWindow, problematicWordsController, this);
+				applicationController, problematicWordsController, this);
 		kanjiContext = KanjiContext.emptyContext();
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		kanjiCharactersReader.loadKanjisIfNeeded();

@@ -51,10 +51,11 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		startingController = new StartingController(this);
 	}
 
-	public void setApplicationWindow(ApplicationWindow applicationWindow) {
+	public void setApplicationWindow(
+			ApplicationController applicationController) {
 		//TODO add it in constructor
-		this.applicationWindow = applicationWindow;
-		applicationController = applicationWindow.getApplicationController();
+		this.applicationWindow = applicationController.getApplicationWindow();
+		this.applicationController = applicationController;
 	}
 
 	public void createListPanels() {
@@ -101,8 +102,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		tabs.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				applicationWindow.getApplicationController()
-						.updateProblematicWordsAmount();
+				applicationController.updateProblematicWordsAmount();
 			}
 		});
 

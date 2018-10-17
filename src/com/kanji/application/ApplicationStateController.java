@@ -3,6 +3,7 @@ package com.kanji.application;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.myList.MyList;
+import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.panelsAndControllers.controllers.RepeatingWordsController;
 import com.kanji.panelsAndControllers.controllers.WordSpecificRepeatingController;
@@ -10,7 +11,6 @@ import com.kanji.problematicWords.ProblematicJapaneseWordsDisplayer;
 import com.kanji.problematicWords.ProblematicKanjiDisplayer;
 import com.kanji.repeating.RepeatingJapaneseWordsDisplayer;
 import com.kanji.repeating.RepeatingKanjiDisplayer;
-import com.kanji.windows.ApplicationWindow;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,23 +19,25 @@ public class ApplicationStateController {
 
 	private Map<String, WordStateController> wordStateControllerByMeaningfulNameMap = new HashMap<>();
 
-	public void initialize(ApplicationWindow applicationWindow) {
-		initializeKanjiControllers(applicationWindow);
-		initializeJapaneseWordsControllers(applicationWindow);
+	public void initialize(ApplicationController applicationController) {
+		initializeKanjiControllers(applicationController);
+		initializeJapaneseWordsControllers(applicationController);
 	}
 
 	private void initializeJapaneseWordsControllers(
-			ApplicationWindow applicationWindow) {
+			ApplicationController applicationController) {
 		RepeatingJapaneseWordsDisplayer repeatingJapaneseWordsDisplayer = new RepeatingJapaneseWordsDisplayer(
-				applicationWindow);
-		MyList<JapaneseWord> japaneseWords = applicationWindow
-				.getApplicationController().getJapaneseWords();
+				applicationController);
+		MyList<JapaneseWord> japaneseWords = applicationController
+				.getJapaneseWords();
 		WordSpecificRepeatingController<JapaneseWord> japaneseWordSpecificController = new WordSpecificRepeatingController<>(
 				japaneseWords, repeatingJapaneseWordsDisplayer);
-		RepeatingWordsController<JapaneseWord> repeatingJapaneseWordsController = new RepeatingWordsController<>(
-				applicationWindow, japaneseWordSpecificController);
+		RepeatingWordsController<JapaneseWord> repeatingJapaneseWordsController =
+				new RepeatingWordsController<>(
+				applicationController,
+				japaneseWordSpecificController);
 		ProblematicJapaneseWordsDisplayer problematicJapaneseWordsDisplayer = new ProblematicJapaneseWordsDisplayer(
-				applicationWindow);
+				applicationController);
 
 		ProblematicWordsController<JapaneseWord> controller = problematicJapaneseWordsDisplayer
 				.getController();
@@ -47,17 +49,17 @@ public class ApplicationStateController {
 	}
 
 	private void initializeKanjiControllers(
-			ApplicationWindow applicationWindow) {
+			ApplicationController applicationController) {
 		RepeatingKanjiDisplayer repeatingKanjiDisplayer = new RepeatingKanjiDisplayer();
-		MyList<Kanji> kanjiList = applicationWindow.getApplicationController()
-				.getKanjiList();
+		MyList<Kanji> kanjiList = applicationController.getKanjiList();
 		WordSpecificRepeatingController<Kanji> kanjiSpecificController = new WordSpecificRepeatingController<>(
 				kanjiList, repeatingKanjiDisplayer);
 		RepeatingWordsController<Kanji> repeatingKanjiController = new RepeatingWordsController<>(
-				applicationWindow, kanjiSpecificController);
+				applicationController,
+				kanjiSpecificController);
 
 		ProblematicKanjiDisplayer problematicKanjiDisplayer = new ProblematicKanjiDisplayer(
-				applicationWindow);
+				applicationController);
 		ProblematicWordsController<Kanji> problematicKanjiController = problematicKanjiDisplayer
 				.getProblematicWordsController();
 		kanjiList.addListObserver(problematicKanjiController);

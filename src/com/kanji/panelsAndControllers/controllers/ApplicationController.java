@@ -141,7 +141,7 @@ public class ApplicationController
 	}
 
 	public void initializeApplicationStateManagers() {
-		applicationStateController.initialize(applicationWindow);
+		applicationStateController.initialize(this);
 
 	}
 
@@ -374,7 +374,7 @@ public class ApplicationController
 		savingInformation.getJapaneseWords().removeIf(JapaneseWord::isEmpty);
 		LoadingPanel loadingPanel = applicationWindow.showProgressDialog();
 		LoadingProjectWorker loadingProjectWorker = new LoadingProjectWorker(
-				applicationWindow, loadingPanel);
+				this, loadingPanel);
 		loadingProjectWorker
 				.load(japaneseWords, savingInformation.getJapaneseWords());
 		loadingProjectWorker.load(kanjiList, savingInformation.getKanjiWords());
@@ -421,7 +421,7 @@ public class ApplicationController
 
 	private void initializeKanjiList() {
 		kanjiList = new MyList<>(applicationWindow, this,
-				new RowInKanjiInformations(applicationWindow,
+				new RowInKanjiInformations(this,
 						PanelDisplayMode.EDIT), Titles.KANJI_LIST,
 				Kanji.getInitializer());
 
@@ -733,6 +733,10 @@ public class ApplicationController
 	public void switchToList(TypeOfWordForRepeating typeOfWordForRepeating) {
 		applicationWindow.getStartingPanel()
 				.switchToList(typeOfWordForRepeating);
+	}
+
+	public ApplicationWindow getApplicationWindow() {
+		return applicationWindow;
 	}
 
 	@Override

@@ -42,7 +42,7 @@ public class ApplicationWindow extends DialogWindow {
 		timeSpentHandler = Optional.empty();
 		setPanel(mainApplicationPanel);
 		setPanel(startingPanel);
-		startingPanel.setApplicationWindow(this);
+		startingPanel.setApplicationWindow(applicationController);
 
 	}
 
@@ -62,10 +62,6 @@ public class ApplicationWindow extends DialogWindow {
 
 	public static Font getKanjiFont() {
 		return kanjiFont;
-	}
-
-	public ApplicationController getApplicationController() {
-		return applicationController;
 	}
 
 	private void setWindowProperties() {
@@ -153,7 +149,8 @@ public class ApplicationWindow extends DialogWindow {
 	public <Word extends ListElement> void showInsertDialog(MyList<Word> list) {
 		customPositioner = new PositionerOnMyList(
 				getStartingPanel().getSplitPaneFor(list.getListElementClass()));
-		AbstractPanelWithHotkeysInfo panel = new InsertWordPanel<>(list, this);
+		AbstractPanelWithHotkeysInfo panel = new InsertWordPanel<>(list,
+				applicationController);
 		setPanel(panel);
 		createDialog(panel, Titles.INSERT_WORD_DIALOG, false, Position.CUSTOM);
 	}
