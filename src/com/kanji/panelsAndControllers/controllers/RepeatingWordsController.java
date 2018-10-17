@@ -98,8 +98,7 @@ public class RepeatingWordsController<Word extends ListElement>
 		repeatingData.setTimeSpentOnRepeating(timeSpentHandler.getTimePassed());
 		applicationController.addWordToRepeatingList(repeatingData);
 		applicationController.updateProblematicWordsAmount();
-		applicationController.getApplicationWindow()
-				.scrollRepeatingListToBottom();
+		applicationController.getActiveRepeatingList().scrollToBottom();
 	}
 
 	private void closeRepeatingPanelAndOpenProperOne() {

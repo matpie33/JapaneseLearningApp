@@ -2,11 +2,9 @@ package com.kanji.windows;
 
 import com.guimaker.colors.BasicColors;
 import com.kanji.constants.enums.SavingStatus;
-import com.kanji.constants.enums.TypeOfWordForRepeating;
-import com.kanji.constants.strings.MenuTexts;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Titles;
-import com.kanji.customPositioning.PositionerOnMyList;
+import com.kanji.customPositioning.CustomPositioner;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
@@ -31,6 +29,7 @@ public class ApplicationWindow extends DialogWindow {
 	private ApplicationController applicationController;
 	private Optional<TimeSpentHandler> timeSpentHandler;
 	private static Font kanjiFont = new Font("MS Mincho", Font.PLAIN, 100);
+	private JMenuBar menuBar;
 
 	public ApplicationWindow(ApplicationController applicationController,
 			StartingPanel startingPanel) {
@@ -44,6 +43,10 @@ public class ApplicationWindow extends DialogWindow {
 		setPanel(startingPanel);
 		startingPanel.setApplicationWindow(applicationController);
 
+	}
+
+	public void setMenuBar(JMenuBar menuBar){
+		this.menuBar = menuBar;
 	}
 
 	public void initiate( AbstractPanelWithHotkeysInfo... panels) {
@@ -66,7 +69,7 @@ public class ApplicationWindow extends DialogWindow {
 
 	private void setWindowProperties() {
 		container = new JFrame();
-		container.setJMenuBar(createMenuBar());
+		container.setJMenuBar(menuBar);
 		container.setContentPane(mainApplicationPanel);
 		container.pack();
 		container.setMinimumSize(container.getSize());
@@ -129,30 +132,20 @@ public class ApplicationWindow extends DialogWindow {
 		container.setTitle(Titles.APPLICATION + "   " + update);
 	}
 
-	public void scrollRepeatingListToBottom() {
-		//TODO scroll the currently active repeating list
-		applicationController.getKanjiRepeatingDates().scrollToBottom();
-	}
-
 	public void enableShowProblematicWordsButton() {
 		startingPanel.enableShowProblematicWordsButton();
 	}
 
-	public void showLearningStartDialog(
-			TypeOfWordForRepeating typeOfWordForRepeating) {
-		createDialog(new LearningStartPanel(applicationController,
-						typeOfWordForRepeating), Titles.LEARNING_START_DIALOG, false,
-				Position.CENTER);
-
+	public void createPanel(AbstractPanelWithHotkeysInfo panel, String title,
+			boolean modal, Position position){
+		setPanel(panel);
+		createDialog(panel, title, modal, position);
 	}
 
-	public <Word extends ListElement> void showInsertDialog(MyList<Word> list) {
-		customPositioner = new PositionerOnMyList(
-				getStartingPanel().getSplitPaneFor(list.getListElementClass()));
-		AbstractPanelWithHotkeysInfo panel = new InsertWordPanel<>(list,
-				applicationController);
-		setPanel(panel);
-		createDialog(panel, Titles.INSERT_WORD_DIALOG, false, Position.CUSTOM);
+	public void createPanel(AbstractPanelWithHotkeysInfo panel, String title,
+			boolean modal, CustomPositioner customPositioner){
+		this.customPositioner = customPositioner;
+		createPanel(panel, title, modal, Position.CUSTOM);
 	}
 
 	//TODO why some dialogs like problematic and search word are in application window,
@@ -205,12 +198,6 @@ public class ApplicationWindow extends DialogWindow {
 
 	}
 
-	public LoadingPanel showProgressDialog() {
-		LoadingPanel dialog = new LoadingPanel(Prompts.PROJECT_LOADING);
-		createDialog(dialog, Titles.MESSAGE_DIALOG, false, Position.CENTER);
-		return dialog;
-	}
-
 	public void closeDialog() {
 		childWindow.getContainer().dispose();
 	}
@@ -219,23 +206,6 @@ public class ApplicationWindow extends DialogWindow {
 		return container;
 	}
 
-	private JMenuBar createMenuBar() {
-		JMenuBar menuBar = new JMenuBar();
-		menuBar.setBackground(BasicColors.BLUE_NORMAL_2);
-		JMenu menu = new JMenu(MenuTexts.MENU_BAR_FILE);
-		menuBar.add(menu);
-		JMenuItem item = new JMenuItem(MenuTexts.MENU_OPEN);
-
-		item.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				applicationController.openKanjiProject();
-			}
-		});
-
-		menu.add(item);
-		return menuBar;
-	}
 
 	public StartingPanel getStartingPanel() {
 		return startingPanel;

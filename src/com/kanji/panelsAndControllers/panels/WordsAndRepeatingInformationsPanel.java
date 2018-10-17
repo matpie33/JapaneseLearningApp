@@ -4,6 +4,7 @@ import com.guimaker.enums.FillType;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.SplitPaneOrientation;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
+import com.kanji.list.listElements.RepeatingData;
 import com.kanji.list.myList.MyList;
 import com.kanji.utilities.CommonGuiElementsCreator;
 
@@ -15,11 +16,11 @@ public class WordsAndRepeatingInformationsPanel
 	private static final String UNIQUE_NAME = "Words and repeating information panel";
 	private JSplitPane listsSplitPane;
 	private MyList wordsList;
-	private MyList repeatingList;
+	private MyList<RepeatingData> repeatingList;
 	private TypeOfWordForRepeating typeOfWordForRepeating;
 
 	public WordsAndRepeatingInformationsPanel(MyList wordsList,
-			MyList repeatingList,
+			MyList<RepeatingData> repeatingList,
 			TypeOfWordForRepeating typeOfWordForRepeating) {
 		this.wordsList = wordsList;
 		this.repeatingList = repeatingList;
@@ -43,7 +44,7 @@ public class WordsAndRepeatingInformationsPanel
 						wordsList.getPanel(), repeatingList.getPanel(), 0.8);
 	}
 
-	public MyList getRepeatingList() {
+	public MyList<RepeatingData> getRepeatingList() {
 		return repeatingList;
 	}
 
@@ -57,7 +58,6 @@ public class WordsAndRepeatingInformationsPanel
 
 	@Override
 	public String getUniqueName() {
-
 		return UNIQUE_NAME;
 	}
 }

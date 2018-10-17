@@ -1,11 +1,15 @@
 package com.kanji.panelsAndControllers.controllers;
 
+import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.MoveDirection;
 import com.guimaker.enums.PanelDisplayMode;
 import com.kanji.application.ApplicationStateController;
 import com.kanji.application.WordStateController;
 import com.kanji.constants.enums.*;
+import com.kanji.constants.strings.MenuTexts;
 import com.kanji.constants.strings.Titles;
+import com.kanji.customPositioning.CustomPositioner;
+import com.kanji.customPositioning.PositionerOnRightPartOfSplitPane;
 import com.kanji.exception.DuplicatedWordException;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
 import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
@@ -22,10 +26,7 @@ import com.kanji.list.myList.ListConfiguration;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.WordParticlesData;
 import com.kanji.model.WordsAndRepeatingInfo;
-import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
-import com.kanji.panelsAndControllers.panels.LoadingPanel;
-import com.kanji.panelsAndControllers.panels.RepeatingWordsPanel;
-import com.kanji.panelsAndControllers.panels.StartingPanel;
+import com.kanji.panelsAndControllers.panels.*;
 import com.kanji.problematicWords.ProblematicKanjiDisplayer;
 import com.kanji.problematicWords.ProblematicWordsDisplayer;
 import com.kanji.range.SetOfRanges;
@@ -36,12 +37,11 @@ import com.kanji.swingWorkers.LoadingProjectWorker;
 import com.kanji.utilities.JapaneseWordsAdjuster;
 import com.kanji.utilities.WordsListReadWrite;
 import com.kanji.windows.ApplicationWindow;
+import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -81,11 +81,30 @@ public class ApplicationController
 
 	public void initiate() {
 		validatePreferIpV4PropertySet();
+		initializeMenuBar();
 		initializeListsElements();
 		initializeApplicationStateManagers();
 		initializePanels();
 		initializeAdditionalWindowListeners();
 
+	}
+
+	private void initializeMenuBar() {
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setBackground(BasicColors.BLUE_NORMAL_2);
+		JMenu menu = new JMenu(MenuTexts.MENU_BAR_FILE);
+		menuBar.add(menu);
+		JMenuItem item = new JMenuItem(MenuTexts.MENU_OPEN);
+
+		item.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				openKanjiProject();
+			}
+		});
+
+		menu.add(item);
+		applicationWindow.setMenuBar(menuBar);
 	}
 
 	private void initializeAdditionalWindowListeners() {
@@ -372,7 +391,7 @@ public class ApplicationController
 
 		applicationWindow.setPanel(applicationWindow.getStartingPanel());
 		savingInformation.getJapaneseWords().removeIf(JapaneseWord::isEmpty);
-		LoadingPanel loadingPanel = applicationWindow.showProgressDialog();
+		LoadingPanel loadingPanel = showProgressDialog();
 		LoadingProjectWorker loadingProjectWorker = new LoadingProjectWorker(
 				this, loadingPanel);
 		loadingProjectWorker
@@ -383,6 +402,13 @@ public class ApplicationController
 		loadingProjectWorker.load(kanjiRepeatingDates,
 				savingInformation.getRepeatingList());
 		recalculateLoadDialogPositionAndSize(loadingPanel);
+	}
+
+	private LoadingPanel showProgressDialog() {
+		LoadingPanel panel = new LoadingPanel();
+		applicationWindow.createPanel(panel, Titles.MESSAGE_DIALOG, false,
+				DialogWindow.Position.CENTER);
+		return panel;
 	}
 
 	private void recalculateLoadDialogPositionAndSize(
@@ -421,9 +447,8 @@ public class ApplicationController
 
 	private void initializeKanjiList() {
 		kanjiList = new MyList<>(applicationWindow, this,
-				new RowInKanjiInformations(this,
-						PanelDisplayMode.EDIT), Titles.KANJI_LIST,
-				Kanji.getInitializer());
+				new RowInKanjiInformations(this, PanelDisplayMode.EDIT),
+				Titles.KANJI_LIST, Kanji.getInitializer());
 
 		for (int i = 1; i <= 510; i++) {
 			kanjiList.addWord(new Kanji("Word no. " + i, i));
@@ -481,15 +506,25 @@ public class ApplicationController
 	}
 
 	public void showInsertWordDialog() {
-		applicationWindow.showInsertDialog(
-				applicationWindow.getStartingPanel().getActiveWordsList());
+		MyList activeWordsList = applicationWindow.getStartingPanel()
+				.getActiveWordsList();
+		CustomPositioner customPositioner = new PositionerOnRightPartOfSplitPane(startingPanel
+				.getSplitPaneFor(activeWordsList.getListElementClass()));
+		AbstractPanelWithHotkeysInfo panel = new InsertWordPanel<>(
+				activeWordsList, this);
+		applicationWindow.createPanel(panel, Titles.INSERT_WORD_DIALOG, false,
+				customPositioner);
 	}
 
 	public void showLearningStartDialog() {
 		TypeOfWordForRepeating typeForRepeating = getActiveWordsListType();
 		getCurrentlyActiveWordsController(typeForRepeating)
 				.setTypeOfWordForRepeating(typeForRepeating);
-		applicationWindow.showLearningStartDialog(typeForRepeating);
+
+		applicationWindow
+				.createPanel(new LearningStartPanel(this, typeForRepeating),
+						Titles.LEARNING_START_DIALOG, false,
+						DialogWindow.Position.CENTER);
 	}
 
 	private RepeatingWordsController getCurrentlyActiveWordsController(
@@ -512,6 +547,10 @@ public class ApplicationController
 
 	public MyList<Kanji> getKanjiList() {
 		return kanjiList;
+	}
+
+	public MyList<RepeatingData> getActiveRepeatingList() {
+		return startingPanel.getActiveRepeatingList();
 	}
 
 	public MyList getActiveWordsList() {

@@ -7,25 +7,19 @@ import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
+import com.kanji.constants.strings.Prompts;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 
 	private static final String UNIQUE_NAME = "Loading panel";
 	private AbstractButton buttonClose;
-	private String title;
 	private MainPanel progressBarsPanel;
 
 	@Override
 	public String getUniqueName() {
 		return UNIQUE_NAME;
-	}
-
-	public LoadingPanel(String title) {
-		this.title = title;
 	}
 
 	@Override
@@ -36,7 +30,8 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 		progressBarsPanel = new MainPanel(BasicColors.BLUE_DARK_3, true);
 		progressBarsPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.CENTER, GuiElementsCreator
-						.createLabel(new ComponentOptions().text(title))));
+						.createLabel(new ComponentOptions()
+								.text(Prompts.PROJECT_LOADING))));
 		mainPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.BOTH, progressBarsPanel.getPanel()));
 		buttonClose = createButtonClose();

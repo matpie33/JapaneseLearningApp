@@ -3,11 +3,11 @@ package com.kanji.customPositioning;
 import javax.swing.*;
 import java.awt.*;
 
-public class PositionerOnMyList implements CustomPositioner {
+public class PositionerOnRightPartOfSplitPane implements CustomPositioner {
 
 	private JSplitPane splitPane;
 
-	public PositionerOnMyList(JSplitPane splitPane) {
+	public PositionerOnRightPartOfSplitPane(JSplitPane splitPane) {
 		this.splitPane = splitPane;
 	}
 

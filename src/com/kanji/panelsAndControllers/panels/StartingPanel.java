@@ -14,6 +14,7 @@ import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.context.WordTypeContext;
 import com.kanji.list.listElements.Kanji;
+import com.kanji.list.listElements.RepeatingData;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.StartingController;
@@ -275,7 +276,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 				.getWordsList();
 	}
 
-	public MyList getActiveRepeatingList() {
+	public MyList<RepeatingData> getActiveRepeatingList() {
 		return listToTabLabel.get(tabs.getTitleAt(tabs.getSelectedIndex()))
 				.getRepeatingList();
 	}
