@@ -3,6 +3,7 @@ package com.kanji.panelsAndControllers.controllers;
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.MoveDirection;
 import com.guimaker.enums.PanelDisplayMode;
+import com.kanji.application.ApplicationChangesManager;
 import com.kanji.application.ApplicationStateController;
 import com.kanji.application.WordStateController;
 import com.kanji.constants.enums.*;
@@ -52,7 +53,8 @@ import java.util.List;
 import java.util.Set;
 
 public class ApplicationController
-		implements ApplicationStateManager, ListObserver {
+		implements ApplicationStateManager, ListObserver,
+		ApplicationChangesManager {
 
 	private ApplicationWindow applicationWindow;
 	private MyList<Kanji> kanjiList;
@@ -381,7 +383,7 @@ public class ApplicationController
 			new JapaneseWordsAdjuster()
 					.replaceSuruInMeaningToAdditionalInformation(
 							savingInformation.getJapaneseWords());
-			saveProject();
+			save();
 		}
 
 		kanjiList.cleanWords();
@@ -650,7 +652,7 @@ public class ApplicationController
 			if (option == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();
 				fileSavingManager.setFileToSave(file);
-				saveProject();
+				save();
 			}
 		}
 
@@ -758,11 +760,13 @@ public class ApplicationController
 		return problematicJapaneseWords;
 	}
 
+	@Override
 	public boolean isClosingSafe() {
 		return isClosingSafe;
 	}
 
-	public void saveProject() {
+	@Override
+	public void save() {
 		if (!fileSavingManager.hasFileToSave() || loadingInProgress) {
 			return;
 		}

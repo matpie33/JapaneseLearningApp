@@ -21,7 +21,7 @@ public class DialogWindow {
 	private JDialog container;
 	private AbstractPanelWithHotkeysInfo panel;
 
-	public void setCustomPositioner(CustomPositioner customPositioner) {
+	private void setCustomPositioner(CustomPositioner customPositioner) {
 		this.customPositioner = customPositioner;
 	}
 
@@ -119,13 +119,9 @@ public class DialogWindow {
 		}
 	}
 
-	public boolean isDialogOfSameType(
+	private boolean isDialogOfSameType(
 			AbstractPanelWithHotkeysInfo panelTypeToCompare) {
 		return panelTypeToCompare.getClass().isInstance(panel);
-	}
-
-	public void showReadyPanel(DialogWindow childWindow) {
-		childWindow.getContainer().setVisible(true);
 	}
 
 	private boolean childWindowIsClosed() {
@@ -138,7 +134,7 @@ public class DialogWindow {
 		return isAccepted();
 	}
 
-	public void setPosition(Position position) {
+	private void setPosition(Position position) {
 		this.position = position;
 	}
 
@@ -146,7 +142,7 @@ public class DialogWindow {
 		this.isAccepted = accepted;
 	}
 
-	public boolean isAccepted() {
+	private boolean isAccepted() {
 		return childWindow.isAccepted;
 	}
 
@@ -154,11 +150,7 @@ public class DialogWindow {
 		return container;
 	}
 
-	public DialogWindow getParent() {
-		return parentWindow;
-	}
-
-	public void maximize() {
+	private void maximize() {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {

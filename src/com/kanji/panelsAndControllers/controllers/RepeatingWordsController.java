@@ -90,7 +90,7 @@ public class RepeatingWordsController<Word extends ListElement>
 		applicationController.getApplicationWindow()
 				.showMessageDialog(createFinishMessage());
 		closeRepeatingPanelAndOpenProperOne();
-		applicationController.saveProject();
+		applicationController.save();
 	}
 
 	private void updateApplicationData() {

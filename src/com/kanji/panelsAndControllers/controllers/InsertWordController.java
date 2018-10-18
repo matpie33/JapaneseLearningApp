@@ -46,7 +46,7 @@ public class InsertWordController<Word extends ListElement>
 			boolean addedWord = list.addWord(word);
 			if (addedWord) {
 				list.scrollToBottom();
-				applicationController.saveProject();
+				applicationController.save();
 			}
 			else{
 				list.highlightRow(list.get1BasedRowNumberOfWord(word) - 1, true);

@@ -97,7 +97,7 @@ public class ProblematicWordsController<Word extends ListElement>
 						.enableShowProblematicWordsButton();
 				if (haveAllWordsBeenReviewed()) {
 					applicationController.finishedRepeating();
-					applicationController.saveProject();
+					applicationController.save();
 				}
 				applicationWindow.showPanel(
 						applicationController.getStartingPanel().getUniqueName());

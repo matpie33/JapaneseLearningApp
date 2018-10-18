@@ -321,7 +321,7 @@ public class ListWordsController<Word extends ListElement> {
 					return;
 				}
 				remove(word);
-				applicationController.saveProject();
+				applicationController.save();
 			}
 		};
 	}

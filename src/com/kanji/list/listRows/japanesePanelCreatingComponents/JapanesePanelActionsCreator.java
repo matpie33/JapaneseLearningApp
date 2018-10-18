@@ -193,7 +193,7 @@ public class JapanesePanelActionsCreator {
 				getOrCreateCheckerFor(japaneseWord, inputGoal)
 						.removeWriting(writing);
 				japaneseWord.getWritings().remove(writing);
-				applicationController.saveProject();
+				applicationController.save();
 			}
 		});
 		return buttonDelete;
@@ -233,7 +233,7 @@ public class JapanesePanelActionsCreator {
 					String newValue = (String) comboBox.getSelectedItem();
 					japaneseWord.getAdditionalInformation().setValue(newValue);
 					ThreadUtilities.callOnOtherThread(
-							applicationController::saveProject);
+							applicationController::save);
 					wordsList.updateObservers(japaneseWord,
 							ListElementModificationType.EDIT);
 				}
@@ -286,7 +286,7 @@ public class JapanesePanelActionsCreator {
 				}
 				else {
 					ThreadUtilities.callOnOtherThread(
-							applicationController::saveProject);
+							applicationController::save);
 
 				}
 				wordsList.updateObservers(japaneseWord,

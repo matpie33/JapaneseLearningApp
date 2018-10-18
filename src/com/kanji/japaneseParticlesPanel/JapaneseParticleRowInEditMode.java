@@ -31,7 +31,7 @@ public class JapaneseParticleRowInEditMode
 				.removeParticleWhenRowDeleted(wordParticlesData, japaneseWord,
 						commonListElements.getButtonDelete());
 		japaneseWord.addParticleData(wordParticlesData);
-		applicationController.saveProject();
+		applicationController.save();
 		JComboBox particleCombobox = actionsCreator.saveParticleWhenChanged(
 				elementsCreator.createParticlesCombobox(wordParticlesData),
 				japaneseWord, wordParticlesData);

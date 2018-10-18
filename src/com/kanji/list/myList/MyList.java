@@ -252,7 +252,7 @@ public class MyList<Word extends ListElement>
 			wordInSourceListExistence.clearRowNumber();
 			return wordInSourceListExistence;
 		}
-		return new WordInMyListExistence<Word>(false, null, -1);
+		return new WordInMyListExistence<>(false, null, -1);
 	}
 
 	private Word getHighlightedWord() {
@@ -288,7 +288,7 @@ public class MyList<Word extends ListElement>
 	}
 
 	public void save() {
-		this.applicationController.saveProject();
+		this.applicationController.save();
 	}
 
 	public JPanel getPanel() {

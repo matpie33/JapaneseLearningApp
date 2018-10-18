@@ -1,10 +1,10 @@
 package com.kanji.windows;
 
 import com.guimaker.colors.BasicColors;
+import com.kanji.application.ApplicationChangesManager;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Titles;
 import com.kanji.customPositioning.CustomPositioner;
-import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.panels.*;
 import com.kanji.timer.TimeSpentHandler;
 
@@ -19,15 +19,15 @@ public class ApplicationWindow extends DialogWindow {
 	private JPanel mainApplicationPanel;
 	private AbstractPanelWithHotkeysInfo startingPanel;
 	private JFrame container;
-	private ApplicationController applicationController;
+	private ApplicationChangesManager applicationChangesManager;
 	private Optional<TimeSpentHandler> timeSpentHandler;
 	private static Font kanjiFont = new Font("MS Mincho", Font.PLAIN, 100);
 	private JMenuBar menuBar;
 
-	public ApplicationWindow(ApplicationController applicationController,
+	public ApplicationWindow(ApplicationChangesManager applicationChangesManager,
 			AbstractPanelWithHotkeysInfo startingPanel) {
 		super(null);
-		this.applicationController = applicationController;
+		this.applicationChangesManager = applicationChangesManager;
 		this.startingPanel = startingPanel;
 		container = new JFrame();
 		mainApplicationPanel = new JPanel(new CardLayout());
@@ -44,7 +44,6 @@ public class ApplicationWindow extends DialogWindow {
 		//TODO put this to another class
 		UIManager.put("ComboBox.disabledBackground", BasicColors.PURPLE_DARK_1);
 		UIManager.put("Label.disabledForeground", Color.WHITE);
-
 
 		mainApplicationPanel.add(startingPanel.createPanel(),
 				startingPanel.getUniqueName());
@@ -94,12 +93,12 @@ public class ApplicationWindow extends DialogWindow {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				stopTimeMeasuring();
-				boolean shouldClose = applicationController.isClosingSafe();
+				boolean shouldClose = applicationChangesManager.isClosingSafe();
 				if (!shouldClose) {
 					shouldClose = showConfirmDialog(Prompts.CLOSE_APPLICATION);
 				}
 				if (shouldClose) {
-					applicationController.saveProject();
+					applicationChangesManager.save();
 					System.exit(0);
 				}
 				else {

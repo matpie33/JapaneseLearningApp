@@ -32,7 +32,7 @@ public class JapaneseParticleActionsCreator {
 				super.focusLost(e);
 				JTextComponent input = (JTextComponent) e.getSource();
 				wordParticlesData.setAdditionalInformation(input.getText());
-				applicationController.saveProject();
+				applicationController.save();
 			}
 		});
 		return additionalInformationInput;
@@ -60,7 +60,7 @@ public class JapaneseParticleActionsCreator {
 						wordParticlesData.setParticle(particleByComboboxValue);
 						japaneseWord.addParticleData(wordParticlesData);
 						ThreadUtilities.callOnOtherThread(() -> {
-							applicationController.saveProject();
+							applicationController.save();
 						});
 					}
 					applicationController.getJapaneseWords()
