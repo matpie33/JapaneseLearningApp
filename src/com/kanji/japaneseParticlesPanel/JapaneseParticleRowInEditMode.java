@@ -3,7 +3,7 @@ package com.kanji.japaneseParticlesPanel;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.model.WordParticlesData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
-import com.kanji.utilities.CommonListElements;
+import com.guimaker.utilities.CommonListElements;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;

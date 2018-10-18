@@ -1,6 +1,6 @@
 package com.kanji.list.listElementPropertyManagers;
 
-import com.kanji.list.listElements.ListElement;
+import com.guimaker.list.listElements.ListElement;
 
 import javax.swing.text.JTextComponent;
 

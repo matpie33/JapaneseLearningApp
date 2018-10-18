@@ -1,6 +1,6 @@
 package com.kanji.list.loadAdditionalWordsHandling;
 
-import com.kanji.range.Range;
+import com.guimaker.utilities.Range;
 
 public class FoundWordInsideVisibleRangeStrategy
 		implements LoadWordsForFoundWord {

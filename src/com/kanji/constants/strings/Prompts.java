@@ -36,7 +36,6 @@ public class Prompts {
 	public static final String ROW_NUMBER = "Nr wiersza: ";
 	public static final String NO_KANJI_INFORMATION_AVAILABLE = "Brak informacji";
 	public static final String KANJI_INFORMATIONS = "Informacje o znakach";
-	public static final String EMPTY_LIST = "Pusta lista.";
 	public static final String ADDITIONAL_INFORMATION = "Dodatkowe informacje.";
 	public static final String KANA_OR_KANJI_TEXT = "Kana lub kanji";
 

@@ -4,7 +4,7 @@ import com.kanji.list.myList.ListWordsController;
 import com.kanji.list.myList.LoadNextWordsHandler;
 import com.kanji.list.myList.LoadPreviousWordsHandler;
 import com.kanji.list.myList.LoadWordsHandler;
-import com.kanji.range.Range;
+import com.guimaker.utilities.Range;
 
 public class FoundWordInsideVisibleRangePlusMaximumWordsStrategy
 		implements LoadWordsForFoundWord {

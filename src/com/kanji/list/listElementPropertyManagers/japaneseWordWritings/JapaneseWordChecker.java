@@ -1,6 +1,6 @@
 package com.kanji.list.listElementPropertyManagers.japaneseWordWritings;
 
-import com.kanji.constants.enums.InputGoal;
+import com.guimaker.enums.InputGoal;
 import com.kanji.constants.enums.TypeOfJapaneseWriting;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;

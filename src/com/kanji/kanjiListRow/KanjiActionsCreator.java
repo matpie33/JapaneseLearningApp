@@ -1,12 +1,11 @@
 package com.kanji.kanjiListRow;
 
 import com.guimaker.enums.PanelDisplayMode;
-import com.kanji.constants.enums.InputGoal;
+import com.guimaker.enums.InputGoal;
 import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
 import com.kanji.list.listElementPropertyManagers.KanjiKeywordChecker;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
 import com.kanji.list.listElements.Kanji;
-import com.kanji.list.listElements.ListElement;
 import com.kanji.list.listeners.InputValidationListener;
 import com.kanji.list.myList.ListPropertyChangeHandler;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;

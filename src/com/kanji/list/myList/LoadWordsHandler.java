@@ -1,7 +1,7 @@
 package com.kanji.list.myList;
 
 import com.guimaker.row.AbstractSimpleRow;
-import com.kanji.range.Range;
+import com.guimaker.utilities.Range;
 
 import javax.swing.*;
 

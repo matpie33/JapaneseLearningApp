@@ -11,7 +11,7 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
 import com.kanji.constants.Colors;
-import com.kanji.constants.strings.ButtonsNames;
+import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Titles;
 import com.kanji.panelsAndControllers.controllers.RepeatingWordsController;
@@ -123,7 +123,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private void createShowPreviousWordButton() {
 		showPreviousWordButton = createButtonWithHotkey(KeyEvent.VK_G,
 				repeatingWordsController.createActionGoToPreviousWord(),
-				ButtonsNames.SHOW_PREVIOUS_WORD,
+				JapaneseApplicationButtonsNames.SHOW_PREVIOUS_WORD,
 				HotkeysDescriptions.SHOW_PREVIOUS_WORD);
 		showPreviousWordButton.setFocusable(false);
 	}
@@ -139,21 +139,21 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private void createPauseButton() {
 		pauseButton = createButtonWithHotkey(KeyEvent.VK_P,
 				repeatingWordsController.createActionPause(),
-				ButtonsNames.PAUSE, HotkeysDescriptions.PAUSE);
+				JapaneseApplicationButtonsNames.PAUSE, HotkeysDescriptions.PAUSE);
 	}
 
 	private void createShowWordOrMarkAsRecognizedButton() {
 		showWordOrMarkAsRecognizedButton = createButtonWithHotkey(
 				KeyEvent.VK_SPACE, repeatingWordsController
 						.createShowFullInformationOrMarkWordAsRecognizedAction(),
-				ButtonsNames.SHOW_WORD,
+				JapaneseApplicationButtonsNames.SHOW_WORD,
 				HotkeysDescriptions.SHOW_WORD_OR_SET_AS_RECOGNIZED);
 	}
 
 	private void createNotRecognizedWordButton() {
 		notRecognizedWordButton = createButtonWithHotkey(KeyEvent.VK_A,
 				repeatingWordsController.createNotRecognizedWordAction(),
-				ButtonsNames.NOT_RECOGNIZED_WORD,
+				JapaneseApplicationButtonsNames.NOT_RECOGNIZED_WORD,
 				HotkeysDescriptions.SET_WORD_AS_PROBLEMATIC);
 	}
 
@@ -164,7 +164,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private AbstractButton createReturnButton() {
 		return createButtonWithHotkey(KeyModifiers.CONTROL, KeyEvent.VK_E,
 				repeatingWordsController.createActionExit(),
-				ButtonsNames.GO_BACK, HotkeysDescriptions.RETURN_FROM_LEARNING);
+				JapaneseApplicationButtonsNames.GO_BACK, HotkeysDescriptions.RETURN_FROM_LEARNING);
 	}
 
 	public JLabel getTimeElapsedLabel() {

@@ -1,10 +1,10 @@
 package com.kanji.list.myList;
 
-import com.kanji.constants.enums.InputGoal;
+import com.guimaker.enums.InputGoal;
 import com.kanji.constants.enums.ListElementModificationType;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
-import com.kanji.list.listElements.ListElement;
+import com.guimaker.list.listElements.ListElement;
 import com.kanji.list.listeners.InputValidationListener;
 import com.kanji.model.PropertyPostValidationData;
 import com.kanji.model.WordInMyListExistence;

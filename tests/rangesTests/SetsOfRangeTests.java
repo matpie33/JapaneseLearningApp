@@ -4,8 +4,8 @@
 //
 //import org.junit.Test;
 // TODO tests are not compiling anymore
-//import com.kanji.range.Range;
-//import com.kanji.range.SetOfRanges;
+//import com.guimaker.utilities.Range;
+//import com.guimaker.utilities.SetOfRanges;
 //
 //public class SetsOfRangeTests {
 //

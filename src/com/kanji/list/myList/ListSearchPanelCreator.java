@@ -10,7 +10,7 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
-import com.kanji.list.listElements.ListElement;
+import com.guimaker.list.listElements.ListElement;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;

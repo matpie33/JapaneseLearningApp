@@ -7,7 +7,7 @@ import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.TextAreaOptions;
 import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
-import com.kanji.constants.strings.ButtonsNames;
+import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -55,6 +55,6 @@ public class KanjiElementsCreator {
 	public AbstractButton createButtonShowKanjiStories() {
 		return GuiElementsCreator.createButtonlikeComponent(
 				new ButtonOptions(ButtonType.BUTTON)
-						.text(ButtonsNames.SHOW_KANJI_STORIES), null);
+						.text(JapaneseApplicationButtonsNames.SHOW_KANJI_STORIES), null);
 	}
 }

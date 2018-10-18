@@ -1,6 +1,6 @@
 package com.kanji.model;
 
-import com.kanji.range.Range;
+import com.guimaker.utilities.Range;
 
 import javax.swing.text.JTextComponent;
 import java.util.Objects;

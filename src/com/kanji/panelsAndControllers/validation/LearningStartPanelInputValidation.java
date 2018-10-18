@@ -1,6 +1,7 @@
 package com.kanji.panelsAndControllers.validation;
 
-import com.kanji.constants.strings.ExceptionsMessages;
+
+import com.guimaker.strings.ExceptionsMessages;
 
 import java.awt.event.KeyEvent;
 
@@ -22,6 +23,7 @@ public class LearningStartPanelInputValidation {
 		String error = "";
 		if (rangeStart == 0) {
 			error = ExceptionsMessages.RANGE_START_MUST_BE_POSITIVE;
+			//TODO do it in class Range
 		}
 		else if (rangeEnd <= rangeStart) {
 			error = ExceptionsMessages.RANGE_TO_VALUE_LESS_THAN_RANGE_FROM_VALUE;

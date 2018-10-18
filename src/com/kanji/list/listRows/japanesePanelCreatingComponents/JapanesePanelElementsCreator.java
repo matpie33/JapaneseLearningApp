@@ -8,10 +8,10 @@ import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
-import com.kanji.constants.enums.InputGoal;
+import com.guimaker.enums.InputGoal;
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.enums.TypeOfJapaneseWriting;
-import com.kanji.constants.strings.ButtonsNames;
+import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
@@ -157,7 +157,7 @@ public class JapanesePanelElementsCreator {
 	public AbstractButton createButtonAddKanjiWriting(MainPanel rowPanel,
 			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
 			InputGoal inputGoal, boolean editMode, boolean selectable) {
-		AbstractButton button = createButton(ButtonsNames.ADD_KANJI_WRITING,
+		AbstractButton button = createButton(JapaneseApplicationButtonsNames.ADD_KANJI_WRITING,
 				null);
 		button.addActionListener(new AbstractAction() {
 			@Override

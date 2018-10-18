@@ -1,7 +1,7 @@
 package com.kanji.list.myList;
 
 import com.guimaker.panels.MainPanel;
-import com.kanji.list.listElements.ListElement;
+import com.guimaker.list.listElements.ListElement;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -13,20 +13,19 @@ import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.AbstractSimpleRow;
 import com.guimaker.row.SimpleRowBuilder;
+import com.guimaker.strings.HotkeysDescriptions;
 import com.guimaker.utilities.ColorChanger;
 import com.guimaker.utilities.HotkeyWrapper;
 import com.guimaker.utilities.KeyModifiers;
 import com.kanji.application.ApplicationChangesManager;
 import com.kanji.constants.Colors;
-import com.kanji.constants.enums.InputGoal;
-import com.kanji.constants.strings.ButtonsNames;
-import com.kanji.constants.strings.HotkeysDescriptions;
-import com.kanji.constants.strings.Prompts;
-import com.kanji.list.listElements.ListElement;
-import com.kanji.model.ListRow;
+import com.guimaker.enums.InputGoal;
+import com.guimaker.strings.ButtonsNames;
+import com.guimaker.list.listElements.ListElement;
+import com.guimaker.model.ListRow;
 import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
-import com.kanji.range.Range;
-import com.kanji.utilities.CommonListElements;
+import com.guimaker.utilities.Range;
+import com.guimaker.utilities.CommonListElements;
 import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
@@ -105,7 +104,8 @@ public class ListPanelCreator<Word extends ListElement>
 	public void addElementsForEmptyList() {
 		rowsPanel.insertRow(1, SimpleRowBuilder.createRow(FillType.NONE,
 				GuiElementsCreator.createLabel(
-						new ComponentOptions().text(Prompts.EMPTY_LIST)),
+						new ComponentOptions().text(
+								com.guimaker.strings.Prompts.EMPTY_LIST)),
 				createButtonAddRow(InputGoal.EDIT)));
 	}
 

@@ -2,12 +2,11 @@ package com.kanji.panelsAndControllers.panels;
 
 import com.guimaker.enums.FillType;
 import com.guimaker.row.SimpleRowBuilder;
+import com.guimaker.strings.ButtonsNames;
+import com.guimaker.strings.HotkeysDescriptions;
 import com.kanji.application.ApplicationChangesManager;
-import com.kanji.constants.strings.ButtonsNames;
-import com.kanji.constants.strings.HotkeysDescriptions;
-import com.kanji.list.listElements.ListElement;
+import com.guimaker.list.listElements.ListElement;
 import com.kanji.list.myList.MyList;
-import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.InsertWordController;
 
 import javax.swing.*;

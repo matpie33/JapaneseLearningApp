@@ -5,7 +5,6 @@ import com.kanji.constants.enums.IncrementSign;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.Labels;
-import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.RepeatingData;
@@ -13,7 +12,7 @@ import com.kanji.model.RangesRow;
 import com.kanji.panelsAndControllers.panelUpdaters.LearningStartPanelUpdater;
 import com.kanji.panelsAndControllers.panels.LearningStartPanel;
 import com.kanji.panelsAndControllers.validation.LearningStartPanelInputValidation;
-import com.kanji.range.SetOfRanges;
+import com.guimaker.utilities.SetOfRanges;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;

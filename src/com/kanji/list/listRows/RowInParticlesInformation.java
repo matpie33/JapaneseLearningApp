@@ -4,7 +4,7 @@ import com.guimaker.enums.FillType;
 import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.kanji.constants.enums.InputGoal;
+import com.guimaker.enums.InputGoal;
 import com.kanji.japaneseParticlesPanel.JapaneseParticleRowCreatingService;
 import com.kanji.japaneseParticlesPanel.JapaneseParticleRowInEditMode;
 import com.kanji.japaneseParticlesPanel.JapaneseParticleRowInViewMode;
@@ -14,7 +14,7 @@ import com.kanji.list.myList.ListRowCreator;
 import com.kanji.list.myList.ListRowData;
 import com.kanji.model.WordParticlesData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
-import com.kanji.utilities.CommonListElements;
+import com.guimaker.utilities.CommonListElements;
 
 public class RowInParticlesInformation
 		implements ListRowCreator<WordParticlesData> {

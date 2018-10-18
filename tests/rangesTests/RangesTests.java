@@ -1,6 +1,6 @@
 package rangesTests;
 
-import com.kanji.range.Range;
+import com.guimaker.utilities.Range;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

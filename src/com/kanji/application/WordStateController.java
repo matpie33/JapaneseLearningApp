@@ -1,11 +1,8 @@
 package com.kanji.application;
 
-import com.kanji.list.listElements.ListElement;
+import com.guimaker.list.listElements.ListElement;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.panelsAndControllers.controllers.RepeatingWordsController;
-import com.kanji.panelsAndControllers.controllers.WordSpecificRepeatingController;
-import com.kanji.problematicWords.ProblematicWordsDisplayer;
-import com.kanji.windows.ApplicationWindow;
 
 import java.util.Set;
 

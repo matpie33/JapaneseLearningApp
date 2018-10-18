@@ -2,11 +2,11 @@ package com.kanji.panelsAndControllers.controllers;
 
 import com.guimaker.panels.MainPanel;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
-import com.kanji.list.listElements.ListElement;
+import com.guimaker.list.listElements.ListElement;
 import com.kanji.list.listElements.RepeatingData;
 import com.kanji.list.myList.MyList;
-import com.kanji.range.Range;
-import com.kanji.range.SetOfRanges;
+import com.guimaker.utilities.Range;
+import com.guimaker.utilities.SetOfRanges;
 import com.kanji.repeating.RepeatingWordsDisplayer;
 import com.kanji.saving.RepeatingState;
 import com.kanji.timer.TimeSpent;

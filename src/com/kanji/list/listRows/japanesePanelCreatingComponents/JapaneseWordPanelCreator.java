@@ -11,7 +11,7 @@ import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.ComplexRow;
 import com.guimaker.row.SimpleRowBuilder;
-import com.kanji.constants.enums.InputGoal;
+import com.guimaker.enums.InputGoal;
 import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.ListPropertiesNames;
@@ -26,7 +26,7 @@ import com.kanji.list.myList.MyList;
 import com.kanji.model.WordParticlesData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.utilities.CommonGuiElementsCreator;
-import com.kanji.utilities.CommonListElements;
+import com.guimaker.utilities.CommonListElements;
 import com.kanji.utilities.Pair;
 import com.kanji.windows.DialogWindow;
 

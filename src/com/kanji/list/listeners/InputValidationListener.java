@@ -1,6 +1,6 @@
 package com.kanji.list.listeners;
 
-import com.kanji.list.listElements.ListElement;
+import com.guimaker.list.listElements.ListElement;
 import com.kanji.model.PropertyPostValidationData;
 
 public interface InputValidationListener<Word extends ListElement> {

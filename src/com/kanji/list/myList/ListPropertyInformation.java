@@ -1,7 +1,7 @@
 package com.kanji.list.myList;
 
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
-import com.kanji.list.listElements.ListElement;
+import com.guimaker.list.listElements.ListElement;
 
 import javax.swing.text.JTextComponent;
 

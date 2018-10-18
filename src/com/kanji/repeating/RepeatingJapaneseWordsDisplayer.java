@@ -2,11 +2,11 @@ package com.kanji.repeating;
 
 import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.panels.MainPanel;
-import com.kanji.constants.enums.InputGoal;
+import com.guimaker.enums.InputGoal;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
-import com.kanji.utilities.CommonListElements;
+import com.guimaker.utilities.CommonListElements;
 import com.kanji.utilities.KanjiCharactersReader;
 import com.kanji.utilities.StringUtilities;
 

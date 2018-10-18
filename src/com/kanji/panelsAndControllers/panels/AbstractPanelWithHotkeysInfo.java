@@ -16,7 +16,7 @@ import com.guimaker.utilities.CommonActionsCreator;
 import com.guimaker.utilities.HotkeyWrapper;
 import com.guimaker.utilities.KeyModifiers;
 import com.kanji.constants.Colors;
-import com.kanji.constants.strings.ButtonsNames;
+import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Titles;
 import com.kanji.list.myList.MyList;
@@ -299,7 +299,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 			}
 		};
 		return createButtonWithHotkey(KeyEvent.VK_ESCAPE, dispose,
-				ButtonsNames.CLOSE_WINDOW, HotkeysDescriptions.CLOSE_WINDOW);
+				JapaneseApplicationButtonsNames.CLOSE_WINDOW, HotkeysDescriptions.CLOSE_WINDOW);
 	}
 
 	public JPanel getPanel() {

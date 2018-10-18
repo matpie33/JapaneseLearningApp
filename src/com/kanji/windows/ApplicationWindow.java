@@ -8,7 +8,6 @@ import com.kanji.constants.strings.Titles;
 import com.kanji.customPositioning.CustomPositioner;
 import com.kanji.panelsAndControllers.panels.*;
 import com.kanji.timer.TimeSpentHandler;
-import javafx.application.Application;
 
 import javax.swing.*;
 import java.awt.*;

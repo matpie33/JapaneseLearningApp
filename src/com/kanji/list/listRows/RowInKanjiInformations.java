@@ -5,7 +5,7 @@ import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.ComplexRow;
 import com.guimaker.row.SimpleRowBuilder;
-import com.kanji.constants.enums.InputGoal;
+import com.guimaker.enums.InputGoal;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.ListPropertiesNames;
 import com.kanji.kanjiListRow.KanjiActionsCreator;
@@ -17,8 +17,7 @@ import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.ListRowDataCreator;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
-import com.kanji.utilities.CommonListElements;
-import com.kanji.windows.ApplicationWindow;
+import com.guimaker.utilities.CommonListElements;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;

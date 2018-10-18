@@ -1,7 +1,7 @@
 package com.kanji.list.loadAdditionalWordsHandling;
 
 import com.kanji.list.myList.ListWordsController;
-import com.kanji.range.Range;
+import com.guimaker.utilities.Range;
 
 public class FoundWordOutsideRangeStrategy implements LoadWordsForFoundWord {
 

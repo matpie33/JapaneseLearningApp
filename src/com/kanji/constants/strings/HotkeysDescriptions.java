@@ -17,7 +17,6 @@ public class HotkeysDescriptions {
 	public static final String OPEN_START_LEARNING_DIALOG = "Rozpoczyna naukę kanji";
 	public static final String OPEN_LOAD_KANJI_DIALOG = "Wczytuje projekt kanji";
 	public static final String START_LEARNING = "Ropoczyna powtarzanie kanji";
-	public static final String ADD_WORD = "Dodaje nowe kanji";
 	public static final String EDIT_WORD = "Edytuje słowo";
 	public static final String SAVE_PROJECT = "Zapisuje projekt";
 	public static final String EXPORT_LIST = "Exportuje listę kanji";
@@ -33,5 +32,4 @@ public class HotkeysDescriptions {
 	public static final String SELECT_INPUT_BELOW_CURRENT = "Przechodzi do pola tekstowego poniżej zaznaczonego.";
 	public static final String SELECT_INPUT_ABOVE_CURRENT = "Przechodzi do pola tekstowego powyżej zaznaczonego.";
 	public static final String SEARCH_IN_DICTIONARY = "Szuka zaznaczonego zapisu japońskiego w słowniku.";
-	public static final String FILTER_WORDS = "Filtruje słowa na podstawie wpisanego tekstu.";
 }

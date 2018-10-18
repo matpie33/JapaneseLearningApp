@@ -1,13 +1,7 @@
 package com.kanji.repeating;
 
 import com.guimaker.panels.MainPanel;
-import com.kanji.list.listElements.ListElement;
-import com.kanji.list.listElements.RepeatingData;
-import com.kanji.saving.RepeatingState;
-import com.kanji.timer.TimeSpent;
-
-import javax.swing.*;
-import java.util.Set;
+import com.guimaker.list.listElements.ListElement;
 
 public interface RepeatingWordsDisplayer<Word extends ListElement> {
 

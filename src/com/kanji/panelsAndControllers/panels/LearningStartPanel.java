@@ -11,12 +11,18 @@ import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.AbstractSimpleRow;
 import com.guimaker.row.SimpleRowBuilder;
+import com.guimaker.strings.ButtonsNames;
+import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
-import com.kanji.constants.strings.*;
+import com.kanji.constants.strings.HotkeysDescriptions;
+import com.kanji.constants.strings.Labels;
+import com.kanji.constants.strings.Prompts;
+import com.kanji.constants.strings.Titles;
 import com.kanji.model.RangesRow;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.LearningStartController;
 import com.kanji.utilities.CommonGuiElementsCreator;
+
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -71,7 +77,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		AbstractButton buttonCancel = createButtonClose();
 		AbstractButton buttonApprove = createButtonWithHotkey(KeyEvent.VK_ENTER,
 				controller.createActionStartLearning(),
-				ButtonsNames.START_LEARNING,
+				JapaneseApplicationButtonsNames.START_LEARNING,
 				HotkeysDescriptions.START_LEARNING);
 
 		MainPanel panelIncludeProblematicWords = new MainPanel(null);

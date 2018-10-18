@@ -1,5 +1,6 @@
 package com.kanji.list.listRows.japanesePanelCreatingComponents;
 
+import com.guimaker.enums.InputGoal;
 import com.kanji.constants.enums.*;
 import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;

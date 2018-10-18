@@ -16,7 +16,7 @@ import com.guimaker.utilities.KeyModifiers;
 import com.guimaker.webPanel.ContextOwner;
 import com.guimaker.webPanel.WebPagePanel;
 import com.kanji.constants.enums.SplitPaneOrientation;
-import com.kanji.constants.strings.ButtonsNames;
+import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Titles;
@@ -116,7 +116,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	private AbstractButton createGoToKanjiStoryButton(KanjiData kanjiData) {
 		return GuiElementsCreator.createButtonlikeComponent(
 				new ButtonOptions(ButtonType.BUTTON)
-						.text(ButtonsNames.SHOW_KANJI_STORIES),
+						.text(JapaneseApplicationButtonsNames.SHOW_KANJI_STORIES),
 				problematicJapaneseWordsDisplayer
 						.createActionShowKanjiDetailsInKoohiPage(
 								kanjiData.getKanji(),
@@ -133,7 +133,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		return createButtonWithHotkey(KeyModifiers.ALT, KeyEvent.VK_C,
 				problematicJapaneseWordsDisplayer
 						.createActionSearchCurrentWordInDictionary(),
-				ButtonsNames.SEARCH_IN_DICTIONARY,
+				JapaneseApplicationButtonsNames.SEARCH_IN_DICTIONARY,
 				HotkeysDescriptions.SEARCH_IN_DICTIONARY);
 
 	}

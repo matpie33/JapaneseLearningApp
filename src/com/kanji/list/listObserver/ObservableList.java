@@ -1,6 +1,6 @@
 package com.kanji.list.listObserver;
 
-import com.kanji.list.listElements.ListElement;
+import com.guimaker.list.listElements.ListElement;
 
 public interface ObservableList<Word extends ListElement> {
 

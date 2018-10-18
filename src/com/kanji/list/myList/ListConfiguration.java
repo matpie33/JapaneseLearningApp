@@ -2,7 +2,7 @@ package com.kanji.list.myList;
 
 import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.inputSelection.ListInputsSelectionManager;
-import com.kanji.list.listElements.ListElement;
+import com.guimaker.list.listElements.ListElement;
 import com.kanji.utilities.Pair;
 
 import javax.swing.*;

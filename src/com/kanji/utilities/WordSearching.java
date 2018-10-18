@@ -3,9 +3,9 @@ package com.kanji.utilities;
 import com.guimaker.utilities.MathUtils;
 import com.kanji.constants.enums.WordSearchOptions;
 import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
-import com.kanji.list.listElements.ListElement;
+import com.guimaker.list.listElements.ListElement;
 import com.kanji.model.FilteredWordMatch;
-import com.kanji.model.ListRow;
+import com.guimaker.model.ListRow;
 
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;

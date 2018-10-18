@@ -11,7 +11,7 @@ import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
 import com.kanji.constants.enums.SavingStatus;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
-import com.kanji.constants.strings.ButtonsNames;
+import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.context.WordTypeContext;
@@ -21,7 +21,6 @@ import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.StartingController;
 import com.kanji.utilities.JapaneseWritingUtilities;
-import com.kanji.windows.ApplicationWindow;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
@@ -166,13 +165,13 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 
 	private List<AbstractButton> createButtons() {
 		List<AbstractButton> buttons = new ArrayList<>();
-		for (String name : ButtonsNames.BUTTONS_ON_MAIN_PAGE) {
+		for (String name : JapaneseApplicationButtonsNames.BUTTONS_ON_MAIN_PAGE) {
 			int keyEvent;
 			AbstractAction action;
 			String hotkeyDescription;
 
 			switch (name) {
-			case ButtonsNames.LOAD_LIST:
+			case JapaneseApplicationButtonsNames.LOAD_LIST:
 				keyEvent = KeyEvent.VK_D;
 				hotkeyDescription = HotkeysDescriptions.LOAD_LISTS_FROM_TEXT_FILE;
 				action = new AbstractAction() {
@@ -182,7 +181,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 					}
 				};
 				break;
-			case ButtonsNames.LOAD_PROJECT:
+			case JapaneseApplicationButtonsNames.LOAD_PROJECT:
 				hotkeyDescription = HotkeysDescriptions.OPEN_LOAD_KANJI_DIALOG;
 				keyEvent = KeyEvent.VK_Q;
 				action = new AbstractAction() {
@@ -192,7 +191,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 					}
 				};
 				break;
-			case ButtonsNames.START:
+			case JapaneseApplicationButtonsNames.START:
 				hotkeyDescription = HotkeysDescriptions.OPEN_START_LEARNING_DIALOG;
 				keyEvent = KeyEvent.VK_R;
 				action = new AbstractAction() {
@@ -202,7 +201,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 					}
 				};
 				break;
-			case ButtonsNames.SAVE:
+			case JapaneseApplicationButtonsNames.SAVE:
 				hotkeyDescription = HotkeysDescriptions.SAVE_PROJECT;
 				keyEvent = KeyEvent.VK_S;
 				action = new AbstractAction() {
@@ -212,7 +211,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 					}
 				};
 				break;
-			case ButtonsNames.SAVE_LIST:
+			case JapaneseApplicationButtonsNames.SAVE_LIST:
 				hotkeyDescription = HotkeysDescriptions.EXPORT_LIST;
 				keyEvent = KeyEvent.VK_T;
 				action = new AbstractAction() {
@@ -222,7 +221,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 					}
 				};
 				break;
-			case ButtonsNames.SHOW_PROBLEMATIC_KANJIS:
+			case JapaneseApplicationButtonsNames.SHOW_PROBLEMATIC_KANJIS:
 				hotkeyDescription = HotkeysDescriptions.REVIEW_PROBLEMATIC_KANJIS;
 				keyEvent = KeyEvent.VK_P;
 				action = new AbstractAction() {
@@ -238,7 +237,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 			}
 			AbstractButton button = createButtonWithHotkey(KeyModifiers.CONTROL,
 					keyEvent, action, name, hotkeyDescription);
-			if (name.equals(ButtonsNames.SHOW_PROBLEMATIC_KANJIS)) {
+			if (name.equals(JapaneseApplicationButtonsNames.SHOW_PROBLEMATIC_KANJIS)) {
 				showProblematicWordsButton = button;
 				showProblematicWordsButton.setEnabled(false);
 			}
@@ -260,7 +259,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	private AbstractButton createShowProblematicWordsButton() {
 		AbstractButton problematicKanjiButton = GuiElementsCreator
 				.createButtonLikeComponent(new ButtonOptions(ButtonType.BUTTON)
-						.text(ButtonsNames.SHOW_PROBLEMATIC_KANJIS));
+						.text(JapaneseApplicationButtonsNames.SHOW_PROBLEMATIC_KANJIS));
 		return problematicKanjiButton;
 	}
 

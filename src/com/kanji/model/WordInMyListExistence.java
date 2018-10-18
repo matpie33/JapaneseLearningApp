@@ -1,6 +1,6 @@
 package com.kanji.model;
 
-import com.kanji.list.listElements.ListElement;
+import com.guimaker.list.listElements.ListElement;
 
 public class WordInMyListExistence<Word extends ListElement> {
 

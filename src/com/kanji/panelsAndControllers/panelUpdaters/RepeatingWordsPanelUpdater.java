@@ -1,7 +1,7 @@
 package com.kanji.panelsAndControllers.panelUpdaters;
 
 import com.kanji.constants.enums.TypeOfWordForRepeating;
-import com.kanji.constants.strings.ButtonsNames;
+import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.panelsAndControllers.panels.RepeatingWordsPanel;
@@ -21,13 +21,13 @@ public class RepeatingWordsPanelUpdater {
 		panel.getNotRecognizedWordButton().setEnabled(false);
 		panel.getShowPreviousWordButton().setEnabled(previousWordExists);
 		panel.getShowWordOrMarkAsRecognizedButton()
-				.setText(ButtonsNames.SHOW_WORD);
+				.setText(JapaneseApplicationButtonsNames.SHOW_WORD);
 
 	}
 
 	public void setButtonsToWordAssessmentState(boolean previousWordExists) {
 		panel.getShowWordOrMarkAsRecognizedButton()
-				.setText(ButtonsNames.RECOGNIZED_WORD);
+				.setText(JapaneseApplicationButtonsNames.RECOGNIZED_WORD);
 		panel.getNotRecognizedWordButton().setEnabled(true);
 		panel.getShowPreviousWordButton().setEnabled(previousWordExists);
 	}

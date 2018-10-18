@@ -3,7 +3,7 @@ package com.kanji.panelsAndControllers.panels;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.MoveDirection;
 import com.guimaker.utilities.KeyModifiers;
-import com.kanji.constants.strings.ButtonsNames;
+import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 
@@ -33,7 +33,7 @@ public class ProblematicWordsPanelCommonPart {
 		return problematicWordsPanel
 				.createButtonWithHotkey(KeyModifiers.CONTROL, KeyEvent.VK_E,
 						problematicWordsController.exitProblematicWordsPanel(),
-						ButtonsNames.GO_BACK,
+						JapaneseApplicationButtonsNames.GO_BACK,
 						HotkeysDescriptions.RETURN_FROM_LEARNING);
 	}
 

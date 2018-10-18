@@ -1,6 +1,7 @@
 package com.kanji.list.listElements;
 
-import com.kanji.constants.enums.InputGoal;
+import com.guimaker.enums.InputGoal;
+import com.guimaker.list.listElements.ListElement;
 import com.kanji.constants.enums.JapaneseParticle;
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.enums.WordSearchOptions;

@@ -2,15 +2,15 @@ package com.kanji.panelsAndControllers.controllers;
 
 import com.guimaker.panels.MainPanel;
 import com.kanji.application.ApplicationChangesManager;
-import com.kanji.constants.enums.InputGoal;
+import com.guimaker.enums.InputGoal;
 import com.kanji.constants.strings.ExceptionsMessages;
-import com.kanji.list.listElements.ListElement;
+import com.guimaker.list.listElements.ListElement;
 import com.kanji.list.listeners.InputValidationListener;
 import com.kanji.list.myList.ListRowData;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.PropertyPostValidationData;
 import com.kanji.panelsAndControllers.panels.InsertWordPanel;
-import com.kanji.utilities.CommonListElements;
+import com.guimaker.utilities.CommonListElements;
 import com.kanji.utilities.ThreadUtilities;
 
 import javax.swing.*;
