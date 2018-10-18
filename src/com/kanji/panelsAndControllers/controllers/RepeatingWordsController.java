@@ -108,8 +108,7 @@ public class RepeatingWordsController<Word extends ListElement>
 		}
 		else {
 			applicationController.getApplicationWindow().showPanel(
-					applicationController.getApplicationWindow()
-							.getStartingPanel().getUniqueName());
+					applicationController.getStartingPanel().getUniqueName());
 			applicationController.finishedRepeating();
 		}
 	}
@@ -199,8 +198,7 @@ public class RepeatingWordsController<Word extends ListElement>
 			return;
 		}
 		applicationController.getApplicationWindow().showPanel(
-				applicationController.getApplicationWindow().getStartingPanel()
-						.getUniqueName());
+				applicationController.getStartingPanel().getUniqueName());
 		applicationController.finishedRepeating();
 		timeSpentHandler.stopTimer();
 	}
@@ -290,7 +288,7 @@ public class RepeatingWordsController<Word extends ListElement>
 
 		reset();
 		resumeUnfinishedRepeating(savingInformation.getRepeatingState());
-		applicationController.getApplicationWindow().getStartingPanel()
+		applicationController.getStartingPanel()
 				.switchToList(savingInformation.getRepeatingState()
 						.getTypeOfWordForRepeating());
 		applicationController.displayMessageAboutUnfinishedRepeating();

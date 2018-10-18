@@ -72,12 +72,11 @@ public class LoadingProjectWorker {
 							interruptedException.getMessage()));
 				}
 				finally {
-					applicationWindow.getStartingPanel().refreshAllTabs();
+					applicationController.getStartingPanel().refreshAllTabs();
 					list.scrollToBottom();
 					swingWorkers.remove(this);
 					if (swingWorkers.isEmpty()) {
-						applicationController
-								.finishedLoadingProject();
+						applicationController.finishedLoadingProject();
 					}
 				}
 

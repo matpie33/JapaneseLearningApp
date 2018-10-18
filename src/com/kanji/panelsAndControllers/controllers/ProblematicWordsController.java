@@ -93,13 +93,14 @@ public class ProblematicWordsController<Word extends ListElement>
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				applicationWindow.enableShowProblematicWordsButton();
+				applicationController
+						.enableShowProblematicWordsButton();
 				if (haveAllWordsBeenReviewed()) {
 					applicationController.finishedRepeating();
 					applicationController.saveProject();
 				}
 				applicationWindow.showPanel(
-						applicationWindow.getStartingPanel().getUniqueName());
+						applicationController.getStartingPanel().getUniqueName());
 			}
 		};
 

@@ -1,16 +1,11 @@
 package com.kanji.windows;
 
 import com.guimaker.colors.BasicColors;
-import com.kanji.constants.enums.SavingStatus;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Titles;
 import com.kanji.customPositioning.CustomPositioner;
-import com.kanji.list.listElements.ListElement;
-import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
-import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.panelsAndControllers.panels.*;
-import com.kanji.saving.ProblematicWordsState;
 import com.kanji.timer.TimeSpentHandler;
 
 import javax.swing.*;
@@ -18,13 +13,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.Set;
 
 public class ApplicationWindow extends DialogWindow {
 
 	private JPanel mainApplicationPanel;
-	private ProblematicWordsController activeProblematicWordsController;
-	private StartingPanel startingPanel;
+	private AbstractPanelWithHotkeysInfo startingPanel;
 	private JFrame container;
 	private ApplicationController applicationController;
 	private Optional<TimeSpentHandler> timeSpentHandler;
@@ -32,17 +25,15 @@ public class ApplicationWindow extends DialogWindow {
 	private JMenuBar menuBar;
 
 	public ApplicationWindow(ApplicationController applicationController,
-			StartingPanel startingPanel) {
+			AbstractPanelWithHotkeysInfo startingPanel) {
 		super(null);
-		this.startingPanel = startingPanel;
 		this.applicationController = applicationController;
+		this.startingPanel = startingPanel;
 		container = new JFrame();
 		mainApplicationPanel = new JPanel(new CardLayout());
 		timeSpentHandler = Optional.empty();
 		setPanel(mainApplicationPanel);
 		setPanel(startingPanel);
-		startingPanel.setApplicationWindow(applicationController);
-
 	}
 
 	public void setMenuBar(JMenuBar menuBar){
@@ -53,7 +44,7 @@ public class ApplicationWindow extends DialogWindow {
 		//TODO put this to another class
 		UIManager.put("ComboBox.disabledBackground", BasicColors.PURPLE_DARK_1);
 		UIManager.put("Label.disabledForeground", Color.WHITE);
-		startingPanel.createListPanels();
+
 
 		mainApplicationPanel.add(startingPanel.createPanel(),
 				startingPanel.getUniqueName());
@@ -123,17 +114,8 @@ public class ApplicationWindow extends DialogWindow {
 				.show(mainApplicationPanel, name);
 	}
 
-	public void changeSaveStatus(SavingStatus savingStatus) {
-		startingPanel.changeSaveStatus(savingStatus);
-		container.repaint();
-	}
-
 	public void updateTitle(String update) {
 		container.setTitle(Titles.APPLICATION + "   " + update);
-	}
-
-	public void enableShowProblematicWordsButton() {
-		startingPanel.enableShowProblematicWordsButton();
 	}
 
 	public void createPanel(AbstractPanelWithHotkeysInfo panel, String title,
@@ -159,10 +141,6 @@ public class ApplicationWindow extends DialogWindow {
 		return container;
 	}
 
-
-	public StartingPanel getStartingPanel() {
-		return startingPanel;
-	}
 
 	public void setTimeSpentHandler(TimeSpentHandler timeSpentHandler) {
 		this.timeSpentHandler = Optional.of(timeSpentHandler);

@@ -72,21 +72,20 @@ public class ApplicationController
 	public ApplicationController() {
 		problematicKanjis = new HashSet<>();
 		problematicJapaneseWords = new HashSet<>();
-		startingPanel = new StartingPanel();
-		this.applicationWindow = new ApplicationWindow(this, startingPanel);
 		isClosingSafe = true;
 		applicationStateManager = this;
 		applicationStateController = new ApplicationStateController();
 		fileSavingManager = new FileSavingManager();
-
+		startingPanel = new StartingPanel();
+		applicationWindow = new ApplicationWindow(this, startingPanel);
 	}
 
 	public void initiate() {
 		validatePreferIpV4PropertySet();
-		initializeMenuBar();
 		initializeListsElements();
 		initializeApplicationStateManagers();
 		initializePanels();
+		initializeMenuBar();
 		initializeAdditionalWindowListeners();
 
 	}
@@ -115,6 +114,10 @@ public class ApplicationController
 	}
 
 	private void initializePanels() {
+
+		startingPanel.setApplicationController(this);
+		startingPanel.createListPanels();
+
 		RepeatingWordsPanel repeatingKanjiPanel = getRepeatingWordsPanel(
 				Kanji.MEANINGFUL_NAME);
 		RepeatingWordsPanel repeatingJapaneseWordsPanel = getRepeatingWordsPanel(
@@ -123,6 +126,7 @@ public class ApplicationController
 				Kanji.MEANINGFUL_NAME);
 		AbstractPanelWithHotkeysInfo problematicJapaneseWordsPanel = getProblematicWordsPanel(
 				JapaneseWord.MEANINGFUL_NAME);
+
 		applicationWindow
 				.initiate(repeatingKanjiPanel, repeatingJapaneseWordsPanel,
 						problematicKanjiPanel, problematicJapaneseWordsPanel);
@@ -389,9 +393,9 @@ public class ApplicationController
 		setProblematicWordsAndUpdateInformation(
 				savingInformation.getProblematicJapaneseWords());
 		applicationWindow.updateTitle(fileToSave.toString());
-		applicationWindow.changeSaveStatus(SavingStatus.NO_CHANGES);
+		changeSaveStatus(SavingStatus.NO_CHANGES);
 
-		applicationWindow.setPanel(applicationWindow.getStartingPanel());
+		applicationWindow.setPanel(startingPanel);
 		savingInformation.getJapaneseWords().removeIf(JapaneseWord::isEmpty);
 		LoadingPanel loadingPanel = showProgressDialog();
 		LoadingProjectWorker loadingProjectWorker = new LoadingProjectWorker(
@@ -508,8 +512,7 @@ public class ApplicationController
 	}
 
 	public void showInsertWordDialog() {
-		MyList activeWordsList = applicationWindow.getStartingPanel()
-				.getActiveWordsList();
+		MyList activeWordsList = startingPanel.getActiveWordsList();
 		CustomPositioner customPositioner = new PositionerOnRightPartOfSplitPane(
 				startingPanel.getSplitPaneFor(
 						activeWordsList.getListElementClass()));
@@ -583,8 +586,9 @@ public class ApplicationController
 			TypeOfWordForRepeating typeForRepeating) {
 
 		WordStateController wordStateController = applicationStateController
-				.getController(typeForRepeating.getAssociatedRepeatingWordsState()
-						.getMeaningfulName());
+				.getController(
+						typeForRepeating.getAssociatedRepeatingWordsState()
+								.getMeaningfulName());
 		//TODO use method: get active words list type; replace all ocurrences
 		return wordStateController.getRepeatingWordsController();
 	}
@@ -606,7 +610,7 @@ public class ApplicationController
 	}
 
 	public MyList getActiveWordsList() {
-		return applicationWindow.getStartingPanel().getActiveWordsList();
+		return startingPanel.getActiveWordsList();
 	}
 
 	public MyList<RepeatingData> getKanjiRepeatingDates() {
@@ -703,8 +707,8 @@ public class ApplicationController
 	}
 
 	public void addWordToRepeatingList(RepeatingData word) {
-		MyList<RepeatingData> repeatingList = applicationWindow
-				.getStartingPanel().getActiveRepeatingList();
+		MyList<RepeatingData> repeatingList = startingPanel
+				.getActiveRepeatingList();
 		repeatingList.addWord(word);
 		repeatingList.scrollToBottom();
 	}
@@ -733,8 +737,7 @@ public class ApplicationController
 	}
 
 	public TypeOfWordForRepeating getActiveWordsListType() {
-		MyList currentList = applicationWindow.getStartingPanel()
-				.getActiveWordsList();
+		MyList currentList = startingPanel.getActiveWordsList();
 		Class listClass = currentList.getListElementClass();
 		TypeOfWordForRepeating typeOfWordForRepeating = null;
 		if (listClass.equals(Kanji.class)) {
@@ -763,7 +766,7 @@ public class ApplicationController
 		if (!fileSavingManager.hasFileToSave() || loadingInProgress) {
 			return;
 		}
-		applicationWindow.changeSaveStatus(SavingStatus.SAVING);
+		changeSaveStatus(SavingStatus.SAVING);
 		SavingInformation savingInformation = applicationStateManager
 				.getApplicationState();
 
@@ -773,7 +776,8 @@ public class ApplicationController
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		applicationWindow.changeSaveStatus(SavingStatus.SAVED);
+
+		changeSaveStatus(SavingStatus.SAVED);
 	}
 
 	@Override
@@ -822,8 +826,11 @@ public class ApplicationController
 	}
 
 	public void switchToList(TypeOfWordForRepeating typeOfWordForRepeating) {
-		applicationWindow.getStartingPanel()
-				.switchToList(typeOfWordForRepeating);
+		startingPanel.switchToList(typeOfWordForRepeating);
+	}
+
+	public StartingPanel getStartingPanel() {
+		return startingPanel;
 	}
 
 	public ApplicationWindow getApplicationWindow() {
@@ -853,5 +860,14 @@ public class ApplicationController
 	public void updateProblematicWordsAmount() {
 		startingPanel.updateProblematicWordsAmount(
 				getProblematicWordsAmountBasedOnCurrentTab());
+	}
+
+	private void changeSaveStatus(SavingStatus savingStatus) {
+		startingPanel.changeSaveStatus(savingStatus);
+		startingPanel.getPanel().repaint();
+	}
+
+	public void enableShowProblematicWordsButton() {
+		startingPanel.enableShowProblematicWordsButton();
 	}
 }

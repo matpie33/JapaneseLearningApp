@@ -48,7 +48,6 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	private Map<String, WordsAndRepeatingInformationsPanel> listToTabLabel = new LinkedHashMap<>();
 	private WordTypeContext wordTypeContext;
 	private StartingController startingController;
-	private ApplicationWindow applicationWindow;
 
 	public StartingPanel() {
 		tabs = new JTabbedPane();
@@ -56,10 +55,9 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		startingController = new StartingController(this);
 	}
 
-	public void setApplicationWindow(
+	public void setApplicationController(
 			ApplicationController applicationController) {
 		//TODO add it in constructor
-		this.applicationWindow = applicationController.getApplicationWindow();
 		this.applicationController = applicationController;
 	}
 
