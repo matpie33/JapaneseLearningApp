@@ -2,6 +2,7 @@ package com.kanji.panelsAndControllers.panels;
 
 import com.guimaker.enums.FillType;
 import com.guimaker.row.SimpleRowBuilder;
+import com.kanji.application.ApplicationChangesManager;
 import com.kanji.constants.strings.ButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.list.listElements.ListElement;
@@ -21,8 +22,8 @@ public class InsertWordPanel<Word extends ListElement>
 	private Color labelsColor = Color.WHITE;
 
 	public InsertWordPanel(MyList<Word> list,
-			ApplicationController applicationController) {
-		controller = new InsertWordController<>(list, applicationController,
+			ApplicationChangesManager applicationChangesManager) {
+		controller = new InsertWordController<>(list, applicationChangesManager,
 				this);
 		initializeOneTimeOnlyElements();
 	}

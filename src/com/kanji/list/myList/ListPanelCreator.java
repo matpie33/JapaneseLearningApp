@@ -16,6 +16,7 @@ import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.ColorChanger;
 import com.guimaker.utilities.HotkeyWrapper;
 import com.guimaker.utilities.KeyModifiers;
+import com.kanji.application.ApplicationChangesManager;
 import com.kanji.constants.Colors;
 import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.strings.ButtonsNames;
@@ -23,10 +24,10 @@ import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.ListElement;
 import com.kanji.model.ListRow;
-import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.range.Range;
 import com.kanji.utilities.CommonListElements;
+import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,7 +46,7 @@ public class ListPanelCreator<Word extends ListElement>
 	private final Dimension scrollPanesSize = new Dimension(550, 100);
 	private JLabel titleLabel;
 	private ListRowCreator<Word> listRow;
-	private ApplicationController applicationController;
+	private ApplicationChangesManager applicationChangesManager;
 	private MainPanel rootPanel;
 	private boolean enableWordAdding;
 	private AbstractButton buttonLoadNextWords;
@@ -64,13 +65,15 @@ public class ListPanelCreator<Word extends ListElement>
 	private boolean hasParentList;
 	private ListSearchPanelCreator<Word> listSearchPanelCreator;
 	private final static String UNIQUE_NAME = "list panel creator";
+	private MyList myList;
 
 	public ListPanelCreator(ListConfiguration listConfiguration,
-			ApplicationController applicationController,
-			ListRowCreator<Word> listRow,
-			ListWordsController<Word> controller) {
+			ApplicationChangesManager applicationChangesManager,
+			ListRowCreator<Word> listRow, ListWordsController<Word> controller,
+			MyList<Word> myList) {
+		this.myList = myList;
 		listSearchPanelCreator = new ListSearchPanelCreator<>();
-		this.applicationController = applicationController;
+		this.applicationChangesManager = applicationChangesManager;
 		listWordsController = controller;
 		isSkipTitle = listConfiguration.isSkipTitle();
 		hasParentList =
@@ -365,7 +368,11 @@ public class ListPanelCreator<Word extends ListElement>
 		AbstractAction action = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				applicationController.showInsertWordDialog();
+				ApplicationWindow applicationWindow = applicationChangesManager
+						.getApplicationWindow();
+				applicationWindow.showInsertWordDialog(myList,
+						applicationWindow.getApplicationConfiguration().
+								getInsertWordPanelPositioner());
 			}
 		};
 		//TODO add in my list a parameter with hotkeys mapping for add/search panels

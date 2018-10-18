@@ -1,9 +1,12 @@
 package com.kanji.windows;
 
+import com.kanji.application.ApplicationChangesManager;
 import com.kanji.constants.strings.Titles;
 import com.kanji.customPositioning.CustomPositioner;
+import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.panelsAndControllers.panels.ConfirmPanel;
+import com.kanji.panelsAndControllers.panels.InsertWordPanel;
 import com.kanji.panelsAndControllers.panels.MessagePanel;
 
 import javax.swing.*;
@@ -20,6 +23,7 @@ public class DialogWindow {
 	private Position position;
 	private JDialog container;
 	private AbstractPanelWithHotkeysInfo panel;
+	protected ApplicationChangesManager applicationChangesManager;
 
 	private void setCustomPositioner(CustomPositioner customPositioner) {
 		this.customPositioner = customPositioner;
@@ -29,7 +33,9 @@ public class DialogWindow {
 		CENTER, LEFT_CORNER, CUSTOM, NEXT_TO_PARENT
 	}
 
-	public DialogWindow(DialogWindow parent) {
+	public DialogWindow(DialogWindow parent,
+			ApplicationChangesManager applicationChangesManager) {
+		this.applicationChangesManager = applicationChangesManager;
 		if (parent instanceof ApplicationWindow) {
 			ApplicationWindow w = (ApplicationWindow) parent;
 			container = new JDialog(w.getContainer());
@@ -99,7 +105,7 @@ public class DialogWindow {
 			if (!getContainer().isVisible()) {
 				return;
 			}
-			childWindow = new DialogWindow(this);
+			childWindow = new DialogWindow(this, applicationChangesManager);
 			childWindow.setPanel(panelCreator);
 
 			if (position.equals(Position.CUSTOM)) {
@@ -126,6 +132,14 @@ public class DialogWindow {
 
 	private boolean childWindowIsClosed() {
 		return childWindow == null || !childWindow.getContainer().isVisible();
+	}
+
+	public void showInsertWordDialog(MyList myList,
+			CustomPositioner customPositioner) {
+		AbstractPanelWithHotkeysInfo panel = new InsertWordPanel<>(myList,
+				applicationChangesManager);
+		setCustomPositioner(customPositioner);
+		createDialog(panel, Titles.INSERT_WORD_DIALOG, false, Position.CUSTOM);
 	}
 
 	public boolean showConfirmDialog(String message) {

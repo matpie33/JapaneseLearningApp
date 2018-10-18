@@ -3,6 +3,7 @@ package com.kanji.list.myList;
 import com.guimaker.enums.MoveDirection;
 import com.guimaker.listeners.SwitchBetweenInputsFailListener;
 import com.guimaker.panels.MainPanel;
+import com.kanji.application.ApplicationChangesManager;
 import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.ListElementModificationType;
 import com.kanji.constants.strings.ExceptionsMessages;
@@ -14,7 +15,6 @@ import com.kanji.list.listObserver.ObservableList;
 import com.kanji.list.listeners.InputValidationListener;
 import com.kanji.model.PropertyPostValidationData;
 import com.kanji.model.WordInMyListExistence;
-import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.swingWorkers.ProgressUpdater;
 import com.kanji.windows.DialogWindow;
 
@@ -26,7 +26,7 @@ public class MyList<Word extends ListElement>
 		implements ObservableList<Word>, InputValidationListener<Word> {
 
 	private DialogWindow parent;
-	private ApplicationController applicationController;
+	private ApplicationChangesManager applicationChangesManager;
 	private ListWordsController<Word> listController;
 	private ListElementInitializer<Word> wordInitializer;
 	private Class listElementClass;
@@ -35,24 +35,25 @@ public class MyList<Word extends ListElement>
 	private MyList<Word> sourceList;
 
 	public MyList(DialogWindow parentDialog,
-			ApplicationController applicationController,
+			ApplicationChangesManager applicationChangesManager,
 			ListRowCreator<Word> listRowCreator, String title,
 			ListConfiguration listConfiguration,
 			ListElementInitializer wordInitializer) {
 		this.listRowCreator = listRowCreator;
-		this.applicationController = applicationController;
+		this.applicationChangesManager = applicationChangesManager;
 		this.parent = parentDialog;
 		listController = new ListWordsController<>(listConfiguration,
-				listRowCreator, title, applicationController, wordInitializer);
+				listRowCreator, title, applicationChangesManager,
+				wordInitializer, this);
 		this.wordInitializer = wordInitializer;
 		this.title = title;
 	}
 
 	public MyList(DialogWindow parentDialog,
-			ApplicationController applicationController,
+			ApplicationChangesManager applicationChangesManager,
 			ListRowCreator<Word> listRowCreator, String title,
 			ListElementInitializer wordInitializer) {
-		this(parentDialog, applicationController, listRowCreator, title,
+		this(parentDialog, applicationChangesManager, listRowCreator, title,
 				new ListConfiguration(), wordInitializer);
 	}
 
@@ -288,7 +289,7 @@ public class MyList<Word extends ListElement>
 	}
 
 	public void save() {
-		this.applicationController.save();
+		this.applicationChangesManager.save();
 	}
 
 	public JPanel getPanel() {

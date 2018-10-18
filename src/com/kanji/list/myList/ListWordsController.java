@@ -3,6 +3,7 @@ package com.kanji.list.myList;
 import com.guimaker.enums.MoveDirection;
 import com.guimaker.listeners.SwitchBetweenInputsFailListener;
 import com.guimaker.panels.MainPanel;
+import com.kanji.application.ApplicationChangesManager;
 import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.enums.ListElementModificationType;
 import com.kanji.constants.strings.Prompts;
@@ -19,7 +20,6 @@ import com.kanji.model.FilteredWordMatch;
 import com.kanji.model.ListRow;
 import com.kanji.model.PropertyPostValidationData;
 import com.kanji.model.WordInMyListExistence;
-import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.range.Range;
 import com.kanji.swingWorkers.ProgressUpdater;
 import com.kanji.utilities.Pair;
@@ -36,7 +36,7 @@ import java.util.List;
 public class ListWordsController<Word extends ListElement> {
 	private List<ListRow<Word>> allWordsToRowNumberMap = new ArrayList<>();
 	private ListPanelCreator<Word> listPanelCreator;
-	private ApplicationController applicationController;
+	private ApplicationChangesManager applicationChangesManager;
 	private final int MAXIMUM_WORDS_TO_SHOW = 201;
 	private int lastRowVisible;
 	private final List<LoadWordsForFoundWord> strategiesForFoundWord = new ArrayList<>();
@@ -53,15 +53,15 @@ public class ListWordsController<Word extends ListElement> {
 
 	public ListWordsController(ListConfiguration listConfiguration,
 			ListRowCreator<Word> listRowCreator, String title,
-			ApplicationController applicationController,
-			ListElementInitializer<Word> wordInitializer) {
+			ApplicationChangesManager applicationChangesManager,
+			ListElementInitializer<Word> wordInitializer, MyList<Word> myList) {
 		this.wordInitializer = wordInitializer;
 		parentListAndWord = listConfiguration
 				.getParentListAndWordContainingThisList();
 		progressUpdater = new ProgressUpdater();
-		this.applicationController = applicationController;
+		this.applicationChangesManager = applicationChangesManager;
 		listPanelCreator = new ListPanelCreator<>(listConfiguration,
-				applicationController, listRowCreator, this);
+				applicationChangesManager, listRowCreator, this, myList);
 		listPanelCreator.createPanel();
 		this.listPanelCreator.setTitle(title);
 
@@ -315,13 +315,13 @@ public class ListWordsController<Word extends ListElement> {
 					rowSpecificPrompt = Prompts.REPEATING_ELEMENT;
 				}
 
-				if (!applicationController.showConfirmDialog(
-						String.format(Prompts.DELETE_ELEMENT,
+				if (!applicationChangesManager.getApplicationWindow()
+						.showConfirmDialog(String.format(Prompts.DELETE_ELEMENT,
 								rowSpecificPrompt))) {
 					return;
 				}
 				remove(word);
-				applicationController.save();
+				applicationChangesManager.save();
 			}
 		};
 	}

@@ -2,11 +2,13 @@ package com.kanji.windows;
 
 import com.guimaker.colors.BasicColors;
 import com.kanji.application.ApplicationChangesManager;
+import com.kanji.application.ApplicationConfiguration;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Titles;
 import com.kanji.customPositioning.CustomPositioner;
 import com.kanji.panelsAndControllers.panels.*;
 import com.kanji.timer.TimeSpentHandler;
+import javafx.application.Application;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,21 +21,27 @@ public class ApplicationWindow extends DialogWindow {
 	private JPanel mainApplicationPanel;
 	private AbstractPanelWithHotkeysInfo startingPanel;
 	private JFrame container;
-	private ApplicationChangesManager applicationChangesManager;
+
 	private Optional<TimeSpentHandler> timeSpentHandler;
 	private static Font kanjiFont = new Font("MS Mincho", Font.PLAIN, 100);
 	private JMenuBar menuBar;
+	private final ApplicationConfiguration applicationConfiguration;
 
 	public ApplicationWindow(ApplicationChangesManager applicationChangesManager,
-			AbstractPanelWithHotkeysInfo startingPanel) {
-		super(null);
-		this.applicationChangesManager = applicationChangesManager;
+			AbstractPanelWithHotkeysInfo startingPanel,
+			ApplicationConfiguration applicationConfiguration) {
+		super(null, applicationChangesManager);
+		this.applicationConfiguration = applicationConfiguration;
 		this.startingPanel = startingPanel;
 		container = new JFrame();
 		mainApplicationPanel = new JPanel(new CardLayout());
 		timeSpentHandler = Optional.empty();
 		setPanel(mainApplicationPanel);
 		setPanel(startingPanel);
+	}
+
+	public ApplicationConfiguration getApplicationConfiguration() {
+		return applicationConfiguration;
 	}
 
 	public void setMenuBar(JMenuBar menuBar){

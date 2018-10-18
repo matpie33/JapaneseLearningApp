@@ -1,6 +1,7 @@
 package com.kanji.panelsAndControllers.controllers;
 
 import com.guimaker.panels.MainPanel;
+import com.kanji.application.ApplicationChangesManager;
 import com.kanji.constants.enums.InputGoal;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElements.ListElement;
@@ -22,17 +23,17 @@ public class InsertWordController<Word extends ListElement>
 		implements InputValidationListener<Word> {
 
 	private MyList<Word> list;
-	private ApplicationController applicationController;
+	private ApplicationChangesManager applicationChangesManager;
 	private InsertWordPanel<Word> panel;
 	private boolean addingWordWasRequested = false;
 	private Word word;
 
 	public InsertWordController(MyList<Word> list,
-			ApplicationController applicationController,
+			ApplicationChangesManager applicationChangesManager,
 			InsertWordPanel panel) {
 		this.panel = panel;
 		this.list = list;
-		this.applicationController = applicationController;
+		this.applicationChangesManager = applicationChangesManager;
 		list.getListRowCreator().addValidationListener(this);
 	}
 
@@ -46,7 +47,7 @@ public class InsertWordController<Word extends ListElement>
 			boolean addedWord = list.addWord(word);
 			if (addedWord) {
 				list.scrollToBottom();
-				applicationController.save();
+				applicationChangesManager.save();
 			}
 			else{
 				list.highlightRow(list.get1BasedRowNumberOfWord(word) - 1, true);

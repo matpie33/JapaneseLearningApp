@@ -4,6 +4,7 @@ import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.MoveDirection;
 import com.guimaker.enums.PanelDisplayMode;
 import com.kanji.application.ApplicationChangesManager;
+import com.kanji.application.ApplicationConfiguration;
 import com.kanji.application.ApplicationStateController;
 import com.kanji.application.WordStateController;
 import com.kanji.constants.enums.*;
@@ -79,7 +80,15 @@ public class ApplicationController
 		applicationStateController = new ApplicationStateController();
 		fileSavingManager = new FileSavingManager();
 		startingPanel = new StartingPanel();
-		applicationWindow = new ApplicationWindow(this, startingPanel);
+		applicationWindow = new ApplicationWindow(this, startingPanel,
+				createApplicationConfiguration());
+	}
+
+	private ApplicationConfiguration createApplicationConfiguration() {
+		CustomPositioner customPositioner = new PositionerOnRightPartOfSplitPane(
+				startingPanel, this);
+		return new ApplicationConfiguration()
+				.setInsertWordPanelPositioner(customPositioner);
 	}
 
 	public void initiate() {
@@ -513,17 +522,6 @@ public class ApplicationController
 		return applicationWindow.showConfirmDialog(message);
 	}
 
-	public void showInsertWordDialog() {
-		MyList activeWordsList = startingPanel.getActiveWordsList();
-		CustomPositioner customPositioner = new PositionerOnRightPartOfSplitPane(
-				startingPanel.getSplitPaneFor(
-						activeWordsList.getListElementClass()));
-		AbstractPanelWithHotkeysInfo panel = new InsertWordPanel<>(
-				activeWordsList, this);
-		applicationWindow.createPanel(panel, Titles.INSERT_WORD_DIALOG, false,
-				customPositioner);
-	}
-
 	public void showProblematicWordsDialogForCurrentList() {
 		showProblematicWordsDialog();
 	}
@@ -837,6 +835,7 @@ public class ApplicationController
 		return startingPanel;
 	}
 
+	@Override
 	public ApplicationWindow getApplicationWindow() {
 		return applicationWindow;
 	}
