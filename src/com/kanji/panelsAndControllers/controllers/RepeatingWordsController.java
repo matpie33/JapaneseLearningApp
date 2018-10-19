@@ -11,8 +11,8 @@ import com.guimaker.utilities.SetOfRanges;
 import com.kanji.saving.ApplicationStateManager;
 import com.kanji.saving.RepeatingState;
 import com.kanji.saving.SavingInformation;
-import com.kanji.timer.TimeSpentHandler;
-import com.kanji.timer.TimeSpentMonitor;
+import com.guimaker.timer.TimeSpentHandler;
+import com.guimaker.timer.TimeSpentMonitor;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

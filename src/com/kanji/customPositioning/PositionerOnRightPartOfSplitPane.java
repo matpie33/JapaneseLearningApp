@@ -1,5 +1,6 @@
 package com.kanji.customPositioning;
 
+import com.guimaker.customPositioning.CustomPositioner;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.panels.StartingPanel;
 

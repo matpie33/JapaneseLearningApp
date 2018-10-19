@@ -28,7 +28,6 @@ public class Prompts {
 	public static final String NO_MORE_WORDS_TO_REVIEW = "Koniec słów do przejrzenia. Przechodzę na początek";
 	public static final String SEARCH_OPTION_PROMPT = "Szukaj według: ";
 	public static final String EXIT_LEARNING = "Czy na pewno chcesz przerwać naukę?";
-	public static final String CLOSE_APPLICATION = "Czy na pewno chcesz zamknąć aplikację?";
 	public static final String UNFINISHED_REPEATING = "Wykryto powtórki, które zostały przerwane. Wznawiam powtarzanie.";
 
 	public static final String KANJI_TEXT = "Kanji";

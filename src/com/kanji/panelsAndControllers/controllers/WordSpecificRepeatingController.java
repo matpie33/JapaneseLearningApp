@@ -9,7 +9,7 @@ import com.guimaker.utilities.Range;
 import com.guimaker.utilities.SetOfRanges;
 import com.kanji.repeating.RepeatingWordsDisplayer;
 import com.kanji.saving.RepeatingState;
-import com.kanji.timer.TimeSpent;
+import com.guimaker.timer.TimeSpent;
 
 import java.util.*;
 

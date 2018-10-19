@@ -6,7 +6,7 @@ import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.list.listElements.ListElement;
 import com.guimaker.utilities.SetOfRanges;
 import com.kanji.application.ApplicationChangesManager;
-import com.kanji.application.ApplicationConfiguration;
+import com.guimaker.application.ApplicationConfiguration;
 import com.kanji.application.ApplicationStateController;
 import com.kanji.application.WordStateController;
 import com.kanji.constants.Colors;
@@ -14,7 +14,7 @@ import com.kanji.constants.enums.*;
 import com.kanji.constants.strings.MenuTexts;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Titles;
-import com.kanji.customPositioning.CustomPositioner;
+import com.guimaker.customPositioning.CustomPositioner;
 import com.kanji.customPositioning.PositionerOnRightPartOfSplitPane;
 import com.kanji.exception.DuplicatedWordException;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
@@ -88,11 +88,13 @@ public class ApplicationController
 	private ApplicationConfiguration createApplicationConfiguration() {
 		CustomPositioner customPositioner = new PositionerOnRightPartOfSplitPane(
 				startingPanel, this);
-		return new ApplicationConfiguration()
+		return new ApplicationConfiguration(Titles.APPLICATION)
 				.setInsertWordPanelPositioner(customPositioner)
 				.setListRowEditTemporarilyColor(
 						Colors.LIST_ROW_EDIT_TEMPORARILY_COLOR)
-				.setListRowHighlightColor(Colors.LIST_ROW_HIGHLIGHT_COLOR);
+				.setListRowHighlightColor(Colors.LIST_ROW_HIGHLIGHT_COLOR)
+				.setContentPanelColor(Colors.CONTENT_PANEL_COLOR)
+				.setPanelBackgroundColor(Colors.BACKGROUND_PANEL_COLOR);
 	}
 
 	public void initiate() {

@@ -3,7 +3,7 @@ package com.kanji.saving;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.guimaker.list.listElements.ListElement;
 import com.kanji.list.listElements.RepeatingData;
-import com.kanji.timer.TimeSpent;
+import com.guimaker.timer.TimeSpent;
 
 import java.io.Serializable;
 import java.util.Set;

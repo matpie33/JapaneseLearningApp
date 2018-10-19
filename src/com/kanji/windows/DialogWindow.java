@@ -1,13 +1,15 @@
 package com.kanji.windows;
 
+import com.guimaker.application.ApplicationConfiguration;
 import com.kanji.application.ApplicationChangesManager;
 import com.kanji.constants.strings.Titles;
-import com.kanji.customPositioning.CustomPositioner;
+import com.guimaker.customPositioning.CustomPositioner;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.panelsAndControllers.panels.ConfirmPanel;
 import com.kanji.panelsAndControllers.panels.InsertWordPanel;
 import com.kanji.panelsAndControllers.panels.MessagePanel;
+import javafx.application.Application;
 
 import javax.swing.*;
 import java.awt.*;
@@ -182,6 +184,18 @@ public class DialogWindow {
 
 	public void setPanel(AbstractPanelWithHotkeysInfo panel) {
 		this.panel = panel;
+	}
+
+	public ApplicationConfiguration getParentConfiguration (){
+		if (this instanceof ApplicationWindow){
+			return ((ApplicationWindow)this).getApplicationConfiguration();
+		}
+		DialogWindow parent = parentWindow;
+		while (!(parent instanceof ApplicationWindow)){
+			parent = parent.parentWindow;
+		}
+		return ((ApplicationWindow)parent).getApplicationConfiguration();
+
 	}
 
 }

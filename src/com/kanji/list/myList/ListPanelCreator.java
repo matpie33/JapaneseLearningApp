@@ -77,6 +77,7 @@ public class ListPanelCreator<Word extends ListElement>
 		rowsPanel = new MainPanel(null, true, true,
 				new PanelConfiguration(listConfiguration.getDisplayMode()));
 		rootPanel = new MainPanel(null);
+		setParentDialog(applicationChangesManager.getApplicationWindow());
 		if (hasParentList) {
 			mainPanel.setRowColor(ColorChanger.makeLighter(getContentColor()));
 			rootPanel.setRowColor(ColorChanger.makeLighter(getContentColor()));

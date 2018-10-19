@@ -1,17 +1,17 @@
 package com.kanji.windows;
 
 import com.guimaker.colors.BasicColors;
+import com.guimaker.strings.Prompts;
 import com.kanji.application.ApplicationChangesManager;
-import com.kanji.application.ApplicationConfiguration;
-import com.kanji.constants.strings.Prompts;
-import com.kanji.constants.strings.Titles;
-import com.kanji.customPositioning.CustomPositioner;
-import com.kanji.panelsAndControllers.panels.*;
-import com.kanji.timer.TimeSpentHandler;
+import com.guimaker.application.ApplicationConfiguration;
+import com.guimaker.customPositioning.CustomPositioner;
+import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
+import com.guimaker.timer.TimeSpentHandler;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -26,7 +26,8 @@ public class ApplicationWindow extends DialogWindow {
 	private JMenuBar menuBar;
 	private final ApplicationConfiguration applicationConfiguration;
 
-	public ApplicationWindow(ApplicationChangesManager applicationChangesManager,
+	public ApplicationWindow(
+			ApplicationChangesManager applicationChangesManager,
 			AbstractPanelWithHotkeysInfo startingPanel,
 			ApplicationConfiguration applicationConfiguration) {
 		super(null, applicationChangesManager);
@@ -43,11 +44,11 @@ public class ApplicationWindow extends DialogWindow {
 		return applicationConfiguration;
 	}
 
-	public void setMenuBar(JMenuBar menuBar){
+	public void setMenuBar(JMenuBar menuBar) {
 		this.menuBar = menuBar;
 	}
 
-	public void initiate( AbstractPanelWithHotkeysInfo... panels) {
+	public void initiate(AbstractPanelWithHotkeysInfo... panels) {
 		//TODO put this to another class
 		UIManager.put("ComboBox.disabledBackground", BasicColors.PURPLE_DARK_1);
 		UIManager.put("Label.disabledForeground", Color.WHITE);
@@ -70,7 +71,7 @@ public class ApplicationWindow extends DialogWindow {
 		container.setContentPane(mainApplicationPanel);
 		container.pack();
 		container.setMinimumSize(container.getSize());
-		container.setTitle(Titles.APPLICATION);
+		container.setTitle(applicationConfiguration.getTitle());
 		container.setLocationRelativeTo(null);
 		container.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		container.setVisible(true);
@@ -80,8 +81,6 @@ public class ApplicationWindow extends DialogWindow {
 		container.addWindowListener(
 				createListenerSwitchToSubdialogWhenFocusGain());
 	}
-
-
 
 	private WindowAdapter createListenerSwitchToSubdialogWhenFocusGain() {
 		return new WindowAdapter() {
@@ -121,17 +120,18 @@ public class ApplicationWindow extends DialogWindow {
 	}
 
 	public void updateTitle(String update) {
-		container.setTitle(Titles.APPLICATION + "   " + update);
+		container
+				.setTitle(applicationConfiguration.getTitle() + "   " + update);
 	}
 
 	public void createPanel(AbstractPanelWithHotkeysInfo panel, String title,
-			boolean modal, Position position){
+			boolean modal, Position position) {
 		setPanel(panel);
 		createDialog(panel, title, modal, position);
 	}
 
 	public void createPanel(AbstractPanelWithHotkeysInfo panel, String title,
-			boolean modal, CustomPositioner customPositioner){
+			boolean modal, CustomPositioner customPositioner) {
 		this.customPositioner = customPositioner;
 		createPanel(panel, title, modal, Position.CUSTOM);
 	}
@@ -147,7 +147,6 @@ public class ApplicationWindow extends DialogWindow {
 		return container;
 	}
 
-
 	public void setTimeSpentHandler(TimeSpentHandler timeSpentHandler) {
 		this.timeSpentHandler = Optional.of(timeSpentHandler);
 	}
@@ -159,7 +158,5 @@ public class ApplicationWindow extends DialogWindow {
 	private void resumeTimeMeasuring() {
 		timeSpentHandler.ifPresent(TimeSpentHandler::startTimer);
 	}
-
-
 
 }
