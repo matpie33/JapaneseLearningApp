@@ -4,7 +4,10 @@ import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
+import com.guimaker.enums.InputGoal;
 import com.guimaker.inputSelection.ListInputsSelectionManager;
+import com.guimaker.list.listElements.ListElement;
+import com.guimaker.model.ListRow;
 import com.guimaker.model.PanelConfiguration;
 import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComponentOptions;
@@ -13,19 +16,11 @@ import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.AbstractSimpleRow;
 import com.guimaker.row.SimpleRowBuilder;
-import com.guimaker.strings.HotkeysDescriptions;
-import com.guimaker.utilities.ColorChanger;
-import com.guimaker.utilities.HotkeyWrapper;
-import com.guimaker.utilities.KeyModifiers;
-import com.kanji.application.ApplicationChangesManager;
-import com.kanji.constants.Colors;
-import com.guimaker.enums.InputGoal;
 import com.guimaker.strings.ButtonsNames;
-import com.guimaker.list.listElements.ListElement;
-import com.guimaker.model.ListRow;
+import com.guimaker.strings.HotkeysDescriptions;
+import com.guimaker.utilities.*;
+import com.kanji.application.ApplicationChangesManager;
 import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
-import com.guimaker.utilities.Range;
-import com.guimaker.utilities.CommonListElements;
 import com.kanji.windows.ApplicationWindow;
 
 import javax.swing.*;
@@ -103,9 +98,8 @@ public class ListPanelCreator<Word extends ListElement>
 
 	public void addElementsForEmptyList() {
 		rowsPanel.insertRow(1, SimpleRowBuilder.createRow(FillType.NONE,
-				GuiElementsCreator.createLabel(
-						new ComponentOptions().text(
-								com.guimaker.strings.Prompts.EMPTY_LIST)),
+				GuiElementsCreator.createLabel(new ComponentOptions()
+						.text(com.guimaker.strings.Prompts.EMPTY_LIST)),
 				createButtonAddRow(InputGoal.EDIT)));
 	}
 
@@ -387,7 +381,10 @@ public class ListPanelCreator<Word extends ListElement>
 
 	public void highlightRowAndScroll(JComponent row) {
 		int rowNumber = rowsPanel.getIndexOfPanel(row);
-		changePanelColor(rowNumber, Colors.LIST_ROW_HIGHLIGHT_COLOR);
+		changePanelColor(rowNumber,
+				applicationChangesManager.getApplicationWindow()
+						.getApplicationConfiguration()
+						.getListRowHighlightColor());
 		scrollTo(rowsPanel.getRows().get(rowNumber));
 		this.rowsPanel.getPanel().repaint();
 	}
@@ -464,11 +461,17 @@ public class ListPanelCreator<Word extends ListElement>
 				customInputGoal == null ? this.inputGoal : customInputGoal)
 				.getRowPanel();
 		if (highlighted) {
-			newPanel.setBackground(Colors.LIST_ROW_HIGHLIGHT_COLOR);
+			newPanel.setBackground(
+					applicationChangesManager.getApplicationWindow()
+							.getApplicationConfiguration()
+							.getListRowHighlightColor());
 		}
 		if (customInputGoal != null && customInputGoal
 				.equals(InputGoal.EDIT_TEMPORARILY)) {
-			newPanel.setBackground(Colors.LIST_ROW_EDIT_TEMPORARILY_COLOR);
+			newPanel.setBackground(
+					applicationChangesManager.getApplicationWindow()
+							.getApplicationConfiguration()
+							.getListRowEditTemporarilyColor());
 			newPanel.updateView();
 		}
 		rowsPanel.replacePanel(oldPanel, newPanel.getPanel());

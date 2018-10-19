@@ -3,10 +3,13 @@ package com.kanji.panelsAndControllers.controllers;
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.MoveDirection;
 import com.guimaker.enums.PanelDisplayMode;
+import com.guimaker.list.listElements.ListElement;
+import com.guimaker.utilities.SetOfRanges;
 import com.kanji.application.ApplicationChangesManager;
 import com.kanji.application.ApplicationConfiguration;
 import com.kanji.application.ApplicationStateController;
 import com.kanji.application.WordStateController;
+import com.kanji.constants.Colors;
 import com.kanji.constants.enums.*;
 import com.kanji.constants.strings.MenuTexts;
 import com.kanji.constants.strings.Prompts;
@@ -18,7 +21,6 @@ import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
 import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
-import com.guimaker.list.listElements.ListElement;
 import com.kanji.list.listElements.RepeatingData;
 import com.kanji.list.listObserver.ListObserver;
 import com.kanji.list.listRows.RowInJapaneseWordInformations;
@@ -32,7 +34,6 @@ import com.kanji.model.WordsAndRepeatingInfo;
 import com.kanji.panelsAndControllers.panels.*;
 import com.kanji.problematicWords.ProblematicKanjiDisplayer;
 import com.kanji.problematicWords.ProblematicWordsDisplayer;
-import com.guimaker.utilities.SetOfRanges;
 import com.kanji.saving.ApplicationStateManager;
 import com.kanji.saving.FileSavingManager;
 import com.kanji.saving.ProblematicWordsState;
@@ -88,7 +89,10 @@ public class ApplicationController
 		CustomPositioner customPositioner = new PositionerOnRightPartOfSplitPane(
 				startingPanel, this);
 		return new ApplicationConfiguration()
-				.setInsertWordPanelPositioner(customPositioner);
+				.setInsertWordPanelPositioner(customPositioner)
+				.setListRowEditTemporarilyColor(
+						Colors.LIST_ROW_EDIT_TEMPORARILY_COLOR)
+				.setListRowHighlightColor(Colors.LIST_ROW_HIGHLIGHT_COLOR);
 	}
 
 	public void initiate() {
