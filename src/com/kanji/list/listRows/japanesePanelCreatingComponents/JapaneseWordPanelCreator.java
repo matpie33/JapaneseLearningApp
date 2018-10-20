@@ -15,6 +15,7 @@ import com.guimaker.enums.InputGoal;
 import com.guimaker.enums.WordSearchOptions;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.ListPropertiesNames;
+import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listRows.RowInJapaneseWritingsList;
@@ -226,7 +227,7 @@ public class JapaneseWordPanelCreator
 				new RowInJapaneseWritingsList(japanesePanelComponentsStore
 						.getPanelCreatingService(displayMode), japaneseWord,
 						displayMode), Labels.WRITING_WAYS_IN_JAPANESE,
-				new ListConfiguration().enableWordAdding(false)
+				new ListConfiguration(Prompts.JAPANESE_WORD_DELETE).enableWordAdding(false)
 						.displayMode(displayMode)
 						.inheritScrollbar(inheritScrollBar)
 						.enableWordSearching(false)

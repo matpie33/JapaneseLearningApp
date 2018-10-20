@@ -49,13 +49,6 @@ public class MyList<Word extends ListElement>
 		this.title = title;
 	}
 
-	public MyList(DialogWindow parentDialog,
-			ApplicationChangesManager applicationChangesManager,
-			ListRowCreator<Word> listRowCreator, String title,
-			ListElementInitializer wordInitializer) {
-		this(parentDialog, applicationChangesManager, listRowCreator, title,
-				new ListConfiguration(), wordInitializer);
-	}
 
 	@Override
 	public void addListObserver(ListObserver<Word> listObserver) {

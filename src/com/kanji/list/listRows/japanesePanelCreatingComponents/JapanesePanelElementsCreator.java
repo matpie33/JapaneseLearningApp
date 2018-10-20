@@ -13,6 +13,7 @@ import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.enums.TypeOfJapaneseWriting;
 import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 import com.kanji.constants.strings.Labels;
+import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listRows.RowInParticlesInformation;
@@ -86,7 +87,8 @@ public class JapanesePanelElementsCreator {
 				applicationController,
 				new RowInParticlesInformation(japaneseWord,
 						applicationController, displayMode), "",
-				new ListConfiguration().showButtonsLoadNextPreviousWords(false)
+				new ListConfiguration(Prompts.JAPANESE_WORD_DELETE)
+						.showButtonsLoadNextPreviousWords(false)
 						.enableWordAdding(false).enableWordSearching(false)
 						.scrollBarFitsContent(true).inheritScrollbar(true)
 						.parentListAndWordContainingThisList(

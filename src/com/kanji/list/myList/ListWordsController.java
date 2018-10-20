@@ -10,9 +10,7 @@ import com.guimaker.strings.Prompts;
 import com.guimaker.utilities.Range;
 import com.kanji.application.ApplicationChangesManager;
 import com.guimaker.enums.ListElementModificationType;
-import com.kanji.list.listElements.Kanji;
 import com.guimaker.list.ListElementInitializer;
-import com.kanji.list.listElements.RepeatingData;
 import com.guimaker.list.ListObserver;
 import com.kanji.list.loadAdditionalWordsHandling.FoundWordInsideVisibleRangePlusMaximumWordsStrategy;
 import com.kanji.list.loadAdditionalWordsHandling.FoundWordInsideVisibleRangeStrategy;
@@ -49,6 +47,7 @@ public class ListWordsController<Word extends ListElement> {
 	private boolean finishEditActionRequested;
 	private boolean isInEditMode;
 	private final int numberOfWordsToDisplayByFilter = 10;
+	private String wordSpecificPrompt;
 	//TODO switchBetweenInputsFailListeners should be deleted from here
 
 	public ListWordsController(ListConfiguration listConfiguration,
@@ -56,6 +55,7 @@ public class ListWordsController<Word extends ListElement> {
 			ApplicationChangesManager applicationChangesManager,
 			ListElementInitializer<Word> wordInitializer, MyList<Word> myList) {
 		this.wordInitializer = wordInitializer;
+		wordSpecificPrompt = listConfiguration.getWordSpecificDeletePrompt();
 		parentListAndWord = listConfiguration
 				.getParentListAndWordContainingThisList();
 		progressUpdater = new ProgressUpdater();
@@ -309,18 +309,11 @@ public class ListWordsController<Word extends ListElement> {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String rowSpecificPrompt = "";
-				if (word instanceof Kanji) {
-					rowSpecificPrompt = Prompts.KANJI_ROW;
-				}
-				if (word instanceof RepeatingData) {
-						rowSpecificPrompt = Prompts.REPEATING_ELEMENT;
-				}
 
 				if (!applicationChangesManager.getApplicationWindow()
 						.showConfirmDialog(String.format(
 								Prompts.DELETE_ELEMENT,
-								rowSpecificPrompt))) {
+								wordSpecificPrompt))) {
 					return;
 				}
 				remove(word);

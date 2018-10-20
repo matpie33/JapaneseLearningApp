@@ -1,14 +1,16 @@
 package com.kanji.panelsAndControllers.controllers;
 
+import com.guimaker.application.ApplicationConfiguration;
 import com.guimaker.colors.BasicColors;
+import com.guimaker.customPositioning.CustomPositioner;
 import com.guimaker.enums.ListElementModificationType;
 import com.guimaker.enums.MoveDirection;
 import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.enums.WordSearchOptions;
 import com.guimaker.list.ListElement;
+import com.guimaker.list.ListObserver;
 import com.guimaker.utilities.SetOfRanges;
 import com.kanji.application.ApplicationChangesManager;
-import com.guimaker.application.ApplicationConfiguration;
 import com.kanji.application.ApplicationStateController;
 import com.kanji.application.WordStateController;
 import com.kanji.constants.Colors;
@@ -16,7 +18,6 @@ import com.kanji.constants.enums.*;
 import com.kanji.constants.strings.MenuTexts;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Titles;
-import com.guimaker.customPositioning.CustomPositioner;
 import com.kanji.customPositioning.PositionerOnRightPartOfSplitPane;
 import com.kanji.exception.DuplicatedWordException;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
@@ -24,7 +25,6 @@ import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.RepeatingData;
-import com.guimaker.list.ListObserver;
 import com.kanji.list.listRows.RowInJapaneseWordInformations;
 import com.kanji.list.listRows.RowInKanjiInformations;
 import com.kanji.list.listRows.RowInRepeatingList;
@@ -205,6 +205,7 @@ public class ApplicationController
 				japaneseWordPanelCreator);
 		japaneseWords = new MyList<>(applicationWindow, this,
 				rowInJapaneseWordInformations, Titles.JAPANESE_WORDS_LIST,
+				new ListConfiguration(Prompts.JAPANESE_WORD_DELETE),
 				JapaneseWord.getInitializer());
 		japaneseWordPanelCreator.setWordsList(japaneseWords);
 
@@ -249,7 +250,8 @@ public class ApplicationController
 	private void initializeJapaneseRepeatingDates() {
 		japaneseWordsRepeatingDates = new MyList<>(applicationWindow, this,
 				new RowInRepeatingList(), Titles.JAPANESE_REPEATING_LIST,
-				new ListConfiguration().enableWordAdding(false)
+				new ListConfiguration(Prompts.REPEATING_DATE_DELETE)
+						.enableWordAdding(false)
 						.showButtonsLoadNextPreviousWords(false),
 				RepeatingData.getInitializer());
 		japaneseWordsRepeatingDates.addWord(
@@ -473,7 +475,8 @@ public class ApplicationController
 	private void initializeKanjiList() {
 		kanjiList = new MyList<>(applicationWindow, this,
 				new RowInKanjiInformations(this, PanelDisplayMode.EDIT),
-				Titles.KANJI_LIST, Kanji.getInitializer());
+				Titles.KANJI_LIST, new ListConfiguration(Prompts.KANJI),
+				Kanji.getInitializer());
 
 		for (int i = 1; i <= 510; i++) {
 			kanjiList.addWord(new Kanji("Word no. " + i, i));
@@ -489,7 +492,8 @@ public class ApplicationController
 	private void initializeKanjiRepeatingDates() {
 		kanjiRepeatingDates = new MyList<>(applicationWindow, this,
 				new RowInRepeatingList(), Titles.KANJI_REPEATING_LIST,
-				new ListConfiguration().showButtonsLoadNextPreviousWords(false)
+				new ListConfiguration(Prompts.REPEATING_DATE_DELETE)
+						.showButtonsLoadNextPreviousWords(false)
 						.enableWordAdding(false),
 				RepeatingData.getInitializer());
 		kanjiRepeatingDates.addWord(

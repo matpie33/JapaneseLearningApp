@@ -19,6 +19,15 @@ public class ListConfiguration {
 	private AbstractButton[] additionalNavigationButtons = new AbstractButton[] {};
 	private ListInputsSelectionManager allInputsSelectionManager;
 	private Pair<MyList, ListElement> parentListAndWordContainingThisList;
+	private String wordSpecificDeletePrompt;
+
+	public ListConfiguration(String wordSpecificDeletePrompt) {
+		this.wordSpecificDeletePrompt = wordSpecificDeletePrompt;
+	}
+
+	public String getWordSpecificDeletePrompt() {
+		return wordSpecificDeletePrompt;
+	}
 
 	public PanelDisplayMode getDisplayMode() {
 		return displayMode;
