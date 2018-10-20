@@ -6,13 +6,13 @@ import com.guimaker.enums.ListElementModificationType;
 import com.kanji.constants.strings.Prompts;
 import com.guimaker.list.ListElement;
 import com.guimaker.list.ListObserver;
-import com.kanji.list.myList.MyList;
-import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
+import com.guimaker.list.myList.MyList;
+import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.problematicWords.ProblematicWordsDisplayer;
 import com.kanji.saving.ApplicationStateManager;
 import com.kanji.saving.ProblematicWordsState;
 import com.kanji.saving.SavingInformation;
-import com.kanji.windows.ApplicationWindow;
+import com.guimaker.application.ApplicationWindow;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

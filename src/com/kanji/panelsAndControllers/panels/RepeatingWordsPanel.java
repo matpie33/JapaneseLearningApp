@@ -6,6 +6,7 @@ import com.guimaker.enums.FillType;
 import com.guimaker.enums.TextAlignment;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.TextPaneOptions;
+import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
@@ -15,7 +16,7 @@ import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.Titles;
 import com.kanji.panelsAndControllers.controllers.RepeatingWordsController;
-import com.kanji.windows.ApplicationWindow;
+import com.guimaker.application.ApplicationWindow;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;

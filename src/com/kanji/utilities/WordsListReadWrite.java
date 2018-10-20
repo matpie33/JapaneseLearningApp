@@ -7,7 +7,7 @@ import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.RepeatingData;
-import com.kanji.list.myList.MyList;
+import com.guimaker.list.myList.MyList;
 import com.kanji.model.WordsAndRepeatingInfo;
 import javafx.util.Pair;
 

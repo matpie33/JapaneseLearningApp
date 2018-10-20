@@ -3,7 +3,6 @@ package com.kanji.main;
 import com.guimaker.panels.MainPanel;
 import com.kanji.constants.Colors;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
-import com.kanji.windows.ApplicationWindow;
 import com.sun.javafx.application.PlatformImpl;
 
 public class AppStart {

@@ -2,9 +2,9 @@
 //
 //import com.kanji.constants.strings.NumberValues;
 //import com.kanji.fileReading.WordsListReadWrite;
-//import com.kanji.list.myList.MyList;
-//import com.kanji.list.myList.RowAsJLabel;
-//import com.kanji.list.myList.SearchCriteria;
+//import com.guimaker.list.myList.MyList;
+//import com.guimaker.list.myList.RowAsJLabel;
+//import com.guimaker.list.myList.SearchCriteria;
 //import com.kanji.window.BaseWindow;
 //import org.junit.Before;
 //import org.junit.Test;

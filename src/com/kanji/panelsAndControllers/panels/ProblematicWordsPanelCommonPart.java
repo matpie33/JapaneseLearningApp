@@ -2,6 +2,7 @@ package com.kanji.panelsAndControllers.panels;
 
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.MoveDirection;
+import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
 import com.guimaker.utilities.KeyModifiers;
 import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;

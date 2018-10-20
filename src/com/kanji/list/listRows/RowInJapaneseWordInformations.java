@@ -7,7 +7,7 @@ import com.guimaker.enums.InputGoal;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
 import com.guimaker.listeners.InputValidationListener;
-import com.kanji.list.myList.ListRowCreator;
+import com.guimaker.list.myList.ListRowCreator;
 import com.guimaker.list.ListRowData;
 import com.guimaker.utilities.CommonListElements;
 

@@ -2,7 +2,7 @@ package com.kanji.application;
 
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
-import com.kanji.list.myList.MyList;
+import com.guimaker.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.panelsAndControllers.controllers.RepeatingWordsController;

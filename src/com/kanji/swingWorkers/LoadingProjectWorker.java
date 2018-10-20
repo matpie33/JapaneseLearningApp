@@ -4,10 +4,10 @@ import com.guimaker.enums.InputGoal;
 import com.guimaker.swingUtilities.ProgressUpdater;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.guimaker.list.ListElement;
-import com.kanji.list.myList.MyList;
+import com.guimaker.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.panels.LoadingPanel;
-import com.kanji.windows.ApplicationWindow;
+import com.guimaker.application.ApplicationWindow;
 
 import javax.swing.*;
 import java.util.ArrayList;

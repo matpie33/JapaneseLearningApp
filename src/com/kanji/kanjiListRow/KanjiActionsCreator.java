@@ -7,10 +7,10 @@ import com.kanji.list.listElementPropertyManagers.KanjiKeywordChecker;
 import com.guimaker.list.ListElementPropertyManager;
 import com.kanji.list.listElements.Kanji;
 import com.guimaker.listeners.InputValidationListener;
-import com.kanji.list.myList.ListPropertyChangeHandler;
+import com.guimaker.list.myList.ListPropertyChangeHandler;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
-import com.kanji.windows.DialogWindow;
+import com.guimaker.application.DialogWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;

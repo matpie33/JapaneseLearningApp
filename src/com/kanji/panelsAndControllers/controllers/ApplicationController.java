@@ -9,8 +9,9 @@ import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.enums.WordSearchOptions;
 import com.guimaker.list.ListElement;
 import com.guimaker.list.ListObserver;
+import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
 import com.guimaker.utilities.SetOfRanges;
-import com.kanji.application.ApplicationChangesManager;
+import com.guimaker.application.ApplicationChangesManager;
 import com.kanji.application.ApplicationStateController;
 import com.kanji.application.WordStateController;
 import com.kanji.constants.Colors;
@@ -29,8 +30,8 @@ import com.kanji.list.listRows.RowInJapaneseWordInformations;
 import com.kanji.list.listRows.RowInKanjiInformations;
 import com.kanji.list.listRows.RowInRepeatingList;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
-import com.kanji.list.myList.ListConfiguration;
-import com.kanji.list.myList.MyList;
+import com.guimaker.list.myList.ListConfiguration;
+import com.guimaker.list.myList.MyList;
 import com.kanji.model.WordParticlesData;
 import com.kanji.model.WordsAndRepeatingInfo;
 import com.kanji.panelsAndControllers.panels.*;
@@ -43,8 +44,8 @@ import com.kanji.saving.SavingInformation;
 import com.kanji.swingWorkers.LoadingProjectWorker;
 import com.kanji.utilities.JapaneseWordsAdjuster;
 import com.kanji.utilities.WordsListReadWrite;
-import com.kanji.windows.ApplicationWindow;
-import com.kanji.windows.DialogWindow;
+import com.guimaker.application.ApplicationWindow;
+import com.guimaker.application.DialogWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -433,7 +434,7 @@ public class ApplicationController
 
 	private LoadingPanel showProgressDialog() {
 		LoadingPanel panel = new LoadingPanel();
-		applicationWindow.createPanel(panel, Titles.MESSAGE_DIALOG, false,
+		applicationWindow.createPanel(panel, Titles.LOADING_DIALOG, false,
 				DialogWindow.Position.CENTER);
 		return panel;
 	}

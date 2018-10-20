@@ -7,6 +7,7 @@ import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.ScrollPaneOptions;
 import com.guimaker.options.TextComponentOptions;
+import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.AbstractSimpleRow;

@@ -10,11 +10,10 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.utilities.KanjiCharactersReader;
-import com.kanji.windows.ApplicationWindow;
+import com.guimaker.application.ApplicationWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
-import java.awt.*;
 
 public class RepeatingKanjiDisplayer implements RepeatingWordsDisplayer<Kanji> {
 

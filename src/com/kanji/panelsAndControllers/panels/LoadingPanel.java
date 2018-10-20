@@ -4,6 +4,7 @@ import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.options.ComponentOptions;
+import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;

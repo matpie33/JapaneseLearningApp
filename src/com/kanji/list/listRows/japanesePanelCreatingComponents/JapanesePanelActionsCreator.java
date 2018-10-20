@@ -12,14 +12,14 @@ import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseW
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.guimaker.listeners.InputValidationListener;
-import com.kanji.list.myList.ListPropertyChangeHandler;
-import com.kanji.list.myList.MyList;
+import com.guimaker.list.myList.ListPropertyChangeHandler;
+import com.guimaker.list.myList.MyList;
 import com.kanji.model.AdditionalInformation;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.utilities.JapaneseWritingUtilities;
 import com.guimaker.utilities.Pair;
 import com.guimaker.utilities.ThreadUtilities;
-import com.kanji.windows.DialogWindow;
+import com.guimaker.application.DialogWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;

@@ -3,13 +3,11 @@ package com.kanji.constants.strings;
 public class Titles {
 
 	public static final String APPLICATION = "Program do nauki kanji i słów.";
-	public static final String INSERT_WORD_DIALOG = "Nowe słowo";
-	public static final String MESSAGE_DIALOG = "Informacja";
 	public static final String LEARNING_START_DIALOG = "Rozpoczęcie nauki";
 	public static final String WORD_SEARCH_DIALOG = "Znajdź słowo";
 	public static final String REPEATING_WORDS_DIALOG = "Powtórka słówek";
-	public static final String CONFIRM_DIALOG = "Potwierdzenie.";
 	public static final String KANJI_RANGES = "Przedziały kanji.";
+	public static final String LOADING_DIALOG = "Wczytywanie";
 	public static final String KANJI_LIST = "Lista kanji";
 	public static final String JAPANESE_WORDS_LIST = "Lista słów";
 	public static final String KANJI_REPEATING_LIST = "Powtórki znaków kanji";
