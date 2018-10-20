@@ -12,12 +12,12 @@ import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.AbstractSimpleRow;
 import com.guimaker.row.SimpleRowBuilder;
+import com.guimaker.strings.ButtonsNames;
+import com.guimaker.strings.HotkeysDescriptions;
+import com.guimaker.strings.Titles;
 import com.guimaker.utilities.CommonActionsCreator;
 import com.guimaker.utilities.HotkeyWrapper;
 import com.guimaker.utilities.KeyModifiers;
-import com.kanji.constants.strings.HotkeysDescriptions;
-import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
-import com.kanji.constants.strings.Titles;
 import com.kanji.list.myList.MyList;
 import com.kanji.windows.DialogWindow;
 
@@ -303,7 +303,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 			}
 		};
 		return createButtonWithHotkey(KeyEvent.VK_ESCAPE, dispose,
-				JapaneseApplicationButtonsNames.CLOSE_WINDOW,
+				ButtonsNames.CLOSE_WINDOW,
 				HotkeysDescriptions.CLOSE_WINDOW);
 	}
 

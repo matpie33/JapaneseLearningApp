@@ -10,7 +10,6 @@ public class Titles {
 	public static final String REPEATING_WORDS_DIALOG = "Powtórka słówek";
 	public static final String CONFIRM_DIALOG = "Potwierdzenie.";
 	public static final String KANJI_RANGES = "Przedziały kanji.";
-	public static final String HOTKEYS = "Skróty klawiszowe";
 	public static final String KANJI_LIST = "Lista kanji";
 	public static final String JAPANESE_WORDS_LIST = "Lista słów";
 	public static final String KANJI_REPEATING_LIST = "Powtórki znaków kanji";

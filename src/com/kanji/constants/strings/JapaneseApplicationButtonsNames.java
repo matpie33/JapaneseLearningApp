@@ -7,7 +7,6 @@ public class JapaneseApplicationButtonsNames {
 
 
 	public static final String START_LEARNING = "Start";
-	public static final String CLOSE_WINDOW = "Zamknij";
 
 	public static final String NOT_RECOGNIZED_WORD = "Nie pamietam";
 	public static final String GO_BACK = "Powrót";
