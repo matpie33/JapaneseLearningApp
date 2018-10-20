@@ -11,8 +11,8 @@ import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
 import com.kanji.constants.enums.SavingStatus;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
-import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
+import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.context.WordTypeContext;
 import com.kanji.list.listElements.Kanji;
@@ -69,6 +69,10 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 				applicationController.getJapaneseWords(),
 				applicationController.getJapaneseWordsRepeatingDates(),
 				TypeOfWordForRepeating.JAPANESE_WORDS);
+		kanjiRepeatingPanel
+				.setParentDialog(applicationController.getApplicationWindow());
+		japaneseWordsRepeatingPanel
+				.setParentDialog(applicationController.getApplicationWindow());
 	}
 
 	public JSplitPane getSplitPaneFor(Class listClass) {
@@ -237,7 +241,8 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 			}
 			AbstractButton button = createButtonWithHotkey(KeyModifiers.CONTROL,
 					keyEvent, action, name, hotkeyDescription);
-			if (name.equals(JapaneseApplicationButtonsNames.SHOW_PROBLEMATIC_KANJIS)) {
+			if (name.equals(
+					JapaneseApplicationButtonsNames.SHOW_PROBLEMATIC_KANJIS)) {
 				showProblematicWordsButton = button;
 				showProblematicWordsButton.setEnabled(false);
 			}

@@ -46,6 +46,7 @@ public class ProblematicJapaneseWordsDisplayer
 				this);
 		problematicJapaneseWordsPanel = new ProblematicJapaneseWordsPanel(
 				applicationController, this, controller);
+		problematicJapaneseWordsPanel.setParentDialog(applicationWindow);
 		kanjiList = applicationController.getKanjiList();
 		problematicJapaneseWordsPanelUpdater = new ProblematicJapaneseWordsPanelUpdater(
 				problematicJapaneseWordsPanel);

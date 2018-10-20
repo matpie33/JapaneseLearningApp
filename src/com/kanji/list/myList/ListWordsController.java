@@ -1,14 +1,16 @@
 package com.kanji.list.myList;
 
-import com.guimaker.enums.MoveDirection;
-import com.guimaker.listeners.SwitchBetweenInputsFailListener;
-import com.guimaker.panels.MainPanel;
-import com.kanji.application.ApplicationChangesManager;
 import com.guimaker.enums.InputGoal;
+import com.guimaker.enums.MoveDirection;
+import com.guimaker.list.listElements.ListElement;
+import com.guimaker.listeners.SwitchBetweenInputsFailListener;
+import com.guimaker.model.ListRow;
+import com.guimaker.panels.MainPanel;
+import com.guimaker.utilities.Range;
+import com.kanji.application.ApplicationChangesManager;
 import com.kanji.constants.enums.ListElementModificationType;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.Kanji;
-import com.guimaker.list.listElements.ListElement;
 import com.kanji.list.listElements.ListElementInitializer;
 import com.kanji.list.listElements.RepeatingData;
 import com.kanji.list.listObserver.ListObserver;
@@ -17,10 +19,8 @@ import com.kanji.list.loadAdditionalWordsHandling.FoundWordInsideVisibleRangeStr
 import com.kanji.list.loadAdditionalWordsHandling.FoundWordOutsideRangeStrategy;
 import com.kanji.list.loadAdditionalWordsHandling.LoadWordsForFoundWord;
 import com.kanji.model.FilteredWordMatch;
-import com.guimaker.model.ListRow;
 import com.kanji.model.PropertyPostValidationData;
 import com.kanji.model.WordInMyListExistence;
-import com.guimaker.utilities.Range;
 import com.kanji.swingWorkers.ProgressUpdater;
 import com.kanji.utilities.Pair;
 import com.kanji.utilities.WordSearching;
@@ -62,6 +62,8 @@ public class ListWordsController<Word extends ListElement> {
 		this.applicationChangesManager = applicationChangesManager;
 		listPanelCreator = new ListPanelCreator<>(listConfiguration,
 				applicationChangesManager, listRowCreator, this, myList);
+		listPanelCreator.setParentDialog(
+				applicationChangesManager.getApplicationWindow());
 		listPanelCreator.createPanel();
 		this.listPanelCreator.setTitle(title);
 

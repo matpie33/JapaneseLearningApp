@@ -33,6 +33,7 @@ public class ApplicationWindow extends DialogWindow {
 		super(null, applicationChangesManager);
 		this.applicationConfiguration = applicationConfiguration;
 		this.startingPanel = startingPanel;
+		startingPanel.setParentDialog(this);
 		container = new JFrame();
 		mainApplicationPanel = new JPanel(new CardLayout());
 		timeSpentHandler = Optional.empty();

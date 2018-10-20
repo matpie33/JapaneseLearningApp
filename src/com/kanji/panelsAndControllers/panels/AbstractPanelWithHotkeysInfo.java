@@ -1,6 +1,6 @@
 package com.kanji.panelsAndControllers.panels;
 
-import com.guimaker.colors.BasicColors;
+import com.guimaker.application.ApplicationConfiguration;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
@@ -15,9 +15,8 @@ import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.CommonActionsCreator;
 import com.guimaker.utilities.HotkeyWrapper;
 import com.guimaker.utilities.KeyModifiers;
-import com.kanji.constants.Colors;
-import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
+import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 import com.kanji.constants.strings.Titles;
 import com.kanji.list.myList.MyList;
 import com.kanji.windows.DialogWindow;
@@ -53,13 +52,10 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	private Color contentColor;
 
 	public AbstractPanelWithHotkeysInfo() {
-		mainPanel = new MainPanel(Colors.BACKGROUND_PANEL_COLOR);
-		mainPanel.setRowColor(Colors.CONTENT_PANEL_COLOR);
+		mainPanel = new MainPanel(null);
 		mainPanel.setRowsBorder(defaultBorder);
 		createHotkeysPanel();
 		isMaximized = false;
-		contentColor = Colors.CONTENT_PANEL_COLOR;
-
 	}
 
 	public Color getContentColor() {
@@ -154,8 +150,7 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	}
 
 	private void createHotkeysPanel() {
-		hotkeysPanel = new ExpandablePanel(BasicColors.BLUE_BRIGHT_1,
-				Titles.HOTKEYS);
+		hotkeysPanel = new ExpandablePanel(null, Titles.HOTKEYS);
 		hotkeysPanelIndex = -1;
 	}
 
@@ -260,7 +255,16 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	}
 
 	public void setParentDialog(DialogWindow parent) {
+		//TODO this should be set in constructor
 		parentDialog = parent;
+		ApplicationConfiguration parentConfiguration = parent
+				.getParentConfiguration();
+		hotkeysPanel
+				.setBackground(parentConfiguration.getPanelBackgroundColor());
+		mainPanel.setBackground(parentConfiguration.getPanelBackgroundColor());
+		mainPanel.setRowColor(parentConfiguration.getContentPanelColor());
+
+		contentColor = parentConfiguration.getContentPanelColor();
 	}
 
 	public void clear() {
@@ -299,7 +303,8 @@ public abstract class AbstractPanelWithHotkeysInfo {
 			}
 		};
 		return createButtonWithHotkey(KeyEvent.VK_ESCAPE, dispose,
-				JapaneseApplicationButtonsNames.CLOSE_WINDOW, HotkeysDescriptions.CLOSE_WINDOW);
+				JapaneseApplicationButtonsNames.CLOSE_WINDOW,
+				HotkeysDescriptions.CLOSE_WINDOW);
 	}
 
 	public JPanel getPanel() {
@@ -343,6 +348,5 @@ public abstract class AbstractPanelWithHotkeysInfo {
 	}
 
 	public abstract String getUniqueName();
-
 
 }

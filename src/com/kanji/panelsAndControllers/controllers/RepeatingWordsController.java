@@ -39,6 +39,7 @@ public class RepeatingWordsController<Word extends ListElement>
 		applicationController.getApplicationWindow()
 				.setTimeSpentHandler(timeSpentHandler);
 		this.panel = new RepeatingWordsPanel(this);
+		panel.setParentDialog(applicationController.getApplicationWindow());
 		repeatingWordsPanelState = RepeatingWordsPanelState.WORD_GUESSING;
 		panelUpdater = new RepeatingWordsPanelUpdater(panel);
 	}

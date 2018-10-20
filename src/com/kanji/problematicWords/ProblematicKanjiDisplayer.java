@@ -12,7 +12,6 @@ import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.panelsAndControllers.panels.ProblematicKanjiPanel;
 import com.kanji.utilities.KanjiCharactersReader;
 import com.kanji.webPanel.KanjiKoohiWebPageHandler;
-import com.kanji.windows.ApplicationWindow;
 
 import java.io.IOException;
 
@@ -26,12 +25,15 @@ public class ProblematicKanjiDisplayer
 	private KanjiKoohiWebPageHandler kanjiKoohiWebPageHandler;
 	private ProblematicWordsController<Kanji> problematicWordsController;
 
-	public ProblematicKanjiDisplayer(ApplicationController applicationController) {
+	public ProblematicKanjiDisplayer(
+			ApplicationController applicationController) {
 
-		problematicWordsController = new
-				ProblematicWordsController<>(applicationController, this);
-		problematicKanjiPanel = new ProblematicKanjiPanel(
-				applicationController, problematicWordsController, this);
+		problematicWordsController = new ProblematicWordsController<>(
+				applicationController, this);
+		problematicKanjiPanel = new ProblematicKanjiPanel(applicationController,
+				problematicWordsController, this);
+		problematicKanjiPanel
+				.setParentDialog(applicationController.getApplicationWindow());
 		kanjiContext = KanjiContext.emptyContext();
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		kanjiCharactersReader.loadKanjisIfNeeded();
