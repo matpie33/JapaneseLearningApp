@@ -9,11 +9,6 @@ public class Labels {
 	public static final String WORD_MEANING = "Znaczenie: ";
 	public static final String PART_OF_SPEECH = "Część mowy: ";
 
-	public static final String WORD_SEARCH_WORD_FRAGMENT = "Szukaj ciągu znaków.";
-	public static final String WORD_SEARCH_ONLY_FULL_WORDS_OPTION = "Szukaj "
-			+ "całych słów.";
-	public static final String WORD_SEARCH_PERFECT_MATCH_OPTION = "Szukaj "
-			+ "pełnego wyrażenia.";
 	public static final String PROBLEMATIC_WORDS_OPTION = "Problematyczne";
 	public static final String TIME_LABEL = "Czas: ";
 

@@ -1,8 +1,9 @@
 package com.kanji.list.myList;
 
 import com.guimaker.enums.InputGoal;
-import com.guimaker.list.listElements.ListElement;
-import com.kanji.list.listeners.InputValidationListener;
+import com.guimaker.list.ListRowData;
+import com.guimaker.list.ListElement;
+import com.guimaker.listeners.InputValidationListener;
 import com.guimaker.utilities.CommonListElements;
 
 public interface ListRowCreator<Word extends ListElement> {

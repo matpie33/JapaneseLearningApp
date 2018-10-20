@@ -2,7 +2,7 @@ package com.kanji.panelsAndControllers.controllers;
 
 import com.guimaker.panels.MainPanel;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
-import com.guimaker.list.listElements.ListElement;
+import com.guimaker.list.ListElement;
 import com.kanji.list.listElements.RepeatingData;
 import com.kanji.list.myList.MyList;
 import com.guimaker.utilities.Range;

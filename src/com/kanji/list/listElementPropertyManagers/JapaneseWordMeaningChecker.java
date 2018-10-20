@@ -1,9 +1,10 @@
 package com.kanji.list.listElementPropertyManagers;
 
-import com.kanji.constants.enums.WordSearchOptions;
+import com.guimaker.list.ListElementPropertyManager;
+import com.guimaker.enums.WordSearchOptions;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElements.JapaneseWord;
-import com.kanji.utilities.WordSearching;
+import com.guimaker.utilities.WordSearching;
 
 import javax.swing.text.JTextComponent;
 

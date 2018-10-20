@@ -1,9 +1,11 @@
 package com.kanji.panelsAndControllers.controllers;
 
 import com.guimaker.colors.BasicColors;
+import com.guimaker.enums.ListElementModificationType;
 import com.guimaker.enums.MoveDirection;
 import com.guimaker.enums.PanelDisplayMode;
-import com.guimaker.list.listElements.ListElement;
+import com.guimaker.enums.WordSearchOptions;
+import com.guimaker.list.ListElement;
 import com.guimaker.utilities.SetOfRanges;
 import com.kanji.application.ApplicationChangesManager;
 import com.guimaker.application.ApplicationConfiguration;
@@ -22,7 +24,7 @@ import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.RepeatingData;
-import com.kanji.list.listObserver.ListObserver;
+import com.guimaker.list.ListObserver;
 import com.kanji.list.listRows.RowInJapaneseWordInformations;
 import com.kanji.list.listRows.RowInKanjiInformations;
 import com.kanji.list.listRows.RowInRepeatingList;

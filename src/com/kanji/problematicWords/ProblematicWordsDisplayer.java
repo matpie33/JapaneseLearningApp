@@ -1,7 +1,7 @@
 package com.kanji.problematicWords;
 
 import com.guimaker.webPanel.ContextOwner;
-import com.guimaker.list.listElements.ListElement;
+import com.guimaker.list.ListElement;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
 

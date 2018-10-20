@@ -1,8 +1,8 @@
 package com.kanji.panelsAndControllers.panels;
 
 import com.guimaker.enums.Anchor;
-import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
-import com.kanji.constants.strings.HotkeysDescriptions;
+import com.guimaker.strings.ButtonsNames;
+import com.guimaker.strings.HotkeysDescriptions;
 import com.kanji.panelsAndControllers.controllers.ConfirmPanelController;
 
 import javax.swing.*;
@@ -23,10 +23,10 @@ public class ConfirmPanel extends MessagePanel {
 		// with button close - we cannot override the hotkey information
 		super.createElements();
 		AbstractButton yesButton = createButtonWithHotkey(KeyEvent.VK_ENTER,
-				controller.createActionConfirm(), JapaneseApplicationButtonsNames.CONFIRM,
+				controller.createActionConfirm(), ButtonsNames.CONFIRM,
 				HotkeysDescriptions.CONFIRM_ACTION);
 		buttonClose.addActionListener(controller.createActionCloseDialog());
-		buttonClose.setText(JapaneseApplicationButtonsNames.REJECT);
+		buttonClose.setText(ButtonsNames.REJECT);
 		setNavigationButtons(Anchor.CENTER, buttonClose, yesButton);
 	}
 

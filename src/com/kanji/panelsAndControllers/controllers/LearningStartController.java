@@ -229,7 +229,8 @@ public class LearningStartController {
 		if (rangesToRepeat.toString().isEmpty() && !problematicWordsCheckbox
 				.isSelected()) {
 			panelUpdater
-					.showErrorInNewDialog(ExceptionsMessages.NO_INPUT_SUPPLIED);
+					.showErrorInNewDialog(
+							com.guimaker.strings.ExceptionsMessages.NO_INPUT_SUPPLIED);
 			return true;
 		}
 		return false;

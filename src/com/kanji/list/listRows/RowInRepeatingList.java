@@ -10,9 +10,9 @@ import com.guimaker.enums.InputGoal;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.RepeatingData;
-import com.kanji.list.listeners.InputValidationListener;
+import com.guimaker.listeners.InputValidationListener;
 import com.kanji.list.myList.ListRowCreator;
-import com.kanji.list.myList.ListRowData;
+import com.guimaker.list.ListRowData;
 import com.kanji.list.myList.ListRowDataCreator;
 import com.guimaker.utilities.CommonListElements;
 

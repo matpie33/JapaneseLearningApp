@@ -2,10 +2,10 @@ package com.kanji.panelsAndControllers.controllers;
 
 import com.guimaker.enums.MoveDirection;
 import com.guimaker.enums.InputGoal;
-import com.kanji.constants.enums.ListElementModificationType;
+import com.guimaker.enums.ListElementModificationType;
 import com.kanji.constants.strings.Prompts;
-import com.guimaker.list.listElements.ListElement;
-import com.kanji.list.listObserver.ListObserver;
+import com.guimaker.list.ListElement;
+import com.guimaker.list.ListObserver;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.problematicWords.ProblematicWordsDisplayer;

@@ -1,8 +1,9 @@
 package com.kanji.swingWorkers;
 
 import com.guimaker.enums.InputGoal;
+import com.guimaker.swingUtilities.ProgressUpdater;
 import com.kanji.constants.strings.ExceptionsMessages;
-import com.guimaker.list.listElements.ListElement;
+import com.guimaker.list.ListElement;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.panels.LoadingPanel;

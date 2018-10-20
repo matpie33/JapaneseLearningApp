@@ -4,7 +4,6 @@ public class HotkeysDescriptions {
 
 	public static final String ADD_PROBLEMATIC_KANJIS = "Dodaje/usuwa problematyczne kanji z listy powtarzanych";
 	public static final String MAXIMIZE_WINDOW = "Maksymalizuje okno";
-	public static final String CONFIRM_ACTION = "Akceptuje zmiany";
 	public static final String SHOW_NEXT_PROBLEMATIC_WORD = "Pokazuje następne problematyczne słowo";
 	public static final String SHOW_PREVIOUS_WORD = "Pokazuje poprzednie "
 			+ "słówko";

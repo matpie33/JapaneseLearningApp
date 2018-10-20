@@ -2,28 +2,28 @@ package com.kanji.list.myList;
 
 import com.guimaker.enums.InputGoal;
 import com.guimaker.enums.MoveDirection;
-import com.guimaker.list.listElements.ListElement;
+import com.guimaker.list.ListElement;
 import com.guimaker.listeners.SwitchBetweenInputsFailListener;
 import com.guimaker.model.ListRow;
 import com.guimaker.panels.MainPanel;
+import com.guimaker.strings.Prompts;
 import com.guimaker.utilities.Range;
 import com.kanji.application.ApplicationChangesManager;
-import com.kanji.constants.enums.ListElementModificationType;
-import com.kanji.constants.strings.Prompts;
+import com.guimaker.enums.ListElementModificationType;
 import com.kanji.list.listElements.Kanji;
-import com.kanji.list.listElements.ListElementInitializer;
+import com.guimaker.list.ListElementInitializer;
 import com.kanji.list.listElements.RepeatingData;
-import com.kanji.list.listObserver.ListObserver;
+import com.guimaker.list.ListObserver;
 import com.kanji.list.loadAdditionalWordsHandling.FoundWordInsideVisibleRangePlusMaximumWordsStrategy;
 import com.kanji.list.loadAdditionalWordsHandling.FoundWordInsideVisibleRangeStrategy;
 import com.kanji.list.loadAdditionalWordsHandling.FoundWordOutsideRangeStrategy;
 import com.kanji.list.loadAdditionalWordsHandling.LoadWordsForFoundWord;
-import com.kanji.model.FilteredWordMatch;
-import com.kanji.model.PropertyPostValidationData;
-import com.kanji.model.WordInMyListExistence;
-import com.kanji.swingWorkers.ProgressUpdater;
-import com.kanji.utilities.Pair;
-import com.kanji.utilities.WordSearching;
+import com.guimaker.model.FilteredWordMatch;
+import com.guimaker.model.PropertyPostValidationData;
+import com.guimaker.list.WordInMyListExistence;
+import com.guimaker.swingUtilities.ProgressUpdater;
+import com.guimaker.utilities.Pair;
+import com.guimaker.utilities.WordSearching;
 
 import javax.swing.*;
 import javax.swing.FocusManager;
@@ -314,11 +314,12 @@ public class ListWordsController<Word extends ListElement> {
 					rowSpecificPrompt = Prompts.KANJI_ROW;
 				}
 				if (word instanceof RepeatingData) {
-					rowSpecificPrompt = Prompts.REPEATING_ELEMENT;
+						rowSpecificPrompt = Prompts.REPEATING_ELEMENT;
 				}
 
 				if (!applicationChangesManager.getApplicationWindow()
-						.showConfirmDialog(String.format(Prompts.DELETE_ELEMENT,
+						.showConfirmDialog(String.format(
+								Prompts.DELETE_ELEMENT,
 								rowSpecificPrompt))) {
 					return;
 				}

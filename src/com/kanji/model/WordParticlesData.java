@@ -2,7 +2,7 @@ package com.kanji.model;
 
 import com.kanji.constants.enums.JapaneseParticle;
 import com.kanji.list.listElements.JapaneseWord;
-import com.guimaker.list.listElements.ListElement;
+import com.guimaker.list.ListElement;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.Serializable;

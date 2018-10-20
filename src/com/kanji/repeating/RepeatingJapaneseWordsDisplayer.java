@@ -8,7 +8,7 @@ import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanel
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.guimaker.utilities.CommonListElements;
 import com.kanji.utilities.KanjiCharactersReader;
-import com.kanji.utilities.StringUtilities;
+import com.guimaker.utilities.StringUtilities;
 
 import java.awt.*;
 import java.util.*;

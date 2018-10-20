@@ -10,9 +10,9 @@ import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listRows.japanesePanelCreatingService.JapanesePanelCreatingService;
-import com.kanji.list.listeners.InputValidationListener;
+import com.guimaker.listeners.InputValidationListener;
 import com.kanji.list.myList.ListRowCreator;
-import com.kanji.list.myList.ListRowData;
+import com.guimaker.list.ListRowData;
 import com.kanji.list.myList.ListRowDataCreator;
 import com.guimaker.utilities.CommonListElements;
 

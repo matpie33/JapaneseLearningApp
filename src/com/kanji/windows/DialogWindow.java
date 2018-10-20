@@ -9,7 +9,6 @@ import com.kanji.panelsAndControllers.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.panelsAndControllers.panels.ConfirmPanel;
 import com.kanji.panelsAndControllers.panels.InsertWordPanel;
 import com.kanji.panelsAndControllers.panels.MessagePanel;
-import javafx.application.Application;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,16 +1,17 @@
 package com.kanji.list.listElements;
 
 import com.guimaker.enums.InputGoal;
-import com.guimaker.list.listElements.ListElement;
+import com.guimaker.list.ListElement;
+import com.guimaker.list.ListElementInitializer;
 import com.kanji.constants.enums.JapaneseParticle;
 import com.kanji.constants.enums.PartOfSpeech;
-import com.kanji.constants.enums.WordSearchOptions;
+import com.guimaker.enums.WordSearchOptions;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
 import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordWritingsChecker;
 import com.kanji.model.AdditionalInformation;
 import com.kanji.model.WordParticlesData;
-import com.kanji.utilities.Pair;
-import com.kanji.utilities.StringUtilities;
+import com.guimaker.utilities.Pair;
+import com.guimaker.utilities.StringUtilities;
 
 import java.io.Serializable;
 import java.util.Arrays;

@@ -1,6 +1,6 @@
 package com.kanji.list.listElementPropertyManagers;
 
-import com.kanji.constants.enums.WordSearchOptions;
+import com.guimaker.enums.WordSearchOptions;
 
 public class WordSearchOptionsHolder {
 

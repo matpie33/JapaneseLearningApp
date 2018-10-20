@@ -1,7 +1,8 @@
 package com.kanji.list.listElements;
 
-import com.guimaker.list.listElements.ListElement;
-import com.kanji.utilities.StringUtilities;
+import com.guimaker.list.ListElement;
+import com.guimaker.list.ListElementInitializer;
+import com.guimaker.utilities.StringUtilities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

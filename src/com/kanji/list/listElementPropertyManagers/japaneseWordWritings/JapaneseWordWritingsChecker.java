@@ -3,7 +3,7 @@ package com.kanji.list.listElementPropertyManagers.japaneseWordWritings;
 import com.guimaker.enums.InputGoal;
 import com.kanji.constants.enums.TypeOfJapaneseWriting;
 import com.kanji.constants.strings.ExceptionsMessages;
-import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
+import com.guimaker.list.ListElementPropertyManager;
 import com.kanji.list.listElementPropertyManagers.WordSearchOptionsHolder;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;

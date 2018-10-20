@@ -7,7 +7,6 @@ import com.guimaker.options.ScrollPaneOptions;
 import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.row.SimpleRowBuilder;
-import com.kanji.constants.Colors;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,7 +28,8 @@ public class MessagePanel extends AbstractPanelWithHotkeysInfo {
 				.createTextPaneWrappedInScrollPane(
 						// TODO add vertical alignment
 						new TextPaneOptions()
-								.backgroundColor(Colors.CONTENT_PANEL_COLOR)
+								.backgroundColor(getDialog()
+										.getParentConfiguration().getContentPanelColor())
 								.textAlignment(TextAlignment.JUSTIFIED)
 								.text(message)
 								.preferredSize(new Dimension(200, 100))

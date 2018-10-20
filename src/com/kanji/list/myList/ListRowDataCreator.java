@@ -1,8 +1,10 @@
 package com.kanji.list.myList;
 
+import com.guimaker.list.ListPropertyInformation;
+import com.guimaker.list.ListRowData;
 import com.guimaker.panels.MainPanel;
-import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
-import com.guimaker.list.listElements.ListElement;
+import com.guimaker.list.ListElementPropertyManager;
+import com.guimaker.list.ListElement;
 
 import javax.swing.text.JTextComponent;
 

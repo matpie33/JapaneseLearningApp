@@ -1,15 +1,15 @@
 package com.kanji.list.myList;
 
 import com.guimaker.enums.InputGoal;
-import com.kanji.constants.enums.ListElementModificationType;
-import com.kanji.constants.strings.ExceptionsMessages;
-import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
-import com.guimaker.list.listElements.ListElement;
-import com.kanji.list.listeners.InputValidationListener;
-import com.kanji.model.PropertyPostValidationData;
-import com.kanji.model.WordInMyListExistence;
-import com.kanji.utilities.StringUtilities;
-import com.kanji.utilities.ThreadUtilities;
+import com.guimaker.enums.ListElementModificationType;
+import com.guimaker.list.ListElementPropertyManager;
+import com.guimaker.list.ListElement;
+import com.guimaker.listeners.InputValidationListener;
+import com.guimaker.model.PropertyPostValidationData;
+import com.guimaker.strings.ExceptionsMessages;
+import com.guimaker.list.WordInMyListExistence;
+import com.guimaker.utilities.StringUtilities;
+import com.guimaker.utilities.ThreadUtilities;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.text.JTextComponent;

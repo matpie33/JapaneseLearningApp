@@ -1,8 +1,9 @@
 package com.kanji.list.listElementPropertyManagers;
 
+import com.guimaker.list.ListElementPropertyManager;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElements.Kanji;
-import com.kanji.utilities.WordSearching;
+import com.guimaker.utilities.WordSearching;
 
 import javax.swing.text.JTextComponent;
 

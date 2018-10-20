@@ -1,5 +1,6 @@
 package com.kanji.list.listElementPropertyManagers;
 
+import com.guimaker.list.ListElementPropertyManager;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElements.Kanji;
 

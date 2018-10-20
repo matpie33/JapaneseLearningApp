@@ -16,7 +16,7 @@ import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listRows.RowInParticlesInformation;
-import com.kanji.list.listeners.InputValidationListener;
+import com.guimaker.listeners.InputValidationListener;
 import com.kanji.list.myList.ListConfiguration;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.AdditionalInformation;

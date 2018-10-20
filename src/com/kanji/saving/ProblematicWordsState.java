@@ -1,6 +1,6 @@
 package com.kanji.saving;
 
-import com.guimaker.list.listElements.ListElement;
+import com.guimaker.list.ListElement;
 
 import java.io.Serializable;
 import java.util.List;

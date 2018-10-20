@@ -5,7 +5,7 @@ import com.kanji.constants.enums.VerbConjugationType;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.exception.IncorrectJapaneseWordsListInputException;
 import com.kanji.list.listElements.JapaneseWord;
-import com.guimaker.list.listElements.ListElement;
+import com.guimaker.list.ListElement;
 import com.kanji.model.DuplicatedJapaneseWordInformation;
 
 import java.io.*;

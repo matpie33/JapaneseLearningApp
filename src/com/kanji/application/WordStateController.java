@@ -1,6 +1,6 @@
 package com.kanji.application;
 
-import com.guimaker.list.listElements.ListElement;
+import com.guimaker.list.ListElement;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.panelsAndControllers.controllers.RepeatingWordsController;
 

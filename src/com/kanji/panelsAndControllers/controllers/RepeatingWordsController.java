@@ -3,7 +3,7 @@ package com.kanji.panelsAndControllers.controllers;
 import com.kanji.constants.enums.RepeatingWordsPanelState;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.Prompts;
-import com.guimaker.list.listElements.ListElement;
+import com.guimaker.list.ListElement;
 import com.kanji.list.listElements.RepeatingData;
 import com.kanji.panelsAndControllers.panelUpdaters.RepeatingWordsPanelUpdater;
 import com.kanji.panelsAndControllers.panels.RepeatingWordsPanel;

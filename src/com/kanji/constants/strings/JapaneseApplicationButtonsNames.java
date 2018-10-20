@@ -22,8 +22,6 @@ public class JapaneseApplicationButtonsNames {
 	public static final String SHOW_PROBLEMATIC_KANJIS = "Problematyczne kanji";
 	public static final String PAUSE = "Pauza";
 
-	public static final String CONFIRM = "Tak";
-	public static final String REJECT = "Nie";
 	public static final String SEARCH_IN_DICTIONARY = "Szukaj w słowniku";
 	public static final String ADD_KANJI_WRITING = "Dodaj zapis kanji";
 

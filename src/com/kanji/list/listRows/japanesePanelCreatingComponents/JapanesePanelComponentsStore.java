@@ -5,7 +5,7 @@ import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listRows.japanesePanelCreatingService.JapanesePanelCreatingService;
 import com.kanji.list.listRows.japanesePanelCreatingService.JapanesePanelInEditModeCreator;
 import com.kanji.list.listRows.japanesePanelCreatingService.JapanesePanelInViewModeCreator;
-import com.kanji.list.listeners.InputValidationListener;
+import com.guimaker.listeners.InputValidationListener;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.windows.DialogWindow;

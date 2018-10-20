@@ -1,11 +1,11 @@
 package com.kanji.japaneseParticlesPanel;
 
 import com.kanji.constants.enums.JapaneseParticle;
-import com.kanji.constants.enums.ListElementModificationType;
+import com.guimaker.enums.ListElementModificationType;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.model.WordParticlesData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
-import com.kanji.utilities.ThreadUtilities;
+import com.guimaker.utilities.ThreadUtilities;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;

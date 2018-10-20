@@ -1,22 +1,24 @@
 package com.kanji.list.listRows.japanesePanelCreatingComponents;
 
 import com.guimaker.enums.InputGoal;
+import com.guimaker.enums.ListElementModificationType;
+import com.guimaker.enums.WordSearchOptions;
 import com.kanji.constants.enums.*;
 import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
-import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
+import com.guimaker.list.ListElementPropertyManager;
 import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordChecker;
 import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordWritingsChecker;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
-import com.kanji.list.listeners.InputValidationListener;
+import com.guimaker.listeners.InputValidationListener;
 import com.kanji.list.myList.ListPropertyChangeHandler;
 import com.kanji.list.myList.MyList;
 import com.kanji.model.AdditionalInformation;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.utilities.JapaneseWritingUtilities;
-import com.kanji.utilities.Pair;
-import com.kanji.utilities.ThreadUtilities;
+import com.guimaker.utilities.Pair;
+import com.guimaker.utilities.ThreadUtilities;
 import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;

@@ -5,9 +5,6 @@ public class ExceptionsMessages {
 	public static final String NO_SELECTED_WORD_TO_SEARCH_IN_DICTIONARY =
 			"Nie zaznaczono słowa, które można by wyszukać w słowniku "
 					+ "japońsko - angielskim.";
-	public static final String WORD_NOT_FOUND_EXCEPTION =
-			"Nie znaleziono podanego słowa. Być może zaznaczono złą opcję, "
-					+ "a może jest błąd we wpisanym słowie.";
 	public static final String DUPLICATED_WORD_EXCEPTION =
 			"Pewne słowo występuje wielokrotnie "
 					+ "na liście słów. Należy poprawić.";
@@ -16,10 +13,7 @@ public class ExceptionsMessages {
 	public static final String ID_ALREADY_DEFINED_EXCEPTION =
 			"Id o wartości %d juz istnieje" + "w wierszu %d.";
 	public static final String DUPLICATED_KEYWORD_EXCEPTION = "Kanji o słowie kluczowym \"%s\" już istnieje.";
-	public static final String WORD_ALREADY_HIGHLIGHTED_EXCEPTION =
-			"To slowo jest juz zaznaczone." + "Nie znaleziono innych pozycji.";
 
-	public static final String NO_INPUT_SUPPLIED = "Prosze cokolwiek wpisac!";
 	public static final String ILLEGAL_LIST_FILE_FORMAT = "Niepoprawny format pliku z listą.";
 	public static final String WORDS_IN_KANJI_LIST_NOT_GIVEN =
 			"Nie podano listy słów " + "zapisanych za pomocą kanji.";
@@ -39,9 +33,7 @@ public class ExceptionsMessages {
 			"Niepoprawny zapis kany lub kanji. Powinien zawierać hiraganę lub katakanę "
 					+ "lub kanji.";
 	public static final String DUPLICATED_KANJI_WRITING_WITHIN_ROW = "Kanji %s już wystepuje w tym wierszu.";
-	public static final String WORD_ALREADY_EXISTS = "Takie slowo już istnieje w wierszu %d.";
 	public static final String EXCEPTION_WHILE_LOADING_KANJI_PROJECT = "Wystąpił błąd przy wczytywaniu: %s.";
-	public static final String ROW_FOR_DUPLICATED_PROPERTY = "Duplikat występuje w wierszu nr %s.";
 	public static final String DUPLICATED_WRITINGS_IN_WORD = "Wpisano identyczne zapisy słowa w dwóch wierszach.";
 	public static final String KANA_INPUT_EMPTY = "Pole \"kana\" musi być wypełnione.";
 	public static final String ERROR_IN_ROW = "Błąd w wierszu %d: %s";

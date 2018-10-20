@@ -1,11 +1,12 @@
 package com.kanji.list.listElements;
 
 import com.guimaker.enums.InputGoal;
-import com.guimaker.list.listElements.ListElement;
+import com.guimaker.list.ListElement;
+import com.guimaker.list.ListElementInitializer;
 import com.kanji.constants.enums.TypeOfJapaneseWriting;
 import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordWritingsChecker;
 import com.kanji.utilities.JapaneseWritingUtilities;
-import com.kanji.utilities.StringUtilities;
+import com.guimaker.utilities.StringUtilities;
 
 import java.io.Serializable;
 import java.util.Arrays;

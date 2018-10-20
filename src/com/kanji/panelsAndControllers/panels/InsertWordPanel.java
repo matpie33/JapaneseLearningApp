@@ -5,7 +5,7 @@ import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.strings.ButtonsNames;
 import com.guimaker.strings.HotkeysDescriptions;
 import com.kanji.application.ApplicationChangesManager;
-import com.guimaker.list.listElements.ListElement;
+import com.guimaker.list.ListElement;
 import com.kanji.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.InsertWordController;
 

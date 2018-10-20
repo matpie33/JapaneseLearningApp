@@ -1,7 +1,6 @@
 package com.kanji.panelsAndControllers.controllers;
 
 import com.kanji.panelsAndControllers.panels.ConfirmPanel;
-import com.kanji.windows.DialogWindow;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

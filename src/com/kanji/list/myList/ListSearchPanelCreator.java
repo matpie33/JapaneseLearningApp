@@ -2,15 +2,16 @@ package com.kanji.list.myList;
 
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
+import com.guimaker.list.ListRowData;
 import com.guimaker.options.ComboboxOptions;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.kanji.constants.strings.Prompts;
-import com.kanji.list.listElementPropertyManagers.ListElementPropertyManager;
-import com.guimaker.list.listElements.ListElement;
+import com.guimaker.list.ListElementPropertyManager;
+import com.guimaker.list.ListElement;
+import com.guimaker.strings.Prompts;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
