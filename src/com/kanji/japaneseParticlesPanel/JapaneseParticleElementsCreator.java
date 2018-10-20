@@ -6,7 +6,7 @@ import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.kanji.constants.enums.JapaneseParticle;
 import com.kanji.constants.strings.Prompts;
-import com.kanji.model.WordParticlesData;
+import com.kanji.list.listElements.WordParticlesData;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;

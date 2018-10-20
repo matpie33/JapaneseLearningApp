@@ -12,7 +12,7 @@ import com.kanji.list.listElements.JapaneseWord;
 import com.guimaker.listeners.InputValidationListener;
 import com.guimaker.list.myList.ListRowCreator;
 import com.guimaker.list.ListRowData;
-import com.kanji.model.WordParticlesData;
+import com.kanji.list.listElements.WordParticlesData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.guimaker.utilities.CommonListElements;
 

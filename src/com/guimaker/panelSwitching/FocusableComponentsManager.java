@@ -1,4 +1,4 @@
-package com.kanji.panelSwitching;
+package com.guimaker.panelSwitching;
 
 import com.guimaker.enums.MoveDirection;
 import com.guimaker.utilities.CommonActionsCreator;

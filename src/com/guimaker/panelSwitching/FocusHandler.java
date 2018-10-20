@@ -1,7 +1,8 @@
-package com.kanji.panelSwitching;
+package com.guimaker.panelSwitching;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.MoveDirection;
+import com.guimaker.panelSwitching.PanelSwitchingHandler;
 
 import javax.swing.*;
 import javax.swing.border.Border;

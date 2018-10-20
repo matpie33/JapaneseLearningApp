@@ -1,6 +1,9 @@
 package com.kanji.panelsAndControllers.controllers;
 
+import com.guimaker.application.ApplicationChangesManager;
 import com.guimaker.application.ApplicationConfiguration;
+import com.guimaker.application.ApplicationWindow;
+import com.guimaker.application.DialogWindow;
 import com.guimaker.colors.BasicColors;
 import com.guimaker.customPositioning.CustomPositioner;
 import com.guimaker.enums.ListElementModificationType;
@@ -9,9 +12,10 @@ import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.enums.WordSearchOptions;
 import com.guimaker.list.ListElement;
 import com.guimaker.list.ListObserver;
+import com.guimaker.list.myList.ListConfiguration;
+import com.guimaker.list.myList.MyList;
 import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
 import com.guimaker.utilities.SetOfRanges;
-import com.guimaker.application.ApplicationChangesManager;
 import com.kanji.application.ApplicationStateController;
 import com.kanji.application.WordStateController;
 import com.kanji.constants.Colors;
@@ -26,15 +30,16 @@ import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.RepeatingData;
+import com.kanji.list.listElements.WordParticlesData;
 import com.kanji.list.listRows.RowInJapaneseWordInformations;
 import com.kanji.list.listRows.RowInKanjiInformations;
 import com.kanji.list.listRows.RowInRepeatingList;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
-import com.guimaker.list.myList.ListConfiguration;
-import com.guimaker.list.myList.MyList;
-import com.kanji.model.WordParticlesData;
 import com.kanji.model.WordsAndRepeatingInfo;
-import com.kanji.panelsAndControllers.panels.*;
+import com.kanji.panelsAndControllers.panels.LearningStartPanel;
+import com.kanji.panelsAndControllers.panels.LoadingPanel;
+import com.kanji.panelsAndControllers.panels.RepeatingWordsPanel;
+import com.kanji.panelsAndControllers.panels.StartingPanel;
 import com.kanji.problematicWords.ProblematicKanjiDisplayer;
 import com.kanji.problematicWords.ProblematicWordsDisplayer;
 import com.kanji.saving.ApplicationStateManager;
@@ -44,8 +49,6 @@ import com.kanji.saving.SavingInformation;
 import com.kanji.swingWorkers.LoadingProjectWorker;
 import com.kanji.utilities.JapaneseWordsAdjuster;
 import com.kanji.utilities.WordsListReadWrite;
-import com.guimaker.application.ApplicationWindow;
-import com.guimaker.application.DialogWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -66,8 +69,6 @@ public class ApplicationController
 	private MyList<RepeatingData> kanjiRepeatingDates;
 	private MyList<RepeatingData> japaneseWordsRepeatingDates;
 	private MyList<JapaneseWord> japaneseWords;
-	private Set<Kanji> problematicKanjis;
-	private Set<JapaneseWord> problematicJapaneseWords;
 	private boolean isClosingSafe;
 	private ApplicationStateManager applicationStateManager;
 	private SavingInformation savingInformation;
@@ -77,8 +78,6 @@ public class ApplicationController
 	private StartingPanel startingPanel;
 
 	public ApplicationController() {
-		problematicKanjis = new HashSet<>();
-		problematicJapaneseWords = new HashSet<>();
 		isClosingSafe = true;
 		applicationStateManager = this;
 		applicationStateController = new ApplicationStateController();
@@ -669,50 +668,25 @@ public class ApplicationController
 
 	}
 
-	public <Word extends ListElement> void setProblematicWordsAndUpdateInformation(
+	private <Word extends ListElement> void setProblematicWordsAndUpdateInformation(
 			Set<Word> problematicWords) {
 		if (problematicWords.isEmpty()) {
 			return;
 		}
-		Class wordClass = problematicWords.iterator().next().getClass();
-
-		if (wordClass.equals(Kanji.class)) {
-			problematicKanjis.clear();
-			problematicKanjis.addAll((Set<Kanji>) problematicWords);
-			//TODO ugly solution
-		}
-		else if (wordClass.equals(JapaneseWord.class)) {
-			problematicJapaneseWords.clear();
-			problematicJapaneseWords
-					.addAll((Set<JapaneseWord>) problematicWords);
-		}
-		else {
-			throw new IllegalArgumentException(
-					"Invalid active words class name: " + wordClass);
-		}
-		if (wordClass.equals(getActiveWordsList().getListElementClass())) {
-			updateProblematicWordsAmount();
-		}
+		applicationStateController.getController(
+				problematicWords.iterator().next().getMeaningfulName())
+				.setProblematicWords(problematicWords);
+		updateProblematicWordsAmount();
 
 	}
 
 	public Set<Kanji> getProblematicKanjis() {
-		return problematicKanjis;
+		return applicationStateController.getController(Kanji.MEANINGFUL_NAME)
+				.getProblematicWords();
 	}
 
 	public Set<? extends ListElement> getProblematicWordsBasedOnCurrentTab() {
-		Class activeWordsElementClass = getActiveWordsList()
-				.getListElementClass();
-		if (activeWordsElementClass.equals(Kanji.class)) {
-			return problematicKanjis;
-		}
-		else if (activeWordsElementClass.equals(JapaneseWord.class)) {
-			return problematicJapaneseWords;
-		}
-		else {
-			throw new IllegalArgumentException(
-					"Invalid active words class" + activeWordsElementClass);
-		}
+		return applicationStateController.getProblematicWordsForActiveTab();
 	}
 
 	public int getProblematicWordsAmountBasedOnCurrentTab() {
@@ -768,7 +742,9 @@ public class ApplicationController
 	}
 
 	public Set<JapaneseWord> getProblematicJapaneseWords() {
-		return problematicJapaneseWords;
+		return applicationStateController
+				.getController(JapaneseWord.MEANINGFUL_NAME)
+				.getProblematicWords();
 	}
 
 	@Override
@@ -823,21 +799,17 @@ public class ApplicationController
 		applicationStateManager.restoreState(savingInformation);
 	}
 
-	public void switchStateManager(ApplicationStateManager stateManager) {
+	private void switchStateManager(ApplicationStateManager stateManager) {
 		this.applicationStateManager = stateManager;
 		isClosingSafe = false;
 	}
 
-	public ProblematicWordsController getActiveProblematicWordsController() {
-		return applicationStateController.getController(
-				getActiveWordsListType().getAssociatedRepeatingWordsState()
-						.getMeaningfulName()).getProblematicWordsController();
+	private ProblematicWordsController getActiveProblematicWordsController() {
+		return applicationStateController.getActiveProblematicWordsController();
 	}
 
 	private RepeatingWordsController getActiveRepeatingWordsController() {
-		return applicationStateController.getController(
-				getActiveWordsListType().getAssociatedRepeatingWordsState()
-						.getMeaningfulName()).getRepeatingWordsController();
+		return applicationStateController.getActiveRepeatingWordsController();
 	}
 
 	public void switchToList(TypeOfWordForRepeating typeOfWordForRepeating) {
@@ -885,5 +857,11 @@ public class ApplicationController
 
 	public void enableShowProblematicWordsButton() {
 		startingPanel.enableShowProblematicWordsButton();
+	}
+
+	public void setActiveWordStateController(
+			String activeWordStateControllerName) {
+		this.applicationStateController
+				.setActiveWordStateControllerKey(activeWordStateControllerName);
 	}
 }

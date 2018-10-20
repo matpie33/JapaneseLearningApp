@@ -21,7 +21,7 @@ import com.guimaker.listeners.InputValidationListener;
 import com.guimaker.list.myList.ListConfiguration;
 import com.guimaker.list.myList.MyList;
 import com.kanji.model.AdditionalInformation;
-import com.kanji.model.WordParticlesData;
+import com.kanji.list.listElements.WordParticlesData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.utilities.JapaneseWritingUtilities;
 import com.guimaker.application.ApplicationWindow;

@@ -1,7 +1,6 @@
-package com.kanji.model;
+package com.kanji.list.listElements;
 
 import com.kanji.constants.enums.JapaneseParticle;
-import com.kanji.list.listElements.JapaneseWord;
 import com.guimaker.list.ListElement;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -13,7 +12,7 @@ public class WordParticlesData implements ListElement, Serializable {
 	private static final long serialVersionUID = -3606244668613031057L;
 	private JapaneseParticle japaneseParticle;
 	private String additionalInformation = "";
-	public final static String MEANINGFUL_NAME ="Partykuły";
+	private final static String MEANINGFUL_NAME ="Partykuły";
 
 	public WordParticlesData(JapaneseParticle japaneseParticle) {
 		this.japaneseParticle = japaneseParticle;

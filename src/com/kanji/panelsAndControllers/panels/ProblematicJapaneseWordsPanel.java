@@ -27,7 +27,7 @@ import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanel
 import com.guimaker.list.myList.ListConfiguration;
 import com.guimaker.list.myList.MyList;
 import com.kanji.model.KanjiData;
-import com.kanji.panelSwitching.FocusableComponentsManager;
+import com.guimaker.panelSwitching.FocusableComponentsManager;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.problematicWords.ProblematicJapaneseWordsDisplayer;

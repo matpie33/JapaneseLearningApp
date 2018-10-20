@@ -19,7 +19,7 @@ import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listRows.RowInKanjiInformations;
 import com.guimaker.list.myList.ListConfiguration;
 import com.guimaker.list.myList.MyList;
-import com.kanji.panelSwitching.FocusableComponentsManager;
+import com.guimaker.panelSwitching.FocusableComponentsManager;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.utilities.CommonGuiElementsCreator;

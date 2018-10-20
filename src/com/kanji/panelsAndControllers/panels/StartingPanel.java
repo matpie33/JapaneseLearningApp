@@ -1,8 +1,10 @@
 package com.kanji.panelsAndControllers.panels;
 
+import com.guimaker.application.DialogWindow;
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
+import com.guimaker.list.myList.MyList;
 import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
@@ -16,27 +18,25 @@ import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.context.WordTypeContext;
+import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.RepeatingData;
-import com.guimaker.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.StartingController;
 import com.kanji.utilities.JapaneseWritingUtilities;
-import com.guimaker.application.DialogWindow;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 
 	private static final String UNIQUE_NAME = "Starting panel";
+	private final String KANJI_TAB_TITLE = "Powtórki kanji";
+	private final String JAPANESE_TAB_TITLE = "Powtórki słówek";
 	private JTabbedPane tabs;
 	private WordsAndRepeatingInformationsPanel kanjiRepeatingPanel;
 	private WordsAndRepeatingInformationsPanel japaneseWordsRepeatingPanel;
@@ -48,6 +48,8 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	private Map<String, WordsAndRepeatingInformationsPanel> listToTabLabel = new LinkedHashMap<>();
 	private WordTypeContext wordTypeContext;
 	private StartingController startingController;
+	private Map<String, String> tabTitleToWordStateControllerMap = new HashMap<>();
+	private String powtórki_kanji;
 
 	public StartingPanel() {
 		tabs = new JTabbedPane();
@@ -94,8 +96,12 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	@Override
 	public void createElements() {
 
-		listToTabLabel.put("Powtórki kanji", kanjiRepeatingPanel);
-		listToTabLabel.put("Powtórki słówek", japaneseWordsRepeatingPanel);
+		tabTitleToWordStateControllerMap
+				.put(KANJI_TAB_TITLE, Kanji.MEANINGFUL_NAME);
+		tabTitleToWordStateControllerMap
+				.put(JAPANESE_TAB_TITLE, JapaneseWord.MEANINGFUL_NAME);
+		listToTabLabel.put(KANJI_TAB_TITLE, kanjiRepeatingPanel);
+		listToTabLabel.put(JAPANESE_TAB_TITLE, japaneseWordsRepeatingPanel);
 
 		for (Map.Entry<String, WordsAndRepeatingInformationsPanel> listAndTabLabel : listToTabLabel
 				.entrySet()) {
@@ -109,6 +115,8 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		tabs.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
+				applicationController.setActiveWordStateController(
+						getActiveWordListControllerName());
 				applicationController.updateProblematicWordsAmount();
 			}
 		});
@@ -142,6 +150,8 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		addHotkeysPanelHere();
 		mainPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.HORIZONTAL, bottomPanel.getPanel()));
+		applicationController.setActiveWordStateController(
+				getActiveWordListControllerName());
 	}
 
 	public void switchToList(TypeOfWordForRepeating wordType) {
@@ -300,6 +310,11 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	@Override
 	public String getUniqueName() {
 		return UNIQUE_NAME;
+	}
+
+	public String getActiveWordListControllerName() {
+		return tabTitleToWordStateControllerMap
+				.get(tabs.getTitleAt(tabs.getSelectedIndex()));
 	}
 }
 

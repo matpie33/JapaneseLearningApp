@@ -9,7 +9,6 @@ import com.guimaker.enums.WordSearchOptions;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
 import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordWritingsChecker;
 import com.kanji.model.AdditionalInformation;
-import com.kanji.model.WordParticlesData;
 import com.guimaker.utilities.Pair;
 import com.guimaker.utilities.StringUtilities;
 

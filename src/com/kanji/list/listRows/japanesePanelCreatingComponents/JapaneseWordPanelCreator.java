@@ -24,7 +24,7 @@ import com.guimaker.list.myList.ListConfiguration;
 import com.guimaker.list.ListRowData;
 import com.guimaker.list.myList.ListRowDataCreator;
 import com.guimaker.list.myList.MyList;
-import com.kanji.model.WordParticlesData;
+import com.kanji.list.listElements.WordParticlesData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.utilities.CommonGuiElementsCreator;
 import com.guimaker.utilities.CommonListElements;
