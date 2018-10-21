@@ -1,5 +1,6 @@
 package com.kanji.panelsAndControllers.panels;
 
+import com.guimaker.application.ApplicationWindow;
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
@@ -12,11 +13,10 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
 import com.kanji.constants.Colors;
-import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
+import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 import com.kanji.constants.strings.Titles;
 import com.kanji.panelsAndControllers.controllers.RepeatingWordsController;
-import com.guimaker.application.ApplicationWindow;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -49,7 +49,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private void initializeWordDataPanel() {
-		wordDataPanel = new MainPanel(null, true);
+		wordDataPanel = new MainPanel(Colors.CONTENT_PANEL_COLOR, true);
 		wordDataPanel.setRowColor(BasicColors.PURPLE_DARK_2);
 		wordDataPanel.setRowsBorder(BorderFactory
 				.createBevelBorder(BevelBorder.LOWERED,
@@ -62,7 +62,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 				new ComponentOptions().text(Titles.REPEATING_WORDS_DIALOG));
 		timeElapsedLabel = GuiElementsCreator
 				.createLabel(new ComponentOptions());
-		remainingWordsAmountLabel = GuiElementsCreator.createLabel(new ComponentOptions());
+		remainingWordsAmountLabel = GuiElementsCreator
+				.createLabel(new ComponentOptions());
 		returnButton = createReturnButton();
 		createRepeatingPanelElements();
 
@@ -99,8 +100,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private void addElementsToPanels() {
 		repeatingDataPanel.addRows(SimpleRowBuilder
 				.createRow(FillType.HORIZONTAL, wordHintTextPane)
-				.nextRow(FillType.BOTH, Anchor.CENTER, wordDataPanel
-						.getPanel())
+				.wrapSingleComponentWithPanel(false)
+				.nextRow(FillType.BOTH, Anchor.CENTER, wordDataPanel.getPanel())
 				.nextRow(FillType.NONE, pauseButton,
 						showWordOrMarkAsRecognizedButton,
 						notRecognizedWordButton, showPreviousWordButton)
@@ -112,8 +113,7 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 				.nextRow(FillType.BOTH, repeatingDataPanel.getPanel())
 				.setBorder(getDefaultBorder())
 				.nextRow(FillType.NONE, Anchor.CENTER,
-						remainingWordsAmountLabel,
-						returnButton));
+						remainingWordsAmountLabel, returnButton));
 
 		//TODO in gui maker enable me to put some element in some anchor so that remaining label can be positioned vertically center
 		mainPanel.addRow(SimpleRowBuilder
@@ -140,7 +140,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private void createPauseButton() {
 		pauseButton = createButtonWithHotkey(KeyEvent.VK_P,
 				repeatingWordsController.createActionPause(),
-				JapaneseApplicationButtonsNames.PAUSE, HotkeysDescriptions.PAUSE);
+				JapaneseApplicationButtonsNames.PAUSE,
+				HotkeysDescriptions.PAUSE);
 	}
 
 	private void createShowWordOrMarkAsRecognizedButton() {
@@ -165,7 +166,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private AbstractButton createReturnButton() {
 		return createButtonWithHotkey(KeyModifiers.CONTROL, KeyEvent.VK_E,
 				repeatingWordsController.createActionExit(),
-				JapaneseApplicationButtonsNames.GO_BACK, HotkeysDescriptions.RETURN_FROM_LEARNING);
+				JapaneseApplicationButtonsNames.GO_BACK,
+				HotkeysDescriptions.RETURN_FROM_LEARNING);
 	}
 
 	public JLabel getTimeElapsedLabel() {

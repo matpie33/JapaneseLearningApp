@@ -1,14 +1,18 @@
 package com.kanji.panelsAndControllers.panels;
 
+import com.guimaker.application.ApplicationWindow;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.PanelDisplayMode;
+import com.guimaker.list.myList.ListConfiguration;
+import com.guimaker.list.myList.MyList;
 import com.guimaker.model.WebContext;
 import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.ScrollPaneOptions;
 import com.guimaker.options.TextAreaOptions;
+import com.guimaker.panelSwitching.FocusableComponentsManager;
 import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
@@ -16,26 +20,24 @@ import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
 import com.guimaker.webPanel.ContextOwner;
 import com.guimaker.webPanel.WebPagePanel;
+import com.kanji.constants.Colors;
 import com.kanji.constants.enums.SplitPaneOrientation;
-import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
+import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Titles;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listRows.RowInJapaneseWordInformations;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
-import com.guimaker.list.myList.ListConfiguration;
-import com.guimaker.list.myList.MyList;
 import com.kanji.model.KanjiData;
-import com.guimaker.panelSwitching.FocusableComponentsManager;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.problematicWords.ProblematicJapaneseWordsDisplayer;
 import com.kanji.utilities.CommonGuiElementsCreator;
-import com.guimaker.application.ApplicationWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
@@ -63,10 +65,16 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		this.problematicWordsController = problematicWordsController;
 		this.parentDialog = applicationController.getApplicationWindow();
 		this.problematicJapaneseWordsDisplayer = problematicJapaneseWordsDisplayer;
-		kanjiInformationPanel = new MainPanel(null, true);
-		englishPolishDictionaryPanel = new WebPagePanel(this, null);
-		japaneseEnglishDictionaryPanel = new WebPagePanel(this, null);
-		kanjiKoohiWebPanel = new WebPagePanel(this, null);
+		kanjiInformationPanel = new MainPanel(Colors.CONTENT_PANEL_COLOR, true);
+		Color panelBackgroundColor = applicationController
+				.getApplicationWindow().getApplicationConfiguration()
+				.getPanelBackgroundColor();
+		englishPolishDictionaryPanel = new WebPagePanel(this, null,
+				applicationController.getApplicationWindow());
+		japaneseEnglishDictionaryPanel = new WebPagePanel(this, null,
+				applicationController.getApplicationWindow());
+		kanjiKoohiWebPanel = new WebPagePanel(this, null,
+				applicationController.getApplicationWindow());
 		createProblematicWordsList();
 	}
 
@@ -189,7 +197,8 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 				applicationController,
 				new RowInJapaneseWordInformations(japanesePanelCreator),
 				Titles.PROBLEMATIC_KANJIS,
-				new ListConfiguration(Prompts.JAPANESE_WORD_DELETE).enableWordAdding(false)
+				new ListConfiguration(Prompts.JAPANESE_WORD_DELETE)
+						.enableWordAdding(false)
 						.showButtonsLoadNextPreviousWords(false)
 						.withAdditionalNavigationButtons(
 								createButtonSearchWord()),

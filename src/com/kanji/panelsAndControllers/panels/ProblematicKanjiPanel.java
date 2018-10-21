@@ -1,11 +1,16 @@
 package com.kanji.panelsAndControllers.panels;
 
+import com.guimaker.application.ApplicationConfiguration;
+import com.guimaker.application.ApplicationWindow;
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.enums.TextAlignment;
+import com.guimaker.list.myList.ListConfiguration;
+import com.guimaker.list.myList.MyList;
 import com.guimaker.options.TextPaneOptions;
+import com.guimaker.panelSwitching.FocusableComponentsManager;
 import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
@@ -17,14 +22,10 @@ import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Titles;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listRows.RowInKanjiInformations;
-import com.guimaker.list.myList.ListConfiguration;
-import com.guimaker.list.myList.MyList;
-import com.guimaker.panelSwitching.FocusableComponentsManager;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.utilities.CommonGuiElementsCreator;
 import com.kanji.webPanel.ConnectionFailKanjiOfflinePage;
-import com.guimaker.application.ApplicationWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -46,10 +47,11 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		focusableComponentsManager = new FocusableComponentsManager(getPanel());
 		this.controller = controller;
 		englishPolishDictionaryWebPanel = new WebPagePanel(kanjiContextOwner,
-				null);
+				null, applicationController.getApplicationWindow());
 		kanjiKoohiWebPanel = new WebPagePanel(kanjiContextOwner,
 				new ConnectionFailKanjiOfflinePage(
-						ApplicationWindow.getKanjiFont()));
+						ApplicationWindow.getKanjiFont()),
+				applicationController.getApplicationWindow());
 
 		RowInKanjiInformations rowInKanjiInformations = new RowInKanjiInformations(
 				applicationController, PanelDisplayMode.VIEW);
