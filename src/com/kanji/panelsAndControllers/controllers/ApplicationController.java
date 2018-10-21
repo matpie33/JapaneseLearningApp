@@ -8,11 +8,9 @@ import com.guimaker.colors.BasicColors;
 import com.guimaker.customPositioning.CustomPositioner;
 import com.guimaker.enums.ListElementModificationType;
 import com.guimaker.enums.MoveDirection;
-import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.enums.WordSearchOptions;
 import com.guimaker.list.ListElement;
 import com.guimaker.list.ListObserver;
-import com.guimaker.list.myList.ListConfiguration;
 import com.guimaker.list.myList.MyList;
 import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
 import com.guimaker.utilities.SetOfRanges;
@@ -30,11 +28,6 @@ import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.RepeatingData;
-import com.kanji.list.listElements.WordParticlesData;
-import com.kanji.list.listRows.RowInJapaneseWordInformations;
-import com.kanji.list.listRows.RowInKanjiInformations;
-import com.kanji.list.listRows.RowInRepeatingList;
-import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
 import com.kanji.model.WordsAndRepeatingInfo;
 import com.kanji.panelsAndControllers.panels.LearningStartPanel;
 import com.kanji.panelsAndControllers.panels.LoadingPanel;
@@ -48,6 +41,7 @@ import com.kanji.saving.ProblematicWordsState;
 import com.kanji.saving.SavingInformation;
 import com.kanji.swingWorkers.LoadingProjectWorker;
 import com.kanji.utilities.JapaneseWordsAdjuster;
+import com.kanji.utilities.OldToNewestVersionConverter;
 import com.kanji.utilities.WordsListReadWrite;
 
 import javax.swing.*;
@@ -55,7 +49,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -72,6 +65,7 @@ public class ApplicationController
 	private FileSavingManager fileSavingManager;
 	private ApplicationStateController applicationStateController;
 	private StartingPanel startingPanel;
+	private final static boolean SHOULD_CONVERT_OLD_TO_NEWEST_VERSION = false;
 
 	public ApplicationController() {
 		isClosingSafe = true;
@@ -286,6 +280,14 @@ public class ApplicationController
 
 	public void openKanjiProject() {
 		File fileToSave = openFile();
+		if (SHOULD_CONVERT_OLD_TO_NEWEST_VERSION){
+			try {
+				OldToNewestVersionConverter.convertPreviousToNewestFile(fileToSave);
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		if (!fileToSave.exists())
 			return;
 

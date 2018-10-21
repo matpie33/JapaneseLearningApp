@@ -15,12 +15,8 @@ public class OldToNewestVersionConverter {
 	private static Map<String, String> replacements = new HashMap<>();
 
 	static {
-		replacements.put("com.kanji.listElements.Kanji",
-				"com.kanji.list.listElements.Kanji");
-		replacements.put("com.kanji.listElements.RepeatingData",
-				"com.kanji.list.listElements.RepeatingData");
-		replacements.put("com.kanji.enums.ApplicationSaveableState",
-				"com.kanji.constants.enums.ApplicationSaveableState");
+		replacements.put("com.kanji.model.WordParticlesData",
+				"com.kanji.list.listElements.WordParticlesData");
 	}
 
 	public static void convertPreviousToNewestFile(File file)
