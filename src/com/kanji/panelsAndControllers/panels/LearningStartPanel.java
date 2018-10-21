@@ -3,6 +3,7 @@ package com.kanji.panelsAndControllers.panels;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
+import com.guimaker.model.PanelConfiguration;
 import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.ScrollPaneOptions;
@@ -13,17 +14,12 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.AbstractSimpleRow;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.strings.ButtonsNames;
-import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
-import com.kanji.constants.strings.HotkeysDescriptions;
-import com.kanji.constants.strings.Labels;
-import com.kanji.constants.strings.Prompts;
-import com.kanji.constants.strings.Titles;
+import com.kanji.constants.strings.*;
 import com.kanji.model.RangesRow;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.LearningStartController;
 import com.kanji.utilities.CommonGuiElementsCreator;
-
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -63,7 +59,8 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		problematicWordsAmountLabel = GuiElementsCreator
 				.createLabel(new ComponentOptions());
 
-		rangesPanel = new MainPanel(null, true);
+		rangesPanel = new MainPanel(
+				new PanelConfiguration().putRowsAsHighestAsPossible());
 		rangesScrollPane = GuiElementsCreator.createScrollPane(
 				new ScrollPaneOptions().opaque(false)
 						.componentToWrap(rangesPanel.getPanel()).border(null)
@@ -81,14 +78,14 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 				JapaneseApplicationButtonsNames.START_LEARNING,
 				HotkeysDescriptions.START_LEARNING);
 
-		MainPanel panelIncludeProblematicWords = new MainPanel(null);
+		MainPanel panelIncludeProblematicWords = new MainPanel();
 		panelIncludeProblematicWords.addRows(
 				SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, title)
 						.disableBorder()
 						.nextRow(FillType.HORIZONTAL, problematicWordsCheckbox)
 						.nextRow(problematicWordsAmountLabel));
 
-		MainPanel panelChooseWordRanges = new MainPanel(null);
+		MainPanel panelChooseWordRanges = new MainPanel();
 		panelChooseWordRanges.addRows(SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.CENTER, GuiElementsCreator
 						.createLabel(new ComponentOptions()

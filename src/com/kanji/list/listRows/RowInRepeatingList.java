@@ -2,19 +2,20 @@ package com.kanji.list.listRows;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.FillType;
+import com.guimaker.enums.InputGoal;
+import com.guimaker.list.ListRowData;
+import com.guimaker.list.myList.ListRowCreator;
+import com.guimaker.list.myList.ListRowDataCreator;
+import com.guimaker.listeners.InputValidationListener;
+import com.guimaker.model.PanelConfiguration;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.guimaker.enums.InputGoal;
+import com.guimaker.utilities.CommonListElements;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.RepeatingData;
-import com.guimaker.listeners.InputValidationListener;
-import com.guimaker.list.myList.ListRowCreator;
-import com.guimaker.list.ListRowData;
-import com.guimaker.list.myList.ListRowDataCreator;
-import com.guimaker.utilities.CommonListElements;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,15 +48,14 @@ public class RowInRepeatingList implements ListRowCreator<RepeatingData> {
 		JLabel timeSpent = null;
 
 		if (time != null) {
-			timeSpent = GuiElementsCreator.createLabel(
-					new ComponentOptions().text(String.format(Prompts
-							.REPEATING_TIME, time))
-							.foregroundColor(labelsColor));
+			timeSpent = GuiElementsCreator.createLabel(new ComponentOptions()
+					.text(String.format(Prompts.REPEATING_TIME, time))
+					.foregroundColor(labelsColor));
 		}
 
 		AbstractButton delete = commonListElements.getButtonDelete();
 
-		MainPanel panel = new MainPanel(null);
+		MainPanel panel = new MainPanel(new PanelConfiguration().setNotOpaque());
 		panel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL,
 				commonListElements.getRowNumberLabel(), date)
 				.nextRow(repeatedWords).nextRow(timeSpent)

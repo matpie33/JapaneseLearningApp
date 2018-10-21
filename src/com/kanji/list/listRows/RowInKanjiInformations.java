@@ -51,7 +51,7 @@ public class RowInKanjiInformations implements ListRowCreator<Kanji> {
 	public ListRowData createListRow(Kanji kanji,
 			CommonListElements commonListElements, InputGoal inputGoal) {
 		elementsCreator.setLabelsColor(commonListElements.getLabelsColor());
-		MainPanel panel = new MainPanel(null);
+		MainPanel panel = new MainPanel();
 		JLabel keywordLabel = elementsCreator
 				.createLabel(Labels.KANJI_KEYWORD_LABEL);
 		JLabel idLabel = elementsCreator.createLabel(Labels.KANJI_ID_LABEL);

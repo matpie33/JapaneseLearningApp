@@ -44,8 +44,8 @@ public class RowInJapaneseWordInformations
 						|| commonListElements.isForSingleRowOnly())) {
 			displayMode = PanelDisplayMode.EDIT;
 		}
-		MainPanel panel = new MainPanel(null,
-				new PanelConfiguration(displayMode));
+		MainPanel panel = new MainPanel(
+				new PanelConfiguration().setPanelDisplayMode(displayMode));
 		JLabel rowNumberLabel = commonListElements.getRowNumberLabel();
 		JapaneseWordPanelCreator panelCreatorToUse;
 		if (commonListElements.isForSingleRowOnly()) {

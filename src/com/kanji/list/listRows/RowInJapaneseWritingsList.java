@@ -1,20 +1,20 @@
 package com.kanji.list.listRows;
 
 import com.guimaker.enums.FillType;
+import com.guimaker.enums.InputGoal;
 import com.guimaker.enums.PanelDisplayMode;
+import com.guimaker.list.ListRowData;
+import com.guimaker.list.myList.ListRowCreator;
+import com.guimaker.list.myList.ListRowDataCreator;
+import com.guimaker.listeners.InputValidationListener;
 import com.guimaker.model.PanelConfiguration;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.guimaker.enums.InputGoal;
+import com.guimaker.utilities.CommonListElements;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listRows.japanesePanelCreatingService.JapanesePanelCreatingService;
-import com.guimaker.listeners.InputValidationListener;
-import com.guimaker.list.myList.ListRowCreator;
-import com.guimaker.list.ListRowData;
-import com.guimaker.list.myList.ListRowDataCreator;
-import com.guimaker.utilities.CommonListElements;
 
 import javax.swing.*;
 
@@ -36,8 +36,8 @@ public class RowInJapaneseWritingsList
 	@Override
 	public ListRowData createListRow(JapaneseWriting japaneseWriting,
 			CommonListElements commonListElements, InputGoal inputGoal) {
-		MainPanel rowPanel = new MainPanel(null, false, true,
-				new PanelConfiguration(displayMode));
+		MainPanel rowPanel = new MainPanel(
+				new PanelConfiguration().setPanelDisplayMode(displayMode));
 		JComponent[] components = japanesePanelCreatingService
 				.addWritingsRow(japaneseWriting, commonListElements,
 						wordContainingWritings, inputGoal, rowPanel);

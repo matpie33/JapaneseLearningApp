@@ -5,6 +5,7 @@ import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.TextAlignment;
+import com.guimaker.model.PanelConfiguration;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
@@ -41,15 +42,17 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private static final String UNIQUE_NAME = "repeating words panel";
 
 	public RepeatingWordsPanel(RepeatingWordsController controller) {
-		rootPanel = new MainPanel(null);
-		repeatingDataPanel = new MainPanel(Colors.BACKGROUND_PANEL_COLOR);
+		rootPanel = new MainPanel();
+		repeatingDataPanel = new MainPanel(new PanelConfiguration()
+				.setColorToUse(Colors.BACKGROUND_PANEL_COLOR));
 		repeatingDataPanel.setRowsBorder(getDefaultBorder());
 		this.repeatingWordsController = controller;
 		initializeWordDataPanel();
 	}
 
 	private void initializeWordDataPanel() {
-		wordDataPanel = new MainPanel(Colors.CONTENT_PANEL_COLOR, true);
+		wordDataPanel = new MainPanel(
+				new PanelConfiguration().putRowsAsHighestAsPossible());
 		wordDataPanel.setRowColor(BasicColors.PURPLE_DARK_2);
 		wordDataPanel.setRowsBorder(BorderFactory
 				.createBevelBorder(BevelBorder.LOWERED,

@@ -48,7 +48,7 @@ public class RowInParticlesInformation
 			WordParticlesData wordParticlesData,
 			CommonListElements commonListElements, InputGoal inputGoal) {
 
-		MainPanel panel = new MainPanel(null);
+		MainPanel panel = new MainPanel();
 		panel.addRow(SimpleRowBuilder.createRow(FillType.NONE,
 				japaneseParticleRowCreatingService
 						.createRowElements(wordParticlesData, japaneseWord,

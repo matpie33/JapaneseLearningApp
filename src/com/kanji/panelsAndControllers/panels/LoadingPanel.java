@@ -3,6 +3,7 @@ package com.kanji.panelsAndControllers.panels;
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
+import com.guimaker.model.PanelConfiguration;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
 import com.guimaker.panels.GuiElementsCreator;
@@ -28,7 +29,9 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 
 		//TODO add method in gui maker to enable connecting one row with
 		// another or create a separate row
-		progressBarsPanel = new MainPanel(BasicColors.BLUE_DARK_3, true);
+		progressBarsPanel = new MainPanel(
+				new PanelConfiguration().setColorToUse(BasicColors.BLUE_DARK_3)
+						.putRowsAsHighestAsPossible());
 		progressBarsPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.CENTER, GuiElementsCreator
 						.createLabel(new ComponentOptions()

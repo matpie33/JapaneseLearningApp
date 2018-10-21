@@ -1,8 +1,6 @@
 package com.kanji.panelsAndControllers.panels;
 
-import com.guimaker.application.ApplicationConfiguration;
 import com.guimaker.application.ApplicationWindow;
-import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.PanelDisplayMode;
@@ -75,8 +73,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	@Override
 	public void createElements() {
 
-		MainPanel kanjiOfflineDisplayingPanel = new MainPanel(
-				BasicColors.BLUE_DARK_1);
+		MainPanel kanjiOfflineDisplayingPanel = new MainPanel();
 		Font messageFont = new JLabel().getFont().deriveFont(15f);
 
 		JTextComponent kanjiOfflineTextPane = GuiElementsCreator.createTextPane(

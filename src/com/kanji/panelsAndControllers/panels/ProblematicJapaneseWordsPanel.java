@@ -7,6 +7,7 @@ import com.guimaker.enums.FillType;
 import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.list.myList.ListConfiguration;
 import com.guimaker.list.myList.MyList;
+import com.guimaker.model.PanelConfiguration;
 import com.guimaker.model.WebContext;
 import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComponentOptions;
@@ -20,7 +21,6 @@ import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
 import com.guimaker.webPanel.ContextOwner;
 import com.guimaker.webPanel.WebPagePanel;
-import com.kanji.constants.Colors;
 import com.kanji.constants.enums.SplitPaneOrientation;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
@@ -65,7 +65,8 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		this.problematicWordsController = problematicWordsController;
 		this.parentDialog = applicationController.getApplicationWindow();
 		this.problematicJapaneseWordsDisplayer = problematicJapaneseWordsDisplayer;
-		kanjiInformationPanel = new MainPanel(Colors.CONTENT_PANEL_COLOR, true);
+		kanjiInformationPanel = new MainPanel(
+				new PanelConfiguration().putRowsAsHighestAsPossible());
 		Color panelBackgroundColor = applicationController
 				.getApplicationWindow().getApplicationConfiguration()
 				.getPanelBackgroundColor();

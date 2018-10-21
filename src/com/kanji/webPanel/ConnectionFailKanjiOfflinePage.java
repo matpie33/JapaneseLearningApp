@@ -28,7 +28,7 @@ public class ConnectionFailKanjiOfflinePage
 				new TextPaneOptions().border(null).editable(false)
 						.textAlignment(TextAlignment.CENTERED).text(""));
 		kanjiTextPane.setFont(kanjiFont.deriveFont(kanjiFontSize));
-		mainPanel = new MainPanel(BasicColors.BLUE_DARK_1);
+		mainPanel = new MainPanel();
 		mainPanel.addRow(SimpleRowBuilder
 				.createRow(FillType.NONE, Anchor.CENTER, kanjiTextPane));
 	}

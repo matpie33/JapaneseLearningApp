@@ -141,7 +141,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		wordTypeContext.setWordTypeForRepeating(TypeOfWordForRepeating.KANJIS);
 
 		List<AbstractButton> buttons = createButtons();
-		bottomPanel = new MainPanel(null);
+		bottomPanel = new MainPanel();
 		bottomPanel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL,
 				buttons.toArray(new JButton[] {})).setNotOpaque()
 				.disableBorder().nextRow(saveInfo, problematicKanjis));
