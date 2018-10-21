@@ -55,7 +55,7 @@ public class RowInRepeatingList implements ListRowCreator<RepeatingData> {
 
 		AbstractButton delete = commonListElements.getButtonDelete();
 
-		MainPanel panel = new MainPanel(new PanelConfiguration().setNotOpaque());
+		MainPanel panel = new MainPanel();
 		panel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL,
 				commonListElements.getRowNumberLabel(), date)
 				.nextRow(repeatedWords).nextRow(timeSpent)
