@@ -1,10 +1,14 @@
 package com.kanji.application;
 
 import com.guimaker.list.ListElement;
+import com.guimaker.list.myList.MyList;
+import com.kanji.list.listElements.JapaneseWord;
+import com.kanji.list.listElements.RepeatingData;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.panelsAndControllers.controllers.RepeatingWordsController;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class WordStateController<Word extends ListElement> {
@@ -12,6 +16,9 @@ public class WordStateController<Word extends ListElement> {
 	private RepeatingWordsController<Word> repeatingWordsController;
 	private ProblematicWordsController<Word> problematicWordsController;
 	private Set<Word> problematicWords;
+	private MyList<Word> wordList;
+	private MyList<RepeatingData> repeatingData;
+	private MyList<Word> wordli;
 
 	public WordStateController(
 			RepeatingWordsController<Word> repeatingWordsController,
@@ -39,4 +46,32 @@ public class WordStateController<Word extends ListElement> {
 		this.problematicWords.addAll(problematicWords);
 	}
 
+	public void setWords(MyList<Word> words) {
+		this.wordList = words;
+	}
+
+	public void setWords(List<Word> words){
+		words.forEach(wordList::addWord);
+	}
+
+	public void setRepeatingDates (List<RepeatingData> repeatingDates){
+		repeatingDates.forEach(repeatingData::addWord);
+	}
+
+	public void setRepeatingDates(MyList<RepeatingData> repeatingDates) {
+		this.repeatingData = repeatingDates;
+	}
+
+	public void clearData() {
+		wordList.cleanWords();
+		repeatingData.cleanWords();
+	}
+
+	public MyList<Word> getWords() {
+		return wordList;
+	}
+
+	public MyList<RepeatingData> getRepeatingList() {
+		return repeatingData;
+	}
 }

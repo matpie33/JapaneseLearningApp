@@ -41,8 +41,7 @@ public class LoadingProjectWorker {
 				int maximumDisplayedWords = list.getMaximumDisplayedWords();
 				int firstRowToLoad = Math
 						.max(0, words.size() - maximumDisplayedWords);
-				int numberOfWordsToLoad = words.size() - firstRowToLoad - 1;
-				int stepsToExecute = numberOfWordsToLoad;
+				int stepsToExecute = words.size() - firstRowToLoad - 1;
 				list.addWords(words, InputGoal.EDIT, false, false);
 				ProgressUpdater progressUpdater = list.getProgressUpdater();
 				progressUpdater.startLongProcess(progressBar, stepsToExecute);

@@ -20,18 +20,25 @@ public class ApplicationStateController {
 
 	private Map<String, WordStateController> wordStateControllerByMeaningfulNameMap = new HashMap<>();
 	private String activeWordsControllerKey;
+	private ListTestDataCreator listTestDataCreator;
+
+	public ApplicationStateController(
+			ApplicationController applicationController) {
+		listTestDataCreator = new ListTestDataCreator(applicationController);
+	}
 
 	public void initialize(ApplicationController applicationController) {
 		initializeKanjiControllers(applicationController);
 		initializeJapaneseWordsControllers(applicationController);
+		listTestDataCreator.initializeTestData();
 	}
 
 	private void initializeJapaneseWordsControllers(
 			ApplicationController applicationController) {
 		RepeatingJapaneseWordsDisplayer repeatingJapaneseWordsDisplayer = new RepeatingJapaneseWordsDisplayer(
 				applicationController);
-		MyList<JapaneseWord> japaneseWords = applicationController
-				.getJapaneseWords();
+		MyList<JapaneseWord> japaneseWords = listTestDataCreator
+				.initializeJapaneseWordsList();
 		WordSpecificRepeatingController<JapaneseWord> japaneseWordSpecificController = new WordSpecificRepeatingController<>(
 				japaneseWords, repeatingJapaneseWordsDisplayer);
 		RepeatingWordsController<JapaneseWord> repeatingJapaneseWordsController = new RepeatingWordsController<>(
@@ -43,15 +50,19 @@ public class ApplicationStateController {
 				.getController();
 		japaneseWords.addListObserver(controller);
 
-		wordStateControllerByMeaningfulNameMap.put(JapaneseWord.MEANINGFUL_NAME,
-				new WordStateController<>(repeatingJapaneseWordsController,
-						controller));
+		WordStateController<JapaneseWord> japaneseWordsController = new WordStateController<>(
+				repeatingJapaneseWordsController, controller);
+		japaneseWordsController.setRepeatingDates(listTestDataCreator
+				.initializeJapaneseWordsRepeatingData());
+		japaneseWordsController.setWords(japaneseWords);
+		wordStateControllerByMeaningfulNameMap
+				.put(JapaneseWord.MEANINGFUL_NAME, japaneseWordsController);
 	}
 
 	private void initializeKanjiControllers(
 			ApplicationController applicationController) {
 		RepeatingKanjiDisplayer repeatingKanjiDisplayer = new RepeatingKanjiDisplayer();
-		MyList<Kanji> kanjiList = applicationController.getKanjiList();
+		MyList<Kanji> kanjiList = listTestDataCreator.initializeKanjiList();
 		WordSpecificRepeatingController<Kanji> kanjiSpecificController = new WordSpecificRepeatingController<>(
 				kanjiList, repeatingKanjiDisplayer);
 		RepeatingWordsController<Kanji> repeatingKanjiController = new RepeatingWordsController<>(
@@ -63,9 +74,13 @@ public class ApplicationStateController {
 				.getProblematicWordsController();
 		kanjiList.addListObserver(problematicKanjiController);
 
-		wordStateControllerByMeaningfulNameMap.put(Kanji.MEANINGFUL_NAME,
-				new WordStateController<>(repeatingKanjiController,
-						problematicKanjiController));
+		WordStateController<Kanji> kanjiController = new WordStateController<>(
+				repeatingKanjiController, problematicKanjiController);
+		kanjiController.setRepeatingDates(
+				listTestDataCreator.initializeKanjiRepeatingList());
+		kanjiController.setWords(kanjiList);
+		wordStateControllerByMeaningfulNameMap
+				.put(Kanji.MEANINGFUL_NAME, kanjiController);
 	}
 
 	public WordStateController getController(String meaningfulName) {
@@ -77,7 +92,8 @@ public class ApplicationStateController {
 				.get(activeWordsControllerKey).getProblematicWords();
 	}
 
-	public void setActiveWordStateControllerKey(String activeWordStateControllerKey) {
+	public void setActiveWordStateControllerKey(
+			String activeWordStateControllerKey) {
 		this.activeWordsControllerKey = activeWordStateControllerKey;
 	}
 
