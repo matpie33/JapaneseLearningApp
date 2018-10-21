@@ -31,7 +31,6 @@ public class ListTestDataCreator {
 		MyList<Kanji> kanjiList = applicationController.getKanjiList();
 
 		for (int i = 1; i <= 510; i++) {
-			System.out.println("create : " + i);
 			kanjiList.addWord(new Kanji("Word no. " + i, i));
 		}
 		kanjiList.addWord(new Kanji(
