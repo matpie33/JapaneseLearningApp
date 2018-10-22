@@ -90,7 +90,6 @@ public class ApplicationController
 	}
 
 	public void initiate() {
-		validatePreferIpV4PropertySet();
 		initializeApplicationStateManagers();
 		initializePanels();
 		initializeMenuBar();
@@ -138,16 +137,6 @@ public class ApplicationController
 		applicationWindow
 				.initiate(repeatingKanjiPanel, repeatingJapaneseWordsPanel,
 						problematicKanjiPanel, problematicJapaneseWordsPanel);
-	}
-
-	private void validatePreferIpV4PropertySet() {
-		String preferIpV4Property = System
-				.getProperty("java.net.preferIPv4Stack");
-		if (preferIpV4Property == null) {
-			String message = "Aplikacja moze byc uruchomiona tylko z pliku exe.";
-			applicationWindow.showMessageDialog(message);
-			System.exit(1);
-		}
 	}
 
 	private WindowListener focusLastFocusedElementWhenWindowRegainsFocus() {

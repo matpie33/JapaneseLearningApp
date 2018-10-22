@@ -170,7 +170,7 @@ public class ProblematicJapaneseWordsDisplayer
 
 	private String createUrlForWordInJapaneseEnglishDictionary(
 			String currentlySelectedWord) {
-		return Urls.TANGORIN_URL + "/general/" + currentlySelectedWord;
+		return Urls.TANGORIN_URL + "/words?search=" + currentlySelectedWord;
 	}
 
 	@Override
