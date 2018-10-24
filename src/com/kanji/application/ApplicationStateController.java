@@ -52,8 +52,8 @@ public class ApplicationStateController {
 
 		WordStateController<JapaneseWord> japaneseWordsController = new WordStateController<>(
 				repeatingJapaneseWordsController, controller);
-		japaneseWordsController.setRepeatingDates(listTestDataCreator
-				.initializeJapaneseWordsRepeatingData());
+		japaneseWordsController.setRepeatingDates(
+				listTestDataCreator.initializeJapaneseWordsRepeatingData());
 		japaneseWordsController.setWords(japaneseWords);
 		wordStateControllerByMeaningfulNameMap
 				.put(JapaneseWord.MEANINGFUL_NAME, japaneseWordsController);
@@ -105,5 +105,12 @@ public class ApplicationStateController {
 	public RepeatingWordsController getActiveRepeatingWordsController() {
 		return wordStateControllerByMeaningfulNameMap
 				.get(activeWordsControllerKey).getRepeatingWordsController();
+	}
+
+	public void reinitializeProblematicWordsControllers() {
+		wordStateControllerByMeaningfulNameMap.values().forEach(
+				wordStateController -> wordStateController
+						.getProblematicWordsController()
+						.getProblematicWordsDisplayer().initializeWebPages());
 	}
 }

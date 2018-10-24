@@ -17,7 +17,9 @@ import com.guimaker.utilities.SetOfRanges;
 import com.kanji.application.ApplicationStateController;
 import com.kanji.application.WordStateController;
 import com.kanji.constants.Colors;
-import com.kanji.constants.enums.*;
+import com.kanji.constants.enums.ApplicationSaveableState;
+import com.kanji.constants.enums.SavingStatus;
+import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.MenuTexts;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Titles;
@@ -169,9 +171,6 @@ public class ApplicationController
 
 	//TODO dependencies between classes are weird and should be reconsidered
 
-
-
-
 	private JFileChooser createFileChooser() {
 		// TODO think about some more clever way of determining whether we are
 		// in test or deployment directory
@@ -269,9 +268,10 @@ public class ApplicationController
 
 	public void openKanjiProject() {
 		File fileToSave = openFile();
-		if (SHOULD_CONVERT_OLD_TO_NEWEST_VERSION){
+		if (SHOULD_CONVERT_OLD_TO_NEWEST_VERSION) {
 			try {
-				OldToNewestVersionConverter.convertPreviousToNewestFile(fileToSave);
+				OldToNewestVersionConverter
+						.convertPreviousToNewestFile(fileToSave);
 			}
 			catch (IOException e) {
 				e.printStackTrace();
@@ -309,6 +309,8 @@ public class ApplicationController
 				((ProblematicKanjiDisplayer) problematicWordsDisplayer).
 						setLoginDataCookie(savingInformation
 								.getKanjiKoohiiCookiesHeaders());
+				applicationStateController
+						.reinitializeProblematicWordsControllers();
 				//TODO avoid cast
 			}
 		}
@@ -341,11 +343,10 @@ public class ApplicationController
 		LoadingPanel loadingPanel = showProgressDialog();
 		LoadingProjectWorker loadingProjectWorker = new LoadingProjectWorker(
 				this, loadingPanel);
-		loadingProjectWorker
-				.load(japaneseWordsController.getWords(), savingInformation
-						.getJapaneseWords());
-		loadingProjectWorker.load(kanjiController.getWords(), savingInformation
-				.getKanjiWords());
+		loadingProjectWorker.load(japaneseWordsController.getWords(),
+				savingInformation.getJapaneseWords());
+		loadingProjectWorker.load(kanjiController.getWords(),
+				savingInformation.getKanjiWords());
 		loadingProjectWorker.load(japaneseWordsController.getRepeatingList(),
 				savingInformation.getJapaneseWordsRepeatingInformations());
 		loadingProjectWorker.load(kanjiController.getRepeatingList(),
@@ -394,7 +395,6 @@ public class ApplicationController
 		}
 		loadingInProgress = false;
 	}
-
 
 	private File openFile() {
 		JFileChooser fileChooser = createFileChooser();
@@ -495,18 +495,18 @@ public class ApplicationController
 	}
 
 	public MyList<JapaneseWord> getJapaneseWords() {
-		return applicationStateController.getController(JapaneseWord
-				.MEANINGFUL_NAME).getWords();
+		return applicationStateController
+				.getController(JapaneseWord.MEANINGFUL_NAME).getWords();
 	}
 
 	public MyList<RepeatingData> getJapaneseWordsRepeatingDates() {
-		return applicationStateController.getController(JapaneseWord.MEANINGFUL_NAME)
-				.getRepeatingList();
+		return applicationStateController
+				.getController(JapaneseWord.MEANINGFUL_NAME).getRepeatingList();
 	}
 
 	public MyList<Kanji> getKanjiList() {
-		return applicationStateController
-				.getController(Kanji.MEANINGFUL_NAME).getWords();
+		return applicationStateController.getController(Kanji.MEANINGFUL_NAME)
+				.getWords();
 	}
 
 	public MyList<RepeatingData> getActiveRepeatingList() {
@@ -518,8 +518,8 @@ public class ApplicationController
 	}
 
 	public MyList<RepeatingData> getKanjiRepeatingDates() {
-		return applicationStateController.getController(Kanji
-				.MEANINGFUL_NAME).getRepeatingList();
+		return applicationStateController.getController(Kanji.MEANINGFUL_NAME)
+				.getRepeatingList();
 	}
 
 	public void saveList() {
@@ -535,8 +535,8 @@ public class ApplicationController
 		f = new File(f.toString() + ".txt");
 		WordsListReadWrite reader = new WordsListReadWrite();
 		try {
-			reader.writeKanjiListToFile(f, getKanjiList(), getKanjiRepeatingDates(),
-					getProblematicKanjis());
+			reader.writeKanjiListToFile(f, getKanjiList(),
+					getKanjiRepeatingDates(), getProblematicKanjis());
 			reader.writeJapaneseListToFile(f, getJapaneseWords(),
 					getJapaneseWordsRepeatingDates(),
 					getProblematicJapaneseWords());

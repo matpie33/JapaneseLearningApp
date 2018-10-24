@@ -18,7 +18,6 @@ public class WordStateController<Word extends ListElement> {
 	private Set<Word> problematicWords;
 	private MyList<Word> wordList;
 	private MyList<RepeatingData> repeatingData;
-	private MyList<Word> wordli;
 
 	public WordStateController(
 			RepeatingWordsController<Word> repeatingWordsController,
