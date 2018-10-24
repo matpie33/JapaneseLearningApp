@@ -351,6 +351,7 @@ public class ApplicationController
 		loadingProjectWorker.load(kanjiController.getRepeatingList(),
 				savingInformation.getRepeatingList());
 		recalculateLoadDialogPositionAndSize(loadingPanel);
+		updateProblematicWordsAmount();
 	}
 
 	private LoadingPanel showProgressDialog() {
