@@ -171,8 +171,11 @@ public class JapaneseWordPanelCreator
 				inheritScrollBar);
 		writingsLists.add(new Pair<>(japaneseWord, lastWritingsListCreated));
 
-		parentDialog.getPanel()
-				.addNavigableByKeyboardList(lastWritingsListCreated);
+		if (!japaneseWord.isEmpty()){
+			parentDialog.getPanel()
+					.addNavigableByKeyboardList(lastWritingsListCreated);
+		}
+
 		if (japaneseWord.getWritings().isEmpty()) {
 			japaneseWord.addWritingsForKana("", "");
 		}
