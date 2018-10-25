@@ -72,7 +72,8 @@ public class ApplicationController
 	public ApplicationController() {
 		isClosingSafe = true;
 		applicationStateManager = this;
-		applicationStateController = new ApplicationStateController(this);
+		applicationStateController = new ApplicationStateController(this,
+				Kanji.MEANINGFUL_NAME);
 		fileSavingManager = new FileSavingManager();
 		startingPanel = new StartingPanel();
 		applicationWindow = new ApplicationWindow(this, startingPanel,
@@ -419,7 +420,6 @@ public class ApplicationController
 				fileChooser.getCurrentDirectory() + File.separator + directory);
 	}
 
-
 	public void showProblematicWordsDialogForCurrentList() {
 		showProblematicWordsDialog(getActiveProblematicWordsController());
 	}
@@ -441,10 +441,9 @@ public class ApplicationController
 		ProblematicWordsController problematicWordsController = applicationStateController
 				.getController(controllerMeaningfulName)
 				.getProblematicWordsController();
-		problematicWordsController
-				.addProblematicWordsHighlightReviewed(
-						problematicWordsState.getReviewedWords(),
-						problematicWordsState.getNotReviewedWords());
+		problematicWordsController.addProblematicWordsHighlightReviewed(
+				problematicWordsState.getReviewedWords(),
+				problematicWordsState.getNotReviewedWords());
 		showProblematicWordsDialog(problematicWordsController);
 	}
 
@@ -462,8 +461,7 @@ public class ApplicationController
 		}
 
 		applicationWindow.showPanel(
-				activeProblematicWordsController.getPanel()
-						.getUniqueName());
+				activeProblematicWordsController.getPanel().getUniqueName());
 
 		switchStateManager(activeProblematicWordsController);
 
@@ -471,7 +469,7 @@ public class ApplicationController
 
 	public void showLearningStartDialog() {
 		TypeOfWordForRepeating typeForRepeating = getActiveWordsListType();
-		getCurrentlyActiveWordsController(typeForRepeating)
+		getActiveRepeatingWordsController()
 				.setTypeOfWordForRepeating(typeForRepeating);
 
 		applicationWindow
@@ -507,11 +505,13 @@ public class ApplicationController
 	}
 
 	public MyList<RepeatingData> getActiveRepeatingList() {
-		return startingPanel.getActiveRepeatingList();
+		return applicationStateController.getActiveWordsStateController()
+				.getRepeatingList();
 	}
 
 	public MyList getActiveWordsList() {
-		return startingPanel.getActiveWordsList();
+		return applicationStateController.getActiveWordsStateController()
+				.getWords();
 	}
 
 	public MyList<RepeatingData> getKanjiRepeatingDates() {
@@ -584,8 +584,7 @@ public class ApplicationController
 	}
 
 	public void addWordToRepeatingList(RepeatingData word) {
-		MyList<RepeatingData> repeatingList = startingPanel
-				.getActiveRepeatingList();
+		MyList<RepeatingData> repeatingList = getActiveRepeatingList();
 		repeatingList.addWord(word);
 		repeatingList.scrollToBottom();
 	}
@@ -614,16 +613,8 @@ public class ApplicationController
 	}
 
 	public TypeOfWordForRepeating getActiveWordsListType() {
-		MyList currentList = startingPanel.getActiveWordsList();
-		Class listClass = currentList.getListElementClass();
-		TypeOfWordForRepeating typeOfWordForRepeating = null;
-		if (listClass.equals(Kanji.class)) {
-			typeOfWordForRepeating = TypeOfWordForRepeating.KANJIS;
-		}
-		else if (listClass.equals(JapaneseWord.class)) {
-			typeOfWordForRepeating = TypeOfWordForRepeating.JAPANESE_WORDS;
-		}
-		return typeOfWordForRepeating;
+		return TypeOfWordForRepeating.withMeaningfulName(
+				applicationStateController.getActiveControllerMeaningfulName());
 	}
 
 	public void finishedRepeating() {
@@ -670,9 +661,7 @@ public class ApplicationController
 				getJapaneseWordsRepeatingDates().getWords());
 		savingInformation.setLastBackupFileNumber(
 				fileSavingManager.getLastBackupFileNumber());
-		String koohiiLoginDataCookie = applicationStateController.getController(
-				getActiveWordsListType().getAssociatedRepeatingWordsState()
-						.getMeaningfulName()).getProblematicWordsController()
+		String koohiiLoginDataCookie = getActiveProblematicWordsController()
 				.getProblematicWordsDisplayer()
 				.getKanjiKoohiLoginCookieHeader();
 		savingInformation.clearApplicationState();

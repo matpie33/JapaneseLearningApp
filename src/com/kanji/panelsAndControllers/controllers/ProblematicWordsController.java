@@ -1,18 +1,19 @@
 package com.kanji.panelsAndControllers.controllers;
 
-import com.guimaker.enums.MoveDirection;
+import com.guimaker.application.ApplicationWindow;
 import com.guimaker.enums.InputGoal;
 import com.guimaker.enums.ListElementModificationType;
-import com.kanji.constants.strings.Prompts;
+import com.guimaker.enums.MoveDirection;
 import com.guimaker.list.ListElement;
 import com.guimaker.list.ListObserver;
 import com.guimaker.list.myList.MyList;
 import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
+import com.kanji.constants.enums.TypeOfWordForRepeating;
+import com.kanji.constants.strings.Prompts;
 import com.kanji.problematicWords.ProblematicWordsDisplayer;
 import com.kanji.saving.ApplicationStateManager;
 import com.kanji.saving.ProblematicWordsState;
 import com.kanji.saving.SavingInformation;
-import com.guimaker.application.ApplicationWindow;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -93,14 +94,14 @@ public class ProblematicWordsController<Word extends ListElement>
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				applicationController
-						.enableShowProblematicWordsButton();
+				applicationController.enableShowProblematicWordsButton();
 				if (haveAllWordsBeenReviewed()) {
 					applicationController.finishedRepeating();
 					applicationController.save();
 				}
 				applicationWindow.showPanel(
-						applicationController.getStartingPanel().getUniqueName());
+						applicationController.getStartingPanel()
+								.getUniqueName());
 			}
 		};
 
@@ -161,11 +162,14 @@ public class ProblematicWordsController<Word extends ListElement>
 	public void restoreState(SavingInformation savingInformation) {
 		if (savingInformation.containsProblematicJapaneseWords()
 				|| savingInformation.containsProblematicKanji()) {
-			applicationController.switchToList(
-					applicationController.getActiveWordsListType());
+			applicationController.switchToList(TypeOfWordForRepeating
+					.withMeaningfulName(
+							savingInformation.getApplicationSaveableState()
+									.getMeaningfulName()));
 		}
-		applicationController.showProblematicWordsDialog(savingInformation
-						.getApplicationSaveableState().getMeaningfulName(),
+		applicationController.showProblematicWordsDialog(
+				savingInformation.getApplicationSaveableState()
+						.getMeaningfulName(),
 				savingInformation.getProblematicWordsState());
 	}
 

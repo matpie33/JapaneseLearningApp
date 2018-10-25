@@ -4,7 +4,6 @@ import com.guimaker.application.DialogWindow;
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
-import com.guimaker.list.myList.MyList;
 import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
@@ -20,7 +19,6 @@ import com.kanji.constants.strings.Prompts;
 import com.kanji.context.WordTypeContext;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
-import com.kanji.list.listElements.RepeatingData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.StartingController;
 import com.kanji.utilities.JapaneseWritingUtilities;
@@ -49,7 +47,6 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	private WordTypeContext wordTypeContext;
 	private StartingController startingController;
 	private Map<String, String> tabTitleToWordStateControllerMap = new HashMap<>();
-	private String powtórki_kanji;
 
 	public StartingPanel() {
 		tabs = new JTabbedPane();
@@ -281,16 +278,6 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 
 	public void enableShowProblematicWordsButton() {
 		showProblematicWordsButton.setEnabled(true);
-	}
-
-	public MyList getActiveWordsList() {
-		return listToTabLabel.get(tabs.getTitleAt(tabs.getSelectedIndex()))
-				.getWordsList();
-	}
-
-	public MyList<RepeatingData> getActiveRepeatingList() {
-		return listToTabLabel.get(tabs.getTitleAt(tabs.getSelectedIndex()))
-				.getRepeatingList();
 	}
 
 	public void updateWordTypeContext(String newTabName) {

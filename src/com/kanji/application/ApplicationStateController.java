@@ -23,8 +23,10 @@ public class ApplicationStateController {
 	private ListTestDataCreator listTestDataCreator;
 
 	public ApplicationStateController(
-			ApplicationController applicationController) {
+			ApplicationController applicationController,
+			String activeWordsControllerKey) {
 		listTestDataCreator = new ListTestDataCreator(applicationController);
+		this.activeWordsControllerKey = activeWordsControllerKey;
 	}
 
 	public void initialize(ApplicationController applicationController) {
@@ -88,8 +90,7 @@ public class ApplicationStateController {
 	}
 
 	public Set getProblematicWordsForActiveTab() {
-		return wordStateControllerByMeaningfulNameMap
-				.get(activeWordsControllerKey).getProblematicWords();
+		return getActiveWordsStateController().getProblematicWords();
 	}
 
 	public void setActiveWordStateControllerKey(
@@ -98,13 +99,16 @@ public class ApplicationStateController {
 	}
 
 	public ProblematicWordsController getActiveProblematicWordsController() {
-		return wordStateControllerByMeaningfulNameMap
-				.get(activeWordsControllerKey).getProblematicWordsController();
+		return getActiveWordsStateController().getProblematicWordsController();
 	}
 
 	public RepeatingWordsController getActiveRepeatingWordsController() {
+		return getActiveWordsStateController().getRepeatingWordsController();
+	}
+
+	public WordStateController getActiveWordsStateController() {
 		return wordStateControllerByMeaningfulNameMap
-				.get(activeWordsControllerKey).getRepeatingWordsController();
+				.get(activeWordsControllerKey);
 	}
 
 	public void reinitializeProblematicWordsControllers() {
@@ -112,5 +116,9 @@ public class ApplicationStateController {
 				wordStateController -> wordStateController
 						.getProblematicWordsController()
 						.getProblematicWordsDisplayer().initializeWebPages());
+	}
+
+	public String getActiveControllerMeaningfulName() {
+		return activeWordsControllerKey;
 	}
 }

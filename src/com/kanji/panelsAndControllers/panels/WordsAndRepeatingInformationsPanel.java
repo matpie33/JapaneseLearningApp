@@ -1,12 +1,12 @@
 package com.kanji.panelsAndControllers.panels;
 
 import com.guimaker.enums.FillType;
+import com.guimaker.list.myList.MyList;
 import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.enums.SplitPaneOrientation;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.list.listElements.RepeatingData;
-import com.guimaker.list.myList.MyList;
 import com.kanji.utilities.CommonGuiElementsCreator;
 
 import javax.swing.*;
@@ -34,23 +34,11 @@ public class WordsAndRepeatingInformationsPanel
 
 	@Override
 	public void createElements() {
-		createSplitPane(wordsList, repeatingList);
-		mainPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.BOTH, listsSplitPane));
-	}
-
-	private void createSplitPane(MyList wordsList, MyList repeatingList) {
 		listsSplitPane = CommonGuiElementsCreator
 				.createSplitPane(SplitPaneOrientation.HORIZONTAL,
 						wordsList.getPanel(), repeatingList.getPanel(), 0.8);
-	}
-
-	public MyList<RepeatingData> getRepeatingList() {
-		return repeatingList;
-	}
-
-	public MyList getWordsList() {
-		return wordsList;
+		mainPanel.addRow(SimpleRowBuilder
+				.createRow(FillType.BOTH, listsSplitPane));
 	}
 
 	public TypeOfWordForRepeating getTypeOfWordForRepeating() {

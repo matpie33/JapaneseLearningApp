@@ -1,5 +1,7 @@
 package com.kanji.constants.enums;
 
+import java.util.Arrays;
+
 public enum TypeOfWordForRepeating {
 	KANJIS(ApplicationSaveableState.REPEATING_KANJI,
 			ApplicationSaveableState.REVIEWING_PROBLEMATIC_KANJIS), JAPANESE_WORDS(
@@ -23,4 +25,13 @@ public enum TypeOfWordForRepeating {
 	public ApplicationSaveableState getAssociatedReviewingWordsState() {
 		return associatedReviewingWordsState;
 	}
+
+	public static TypeOfWordForRepeating withMeaningfulName(
+			String meaningfulName) {
+		return Arrays.stream(values())
+				.filter(type -> type.getAssociatedRepeatingWordsState()
+						.getMeaningfulName().equals(meaningfulName)).findFirst()
+				.orElse(null);
+	}
+
 }
