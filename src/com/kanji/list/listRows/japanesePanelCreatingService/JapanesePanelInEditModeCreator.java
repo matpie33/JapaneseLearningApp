@@ -8,6 +8,7 @@ import com.kanji.list.listRows.japanesePanelCreatingComponents.JapanesePanelElem
 import com.guimaker.utilities.CommonListElements;
 
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,9 +32,11 @@ public class JapanesePanelInEditModeCreator
 					japaneseWord, true, inputGoal, false);
 		}
 		else {
-			rowElements.add(elementsMaker
+			JTextComponent kanaInput = elementsMaker
 					.createKanaInputWithValidation(japaneseWriting,
-							japaneseWord, true, inputGoal, false));
+							japaneseWord, true, inputGoal, false);
+			rowElements.add(kanaInput);
+			SwingUtilities.invokeLater(kanaInput::requestFocusInWindow);
 			//TODO try to use the approach in whole application:
 			//GuiElement e = actionMaker.withAction(elementsMaker.createElement)
 			for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {

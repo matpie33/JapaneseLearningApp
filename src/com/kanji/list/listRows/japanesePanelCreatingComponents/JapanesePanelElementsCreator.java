@@ -164,10 +164,13 @@ public class JapanesePanelElementsCreator {
 		button.addActionListener(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				JTextComponent input = createKanjiInputWithValidation(
+						"", japaneseWriting, japaneseWord, inputGoal, editMode,
+						selectable);
 				rowPanel.insertElementInPlaceOfElement(
-						createKanjiInputWithValidation("", japaneseWriting,
-								japaneseWord, inputGoal, editMode, selectable),
+						input,
 						button);
+				SwingUtilities.invokeLater(input::requestFocusInWindow);
 			}
 		});
 		return button;

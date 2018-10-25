@@ -419,12 +419,9 @@ public class ApplicationController
 				fileChooser.getCurrentDirectory() + File.separator + directory);
 	}
 
-	public boolean showConfirmDialog(String message) {
-		return applicationWindow.showConfirmDialog(message);
-	}
 
 	public void showProblematicWordsDialogForCurrentList() {
-		showProblematicWordsDialog();
+		showProblematicWordsDialog(getActiveProblematicWordsController());
 	}
 
 	public <Element extends ListElement> void showProblematicWordsDialog(
@@ -434,30 +431,30 @@ public class ApplicationController
 		applicationWindow.setPanel(activeProblematicWordsController.getPanel());
 		activeProblematicWordsController
 				.addProblematicWordsAndHighlightFirst(problematicWords);
-		showProblematicWordsDialog();
+		showProblematicWordsDialog(activeProblematicWordsController);
 	}
 
 	public <Element extends ListElement> void showProblematicWordsDialog(
+			String controllerMeaningfulName,
 			ProblematicWordsState<Element> problematicWordsState) {
 		displayMessageAboutUnfinishedRepeating();
-
-		getActiveProblematicWordsController()
+		ProblematicWordsController problematicWordsController = applicationStateController
+				.getController(controllerMeaningfulName)
+				.getProblematicWordsController();
+		problematicWordsController
 				.addProblematicWordsHighlightReviewed(
 						problematicWordsState.getReviewedWords(),
 						problematicWordsState.getNotReviewedWords());
-		showProblematicWordsDialog();
+		showProblematicWordsDialog(problematicWordsController);
 	}
 
 	public void displayMessageAboutUnfinishedRepeating() {
 		applicationWindow.showMessageDialog(Prompts.UNFINISHED_REPEATING);
 	}
 
-	private void showProblematicWordsDialog() {
+	private void showProblematicWordsDialog(
+			ProblematicWordsController activeProblematicWordsController) {
 
-		ProblematicWordsController activeProblematicWordsController = getActiveProblematicWordsController();
-		if (activeProblematicWordsController.isProblematicWordsListEmpty()) {
-			return;
-		}
 		AbstractPanelWithHotkeysInfo problematicWordsPanel = activeProblematicWordsController
 				.getPanel();
 		if (problematicWordsPanel.isReady()) {
@@ -465,7 +462,7 @@ public class ApplicationController
 		}
 
 		applicationWindow.showPanel(
-				getActiveProblematicWordsController().getPanel()
+				activeProblematicWordsController.getPanel()
 						.getUniqueName());
 
 		switchStateManager(activeProblematicWordsController);

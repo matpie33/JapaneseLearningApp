@@ -67,9 +67,6 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		this.problematicJapaneseWordsDisplayer = problematicJapaneseWordsDisplayer;
 		kanjiInformationPanel = new MainPanel(
 				new PanelConfiguration().putRowsAsHighestAsPossible());
-		Color panelBackgroundColor = applicationController
-				.getApplicationWindow().getApplicationConfiguration()
-				.getPanelBackgroundColor();
 		englishPolishDictionaryPanel = new WebPagePanel(this, null,
 				applicationController.getApplicationWindow());
 		japaneseEnglishDictionaryPanel = new WebPagePanel(this, null,
@@ -213,9 +210,6 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		return null; //TODO implement it to return kanji tried to retrieve
 	}
 
-	public void setList(MyList<JapaneseWord> list) {
-		this.problematicWordsList = list;
-	}
 
 	public MyList<JapaneseWord> getWordsList() {
 		return problematicWordsList;

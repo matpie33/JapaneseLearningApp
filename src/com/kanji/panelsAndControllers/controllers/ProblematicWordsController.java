@@ -164,7 +164,8 @@ public class ProblematicWordsController<Word extends ListElement>
 			applicationController.switchToList(
 					applicationController.getActiveWordsListType());
 		}
-		applicationController.showProblematicWordsDialog(
+		applicationController.showProblematicWordsDialog(savingInformation
+						.getApplicationSaveableState().getMeaningfulName(),
 				savingInformation.getProblematicWordsState());
 	}
 
