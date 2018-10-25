@@ -2,10 +2,6 @@ package com.kanji.constants.strings;
 
 public class JapaneseApplicationButtonsNames {
 
-
-
-
-
 	public static final String START_LEARNING = "Start";
 
 	public static final String NOT_RECOGNIZED_WORD = "Nie pamietam";
@@ -27,7 +23,5 @@ public class JapaneseApplicationButtonsNames {
 
 	public static final String SHOW_KANJI_STORIES = "Przejdź do historyjki";
 
-	public static final String[] BUTTONS_ON_MAIN_PAGE = { START, LOAD_PROJECT,
-			LOAD_LIST, SAVE, SAVE_LIST, SHOW_PROBLEMATIC_KANJIS };
 
 }

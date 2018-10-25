@@ -66,7 +66,7 @@ public class ApplicationController
 	private boolean loadingInProgress = false;
 	private FileSavingManager fileSavingManager;
 	private ApplicationStateController applicationStateController;
-	private StartingPanel startingPanel;
+	private StartingController startingController;
 	private final static boolean SHOULD_CONVERT_OLD_TO_NEWEST_VERSION = false;
 
 	public ApplicationController() {
@@ -75,14 +75,15 @@ public class ApplicationController
 		applicationStateController = new ApplicationStateController(this,
 				Kanji.MEANINGFUL_NAME);
 		fileSavingManager = new FileSavingManager();
-		startingPanel = new StartingPanel();
-		applicationWindow = new ApplicationWindow(this, startingPanel,
+		startingController = new StartingController(this);
+		applicationWindow = new ApplicationWindow(this,
+				startingController.getStartingPanel(),
 				createApplicationConfiguration());
 	}
 
 	private ApplicationConfiguration createApplicationConfiguration() {
 		CustomPositioner customPositioner = new PositionerOnRightPartOfSplitPane(
-				startingPanel, this);
+				startingController, this);
 		return new ApplicationConfiguration(Titles.APPLICATION)
 				.setInsertWordPanelPositioner(customPositioner)
 				.setListRowEditTemporarilyColor(
@@ -125,8 +126,7 @@ public class ApplicationController
 
 	private void initializePanels() {
 
-		startingPanel.setApplicationController(this);
-		startingPanel.createListPanels();
+		startingController.getStartingPanel().createListPanels();
 
 		RepeatingWordsPanel repeatingKanjiPanel = getRepeatingWordsPanel(
 				Kanji.MEANINGFUL_NAME);
@@ -339,7 +339,7 @@ public class ApplicationController
 		applicationWindow.updateTitle(fileToSave.toString());
 		changeSaveStatus(SavingStatus.NO_CHANGES);
 
-		applicationWindow.setPanel(startingPanel);
+		applicationWindow.setPanel(startingController.getStartingPanel());
 		savingInformation.getJapaneseWords().removeIf(JapaneseWord::isEmpty);
 		LoadingPanel loadingPanel = showProgressDialog();
 		LoadingProjectWorker loadingProjectWorker = new LoadingProjectWorker(
@@ -692,11 +692,11 @@ public class ApplicationController
 	}
 
 	public void switchToList(TypeOfWordForRepeating typeOfWordForRepeating) {
-		startingPanel.switchToList(typeOfWordForRepeating);
+		startingController.switchToList(typeOfWordForRepeating);
 	}
 
 	public StartingPanel getStartingPanel() {
-		return startingPanel;
+		return startingController.getStartingPanel();
 	}
 
 	@Override
@@ -725,22 +725,26 @@ public class ApplicationController
 	}
 
 	public void updateProblematicWordsAmount() {
-		startingPanel.updateProblematicWordsAmount(
+		startingController.updateProblematicWordsAmount(
 				getProblematicWordsAmountBasedOnCurrentTab());
 	}
 
 	private void changeSaveStatus(SavingStatus savingStatus) {
-		startingPanel.changeSaveStatus(savingStatus);
-		startingPanel.getPanel().repaint();
+		startingController
+				.changeSaveStatus(savingStatus);
 	}
 
 	public void enableShowProblematicWordsButton() {
-		startingPanel.enableShowProblematicWordsButton();
+		startingController.enableShowProblematicWordsButton();
 	}
 
 	public void setActiveWordStateController(
 			String activeWordStateControllerName) {
 		this.applicationStateController
 				.setActiveWordStateControllerKey(activeWordStateControllerName);
+	}
+
+	public StartingController getStartingController() {
+		return startingController;
 	}
 }

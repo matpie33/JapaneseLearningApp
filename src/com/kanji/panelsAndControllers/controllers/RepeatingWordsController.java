@@ -1,18 +1,18 @@
 package com.kanji.panelsAndControllers.controllers;
 
+import com.guimaker.list.ListElement;
+import com.guimaker.timer.TimeSpentHandler;
+import com.guimaker.timer.TimeSpentMonitor;
+import com.guimaker.utilities.SetOfRanges;
 import com.kanji.constants.enums.RepeatingWordsPanelState;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.Prompts;
-import com.guimaker.list.ListElement;
 import com.kanji.list.listElements.RepeatingData;
 import com.kanji.panelsAndControllers.panelUpdaters.RepeatingWordsPanelUpdater;
 import com.kanji.panelsAndControllers.panels.RepeatingWordsPanel;
-import com.guimaker.utilities.SetOfRanges;
 import com.kanji.saving.ApplicationStateManager;
 import com.kanji.saving.RepeatingState;
 import com.kanji.saving.SavingInformation;
-import com.guimaker.timer.TimeSpentHandler;
-import com.guimaker.timer.TimeSpentMonitor;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -289,7 +289,7 @@ public class RepeatingWordsController<Word extends ListElement>
 
 		reset();
 		resumeUnfinishedRepeating(savingInformation.getRepeatingState());
-		applicationController.getStartingPanel()
+		applicationController.getStartingController()
 				.switchToList(savingInformation.getRepeatingState()
 						.getTypeOfWordForRepeating());
 		applicationController.displayMessageAboutUnfinishedRepeating();
