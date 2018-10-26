@@ -49,8 +49,8 @@ public class AdditionalInformation implements Serializable {
 			return false;
 		}
 		AdditionalInformation otherObject = (AdditionalInformation) o;
-		return tag.equals(otherObject.getTag()) && value
-				.equals(otherObject.getValue());
+		return tag.equals(otherObject.getTag()) && value.equals(
+				otherObject.getValue());
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class AdditionalInformation implements Serializable {
 	public boolean isEmpty() {
 		return getTag().equals(AdditionalInformationTag.OTHER)
 				&& possibleValues.size() == 1 && possibleValues.get(0)
-				.isEmpty();
+															   .isEmpty();
 	}
 
 }

@@ -1,7 +1,7 @@
 package com.kanji.list.listElements;
 
-import com.kanji.constants.enums.JapaneseParticle;
 import com.guimaker.list.ListElement;
+import com.kanji.constants.enums.JapaneseParticle;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.Serializable;
@@ -12,7 +12,7 @@ public class WordParticlesData implements ListElement, Serializable {
 	private static final long serialVersionUID = -3606244668613031057L;
 	private JapaneseParticle japaneseParticle;
 	private String additionalInformation = "";
-	private final static String MEANINGFUL_NAME ="Partykuły";
+	private final static String MEANINGFUL_NAME = "Partykuły";
 
 	public WordParticlesData(JapaneseParticle japaneseParticle) {
 		this.japaneseParticle = japaneseParticle;
@@ -40,8 +40,8 @@ public class WordParticlesData implements ListElement, Serializable {
 	public static WordParticlesData createParticleNotIncludedInWord(
 			JapaneseWord word) {
 		for (JapaneseParticle particle : JapaneseParticle.values()) {
-			if (!particle.equals(JapaneseParticle.EMPTY) && !word
-					.hasParticle(particle)) {
+			if (!particle.equals(JapaneseParticle.EMPTY) && !word.hasParticle(
+					particle)) {
 				return new WordParticlesData(particle);
 			}
 		}
@@ -50,12 +50,14 @@ public class WordParticlesData implements ListElement, Serializable {
 
 	@Override
 	public boolean equals(Object o) {
-		if (!o.getClass().equals(WordParticlesData.class)) {
+		if (!o.getClass()
+			  .equals(WordParticlesData.class)) {
 			return false;
 		}
 		WordParticlesData wordParticlesData = (WordParticlesData) o;
-		return !wordParticlesData.isEmpty() && !isEmpty() && wordParticlesData
-				.getJapaneseParticle().equals(getJapaneseParticle());
+		return !wordParticlesData.isEmpty() && !isEmpty()
+				&& wordParticlesData.getJapaneseParticle()
+									.equals(getJapaneseParticle());
 	}
 
 	@Override

@@ -2,7 +2,6 @@ package com.kanji.application;
 
 import com.guimaker.list.ListElement;
 import com.guimaker.list.myList.MyList;
-import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.RepeatingData;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.panelsAndControllers.controllers.RepeatingWordsController;
@@ -40,7 +39,7 @@ public class WordStateController<Word extends ListElement> {
 		return problematicWords;
 	}
 
-	public void setProblematicWords (Set <Word> problematicWords){
+	public void setProblematicWords(Set<Word> problematicWords) {
 		this.problematicWords.clear();
 		this.problematicWords.addAll(problematicWords);
 	}
@@ -49,11 +48,11 @@ public class WordStateController<Word extends ListElement> {
 		this.wordList = words;
 	}
 
-	public void setWords(List<Word> words){
+	public void setWords(List<Word> words) {
 		words.forEach(wordList::addWord);
 	}
 
-	public void setRepeatingDates (List<RepeatingData> repeatingDates){
+	public void setRepeatingDates(List<RepeatingData> repeatingDates) {
 		repeatingDates.forEach(repeatingData::addWord);
 	}
 

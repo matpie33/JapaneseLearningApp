@@ -1,16 +1,16 @@
 package com.kanji.list.listElements;
 
 import com.guimaker.enums.InputGoal;
+import com.guimaker.enums.WordSearchOptions;
 import com.guimaker.list.ListElement;
 import com.guimaker.list.ListElementInitializer;
+import com.guimaker.utilities.Pair;
+import com.guimaker.utilities.StringUtilities;
 import com.kanji.constants.enums.JapaneseParticle;
 import com.kanji.constants.enums.PartOfSpeech;
-import com.guimaker.enums.WordSearchOptions;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
 import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordWritingsChecker;
 import com.kanji.model.AdditionalInformation;
-import com.guimaker.utilities.Pair;
-import com.guimaker.utilities.StringUtilities;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -62,7 +62,8 @@ public class JapaneseWord implements ListElement, Serializable {
 
 	public boolean hasKanjiWriting() {
 		for (JapaneseWriting japaneseWriting : japaneseWritings) {
-			if (!japaneseWriting.getKanjiWritings().isEmpty()) {
+			if (!japaneseWriting.getKanjiWritings()
+								.isEmpty()) {
 				return true;
 			}
 		}
@@ -76,10 +77,10 @@ public class JapaneseWord implements ListElement, Serializable {
 	public static ListElementInitializer<JapaneseWord> getInitializer() {
 		return () -> {
 			JapaneseWord japaneseWord = new JapaneseWord(PartOfSpeech.NOUN, "");
-			japaneseWord.japaneseWritings
-					.add(JapaneseWriting.getInitializer().initializeElement());
-			japaneseWord.japaneseWritings
-					.add(JapaneseWriting.getInitializer().initializeElement());
+			japaneseWord.japaneseWritings.add(JapaneseWriting.getInitializer()
+															 .initializeElement());
+			japaneseWord.japaneseWritings.add(JapaneseWriting.getInitializer()
+															 .initializeElement());
 			return japaneseWord;
 		};
 	}
@@ -108,8 +109,9 @@ public class JapaneseWord implements ListElement, Serializable {
 	}
 
 	public Set<String> getKanaWritings() {
-		return japaneseWritings.stream().map(JapaneseWriting::getKanaWriting)
-				.collect(Collectors.toSet());
+		return japaneseWritings.stream()
+							   .map(JapaneseWriting::getKanaWriting)
+							   .collect(Collectors.toSet());
 	}
 
 	@Override
@@ -118,7 +120,7 @@ public class JapaneseWord implements ListElement, Serializable {
 			if (isEmpty() && ((JapaneseWord) element).isEmpty()) {
 				return true;
 			}
-			else if (isEmpty() || ((JapaneseWord) element).isEmpty()){
+			else if (isEmpty() || ((JapaneseWord) element).isEmpty()) {
 				return false;
 			}
 			JapaneseWord otherWord = (JapaneseWord) element;
@@ -148,11 +150,9 @@ public class JapaneseWord implements ListElement, Serializable {
 		builder.append("\nKana to kanji");
 		builder.append(getWritings());
 		builder.append("\nAdditionalInformations");
-		AdditionalInformation additionalInformation = partOfSpeechWithInformation
-				.getRight();
-		builder.append(
-				additionalInformation.getTag() + ", " + additionalInformation
-						.getValue());
+		AdditionalInformation additionalInformation = partOfSpeechWithInformation.getRight();
+		builder.append(additionalInformation.getTag() + ", "
+				+ additionalInformation.getValue());
 
 		builder.append("\nWord type: ");
 		builder.append(getPartOfSpeech().getPolishMeaning());
@@ -188,21 +188,22 @@ public class JapaneseWord implements ListElement, Serializable {
 	public String getDisplayedText() {
 		return StringUtilities.joinPropertyValuePairs(//
 				StringUtilities.joinPropertyAndValue(MEANING, getMeaning()),//
-				StringUtilities
-						.joinPropertyAndValue(PART_OF_SPEECH.toLowerCase()//
-								, getPartOfSpeech().getPolishMeaning()),//
+				StringUtilities.joinPropertyAndValue(
+						PART_OF_SPEECH.toLowerCase()//
+						, getPartOfSpeech().getPolishMeaning()),//
 				StringUtilities.joinPropertyAndValue(JAPANESE_WRITING, //
 						StringUtilities.concatenateStrings(//
 								getWritings().//
-										stream()
-										.map(JapaneseWriting::getDisplayedText)//
-										.collect(Collectors.toList()))));//
+													  stream().map(
+										JapaneseWriting::getDisplayedText)//
+											  .collect(
+													  Collectors.toList()))));//
 	}
 
 	public boolean containsWriting(JapaneseWriting writing) {
 		for (JapaneseWriting thisWriting : getWritings()) {
-			if (thisWriting.equals(writing) || (thisWriting.isEmpty() && writing
-					.isEmpty())) {
+			if (thisWriting.equals(writing) || (thisWriting.isEmpty()
+					&& writing.isEmpty())) {
 				return true;
 			}
 		}
@@ -218,16 +219,18 @@ public class JapaneseWord implements ListElement, Serializable {
 
 	public void addTakenParticle(JapaneseParticle particle,
 			String... additionalInformation) {
-		String mergedAdditionalInformations = StringUtilities
-				.concatenateStrings(Arrays.asList(additionalInformation));
-		takenParticles.add(new WordParticlesData(particle)
-				.setAdditionalInformation(mergedAdditionalInformations));
+		String mergedAdditionalInformations = StringUtilities.concatenateStrings(
+				Arrays.asList(additionalInformation));
+		takenParticles.add(
+				new WordParticlesData(particle).setAdditionalInformation(
+						mergedAdditionalInformations));
 	}
 
 	public void removeParticle(JapaneseParticle particle) {
 		WordParticlesData particleDataToRemove = null;
 		for (WordParticlesData existingParticle : getTakenParticles()) {
-			if (existingParticle.getJapaneseParticle().equals(particle)) {
+			if (existingParticle.getJapaneseParticle()
+								.equals(particle)) {
 				particleDataToRemove = existingParticle;
 				break;
 			}

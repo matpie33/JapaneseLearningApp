@@ -35,7 +35,8 @@ public enum PartOfSpeech {
 	public static PartOfSpeech getPartOfSpeachByPolishMeaning(
 			String polishMeaning) {
 		for (PartOfSpeech partOfSpeech : values()) {
-			if (partOfSpeech.getPolishMeaning().equals(polishMeaning)) {
+			if (partOfSpeech.getPolishMeaning()
+							.equals(polishMeaning)) {
 				return partOfSpeech;
 			}
 		}

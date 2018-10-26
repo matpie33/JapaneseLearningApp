@@ -20,7 +20,8 @@ public class JapaneseWritingUtilities {
 
 	public static boolean areKanjiWritingsEmpty(Set<String> kanjiWritings) {
 		return kanjiWritings.isEmpty() || (kanjiWritings.size() == 1
-				&& isInputEmpty(kanjiWritings.iterator().next(),
+				&& isInputEmpty(kanjiWritings.iterator()
+											 .next(),
 				TypeOfJapaneseWriting.KANJI));
 	}
 

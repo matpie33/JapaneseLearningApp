@@ -31,25 +31,26 @@ public class LoadingPanel extends AbstractPanelWithHotkeysInfo {
 		// another or create a separate row
 		progressBarsPanel = new MainPanel(
 				new PanelConfiguration().setColorToUse(BasicColors.BLUE_DARK_3)
-						.putRowsAsHighestAsPossible());
-		progressBarsPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.NONE, Anchor.CENTER, GuiElementsCreator
-						.createLabel(new ComponentOptions()
-								.text(Prompts.PROJECT_LOADING))));
-		mainPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.BOTH, progressBarsPanel.getPanel()));
+										.putRowsAsHighestAsPossible());
+		progressBarsPanel.addRow(
+				SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER,
+						GuiElementsCreator.createLabel(
+								new ComponentOptions().text(
+										Prompts.PROJECT_LOADING))));
+		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH,
+				progressBarsPanel.getPanel()));
 		buttonClose = createButtonClose();
 		setNavigationButtons(Anchor.CENTER, buttonClose);
 
 	}
 
 	public JProgressBar addProgressBar(String textLabel) {
-		JLabel label = GuiElementsCreator
-				.createLabel(new ComponentOptions().text(textLabel));
+		JLabel label = GuiElementsCreator.createLabel(
+				new ComponentOptions().text(textLabel));
 		JProgressBar progressBar = new JProgressBar();
-		progressBarsPanel.addElementsInColumn(SimpleRowBuilder
-				.createRowStartingFromColumn(0, FillType.NONE, label,
-						progressBar));
+		progressBarsPanel.addElementsInColumn(
+				SimpleRowBuilder.createRowStartingFromColumn(0, FillType.NONE,
+						label, progressBar));
 		return progressBar;
 	}
 

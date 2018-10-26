@@ -1,15 +1,15 @@
 package com.kanji.list.listRows;
 
+import com.guimaker.enums.InputGoal;
 import com.guimaker.enums.PanelDisplayMode;
+import com.guimaker.list.ListRowData;
+import com.guimaker.list.myList.ListRowCreator;
+import com.guimaker.listeners.InputValidationListener;
 import com.guimaker.model.PanelConfiguration;
 import com.guimaker.panels.MainPanel;
-import com.guimaker.enums.InputGoal;
+import com.guimaker.utilities.CommonListElements;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
-import com.guimaker.listeners.InputValidationListener;
-import com.guimaker.list.myList.ListRowCreator;
-import com.guimaker.list.ListRowData;
-import com.guimaker.utilities.CommonListElements;
 
 import javax.swing.*;
 import java.util.HashSet;
@@ -49,8 +49,8 @@ public class RowInJapaneseWordInformations
 		JLabel rowNumberLabel = commonListElements.getRowNumberLabel();
 		JapaneseWordPanelCreator panelCreatorToUse;
 		if (commonListElements.isForSingleRowOnly()) {
-			panelCreatorToUse = searchOrAddDialogPanelCreator
-					.orElse(newWordsPanelCreator.copy());
+			panelCreatorToUse = searchOrAddDialogPanelCreator.orElse(
+					newWordsPanelCreator.copy());
 		}
 		else {
 			panelCreatorToUse = newWordsPanelCreator;
@@ -58,10 +58,9 @@ public class RowInJapaneseWordInformations
 		panelCreatorToUse.addValidationListeners(validationListeners);
 		panelCreatorToUse.setRowNumberLabel(rowNumberLabel);
 		panelCreatorToUse.setLabelsColor(commonListElements.getLabelsColor());
-		ListRowData<JapaneseWord> rowData = panelCreatorToUse
-				.addJapanesePanelToExistingPanel(panel, japaneseWord, inputGoal,
-						commonListElements,
-						!commonListElements.isForSingleRowOnly());
+		ListRowData<JapaneseWord> rowData = panelCreatorToUse.addJapanesePanelToExistingPanel(
+				panel, japaneseWord, inputGoal, commonListElements,
+				!commonListElements.isForSingleRowOnly());
 		panelCreatorToUse.focusMeaningTextfield();
 
 		return rowData;

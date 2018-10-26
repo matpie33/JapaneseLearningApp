@@ -1,6 +1,5 @@
 package com.kanji.webPanel;
 
-import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.TextAlignment;
@@ -25,12 +24,15 @@ public class ConnectionFailKanjiOfflinePage
 
 	public ConnectionFailKanjiOfflinePage(Font kanjiFont) {
 		kanjiTextPane = GuiElementsCreator.createTextPane(
-				new TextPaneOptions().border(null).editable(false)
-						.textAlignment(TextAlignment.CENTERED).text(""));
+				new TextPaneOptions().border(null)
+									 .editable(false)
+									 .textAlignment(TextAlignment.CENTERED)
+									 .text(""));
 		kanjiTextPane.setFont(kanjiFont.deriveFont(kanjiFontSize));
 		mainPanel = new MainPanel();
-		mainPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.NONE, Anchor.CENTER, kanjiTextPane));
+		mainPanel.addRow(
+				SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER,
+						kanjiTextPane));
 	}
 
 	@Override
@@ -53,7 +55,8 @@ public class ConnectionFailKanjiOfflinePage
 	}
 
 	private void setFontSize(float fontSize) {
-		kanjiTextPane.setFont(kanjiTextPane.getFont().deriveFont(fontSize));
+		kanjiTextPane.setFont(kanjiTextPane.getFont()
+										   .deriveFont(fontSize));
 	}
 
 }

@@ -6,8 +6,7 @@ import com.kanji.list.listElements.Kanji;
 public enum ApplicationSaveableState {
 	//TODO make it a class with 2 fields
 	REPEATING_KANJI(Kanji.MEANINGFUL_NAME,
-			LearningState.REPEATING),
-	REPEATING_JAPANESE_WORDS(
+			LearningState.REPEATING), REPEATING_JAPANESE_WORDS(
 			JapaneseWord.MEANINGFUL_NAME, LearningState.REPEATING),
 
 	REVIEWING_PROBLEMATIC_KANJIS(Kanji.MEANINGFUL_NAME,

@@ -1,15 +1,15 @@
 package com.kanji.panelsAndControllers.controllers;
 
-import com.guimaker.panels.MainPanel;
-import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.guimaker.list.ListElement;
-import com.kanji.list.listElements.RepeatingData;
 import com.guimaker.list.myList.MyList;
+import com.guimaker.panels.MainPanel;
+import com.guimaker.timer.TimeSpent;
 import com.guimaker.utilities.Range;
 import com.guimaker.utilities.SetOfRanges;
+import com.kanji.constants.enums.TypeOfWordForRepeating;
+import com.kanji.list.listElements.RepeatingData;
 import com.kanji.repeating.RepeatingWordsDisplayer;
 import com.kanji.saving.RepeatingState;
-import com.guimaker.timer.TimeSpent;
 
 import java.util.*;
 

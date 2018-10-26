@@ -1,9 +1,9 @@
 package com.kanji.list.listElementPropertyManagers;
 
 import com.guimaker.list.ListElementPropertyManager;
+import com.guimaker.utilities.WordSearching;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElements.Kanji;
-import com.guimaker.utilities.WordSearching;
 
 import javax.swing.text.JTextComponent;
 
@@ -17,9 +17,8 @@ public class KanjiKeywordChecker extends WordSearchOptionsHolder
 
 	@Override
 	public boolean isPropertyFound(String kanjiKeyWord, Kanji kanji) {
-		return kanji != null && WordSearching
-				.doesWordContainSearchedWord(kanji.getKeyword(), kanjiKeyWord,
-						getWordSearchOptions());
+		return kanji != null && WordSearching.doesWordContainSearchedWord(
+				kanji.getKeyword(), kanjiKeyWord, getWordSearchOptions());
 	}
 
 	@Override

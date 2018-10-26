@@ -23,5 +23,4 @@ public class JapaneseApplicationButtonsNames {
 
 	public static final String SHOW_KANJI_STORIES = "Przejdź do historyjki";
 
-
 }

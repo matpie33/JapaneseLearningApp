@@ -83,15 +83,16 @@ public class RepeatingData implements Serializable, ListElement {
 	public boolean equals(Object element) {
 		if (element instanceof RepeatingData) {
 			RepeatingData otherWord = (RepeatingData) element;
-			return otherWord.getRepeatingDate().isEqual(repeatingDate);
+			return otherWord.getRepeatingDate()
+							.isEqual(repeatingDate);
 		}
 		return false;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects
-				.hash(repeatingDate, timeSpentOnRepeating, repeatingRange);
+		return Objects.hash(repeatingDate, timeSpentOnRepeating,
+				repeatingRange);
 	}
 
 	@Override
@@ -101,9 +102,10 @@ public class RepeatingData implements Serializable, ListElement {
 
 	@Override
 	public String getDisplayedText() {
-		return StringUtilities.joinPropertyValuePairs(StringUtilities
-						.joinPropertyAndValue(DATE, getRepeatingDate().toString()),
-				StringUtilities
-						.joinPropertyAndValue(RANGE, getRepeatingRange()));
+		return StringUtilities.joinPropertyValuePairs(
+				StringUtilities.joinPropertyAndValue(DATE,
+						getRepeatingDate().toString()),
+				StringUtilities.joinPropertyAndValue(RANGE,
+						getRepeatingRange()));
 	}
 }

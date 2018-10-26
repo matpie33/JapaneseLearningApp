@@ -23,8 +23,8 @@ public class KanjiKoohiWebPageHandler {
 		CookieHandler.setDefault(cookieManager);
 	}
 
-	public static KanjiKoohiWebPageHandler getInstance (){
-		if (kanjiKoohiWebPageHandler == null){
+	public static KanjiKoohiWebPageHandler getInstance() {
+		if (kanjiKoohiWebPageHandler == null) {
 			kanjiKoohiWebPageHandler = new KanjiKoohiWebPageHandler();
 		}
 		return kanjiKoohiWebPageHandler;
@@ -37,9 +37,9 @@ public class KanjiKoohiWebPageHandler {
 	}
 
 	private boolean isLoginDataRemembered() {
-		CookieManager cookieManager = (CookieManager) CookieHandler
-				.getDefault();
-		for (HttpCookie cookie : cookieManager.getCookieStore().getCookies()) {
+		CookieManager cookieManager = (CookieManager) CookieHandler.getDefault();
+		for (HttpCookie cookie : cookieManager.getCookieStore()
+											  .getCookies()) {
 			if (isCookieForLoginDataFromKoohiiPage(cookie)) {
 				return true;
 			}
@@ -49,12 +49,14 @@ public class KanjiKoohiWebPageHandler {
 
 	private boolean isCookieForLoginDataFromKoohiiPage(HttpCookie cookie) {
 
-		return cookie.getName().equals(KANJI_KOOHI_LOGIN_COOKIE) && cookie
-				.getDomain().equals("kanji.koohii.com");
+		return cookie.getName()
+					 .equals(KANJI_KOOHI_LOGIN_COOKIE) && cookie.getDomain()
+																.equals("kanji.koohii.com");
 	}
 
 	public String getKanjiKoohiLoginCookieHeader() {
-		List<HttpCookie> cookies = cookieManager.getCookieStore().getCookies();
+		List<HttpCookie> cookies = cookieManager.getCookieStore()
+												.getCookies();
 		for (HttpCookie cookie : cookies) {
 			if (isCookieForLoginDataFromKoohiiPage(cookie)) {
 				return cookie.toString();
@@ -63,19 +65,19 @@ public class KanjiKoohiWebPageHandler {
 		return "";
 	}
 
-
 	public void setLoginDataCookie(String loginDataCookie) throws IOException {
 		Map<String, List<String>> headers = new LinkedHashMap<>();
 		headers.put("Set-Cookie", Arrays.asList(loginDataCookie));
-		List<HttpCookie> cookies = cookieManager.getCookieStore().getCookies();
+		List<HttpCookie> cookies = cookieManager.getCookieStore()
+												.getCookies();
 		for (HttpCookie cookie : cookies) {
-			if (cookie.getName().equals(KANJI_KOOHI_LOGIN_COOKIE)) {
+			if (cookie.getName()
+					  .equals(KANJI_KOOHI_LOGIN_COOKIE)) {
 				return;
 			}
 		}
 		cookieManager.put(URI.create(Urls.KANJI_KOOHI_LOGIN_PAGE), headers);
 
 	}
-
 
 }

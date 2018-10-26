@@ -1,14 +1,14 @@
 package com.kanji.problematicWords;
 
+import com.guimaker.list.myList.MyList;
 import com.guimaker.model.WebContext;
+import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Urls;
 import com.kanji.context.KanjiContext;
 import com.kanji.list.listElements.Kanji;
-import com.guimaker.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
-import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.panelsAndControllers.panels.ProblematicKanjiPanel;
 import com.kanji.utilities.KanjiCharactersReader;
 import com.kanji.webPanel.KanjiKoohiWebPageHandler;
@@ -32,8 +32,8 @@ public class ProblematicKanjiDisplayer
 				applicationController, this);
 		problematicKanjiPanel = new ProblematicKanjiPanel(applicationController,
 				problematicWordsController, this);
-		problematicKanjiPanel
-				.setParentDialog(applicationController.getApplicationWindow());
+		problematicKanjiPanel.setParentDialog(
+				applicationController.getApplicationWindow());
 		kanjiContext = KanjiContext.emptyContext();
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		kanjiCharactersReader.loadKanjisIfNeeded();
@@ -55,7 +55,7 @@ public class ProblematicKanjiDisplayer
 		String uriText = Urls.KANJI_KOOHI_REVIEW_BASE_PAGE;
 		uriText += kanji.getId();
 		problematicKanjiPanel.getKanjiKoohiWebPanel()
-				.showPageWithoutGrabbingFocus(uriText);
+							 .showPageWithoutGrabbingFocus(uriText);
 		kanjiContext = new KanjiContext(
 				kanjiCharactersReader.getKanjiById(kanji.getId()),
 				kanji.getId());
@@ -70,10 +70,11 @@ public class ProblematicKanjiDisplayer
 	@Override
 	public void initializeWebPages() {
 		problematicKanjiPanel.getEnglishPolishDictionaryWebPanel()
-				.showPageWithoutGrabbingFocus(Urls.DICTIONARY_PL_EN_MAIN_PAGE);
+							 .showPageWithoutGrabbingFocus(
+									 Urls.DICTIONARY_PL_EN_MAIN_PAGE);
 		problematicKanjiPanel.getKanjiKoohiWebPanel()
-				.showPageWithoutGrabbingFocus(
-						kanjiKoohiWebPageHandler.getInitialPage());
+							 .showPageWithoutGrabbingFocus(
+									 kanjiKoohiWebPageHandler.getInitialPage());
 	}
 
 	@Override
@@ -84,13 +85,14 @@ public class ProblematicKanjiDisplayer
 	@Override
 	public boolean isListPanelFocused() {
 		return problematicKanjiPanel.getFocusableComponentsManager()
-				.getFocusedComponent().equals(wordsToReviewList.getPanel());
+									.getFocusedComponent()
+									.equals(wordsToReviewList.getPanel());
 	}
 
 	@Override
 	public void focusPreviouslyFocusedElement() {
 		problematicKanjiPanel.getFocusableComponentsManager()
-				.focusPreviouslyFocusedElement();
+							 .focusPreviouslyFocusedElement();
 	}
 
 	public String getKanjiKoohiLoginCookieHeader() {

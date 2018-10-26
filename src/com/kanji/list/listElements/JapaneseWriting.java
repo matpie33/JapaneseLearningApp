@@ -3,10 +3,10 @@ package com.kanji.list.listElements;
 import com.guimaker.enums.InputGoal;
 import com.guimaker.list.ListElement;
 import com.guimaker.list.ListElementInitializer;
+import com.guimaker.utilities.StringUtilities;
 import com.kanji.constants.enums.TypeOfJapaneseWriting;
 import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordWritingsChecker;
 import com.kanji.utilities.JapaneseWritingUtilities;
-import com.guimaker.utilities.StringUtilities;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -38,10 +38,10 @@ public class JapaneseWriting implements ListElement, Serializable {
 
 	@Override
 	public boolean isEmpty() {
-		return JapaneseWritingUtilities
-				.isInputEmpty(kanaWriting, TypeOfJapaneseWriting.KANA) && (
-				kanjiWritings.isEmpty() || JapaneseWritingUtilities
-						.areKanjiWritingsEmpty(kanjiWritings));
+		return JapaneseWritingUtilities.isInputEmpty(kanaWriting,
+				TypeOfJapaneseWriting.KANA) && (kanjiWritings.isEmpty()
+				|| JapaneseWritingUtilities.areKanjiWritingsEmpty(
+				kanjiWritings));
 	}
 
 	public String getKanaWriting() {
@@ -66,20 +66,22 @@ public class JapaneseWriting implements ListElement, Serializable {
 
 	@Override
 	public boolean equals(Object element) {
-		if (!element.getClass().equals(getClass())) {
+		if (!element.getClass()
+					.equals(getClass())) {
 			return false;
 		}
 		JapaneseWriting otherWriting = (JapaneseWriting) element;
-		return JapaneseWordWritingsChecker
-				.areWritingsEqual(otherWriting, this, InputGoal.ADD);
+		return JapaneseWordWritingsChecker.areWritingsEqual(otherWriting, this,
+				InputGoal.ADD);
 	}
 
 	@Override
 	public String getDisplayedText() {
 		return StringUtilities.joinPropertyValuePairs(//
 				StringUtilities.joinPropertyAndValue(KANA, getKanaWriting()),
-				StringUtilities.joinPropertyAndValue(KANJI, StringUtilities
-						.concatenateStrings(getKanjiWritings())));
+				StringUtilities.joinPropertyAndValue(KANJI,
+						StringUtilities.concatenateStrings(
+								getKanjiWritings())));
 	}
 
 	public void replaceKanji(String previousValue, String newValue) {

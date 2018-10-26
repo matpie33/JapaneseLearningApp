@@ -32,9 +32,9 @@ public class OldToNewestVersionConverter {
 		byte[] result = new byte[content.length + calculateBytesDifference()];
 
 		int numberOfElementsInResult = 0;
-		for (Map.Entry<String, String> replacementEntry : replacements
-				.entrySet()) {
-			byte[] toReplace = replacementEntry.getKey().getBytes();
+		for (Map.Entry<String, String> replacementEntry : replacements.entrySet()) {
+			byte[] toReplace = replacementEntry.getKey()
+											   .getBytes();
 			int index = indexOf(content, toReplace);
 			if (index > -1) {
 				indexAndReplacement.put(index, replacementEntry);
@@ -46,10 +46,10 @@ public class OldToNewestVersionConverter {
 		}
 
 		int copyStartIndex = 0;
-		for (Map.Entry<Integer, Map.Entry<String, String>> entry : indexAndReplacement
-				.entrySet()) {
+		for (Map.Entry<Integer, Map.Entry<String, String>> entry : indexAndReplacement.entrySet()) {
 			Map.Entry<String, String> replacementEntry = entry.getValue();
-			byte[] toReplace = replacementEntry.getKey().getBytes();
+			byte[] toReplace = replacementEntry.getKey()
+											   .getBytes();
 			String replacement = replacementEntry.getValue();
 			int index = entry.getKey();
 			int replacementLength = replacement.length();
@@ -76,7 +76,9 @@ public class OldToNewestVersionConverter {
 	private static int calculateBytesDifference() {
 		int difference = 0;
 		for (Map.Entry<String, String> entry : replacements.entrySet()) {
-			difference += entry.getValue().length() - entry.getKey().length();
+			difference += entry.getValue()
+							   .length() - entry.getKey()
+												.length();
 		}
 		return difference;
 	}

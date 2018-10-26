@@ -1,11 +1,11 @@
 package com.kanji.japaneseParticlesPanel;
 
-import com.kanji.constants.enums.JapaneseParticle;
 import com.guimaker.enums.ListElementModificationType;
+import com.guimaker.utilities.ThreadUtilities;
+import com.kanji.constants.enums.JapaneseParticle;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.WordParticlesData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
-import com.guimaker.utilities.ThreadUtilities;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -41,8 +41,8 @@ public class JapaneseParticleActionsCreator {
 	public void removeParticleWhenRowDeleted(
 			WordParticlesData wordParticlesData, JapaneseWord japaneseWord,
 			AbstractButton buttonDelete) {
-		buttonDelete.addActionListener(e -> japaneseWord
-				.removeParticle(wordParticlesData.getJapaneseParticle()));
+		buttonDelete.addActionListener(e -> japaneseWord.removeParticle(
+				wordParticlesData.getJapaneseParticle()));
 	}
 
 	public JComboBox saveParticleWhenChanged(JComboBox particleCombobox,
@@ -51,8 +51,8 @@ public class JapaneseParticleActionsCreator {
 			particleCombobox.addItemListener(new ItemListener() {
 				@Override
 				public void itemStateChanged(ItemEvent e) {
-					JapaneseParticle particleByComboboxValue = JapaneseParticle
-							.getByString((String) e.getItem());
+					JapaneseParticle particleByComboboxValue = JapaneseParticle.getByString(
+							(String) e.getItem());
 					if (e.getStateChange() == ItemEvent.DESELECTED) {
 						japaneseWord.removeParticle(particleByComboboxValue);
 					}
@@ -64,8 +64,8 @@ public class JapaneseParticleActionsCreator {
 						});
 					}
 					applicationController.getJapaneseWords()
-							.updateObservers(japaneseWord,
-									ListElementModificationType.EDIT);
+										 .updateObservers(japaneseWord,
+												 ListElementModificationType.EDIT);
 
 				}
 			});

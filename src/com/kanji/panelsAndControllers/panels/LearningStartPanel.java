@@ -56,22 +56,22 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		JLabel title = GuiElementsCreator.createLabel(
 				new ComponentOptions().text(Titles.LEARNING_START_DIALOG));
 		problematicWordsCheckbox = createProblematicKanjiCheckbox();
-		problematicWordsAmountLabel = GuiElementsCreator
-				.createLabel(new ComponentOptions());
+		problematicWordsAmountLabel = GuiElementsCreator.createLabel(
+				new ComponentOptions());
 
 		rangesPanel = new MainPanel(
 				new PanelConfiguration().putRowsAsHighestAsPossible());
 		rangesScrollPane = GuiElementsCreator.createScrollPane(
 				new ScrollPaneOptions().opaque(false)
-						.componentToWrap(rangesPanel.getPanel()).border(null)
-						.preferredSize(new Dimension(350, 200)));
+									   .componentToWrap(rangesPanel.getPanel())
+									   .border(null)
+									   .preferredSize(new Dimension(350, 200)));
 		addRowToRangesPanel();
-		AbstractButton buttonAddRow = GuiElementsCreator
-				.createButtonlikeComponent(new ButtonOptions(ButtonType.BUTTON)
-								.text(ButtonsNames.ADD_ROW),
-						controller.createActionAddRow());
-		sumOfWordsLabel = GuiElementsCreator
-				.createLabel(new ComponentOptions());
+		AbstractButton buttonAddRow = GuiElementsCreator.createButtonlikeComponent(
+				new ButtonOptions(ButtonType.BUTTON).text(ButtonsNames.ADD_ROW),
+				controller.createActionAddRow());
+		sumOfWordsLabel = GuiElementsCreator.createLabel(
+				new ComponentOptions());
 		AbstractButton buttonCancel = createButtonClose();
 		AbstractButton buttonApprove = createButtonWithHotkey(KeyEvent.VK_ENTER,
 				controller.createActionStartLearning(),
@@ -81,25 +81,28 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		MainPanel panelIncludeProblematicWords = new MainPanel();
 		panelIncludeProblematicWords.addRows(
 				SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER, title)
-						.disableBorder()
-						.nextRow(FillType.HORIZONTAL, problematicWordsCheckbox)
-						.nextRow(problematicWordsAmountLabel));
+								.disableBorder()
+								.nextRow(FillType.HORIZONTAL,
+										problematicWordsCheckbox)
+								.nextRow(problematicWordsAmountLabel));
 
 		MainPanel panelChooseWordRanges = new MainPanel();
-		panelChooseWordRanges.addRows(SimpleRowBuilder
-				.createRow(FillType.NONE, Anchor.CENTER, GuiElementsCreator
-						.createLabel(new ComponentOptions()
-								.text(Prompts.LEARNING_START)))
-				.nextRow(FillType.BOTH, rangesScrollPane)
-				.useAllExtraVerticalSpace()
-				.nextRow(FillType.HORIZONTAL, buttonAddRow, sumOfWordsLabel)
-				.fillHorizontallySomeElements(sumOfWordsLabel));
+		panelChooseWordRanges.addRows(
+				SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER,
+						GuiElementsCreator.createLabel(
+								new ComponentOptions().text(
+										Prompts.LEARNING_START)))
+								.nextRow(FillType.BOTH, rangesScrollPane)
+								.useAllExtraVerticalSpace()
+								.nextRow(FillType.HORIZONTAL, buttonAddRow,
+										sumOfWordsLabel)
+								.fillHorizontallySomeElements(sumOfWordsLabel));
 
 		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH,
 				panelIncludeProblematicWords.getPanel()));
-		mainPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.BOTH, panelChooseWordRanges.getPanel())
-				.useAllExtraVerticalSpace());
+		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH,
+				panelChooseWordRanges.getPanel())
+										 .useAllExtraVerticalSpace());
 
 		controller.setProblematicWordsAmount();
 		setNavigationButtons(buttonCancel, buttonApprove);
@@ -108,11 +111,12 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 	private AbstractButton createProblematicKanjiCheckbox() {
 		problematicCheckbox = GuiElementsCreator.createButtonlikeComponent(
-				new ButtonOptions(ButtonType.CHECKBOX)
-						.text(Labels.PROBLEMATIC_WORDS_OPTION).opaque(false),
-				null);
-		problematicCheckbox.addItemListener(controller
-				.createListenerAddProblematicWords(problematicCheckbox));
+				new ButtonOptions(ButtonType.CHECKBOX).text(
+						Labels.PROBLEMATIC_WORDS_OPTION)
+													  .opaque(false), null);
+		problematicCheckbox.addItemListener(
+				controller.createListenerAddProblematicWords(
+						problematicCheckbox));
 		controller.enableOrDisableProblematicCheckbox();
 		return problematicCheckbox;
 
@@ -128,8 +132,9 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 	public void addLabelWithProblematicWords() {
 		problematicWordsLabel = GuiElementsCreator.createLabel(
 				new ComponentOptions().text(Prompts.PROBLEMATIC_KANJIS_ADDED));
-		rangesPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.NONE, Anchor.NORTH, problematicWordsLabel));
+		rangesPanel.addRow(
+				SimpleRowBuilder.createRow(FillType.NONE, Anchor.NORTH,
+						problematicWordsLabel));
 	}
 
 	public JLabel getProblematicWordsLabel() {
@@ -144,15 +149,15 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		JTextComponent inputRangeFrom = createInputForWordRangeComponent();
 		JTextComponent inputRangeTo = createInputForWordRangeComponent();
 
-		KeyAdapter keyAdapter = controller
-				.createListenerForKeyTyped(inputRangeFrom, inputRangeTo);
+		KeyAdapter keyAdapter = controller.createListenerForKeyTyped(
+				inputRangeFrom, inputRangeTo);
 		inputRangeFrom.addKeyListener(keyAdapter);
 		inputRangeTo.addKeyListener(keyAdapter);
 		firstTextFieldInRow = inputRangeFrom;
 
 		AbstractButton removeRow = GuiElementsCreator.createButtonlikeComponent(
-				new ButtonOptions(ButtonType.BUTTON)
-						.text(ButtonsNames.REMOVE_ROW),
+				new ButtonOptions(ButtonType.BUTTON).text(
+						ButtonsNames.REMOVE_ROW),
 				controller.createActionDeleteRow(inputRangeFrom, inputRangeTo));
 
 		JLabel labelFrom = GuiElementsCreator.createLabel(
@@ -160,9 +165,9 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		JLabel labelTo = GuiElementsCreator.createLabel(
 				new ComponentOptions().text(Labels.RANGE_TO_LABEL));
 
-		AbstractSimpleRow newRow = SimpleRowBuilder
-				.createRow(FillType.NONE, Anchor.NORTH, labelFrom,
-						inputRangeFrom, labelTo, inputRangeTo, removeRow);
+		AbstractSimpleRow newRow = SimpleRowBuilder.createRow(FillType.NONE,
+				Anchor.NORTH, labelFrom, inputRangeFrom, labelTo, inputRangeTo,
+				removeRow);
 
 		controller.addRowToRangesPanel(inputRangeFrom, inputRangeTo, newRow);
 		controller.updateAfterAddingRangesRow(rangesScrollPane, inputRangeFrom);
@@ -175,14 +180,18 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 
 	private JTextComponent createInputForWordRangeComponent() {
 		return GuiElementsCreator.createTextField(new TextComponentOptions().
-				maximumCharacters(5).rowsAndColumns(1, 5));
+																					maximumCharacters(
+																							5)
+																			.rowsAndColumns(
+																					1,
+																					5));
 	}
 
 	public void showErrorOnThePanel(String message, int rowNumber) {
-		rangesPanel.insertRow(rowNumber, SimpleRowBuilder
-				.createRow(FillType.NONE, Anchor.NORTH,
+		rangesPanel.insertRow(rowNumber,
+				SimpleRowBuilder.createRow(FillType.NONE, Anchor.NORTH,
 						CommonGuiElementsCreator.createErrorLabel(message))
-				.fillAllVertically());
+								.fillAllVertically());
 	}
 
 	public JLabel getSumOfWordsLabel() {
@@ -190,9 +199,8 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	public int getIndexOfRangesRow(RangesRow rangesRow) {
-		return getRangesPanel()
-				.getIndexOfRowContainingElements(rangesRow.getTextFieldFrom(),
-						rangesRow.getTextFieldTo());
+		return getRangesPanel().getIndexOfRowContainingElements(
+				rangesRow.getTextFieldFrom(), rangesRow.getTextFieldTo());
 	}
 
 	@Override

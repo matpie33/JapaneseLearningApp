@@ -44,17 +44,21 @@ public class PanelSwitchingHandler {
 			JComponent closestPanel, MoveDirection moveDirection) {
 		switch (moveDirection) {
 		case RIGHT:
-			return panel.getLocationOnScreen().getX() < closestPanel
-					.getLocationOnScreen().getX();
+			return panel.getLocationOnScreen()
+						.getX() < closestPanel.getLocationOnScreen()
+											  .getX();
 		case LEFT:
-			return panel.getLocationOnScreen().getX() > closestPanel
-					.getLocationOnScreen().getX();
+			return panel.getLocationOnScreen()
+						.getX() > closestPanel.getLocationOnScreen()
+											  .getX();
 		case ABOVE:
-			return panel.getLocationOnScreen().getY() > closestPanel
-					.getLocationOnScreen().getY();
+			return panel.getLocationOnScreen()
+						.getY() > closestPanel.getLocationOnScreen()
+											  .getY();
 		case BELOW:
-			return panel.getLocationOnScreen().getY() < closestPanel
-					.getLocationOnScreen().getY();
+			return panel.getLocationOnScreen()
+						.getY() < closestPanel.getLocationOnScreen()
+											  .getY();
 
 		}
 		return false;
@@ -65,17 +69,21 @@ public class PanelSwitchingHandler {
 
 		switch (moveDirection) {
 		case RIGHT:
-			return panel.getLocationOnScreen().getX() > referencePanel
-					.getLocationOnScreen().getX();
+			return panel.getLocationOnScreen()
+						.getX() > referencePanel.getLocationOnScreen()
+												.getX();
 		case LEFT:
-			return panel.getLocationOnScreen().getX() < referencePanel
-					.getLocationOnScreen().getX();
+			return panel.getLocationOnScreen()
+						.getX() < referencePanel.getLocationOnScreen()
+												.getX();
 		case ABOVE:
-			return panel.getLocationOnScreen().getY() < referencePanel
-					.getLocationOnScreen().getY();
+			return panel.getLocationOnScreen()
+						.getY() < referencePanel.getLocationOnScreen()
+												.getY();
 		case BELOW:
-			return panel.getLocationOnScreen().getY() > referencePanel
-					.getLocationOnScreen().getY();
+			return panel.getLocationOnScreen()
+						.getY() > referencePanel.getLocationOnScreen()
+												.getY();
 
 		}
 		return false;
@@ -87,21 +95,24 @@ public class PanelSwitchingHandler {
 		switch (moveDirection) {
 		case LEFT:
 		case RIGHT:
-			return panel.getLocationOnScreen().getY() == referencePanel
-					.getLocationOnScreen().getY()
+			return panel.getLocationOnScreen()
+						.getY() == referencePanel.getLocationOnScreen()
+												 .getY()
 					|| getBottomLocation(panel) == getBottomLocation(
 					referencePanel);
 		case ABOVE:
 		case BELOW:
-			return panel.getLocationOnScreen().getX() == referencePanel
-					.getLocationOnScreen().getX();
+			return panel.getLocationOnScreen()
+						.getX() == referencePanel.getLocationOnScreen()
+												 .getX();
 		}
 		return false;
 	}
 
 	private double getBottomLocation(JComponent component) {
-		return component.getLocationOnScreen().getY() + component.getSize()
-				.getHeight();
+		return component.getLocationOnScreen()
+						.getY() + component.getSize()
+										   .getHeight();
 	}
 
 }

@@ -1,12 +1,12 @@
 package com.kanji.problematicWords;
 
-import com.guimaker.webPanel.ContextOwner;
 import com.guimaker.list.ListElement;
 import com.guimaker.list.myList.MyList;
 import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
+import com.guimaker.webPanel.ContextOwner;
 
-public interface ProblematicWordsDisplayer<Word extends ListElement> extends
-		ContextOwner {
+public interface ProblematicWordsDisplayer<Word extends ListElement>
+		extends ContextOwner {
 
 	public MyList<Word> getWordsToReviewList();
 

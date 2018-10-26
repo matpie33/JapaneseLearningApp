@@ -1,10 +1,10 @@
 package com.kanji.list.listElementPropertyManagers;
 
-import com.guimaker.list.ListElementPropertyManager;
 import com.guimaker.enums.WordSearchOptions;
+import com.guimaker.list.ListElementPropertyManager;
+import com.guimaker.utilities.WordSearching;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElements.JapaneseWord;
-import com.guimaker.utilities.WordSearching;
 
 import javax.swing.text.JTextComponent;
 
@@ -23,9 +23,10 @@ public class JapaneseWordMeaningChecker extends WordSearchOptionsHolder
 	@Override
 	public boolean isPropertyFound(String wordInKanji,
 			JapaneseWord wordInformation) {
-		return wordInformation != null && WordSearching
-				.doesWordContainSearchedWord(wordInformation.getMeaning(),
-						wordInKanji, getWordSearchOptions());
+		return wordInformation != null
+				&& WordSearching.doesWordContainSearchedWord(
+				wordInformation.getMeaning(), wordInKanji,
+				getWordSearchOptions());
 	}
 
 	@Override
@@ -47,7 +48,7 @@ public class JapaneseWordMeaningChecker extends WordSearchOptionsHolder
 
 	@Override
 	public String getPropertyDefinedException(String property) {
-		return String
-				.format(ExceptionsMessages.DUPLICATED_WORD_MEANING, property);
+		return String.format(ExceptionsMessages.DUPLICATED_WORD_MEANING,
+				property);
 	}
 }

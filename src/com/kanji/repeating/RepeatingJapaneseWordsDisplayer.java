@@ -1,14 +1,14 @@
 package com.kanji.repeating;
 
+import com.guimaker.enums.InputGoal;
 import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.panels.MainPanel;
-import com.guimaker.enums.InputGoal;
+import com.guimaker.utilities.CommonListElements;
+import com.guimaker.utilities.StringUtilities;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
-import com.guimaker.utilities.CommonListElements;
 import com.kanji.utilities.KanjiCharactersReader;
-import com.guimaker.utilities.StringUtilities;
 
 import java.awt.*;
 import java.util.*;
@@ -38,8 +38,8 @@ public class RepeatingJapaneseWordsDisplayer
 	private void initializeHintTypeValues() {
 		hintTypeIntValues = new HashMap<>();
 		hintTypeIntValues.put(1, japaneseWordInformation -> new HashSet<>(
-				Collections
-						.singletonList(japaneseWordInformation.getMeaning())));
+				Collections.singletonList(
+						japaneseWordInformation.getMeaning())));
 		hintTypeIntValues.put(2, JapaneseWord::getKanaWritings);
 		hintTypeIntValues.put(3, JapaneseWord::getKanjiWritings);
 
@@ -49,10 +49,9 @@ public class RepeatingJapaneseWordsDisplayer
 	public void showFullWordDetailsPanel(JapaneseWord japaneseWord,
 			MainPanel wordAssessmentPanel) {
 		wordAssessmentPanel.clear();
-		japaneseWordPanelCreator
-				.addJapanesePanelToExistingPanel(wordAssessmentPanel,
-						japaneseWord, InputGoal.NO_INPUT,
-						CommonListElements.forSingleRowOnly(Color.WHITE), true);
+		japaneseWordPanelCreator.addJapanesePanelToExistingPanel(
+				wordAssessmentPanel, japaneseWord, InputGoal.NO_INPUT,
+				CommonListElements.forSingleRowOnly(Color.WHITE), true);
 	}
 
 	@Override
@@ -71,8 +70,8 @@ public class RepeatingJapaneseWordsDisplayer
 		}
 		Random random = new Random();
 		int randomNumber = random.nextInt(possibilitiesAmount) + 1;
-		Function<JapaneseWord, Set<String>> hintGetter = hintTypeIntValues
-				.get(randomNumber);
+		Function<JapaneseWord, Set<String>> hintGetter = hintTypeIntValues.get(
+				randomNumber);
 		return StringUtilities.concatenateStrings(
 				new ArrayList<>((hintGetter.apply(kanjiInformation))));
 	}

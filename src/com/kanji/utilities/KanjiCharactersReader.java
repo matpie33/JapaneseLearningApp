@@ -37,7 +37,8 @@ public class KanjiCharactersReader {
 			while ((line = br.readLine()) != null) {
 				words.add(line);
 			}
-			String first = words.get(0).replace("\uFEFF", "");
+			String first = words.get(0)
+								.replace("\uFEFF", "");
 			words.remove(0);
 			words.add(0, first);
 			br.close();

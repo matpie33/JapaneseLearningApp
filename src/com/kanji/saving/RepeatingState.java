@@ -1,9 +1,9 @@
 package com.kanji.saving;
 
-import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.guimaker.list.ListElement;
-import com.kanji.list.listElements.RepeatingData;
 import com.guimaker.timer.TimeSpent;
+import com.kanji.constants.enums.TypeOfWordForRepeating;
+import com.kanji.list.listElements.RepeatingData;
 
 import java.io.Serializable;
 import java.util.Set;

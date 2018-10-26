@@ -7,7 +7,6 @@ import com.guimaker.list.ListRowData;
 import com.guimaker.list.myList.ListRowCreator;
 import com.guimaker.list.myList.ListRowDataCreator;
 import com.guimaker.listeners.InputValidationListener;
-import com.guimaker.model.PanelConfiguration;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
@@ -34,23 +33,25 @@ public class RowInRepeatingList implements ListRowCreator<RepeatingData> {
 		LocalDateTime date1 = repeatingData.getRepeatingDate();
 
 		JLabel repeatedWords = GuiElementsCreator.createLabel(
-				new ComponentOptions()
-						.text(Prompts.REPEATING_WORDS_RANGE + word)
-						.foregroundColor(labelsColor));
+				new ComponentOptions().text(
+						Prompts.REPEATING_WORDS_RANGE + word)
+									  .foregroundColor(labelsColor));
 
-		DateTimeFormatter sdf = DateTimeFormatter
-				.ofPattern("dd MMMM yyyy / HH:mm");
-		JLabel date = GuiElementsCreator.createLabel(new ComponentOptions()
-				.text(Prompts.REPEATING_DATE + sdf.format(date1))
-				.foregroundColor(labelsColor));
+		DateTimeFormatter sdf = DateTimeFormatter.ofPattern(
+				"dd MMMM yyyy / HH:mm");
+		JLabel date = GuiElementsCreator.createLabel(
+				new ComponentOptions().text(
+						Prompts.REPEATING_DATE + sdf.format(date1))
+									  .foregroundColor(labelsColor));
 
 		date.setForeground(BasicColors.BLUE_NORMAL_2);
 		JLabel timeSpent = null;
 
 		if (time != null) {
-			timeSpent = GuiElementsCreator.createLabel(new ComponentOptions()
-					.text(String.format(Prompts.REPEATING_TIME, time))
-					.foregroundColor(labelsColor));
+			timeSpent = GuiElementsCreator.createLabel(
+					new ComponentOptions().text(
+							String.format(Prompts.REPEATING_TIME, time))
+										  .foregroundColor(labelsColor));
 		}
 
 		AbstractButton delete = commonListElements.getButtonDelete();
@@ -58,8 +59,9 @@ public class RowInRepeatingList implements ListRowCreator<RepeatingData> {
 		MainPanel panel = new MainPanel();
 		panel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL,
 				commonListElements.getRowNumberLabel(), date)
-				.nextRow(repeatedWords).nextRow(timeSpent)
-				.nextRow(FillType.NONE, delete));
+									  .nextRow(repeatedWords)
+									  .nextRow(timeSpent)
+									  .nextRow(FillType.NONE, delete));
 
 		if (!inputGoal.equals(InputGoal.EDIT)) {
 			//TODO implement it for searching repeating list to work

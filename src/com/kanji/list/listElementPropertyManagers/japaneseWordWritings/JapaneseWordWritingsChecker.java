@@ -1,9 +1,9 @@
 package com.kanji.list.listElementPropertyManagers.japaneseWordWritings;
 
 import com.guimaker.enums.InputGoal;
+import com.guimaker.list.ListElementPropertyManager;
 import com.kanji.constants.enums.TypeOfJapaneseWriting;
 import com.kanji.constants.strings.ExceptionsMessages;
-import com.guimaker.list.ListElementPropertyManager;
 import com.kanji.list.listElementPropertyManagers.WordSearchOptionsHolder;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
@@ -38,8 +38,7 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 	}
 
 	public JTextComponent getAnyKanjiInput() {
-		List<JTextComponent> kanjiInputs = writingsInputManager
-				.getKanjiInputs();
+		List<JTextComponent> kanjiInputs = writingsInputManager.getKanjiInputs();
 
 		return kanjiInputs.isEmpty() ? null : kanjiInputs.get(0);
 	}
@@ -79,31 +78,31 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 		TypeOfJapaneseWriting typeOfJapaneseWriting;
 		if (writingsInputManager.getKanaInput() == valueToConvert
 				&& writingsInputManager.getKanjiInputs()
-				.contains(valueToConvert)) {
+									   .contains(valueToConvert)) {
 			typeOfJapaneseWriting = TypeOfJapaneseWriting.KANA_OR_KANJI;
 		}
 		else if (writingsInputManager.getKanaInput() == valueToConvert) {
 			typeOfJapaneseWriting = TypeOfJapaneseWriting.KANA;
 		}
 		else if (writingsInputManager.getKanjiInputs()
-				.contains(valueToConvert)) {
+									 .contains(valueToConvert)) {
 			typeOfJapaneseWriting = TypeOfJapaneseWriting.KANJI;
 		}
 		else {
 			throw new IllegalStateException(
 					"input field is not kana or kanji or even both");
 		}
-		boolean isKana = typeOfJapaneseWriting
-				.equals(TypeOfJapaneseWriting.KANA);
+		boolean isKana = typeOfJapaneseWriting.equals(
+				TypeOfJapaneseWriting.KANA);
 
 		JapaneseWriting writingToAdd;
 
-		if (JapaneseWritingUtilities
-				.isInputEmpty(newValue, typeOfJapaneseWriting)) {
+		if (JapaneseWritingUtilities.isInputEmpty(newValue,
+				typeOfJapaneseWriting)) {
 			writingToAdd = japaneseWritingToCheck;
 			if (typeOfJapaneseWriting.equals(TypeOfJapaneseWriting.KANJI)) {
-				japaneseWritingToCheck
-						.replaceKanji(findKanjiPreviousValue(), "");
+				japaneseWritingToCheck.replaceKanji(findKanjiPreviousValue(),
+						"");
 			}
 			else {
 				japaneseWritingToCheck.setKanaWriting("");
@@ -111,16 +110,16 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 
 		}
 		else {
-			if (typeOfJapaneseWriting
-					.equals(TypeOfJapaneseWriting.KANA_OR_KANJI)
+			if (typeOfJapaneseWriting.equals(
+					TypeOfJapaneseWriting.KANA_OR_KANJI)
 					&& !JapaneseWritingUtilities.isInputValid(newValue,
 					TypeOfJapaneseWriting.KANA_OR_KANJI)) {
 				String exceptionMessage = ExceptionsMessages.KANA_OR_KANJI_WRITING_INCORRECT;
 				errorDetails += String.format(exceptionMessage, newValue);
 				writingToAdd = null;
 			}
-			else if (!JapaneseWritingUtilities
-					.isInputValid(newValue, typeOfJapaneseWriting)) {
+			else if (!JapaneseWritingUtilities.isInputValid(newValue,
+					typeOfJapaneseWriting)) {
 				String exceptionMessage = isKana ?
 						ExceptionsMessages.KANA_WRITING_INCORRECT :
 						ExceptionsMessages.KANJI_WRITING_INCORRECT;
@@ -128,8 +127,8 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 				writingToAdd = null;
 			}
 			else {
-				if (isKana || typeOfJapaneseWriting
-						.equals(TypeOfJapaneseWriting.KANA_OR_KANJI)) {
+				if (isKana || typeOfJapaneseWriting.equals(
+						TypeOfJapaneseWriting.KANA_OR_KANJI)) {
 					japaneseWritingToCheck.setKanaWriting(newValue);
 					writingToAdd = japaneseWritingToCheck;
 				}
@@ -141,18 +140,17 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 						errorDetails = ExceptionsMessages.KANA_INPUT_EMPTY;
 						return null;
 					}
-					boolean isNewWriting = writingsInputManager
-							.addKanjiInput(valueToConvert);
+					boolean isNewWriting = writingsInputManager.addKanjiInput(
+							valueToConvert);
 					if (!isNewWriting) {
-						errorDetails = String
-								.format(ExceptionsMessages.DUPLICATED_KANJI_WRITING_WITHIN_ROW,
-										newValue);
+						errorDetails = String.format(
+								ExceptionsMessages.DUPLICATED_KANJI_WRITING_WITHIN_ROW,
+								newValue);
 						writingToAdd = null;
 					}
 					else {
-						japaneseWritingToCheck
-								.replaceKanji(findKanjiPreviousValue(),
-										newValue);
+						japaneseWritingToCheck.replaceKanji(
+								findKanjiPreviousValue(), newValue);
 						writingToAdd = japaneseWritingToCheck;
 					}
 				}
@@ -167,8 +165,8 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 	private void removeEmptyValues() {
 		Set<String> notEmptyKanjiValues = new HashSet<>();
 		for (String kanjiWriting : japaneseWritingToCheck.getKanjiWritings()) {
-			if (!JapaneseWritingUtilities
-					.isInputEmpty(kanjiWriting, TypeOfJapaneseWriting.KANJI)) {
+			if (!JapaneseWritingUtilities.isInputEmpty(kanjiWriting,
+					TypeOfJapaneseWriting.KANJI)) {
 				notEmptyKanjiValues.add(kanjiWriting);
 			}
 		}
@@ -178,8 +176,7 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 	private String findKanjiPreviousValue() {
 		Set<String> kanjiWritings = japaneseWritingToCheck.getKanjiWritings();
 		Set<String> copiedKanjiWritings = new HashSet<>(kanjiWritings);
-		for (JTextComponent kanjiInput : writingsInputManager
-				.getKanjiInputs()) {
+		for (JTextComponent kanjiInput : writingsInputManager.getKanjiInputs()) {
 			copiedKanjiWritings.remove(kanjiInput.getText());
 		}
 		if (copiedKanjiWritings.size() > 1) {
@@ -189,7 +186,8 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 		if (copiedKanjiWritings.isEmpty()) {
 			return "";
 		}
-		return copiedKanjiWritings.iterator().next();
+		return copiedKanjiWritings.iterator()
+								  .next();
 
 	}
 
@@ -201,9 +199,9 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 
 	@Override
 	public String getPropertyDefinedException(JapaneseWriting writing) {
-		return String
-				.format(ExceptionsMessages.DUPLICATED_KANJI_WRITING_WITHIN_ROW,
-						writing.getDisplayedText());
+		return String.format(
+				ExceptionsMessages.DUPLICATED_KANJI_WRITING_WITHIN_ROW,
+				writing.getDisplayedText());
 	}
 
 	public static boolean areWritingsEqual(JapaneseWriting searchedWriting,
@@ -226,8 +224,8 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 			return true;
 		}
 
-		if (JapaneseWritingUtilities
-				.isInputEmpty(searchedKana, TypeOfJapaneseWriting.KANA)) {
+		if (JapaneseWritingUtilities.isInputEmpty(searchedKana,
+				TypeOfJapaneseWriting.KANA)) {
 			return areKanjisSame(searchedKanji, existingKanjiWritings,
 					inputGoal);
 		}
@@ -255,16 +253,16 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 			}
 		}
 		else {
-			if (JapaneseWritingUtilities
-					.areKanjiWritingsEmpty(existingKanjiWritings)
-					&& JapaneseWritingUtilities
-					.areKanjiWritingsEmpty(searchedKanji)) {
+			if (JapaneseWritingUtilities.areKanjiWritingsEmpty(
+					existingKanjiWritings)
+					&& JapaneseWritingUtilities.areKanjiWritingsEmpty(
+					searchedKanji)) {
 				return true;
 			}
-			else if (JapaneseWritingUtilities
-					.areKanjiWritingsEmpty(existingKanjiWritings)
-					!= JapaneseWritingUtilities
-					.areKanjiWritingsEmpty(searchedKanji)) {
+			else if (JapaneseWritingUtilities.areKanjiWritingsEmpty(
+					existingKanjiWritings)
+					!= JapaneseWritingUtilities.areKanjiWritingsEmpty(
+					searchedKanji)) {
 				return false;
 			}
 			else {

@@ -1,14 +1,19 @@
 package com.kanji.list.listRows.japanesePanelCreatingComponents;
 
+import com.guimaker.application.ApplicationWindow;
+import com.guimaker.application.DialogWindow;
 import com.guimaker.enums.ButtonType;
+import com.guimaker.enums.InputGoal;
 import com.guimaker.enums.PanelDisplayMode;
+import com.guimaker.list.myList.ListConfiguration;
+import com.guimaker.list.myList.MyList;
+import com.guimaker.listeners.InputValidationListener;
 import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComboboxOptions;
 import com.guimaker.options.ComponentOptions;
 import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
-import com.guimaker.enums.InputGoal;
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.enums.TypeOfJapaneseWriting;
 import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
@@ -16,16 +21,11 @@ import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
-import com.kanji.list.listRows.RowInParticlesInformation;
-import com.guimaker.listeners.InputValidationListener;
-import com.guimaker.list.myList.ListConfiguration;
-import com.guimaker.list.myList.MyList;
-import com.kanji.model.AdditionalInformation;
 import com.kanji.list.listElements.WordParticlesData;
+import com.kanji.list.listRows.RowInParticlesInformation;
+import com.kanji.model.AdditionalInformation;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.utilities.JapaneseWritingUtilities;
-import com.guimaker.application.ApplicationWindow;
-import com.guimaker.application.DialogWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -60,13 +60,11 @@ public class JapanesePanelElementsCreator {
 			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
 			boolean enabled, InputGoal inputGoal, boolean selectable) {
 		if (kanaOrKanjiInputForFiltering == null) {
-			kanaOrKanjiInputForFiltering = actionsCreator
-					.withJapaneseWritingValidation(createWritingsInput(
-							japaneseWriting.getKanaWriting(),
+			kanaOrKanjiInputForFiltering = actionsCreator.withJapaneseWritingValidation(
+					createWritingsInput(japaneseWriting.getKanaWriting(),
 							TypeOfJapaneseWriting.KANA_OR_KANJI, enabled,
 							selectable), japaneseWriting, japaneseWord,
-							TypeOfJapaneseWriting.KANA_OR_KANJI, inputGoal,
-							enabled);
+					TypeOfJapaneseWriting.KANA_OR_KANJI, inputGoal, enabled);
 		}
 
 	}
@@ -87,16 +85,21 @@ public class JapanesePanelElementsCreator {
 				applicationController,
 				new RowInParticlesInformation(japaneseWord,
 						applicationController, displayMode), "",
-				new ListConfiguration(Prompts.JAPANESE_WORD_DELETE)
-						.showButtonsLoadNextPreviousWords(false)
-						.enableWordAdding(false).enableWordSearching(false)
-						.scrollBarFitsContent(true).inheritScrollbar(true)
-						.parentListAndWordContainingThisList(
-								applicationController.getJapaneseWords(),
-								japaneseWord), () -> WordParticlesData
-				.createParticleNotIncludedInWord(japaneseWord));
+				new ListConfiguration(
+						Prompts.JAPANESE_WORD_DELETE).showButtonsLoadNextPreviousWords(
+						false)
+													 .enableWordAdding(false)
+													 .enableWordSearching(false)
+													 .scrollBarFitsContent(true)
+													 .inheritScrollbar(true)
+													 .parentListAndWordContainingThisList(
+															 applicationController.getJapaneseWords(),
+															 japaneseWord),
+				() -> WordParticlesData.createParticleNotIncludedInWord(
+						japaneseWord));
 		if (japaneseWord.getTakenParticles() != null) {
-			japaneseWord.getTakenParticles().forEach(particlesList::addWord);
+			japaneseWord.getTakenParticles()
+						.forEach(particlesList::addWord);
 		}
 
 		return particlesList;
@@ -114,20 +117,21 @@ public class JapanesePanelElementsCreator {
 	public JTextComponent createWritingsInput(String initialValue,
 			TypeOfJapaneseWriting typeOfJapaneseWriting, boolean editable,
 			boolean selectable) {
-		return actionsCreator.repaintParentOnFocusLost(actionsCreator
-				.withSwitchToJapaneseActionOnClick(GuiElementsCreator
-						.createTextField(
+		return actionsCreator.repaintParentOnFocusLost(
+				actionsCreator.withSwitchToJapaneseActionOnClick(
+						GuiElementsCreator.createTextField(
 								new TextComponentOptions().text(initialValue)
-										.editable(editable)
-										//TODO editable/non editable should be handled automatically
-										// by main panel's display mode -> remove from here
-										.selectable(selectable)
-										.font(ApplicationWindow.getKanjiFont())
-										.focusable(true).fontSize(30f)
-										.promptWhenEmpty(
-												JapaneseWritingUtilities
-														.getDefaultValueForWriting(
-																typeOfJapaneseWriting)))));
+														  .editable(editable)
+														  //TODO editable/non editable should be handled automatically
+														  // by main panel's display mode -> remove from here
+														  .selectable(
+																  selectable)
+														  .font(ApplicationWindow.getKanjiFont())
+														  .focusable(true)
+														  .fontSize(30f)
+														  .promptWhenEmpty(
+																  JapaneseWritingUtilities.getDefaultValueForWriting(
+																		  typeOfJapaneseWriting)))));
 	}
 
 	private AbstractButton createButton(String buttonLabel,
@@ -142,15 +146,14 @@ public class JapanesePanelElementsCreator {
 			PartOfSpeech partOfSpeechToSelect,
 			JLabel additionalInformationLabel,
 			JComboBox additionalInformationValue, JapaneseWord japaneseWord) {
-		JComboBox<String> comboBox = actionsCreator
-				.addAdditionalInformationOnPartOfSpeechChange(
-						additionalInformationValue, additionalInformationLabel,
-						GuiElementsCreator.createCombobox(new ComboboxOptions()
-								.setComboboxValues(
-										Arrays.stream(PartOfSpeech.values())
-												.map(PartOfSpeech::getPolishMeaning)
-												.collect(Collectors.toList()))),
-						japaneseWord);
+		JComboBox<String> comboBox = actionsCreator.addAdditionalInformationOnPartOfSpeechChange(
+				additionalInformationValue, additionalInformationLabel,
+				GuiElementsCreator.createCombobox(
+						new ComboboxOptions().setComboboxValues(
+								Arrays.stream(PartOfSpeech.values())
+									  .map(PartOfSpeech::getPolishMeaning)
+									  .collect(Collectors.toList()))),
+				japaneseWord);
 
 		comboBox.setSelectedItem(partOfSpeechToSelect.getPolishMeaning());
 		return comboBox;
@@ -159,17 +162,15 @@ public class JapanesePanelElementsCreator {
 	public AbstractButton createButtonAddKanjiWriting(MainPanel rowPanel,
 			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
 			InputGoal inputGoal, boolean editMode, boolean selectable) {
-		AbstractButton button = createButton(JapaneseApplicationButtonsNames.ADD_KANJI_WRITING,
-				null);
+		AbstractButton button = createButton(
+				JapaneseApplicationButtonsNames.ADD_KANJI_WRITING, null);
 		button.addActionListener(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JTextComponent input = createKanjiInputWithValidation(
-						"", japaneseWriting, japaneseWord, inputGoal, editMode,
+				JTextComponent input = createKanjiInputWithValidation("",
+						japaneseWriting, japaneseWord, inputGoal, editMode,
 						selectable);
-				rowPanel.insertElementInPlaceOfElement(
-						input,
-						button);
+				rowPanel.insertElementInPlaceOfElement(input, button);
 				SwingUtilities.invokeLater(input::requestFocusInWindow);
 			}
 		});
@@ -179,9 +180,8 @@ public class JapanesePanelElementsCreator {
 	public JComponent createButonDelete(AbstractButton buttonDelete,
 			JapaneseWord japaneseWord, JapaneseWriting writing,
 			InputGoal inputGoal) {
-		return actionsCreator
-				.updateWritingsInWordWhenDeleteWriting(buttonDelete,
-						japaneseWord, writing, inputGoal);
+		return actionsCreator.updateWritingsInWordWhenDeleteWriting(
+				buttonDelete, japaneseWord, writing, inputGoal);
 	}
 
 	public void addValidationListeners(
@@ -191,18 +191,17 @@ public class JapanesePanelElementsCreator {
 
 	public JComboBox createComboboxForAdditionalInformation(
 			JapaneseWord japaneseWord) {
-		AdditionalInformation additionalInformation = japaneseWord
-				.getAdditionalInformation();
+		AdditionalInformation additionalInformation = japaneseWord.getAdditionalInformation();
 		List<String> possibleValues = additionalInformation.getPossibleValues();
 		boolean hasPossibleAdditionalInformation =
 				!possibleValues.isEmpty() && !possibleValues.get(0)
-						.equals(Labels.NO_ADDITIONAL_INFORMATION);
-		JComboBox comboBox = actionsCreator
-				.changeAdditionalInformationOnComboboxChange(GuiElementsCreator
-								.createCombobox(new ComboboxOptions()
-										.setComboboxValues(possibleValues)
-										.setEnabled(hasPossibleAdditionalInformation)),
-						japaneseWord);
+															.equals(Labels.NO_ADDITIONAL_INFORMATION);
+		JComboBox comboBox = actionsCreator.changeAdditionalInformationOnComboboxChange(
+				GuiElementsCreator.createCombobox(
+						new ComboboxOptions().setComboboxValues(possibleValues)
+											 .setEnabled(
+													 hasPossibleAdditionalInformation)),
+				japaneseWord);
 
 		if (hasPossibleAdditionalInformation) {
 			String value = additionalInformation.getValue();
@@ -215,11 +214,13 @@ public class JapanesePanelElementsCreator {
 
 	public JLabel createAdditionalInformationLabel(JapaneseWord japaneseWord,
 			Color labelColor) {
-		AdditionalInformation additionalInformation = japaneseWord
-				.getAdditionalInformation();
-		return GuiElementsCreator.createLabel(new ComponentOptions()
-				.text(additionalInformation.getTag().getLabel())
-				.foregroundColor(labelColor)
-				.setEnabled(!additionalInformation.isEmpty()));
+		AdditionalInformation additionalInformation = japaneseWord.getAdditionalInformation();
+		return GuiElementsCreator.createLabel(new ComponentOptions().text(
+				additionalInformation.getTag()
+									 .getLabel())
+																	.foregroundColor(
+																			labelColor)
+																	.setEnabled(
+																			!additionalInformation.isEmpty()));
 	}
 }

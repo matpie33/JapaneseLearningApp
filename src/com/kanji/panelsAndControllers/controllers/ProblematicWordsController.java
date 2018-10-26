@@ -67,8 +67,8 @@ public class ProblematicWordsController<Word extends ListElement>
 
 		wordsToReviewList.scrollToTop();
 		goToNextResource();
-		SwingUtilities.invokeLater(
-				() -> wordsToReviewList.getPanel().requestFocusInWindow());
+		SwingUtilities.invokeLater(() -> wordsToReviewList.getPanel()
+														  .requestFocusInWindow());
 	}
 
 	private void addWord(Word word) {
@@ -101,7 +101,7 @@ public class ProblematicWordsController<Word extends ListElement>
 				}
 				applicationWindow.showPanel(
 						applicationController.getStartingPanel()
-								.getUniqueName());
+											 .getUniqueName());
 			}
 		};
 
@@ -112,8 +112,8 @@ public class ProblematicWordsController<Word extends ListElement>
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!problematicWordsDisplayer.isListPanelFocused()
-						|| wordsToReviewList.isInEditMode() || wordsToReviewList
-						.isFilterInputFocused()) {
+						|| wordsToReviewList.isInEditMode()
+						|| wordsToReviewList.isFilterInputFocused()) {
 					return;
 				}
 				moveToNextWord(direction);
@@ -133,8 +133,8 @@ public class ProblematicWordsController<Word extends ListElement>
 			wordsReviewFinished = true;
 		}
 		if (nextWordToReview == wordsToReviewList.getNumberOfWords()) {
-			applicationWindow
-					.showMessageDialog(Prompts.NO_MORE_WORDS_TO_REVIEW);
+			applicationWindow.showMessageDialog(
+					Prompts.NO_MORE_WORDS_TO_REVIEW);
 			nextWordToReview = 0;
 			wordsToReviewList.clearHighlightedWords();
 		}
@@ -149,11 +149,10 @@ public class ProblematicWordsController<Word extends ListElement>
 				wordsToReviewList.getHighlightedWords(),
 				wordsToReviewList.getNotHighlightedWords());
 
-		SavingInformation savingInformation = applicationController
-				.getApplicationState();
+		SavingInformation savingInformation = applicationController.getApplicationState();
 		savingInformation.setProblematicWordsState(problematicWordsState,
 				applicationController.getActiveWordsListType()
-						.getAssociatedReviewingWordsState());
+									 .getAssociatedReviewingWordsState());
 
 		return savingInformation;
 	}
@@ -162,14 +161,14 @@ public class ProblematicWordsController<Word extends ListElement>
 	public void restoreState(SavingInformation savingInformation) {
 		if (savingInformation.containsProblematicJapaneseWords()
 				|| savingInformation.containsProblematicKanji()) {
-			applicationController.switchToList(TypeOfWordForRepeating
-					.withMeaningfulName(
+			applicationController.switchToList(
+					TypeOfWordForRepeating.withMeaningfulName(
 							savingInformation.getApplicationSaveableState()
-									.getMeaningfulName()));
+											 .getMeaningfulName()));
 		}
 		applicationController.showProblematicWordsDialog(
 				savingInformation.getApplicationSaveableState()
-						.getMeaningfulName(),
+								 .getMeaningfulName(),
 				savingInformation.getProblematicWordsState());
 	}
 
@@ -202,8 +201,8 @@ public class ProblematicWordsController<Word extends ListElement>
 		boolean hasWord = wordsToReviewList.containsWord(word);
 		wordsToReviewList.update(word, modificationType);
 		if (modificationType.equals(ListElementModificationType.DELETE)) {
-			if (hasWord && nextWordToReview >= wordsToReviewList
-					.getNumberOfWords()) {
+			if (hasWord && nextWordToReview
+					>= wordsToReviewList.getNumberOfWords()) {
 				nextWordToReview = 0;
 			}
 			if (hasWord) {
@@ -213,7 +212,8 @@ public class ProblematicWordsController<Word extends ListElement>
 	}
 
 	public boolean isProblematicWordsListEmpty() {
-		return wordsToReviewList.getWords().isEmpty();
+		return wordsToReviewList.getWords()
+								.isEmpty();
 	}
 
 	public void focusPreviouslyFocusedElement() {

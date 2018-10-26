@@ -48,7 +48,8 @@ public class Kanji implements Serializable, ListElement {
 			return false;
 		}
 		Kanji kanji = (Kanji) another;
-		return kanji.getKeyword().equals(keyword) && kanji.getId() == id;
+		return kanji.getKeyword()
+					.equals(keyword) && kanji.getId() == id;
 
 	}
 
@@ -75,7 +76,7 @@ public class Kanji implements Serializable, ListElement {
 	public String getDisplayedText() {
 		return StringUtilities.joinPropertyValuePairs(
 				StringUtilities.joinPropertyAndValue(KEYWORD, getKeyword()),
-				StringUtilities
-						.joinPropertyAndValue(ID, Integer.toString(getId())));
+				StringUtilities.joinPropertyAndValue(ID,
+						Integer.toString(getId())));
 	}
 }

@@ -15,9 +15,11 @@ public class JapaneseParticleElementsCreator {
 
 	public JTextComponent createAdditionalInformationInput(
 			WordParticlesData wordParticlesData) {
-		return GuiElementsCreator.createTextField(new TextComponentOptions()
-				.text(wordParticlesData.getAdditionalInformation())
-				.promptWhenEmpty(Prompts.ADDITIONAL_INFORMATION));
+		return GuiElementsCreator.createTextField(
+				new TextComponentOptions().text(
+						wordParticlesData.getAdditionalInformation())
+										  .promptWhenEmpty(
+												  Prompts.ADDITIONAL_INFORMATION));
 	}
 
 	public JComboBox createParticlesCombobox(
@@ -25,14 +27,14 @@ public class JapaneseParticleElementsCreator {
 		JComboBox particleCombobox = GuiElementsCreator.createCombobox(
 				new ComboboxOptions().setComboboxValues(
 						JapaneseParticle.getPossibleParticles()));
-		particleCombobox.setSelectedItem(
-				wordParticlesData.getJapaneseParticle().getDisplayedValue());
+		particleCombobox.setSelectedItem(wordParticlesData.getJapaneseParticle()
+														  .getDisplayedValue());
 		return particleCombobox;
 	}
 
 	public JLabel createLabel(String text) {
-		return GuiElementsCreator
-				.createLabel(new ComponentOptions().text(text));
+		return GuiElementsCreator.createLabel(
+				new ComponentOptions().text(text));
 	}
 
 }

@@ -50,8 +50,7 @@ public class ListTestDataCreator {
 	}
 
 	private void createKanjiRepeatingDatesTestList() {
-		MyList<RepeatingData> kanjiRepeatingDates = applicationController
-				.getKanjiRepeatingDates();
+		MyList<RepeatingData> kanjiRepeatingDates = applicationController.getKanjiRepeatingDates();
 		kanjiRepeatingDates.addWord(
 				new RepeatingData("abc", LocalDateTime.of(1993, 11, 13, 13, 25),
 						true, "3 minuty"));
@@ -66,16 +65,15 @@ public class ListTestDataCreator {
 	public MyList<RepeatingData> initializeKanjiRepeatingList() {
 		return new MyList<>(applicationController.getApplicationWindow(),
 				applicationController, new RowInRepeatingList(),
-				Titles.KANJI_REPEATING_LIST,
-				new ListConfiguration(Prompts.REPEATING_DATE_DELETE)
-						.showButtonsLoadNextPreviousWords(false)
-						.enableWordAdding(false),
+				Titles.KANJI_REPEATING_LIST, new ListConfiguration(
+				Prompts.REPEATING_DATE_DELETE).showButtonsLoadNextPreviousWords(
+				false)
+											  .enableWordAdding(false),
 				RepeatingData.getInitializer());
 	}
 
 	private void createJapaneseWordsRepeatingDatesTestList() {
-		MyList<RepeatingData> japaneseWordsRepeatingDates = applicationController
-				.getJapaneseWordsRepeatingDates();
+		MyList<RepeatingData> japaneseWordsRepeatingDates = applicationController.getJapaneseWordsRepeatingDates();
 		japaneseWordsRepeatingDates.addWord(
 				new RepeatingData("abc", LocalDateTime.of(1993, 11, 13, 13, 25),
 						true, "3 minuty"));
@@ -90,16 +88,15 @@ public class ListTestDataCreator {
 	public MyList<RepeatingData> initializeJapaneseWordsRepeatingData() {
 		return new MyList<>(applicationController.getApplicationWindow(),
 				applicationController, new RowInRepeatingList(),
-				Titles.JAPANESE_REPEATING_LIST,
-				new ListConfiguration(Prompts.REPEATING_DATE_DELETE)
-						.enableWordAdding(false)
-						.showButtonsLoadNextPreviousWords(false),
+				Titles.JAPANESE_REPEATING_LIST, new ListConfiguration(
+				Prompts.REPEATING_DATE_DELETE).enableWordAdding(false)
+											  .showButtonsLoadNextPreviousWords(
+													  false),
 				RepeatingData.getInitializer());
 	}
 
 	private void createJapaneseWordsTestList() {
-		MyList<JapaneseWord> japaneseWords = applicationController
-				.getJapaneseWords();
+		MyList<JapaneseWord> japaneseWords = applicationController.getJapaneseWords();
 
 		JapaneseWord cat = new JapaneseWord(PartOfSpeech.NOUN, "kot");
 		cat.addWritingsForKana("ねこ", "頭骨");

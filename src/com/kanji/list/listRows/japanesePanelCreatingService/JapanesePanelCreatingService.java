@@ -1,10 +1,10 @@
 package com.kanji.list.listRows.japanesePanelCreatingService;
 
-import com.guimaker.panels.MainPanel;
 import com.guimaker.enums.InputGoal;
+import com.guimaker.panels.MainPanel;
+import com.guimaker.utilities.CommonListElements;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
-import com.guimaker.utilities.CommonListElements;
 
 import javax.swing.*;
 

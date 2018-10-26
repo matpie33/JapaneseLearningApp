@@ -4,8 +4,8 @@ import com.guimaker.enums.Anchor;
 import com.guimaker.enums.MoveDirection;
 import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
 import com.guimaker.utilities.KeyModifiers;
-import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 import com.kanji.constants.strings.HotkeysDescriptions;
+import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 
 import javax.swing.*;
@@ -24,30 +24,32 @@ public class ProblematicWordsPanelCommonPart {
 	}
 
 	public void addCommonPartToPanel() {
-		problematicWordsPanel
-				.setNavigationButtons(Anchor.WEST, createButtonReturn());
+		problematicWordsPanel.setNavigationButtons(Anchor.WEST,
+				createButtonReturn());
 		initializeActionBrowseNextWord();
 		initializeActionBrowsePreviousWord();
 	}
 
 	private AbstractButton createButtonReturn() {
-		return problematicWordsPanel
-				.createButtonWithHotkey(KeyModifiers.CONTROL, KeyEvent.VK_E,
-						problematicWordsController.exitProblematicWordsPanel(),
-						JapaneseApplicationButtonsNames.GO_BACK,
-						HotkeysDescriptions.RETURN_FROM_LEARNING);
+		return problematicWordsPanel.createButtonWithHotkey(
+				KeyModifiers.CONTROL, KeyEvent.VK_E,
+				problematicWordsController.exitProblematicWordsPanel(),
+				JapaneseApplicationButtonsNames.GO_BACK,
+				HotkeysDescriptions.RETURN_FROM_LEARNING);
 	}
 
 	private void initializeActionBrowseNextWord() {
-		initializeAction(KeyEvent.VK_SPACE, problematicWordsController
-						.createActionShowNextWord(MoveDirection.BELOW),
+		initializeAction(KeyEvent.VK_SPACE,
+				problematicWordsController.createActionShowNextWord(
+						MoveDirection.BELOW),
 				HotkeysDescriptions.SHOW_NEXT_PROBLEMATIC_WORD);
 
 	}
 
 	private void initializeActionBrowsePreviousWord() {
-		initializeAction(KeyEvent.VK_BACK_SPACE, problematicWordsController
-						.createActionShowNextWord(MoveDirection.ABOVE),
+		initializeAction(KeyEvent.VK_BACK_SPACE,
+				problematicWordsController.createActionShowNextWord(
+						MoveDirection.ABOVE),
 				HotkeysDescriptions.SHOW_PREVIOUS_PROBLEMATIC_WORD);
 	}
 

@@ -1,20 +1,20 @@
 package com.kanji.list.listRows;
 
 import com.guimaker.enums.FillType;
+import com.guimaker.enums.InputGoal;
 import com.guimaker.enums.PanelDisplayMode;
+import com.guimaker.list.ListRowData;
+import com.guimaker.list.myList.ListRowCreator;
+import com.guimaker.listeners.InputValidationListener;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.guimaker.enums.InputGoal;
+import com.guimaker.utilities.CommonListElements;
 import com.kanji.japaneseParticlesPanel.JapaneseParticleRowCreatingService;
 import com.kanji.japaneseParticlesPanel.JapaneseParticleRowInEditMode;
 import com.kanji.japaneseParticlesPanel.JapaneseParticleRowInViewMode;
 import com.kanji.list.listElements.JapaneseWord;
-import com.guimaker.listeners.InputValidationListener;
-import com.guimaker.list.myList.ListRowCreator;
-import com.guimaker.list.ListRowData;
 import com.kanji.list.listElements.WordParticlesData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
-import com.guimaker.utilities.CommonListElements;
 
 public class RowInParticlesInformation
 		implements ListRowCreator<WordParticlesData> {
@@ -50,9 +50,8 @@ public class RowInParticlesInformation
 
 		MainPanel panel = new MainPanel();
 		panel.addRow(SimpleRowBuilder.createRow(FillType.NONE,
-				japaneseParticleRowCreatingService
-						.createRowElements(wordParticlesData, japaneseWord,
-								commonListElements)));
+				japaneseParticleRowCreatingService.createRowElements(
+						wordParticlesData, japaneseWord, commonListElements)));
 
 		return new ListRowData<>(panel);
 	}

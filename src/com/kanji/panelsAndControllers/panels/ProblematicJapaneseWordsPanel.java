@@ -37,7 +37,6 @@ import com.kanji.utilities.CommonGuiElementsCreator;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
@@ -95,39 +94,42 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	public void createKanjiInformationPanelForKanjiData(
 			List<KanjiData> kanjiDataList) {
 		kanjiInformationPanel.clear();
-		kanjiInformationPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.NONE, Anchor.CENTER, GuiElementsCreator
-						.createLabel(new ComponentOptions()
-								.text(Prompts.KANJI_INFORMATIONS))));
+		kanjiInformationPanel.addRow(
+				SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER,
+						GuiElementsCreator.createLabel(
+								new ComponentOptions().text(
+										Prompts.KANJI_INFORMATIONS))));
 		for (KanjiData kanjiData : kanjiDataList) {
 			JLabel kanjiLabel = GuiElementsCreator.createLabel(
 					new ComponentOptions().text(kanjiData.getKanjiCharacter())
-							.font(ApplicationWindow.getKanjiFont()));
-			kanjiLabel.setFont(kanjiLabel.getFont().deriveFont(30f));
+										  .font(ApplicationWindow.getKanjiFont()));
+			kanjiLabel.setFont(kanjiLabel.getFont()
+										 .deriveFont(30f));
 			//TODO set the kanjis font in one place for whole application
 			JTextComponent keywordLabel = GuiElementsCreator.createTextArea(
-					new TextAreaOptions().editable(false).rowsAndColumns(2, 5)
-							.text(kanjiData.getKanji() == null ?
-									Prompts.NO_KANJI_INFORMATION_AVAILABLE :
-									kanjiData.getKanji().getKeyword()));
+					new TextAreaOptions().editable(false)
+										 .rowsAndColumns(2, 5)
+										 .text(kanjiData.getKanji() == null ?
+												 Prompts.NO_KANJI_INFORMATION_AVAILABLE :
+												 kanjiData.getKanji()
+														  .getKeyword()));
 			AbstractButton goToKanjiStoryButton = createGoToKanjiStoryButton(
 					kanjiData);
 			goToKanjiStoryButton.setFocusable(false);
-			kanjiInformationPanel.addElementsInColumn(SimpleRowBuilder
-					.createRowStartingFromColumn(0, FillType.NONE, kanjiLabel,
-							keywordLabel, goToKanjiStoryButton));
+			kanjiInformationPanel.addElementsInColumn(
+					SimpleRowBuilder.createRowStartingFromColumn(0,
+							FillType.NONE, kanjiLabel, keywordLabel,
+							goToKanjiStoryButton));
 		}
 		kanjiInformationPanel.updateView();
 	}
 
 	private AbstractButton createGoToKanjiStoryButton(KanjiData kanjiData) {
 		return GuiElementsCreator.createButtonlikeComponent(
-				new ButtonOptions(ButtonType.BUTTON)
-						.text(JapaneseApplicationButtonsNames.SHOW_KANJI_STORIES),
-				problematicJapaneseWordsDisplayer
-						.createActionShowKanjiDetailsInKoohiPage(
-								kanjiData.getKanji(),
-								kanjiData.getKanjiCharacter()));
+				new ButtonOptions(ButtonType.BUTTON).text(
+						JapaneseApplicationButtonsNames.SHOW_KANJI_STORIES),
+				problematicJapaneseWordsDisplayer.createActionShowKanjiDetailsInKoohiPage(
+						kanjiData.getKanji(), kanjiData.getKanjiCharacter()));
 	}
 
 	private JapaneseWordPanelCreator createJapanesePanelCreator(
@@ -138,8 +140,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 
 	private AbstractButton createButtonSearchWord() {
 		return createButtonWithHotkey(KeyModifiers.ALT, KeyEvent.VK_C,
-				problematicJapaneseWordsDisplayer
-						.createActionSearchCurrentWordInDictionary(),
+				problematicJapaneseWordsDisplayer.createActionSearchCurrentWordInDictionary(),
 				JapaneseApplicationButtonsNames.SEARCH_IN_DICTIONARY,
 				HotkeysDescriptions.SEARCH_IN_DICTIONARY);
 
@@ -152,39 +153,37 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	@Override
 	public void createElements() {
 
-		focusableComponentsManager
-				.makeFocusable(problematicWordsList.getPanel(),
-						japaneseEnglishDictionaryPanel.getWebPanel(),
-						englishPolishDictionaryPanel.getWebPanel(),
-						kanjiInformationPanel.getPanel(),
-						kanjiKoohiWebPanel.getWebPanel());
+		focusableComponentsManager.makeFocusable(
+				problematicWordsList.getPanel(),
+				japaneseEnglishDictionaryPanel.getWebPanel(),
+				englishPolishDictionaryPanel.getWebPanel(),
+				kanjiInformationPanel.getPanel(),
+				kanjiKoohiWebPanel.getWebPanel());
 
-		JScrollPane scrollPaneForKanjiInformation = GuiElementsCreator
-				.createScrollPane(new ScrollPaneOptions()
-						.componentToWrap(kanjiInformationPanel.getPanel()));
+		JScrollPane scrollPaneForKanjiInformation = GuiElementsCreator.createScrollPane(
+				new ScrollPaneOptions().componentToWrap(
+						kanjiInformationPanel.getPanel()));
 
-		JSplitPane wordsListAndKanjiInformationSplitPane = CommonGuiElementsCreator
-				.createSplitPane(SplitPaneOrientation.VERTICAL,
-						scrollPaneForKanjiInformation,
-						problematicWordsList.getPanel(), 0.2);
-		JSplitPane dictionariesSplitPane = CommonGuiElementsCreator
-				.createSplitPane(SplitPaneOrientation.VERTICAL,
-						japaneseEnglishDictionaryPanel.getSwitchingPanel(),
-						englishPolishDictionaryPanel.getSwitchingPanel(), 0.5);
+		JSplitPane wordsListAndKanjiInformationSplitPane = CommonGuiElementsCreator.createSplitPane(
+				SplitPaneOrientation.VERTICAL, scrollPaneForKanjiInformation,
+				problematicWordsList.getPanel(), 0.2);
+		JSplitPane dictionariesSplitPane = CommonGuiElementsCreator.createSplitPane(
+				SplitPaneOrientation.VERTICAL,
+				japaneseEnglishDictionaryPanel.getSwitchingPanel(),
+				englishPolishDictionaryPanel.getSwitchingPanel(), 0.5);
 
-		JSplitPane dictionariesWithProblematicWordsSplitPane = CommonGuiElementsCreator
-				.createSplitPane(SplitPaneOrientation.HORIZONTAL,
-						dictionariesSplitPane,
-						wordsListAndKanjiInformationSplitPane, 0.3);
+		JSplitPane dictionariesWithProblematicWordsSplitPane = CommonGuiElementsCreator.createSplitPane(
+				SplitPaneOrientation.HORIZONTAL, dictionariesSplitPane,
+				wordsListAndKanjiInformationSplitPane, 0.3);
 
-		JSplitPane splitPane = CommonGuiElementsCreator
-				.createSplitPane(SplitPaneOrientation.HORIZONTAL,
-						dictionariesWithProblematicWordsSplitPane,
-						kanjiKoohiWebPanel.getSwitchingPanel(), 0.7);
+		JSplitPane splitPane = CommonGuiElementsCreator.createSplitPane(
+				SplitPaneOrientation.HORIZONTAL,
+				dictionariesWithProblematicWordsSplitPane,
+				kanjiKoohiWebPanel.getSwitchingPanel(), 0.7);
 
 		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, splitPane));
-		new ProblematicWordsPanelCommonPart(this, problematicWordsController)
-				.addCommonPartToPanel();
+		new ProblematicWordsPanelCommonPart(this,
+				problematicWordsController).addCommonPartToPanel();
 
 	}
 
@@ -194,12 +193,12 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		this.problematicWordsList = new MyList<>(parentDialog,
 				applicationController,
 				new RowInJapaneseWordInformations(japanesePanelCreator),
-				Titles.PROBLEMATIC_KANJIS,
-				new ListConfiguration(Prompts.JAPANESE_WORD_DELETE)
-						.enableWordAdding(false)
-						.showButtonsLoadNextPreviousWords(false)
-						.withAdditionalNavigationButtons(
-								createButtonSearchWord()),
+				Titles.PROBLEMATIC_KANJIS, new ListConfiguration(
+				Prompts.JAPANESE_WORD_DELETE).enableWordAdding(false)
+											 .showButtonsLoadNextPreviousWords(
+													 false)
+											 .withAdditionalNavigationButtons(
+													 createButtonSearchWord()),
 				JapaneseWord.getInitializer());
 		japanesePanelCreator.setWordsList(problematicWordsList);
 		problematicWordsList.addListObserver(applicationController);
@@ -209,7 +208,6 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	public WebContext getContext() {
 		return null; //TODO implement it to return kanji tried to retrieve
 	}
-
 
 	public MyList<JapaneseWord> getWordsList() {
 		return problematicWordsList;

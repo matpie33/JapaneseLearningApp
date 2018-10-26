@@ -19,7 +19,8 @@ public enum JapaneseParticle {
 
 	public static JapaneseParticle getByString(String value) {
 		for (JapaneseParticle japaneseParticle : JapaneseParticle.values()) {
-			if (japaneseParticle.getDisplayedValue().equals(value)) {
+			if (japaneseParticle.getDisplayedValue()
+								.equals(value)) {
 				return japaneseParticle;
 			}
 		}
@@ -28,9 +29,9 @@ public enum JapaneseParticle {
 
 	public static List<String> getPossibleParticles() {
 		return Arrays.stream(JapaneseParticle.values())
-				.filter(p -> !p.equals(JapaneseParticle.EMPTY))
-				.map(JapaneseParticle::getDisplayedValue)
-				.collect(Collectors.toList());
+					 .filter(p -> !p.equals(JapaneseParticle.EMPTY))
+					 .map(JapaneseParticle::getDisplayedValue)
+					 .collect(Collectors.toList());
 
 	}
 

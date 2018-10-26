@@ -1,23 +1,23 @@
 package com.kanji.problematicWords;
 
+import com.guimaker.application.ApplicationWindow;
 import com.guimaker.enums.MoveDirection;
+import com.guimaker.list.myList.MyList;
 import com.guimaker.model.WebContext;
+import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.Urls;
 import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
-import com.guimaker.list.myList.MyList;
 import com.kanji.model.KanjiData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.panelsAndControllers.panelUpdaters.ProblematicJapaneseWordsPanelUpdater;
-import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.panelsAndControllers.panels.ProblematicJapaneseWordsPanel;
 import com.kanji.utilities.JapaneseWritingUtilities;
 import com.kanji.utilities.KanjiCharactersReader;
 import com.kanji.webPanel.KanjiKoohiWebPageHandler;
-import com.guimaker.application.ApplicationWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -71,21 +71,22 @@ public class ProblematicJapaneseWordsDisplayer
 
 	@Override
 	public void browseWord(JapaneseWord japaneseWord) {
-		KanjiCharactersReader kanjiCharactersReader = KanjiCharactersReader
-				.getInstance();
+		KanjiCharactersReader kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		Set<String> kanjis = extractKanjis(japaneseWord);
 		List<KanjiData> kanjiDataList = new ArrayList<>();
 		for (String kanji : kanjis) {
 			Kanji kanjiInformation = kanjiList.
-					findRowBasedOnPropertyStartingFromBeginningOfList(
-							new KanjiIdChecker(),
-							kanjiCharactersReader.getIdOfKanji(kanji),
-							MoveDirection.BELOW, false);
+													  findRowBasedOnPropertyStartingFromBeginningOfList(
+															  new KanjiIdChecker(),
+															  kanjiCharactersReader.getIdOfKanji(
+																	  kanji),
+															  MoveDirection.BELOW,
+															  false);
 			kanjiDataList.add(new KanjiData(kanji, kanjiInformation));
 		}
 
-		problematicJapaneseWordsPanelUpdater
-				.addInformationAboutKanjisForGivenWord(kanjiDataList);
+		problematicJapaneseWordsPanelUpdater.addInformationAboutKanjisForGivenWord(
+				kanjiDataList);
 	}
 
 	@Override
@@ -111,7 +112,7 @@ public class ProblematicJapaneseWordsDisplayer
 		String uriText = Urls.KANJI_KOOHI_REVIEW_BASE_PAGE;
 		uriText += kanjiData;
 		problematicJapaneseWordsPanel.getKanjiKoohiWebPanel()
-				.showPageWithoutGrabbingFocus(uriText);
+									 .showPageWithoutGrabbingFocus(uriText);
 	}
 
 	private Set<String> extractKanjis(JapaneseWord japaneseWord) {
@@ -131,12 +132,12 @@ public class ProblematicJapaneseWordsDisplayer
 	@Override
 	public void initializeWebPages() {
 		problematicJapaneseWordsPanel.getJapaneseEnglishDictionaryPanel()
-				.showPage(Urls.TANGORIN_URL);
+									 .showPage(Urls.TANGORIN_URL);
 		problematicJapaneseWordsPanel.getEnglishPolishDictionaryPanel()
-				.showPage(Urls.DICTIONARY_PL_EN_MAIN_PAGE);
+									 .showPage(Urls.DICTIONARY_PL_EN_MAIN_PAGE);
 		problematicJapaneseWordsPanel.getKanjiKoohiWebPanel()
-				.showPageWithoutGrabbingFocus(
-						kanjiKoohiWebPageHandler.getInitialPage());
+									 .showPageWithoutGrabbingFocus(
+											 kanjiKoohiWebPageHandler.getInitialPage());
 	}
 
 	@Override
@@ -148,16 +149,15 @@ public class ProblematicJapaneseWordsDisplayer
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JTextComponent selectedInput = problematicJapaneseWordsPanel
-						.getJapanesePanelCreator()
-						.getListInputsSelectionManager().getSelectedInput();
+				JTextComponent selectedInput = problematicJapaneseWordsPanel.getJapanesePanelCreator()
+																			.getListInputsSelectionManager()
+																			.getSelectedInput();
 
 				if (selectedInput != null) {
-					problematicJapaneseWordsPanel
-							.getJapaneseEnglishDictionaryPanel()
-							.showPageWithoutGrabbingFocus(
-									createUrlForWordInJapaneseEnglishDictionary(
-											selectedInput.getText()));
+					problematicJapaneseWordsPanel.getJapaneseEnglishDictionaryPanel()
+												 .showPageWithoutGrabbingFocus(
+														 createUrlForWordInJapaneseEnglishDictionary(
+																 selectedInput.getText()));
 				}
 				else {
 					applicationWindow.showMessageDialog(
@@ -176,14 +176,14 @@ public class ProblematicJapaneseWordsDisplayer
 	@Override
 	public boolean isListPanelFocused() {
 		return problematicJapaneseWordsPanel.getFocusableComponentsManager()
-				.getFocusedComponent()
-				.equals(problematicJapaneseWordsPanel.getWordsList()
-						.getPanel());
+											.getFocusedComponent()
+											.equals(problematicJapaneseWordsPanel.getWordsList()
+																				 .getPanel());
 	}
 
 	@Override
 	public void focusPreviouslyFocusedElement() {
 		problematicJapaneseWordsPanel.getFocusableComponentsManager()
-				.focusPreviouslyFocusedElement();
+									 .focusPreviouslyFocusedElement();
 	}
 }

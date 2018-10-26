@@ -1,14 +1,14 @@
 package com.kanji.list.listRows.japanesePanelCreatingComponents;
 
+import com.guimaker.application.DialogWindow;
 import com.guimaker.enums.PanelDisplayMode;
+import com.guimaker.list.myList.MyList;
+import com.guimaker.listeners.InputValidationListener;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listRows.japanesePanelCreatingService.JapanesePanelCreatingService;
 import com.kanji.list.listRows.japanesePanelCreatingService.JapanesePanelInEditModeCreator;
 import com.kanji.list.listRows.japanesePanelCreatingService.JapanesePanelInViewModeCreator;
-import com.guimaker.listeners.InputValidationListener;
-import com.guimaker.list.myList.MyList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
-import com.guimaker.application.DialogWindow;
 
 import java.util.HashMap;
 import java.util.Map;

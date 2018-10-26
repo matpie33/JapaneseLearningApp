@@ -20,25 +20,24 @@ public class FocusableComponentsManager {
 	}
 
 	private void initializeHotkeysForSwitchingBetweenPanels() {
-		CommonActionsCreator
-				.addHotkey(new HotkeyWrapper(KeyEvent.VK_BACK_QUOTE),
-						wrapAsAction(focusHandler::toggleSwitchMode),
-						rootPanel);
+		CommonActionsCreator.addHotkey(
+				new HotkeyWrapper(KeyEvent.VK_BACK_QUOTE),
+				wrapAsAction(focusHandler::toggleSwitchMode), rootPanel);
 		CommonActionsCreator.addHotkey(new HotkeyWrapper(KeyEvent.VK_W),
-				wrapAsAction(() -> focusHandler
-						.selectNextPanelInDirectionIfInSwitchingMode(
+				wrapAsAction(
+						() -> focusHandler.selectNextPanelInDirectionIfInSwitchingMode(
 								MoveDirection.ABOVE)), rootPanel);
 		CommonActionsCreator.addHotkey(new HotkeyWrapper(KeyEvent.VK_S),
-				wrapAsAction(() -> focusHandler
-						.selectNextPanelInDirectionIfInSwitchingMode(
+				wrapAsAction(
+						() -> focusHandler.selectNextPanelInDirectionIfInSwitchingMode(
 								MoveDirection.BELOW)), rootPanel);
 		CommonActionsCreator.addHotkey(new HotkeyWrapper(KeyEvent.VK_A),
-				wrapAsAction(() -> focusHandler
-						.selectNextPanelInDirectionIfInSwitchingMode(
+				wrapAsAction(
+						() -> focusHandler.selectNextPanelInDirectionIfInSwitchingMode(
 								MoveDirection.LEFT)), rootPanel);
 		CommonActionsCreator.addHotkey(new HotkeyWrapper(KeyEvent.VK_D),
-				wrapAsAction(() -> focusHandler
-						.selectNextPanelInDirectionIfInSwitchingMode(
+				wrapAsAction(
+						() -> focusHandler.selectNextPanelInDirectionIfInSwitchingMode(
 								MoveDirection.RIGHT)), rootPanel);
 	}
 
@@ -58,7 +57,7 @@ public class FocusableComponentsManager {
 		addFocus(panelToWrap, panelToWrap);
 	}
 
-	public void makeFocusable (JComponent... panels){
+	public void makeFocusable(JComponent... panels) {
 		for (JComponent panel : panels) {
 			makeFocusable(panel);
 		}

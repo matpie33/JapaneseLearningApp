@@ -1,6 +1,7 @@
 package com.kanji.panelsAndControllers.controllers;
 
 import com.guimaker.row.AbstractSimpleRow;
+import com.guimaker.utilities.SetOfRanges;
 import com.kanji.constants.enums.IncrementSign;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.ExceptionsMessages;
@@ -12,7 +13,6 @@ import com.kanji.model.RangesRow;
 import com.kanji.panelsAndControllers.panelUpdaters.LearningStartPanelUpdater;
 import com.kanji.panelsAndControllers.panels.LearningStartPanel;
 import com.kanji.panelsAndControllers.validation.LearningStartPanelInputValidation;
-import com.guimaker.utilities.SetOfRanges;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -35,7 +35,8 @@ public class LearningStartController {
 	private AbstractButton problematicWordsCheckbox;
 	private TypeOfWordForRepeating typeOfWordForRepeating;
 
-	public LearningStartController(TypeOfWordForRepeating typeOfWordForRepeating,
+	public LearningStartController(
+			TypeOfWordForRepeating typeOfWordForRepeating,
 			ApplicationController applicationController,
 			LearningStartPanel learningStartPanel) {
 		this.applicationController = applicationController;
@@ -43,8 +44,9 @@ public class LearningStartController {
 		this.learningStartPanel = learningStartPanel;
 		rangesRows = new ArrayList<>();
 		errors = new HashMap<>();
-		inputValidation = new LearningStartPanelInputValidation
-				(applicationController.getActiveWordsList().getNumberOfWords());
+		inputValidation = new LearningStartPanelInputValidation(
+				applicationController.getActiveWordsList()
+									 .getNumberOfWords());
 		panelUpdater = new LearningStartPanelUpdater(learningStartPanel);
 	}
 
@@ -68,8 +70,9 @@ public class LearningStartController {
 
 	private void addOrSubtractProblematicWordsFromSum(
 			IncrementSign incrementSign) {
-		if (applicationController.getActiveWordsList().getListElementClass()
-				.equals(Kanji.class)) {
+		if (applicationController.getActiveWordsList()
+								 .getListElementClass()
+								 .equals(Kanji.class)) {
 			updateSumBasedOnProblematicKanjis(incrementSign);
 		}
 		else {
@@ -79,8 +82,7 @@ public class LearningStartController {
 	}
 
 	private void updateSumBasedOnProblematicWords(IncrementSign incrementSign) {
-		Set<JapaneseWord> problematicWords = applicationController
-				.getProblematicJapaneseWords();
+		Set<JapaneseWord> problematicWords = applicationController.getProblematicJapaneseWords();
 		sumOfWords += incrementSign.getSignValue() * problematicWords.size();
 		//TODO figure out if problematic word is or is not inside selected range
 	}
@@ -96,8 +98,7 @@ public class LearningStartController {
 	}
 
 	public int getProblematicWordsNumber() {
-		return applicationController
-				.getProblematicWordsAmountBasedOnCurrentTab();
+		return applicationController.getProblematicWordsAmountBasedOnCurrentTab();
 	}
 
 	public void addRow(JTextComponent from, JTextComponent to) {
@@ -133,7 +134,9 @@ public class LearningStartController {
 
 	private void handleKeyReleased(KeyEvent e, JTextComponent to,
 			JTextComponent from) {
-		if (from.getText().isEmpty() || to.getText().isEmpty()) {
+		if (from.getText()
+				.isEmpty() || to.getText()
+								.isEmpty()) {
 			if (e.getKeyChar() == KeyEvent.VK_BACK_SPACE) {
 				resetRangeForRowAndUpdateSum(to, from);
 			}
@@ -153,7 +156,8 @@ public class LearningStartController {
 	private void processTextFieldsInputAfterKeyRelease(JTextComponent to,
 			JTextComponent from) {
 		Component focusedComponent = learningStartPanel.getDialog()
-				.getContainer().getFocusOwner();
+													   .getContainer()
+													   .getFocusOwner();
 		int valueFrom = Integer.parseInt(from.getText());
 		int valueTo = Integer.parseInt(to.getText());
 		String error = inputValidation.validateRangesInput(valueFrom, valueTo);
@@ -188,8 +192,8 @@ public class LearningStartController {
 
 	private void removeRow(RangesRow rangesRow) {
 		boolean wasError = rangesRow.hasError();
-		int rowWithTextFieldsNumber = learningStartPanel
-				.getIndexOfRangesRow(rangesRow);
+		int rowWithTextFieldsNumber = learningStartPanel.getIndexOfRangesRow(
+				rangesRow);
 		panelUpdater.removeRow(rowWithTextFieldsNumber);
 		if (wasError) {
 			panelUpdater.removeRow(rowWithTextFieldsNumber);
@@ -221,16 +225,17 @@ public class LearningStartController {
 
 	private boolean isInputEmptyAfterStartButtonPress() {
 		rangesToRepeat = addAllRangesToSet();
-		if (rangesToRepeat.toString().isEmpty()) {
+		if (rangesToRepeat.toString()
+						  .isEmpty()) {
 			makeSureTheresNoInput();
 			//TODO do it on "enter key listener", process only the currently
 			// focused row
 		}
-		if (rangesToRepeat.toString().isEmpty() && !problematicWordsCheckbox
-				.isSelected()) {
-			panelUpdater
-					.showErrorInNewDialog(
-							com.guimaker.strings.ExceptionsMessages.NO_INPUT_SUPPLIED);
+		if (rangesToRepeat.toString()
+						  .isEmpty()
+				&& !problematicWordsCheckbox.isSelected()) {
+			panelUpdater.showErrorInNewDialog(
+					com.guimaker.strings.ExceptionsMessages.NO_INPUT_SUPPLIED);
 			return true;
 		}
 		return false;
@@ -240,8 +245,9 @@ public class LearningStartController {
 		for (RangesRow range : rangesRows) {
 			JTextComponent textFieldTo = range.getTextFieldTo();
 			JTextComponent textFieldFrom = range.getTextFieldFrom();
-			if (textFieldFrom.getText().isEmpty() || textFieldTo.getText()
-					.isEmpty()) {
+			if (textFieldFrom.getText()
+							 .isEmpty() || textFieldTo.getText()
+													  .isEmpty()) {
 				continue;
 			}
 			processTextFieldsInputAfterKeyRelease(textFieldTo, textFieldFrom);
@@ -252,7 +258,8 @@ public class LearningStartController {
 		String repeatingInformation = "";
 		if (problematicWordsCheckbox.isSelected()) {
 			repeatingInformation = Labels.PROBLEMATIC_WORDS_OPTION;
-			if (rangesToRepeat.getRangesAsList().size() > 0) {
+			if (rangesToRepeat.getRangesAsList()
+							  .size() > 0) {
 				repeatingInformation += ", ";
 			}
 		}
@@ -266,7 +273,8 @@ public class LearningStartController {
 	private SetOfRanges addAllRangesToSet() {
 		SetOfRanges setOfRanges = new SetOfRanges();
 		for (RangesRow r : rangesRows) {
-			if (!r.getRange().isEmpty()) {
+			if (!r.getRange()
+				  .isEmpty()) {
 				setOfRanges.addRange(r.getRange());
 			}
 
@@ -285,9 +293,8 @@ public class LearningStartController {
 				continue;
 			}
 			int rowNumber = learningStartPanel.getIndexOfRangesRow(rangesRow);
-			concatenated += String
-					.format(ExceptionsMessages.ERROR_IN_ROW, rowNumber + 1,
-							rangesRow.getError());
+			concatenated += String.format(ExceptionsMessages.ERROR_IN_ROW,
+					rowNumber + 1, rangesRow.getError());
 			concatenated += "\n\n";
 		}
 		return concatenated;
@@ -387,10 +394,9 @@ public class LearningStartController {
 
 	public void addRowToRangesPanel(JTextComponent fieldFrom,
 			JTextComponent fieldTo, AbstractSimpleRow newRow) {
-		boolean problematicCheckboxSelected = problematicWordsCheckbox
-				.isSelected();
+		boolean problematicCheckboxSelected = problematicWordsCheckbox.isSelected();
 		int nextRowNumber = learningStartPanel.getRangesPanel()
-				.getNumberOfRows();
+											  .getNumberOfRows();
 		if (problematicCheckboxSelected) {
 			nextRowNumber -= 1;
 		}

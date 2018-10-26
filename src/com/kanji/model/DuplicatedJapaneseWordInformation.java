@@ -1,7 +1,7 @@
 package com.kanji.model;
 
-import com.kanji.list.listElements.JapaneseWord;
 import com.guimaker.list.ListElement;
+import com.kanji.list.listElements.JapaneseWord;
 
 public class DuplicatedJapaneseWordInformation implements ListElement {
 

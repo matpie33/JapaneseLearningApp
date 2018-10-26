@@ -1,6 +1,5 @@
 package com.kanji.main;
 
-import com.guimaker.colors.BasicColors;
 import com.guimaker.panels.MainPanel;
 import com.kanji.constants.Colors;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
@@ -17,7 +16,6 @@ public class AppStart {
 		//buttons color, list default color
 		ApplicationController applicationController = new ApplicationController();
 		applicationController.initiate();
-
 
 	}
 

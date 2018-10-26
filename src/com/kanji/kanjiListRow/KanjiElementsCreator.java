@@ -24,9 +24,10 @@ public class KanjiElementsCreator {
 	public JTextComponent createKanjiKeywordInput(String text,
 			boolean enabled) {
 		return GuiElementsCreator.createTextArea(
-				new TextAreaOptions().text(text).rowsAndColumns(2, 5)
-						.moveToNextComponentWhenTabbed(true)
-						.setEnabled(enabled));
+				new TextAreaOptions().text(text)
+									 .rowsAndColumns(2, 5)
+									 .moveToNextComponentWhenTabbed(true)
+									 .setEnabled(enabled));
 	}
 
 	private boolean isEditable(PanelDisplayMode displayMode) {
@@ -42,19 +43,23 @@ public class KanjiElementsCreator {
 			inputText = "";
 		}
 		return GuiElementsCreator.createTextField(
-				new TextComponentOptions().text(inputText).maximumCharacters(5)
-						.digitsOnly(true).setEnabled(enabled)
-						.rowsAndColumns(1, 5));
+				new TextComponentOptions().text(inputText)
+										  .maximumCharacters(5)
+										  .digitsOnly(true)
+										  .setEnabled(enabled)
+										  .rowsAndColumns(1, 5));
 	}
 
 	public JLabel createLabel(String text) {
-		return GuiElementsCreator.createLabel(
-				new ComponentOptions().text(text).foregroundColor(labelsColor));
+		return GuiElementsCreator.createLabel(new ComponentOptions().text(text)
+																	.foregroundColor(
+																			labelsColor));
 	}
 
 	public AbstractButton createButtonShowKanjiStories() {
 		return GuiElementsCreator.createButtonlikeComponent(
-				new ButtonOptions(ButtonType.BUTTON)
-						.text(JapaneseApplicationButtonsNames.SHOW_KANJI_STORIES), null);
+				new ButtonOptions(ButtonType.BUTTON).text(
+						JapaneseApplicationButtonsNames.SHOW_KANJI_STORIES),
+				null);
 	}
 }

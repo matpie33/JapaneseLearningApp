@@ -1,5 +1,6 @@
 package com.kanji.utilities;
 
+import com.guimaker.list.myList.MyList;
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.exception.DuplicatedWordException;
@@ -7,7 +8,6 @@ import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.RepeatingData;
-import com.guimaker.list.myList.MyList;
 import com.kanji.model.WordsAndRepeatingInfo;
 import javafx.util.Pair;
 
@@ -91,8 +91,8 @@ public class WordsListReadWrite {
 			wordInformation.setPartOfSpeech(
 					PartOfSpeech.getPartOfSpeachByPolishMeaning(partOfSpeech));
 			for (int i = 2; i < partsSeparatedByHash.length; i++) {
-				String[] kanaAndKanjis = partsSeparatedByHash[i]
-						.split(KANA_SEPARATOR);
+				String[] kanaAndKanjis = partsSeparatedByHash[i].split(
+						KANA_SEPARATOR);
 				String kana = kanaAndKanjis[0];
 				if (kanaAndKanjis.length > 1) {
 					String[] kanjis = kanaAndKanjis[1].split(KANJI_SEPARATOR);
@@ -122,10 +122,12 @@ public class WordsListReadWrite {
 		p.newLine();
 		for (JapaneseWord word : list) {
 			p.write(word.getMeaning() + SEPARATOR + word.getPartOfSpeech()
-					.getPolishMeaning() + SEPARATOR);
+														.getPolishMeaning()
+					+ SEPARATOR);
 			for (JapaneseWriting writing : word.getWritings()) {
 				p.write(writing.getKanaWriting());
-				if (!writing.getKanjiWritings().isEmpty()) {
+				if (!writing.getKanjiWritings()
+							.isEmpty()) {
 					p.write(KANA_SEPARATOR);
 					boolean firstKanji = true;
 					for (String kanji : writing.getKanjiWritings()) {
@@ -169,8 +171,8 @@ public class WordsListReadWrite {
 		p.write(KANJIS_HEADER);
 		p.newLine();
 		for (Kanji kanji : list) {
-			p.write(kanji.getKeyword() + SEPARATOR + Integer
-					.toString(kanji.getId()) + SEPARATOR);
+			p.write(kanji.getKeyword() + SEPARATOR + Integer.toString(
+					kanji.getId()) + SEPARATOR);
 			p.newLine();
 		}
 		List<RepeatingData> repeatingData = repeats.getWords();
@@ -238,7 +240,8 @@ public class WordsListReadWrite {
 
 	private boolean isKeywordDefined(String keyword, List<Kanji> kanjis) {
 		for (Kanji kanji : kanjis) {
-			if (kanji.getKeyword().equals(keyword)) {
+			if (kanji.getKeyword()
+					 .equals(keyword)) {
 				return true;
 			}
 		}
@@ -295,7 +298,8 @@ public class WordsListReadWrite {
 
 	private void openDesktopAndShowMessage(int wordId)
 			throws DuplicatedWordException, IOException {
-		Desktop.getDesktop().open(this.readedFile);
+		Desktop.getDesktop()
+			   .open(this.readedFile);
 		//TODO if the file has wrong extension we get exception: no application associated for this application with this file
 		throw new DuplicatedWordException(
 				ExceptionsMessages.DUPLICATED_ID_EXCEPTION + " " + NUMBER_TEXT
@@ -304,7 +308,8 @@ public class WordsListReadWrite {
 
 	private void openDesktopAndShowMessage(String duplicatedWord, int wordId,
 			List<Kanji> kanjis) throws DuplicatedWordException, IOException {
-		Desktop.getDesktop().open(this.readedFile);
+		Desktop.getDesktop()
+			   .open(this.readedFile);
 		throw new DuplicatedWordException(
 				ExceptionsMessages.DUPLICATED_WORD_EXCEPTION + " " + WORD_TEXT
 						+ duplicatedWord + "; " + NUMBER_TEXT + wordId

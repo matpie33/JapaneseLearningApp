@@ -39,8 +39,7 @@ public class ApplicationStateController {
 			ApplicationController applicationController) {
 		RepeatingJapaneseWordsDisplayer repeatingJapaneseWordsDisplayer = new RepeatingJapaneseWordsDisplayer(
 				applicationController);
-		MyList<JapaneseWord> japaneseWords = listTestDataCreator
-				.initializeJapaneseWordsList();
+		MyList<JapaneseWord> japaneseWords = listTestDataCreator.initializeJapaneseWordsList();
 		WordSpecificRepeatingController<JapaneseWord> japaneseWordSpecificController = new WordSpecificRepeatingController<>(
 				japaneseWords, repeatingJapaneseWordsDisplayer);
 		RepeatingWordsController<JapaneseWord> repeatingJapaneseWordsController = new RepeatingWordsController<>(
@@ -48,8 +47,7 @@ public class ApplicationStateController {
 		ProblematicJapaneseWordsDisplayer problematicJapaneseWordsDisplayer = new ProblematicJapaneseWordsDisplayer(
 				applicationController);
 
-		ProblematicWordsController<JapaneseWord> controller = problematicJapaneseWordsDisplayer
-				.getController();
+		ProblematicWordsController<JapaneseWord> controller = problematicJapaneseWordsDisplayer.getController();
 		japaneseWords.addListObserver(controller);
 
 		WordStateController<JapaneseWord> japaneseWordsController = new WordStateController<>(
@@ -57,8 +55,8 @@ public class ApplicationStateController {
 		japaneseWordsController.setRepeatingDates(
 				listTestDataCreator.initializeJapaneseWordsRepeatingData());
 		japaneseWordsController.setWords(japaneseWords);
-		wordStateControllerByMeaningfulNameMap
-				.put(JapaneseWord.MEANINGFUL_NAME, japaneseWordsController);
+		wordStateControllerByMeaningfulNameMap.put(JapaneseWord.MEANINGFUL_NAME,
+				japaneseWordsController);
 	}
 
 	private void initializeKanjiControllers(
@@ -72,8 +70,7 @@ public class ApplicationStateController {
 
 		ProblematicKanjiDisplayer problematicKanjiDisplayer = new ProblematicKanjiDisplayer(
 				applicationController);
-		ProblematicWordsController<Kanji> problematicKanjiController = problematicKanjiDisplayer
-				.getProblematicWordsController();
+		ProblematicWordsController<Kanji> problematicKanjiController = problematicKanjiDisplayer.getProblematicWordsController();
 		kanjiList.addListObserver(problematicKanjiController);
 
 		WordStateController<Kanji> kanjiController = new WordStateController<>(
@@ -81,8 +78,8 @@ public class ApplicationStateController {
 		kanjiController.setRepeatingDates(
 				listTestDataCreator.initializeKanjiRepeatingList());
 		kanjiController.setWords(kanjiList);
-		wordStateControllerByMeaningfulNameMap
-				.put(Kanji.MEANINGFUL_NAME, kanjiController);
+		wordStateControllerByMeaningfulNameMap.put(Kanji.MEANINGFUL_NAME,
+				kanjiController);
 	}
 
 	public WordStateController getController(String meaningfulName) {
@@ -107,15 +104,16 @@ public class ApplicationStateController {
 	}
 
 	public WordStateController getActiveWordsStateController() {
-		return wordStateControllerByMeaningfulNameMap
-				.get(activeWordsControllerKey);
+		return wordStateControllerByMeaningfulNameMap.get(
+				activeWordsControllerKey);
 	}
 
 	public void reinitializeProblematicWordsControllers() {
-		wordStateControllerByMeaningfulNameMap.values().forEach(
-				wordStateController -> wordStateController
-						.getProblematicWordsController()
-						.getProblematicWordsDisplayer().initializeWebPages());
+		wordStateControllerByMeaningfulNameMap.values()
+											  .forEach(
+													  wordStateController -> wordStateController.getProblematicWordsController()
+																								.getProblematicWordsDisplayer()
+																								.initializeWebPages());
 	}
 
 	public String getActiveControllerMeaningfulName() {

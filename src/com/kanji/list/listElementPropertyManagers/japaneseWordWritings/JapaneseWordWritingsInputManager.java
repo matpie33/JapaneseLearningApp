@@ -35,7 +35,8 @@ public class JapaneseWordWritingsInputManager {
 			if (input == kanjiInput) {
 				continue;
 			}
-			if (kanjiInput.getText().equals(input.getText())) {
+			if (kanjiInput.getText()
+						  .equals(input.getText())) {
 				return false;
 			}
 		}

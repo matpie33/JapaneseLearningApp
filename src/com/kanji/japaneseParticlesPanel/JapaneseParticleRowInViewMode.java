@@ -1,8 +1,8 @@
 package com.kanji.japaneseParticlesPanel;
 
+import com.guimaker.utilities.CommonListElements;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.WordParticlesData;
-import com.guimaker.utilities.CommonListElements;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -20,9 +20,10 @@ public class JapaneseParticleRowInViewMode
 	public JComponent[] createRowElements(WordParticlesData wordParticlesData,
 			JapaneseWord japaneseWord, CommonListElements commonListElements) {
 		JLabel particleLabel = elementsCreator.createLabel(
-				wordParticlesData.getJapaneseParticle().getDisplayedValue());
-		JLabel particleAdditionalInformation = elementsCreator
-				.createLabel(wordParticlesData.getAdditionalInformation());
+				wordParticlesData.getJapaneseParticle()
+								 .getDisplayedValue());
+		JLabel particleAdditionalInformation = elementsCreator.createLabel(
+				wordParticlesData.getAdditionalInformation());
 		List<JComponent> components = new ArrayList<>();
 		components.add(particleLabel);
 		components.add(particleAdditionalInformation);

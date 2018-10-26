@@ -29,9 +29,11 @@ public enum TypeOfWordForRepeating {
 	public static TypeOfWordForRepeating withMeaningfulName(
 			String meaningfulName) {
 		return Arrays.stream(values())
-				.filter(type -> type.getAssociatedRepeatingWordsState()
-						.getMeaningfulName().equals(meaningfulName)).findFirst()
-				.orElse(null);
+					 .filter(type -> type.getAssociatedRepeatingWordsState()
+										 .getMeaningfulName()
+										 .equals(meaningfulName))
+					 .findFirst()
+					 .orElse(null);
 	}
 
 }

@@ -24,7 +24,10 @@ import com.kanji.utilities.CommonGuiElementsCreator;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.kanji.constants.strings.JapaneseApplicationButtonsNames.*;
 
@@ -99,8 +102,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 				TypeOfWordForRepeating.JAPANESE_WORDS);
 
 		tabbedPane.addTab(KANJI_TAB_TITLE, kanjiListsSplitPane);
-		tabbedPane.addTab(JAPANESE_TAB_TITLE,
-				japaneseWordsListsSplitPane);
+		tabbedPane.addTab(JAPANESE_TAB_TITLE, japaneseWordsListsSplitPane);
 
 		for (int i = 0; i < tabbedPane.getTabCount(); i++) {
 			tabbedPane.setBackgroundAt(i, BasicColors.BLUE_NORMAL_1);

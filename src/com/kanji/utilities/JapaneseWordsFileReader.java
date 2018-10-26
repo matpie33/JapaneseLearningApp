@@ -1,11 +1,11 @@
 package com.kanji.utilities;
 
+import com.guimaker.list.ListElement;
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.enums.VerbConjugationType;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.exception.IncorrectJapaneseWordsListInputException;
 import com.kanji.list.listElements.JapaneseWord;
-import com.guimaker.list.ListElement;
 import com.kanji.model.DuplicatedJapaneseWordInformation;
 
 import java.io.*;
@@ -43,7 +43,7 @@ public class JapaneseWordsFileReader {
 	private void changeStringsToJapaneseWordInformation() {
 		for (int i = 0; i < wordsInKanaList.size(); i++) {
 			JapaneseWord japaneseWord = JapaneseWord.getInitializer()
-					.initializeElement();
+													.initializeElement();
 			String stringInKana = wordsInKanaList.get(i);
 			String stringInKanji = wordsInKanjiList.get(i);
 			String meaning = meaningsList.get(i);
@@ -72,10 +72,10 @@ public class JapaneseWordsFileReader {
 				partOfSpeech = PartOfSpeech.NA_ADJECTIVE;
 			}
 			if (stringInKana.contains("+する") || stringInKana.contains("、する")
-					|| stringInKanji.contains("+する") || stringInKanji
-					.contains("、する") || (stringInKana.contains("rzeczownik")
-					&& !stringInKana.contains("rzeczownik +")) || stringInKana
-					.contains("+の")) {
+					|| stringInKanji.contains("+する") || stringInKanji.contains(
+					"、する") || (stringInKana.contains("rzeczownik")
+					&& !stringInKana.contains("rzeczownik +"))
+					|| stringInKana.contains("+の")) {
 				stringInKana = removeFromString(stringInKana, "+する",
 						"rzeczownik");
 				stringInKanji = removeFromString(stringInKanji, "+する",
@@ -102,8 +102,8 @@ public class JapaneseWordsFileReader {
 				// '' imieslow czasownikowy''
 				partOfSpeech = PartOfSpeech.I_ADJECTIVE;
 			}
-			else if (JapaneseWritingUtilities
-					.characterIsKanji(lastCharacterOf(stringInKanji))) {
+			else if (JapaneseWritingUtilities.characterIsKanji(
+					lastCharacterOf(stringInKanji))) {
 				partOfSpeech = PartOfSpeech.NOUN;
 			}
 			else {
@@ -117,8 +117,8 @@ public class JapaneseWordsFileReader {
 			int potentialDuplicateIndex = searchForElementInList(newWords,
 					japaneseWord);
 			if (potentialDuplicateIndex != -1) {
-				duplicatedWords
-						.add(new DuplicatedJapaneseWordInformation(japaneseWord,
+				duplicatedWords.add(
+						new DuplicatedJapaneseWordInformation(japaneseWord,
 								potentialDuplicateIndex));
 			}
 			else {
@@ -131,7 +131,8 @@ public class JapaneseWordsFileReader {
 	private int searchForElementInList(List<? extends ListElement> list,
 			ListElement o) {
 		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i).equals(o)) {
+			if (list.get(i)
+					.equals(o)) {
 				return i;
 			}
 		}
@@ -150,8 +151,8 @@ public class JapaneseWordsFileReader {
 	private String checkForTakingParticleAndModifyString(
 			String wordRepresentation, char particle,
 			JapaneseWord japaneseWord) {
-		if (wordRepresentation.contains("+" + particle) || wordRepresentation
-				.contains("+ " + particle)) {
+		if (wordRepresentation.contains("+" + particle)
+				|| wordRepresentation.contains("+ " + particle)) {
 			if (particle == 'と' && wordRepresentation.contains("ところ")) {
 				return wordRepresentation;
 			}
@@ -191,8 +192,8 @@ public class JapaneseWordsFileReader {
 			JapaneseWord japaneseWord) {
 		if (kanaWritings.length == kanjiWritings.length) {
 			for (int i = 0; i < kanaWritings.length; i++) {
-				japaneseWord
-						.addWritingsForKana(kanaWritings[i], kanjiWritings[i]);
+				japaneseWord.addWritingsForKana(kanaWritings[i],
+						kanjiWritings[i]);
 			}
 		}
 		else if (kanjiWritings.length > kanaWritings.length) {
@@ -228,8 +229,8 @@ public class JapaneseWordsFileReader {
 		String wordToCompare = splittedWords[0];
 		alternativeWritings.add(wordToCompare);
 		char lastCharacterOfWordToCompare = lastCharacterOf(wordToCompare);
-		boolean isLastCharacterKanji = JapaneseWritingUtilities
-				.characterIsKanji(lastCharacterOfWordToCompare);
+		boolean isLastCharacterKanji = JapaneseWritingUtilities.characterIsKanji(
+				lastCharacterOfWordToCompare);
 		boolean foundVerbConjugationType = false;
 		for (int i = 1; i < splittedWords.length; i++) {
 			String nextWord = splittedWords[i];
@@ -280,8 +281,10 @@ public class JapaneseWordsFileReader {
 		for (String part : partsToRemove) {
 			baseString = baseString.replace(part, "");
 		}
-		return baseString.replace(",", "").
-				replace("-", "").trim();
+		return baseString.replace(",", "")
+						 .
+								 replace("-", "")
+						 .trim();
 	}
 
 	private char lastCharacterOfKanjiOrKanaIfKanjiIsEmpty(String wordInKanji,
@@ -316,8 +319,8 @@ public class JapaneseWordsFileReader {
 					INCORRECT_JAPANESE_WORDS_LISTS_SIZES + SEPARATOR;
 		}
 		if (!message.isEmpty()) {
-			message = message
-					.substring(0, message.length() - SEPARATOR.length());
+			message = message.substring(0,
+					message.length() - SEPARATOR.length());
 			throw new IncorrectJapaneseWordsListInputException(message);
 		}
 	}
@@ -346,7 +349,8 @@ public class JapaneseWordsFileReader {
 		}
 		while ((line = in.readLine()) != null) {
 			listToFill.add(line.trim()
-					.replace("＋", "+")); //TODO more complicated for kanji word
+							   .replace("＋",
+									   "+")); //TODO more complicated for kanji word
 		}
 		in.close();
 

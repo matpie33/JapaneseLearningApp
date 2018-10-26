@@ -43,8 +43,9 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
 	public RepeatingWordsPanel(RepeatingWordsController controller) {
 		rootPanel = new MainPanel();
-		repeatingDataPanel = new MainPanel(new PanelConfiguration()
-				.setColorToUse(Colors.BACKGROUND_PANEL_COLOR));
+		repeatingDataPanel = new MainPanel(
+				new PanelConfiguration().setColorToUse(
+						Colors.BACKGROUND_PANEL_COLOR));
 		repeatingDataPanel.setRowsBorder(getDefaultBorder());
 		this.repeatingWordsController = controller;
 		initializeWordDataPanel();
@@ -54,8 +55,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 		wordDataPanel = new MainPanel(
 				new PanelConfiguration().putRowsAsHighestAsPossible());
 		wordDataPanel.setRowColor(BasicColors.PURPLE_DARK_2);
-		wordDataPanel.setRowsBorder(BorderFactory
-				.createBevelBorder(BevelBorder.LOWERED,
+		wordDataPanel.setRowsBorder(
+				BorderFactory.createBevelBorder(BevelBorder.LOWERED,
 						BasicColors.BLUE_NORMAL_1, BasicColors.BLUE_NORMAL_7));
 	}
 
@@ -63,21 +64,23 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	public void createElements() {
 		titleLabel = GuiElementsCreator.createLabel(
 				new ComponentOptions().text(Titles.REPEATING_WORDS_DIALOG));
-		timeElapsedLabel = GuiElementsCreator
-				.createLabel(new ComponentOptions());
-		remainingWordsAmountLabel = GuiElementsCreator
-				.createLabel(new ComponentOptions());
+		timeElapsedLabel = GuiElementsCreator.createLabel(
+				new ComponentOptions());
+		remainingWordsAmountLabel = GuiElementsCreator.createLabel(
+				new ComponentOptions());
 		returnButton = createReturnButton();
 		createRepeatingPanelElements();
 
 		addElementsToPanels();
-		mainPanel.getPanel().repaint();
+		mainPanel.getPanel()
+				 .repaint();
 	}
 
 	@Override
 	public String getUniqueName() {
 		return repeatingWordsController.getWordSpecificRepeatingController()
-				.getWordDisplayer().getUniqueName();
+									   .getWordDisplayer()
+									   .getUniqueName();
 	}
 
 	public AbstractButton getShowWordOrMarkAsRecognizedButton() {
@@ -101,27 +104,34 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private void addElementsToPanels() {
-		repeatingDataPanel.addRows(SimpleRowBuilder
-				.createRow(FillType.HORIZONTAL, wordHintTextPane)
-				.wrapSingleComponentWithPanel(false)
-				.nextRow(FillType.BOTH, Anchor.CENTER, wordDataPanel.getPanel())
-				.nextRow(FillType.NONE, pauseButton,
-						showWordOrMarkAsRecognizedButton,
-						notRecognizedWordButton, showPreviousWordButton)
-				.fillHorizontallyEqually().disableBorder());
+		repeatingDataPanel.addRows(
+				SimpleRowBuilder.createRow(FillType.HORIZONTAL,
+						wordHintTextPane)
+								.wrapSingleComponentWithPanel(false)
+								.nextRow(FillType.BOTH, Anchor.CENTER,
+										wordDataPanel.getPanel())
+								.nextRow(FillType.NONE, pauseButton,
+										showWordOrMarkAsRecognizedButton,
+										notRecognizedWordButton,
+										showPreviousWordButton)
+								.fillHorizontallyEqually()
+								.disableBorder());
 
-		rootPanel.addRows(SimpleRowBuilder
-				.createRow(FillType.NONE, Anchor.NORTH, titleLabel,
-						timeElapsedLabel)
-				.nextRow(FillType.BOTH, repeatingDataPanel.getPanel())
-				.setBorder(getDefaultBorder())
-				.nextRow(FillType.NONE, Anchor.CENTER,
-						remainingWordsAmountLabel, returnButton));
+		rootPanel.addRows(
+				SimpleRowBuilder.createRow(FillType.NONE, Anchor.NORTH,
+						titleLabel, timeElapsedLabel)
+								.nextRow(FillType.BOTH,
+										repeatingDataPanel.getPanel())
+								.setBorder(getDefaultBorder())
+								.nextRow(FillType.NONE, Anchor.CENTER,
+										remainingWordsAmountLabel,
+										returnButton));
 
 		//TODO in gui maker enable me to put some element in some anchor so that remaining label can be positioned vertically center
-		mainPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.BOTH, Anchor.CENTER, rootPanel.getPanel())
-				.useAllExtraVerticalSpace());
+		mainPanel.addRow(
+				SimpleRowBuilder.createRow(FillType.BOTH, Anchor.CENTER,
+						rootPanel.getPanel())
+								.useAllExtraVerticalSpace());
 	}
 
 	private void createShowPreviousWordButton() {
@@ -135,9 +145,12 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 	private void createWordHintTextPane() {
 		wordHintTextPane = GuiElementsCreator.createTextPane(
 				new TextPaneOptions().textAlignment(TextAlignment.CENTERED)
-						.text("").editable(false).fontSize(30f)
-						.backgroundColor(Colors.CONTENT_PANEL_COLOR)
-						.font(ApplicationWindow.getKanjiFont()));
+									 .text("")
+									 .editable(false)
+									 .fontSize(30f)
+									 .backgroundColor(
+											 Colors.CONTENT_PANEL_COLOR)
+									 .font(ApplicationWindow.getKanjiFont()));
 	}
 
 	private void createPauseButton() {
@@ -149,8 +162,8 @@ public class RepeatingWordsPanel extends AbstractPanelWithHotkeysInfo {
 
 	private void createShowWordOrMarkAsRecognizedButton() {
 		showWordOrMarkAsRecognizedButton = createButtonWithHotkey(
-				KeyEvent.VK_SPACE, repeatingWordsController
-						.createShowFullInformationOrMarkWordAsRecognizedAction(),
+				KeyEvent.VK_SPACE,
+				repeatingWordsController.createShowFullInformationOrMarkWordAsRecognizedAction(),
 				JapaneseApplicationButtonsNames.SHOW_WORD,
 				HotkeysDescriptions.SHOW_WORD_OR_SET_AS_RECOGNIZED);
 	}

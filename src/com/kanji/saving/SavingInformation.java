@@ -62,8 +62,10 @@ public class SavingInformation implements Serializable {
 
 	public void setRepeatingState(RepeatingState state) {
 		this.repeatingState = state;
-		Class<?> aClass = state.getCurrentlyRepeatedWords().iterator().next()
-				.getClass();
+		Class<?> aClass = state.getCurrentlyRepeatedWords()
+							   .iterator()
+							   .next()
+							   .getClass();
 		ApplicationSaveableState saveableState;
 		//TODO do it better
 		if (aClass.equals(Kanji.class)) {
@@ -82,10 +84,10 @@ public class SavingInformation implements Serializable {
 	public void setProblematicWordsState(
 			ProblematicWordsState problematicWordsState,
 			ApplicationSaveableState state) {
-		if (!state
-				.equals(ApplicationSaveableState.REVIEWING_PROBLEMATIC_JAPANESE_WORDS)
-				&& !state
-				.equals(ApplicationSaveableState.REVIEWING_PROBLEMATIC_KANJIS)) {
+		if (!state.equals(
+				ApplicationSaveableState.REVIEWING_PROBLEMATIC_JAPANESE_WORDS)
+				&& !state.equals(
+				ApplicationSaveableState.REVIEWING_PROBLEMATIC_KANJIS)) {
 			throw new IllegalArgumentException(
 					"Only reviewing state can be used here but was: " + state);
 		}

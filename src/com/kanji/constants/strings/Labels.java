@@ -22,7 +22,6 @@ public class Labels {
 
 	public static final String YES = "tak";
 	public static final String NO = "nie";
-	public static final String ADDITIONAL_INFORMATION_GENERAL_TAG =
-			"Dodatkowe informacje";
+	public static final String ADDITIONAL_INFORMATION_GENERAL_TAG = "Dodatkowe informacje";
 	public static final String NO_ADDITIONAL_INFORMATION = "brak";
 }

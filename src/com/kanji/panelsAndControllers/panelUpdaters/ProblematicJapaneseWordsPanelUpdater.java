@@ -14,9 +14,10 @@ public class ProblematicJapaneseWordsPanelUpdater {
 		this.problematicJapaneseWordsPanel = problematicJapaneseWordsPanel;
 	}
 
-	public void addInformationAboutKanjisForGivenWord(List<KanjiData> kanjiDataList){
-		problematicJapaneseWordsPanel.createKanjiInformationPanelForKanjiData
-				(kanjiDataList);
+	public void addInformationAboutKanjisForGivenWord(
+			List<KanjiData> kanjiDataList) {
+		problematicJapaneseWordsPanel.createKanjiInformationPanelForKanjiData(
+				kanjiDataList);
 	}
 
 }

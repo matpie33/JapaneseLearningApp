@@ -1,8 +1,8 @@
 package com.kanji.japaneseParticlesPanel;
 
+import com.guimaker.utilities.CommonListElements;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.WordParticlesData;
-import com.guimaker.utilities.CommonListElements;
 
 import javax.swing.*;
 

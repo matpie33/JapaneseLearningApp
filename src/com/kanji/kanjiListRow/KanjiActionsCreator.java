@@ -1,16 +1,16 @@
 package com.kanji.kanjiListRow;
 
-import com.guimaker.enums.PanelDisplayMode;
+import com.guimaker.application.DialogWindow;
 import com.guimaker.enums.InputGoal;
+import com.guimaker.enums.PanelDisplayMode;
+import com.guimaker.list.ListElementPropertyManager;
+import com.guimaker.list.myList.ListPropertyChangeHandler;
+import com.guimaker.listeners.InputValidationListener;
 import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
 import com.kanji.list.listElementPropertyManagers.KanjiKeywordChecker;
-import com.guimaker.list.ListElementPropertyManager;
 import com.kanji.list.listElements.Kanji;
-import com.guimaker.listeners.InputValidationListener;
-import com.guimaker.list.myList.ListPropertyChangeHandler;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
-import com.guimaker.application.DialogWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -35,8 +35,8 @@ public class KanjiActionsCreator {
 
 	public JTextComponent withKeywordValidation(JTextComponent keywordInput,
 			Kanji kanji, InputGoal inputGoal) {
-		if (displayMode.equals(PanelDisplayMode.VIEW) && !inputGoal
-				.equals(InputGoal.SEARCH)) {
+		if (displayMode.equals(PanelDisplayMode.VIEW) && !inputGoal.equals(
+				InputGoal.SEARCH)) {
 			return keywordInput;
 		}
 		keywordChecker = new KanjiKeywordChecker();
@@ -50,8 +50,8 @@ public class KanjiActionsCreator {
 
 	public JTextComponent withKanjiIdValidation(JTextComponent kanjiIdInput,
 			Kanji kanji, InputGoal inputGoal) {
-		if (displayMode.equals(PanelDisplayMode.VIEW) && !inputGoal
-				.equals(InputGoal.SEARCH)) {
+		if (displayMode.equals(PanelDisplayMode.VIEW) && !inputGoal.equals(
+				InputGoal.SEARCH)) {
 			return kanjiIdInput;
 		}
 		idChecker = new KanjiIdChecker();
@@ -67,8 +67,8 @@ public class KanjiActionsCreator {
 		ListPropertyChangeHandler listPropertyChangeHandler = new ListPropertyChangeHandler<>(
 				kanji, applicationController.getKanjiList(), parentDialog,
 				propertyManager, inputGoal);
-		validationListeners
-				.forEach(listPropertyChangeHandler::addValidationListener);
+		validationListeners.forEach(
+				listPropertyChangeHandler::addValidationListener);
 		return listPropertyChangeHandler;
 	}
 

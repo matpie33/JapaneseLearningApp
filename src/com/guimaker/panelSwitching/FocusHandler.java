@@ -2,7 +2,6 @@ package com.guimaker.panelSwitching;
 
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.MoveDirection;
-import com.guimaker.panelSwitching.PanelSwitchingHandler;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -22,7 +21,7 @@ public class FocusHandler {
 		switchingModeEnabled = !switchingModeEnabled;
 		markPanelsAsSwitchable();
 		KeyboardFocusManager.getCurrentKeyboardFocusManager()
-				.clearGlobalFocusOwner();
+							.clearGlobalFocusOwner();
 		if (!switchingModeEnabled) {
 			focusedPanel.requestFocusInWindow();
 		}
@@ -73,8 +72,8 @@ public class FocusHandler {
 	public void selectNextPanelInDirectionIfInSwitchingMode(
 			MoveDirection above) {
 		if (switchingModeEnabled) {
-			JComponent closestPanelBasedOnDirection = panelSwitchingHandler
-					.findClosestPanelBasedOnDirection(focusedPanel, above);
+			JComponent closestPanelBasedOnDirection = panelSwitchingHandler.findClosestPanelBasedOnDirection(
+					focusedPanel, above);
 			if (closestPanelBasedOnDirection != null) {
 				markPanelAsSelected(closestPanelBasedOnDirection);
 			}
@@ -91,8 +90,8 @@ public class FocusHandler {
 
 	public void focusPreviouslyFocusedElement() {
 		if (focusedPanel != null) {
-			SwingUtilities
-					.invokeLater(() -> focusedPanel.requestFocusInWindow());
+			SwingUtilities.invokeLater(
+					() -> focusedPanel.requestFocusInWindow());
 		}
 	}
 }

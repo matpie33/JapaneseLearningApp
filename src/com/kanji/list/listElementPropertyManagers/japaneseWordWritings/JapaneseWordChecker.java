@@ -1,12 +1,12 @@
 package com.kanji.list.listElementPropertyManagers.japaneseWordWritings;
 
 import com.guimaker.enums.InputGoal;
+import com.guimaker.list.ListElementPropertyManager;
+import com.guimaker.utilities.Pair;
 import com.kanji.constants.enums.TypeOfJapaneseWriting;
 import com.kanji.constants.strings.ExceptionsMessages;
-import com.guimaker.list.ListElementPropertyManager;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
-import com.guimaker.utilities.Pair;
 
 import javax.swing.text.JTextComponent;
 import java.util.*;
@@ -34,9 +34,9 @@ public class JapaneseWordChecker implements
 
 	public Pair<JapaneseWriting, JapaneseWordWritingsChecker> getWritingForInput(
 			JTextComponent input) {
-		for (Map.Entry<JTextComponent, JapaneseWriting> inputWithWriting : inputToWritingMap
-				.entrySet()) {
-			if (inputWithWriting.getKey().equals(input)) {
+		for (Map.Entry<JTextComponent, JapaneseWriting> inputWithWriting : inputToWritingMap.entrySet()) {
+			if (inputWithWriting.getKey()
+								.equals(input)) {
 				return new Pair<>(inputWithWriting.getValue(),
 						writingToCheckerMap.get(inputWithWriting.getValue()));
 			}
@@ -53,8 +53,8 @@ public class JapaneseWordChecker implements
 
 	private JapaneseWordWritingsChecker getCheckerForInput(
 			JapaneseWriting writingContainingThisKana) {
-		JapaneseWordWritingsChecker checkerForWriting = writingToCheckerMap
-				.get(writingContainingThisKana);
+		JapaneseWordWritingsChecker checkerForWriting = writingToCheckerMap.get(
+				writingContainingThisKana);
 		if (checkerForWriting == null) {
 			checkerForWriting = new JapaneseWordWritingsChecker(
 					writingContainingThisKana, inputGoal);
@@ -68,7 +68,7 @@ public class JapaneseWordChecker implements
 		for (JapaneseWriting japaneseWriting : japaneseWord.getWritings()) {
 			writingsText.append(japaneseWriting.getKanaWriting());
 			japaneseWriting.getKanjiWritings()
-					.forEach(kanji -> writingsText.append(" " + kanji));
+						   .forEach(kanji -> writingsText.append(" " + kanji));
 		}
 		return writingsText.toString();
 	}
@@ -83,9 +83,8 @@ public class JapaneseWordChecker implements
 			JapaneseWord japaneseWord) {
 		for (JapaneseWriting writing : japaneseWord.getWritings()) {
 			for (JapaneseWriting propertyWriting : property) {
-				if (JapaneseWordWritingsChecker
-						.areWritingsEqual(propertyWriting, writing,
-								inputGoal)) {
+				if (JapaneseWordWritingsChecker.areWritingsEqual(
+						propertyWriting, writing, inputGoal)) {
 					return true;
 				}
 			}
@@ -96,19 +95,19 @@ public class JapaneseWordChecker implements
 	@Override
 	public Set<JapaneseWriting> validateInputAndConvertToProperty(
 			JTextComponent textInput) {
-		JapaneseWriting existingWritingForInput = inputToWritingMap
-				.get(textInput);
-		JapaneseWordWritingsChecker checkerForInput = writingToCheckerMap
-				.get(existingWritingForInput);
-		JapaneseWriting convertedProperty = checkerForInput
-				.validateInputAndConvertToProperty(textInput);
+		JapaneseWriting existingWritingForInput = inputToWritingMap.get(
+				textInput);
+		JapaneseWordWritingsChecker checkerForInput = writingToCheckerMap.get(
+				existingWritingForInput);
+		JapaneseWriting convertedProperty = checkerForInput.validateInputAndConvertToProperty(
+				textInput);
 		if (convertedProperty == null) {
 			invalidPropertyReason = checkerForInput.getInvalidPropertyReason();
 			return null;
 		}
 		for (JapaneseWriting writing : writingToCheckerMap.keySet()) {
-			if (writing != convertedProperty && writing
-					.equals(convertedProperty)) {
+			if (writing != convertedProperty && writing.equals(
+					convertedProperty)) {
 				invalidPropertyReason = ExceptionsMessages.DUPLICATED_WRITINGS_IN_WORD;
 				return null;
 			}
@@ -130,15 +129,15 @@ public class JapaneseWordChecker implements
 
 	private void updateWritingsInMaps(JapaneseWriting oldWriting,
 			JapaneseWriting newWriting) {
-		for (Map.Entry<JTextComponent, JapaneseWriting> inputAndWriting : inputToWritingMap
-				.entrySet()) {
-			if (inputAndWriting.getValue().equals(oldWriting)) {
+		for (Map.Entry<JTextComponent, JapaneseWriting> inputAndWriting : inputToWritingMap.entrySet()) {
+			if (inputAndWriting.getValue()
+							   .equals(oldWriting)) {
 				inputToWritingMap.put(inputAndWriting.getKey(), newWriting);
 			}
 
 		}
-		JapaneseWordWritingsChecker checker = writingToCheckerMap
-				.remove(oldWriting);
+		JapaneseWordWritingsChecker checker = writingToCheckerMap.remove(
+				oldWriting);
 		writingToCheckerMap.put(newWriting, checker);
 	}
 
@@ -150,23 +149,25 @@ public class JapaneseWordChecker implements
 
 	@Override
 	public String getPropertyDefinedException(Set<JapaneseWriting> property) {
-		return String
-				.format(ExceptionsMessages.JAPANESE_WORD_WRITINGS_ALREADY_DEFINED,
-						property);
+		return String.format(
+				ExceptionsMessages.JAPANESE_WORD_WRITINGS_ALREADY_DEFINED,
+				property);
 	}
 
 	public JTextComponent getAnyKanjiInput() {
 		Map<JTextComponent, ListElementPropertyManager> inputToChecker = new LinkedHashMap<>();
-		return writingToCheckerMap.values().iterator().next()
-				.getAnyKanjiInput();
+		return writingToCheckerMap.values()
+								  .iterator()
+								  .next()
+								  .getAnyKanjiInput();
 	}
 
 	public void removeWriting(JapaneseWriting writing) {
 		writingToCheckerMap.remove(writing);
 		List<JTextComponent> inputsRemoved = new ArrayList<>();
-		for (Map.Entry<JTextComponent, JapaneseWriting> inputToWriting : inputToWritingMap
-				.entrySet()) {
-			if (inputToWriting.getValue().equals(writing)) {
+		for (Map.Entry<JTextComponent, JapaneseWriting> inputToWriting : inputToWritingMap.entrySet()) {
+			if (inputToWriting.getValue()
+							  .equals(writing)) {
 				inputsRemoved.add(inputToWriting.getKey());
 			}
 		}

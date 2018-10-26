@@ -1,9 +1,9 @@
 package com.kanji.japaneseParticlesPanel;
 
+import com.guimaker.utilities.CommonListElements;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.WordParticlesData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
-import com.guimaker.utilities.CommonListElements;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -27,18 +27,16 @@ public class JapaneseParticleRowInEditMode
 	@Override
 	public JComponent[] createRowElements(WordParticlesData wordParticlesData,
 			JapaneseWord japaneseWord, CommonListElements commonListElements) {
-		actionsCreator
-				.removeParticleWhenRowDeleted(wordParticlesData, japaneseWord,
-						commonListElements.getButtonDelete());
+		actionsCreator.removeParticleWhenRowDeleted(wordParticlesData,
+				japaneseWord, commonListElements.getButtonDelete());
 		japaneseWord.addParticleData(wordParticlesData);
 		applicationController.save();
 		JComboBox particleCombobox = actionsCreator.saveParticleWhenChanged(
 				elementsCreator.createParticlesCombobox(wordParticlesData),
 				japaneseWord, wordParticlesData);
-		JTextComponent input = actionsCreator
-				.saveAdditionalInformationOnFocusLost(elementsCreator
-								.createAdditionalInformationInput(wordParticlesData),
-						wordParticlesData);
+		JTextComponent input = actionsCreator.saveAdditionalInformationOnFocusLost(
+				elementsCreator.createAdditionalInformationInput(
+						wordParticlesData), wordParticlesData);
 		List<JComponent> components = new ArrayList<>();
 		components.add(particleCombobox);
 		components.add(input);

@@ -1,13 +1,13 @@
 package com.kanji.swingWorkers;
 
+import com.guimaker.application.ApplicationWindow;
 import com.guimaker.enums.InputGoal;
-import com.guimaker.swingUtilities.ProgressUpdater;
-import com.kanji.constants.strings.ExceptionsMessages;
 import com.guimaker.list.ListElement;
 import com.guimaker.list.myList.MyList;
+import com.guimaker.swingUtilities.ProgressUpdater;
+import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.panels.LoadingPanel;
-import com.guimaker.application.ApplicationWindow;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -31,16 +31,16 @@ public class LoadingProjectWorker {
 			List<Element> words) {
 		SwingWorker s = new SwingWorker<Void, Integer>() {
 
-			private JProgressBar progressBar = loadingPanel
-					.addProgressBar(list.getTitle());
+			private JProgressBar progressBar = loadingPanel.addProgressBar(
+					list.getTitle());
 
 			@Override
 			public Void doInBackground() throws Exception {
 				list.cleanWords();
 
 				int maximumDisplayedWords = list.getMaximumDisplayedWords();
-				int firstRowToLoad = Math
-						.max(0, words.size() - maximumDisplayedWords);
+				int firstRowToLoad = Math.max(0,
+						words.size() - maximumDisplayedWords);
 				int stepsToExecute = words.size() - firstRowToLoad - 1;
 				list.addWords(words, InputGoal.EDIT, false, false);
 				ProgressUpdater progressUpdater = list.getProgressUpdater();
@@ -54,8 +54,7 @@ public class LoadingProjectWorker {
 
 			@Override
 			public void done() {
-				ApplicationWindow applicationWindow = applicationController
-						.getApplicationWindow();
+				ApplicationWindow applicationWindow = applicationController.getApplicationWindow();
 				try {
 					get();
 				}
@@ -72,7 +71,8 @@ public class LoadingProjectWorker {
 							interruptedException.getMessage()));
 				}
 				finally {
-					applicationController.getStartingPanel().refreshAllTabs();
+					applicationController.getStartingPanel()
+										 .refreshAllTabs();
 					list.scrollToBottom();
 					swingWorkers.remove(this);
 					if (swingWorkers.isEmpty()) {

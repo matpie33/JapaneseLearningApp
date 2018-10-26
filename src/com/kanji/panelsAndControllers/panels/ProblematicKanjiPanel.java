@@ -56,8 +56,8 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		rowInKanjiInformations.setProblematicWordsController(controller);
 		wordsToReviewList = new MyList<>(parentDialog, applicationController,
 				rowInKanjiInformations, Titles.PROBLEMATIC_KANJIS,
-				new ListConfiguration(Prompts.KANJI)
-						.showButtonsLoadNextPreviousWords(false),
+				new ListConfiguration(
+						Prompts.KANJI).showButtonsLoadNextPreviousWords(false),
 				Kanji.getInitializer());
 
 	}
@@ -74,36 +74,39 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	public void createElements() {
 
 		MainPanel kanjiOfflineDisplayingPanel = new MainPanel();
-		Font messageFont = new JLabel().getFont().deriveFont(15f);
+		Font messageFont = new JLabel().getFont()
+									   .deriveFont(15f);
 
 		JTextComponent kanjiOfflineTextPane = GuiElementsCreator.createTextPane(
-				new TextPaneOptions().border(null).editable(false)
-						.textAlignment(TextAlignment.CENTERED).text("")
-						.border(getDefaultBorder()));
+				new TextPaneOptions().border(null)
+									 .editable(false)
+									 .textAlignment(TextAlignment.CENTERED)
+									 .text("")
+									 .border(getDefaultBorder()));
 		kanjiOfflineTextPane.setText(Prompts.NO_KANJI_TO_DISPLAY);
 		kanjiOfflineTextPane.setFont(messageFont);
 
-		kanjiOfflineDisplayingPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.NONE, Anchor.CENTER, kanjiOfflineTextPane));
+		kanjiOfflineDisplayingPanel.addRow(
+				SimpleRowBuilder.createRow(FillType.NONE, Anchor.CENTER,
+						kanjiOfflineTextPane));
 
 		focusableComponentsManager.makeFocusable(wordsToReviewList.getPanel(),
 				englishPolishDictionaryWebPanel.getWebPanel(),
 				kanjiKoohiWebPanel.getWebPanel());
 
-		JSplitPane wordsAndDictionaryPane = CommonGuiElementsCreator
-				.createSplitPane(SplitPaneOrientation.VERTICAL,
-						englishPolishDictionaryWebPanel.getSwitchingPanel(),
-						wordsToReviewList.getPanel(), 0.7);
+		JSplitPane wordsAndDictionaryPane = CommonGuiElementsCreator.createSplitPane(
+				SplitPaneOrientation.VERTICAL,
+				englishPolishDictionaryWebPanel.getSwitchingPanel(),
+				wordsToReviewList.getPanel(), 0.7);
 
-		JSplitPane splitPane = CommonGuiElementsCreator
-				.createSplitPane(SplitPaneOrientation.HORIZONTAL,
-						wordsAndDictionaryPane,
-						kanjiKoohiWebPanel.getSwitchingPanel(), 0.2);
+		JSplitPane splitPane = CommonGuiElementsCreator.createSplitPane(
+				SplitPaneOrientation.HORIZONTAL, wordsAndDictionaryPane,
+				kanjiKoohiWebPanel.getSwitchingPanel(), 0.2);
 
 		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, splitPane));
 
-		new ProblematicWordsPanelCommonPart(this, controller)
-				.addCommonPartToPanel();
+		new ProblematicWordsPanelCommonPart(this,
+				controller).addCommonPartToPanel();
 
 	}
 

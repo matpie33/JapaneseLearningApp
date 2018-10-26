@@ -1,6 +1,5 @@
 package com.kanji.panelsAndControllers.validation;
 
-
 import com.guimaker.strings.ExceptionsMessages;
 
 import java.awt.event.KeyEvent;
@@ -30,9 +29,9 @@ public class LearningStartPanelInputValidation {
 		}
 		else if (isNumberHigherThanMaximum(rangeStart)
 				|| isNumberHigherThanMaximum(rangeEnd)) {
-			error = String
-					.format(ExceptionsMessages.RANGE_VALUE_HIGHER_THAN_MAXIMUM_WORD_NUMBER,
-							numberOfWords);
+			error = String.format(
+					ExceptionsMessages.RANGE_VALUE_HIGHER_THAN_MAXIMUM_WORD_NUMBER,
+					numberOfWords);
 		}
 
 		return error;

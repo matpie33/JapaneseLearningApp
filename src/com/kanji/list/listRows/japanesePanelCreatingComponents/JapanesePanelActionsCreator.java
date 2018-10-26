@@ -1,25 +1,27 @@
 package com.kanji.list.listRows.japanesePanelCreatingComponents;
 
+import com.guimaker.application.DialogWindow;
 import com.guimaker.enums.InputGoal;
 import com.guimaker.enums.ListElementModificationType;
 import com.guimaker.enums.WordSearchOptions;
-import com.kanji.constants.enums.*;
+import com.guimaker.list.ListElementPropertyManager;
+import com.guimaker.list.myList.ListPropertyChangeHandler;
+import com.guimaker.list.myList.MyList;
+import com.guimaker.listeners.InputValidationListener;
+import com.guimaker.utilities.Pair;
+import com.guimaker.utilities.ThreadUtilities;
+import com.kanji.constants.enums.AdditionalInformationTag;
+import com.kanji.constants.enums.PartOfSpeech;
+import com.kanji.constants.enums.TypeOfJapaneseWriting;
 import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
-import com.guimaker.list.ListElementPropertyManager;
 import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordChecker;
 import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordWritingsChecker;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
-import com.guimaker.listeners.InputValidationListener;
-import com.guimaker.list.myList.ListPropertyChangeHandler;
-import com.guimaker.list.myList.MyList;
 import com.kanji.model.AdditionalInformation;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.utilities.JapaneseWritingUtilities;
-import com.guimaker.utilities.Pair;
-import com.guimaker.utilities.ThreadUtilities;
-import com.guimaker.application.DialogWindow;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -64,22 +66,26 @@ public class JapanesePanelActionsCreator {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				super.mouseEntered(e);
-				parentDialog.getPanel().getPanel()
-						.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				parentDialog.getPanel()
+							.getPanel()
+							.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
 				super.mouseEntered(e);
-				parentDialog.getPanel().getPanel()
-						.setCursor(Cursor.getDefaultCursor());
+				parentDialog.getPanel()
+							.getPanel()
+							.setCursor(Cursor.getDefaultCursor());
 			}
 		});
 		return textComponent;
 	}
 
 	public JTextComponent getAnyKanjiInputField() {
-		return checkersForJapaneseWords.get(0).getRight().getAnyKanjiInput();
+		return checkersForJapaneseWords.get(0)
+									   .getRight()
+									   .getAnyKanjiInput();
 	}
 
 	public JapaneseWordChecker getWordCheckerForKanaOrKanjiFilter() {
@@ -93,8 +99,8 @@ public class JapanesePanelActionsCreator {
 			boolean enabled) {
 		JapaneseWordChecker checker = getOrCreateCheckerFor(japaneseWord,
 				inputGoal);
-		boolean isKana = typeOfJapaneseWriting
-				.equals(TypeOfJapaneseWriting.KANA);
+		boolean isKana = typeOfJapaneseWriting.equals(
+				TypeOfJapaneseWriting.KANA);
 		checker.addInput(textComponent, japaneseWriting, typeOfJapaneseWriting);
 
 		if (typeOfJapaneseWriting.equals(TypeOfJapaneseWriting.KANA_OR_KANJI)
@@ -107,9 +113,9 @@ public class JapanesePanelActionsCreator {
 		if (enabled) {
 			addPropertyChangeHandler(textComponent, japaneseWord,
 					!inputGoal.equals(InputGoal.SEARCH) && isKana,
-					JapaneseWritingUtilities
-							.getDefaultValueForWriting(typeOfJapaneseWriting),
-					checker, parentDialog, wordsList, inputGoal);
+					JapaneseWritingUtilities.getDefaultValueForWriting(
+							typeOfJapaneseWriting), checker, parentDialog,
+					wordsList, inputGoal);
 		}
 
 		return textComponent;
@@ -119,7 +125,8 @@ public class JapanesePanelActionsCreator {
 			InputGoal inputGoal) {
 
 		for (Pair<JapaneseWord, JapaneseWordChecker> checkerForJapaneseWord : checkersForJapaneseWords) {
-			if (checkerForJapaneseWord.getLeft().equals(word)) {
+			if (checkerForJapaneseWord.getLeft()
+									  .equals(word)) {
 				return checkerForJapaneseWord.getRight();
 			}
 		}
@@ -137,10 +144,10 @@ public class JapanesePanelActionsCreator {
 		ListPropertyChangeHandler<?, JapaneseWord> propertyChangeHandler = new ListPropertyChangeHandler<>(
 				japaneseWord, wordsList, parentDialog, propertyManager,
 				defaultValue, requiredInput, inputGoal);
-		if (inputGoal.equals(InputGoal.ADD) || inputGoal
-				.equals(InputGoal.SEARCH)) {
-			inputValidationListeners
-					.forEach(propertyChangeHandler::addValidationListener);
+		if (inputGoal.equals(InputGoal.ADD) || inputGoal.equals(
+				InputGoal.SEARCH)) {
+			inputValidationListeners.forEach(
+					propertyChangeHandler::addValidationListener);
 		}
 		propertyChangeHandler.addValidationListener(wordsList);
 
@@ -163,10 +170,11 @@ public class JapanesePanelActionsCreator {
 
 			@Override
 			public void focusGained(FocusEvent e) {
-				textComponent.getInputContext().selectInputMethod(Locale.JAPAN);
-				textComponent.getInputContext().setCharacterSubsets(
-						new Character.Subset[] {
-								Character.UnicodeBlock.HIRAGANA });
+				textComponent.getInputContext()
+							 .selectInputMethod(Locale.JAPAN);
+				textComponent.getInputContext()
+							 .setCharacterSubsets(new Character.Subset[] {
+									 Character.UnicodeBlock.HIRAGANA });
 				super.focusGained(e);
 			}
 
@@ -174,12 +182,13 @@ public class JapanesePanelActionsCreator {
 			public void focusLost(FocusEvent e) {
 				super.focusLost(e);
 				if (textComponent.getInputContext() == null) {
-					parentDialog.getContainer().getInputContext()
-							.selectInputMethod(Locale.getDefault());
+					parentDialog.getContainer()
+								.getInputContext()
+								.selectInputMethod(Locale.getDefault());
 				}
 				else {
 					textComponent.getInputContext()
-							.selectInputMethod(Locale.getDefault());
+								 .selectInputMethod(Locale.getDefault());
 				}
 
 			}
@@ -193,9 +202,10 @@ public class JapanesePanelActionsCreator {
 		buttonDelete.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				getOrCreateCheckerFor(japaneseWord, inputGoal)
-						.removeWriting(writing);
-				japaneseWord.getWritings().remove(writing);
+				getOrCreateCheckerFor(japaneseWord, inputGoal).removeWriting(
+						writing);
+				japaneseWord.getWritings()
+							.remove(writing);
 				applicationController.save();
 			}
 		});
@@ -207,7 +217,8 @@ public class JapanesePanelActionsCreator {
 			@Override
 			public void focusLost(FocusEvent e) {
 				super.focusLost(e);
-				parentDialog.getContainer().repaint();
+				parentDialog.getContainer()
+							.repaint();
 			}
 		});
 		return textInput;
@@ -215,8 +226,9 @@ public class JapanesePanelActionsCreator {
 
 	public JapaneseWord getWordContainingInput(JTextComponent input) {
 		for (Pair<JapaneseWord, JapaneseWordChecker> wordToChecker : checkersForJapaneseWords) {
-			Pair<JapaneseWriting, JapaneseWordWritingsChecker> writingToChecker = wordToChecker
-					.getRight().getWritingForInput(input);
+			Pair<JapaneseWriting, JapaneseWordWritingsChecker> writingToChecker = wordToChecker.getRight()
+																							   .getWritingForInput(
+																									   input);
 			if (writingToChecker != null) {
 				return wordToChecker.getLeft();
 			}
@@ -234,7 +246,8 @@ public class JapanesePanelActionsCreator {
 						return;
 					}
 					String newValue = (String) comboBox.getSelectedItem();
-					japaneseWord.getAdditionalInformation().setValue(newValue);
+					japaneseWord.getAdditionalInformation()
+								.setValue(newValue);
 					ThreadUtilities.callOnOtherThread(
 							applicationController::save);
 					wordsList.updateObservers(japaneseWord,
@@ -258,8 +271,8 @@ public class JapanesePanelActionsCreator {
 					return;
 				}
 				String newValue = (String) e.getItem();
-				PartOfSpeech newPartOfSpeech = PartOfSpeech
-						.getPartOfSpeachByPolishMeaning(newValue);
+				PartOfSpeech newPartOfSpeech = PartOfSpeech.getPartOfSpeachByPolishMeaning(
+						newValue);
 
 				if (newPartOfSpeech.equals(japaneseWord.getPartOfSpeech())) {
 					return;
@@ -267,24 +280,23 @@ public class JapanesePanelActionsCreator {
 				japaneseWord.setPartOfSpeech(newPartOfSpeech);
 
 				String[] possibleValues = newPartOfSpeech.getPossibleValues();
-				boolean hasAdditionalInformation = !possibleValues[0]
-						.equals(Labels.NO_ADDITIONAL_INFORMATION);
+				boolean hasAdditionalInformation = !possibleValues[0].equals(
+						Labels.NO_ADDITIONAL_INFORMATION);
 				//TODO duplicated logic for has additional information in method
 				// create combobox for additional information in japanese
 				// panel elements creator
 				additionalInformationValue.setEnabled(hasAdditionalInformation);
 				additionalInformationValue.removeAllItems();
 				Arrays.stream(possibleValues)
-						.forEach(additionalInformationValue::addItem);
-				AdditionalInformationTag additionalInformationTag = newPartOfSpeech
-						.getAdditionalInformationTag();
-				additionalInformationLabel
-						.setText(additionalInformationTag.getLabel());
+					  .forEach(additionalInformationValue::addItem);
+				AdditionalInformationTag additionalInformationTag = newPartOfSpeech.getAdditionalInformationTag();
+				additionalInformationLabel.setText(
+						additionalInformationTag.getLabel());
 				if (hasAdditionalInformation) {
 					AdditionalInformation additionalInformation = new AdditionalInformation(
 							additionalInformationTag, possibleValues);
-					japaneseWord
-							.setAdditionalInformation(additionalInformation);
+					japaneseWord.setAdditionalInformation(
+							additionalInformation);
 
 				}
 				else {
@@ -300,8 +312,8 @@ public class JapanesePanelActionsCreator {
 	}
 
 	public void clearMappingForWordIfExists(JapaneseWord japaneseWord) {
-		checkersForJapaneseWords
-				.removeIf(pair -> pair.getLeft().equals(japaneseWord));
+		checkersForJapaneseWords.removeIf(pair -> pair.getLeft()
+													  .equals(japaneseWord));
 	}
 
 	public MyList<JapaneseWord> getWordsList() {

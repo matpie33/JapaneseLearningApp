@@ -15,15 +15,16 @@ public class CommonGuiElementsCreator {
 
 	public static JTextComponent createKanjiWordInput(String defaultContent) {
 		return GuiElementsCreator.createTextArea(
-				new TextAreaOptions().text(defaultContent).rowsAndColumns(2, 5)
-						.moveToNextComponentWhenTabbed(true));
+				new TextAreaOptions().text(defaultContent)
+									 .rowsAndColumns(2, 5)
+									 .moveToNextComponentWhenTabbed(true));
 	}
 
 	public static JTextComponent createShortInput(String defaultContent,
 			PanelDisplayMode displayMode) {
-		TextComponentOptions options = new TextComponentOptions()
-				.editable(displayMode.equals(PanelDisplayMode.EDIT))
-				.text(defaultContent);
+		TextComponentOptions options = new TextComponentOptions().editable(
+				displayMode.equals(PanelDisplayMode.EDIT))
+																 .text(defaultContent);
 		if (displayMode.equals(PanelDisplayMode.EDIT)) {
 			options.rowsAndColumns(1, 35);
 		}
@@ -33,19 +34,20 @@ public class CommonGuiElementsCreator {
 	public static JTextComponent createTextField(String defaultContent) {
 		return GuiElementsCreator.createTextField(
 				new TextComponentOptions().text(defaultContent)
-						.rowsAndColumns(1, 15));
+										  .rowsAndColumns(1, 15));
 	}
 
 	public static JTextComponent createKanjiIdInput() {
 		return GuiElementsCreator.createTextField(
-				new TextComponentOptions().maximumCharacters(5).digitsOnly(true)
-						.rowsAndColumns(1, 5));
+				new TextComponentOptions().maximumCharacters(5)
+										  .digitsOnly(true)
+										  .rowsAndColumns(1, 5));
 	}
 
 	public static JLabel createErrorLabel(String message) {
 		return GuiElementsCreator.createLabel(
 				new ComponentOptions().text(message)
-						.foregroundColor(Color.RED));
+									  .foregroundColor(Color.RED));
 	}
 
 	public static JSplitPane createSplitPane(

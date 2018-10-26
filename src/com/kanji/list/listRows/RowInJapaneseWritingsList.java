@@ -38,9 +38,9 @@ public class RowInJapaneseWritingsList
 			CommonListElements commonListElements, InputGoal inputGoal) {
 		MainPanel rowPanel = new MainPanel(
 				new PanelConfiguration().setPanelDisplayMode(displayMode));
-		JComponent[] components = japanesePanelCreatingService
-				.addWritingsRow(japaneseWriting, commonListElements,
-						wordContainingWritings, inputGoal, rowPanel);
+		JComponent[] components = japanesePanelCreatingService.addWritingsRow(
+				japaneseWriting, commonListElements, wordContainingWritings,
+				inputGoal, rowPanel);
 		rowPanel.addRow(
 				SimpleRowBuilder.createRow(FillType.HORIZONTAL, components));
 		ListRowDataCreator<Kanji> rowDataCreator = new ListRowDataCreator<>(
