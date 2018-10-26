@@ -126,8 +126,6 @@ public class ApplicationController
 
 	private void initializePanels() {
 
-		startingController.getStartingPanel().createListPanels();
-
 		RepeatingWordsPanel repeatingKanjiPanel = getRepeatingWordsPanel(
 				Kanji.MEANINGFUL_NAME);
 		RepeatingWordsPanel repeatingJapaneseWordsPanel = getRepeatingWordsPanel(

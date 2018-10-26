@@ -75,11 +75,10 @@ public class StartingController {
 
 	public JSplitPane getSplitPaneFor(Class listClass) {
 		if (listClass.equals(Kanji.class)) {
-			return startingPanel.getKanjiRepeatingPanel().getListsSplitPane();
+			return startingPanel.getKanjiListsSplitPane();
 		}
 		else {
-			return startingPanel.getJapaneseWordsRepeatingPanel()
-					.getListsSplitPane();
+			return startingPanel.getJapaneseWordsListsSplitPane();
 		}
 	}
 
