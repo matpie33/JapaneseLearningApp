@@ -27,7 +27,9 @@ public class StartingController {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				applicationController.setActiveWordStateController(
-						startingPanel.getActiveWordListControllerName());
+						startingPanel.getCurrentlySelectedWordListType()
+									 .getAssociatedRepeatingWordsState()
+									 .getMeaningfulName());
 				applicationController.updateProblematicWordsAmount();
 			}
 		};
@@ -52,16 +54,20 @@ public class StartingController {
 
 	public void setInitialStartingPanelState() {
 		applicationController.setActiveWordStateController(
-				startingPanel.getActiveWordListControllerName());
+				startingPanel.getCurrentlySelectedWordListType()
+							 .getAssociatedRepeatingWordsState()
+							 .getMeaningfulName());
 		changeSaveStatus(SavingStatus.NO_CHANGES);
 	}
 
 	public void switchToList(TypeOfWordForRepeating wordType) {
 		if (wordType.equals(TypeOfWordForRepeating.KANJIS)) {
-			startingPanel.getTabbedPane().setSelectedIndex(0);
+			startingPanel.getTabbedPane()
+						 .setSelectedIndex(0);
 		}
 		else if (wordType.equals(TypeOfWordForRepeating.JAPANESE_WORDS)) {
-			startingPanel.getTabbedPane().setSelectedIndex(1);
+			startingPanel.getTabbedPane()
+						 .setSelectedIndex(1);
 			//TODO use enum instead of class checking, and tab index to enum and use it instead of
 			// listToLabel map
 		}
@@ -69,8 +75,9 @@ public class StartingController {
 
 	public void changeSaveStatus(SavingStatus savingStatus) {
 		startingPanel.getSaveInfoLabel()
-				.setText(Prompts.SAVING_STATUS + savingStatus.getStatus());
-		startingPanel.getPanel().repaint();
+					 .setText(Prompts.SAVING_STATUS + savingStatus.getStatus());
+		startingPanel.getPanel()
+					 .repaint();
 	}
 
 	public JSplitPane getSplitPaneFor(Class listClass) {
@@ -87,15 +94,15 @@ public class StartingController {
 	}
 
 	public void updateProblematicWordsAmount(int problematicKanjisNumber) {
-		String wordType = JapaneseWritingUtilities
-				.getTextForTypeOfWordForRepeating(
-						applicationController.getActiveWordsListType());
-		startingPanel.getProblematicKanjisLabel().setText(
-				String.format(Prompts.PROBLEMATIC_WORDS_AMOUNT, wordType,
-						problematicKanjisNumber));
+		String wordType = JapaneseWritingUtilities.getTextForTypeOfWordForRepeating(
+				applicationController.getActiveWordsListType());
+		startingPanel.getProblematicKanjisLabel()
+					 .setText(String.format(Prompts.PROBLEMATIC_WORDS_AMOUNT,
+							 wordType, problematicKanjisNumber));
 	}
 
 	public void enableShowProblematicWordsButton() {
-		startingPanel.getShowProblematicWordsButton().setEnabled(true);
+		startingPanel.getShowProblematicWordsButton()
+					 .setEnabled(true);
 	}
 }

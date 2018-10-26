@@ -13,10 +13,9 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.KeyModifiers;
 import com.kanji.constants.enums.SplitPaneOrientation;
+import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
-import com.kanji.list.listElements.JapaneseWord;
-import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.RepeatingData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.StartingController;
@@ -39,9 +38,8 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	private JLabel saveInfo;
 	private AbstractButton showProblematicWordsButton;
 	private ApplicationController applicationController;
-	private Map<String, JSplitPane> tabTitleToContentMap = new LinkedHashMap<>();
 	private StartingController startingController;
-	private Map<String, String> tabTitleToWordStateControllerMap = new HashMap<>();
+	private Map<String, TypeOfWordForRepeating> tabTitleToWordTypeMap = new HashMap<>();
 	private static final String[] BUTTONS_ON_MAIN_PAGE = { START, LOAD_PROJECT,
 			LOAD_LIST, SAVE, SAVE_LIST, SHOW_PROBLEMATIC_KANJIS };
 	private JSplitPane kanjiListsSplitPane;
@@ -56,9 +54,9 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 
 	private JSplitPane createWordsAndRepeatingDataListSplitPane(
 			MyList wordsList, MyList<RepeatingData> repeatingList) {
-		return CommonGuiElementsCreator
-				.createSplitPane(SplitPaneOrientation.HORIZONTAL,
-						wordsList.getPanel(), repeatingList.getPanel(), 0.8);
+		return CommonGuiElementsCreator.createSplitPane(
+				SplitPaneOrientation.HORIZONTAL, wordsList.getPanel(),
+				repeatingList.getPanel(), 0.8);
 	}
 
 	@Override
@@ -76,13 +74,15 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		MainPanel bottomPanel = new MainPanel();
 		bottomPanel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL,
 				navigationButtons.toArray(new AbstractButton[] {}))
-				.setNotOpaque().disableBorder()
-				.nextRow(saveInfo, problematicKanjisLabel));
+											.setNotOpaque()
+											.disableBorder()
+											.nextRow(saveInfo,
+													problematicKanjisLabel));
 
 		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, tabbedPane));
 		addHotkeysPanelHere();
-		mainPanel.addRow(SimpleRowBuilder
-				.createRow(FillType.HORIZONTAL, bottomPanel.getPanel()));
+		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.HORIZONTAL,
+				bottomPanel.getPanel()));
 		startingController.setInitialStartingPanelState();
 	}
 
@@ -93,22 +93,15 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiListsSplitPane = createWordsAndRepeatingDataListSplitPane(
 				applicationController.getKanjiList(),
 				applicationController.getKanjiRepeatingDates());
+		tabTitleToWordTypeMap.put(KANJI_TAB_TITLE,
+				TypeOfWordForRepeating.KANJIS);
+		tabTitleToWordTypeMap.put(JAPANESE_TAB_TITLE,
+				TypeOfWordForRepeating.JAPANESE_WORDS);
 
-		tabTitleToWordStateControllerMap
-				.put(KANJI_TAB_TITLE, Kanji.MEANINGFUL_NAME);
-		tabTitleToWordStateControllerMap
-				.put(JAPANESE_TAB_TITLE, JapaneseWord.MEANINGFUL_NAME);
-
-		tabTitleToContentMap.put(KANJI_TAB_TITLE,
-				kanjiListsSplitPane);
-		tabTitleToContentMap.put(JAPANESE_TAB_TITLE,
+		tabbedPane.addTab(KANJI_TAB_TITLE, kanjiListsSplitPane);
+		tabbedPane.addTab(JAPANESE_TAB_TITLE,
 				japaneseWordsListsSplitPane);
 
-		for (Map.Entry<String, JSplitPane> listAndTabLabel : tabTitleToContentMap
-				.entrySet()) {
-			tabbedPane.addTab(listAndTabLabel.getKey(),
-					listAndTabLabel.getValue());
-		}
 		for (int i = 0; i < tabbedPane.getTabCount(); i++) {
 			tabbedPane.setBackgroundAt(i, BasicColors.BLUE_NORMAL_1);
 		}
@@ -185,8 +178,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 				action = new AbstractAction() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						applicationController
-								.showProblematicWordsDialogForCurrentList();
+						applicationController.showProblematicWordsDialogForCurrentList();
 					}
 				};
 				break;
@@ -207,11 +199,11 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 
 	private void createInformationsPanel() {
 		saveInfo = GuiElementsCreator.createLabel(new ComponentOptions());
-		problematicKanjisLabel = GuiElementsCreator
-				.createLabel(new ComponentOptions());
-		showProblematicWordsButton = GuiElementsCreator
-				.createButtonLikeComponent(new ButtonOptions(ButtonType.BUTTON)
-						.text(JapaneseApplicationButtonsNames.SHOW_PROBLEMATIC_KANJIS));
+		problematicKanjisLabel = GuiElementsCreator.createLabel(
+				new ComponentOptions());
+		showProblematicWordsButton = GuiElementsCreator.createButtonLikeComponent(
+				new ButtonOptions(ButtonType.BUTTON).text(
+						JapaneseApplicationButtonsNames.SHOW_PROBLEMATIC_KANJIS));
 	}
 
 	public AbstractButton getShowProblematicWordsButton() {
@@ -226,11 +218,6 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	@Override
 	public String getUniqueName() {
 		return UNIQUE_NAME;
-	}
-
-	public String getActiveWordListControllerName() {
-		return tabTitleToWordStateControllerMap
-				.get(tabbedPane.getTitleAt(tabbedPane.getSelectedIndex()));
 	}
 
 	public JLabel getSaveInfoLabel() {
@@ -252,5 +239,11 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	public JSplitPane getJapaneseWordsListsSplitPane() {
 		return japaneseWordsListsSplitPane;
 	}
+
+	public TypeOfWordForRepeating getCurrentlySelectedWordListType() {
+		return tabTitleToWordTypeMap.get(
+				tabbedPane.getTitleAt(tabbedPane.getSelectedIndex()));
+	}
+
 }
 
