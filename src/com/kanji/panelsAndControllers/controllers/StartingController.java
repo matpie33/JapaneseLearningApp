@@ -68,8 +68,6 @@ public class StartingController {
 		else if (wordType.equals(TypeOfWordForRepeating.JAPANESE_WORDS)) {
 			startingPanel.getTabbedPane()
 						 .setSelectedIndex(1);
-			//TODO use enum instead of class checking, and tab index to enum and use it instead of
-			// listToLabel map
 		}
 	}
 
