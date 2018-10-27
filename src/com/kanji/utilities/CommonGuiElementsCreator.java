@@ -13,13 +13,6 @@ import java.awt.*;
 
 public class CommonGuiElementsCreator {
 
-	public static JTextComponent createKanjiWordInput(String defaultContent) {
-		return GuiElementsCreator.createTextArea(
-				new TextAreaOptions().text(defaultContent)
-									 .rowsAndColumns(2, 5)
-									 .moveToNextComponentWhenTabbed(true));
-	}
-
 	public static JTextComponent createShortInput(String defaultContent,
 			PanelDisplayMode displayMode) {
 		TextComponentOptions options = new TextComponentOptions().editable(
@@ -29,19 +22,6 @@ public class CommonGuiElementsCreator {
 			options.rowsAndColumns(1, 35);
 		}
 		return GuiElementsCreator.createTextField(options);
-	}
-
-	public static JTextComponent createTextField(String defaultContent) {
-		return GuiElementsCreator.createTextField(
-				new TextComponentOptions().text(defaultContent)
-										  .rowsAndColumns(1, 15));
-	}
-
-	public static JTextComponent createKanjiIdInput() {
-		return GuiElementsCreator.createTextField(
-				new TextComponentOptions().maximumCharacters(5)
-										  .digitsOnly(true)
-										  .rowsAndColumns(1, 5));
 	}
 
 	public static JLabel createErrorLabel(String message) {
