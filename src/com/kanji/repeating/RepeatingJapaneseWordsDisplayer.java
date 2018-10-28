@@ -1,5 +1,6 @@
 package com.kanji.repeating;
 
+import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.InputGoal;
 import com.guimaker.enums.PanelDisplayMode;
@@ -55,8 +56,9 @@ public class RepeatingJapaneseWordsDisplayer
 				japaneseWord, InputGoal.NO_INPUT,
 				CommonListElements.forSingleRowOnly(Color.WHITE))
 													 .getRowPanel();
-		wordAssessmentPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH,
-				rowPanel.getPanel()));
+		wordAssessmentPanel.addRow(
+				SimpleRowBuilder.createRow(FillType.NONE, Anchor.NORTH,
+						rowPanel.getPanel()));
 	}
 
 	@Override
