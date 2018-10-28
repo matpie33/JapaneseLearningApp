@@ -4,27 +4,20 @@ import com.guimaker.application.DialogWindow;
 import com.guimaker.enums.*;
 import com.guimaker.inputSelection.ListInputsSelectionManager;
 import com.guimaker.list.ListRowData;
-import com.guimaker.list.myList.ListConfiguration;
 import com.guimaker.list.myList.ListRowDataCreator;
 import com.guimaker.list.myList.MyList;
 import com.guimaker.listeners.InputValidationListener;
 import com.guimaker.listeners.SwitchBetweenInputsFailListener;
-import com.guimaker.options.ComponentOptions;
-import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.ComplexRow;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.CommonListElements;
 import com.guimaker.utilities.Pair;
-import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.ListPropertiesNames;
-import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listElements.WordParticlesData;
-import com.kanji.list.listRows.RowInJapaneseWritingsList;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
-import com.kanji.utilities.CommonGuiElementsCreator;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -55,7 +48,6 @@ public class JapaneseWordPanelCreator
 	private JLabel particlesTakenLabel;
 	private JLabel additionalInformationLabel;
 	private JComboBox additionalInformationValue;
-	private MyList<JapaneseWord> list;
 	//TODO it's the second place where map did not fit due to mutable keys,
 	//can we do better than list of pairs?
 
@@ -90,16 +82,21 @@ public class JapaneseWordPanelCreator
 			MainPanel existingPanel, JapaneseWord japaneseWord,
 			InputGoal inputGoal, CommonListElements commonListElements,
 			boolean inheritScrollBar) {
+		determineDisplayMode(inputGoal);
+		japanesePanelComponentsStore.getActionCreator()
+									.clearMappingForWordIfExists(japaneseWord);
+		createElements(japaneseWord, inputGoal, inheritScrollBar);
+		return addElementsToPanel(existingPanel, commonListElements, inputGoal);
+
+	}
+
+	private void determineDisplayMode(InputGoal inputGoal) {
 		if (inputGoal.equals(InputGoal.NO_INPUT)) {
 			displayMode = PanelDisplayMode.VIEW;
 		}
 		else {
 			displayMode = PanelDisplayMode.EDIT;
 		}
-		createElements(japaneseWord, inputGoal, inheritScrollBar);
-		addActions(japaneseWord, inputGoal);
-		return addElementsToPanel(existingPanel, commonListElements, inputGoal);
-
 	}
 
 	private void createElements(JapaneseWord japaneseWord, InputGoal inputGoal,
@@ -107,66 +104,42 @@ public class JapaneseWordPanelCreator
 		if (rowNumberLabel != null) {
 			rowNumberLabel.setForeground(labelsColor);
 		}
-		japanesePanelComponentsStore.getActionCreator()
-									.clearMappingForWordIfExists(japaneseWord);
-		wordMeaningLabel = GuiElementsCreator.createLabel(
-				new ComponentOptions().text(Labels.WORD_MEANING)
-									  .foregroundColor(labelsColor));
-		wordMeaningText = CommonGuiElementsCreator.createShortInput(
-				japaneseWord.getMeaning(), displayMode);
 
-		partOfSpeechLabel = GuiElementsCreator.createLabel(
-				new ComponentOptions().text(Labels.PART_OF_SPEECH)
-									  .foregroundColor(labelsColor));
-		createParticlesTakenList(japaneseWord);
+		JapanesePanelElementsCreator elementsCreator = japanesePanelComponentsStore.getElementsCreator();
 
-		additionalInformationLabel = japanesePanelComponentsStore.getElementsCreator()
-																 .createAdditionalInformationLabel(
-																		 japaneseWord,
-																		 labelsColor);
-		additionalInformationValue = japanesePanelComponentsStore.getElementsCreator()
-																 .createComboboxForAdditionalInformation(
-																		 japaneseWord);
-		partOfSpeechCombobox = japanesePanelComponentsStore.getElementsCreator()
-														   .createComboboxForPartOfSpeech(
-																   japaneseWord.getPartOfSpeech(),
-																   additionalInformationLabel,
-																   additionalInformationValue,
-																   japaneseWord);
+		wordMeaningLabel = elementsCreator.createWordMeaningLabel(labelsColor);
+		wordMeaningText = elementsCreator.createWordMeaningText(japaneseWord,
+				displayMode, inputGoal);
+		partOfSpeechLabel = elementsCreator.createPartOfSpeechLabel(
+				labelsColor);
+		particlesTakenList = elementsCreator.createParticlesDataList(
+				japaneseWord, displayMode);
+		additionalInformationLabel = elementsCreator.createAdditionalInformationLabel(
+				japaneseWord, labelsColor);
+		additionalInformationValue = elementsCreator.createComboboxForAdditionalInformation(
+				japaneseWord);
+		partOfSpeechCombobox = elementsCreator.createComboboxForPartOfSpeech(
+				japaneseWord.getPartOfSpeech(), additionalInformationLabel,
+				additionalInformationValue, japaneseWord);
 		lastWritingsListCreated = createWritingsList(japaneseWord, inputGoal,
 				inheritScrollBar);
-		writingsLabel = GuiElementsCreator.createLabel(
-				new ComponentOptions().text(Labels.WRITING_WAYS_IN_JAPANESE)
-									  .foregroundColor(labelsColor));
-		particlesTakenLabel = GuiElementsCreator.createLabel(
-				new ComponentOptions().text(Labels.TAKING_PARTICLE)
-									  .foregroundColor(labelsColor));
-	}
-
-	private void createParticlesTakenList(JapaneseWord japaneseWord) {
-		particlesTakenList = japanesePanelComponentsStore.getElementsCreator()
-														 .createParticlesDataList(
-																 japaneseWord,
-																 displayMode);
-	}
-
-	private void addActions(JapaneseWord japaneseWord, InputGoal inputGoal) {
-		JapanesePanelActionsCreator actionCreatingService = japanesePanelComponentsStore.getActionCreator();
-		if (displayMode.equals(PanelDisplayMode.VIEW)) {
-			return;
-		}
-		actionCreatingService.addWordMeaningPropertyChangeListener(
-				wordMeaningText, japaneseWord,
-				inputGoal.equals(InputGoal.SEARCH) ?
-						WordSearchOptions.BY_WORD_FRAGMENT :
-						WordSearchOptions.BY_FULL_EXPRESSION, inputGoal);
+		writingsLabel = elementsCreator.createWritingsLabel(labelsColor);
+		particlesTakenLabel = elementsCreator.createParticlesTakenLabel(
+				labelsColor);
 	}
 
 	private MyList<JapaneseWriting> createWritingsList(
 			JapaneseWord japaneseWord, InputGoal inputGoal,
 			boolean inheritScrollBar) {
-		lastWritingsListCreated = createJapaneseWritingsList(japaneseWord,
-				inheritScrollBar);
+		lastWritingsListCreated = japanesePanelComponentsStore.getElementsCreator()
+															  .createJapaneseWritingsList(
+																	  japaneseWord,
+																	  inheritScrollBar,
+																	  parentDialog,
+																	  displayMode,
+																	  listInputsSelectionManager,
+																	  japanesePanelComponentsStore.getPanelCreatingService(
+																			  displayMode));
 		writingsLists.add(new Pair<>(japaneseWord, lastWritingsListCreated));
 
 		if (!japaneseWord.isEmpty()) {
@@ -225,29 +198,6 @@ public class JapaneseWordPanelCreator
 			writingsListToAddWriting = lastWritingsListCreated;
 		}
 		return writingsListToAddWriting;
-	}
-
-	private MyList<JapaneseWriting> createJapaneseWritingsList(
-			JapaneseWord japaneseWord, boolean inheritScrollBar) {
-		return new MyList<>(parentDialog, applicationController,
-				new RowInJapaneseWritingsList(
-						japanesePanelComponentsStore.getPanelCreatingService(
-								displayMode), japaneseWord, displayMode),
-				Labels.WRITING_WAYS_IN_JAPANESE, new ListConfiguration(
-				Prompts.JAPANESE_WORD_DELETE).enableWordAdding(false)
-											 .displayMode(displayMode)
-											 .inheritScrollbar(inheritScrollBar)
-											 .enableWordSearching(false)
-											 .parentListAndWordContainingThisList(
-													 applicationController.getJapaneseWords(),
-													 japaneseWord)
-											 .showButtonsLoadNextPreviousWords(
-													 false)
-											 .scrollBarFitsContent(false)
-											 .allInputsSelectionManager(
-													 listInputsSelectionManager)
-											 .skipTitle(true),
-				JapaneseWriting.getInitializer());
 	}
 
 	private ListRowData<JapaneseWord> addElementsToPanel(

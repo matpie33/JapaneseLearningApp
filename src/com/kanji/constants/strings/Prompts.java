@@ -16,6 +16,8 @@ public class Prompts {
 	public static final String REPEATING_DATE_DELETE = "dane o powtórce";
 	public static final String JAPANESE_WORD = "japońskich słów";
 	public static final String JAPANESE_WORD_DELETE = "japońskie słowo";
+	public static final String JAPANESE_WRITING_DELETE = "sposób zapisu słowa";
+	public static final String JAPANESE_PARTICLE_DELETE = "partykułę";
 	public static final String SAVING_STATUS = "Status zapisywania: ";
 	public static final String REPEATING_TIME = "Czas powtórek wyniósł %s.";
 	public static final String REPEATING_TIME_NOT_AVAILABLE = "nieokreślony";

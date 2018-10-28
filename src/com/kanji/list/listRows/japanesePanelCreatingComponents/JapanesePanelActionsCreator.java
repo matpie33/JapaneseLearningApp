@@ -155,13 +155,14 @@ public class JapanesePanelActionsCreator {
 
 	}
 
-	public void addWordMeaningPropertyChangeListener(
+	public JTextComponent withWordMeaningChangeListener(
 			JTextComponent wordMeaningTextField, JapaneseWord japaneseWord,
 			WordSearchOptions meaningSearchOptions, InputGoal inputGoal) {
 		wordMeaningChecker = new JapaneseWordMeaningChecker(
 				meaningSearchOptions);
 		addPropertyChangeHandler(wordMeaningTextField, japaneseWord, true, "",
 				wordMeaningChecker, parentDialog, wordsList, inputGoal);
+		return wordMeaningTextField;
 	}
 
 	public JTextComponent withSwitchToJapaneseActionOnClick(

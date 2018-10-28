@@ -18,13 +18,13 @@ import java.util.Set;
 
 public class RowInJapaneseWordInformations
 		implements ListRowCreator<JapaneseWord> {
-	private JapaneseWordPanelCreator newWordsPanelCreator;
+	private JapaneseWordPanelCreator japaneseWordsPanelCreator;
 	private Optional<JapaneseWordPanelCreator> searchOrAddDialogPanelCreator;
 	private Set<InputValidationListener<JapaneseWord>> validationListeners = new HashSet<>();
 
 	public RowInJapaneseWordInformations(
-			JapaneseWordPanelCreator newWordsPanelCreator) {
-		this.newWordsPanelCreator = newWordsPanelCreator;
+			JapaneseWordPanelCreator japaneseWordsPanelCreator) {
+		this.japaneseWordsPanelCreator = japaneseWordsPanelCreator;
 		searchOrAddDialogPanelCreator = Optional.empty();
 	}
 
@@ -36,34 +36,56 @@ public class RowInJapaneseWordInformations
 	}
 
 	@Override
-	public ListRowData createListRow(JapaneseWord japaneseWord,
+	public ListRowData<JapaneseWord> createListRow(JapaneseWord japaneseWord,
 			CommonListElements commonListElements, InputGoal inputGoal) {
-		PanelDisplayMode displayMode = newWordsPanelCreator.getDisplayMode();
-		if (displayMode.equals(PanelDisplayMode.VIEW) && (
-				inputGoal.equals(InputGoal.EDIT_TEMPORARILY)
-						|| commonListElements.isForSingleRowOnly())) {
-			displayMode = PanelDisplayMode.EDIT;
-		}
+		PanelDisplayMode displayMode = getPanelDisplayMode(commonListElements,
+				inputGoal);
 		MainPanel panel = new MainPanel(
 				new PanelConfiguration().setPanelDisplayMode(displayMode));
 		JLabel rowNumberLabel = commonListElements.getRowNumberLabel();
-		JapaneseWordPanelCreator panelCreatorToUse;
-		if (commonListElements.isForSingleRowOnly()) {
-			panelCreatorToUse = searchOrAddDialogPanelCreator.orElse(
-					newWordsPanelCreator.copy());
-		}
-		else {
-			panelCreatorToUse = newWordsPanelCreator;
-		}
-		panelCreatorToUse.addValidationListeners(validationListeners);
-		panelCreatorToUse.setRowNumberLabel(rowNumberLabel);
-		panelCreatorToUse.setLabelsColor(commonListElements.getLabelsColor());
+
+		JapaneseWordPanelCreator panelCreatorToUse = getJapaneseWordPanelCreator(
+				commonListElements.isForSingleRowOnly());
+		setPanelCreatorProperties(commonListElements, rowNumberLabel,
+				panelCreatorToUse);
 		ListRowData<JapaneseWord> rowData = panelCreatorToUse.addJapanesePanelToExistingPanel(
 				panel, japaneseWord, inputGoal, commonListElements,
 				!commonListElements.isForSingleRowOnly());
 		panelCreatorToUse.focusMeaningTextfield();
 
 		return rowData;
+	}
+
+	private void setPanelCreatorProperties(
+			CommonListElements commonListElements, JLabel rowNumberLabel,
+			JapaneseWordPanelCreator panelCreatorToUse) {
+		panelCreatorToUse.addValidationListeners(validationListeners);
+		panelCreatorToUse.setRowNumberLabel(rowNumberLabel);
+		panelCreatorToUse.setLabelsColor(commonListElements.getLabelsColor());
+	}
+
+	private JapaneseWordPanelCreator getJapaneseWordPanelCreator(
+			boolean forSingleRowOnly) {
+		JapaneseWordPanelCreator panelCreatorToUse;
+		if (forSingleRowOnly) {
+			panelCreatorToUse = searchOrAddDialogPanelCreator.orElse(
+					japaneseWordsPanelCreator.copy());
+		}
+		else {
+			panelCreatorToUse = japaneseWordsPanelCreator;
+		}
+		return panelCreatorToUse;
+	}
+
+	private PanelDisplayMode getPanelDisplayMode(
+			CommonListElements commonListElements, InputGoal inputGoal) {
+		PanelDisplayMode displayMode = japaneseWordsPanelCreator.getDisplayMode();
+		if (displayMode.equals(PanelDisplayMode.VIEW) && (
+				inputGoal.equals(InputGoal.EDIT_TEMPORARILY)
+						|| commonListElements.isForSingleRowOnly())) {
+			displayMode = PanelDisplayMode.EDIT;
+		}
+		return displayMode;
 	}
 
 }

@@ -5,6 +5,8 @@ import com.guimaker.application.DialogWindow;
 import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.InputGoal;
 import com.guimaker.enums.PanelDisplayMode;
+import com.guimaker.enums.WordSearchOptions;
+import com.guimaker.inputSelection.ListInputsSelectionManager;
 import com.guimaker.list.myList.ListConfiguration;
 import com.guimaker.list.myList.MyList;
 import com.guimaker.listeners.InputValidationListener;
@@ -22,9 +24,12 @@ import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listElements.WordParticlesData;
+import com.kanji.list.listRows.RowInJapaneseWritingsList;
 import com.kanji.list.listRows.RowInParticlesInformation;
+import com.kanji.list.listRows.japanesePanelCreatingService.JapanesePanelCreatingService;
 import com.kanji.model.AdditionalInformation;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
+import com.kanji.utilities.CommonGuiElementsCreator;
 import com.kanji.utilities.JapaneseWritingUtilities;
 
 import javax.swing.*;
@@ -86,15 +91,18 @@ public class JapanesePanelElementsCreator {
 				new RowInParticlesInformation(japaneseWord,
 						applicationController, displayMode), "",
 				new ListConfiguration(
-						Prompts.JAPANESE_WORD_DELETE).showButtonsLoadNextPreviousWords(
+						Prompts.JAPANESE_PARTICLE_DELETE).showButtonsLoadNextPreviousWords(
 						false)
-													 .enableWordAdding(false)
-													 .enableWordSearching(false)
-													 .scrollBarFitsContent(true)
-													 .inheritScrollbar(true)
-													 .parentListAndWordContainingThisList(
-															 applicationController.getJapaneseWords(),
-															 japaneseWord),
+														 .enableWordAdding(
+																 false)
+														 .enableWordSearching(
+																 false)
+														 .scrollBarFitsContent(
+																 true)
+														 .inheritScrollbar(true)
+														 .parentListAndWordContainingThisList(
+																 applicationController.getJapaneseWords(),
+																 japaneseWord),
 				() -> WordParticlesData.createParticleNotIncludedInWord(
 						japaneseWord));
 		if (japaneseWord.getTakenParticles() != null) {
@@ -222,5 +230,67 @@ public class JapanesePanelElementsCreator {
 																			labelColor)
 																	.setEnabled(
 																			!additionalInformation.isEmpty()));
+	}
+
+	public JLabel createWordMeaningLabel(Color labelsColor) {
+		return GuiElementsCreator.createLabel(
+				new ComponentOptions().text(Labels.WORD_MEANING)
+									  .foregroundColor(labelsColor));
+	}
+
+	public JTextComponent createWordMeaningText(JapaneseWord japaneseWord,
+			PanelDisplayMode displayMode, InputGoal inputGoal) {
+
+		return actionsCreator.withWordMeaningChangeListener(
+				CommonGuiElementsCreator.createShortInput(
+						japaneseWord.getMeaning(), displayMode), japaneseWord,
+				inputGoal.equals(InputGoal.SEARCH) ?
+						WordSearchOptions.BY_WORD_FRAGMENT :
+						WordSearchOptions.BY_FULL_EXPRESSION, inputGoal);
+
+	}
+
+	public JLabel createPartOfSpeechLabel(Color labelsColor) {
+		return GuiElementsCreator.createLabel(
+				new ComponentOptions().text(Labels.PART_OF_SPEECH)
+									  .foregroundColor(labelsColor));
+	}
+
+	public MyList<JapaneseWriting> createJapaneseWritingsList(
+			JapaneseWord japaneseWord, boolean inheritScrollBar,
+			DialogWindow parentDialog, PanelDisplayMode displayMode,
+			ListInputsSelectionManager listInputsSelectionManager,
+			JapanesePanelCreatingService panelCreatingService) {
+		return new MyList<>(parentDialog, applicationController,
+				new RowInJapaneseWritingsList(panelCreatingService,
+						japaneseWord, displayMode),
+				Labels.WRITING_WAYS_IN_JAPANESE, new ListConfiguration(
+				Prompts.JAPANESE_WRITING_DELETE).enableWordAdding(false)
+												.displayMode(displayMode)
+												.inheritScrollbar(
+														inheritScrollBar)
+												.enableWordSearching(false)
+												.parentListAndWordContainingThisList(
+														applicationController.getJapaneseWords(),
+														japaneseWord)
+												.showButtonsLoadNextPreviousWords(
+														false)
+												.scrollBarFitsContent(false)
+												.allInputsSelectionManager(
+														listInputsSelectionManager)
+												.skipTitle(true),
+				JapaneseWriting.getInitializer());
+	}
+
+	public JLabel createWritingsLabel(Color labelsColor) {
+		return GuiElementsCreator.createLabel(
+				new ComponentOptions().text(Labels.WRITING_WAYS_IN_JAPANESE)
+									  .foregroundColor(labelsColor));
+	}
+
+	public JLabel createParticlesTakenLabel(Color labelsColor) {
+		return GuiElementsCreator.createLabel(
+				new ComponentOptions().text(Labels.TAKING_PARTICLE)
+									  .foregroundColor(labelsColor));
 	}
 }
