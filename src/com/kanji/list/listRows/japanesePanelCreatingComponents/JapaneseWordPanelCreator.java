@@ -126,8 +126,6 @@ public class JapaneseWordPanelCreator
 		ListRowDataCreator<JapaneseWord> rowDataCreator = createListRow(
 				japaneseWord, inputGoal, commonListElements, japaneseWordPanel);
 
-		SwingUtilities.invokeLater(() -> japaneseWordPanel.getWordMeaningText()
-														  .requestFocusInWindow());
 		return rowDataCreator.getListRowData();
 	}
 

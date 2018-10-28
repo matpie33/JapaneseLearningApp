@@ -35,7 +35,6 @@ public class JapanesePanelInEditModeCreator
 			JTextComponent kanaInput = elementsMaker.createKanaInputWithValidation(
 					japaneseWriting, japaneseWord, true, inputGoal, false);
 			rowElements.add(kanaInput);
-			SwingUtilities.invokeLater(kanaInput::requestFocusInWindow);
 			//TODO try to use the approach in whole application:
 			//GuiElement e = actionMaker.withAction(elementsMaker.createElement)
 			for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
