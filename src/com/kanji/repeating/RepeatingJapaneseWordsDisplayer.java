@@ -1,8 +1,10 @@
 package com.kanji.repeating;
 
+import com.guimaker.enums.FillType;
 import com.guimaker.enums.InputGoal;
 import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.panels.MainPanel;
+import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.CommonListElements;
 import com.guimaker.utilities.StringUtilities;
 import com.kanji.list.listElements.JapaneseWord;
@@ -49,9 +51,12 @@ public class RepeatingJapaneseWordsDisplayer
 	public void showFullWordDetailsPanel(JapaneseWord japaneseWord,
 			MainPanel wordAssessmentPanel) {
 		wordAssessmentPanel.clear();
-		japaneseWordPanelCreator.addJapanesePanelToExistingPanel(
-				wordAssessmentPanel, japaneseWord, InputGoal.NO_INPUT,
-				CommonListElements.forSingleRowOnly(Color.WHITE), true);
+		MainPanel rowPanel = japaneseWordPanelCreator.createJapaneseWordPanel(
+				japaneseWord, InputGoal.NO_INPUT,
+				CommonListElements.forSingleRowOnly(Color.WHITE))
+													 .getRowPanel();
+		wordAssessmentPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH,
+				rowPanel.getPanel()));
 	}
 
 	@Override

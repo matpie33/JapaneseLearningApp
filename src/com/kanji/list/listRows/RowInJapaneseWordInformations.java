@@ -5,8 +5,6 @@ import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.list.ListRowData;
 import com.guimaker.list.myList.ListRowCreator;
 import com.guimaker.listeners.InputValidationListener;
-import com.guimaker.model.PanelConfiguration;
-import com.guimaker.panels.MainPanel;
 import com.guimaker.utilities.CommonListElements;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
@@ -40,18 +38,15 @@ public class RowInJapaneseWordInformations
 			CommonListElements commonListElements, InputGoal inputGoal) {
 		PanelDisplayMode displayMode = getPanelDisplayMode(commonListElements,
 				inputGoal);
-		MainPanel panel = new MainPanel(
-				new PanelConfiguration().setPanelDisplayMode(displayMode));
+
 		JLabel rowNumberLabel = commonListElements.getRowNumberLabel();
 
 		JapaneseWordPanelCreator panelCreatorToUse = getJapaneseWordPanelCreator(
 				commonListElements.isForSingleRowOnly());
 		setPanelCreatorProperties(commonListElements, rowNumberLabel,
 				panelCreatorToUse);
-		ListRowData<JapaneseWord> rowData = panelCreatorToUse.addJapanesePanelToExistingPanel(
-				panel, japaneseWord, inputGoal, commonListElements,
-				!commonListElements.isForSingleRowOnly());
-		panelCreatorToUse.focusMeaningTextfield();
+		ListRowData<JapaneseWord> rowData = panelCreatorToUse.createJapaneseWordPanel(
+				japaneseWord, inputGoal, commonListElements);
 
 		return rowData;
 	}
@@ -60,8 +55,6 @@ public class RowInJapaneseWordInformations
 			CommonListElements commonListElements, JLabel rowNumberLabel,
 			JapaneseWordPanelCreator panelCreatorToUse) {
 		panelCreatorToUse.addValidationListeners(validationListeners);
-		panelCreatorToUse.setRowNumberLabel(rowNumberLabel);
-		panelCreatorToUse.setLabelsColor(commonListElements.getLabelsColor());
 	}
 
 	private JapaneseWordPanelCreator getJapaneseWordPanelCreator(
