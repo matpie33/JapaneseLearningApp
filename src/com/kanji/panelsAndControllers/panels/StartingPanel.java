@@ -73,7 +73,17 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		createTabPane();
 		createInformationsPanel();
 		List<AbstractButton> navigationButtons = createNavigationButtons();
+		MainPanel bottomPanel = createBottomPanel(navigationButtons);
 
+		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, tabbedPane));
+		addHotkeysPanelHere();
+		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.HORIZONTAL,
+				bottomPanel.getPanel()));
+		startingController.setInitialStartingPanelState();
+	}
+
+	private MainPanel createBottomPanel(
+			List<AbstractButton> navigationButtons) {
 		MainPanel bottomPanel = new MainPanel();
 		bottomPanel.addRows(SimpleRowBuilder.createRow(FillType.HORIZONTAL,
 				navigationButtons.toArray(new AbstractButton[] {}))
@@ -81,12 +91,7 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 											.disableBorder()
 											.nextRow(saveInfo,
 													problematicKanjisLabel));
-
-		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.BOTH, tabbedPane));
-		addHotkeysPanelHere();
-		mainPanel.addRow(SimpleRowBuilder.createRow(FillType.HORIZONTAL,
-				bottomPanel.getPanel()));
-		startingController.setInitialStartingPanelState();
+		return bottomPanel;
 	}
 
 	private void createTabPane() {
