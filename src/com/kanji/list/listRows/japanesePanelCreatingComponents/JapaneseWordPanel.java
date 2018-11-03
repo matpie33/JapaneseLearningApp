@@ -68,7 +68,7 @@ public class JapaneseWordPanel {
 				japaneseWord.getPartOfSpeech(), additionalInformationLabel,
 				additionalInformationCombobox, japaneseWord);
 		boolean inheritScrollbar = !commonListElements.isForSingleRowOnly();
-		MyList lastWritingsListCreated = createJapaneseWritingsList(
+		MyList writingsList = createJapaneseWritingsList(
 				japaneseWord, displayMode, inheritScrollbar,
 				panelCreatingService, inputGoal);
 		JLabel writingsLabel = elementsCreator.createWritingsLabel(
@@ -93,7 +93,7 @@ public class JapaneseWordPanel {
 																   additionalInformationCombobox)
 														   .nextRow(
 																   writingsLabel,
-																   lastWritingsListCreated.getPanel())
+																   writingsList.getPanel())
 														   .nextRow(
 																   particlesTakenLabel,
 																   particlesTakenList.getPanel())
