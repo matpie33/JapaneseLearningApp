@@ -94,7 +94,9 @@ public class ApplicationController
 								   .setContentPanelColor(
 										   Colors.CONTENT_PANEL_COLOR)
 								   .setPanelBackgroundColor(
-										   Colors.BACKGROUND_PANEL_COLOR);
+										   Colors.BACKGROUND_PANEL_COLOR)
+								   .setHotkeysPanelColor(
+										   Colors.HOTKEY_PANEL_COLOR);
 	}
 
 	public void initiate() {
