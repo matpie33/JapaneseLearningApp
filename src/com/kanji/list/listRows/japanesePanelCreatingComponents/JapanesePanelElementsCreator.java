@@ -86,25 +86,24 @@ public class JapanesePanelElementsCreator {
 
 	public MyList<WordParticlesData> createParticlesDataList(
 			JapaneseWord japaneseWord, PanelDisplayMode displayMode) {
-		MyList<WordParticlesData> particlesList = new MyList<>(dialogWindow,
-				applicationController,
-				new RowInParticlesInformation(japaneseWord,
-						applicationController, displayMode), "",
-				new ListConfiguration(
-						Prompts.JAPANESE_PARTICLE_DELETE).showButtonsLoadNextPreviousWords(
+		MyList<WordParticlesData> particlesList = new MyList<>(
+				new ListConfiguration<>(Prompts.JAPANESE_PARTICLE_DELETE,
+						new RowInParticlesInformation(japaneseWord,
+								applicationController, displayMode),
+						() -> WordParticlesData.createParticleNotIncludedInWord(
+								japaneseWord), //TODO this should be in word
+						// particles data initializer
+						"", dialogWindow,
+						applicationController).showButtonsLoadNextPreviousWords(
 						false)
-														 .enableWordAdding(
-																 false)
-														 .enableWordSearching(
-																 false)
-														 .scrollBarFitsContent(
-																 true)
-														 .inheritScrollbar(true)
-														 .parentListAndWordContainingThisList(
-																 applicationController.getJapaneseWords(),
-																 japaneseWord),
-				() -> WordParticlesData.createParticleNotIncludedInWord(
-						japaneseWord));
+											  .enableWordAdding(false)
+											  .enableWordSearching(false)
+											  .scrollBarFitsContent(true)
+											  .inheritScrollbar(true)
+											  .parentListAndWordContainingThisList(
+													  applicationController.getJapaneseWords(),
+													  japaneseWord));
+
 		if (japaneseWord.getTakenParticles() != null) {
 			japaneseWord.getTakenParticles()
 						.forEach(particlesList::addWord);
@@ -265,25 +264,27 @@ public class JapanesePanelElementsCreator {
 			DialogWindow parentDialog, PanelDisplayMode displayMode,
 			ListInputsSelectionManager listInputsSelectionManager,
 			JapanesePanelCreatingService panelCreatingService) {
-		return new MyList<>(parentDialog, applicationController,
-				new RowInJapaneseWritingsList(panelCreatingService,
-						japaneseWord, displayMode),
-				Labels.WRITING_WAYS_IN_JAPANESE, new ListConfiguration(
-				Prompts.JAPANESE_WRITING_DELETE).enableWordAdding(false)
-												.displayMode(displayMode)
-												.inheritScrollbar(
-														inheritScrollBar)
-												.enableWordSearching(false)
-												.parentListAndWordContainingThisList(
-														applicationController.getJapaneseWords(),
-														japaneseWord)
-												.showButtonsLoadNextPreviousWords(
-														false)
-												.scrollBarFitsContent(false)
-												.allInputsSelectionManager(
-														listInputsSelectionManager)
-												.skipTitle(true),
-				JapaneseWriting.getInitializer());
+
+		return new MyList<>(
+				new ListConfiguration<>(Prompts.JAPANESE_WRITING_DELETE,
+						new RowInJapaneseWritingsList(panelCreatingService,
+								japaneseWord, displayMode),
+						JapaneseWriting.getInitializer(),
+						Labels.WRITING_WAYS_IN_JAPANESE, parentDialog,
+						applicationController).enableWordAdding(false)
+											  .displayMode(displayMode)
+											  .inheritScrollbar(
+													  inheritScrollBar)
+											  .enableWordSearching(false)
+											  .parentListAndWordContainingThisList(
+													  applicationController.getJapaneseWords(),
+													  japaneseWord)
+											  .showButtonsLoadNextPreviousWords(
+													  false)
+											  .scrollBarFitsContent(false)
+											  .allInputsSelectionManager(
+													  listInputsSelectionManager)
+											  .skipTitle(true));
 	}
 
 	public JLabel createWritingsLabel(Color labelsColor) {

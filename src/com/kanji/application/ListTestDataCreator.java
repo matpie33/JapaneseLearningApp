@@ -42,11 +42,11 @@ public class ListTestDataCreator {
 	}
 
 	public MyList<Kanji> initializeKanjiList() {
-		return new MyList<>(applicationController.getApplicationWindow(),
-				applicationController,
+		return new MyList<>(new ListConfiguration<>(Prompts.KANJI,
 				new RowInKanjiInformations(applicationController,
-						PanelDisplayMode.EDIT), Titles.KANJI_LIST,
-				new ListConfiguration(Prompts.KANJI), Kanji.getInitializer());
+						PanelDisplayMode.EDIT), Kanji.getInitializer(),
+				Titles.KANJI_LIST, applicationController.getApplicationWindow(),
+				applicationController));
 	}
 
 	private void createKanjiRepeatingDatesTestList() {
@@ -63,13 +63,15 @@ public class ListTestDataCreator {
 	}
 
 	public MyList<RepeatingData> initializeKanjiRepeatingList() {
-		return new MyList<>(applicationController.getApplicationWindow(),
-				applicationController, new RowInRepeatingList(),
-				Titles.KANJI_REPEATING_LIST, new ListConfiguration(
-				Prompts.REPEATING_DATE_DELETE).showButtonsLoadNextPreviousWords(
-				false)
-											  .enableWordAdding(false),
-				RepeatingData.getInitializer());
+		return new MyList<>(
+				new ListConfiguration<>(Prompts.REPEATING_DATE_DELETE,
+						new RowInRepeatingList(),
+						RepeatingData.getInitializer(),
+						Titles.KANJI_REPEATING_LIST,
+						applicationController.getApplicationWindow(),
+						applicationController).showButtonsLoadNextPreviousWords(
+						false)
+											  .enableWordAdding(false));
 	}
 
 	private void createJapaneseWordsRepeatingDatesTestList() {
@@ -86,13 +88,15 @@ public class ListTestDataCreator {
 	}
 
 	public MyList<RepeatingData> initializeJapaneseWordsRepeatingData() {
-		return new MyList<>(applicationController.getApplicationWindow(),
-				applicationController, new RowInRepeatingList(),
-				Titles.JAPANESE_REPEATING_LIST, new ListConfiguration(
-				Prompts.REPEATING_DATE_DELETE).enableWordAdding(false)
+		return new MyList<>(
+				new ListConfiguration<>(Prompts.REPEATING_DATE_DELETE,
+						new RowInRepeatingList(),
+						RepeatingData.getInitializer(),
+						Titles.JAPANESE_REPEATING_LIST,
+						applicationController.getApplicationWindow(),
+						applicationController).enableWordAdding(false)
 											  .showButtonsLoadNextPreviousWords(
-													  false),
-				RepeatingData.getInitializer());
+													  false));
 	}
 
 	private void createJapaneseWordsTestList() {
@@ -143,11 +147,12 @@ public class ListTestDataCreator {
 		RowInJapaneseWordInformations rowInJapaneseWordInformations = new RowInJapaneseWordInformations(
 				japaneseWordPanelCreator);
 		MyList<JapaneseWord> japaneseWords = new MyList<>(
-				applicationController.getApplicationWindow(),
-				applicationController, rowInJapaneseWordInformations,
-				Titles.JAPANESE_WORDS_LIST,
-				new ListConfiguration(Prompts.JAPANESE_WORD_DELETE),
-				JapaneseWord.getInitializer());
+				new ListConfiguration<>(Prompts.JAPANESE_WORD_DELETE,
+						rowInJapaneseWordInformations,
+						JapaneseWord.getInitializer(),
+						Titles.JAPANESE_WORDS_LIST,
+						applicationController.getApplicationWindow(),
+						applicationController));
 		japaneseWordPanelCreator.setWordsList(japaneseWords);
 		return japaneseWords;
 	}

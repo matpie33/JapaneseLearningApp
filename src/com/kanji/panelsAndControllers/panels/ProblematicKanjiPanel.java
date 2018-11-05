@@ -54,11 +54,12 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		RowInKanjiInformations rowInKanjiInformations = new RowInKanjiInformations(
 				applicationController, PanelDisplayMode.VIEW);
 		rowInKanjiInformations.setProblematicWordsController(controller);
-		wordsToReviewList = new MyList<>(parentDialog, applicationController,
-				rowInKanjiInformations, Titles.PROBLEMATIC_KANJIS,
-				new ListConfiguration(
-						Prompts.KANJI).showButtonsLoadNextPreviousWords(false),
-				Kanji.getInitializer());
+		wordsToReviewList = new MyList<>(
+				new ListConfiguration<>(Prompts.KANJI, rowInKanjiInformations,
+						Kanji.getInitializer(), Titles.PROBLEMATIC_KANJIS,
+						parentDialog,
+						applicationController).showButtonsLoadNextPreviousWords(
+						false));
 
 	}
 

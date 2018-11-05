@@ -190,16 +190,18 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	private void createProblematicWordsList() {
 		japanesePanelCreator = createJapanesePanelCreator(
 				(ApplicationWindow) parentDialog);
-		this.problematicWordsList = new MyList<>(parentDialog,
-				applicationController,
-				new RowInJapaneseWordInformations(japanesePanelCreator),
-				Titles.PROBLEMATIC_KANJIS, new ListConfiguration(
-				Prompts.JAPANESE_WORD_DELETE).enableWordAdding(false)
-											 .showButtonsLoadNextPreviousWords(
-													 false)
-											 .withAdditionalNavigationButtons(
-													 createButtonSearchWord()),
-				JapaneseWord.getInitializer());
+		this.problematicWordsList = new MyList<>(
+				new ListConfiguration<>(Prompts.JAPANESE_WORD_DELETE,
+						new RowInJapaneseWordInformations(japanesePanelCreator),
+						JapaneseWord.getInitializer(),
+						Titles.PROBLEMATIC_KANJIS, parentDialog,
+						applicationController).enableWordAdding(false)
+											  .showButtonsLoadNextPreviousWords(
+													  false)
+											  .withAdditionalNavigationButtons(
+													  createButtonSearchWord
+															  ()));
+
 		japanesePanelCreator.setWordsList(problematicWordsList);
 		problematicWordsList.addListObserver(applicationController);
 	}
