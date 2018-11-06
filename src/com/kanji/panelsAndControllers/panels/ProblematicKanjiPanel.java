@@ -57,7 +57,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		wordsToReviewList = new MyList<>(
 				new ListConfiguration<>(Prompts.KANJI, rowInKanjiInformations,
 						Kanji.getInitializer(), Titles.PROBLEMATIC_KANJIS,
-						parentDialog,
+						applicationController.getApplicationWindow(),
 						applicationController).showButtonsLoadNextPreviousWords(
 						false));
 
