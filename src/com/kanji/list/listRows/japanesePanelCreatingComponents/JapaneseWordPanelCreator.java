@@ -11,14 +11,13 @@ import com.guimaker.list.myList.MyList;
 import com.guimaker.listeners.InputValidationListener;
 import com.guimaker.listeners.SwitchBetweenInputsFailListener;
 import com.guimaker.panels.MainPanel;
-import com.guimaker.utilities.CommonListElements;
+import com.guimaker.model.CommonListElements;
 import com.guimaker.utilities.Pair;
 import com.kanji.constants.strings.ListPropertiesNames;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 
-import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.util.ArrayList;
 import java.util.List;

@@ -12,8 +12,8 @@ import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.problematicWords.ProblematicWordsDisplayer;
 import com.kanji.saving.ApplicationStateManager;
-import com.kanji.saving.ProblematicWordsState;
-import com.kanji.saving.SavingInformation;
+import com.kanji.model.saving.ProblematicWordsState;
+import com.kanji.model.saving.SavingInformation;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

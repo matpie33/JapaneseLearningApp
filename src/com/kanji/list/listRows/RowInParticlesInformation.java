@@ -8,7 +8,7 @@ import com.guimaker.list.myList.ListRowCreator;
 import com.guimaker.listeners.InputValidationListener;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.guimaker.utilities.CommonListElements;
+import com.guimaker.model.CommonListElements;
 import com.kanji.japaneseParticlesPanel.JapaneseParticleRowCreatingService;
 import com.kanji.japaneseParticlesPanel.JapaneseParticleRowInEditMode;
 import com.kanji.japaneseParticlesPanel.JapaneseParticleRowInViewMode;

@@ -12,7 +12,7 @@ import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.guimaker.utilities.KeyModifiers;
+import com.guimaker.enums.KeyModifiers;
 import com.kanji.constants.Colors;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.JapaneseApplicationButtonsNames;

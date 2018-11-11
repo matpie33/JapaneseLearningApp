@@ -1,4 +1,4 @@
-package com.kanji.saving;
+package com.kanji.model.saving;
 
 import com.kanji.constants.enums.ApplicationSaveableState;
 import com.kanji.list.listElements.JapaneseWord;

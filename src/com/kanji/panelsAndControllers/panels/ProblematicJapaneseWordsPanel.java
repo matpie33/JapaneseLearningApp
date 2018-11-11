@@ -18,7 +18,7 @@ import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.guimaker.utilities.KeyModifiers;
+import com.guimaker.enums.KeyModifiers;
 import com.guimaker.webPanel.ContextOwner;
 import com.guimaker.webPanel.WebPagePanel;
 import com.kanji.constants.enums.SplitPaneOrientation;

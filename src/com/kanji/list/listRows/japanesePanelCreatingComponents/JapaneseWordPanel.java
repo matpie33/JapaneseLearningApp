@@ -11,7 +11,7 @@ import com.guimaker.model.PanelConfiguration;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.ComplexRow;
 import com.guimaker.row.SimpleRowBuilder;
-import com.guimaker.utilities.CommonListElements;
+import com.guimaker.model.CommonListElements;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listElements.WordParticlesData;

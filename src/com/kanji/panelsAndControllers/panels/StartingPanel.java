@@ -11,7 +11,7 @@ import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.guimaker.utilities.KeyModifiers;
+import com.guimaker.enums.KeyModifiers;
 import com.kanji.constants.enums.SplitPaneOrientation;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.HotkeysDescriptions;

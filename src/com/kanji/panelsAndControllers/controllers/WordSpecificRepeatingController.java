@@ -9,7 +9,7 @@ import com.guimaker.utilities.SetOfRanges;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.list.listElements.RepeatingData;
 import com.kanji.repeating.RepeatingWordsDisplayer;
-import com.kanji.saving.RepeatingState;
+import com.kanji.model.saving.RepeatingState;
 
 import java.util.*;
 

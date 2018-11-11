@@ -11,7 +11,7 @@ import com.guimaker.options.ComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.guimaker.utilities.CommonListElements;
+import com.guimaker.model.CommonListElements;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.RepeatingData;

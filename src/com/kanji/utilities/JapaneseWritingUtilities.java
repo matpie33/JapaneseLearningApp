@@ -56,13 +56,13 @@ public class JapaneseWritingUtilities {
 				CJK_UNIFIED_IDEOGRAPHS || character == '々';
 	}
 
-	public static boolean characterIsKana(char character) {
+	private static boolean characterIsKana(char character) {
 		return Character.UnicodeBlock.of(character) == Character.UnicodeBlock.
 				HIRAGANA || Character.UnicodeBlock.of(character)
 				== Character.UnicodeBlock.KATAKANA;
 	}
 
-	public static boolean wordIsInKana(String word) {
+	private static boolean wordIsInKana(String word) {
 		word = word.trim();
 		for (char c : word.toCharArray()) {
 			if (!characterIsKana(c)) {
@@ -72,7 +72,7 @@ public class JapaneseWritingUtilities {
 		return true;
 	}
 
-	public static boolean wordIsInKanji(String word) {
+	private static boolean wordIsInKanji(String word) {
 		boolean anyKanji = false;
 		word = word.trim();
 		for (char c : word.toCharArray()) {

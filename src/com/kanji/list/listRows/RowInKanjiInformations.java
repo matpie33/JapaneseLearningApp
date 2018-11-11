@@ -10,7 +10,7 @@ import com.guimaker.listeners.InputValidationListener;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.ComplexRow;
 import com.guimaker.row.SimpleRowBuilder;
-import com.guimaker.utilities.CommonListElements;
+import com.guimaker.model.CommonListElements;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.ListPropertiesNames;
 import com.kanji.kanjiListRow.KanjiActionsCreator;

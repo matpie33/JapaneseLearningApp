@@ -11,8 +11,8 @@ import com.kanji.list.listElements.RepeatingData;
 import com.kanji.panelsAndControllers.panelUpdaters.RepeatingWordsPanelUpdater;
 import com.kanji.panelsAndControllers.panels.RepeatingWordsPanel;
 import com.kanji.saving.ApplicationStateManager;
-import com.kanji.saving.RepeatingState;
-import com.kanji.saving.SavingInformation;
+import com.kanji.model.saving.RepeatingState;
+import com.kanji.model.saving.SavingInformation;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

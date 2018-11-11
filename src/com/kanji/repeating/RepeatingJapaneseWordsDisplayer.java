@@ -6,7 +6,7 @@ import com.guimaker.enums.InputGoal;
 import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.guimaker.utilities.CommonListElements;
+import com.guimaker.model.CommonListElements;
 import com.guimaker.utilities.StringUtilities;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;

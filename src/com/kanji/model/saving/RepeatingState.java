@@ -1,4 +1,4 @@
-package com.kanji.saving;
+package com.kanji.model.saving;
 
 import com.guimaker.list.ListElement;
 import com.guimaker.timer.TimeSpent;

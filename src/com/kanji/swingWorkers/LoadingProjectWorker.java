@@ -58,17 +58,11 @@ public class LoadingProjectWorker {
 				try {
 					get();
 				}
-				catch (ExecutionException exception) {
+				catch (ExecutionException | InterruptedException exception) {
 					exception.printStackTrace();
 					applicationWindow.showMessageDialog(String.format(
 							ExceptionsMessages.EXCEPTION_WHILE_LOADING_KANJI_PROJECT,
 							exception.getMessage()));
-				}
-				catch (InterruptedException interruptedException) {
-					interruptedException.printStackTrace();
-					applicationWindow.showMessageDialog(String.format(
-							ExceptionsMessages.EXCEPTION_WHILE_LOADING_KANJI_PROJECT,
-							interruptedException.getMessage()));
 				}
 				finally {
 					applicationController.getStartingPanel()

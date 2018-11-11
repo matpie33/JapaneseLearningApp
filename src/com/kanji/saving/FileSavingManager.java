@@ -1,5 +1,7 @@
 package com.kanji.saving;
 
+import com.kanji.model.saving.SavingInformation;
+
 import java.io.File;
 import java.io.IOException;
 
