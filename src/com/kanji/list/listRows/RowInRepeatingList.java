@@ -72,9 +72,4 @@ public class RowInRepeatingList implements ListRowCreator<RepeatingData> {
 
 	}
 
-	@Override
-	public void addValidationListener(
-			InputValidationListener<RepeatingData> inputValidationListener) {
-
-	}
 }

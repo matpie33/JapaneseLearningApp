@@ -41,10 +41,6 @@ public class JapaneseWord implements ListElement, Serializable {
 		japaneseWritings = new HashSet<>();
 	}
 
-	@Override
-	public String getMeaningfulName() {
-		return MEANINGFUL_NAME;
-	}
 
 	public void addWritingsForKana(String kanaWriting,
 			String... kanjiWritingsForThisKana) {

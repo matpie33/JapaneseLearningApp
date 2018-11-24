@@ -161,12 +161,6 @@ public class JapaneseWordPanelCreator
 		return wordPanelCreator;
 	}
 
-	public void addValidationListeners(
-			Set<InputValidationListener<JapaneseWord>> validationListeners) {
-		japanesePanelComponentsStore.addValidationListeners(
-				validationListeners);
-	}
-
 	public void setWordsList(MyList<JapaneseWord> list) {
 		japanesePanelComponentsStore.setWordsList(list);
 	}

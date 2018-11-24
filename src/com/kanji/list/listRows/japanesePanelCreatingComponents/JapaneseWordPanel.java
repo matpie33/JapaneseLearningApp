@@ -80,7 +80,7 @@ public class JapaneseWordPanel {
 				new PanelConfiguration().setPanelDisplayMode(displayMode));
 
 		ComplexRow lastJapanesePanelMade = SimpleRowBuilder.createRowStartingFromColumn(
-				0, FillType.NONE, Anchor.NORTH,
+				0, FillType.NONE, Anchor.WEST,
 				commonListElements.getRowNumberLabel(), wordMeaningLabel,
 				wordMeaningText)
 														   .nextRow(

@@ -48,9 +48,4 @@ public class RowInJapaneseWritingsList
 		return rowDataCreator.getListRowData();
 	}
 
-	@Override
-	public void addValidationListener(
-			InputValidationListener<JapaneseWriting> inputValidationListener) {
-
-	}
 }

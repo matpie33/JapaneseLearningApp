@@ -50,11 +50,6 @@ public class JapanesePanelComponentsStore {
 		return actionsCreator;
 	}
 
-	public void addValidationListeners(
-			Set<InputValidationListener<JapaneseWord>> validationListeners) {
-		elementsMaker.addValidationListeners(validationListeners);
-	}
-
 	public void setWordsList(MyList<JapaneseWord> list) {
 		actionsCreator.setWordsList(list);
 	}

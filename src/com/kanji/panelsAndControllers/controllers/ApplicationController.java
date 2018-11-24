@@ -559,18 +559,6 @@ public class ApplicationController
 
 	}
 
-	private <Word extends ListElement> void setProblematicWordsAndUpdateInformation(
-			Set<Word> problematicWords) {
-		if (problematicWords.isEmpty()) {
-			return;
-		}
-		applicationStateController.getController(problematicWords.iterator()
-																 .next()
-																 .getMeaningfulName())
-								  .setProblematicWords(problematicWords);
-		updateProblematicWordsAmount();
-
-	}
 
 	public Set<Kanji> getProblematicKanjis() {
 		return applicationStateController.getController(Kanji.MEANINGFUL_NAME)

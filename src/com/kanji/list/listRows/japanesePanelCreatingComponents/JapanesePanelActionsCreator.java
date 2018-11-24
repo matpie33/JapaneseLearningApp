@@ -36,7 +36,6 @@ public class JapanesePanelActionsCreator {
 	private DialogWindow parentDialog;
 	private ApplicationController applicationController;
 	private JapaneseWordMeaningChecker wordMeaningChecker;
-	private Set<InputValidationListener<JapaneseWord>> inputValidationListeners = new HashSet<>();
 	private MyList<JapaneseWord> wordsList;
 	private JapaneseWordChecker wordCheckerForKanaOrKanjiFilter;
 
@@ -50,10 +49,6 @@ public class JapanesePanelActionsCreator {
 		this.wordsList = wordsList;
 	}
 
-	public void setInputValidationListeners(
-			Set<InputValidationListener<JapaneseWord>> inputValidationListeners) {
-		this.inputValidationListeners = inputValidationListeners;
-	}
 
 	public JapaneseWordMeaningChecker getWordMeaningChecker() {
 		return wordMeaningChecker;
@@ -144,13 +139,7 @@ public class JapanesePanelActionsCreator {
 		ListPropertyChangeHandler<?, JapaneseWord> propertyChangeHandler = new ListPropertyChangeHandler<>(
 				japaneseWord, wordsList, parentDialog, propertyManager,
 				defaultValue, requiredInput, inputGoal);
-		if (inputGoal.equals(InputGoal.ADD) || inputGoal.equals(
-				InputGoal.SEARCH)) {
-			inputValidationListeners.forEach(
-					propertyChangeHandler::addValidationListener);
-		}
 		propertyChangeHandler.addValidationListener(wordsList);
-
 		textComponent.addFocusListener(propertyChangeHandler);
 
 	}

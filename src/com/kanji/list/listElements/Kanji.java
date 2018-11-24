@@ -29,10 +29,6 @@ public class Kanji implements Serializable, ListElement {
 		this.keyword = kanjiKeyword;
 	}
 
-	@Override
-	public String getMeaningfulName() {
-		return MEANINGFUL_NAME;
-	}
 
 	public int getId() {
 		return id;

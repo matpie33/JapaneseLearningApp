@@ -18,7 +18,6 @@ public class RowInJapaneseWordInformations
 		implements ListRowCreator<JapaneseWord> {
 	private JapaneseWordPanelCreator japaneseWordsPanelCreator;
 	private Optional<JapaneseWordPanelCreator> searchOrAddDialogPanelCreator;
-	private Set<InputValidationListener<JapaneseWord>> validationListeners = new HashSet<>();
 
 	public RowInJapaneseWordInformations(
 			JapaneseWordPanelCreator japaneseWordsPanelCreator) {
@@ -26,12 +25,6 @@ public class RowInJapaneseWordInformations
 		searchOrAddDialogPanelCreator = Optional.empty();
 	}
 
-	@Override
-	public void addValidationListener(
-			InputValidationListener<JapaneseWord> validationListener) {
-		//TODO this method looks the same in implementors or it's not needed at all for others
-		this.validationListeners.add(validationListener);
-	}
 
 	@Override
 	public ListRowData<JapaneseWord> createListRow(JapaneseWord japaneseWord,
@@ -43,19 +36,12 @@ public class RowInJapaneseWordInformations
 
 		JapaneseWordPanelCreator panelCreatorToUse = getJapaneseWordPanelCreator(
 				commonListElements.isForSingleRowOnly());
-		setPanelCreatorProperties(commonListElements, rowNumberLabel,
-				panelCreatorToUse);
 		ListRowData<JapaneseWord> rowData = panelCreatorToUse.createJapaneseWordPanel(
 				japaneseWord, inputGoal, commonListElements);
 
 		return rowData;
 	}
 
-	private void setPanelCreatorProperties(
-			CommonListElements commonListElements, JLabel rowNumberLabel,
-			JapaneseWordPanelCreator panelCreatorToUse) {
-		panelCreatorToUse.addValidationListeners(validationListeners);
-	}
 
 	private JapaneseWordPanelCreator getJapaneseWordPanelCreator(
 			boolean forSingleRowOnly) {

@@ -100,9 +100,4 @@ public class RowInKanjiInformations implements ListRowCreator<Kanji> {
 				"Problematic words controller was not initialized for view mode");
 	}
 
-	@Override
-	public void addValidationListener(
-			InputValidationListener<Kanji> inputValidationListener) {
-		actionsCreator.addValidationListener(inputValidationListener);
-	}
 }

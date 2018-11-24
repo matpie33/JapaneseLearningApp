@@ -191,10 +191,6 @@ public class JapanesePanelElementsCreator {
 				buttonDelete, japaneseWord, writing, inputGoal);
 	}
 
-	public void addValidationListeners(
-			Set<InputValidationListener<JapaneseWord>> validationListeners) {
-		actionsCreator.setInputValidationListeners(validationListeners);
-	}
 
 	public JComboBox createComboboxForAdditionalInformation(
 			JapaneseWord japaneseWord) {

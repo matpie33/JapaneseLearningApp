@@ -56,9 +56,5 @@ public class RowInParticlesInformation
 		return new ListRowData<>(panel);
 	}
 
-	@Override
-	public void addValidationListener(
-			InputValidationListener<WordParticlesData> inputValidationListener) {
-	}
 
 }
