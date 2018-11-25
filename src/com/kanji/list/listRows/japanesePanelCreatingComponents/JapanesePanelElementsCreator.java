@@ -9,7 +9,6 @@ import com.guimaker.enums.WordSearchOptions;
 import com.guimaker.inputSelection.ListInputsSelectionManager;
 import com.guimaker.list.myList.ListConfiguration;
 import com.guimaker.list.myList.MyList;
-import com.guimaker.listeners.InputValidationListener;
 import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComboboxOptions;
 import com.guimaker.options.ComponentOptions;
@@ -38,7 +37,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class JapanesePanelElementsCreator {
@@ -190,7 +188,6 @@ public class JapanesePanelElementsCreator {
 		return actionsCreator.updateWritingsInWordWhenDeleteWriting(
 				buttonDelete, japaneseWord, writing, inputGoal);
 	}
-
 
 	public JComboBox createComboboxForAdditionalInformation(
 			JapaneseWord japaneseWord) {

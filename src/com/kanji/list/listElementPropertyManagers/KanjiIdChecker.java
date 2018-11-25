@@ -21,7 +21,7 @@ public class KanjiIdChecker
 
 	@Override
 	public Integer validateInputAndConvertToProperty(
-			JTextComponent textComponent) {
+			JTextComponent textComponent, Kanji propertyHolder) {
 		String valueToConvert = textComponent.getText();
 		boolean isValidNumber = isIdValidNumber(valueToConvert);
 		Integer convertedValue = null;
@@ -37,8 +37,9 @@ public class KanjiIdChecker
 	}
 
 	@Override
-	public void setProperty(Kanji kanji, Integer propertyValue) {
-		kanji.setId(propertyValue);
+	public void setProperty(Kanji kanji, Integer newValue,
+			Integer previousValue) {
+		kanji.setId(newValue);
 	}
 
 	private boolean isIdValidNumber(String number) {

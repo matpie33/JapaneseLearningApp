@@ -65,7 +65,7 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 
 	@Override
 	public JapaneseWriting validateInputAndConvertToProperty(
-			JTextComponent valueToConvert) {
+			JTextComponent valueToConvert, JapaneseWord propertyHolder) {
 
 		String newValue = valueToConvert.getText();
 		char lastCharacter = newValue.charAt(newValue.length() - 1);
@@ -193,7 +193,7 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 
 	@Override
 	public void setProperty(JapaneseWord japaneseWord,
-			JapaneseWriting newWriting) {
+			JapaneseWriting newWriting, JapaneseWriting previousValue) {
 		japaneseWord.addWriting(newWriting);
 	}
 

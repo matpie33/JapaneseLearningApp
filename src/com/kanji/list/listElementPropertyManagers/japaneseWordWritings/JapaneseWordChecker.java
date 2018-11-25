@@ -94,13 +94,13 @@ public class JapaneseWordChecker implements
 
 	@Override
 	public Set<JapaneseWriting> validateInputAndConvertToProperty(
-			JTextComponent textInput) {
+			JTextComponent textInput, JapaneseWord propertyHolder) {
 		JapaneseWriting existingWritingForInput = inputToWritingMap.get(
 				textInput);
 		JapaneseWordWritingsChecker checkerForInput = writingToCheckerMap.get(
 				existingWritingForInput);
 		JapaneseWriting convertedProperty = checkerForInput.validateInputAndConvertToProperty(
-				textInput);
+				textInput, propertyHolder);
 		if (convertedProperty == null) {
 			invalidPropertyReason = checkerForInput.getInvalidPropertyReason();
 			return null;
@@ -143,7 +143,8 @@ public class JapaneseWordChecker implements
 
 	@Override
 	public void setProperty(JapaneseWord japaneseWord,
-			Set<JapaneseWriting> newWritings) {
+			Set<JapaneseWriting> newWritings,
+			Set<JapaneseWriting> previousValue) {
 		japaneseWord.setWritings(newWritings);
 	}
 
