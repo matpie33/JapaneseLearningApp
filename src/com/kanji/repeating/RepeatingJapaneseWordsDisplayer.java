@@ -4,9 +4,9 @@ import com.guimaker.enums.Anchor;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.InputGoal;
 import com.guimaker.enums.PanelDisplayMode;
+import com.guimaker.model.CommonListElements;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.guimaker.model.CommonListElements;
 import com.guimaker.utilities.StringUtilities;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
@@ -24,6 +24,7 @@ public class RepeatingJapaneseWordsDisplayer
 	private Map<Integer, Function<JapaneseWord, Set<String>>> hintTypeIntValues;
 	private JapaneseWordPanelCreator japaneseWordPanelCreator;
 	private String UNIQUE_NAME = "Repeating japanese words";
+	private ApplicationController applicationController;
 
 	public RepeatingJapaneseWordsDisplayer(
 			ApplicationController applicationController) {
@@ -54,7 +55,8 @@ public class RepeatingJapaneseWordsDisplayer
 		wordAssessmentPanel.clear();
 		MainPanel rowPanel = japaneseWordPanelCreator.createJapaneseWordPanel(
 				japaneseWord, InputGoal.NO_INPUT,
-				CommonListElements.forSingleRowOnly(Color.WHITE))
+				CommonListElements.forSingleRowOnly(Color.WHITE,
+						applicationController.getJapaneseWords()))
 													 .getRowPanel();
 		wordAssessmentPanel.addRow(
 				SimpleRowBuilder.createRow(FillType.NONE, Anchor.NORTH,

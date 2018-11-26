@@ -100,7 +100,8 @@ public class JapanesePanelElementsCreator {
 											  .inheritScrollbar(true)
 											  .parentListAndWordContainingThisList(
 													  applicationController.getJapaneseWords(),
-													  japaneseWord));
+													  japaneseWord,
+													  japaneseWord.getTakenParticles()));
 
 		if (japaneseWord.getTakenParticles() != null) {
 			japaneseWord.getTakenParticles()
@@ -271,7 +272,8 @@ public class JapanesePanelElementsCreator {
 											  .enableWordSearching(false)
 											  .parentListAndWordContainingThisList(
 													  applicationController.getJapaneseWords(),
-													  japaneseWord)
+													  japaneseWord,
+													  japaneseWord.getWritings())
 											  .showButtonsLoadNextPreviousWords(
 													  false)
 											  .scrollBarFitsContent(false)
