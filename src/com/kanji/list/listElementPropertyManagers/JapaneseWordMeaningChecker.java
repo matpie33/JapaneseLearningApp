@@ -22,10 +22,10 @@ public class JapaneseWordMeaningChecker extends WordSearchOptionsHolder
 
 	@Override
 	public boolean isPropertyFound(String wordInKanji,
-			JapaneseWord wordInformation) {
-		return wordInformation != null
+			JapaneseWord wordToCheck, JapaneseWord propertyHolder) {
+		return wordToCheck != null
 				&& WordSearching.doesWordContainSearchedWord(
-				wordInformation.getMeaning(), wordInKanji,
+				wordToCheck.getMeaning(), wordInKanji,
 				getWordSearchOptions());
 	}
 

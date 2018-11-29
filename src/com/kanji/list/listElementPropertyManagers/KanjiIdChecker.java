@@ -15,8 +15,9 @@ public class KanjiIdChecker
 	}
 
 	@Override
-	public boolean isPropertyFound(Integer property, Kanji kanji) {
-		return kanji.getId() == property;
+	public boolean isPropertyFound(Integer property, Kanji wordToCheck,
+			Kanji propertyHolder) {
+		return wordToCheck.getId() == property;
 	}
 
 	@Override

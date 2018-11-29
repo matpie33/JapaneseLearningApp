@@ -36,7 +36,7 @@ public class RepeatingJapaneseWordsDisplayer
 		kanjiCharactersReader.loadKanjisIfNeeded();
 		//TODO kanjis can be loaded just once in the "get instance" method
 		initializeHintTypeValues();
-		this.japaneseWordPanelCreator = japaneseWordPanelCreator;
+		this.applicationController = applicationController;
 	}
 
 	private void initializeHintTypeValues() {

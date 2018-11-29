@@ -7,7 +7,7 @@ import com.guimaker.enums.WordSearchOptions;
 import com.guimaker.list.ListElementPropertyManager;
 import com.guimaker.list.myList.ListPropertyChangeHandler;
 import com.guimaker.list.myList.MyList;
-import com.guimaker.listeners.InputValidationListener;
+import com.guimaker.model.CommonListElements;
 import com.guimaker.utilities.Pair;
 import com.guimaker.utilities.ThreadUtilities;
 import com.kanji.constants.enums.AdditionalInformationTag;
@@ -15,6 +15,8 @@ import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.enums.TypeOfJapaneseWriting;
 import com.kanji.constants.strings.Labels;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
+import com.kanji.list.listElementPropertyManagers.KanaWritingChecker;
+import com.kanji.list.listElementPropertyManagers.KanjiWritingChecker;
 import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordChecker;
 import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordWritingsChecker;
 import com.kanji.list.listElements.JapaneseWord;
@@ -27,8 +29,10 @@ import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class JapanesePanelActionsCreator {
 
@@ -48,7 +52,6 @@ public class JapanesePanelActionsCreator {
 	public void setWordsList(MyList<JapaneseWord> wordsList) {
 		this.wordsList = wordsList;
 	}
-
 
 	public JapaneseWordMeaningChecker getWordMeaningChecker() {
 		return wordMeaningChecker;
@@ -91,26 +94,30 @@ public class JapanesePanelActionsCreator {
 			JTextComponent textComponent, JapaneseWriting japaneseWriting,
 			JapaneseWord japaneseWord,
 			TypeOfJapaneseWriting typeOfJapaneseWriting, InputGoal inputGoal,
-			boolean enabled) {
-		JapaneseWordChecker checker = getOrCreateCheckerFor(japaneseWord,
-				inputGoal);
+			boolean enabled, CommonListElements commonListElements) {
 		boolean isKana = typeOfJapaneseWriting.equals(
 				TypeOfJapaneseWriting.KANA);
-		checker.addInput(textComponent, japaneseWriting, typeOfJapaneseWriting);
+		ListElementPropertyManager propertyManager;
+		if (isKana) {
+			propertyManager = new KanaWritingChecker();
+		}
+		else {
+			propertyManager = new KanjiWritingChecker();
+		}
 
 		if (typeOfJapaneseWriting.equals(TypeOfJapaneseWriting.KANA_OR_KANJI)
 				&& wordCheckerForKanaOrKanjiFilter == null) {
 			//TODO do I have to create this variable? is the usual way not
 			// enough?
-			wordCheckerForKanaOrKanjiFilter = checker;
+			wordCheckerForKanaOrKanjiFilter = null;
 		}
 
 		if (enabled) {
-			addPropertyChangeHandler(textComponent, japaneseWord,
+			addPropertyChangeHandler(textComponent, japaneseWriting,
 					!inputGoal.equals(InputGoal.SEARCH) && isKana,
 					JapaneseWritingUtilities.getDefaultValueForWriting(
-							typeOfJapaneseWriting), checker, parentDialog,
-					wordsList, inputGoal);
+							typeOfJapaneseWriting), propertyManager,
+					parentDialog, commonListElements.getList(), inputGoal);
 		}
 
 		return textComponent;
@@ -131,15 +138,14 @@ public class JapanesePanelActionsCreator {
 	}
 
 	private void addPropertyChangeHandler(JTextComponent textComponent,
-			JapaneseWord japaneseWord, boolean requiredInput,
+			JapaneseWriting japaneseWriting, boolean requiredInput,
 			String defaultValue,
-			ListElementPropertyManager<?, JapaneseWord> propertyManager,
-			DialogWindow parentDialog, MyList<JapaneseWord> wordsList,
+			ListElementPropertyManager<?, JapaneseWriting> propertyManager,
+			DialogWindow parentDialog, MyList<JapaneseWriting> wordsList,
 			InputGoal inputGoal) {
-		ListPropertyChangeHandler<?, JapaneseWord> propertyChangeHandler = new ListPropertyChangeHandler<>(
-				japaneseWord, wordsList, parentDialog, propertyManager,
+		ListPropertyChangeHandler<?, JapaneseWriting> propertyChangeHandler = new ListPropertyChangeHandler<>(
+				japaneseWriting, wordsList, parentDialog, propertyManager,
 				defaultValue, requiredInput, inputGoal);
-		propertyChangeHandler.addValidationListener(wordsList);
 		textComponent.addFocusListener(propertyChangeHandler);
 
 	}
@@ -149,8 +155,10 @@ public class JapanesePanelActionsCreator {
 			WordSearchOptions meaningSearchOptions, InputGoal inputGoal) {
 		wordMeaningChecker = new JapaneseWordMeaningChecker(
 				meaningSearchOptions);
-		addPropertyChangeHandler(wordMeaningTextField, japaneseWord, true, "",
-				wordMeaningChecker, parentDialog, wordsList, inputGoal);
+		ListPropertyChangeHandler<?, JapaneseWord> propertyChangeHandler = new ListPropertyChangeHandler<>(
+				japaneseWord, wordsList, parentDialog, wordMeaningChecker, "",
+				true, inputGoal);
+		wordMeaningTextField.addFocusListener(propertyChangeHandler);
 		return wordMeaningTextField;
 	}
 

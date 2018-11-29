@@ -122,12 +122,12 @@ public class JapaneseWord implements ListElement, Serializable {
 			JapaneseWord otherWord = (JapaneseWord) element;
 
 			for (JapaneseWriting japaneseWriting : otherWord.getWritings()) {
-				if (new JapaneseWordWritingsChecker(japaneseWriting,
-						InputGoal.ADD).isPropertyFound(japaneseWriting, this)) {
+				if (getWritings().contains(japaneseWriting)){
 					return true;
 				}
 			}
-			if (meaningChecker.isPropertyFound(otherWord.getMeaning(), this)) {
+			if (meaningChecker.isPropertyFound(otherWord.getMeaning(), this,
+					otherWord)) {
 				return true;
 			}
 			return false;

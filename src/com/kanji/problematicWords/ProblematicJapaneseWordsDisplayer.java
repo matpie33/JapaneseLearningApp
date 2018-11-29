@@ -75,13 +75,10 @@ public class ProblematicJapaneseWordsDisplayer
 		Set<String> kanjis = extractKanjis(japaneseWord);
 		List<KanjiData> kanjiDataList = new ArrayList<>();
 		for (String kanji : kanjis) {
-			Kanji kanjiInformation = kanjiList.
-													  findRowBasedOnPropertyStartingFromBeginningOfList(
-															  new KanjiIdChecker(),
-															  kanjiCharactersReader.getIdOfKanji(
-																	  kanji),
-															  MoveDirection.BELOW,
-															  false);
+			Kanji kanjiInformation = kanjiList.findRowBasedOnPropertyStartingFromBeginningOfList(
+					new KanjiIdChecker(),
+					kanjiCharactersReader.getIdOfKanji(kanji),
+					MoveDirection.BELOW, false);
 			kanjiDataList.add(new KanjiData(kanji, kanjiInformation));
 		}
 

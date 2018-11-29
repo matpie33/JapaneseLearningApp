@@ -80,8 +80,8 @@ public class JapaneseWordChecker implements
 
 	@Override
 	public boolean isPropertyFound(Set<JapaneseWriting> property,
-			JapaneseWord japaneseWord) {
-		for (JapaneseWriting writing : japaneseWord.getWritings()) {
+			JapaneseWord wordToCheck, JapaneseWord propertyHolder) {
+		for (JapaneseWriting writing : wordToCheck.getWritings()) {
 			for (JapaneseWriting propertyWriting : property) {
 				if (JapaneseWordWritingsChecker.areWritingsEqual(
 						propertyWriting, writing, inputGoal)) {

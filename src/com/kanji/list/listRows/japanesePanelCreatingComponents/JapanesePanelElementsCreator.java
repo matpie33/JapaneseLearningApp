@@ -9,6 +9,7 @@ import com.guimaker.enums.WordSearchOptions;
 import com.guimaker.inputSelection.ListInputsSelectionManager;
 import com.guimaker.list.myList.ListConfiguration;
 import com.guimaker.list.myList.MyList;
+import com.guimaker.model.CommonListElements;
 import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComboboxOptions;
 import com.guimaker.options.ComponentOptions;
@@ -61,25 +62,28 @@ public class JapanesePanelElementsCreator {
 
 	public void createKanaOrKanjiInputForFiltering(
 			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
-			boolean enabled, InputGoal inputGoal, boolean selectable) {
+			boolean enabled, InputGoal inputGoal, boolean selectable,
+			CommonListElements commonListElements) {
 		if (kanaOrKanjiInputForFiltering == null) {
 			kanaOrKanjiInputForFiltering = actionsCreator.withJapaneseWritingValidation(
 					createWritingsInput(japaneseWriting.getKanaWriting(),
 							TypeOfJapaneseWriting.KANA_OR_KANJI, enabled,
 							selectable), japaneseWriting, japaneseWord,
-					TypeOfJapaneseWriting.KANA_OR_KANJI, inputGoal, enabled);
+					TypeOfJapaneseWriting.KANA_OR_KANJI, inputGoal, enabled,
+					commonListElements);
 		}
 
 	}
 
 	public JTextComponent createKanaInputWithValidation(
 			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
-			boolean enabled, InputGoal inputGoal, boolean selectable) {
+			boolean enabled, InputGoal inputGoal, boolean selectable,
+			CommonListElements commonListElements) {
 		return actionsCreator.withJapaneseWritingValidation(
 				createWritingsInput(japaneseWriting.getKanaWriting(),
 						TypeOfJapaneseWriting.KANA, enabled, selectable),
 				japaneseWriting, japaneseWord, TypeOfJapaneseWriting.KANA,
-				inputGoal, enabled);
+				inputGoal, enabled, commonListElements);
 	}
 
 	public MyList<WordParticlesData> createParticlesDataList(
@@ -113,11 +117,12 @@ public class JapanesePanelElementsCreator {
 
 	public JTextComponent createKanjiInputWithValidation(String text,
 			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
-			InputGoal inputGoal, boolean enabled, boolean selectable) {
+			InputGoal inputGoal, boolean enabled, boolean selectable,
+			CommonListElements commonListElements) {
 		return actionsCreator.withJapaneseWritingValidation(
 				createWritingsInput(text, TypeOfJapaneseWriting.KANJI, enabled,
 						selectable), japaneseWriting, japaneseWord,
-				TypeOfJapaneseWriting.KANJI, inputGoal, enabled);
+				TypeOfJapaneseWriting.KANJI, inputGoal, enabled, commonListElements);
 	}
 
 	public JTextComponent createWritingsInput(String initialValue,
@@ -167,7 +172,8 @@ public class JapanesePanelElementsCreator {
 
 	public AbstractButton createButtonAddKanjiWriting(MainPanel rowPanel,
 			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
-			InputGoal inputGoal, boolean editMode, boolean selectable) {
+			InputGoal inputGoal, boolean editMode, boolean selectable,
+			CommonListElements commonListElements) {
 		AbstractButton button = createButton(
 				JapaneseApplicationButtonsNames.ADD_KANJI_WRITING, null);
 		button.addActionListener(new AbstractAction() {
@@ -175,7 +181,7 @@ public class JapanesePanelElementsCreator {
 			public void actionPerformed(ActionEvent e) {
 				JTextComponent input = createKanjiInputWithValidation("",
 						japaneseWriting, japaneseWord, inputGoal, editMode,
-						selectable);
+						selectable, commonListElements);
 				rowPanel.insertElementInPlaceOfElement(input, button);
 				SwingUtilities.invokeLater(input::requestFocusInWindow);
 			}

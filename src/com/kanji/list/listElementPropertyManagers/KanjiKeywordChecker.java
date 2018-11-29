@@ -16,9 +16,10 @@ public class KanjiKeywordChecker extends WordSearchOptionsHolder
 	}
 
 	@Override
-	public boolean isPropertyFound(String kanjiKeyWord, Kanji kanji) {
-		return kanji != null && WordSearching.doesWordContainSearchedWord(
-				kanji.getKeyword(), kanjiKeyWord, getWordSearchOptions());
+	public boolean isPropertyFound(String kanjiKeyWord, Kanji wordToCheck,
+			Kanji propertyHolder) {
+		return wordToCheck != null && WordSearching.doesWordContainSearchedWord(
+				wordToCheck.getKeyword(), kanjiKeyWord, getWordSearchOptions());
 	}
 
 	@Override

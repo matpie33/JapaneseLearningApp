@@ -32,12 +32,13 @@ public class JapanesePanelInViewModeCreator
 		List<JComponent> rowElements = new ArrayList<>();
 		rowElements.add(actionsCreator.switchToHandCursorOnMouseEnter(
 				elementsMaker.createKanaInputWithValidation(japaneseWriting,
-						japaneseWord, false, inputGoal, true)));
+						japaneseWord, false, inputGoal, true,
+						commonListElements)));
 		for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
 			rowElements.add(actionsCreator.switchToHandCursorOnMouseEnter(
 					elementsMaker.createKanjiInputWithValidation(kanjiWriting,
 							japaneseWriting, japaneseWord, inputGoal, false,
-							true)));
+							true, commonListElements)));
 		}
 
 		return rowElements.toArray(new JComponent[] {});
