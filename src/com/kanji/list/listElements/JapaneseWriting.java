@@ -11,6 +11,7 @@ import com.kanji.utilities.JapaneseWritingUtilities;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class JapaneseWriting implements ListElement, Serializable {
@@ -57,6 +58,11 @@ public class JapaneseWriting implements ListElement, Serializable {
 			kanjiWritings.add("");
 			return new JapaneseWriting("", kanjiWritings);
 		};
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(kanaWriting, kanjiWritings);
 	}
 
 	@Override

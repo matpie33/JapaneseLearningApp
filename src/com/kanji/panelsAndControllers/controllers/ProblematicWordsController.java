@@ -10,10 +10,10 @@ import com.guimaker.list.myList.MyList;
 import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.Prompts;
-import com.kanji.problematicWords.ProblematicWordsDisplayer;
-import com.kanji.saving.ApplicationStateManager;
 import com.kanji.model.saving.ProblematicWordsState;
 import com.kanji.model.saving.SavingInformation;
+import com.kanji.problematicWords.ProblematicWordsDisplayer;
+import com.kanji.saving.ApplicationStateManager;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -198,7 +198,8 @@ public class ProblematicWordsController<Word extends ListElement>
 		if (isProblematicWordsListEmpty()) {
 			return;
 		}
-		boolean hasWord = wordsToReviewList.containsWord(word);
+		boolean hasWord = wordsToReviewList.containsWord(word)
+										   .exists();
 		wordsToReviewList.update(word, modificationType);
 		if (modificationType.equals(ListElementModificationType.DELETE)) {
 			if (hasWord && nextWordToReview
