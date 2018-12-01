@@ -28,7 +28,8 @@ public class RowInJapaneseWordInformations
 
 	@Override
 	public ListRowData<JapaneseWord> createListRow(JapaneseWord japaneseWord,
-			CommonListElements commonListElements, InputGoal inputGoal) {
+			CommonListElements<JapaneseWord> commonListElements, InputGoal
+			inputGoal) {
 
 		JapaneseWordPanelCreator panelCreatorToUse = getJapaneseWordPanelCreator(
 				commonListElements.isForSingleRowOnly());

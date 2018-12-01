@@ -87,7 +87,8 @@ public class JapanesePanelElementsCreator {
 	}
 
 	public MyList<WordParticlesData> createParticlesDataList(
-			JapaneseWord japaneseWord, PanelDisplayMode displayMode) {
+			JapaneseWord japaneseWord, PanelDisplayMode displayMode,
+			CommonListElements<JapaneseWord> commonListElements) {
 		MyList<WordParticlesData> particlesList = new MyList<>(
 				new ListConfiguration<>(Prompts.JAPANESE_PARTICLE_DELETE,
 						new RowInParticlesInformation(japaneseWord,
@@ -103,7 +104,7 @@ public class JapanesePanelElementsCreator {
 											  .scrollBarFitsContent(true)
 											  .inheritScrollbar(true)
 											  .parentListAndWordContainingThisList(
-													  applicationController.getJapaneseWords(),
+													  commonListElements.getList(),
 													  japaneseWord,
 													  japaneseWord.getTakenParticles()));
 
@@ -122,7 +123,8 @@ public class JapanesePanelElementsCreator {
 		return actionsCreator.withJapaneseWritingValidation(
 				createWritingsInput(text, TypeOfJapaneseWriting.KANJI, enabled,
 						selectable), japaneseWriting, japaneseWord,
-				TypeOfJapaneseWriting.KANJI, inputGoal, enabled, commonListElements);
+				TypeOfJapaneseWriting.KANJI, inputGoal, enabled,
+				commonListElements);
 	}
 
 	public JTextComponent createWritingsInput(String initialValue,
@@ -263,7 +265,8 @@ public class JapanesePanelElementsCreator {
 			JapaneseWord japaneseWord, boolean inheritScrollBar,
 			DialogWindow parentDialog, PanelDisplayMode displayMode,
 			ListInputsSelectionManager listInputsSelectionManager,
-			JapanesePanelCreatingService panelCreatingService) {
+			JapanesePanelCreatingService panelCreatingService,
+			CommonListElements<JapaneseWord> commonListElements) {
 
 		return new MyList<>(
 				new ListConfiguration<>(Prompts.JAPANESE_WRITING_DELETE,
@@ -277,7 +280,7 @@ public class JapanesePanelElementsCreator {
 													  inheritScrollBar)
 											  .enableWordSearching(false)
 											  .parentListAndWordContainingThisList(
-													  applicationController.getJapaneseWords(),
+													  commonListElements.getList(),
 													  japaneseWord,
 													  japaneseWord.getWritings())
 											  .showButtonsLoadNextPreviousWords(

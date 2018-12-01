@@ -194,7 +194,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 				new ListConfiguration<>(Prompts.JAPANESE_WORD_DELETE,
 						new RowInJapaneseWordInformations(japanesePanelCreator),
 						JapaneseWord.getInitializer(),
-						Titles.PROBLEMATIC_KANJIS, parentDialog,
+						Titles.PROBLEMATIC_JAPANESE_WORDS, parentDialog,
 						applicationController).enableWordAdding(false)
 											  .showButtonsLoadNextPreviousWords(
 													  false)

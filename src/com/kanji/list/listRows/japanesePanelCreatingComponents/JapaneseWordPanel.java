@@ -7,11 +7,11 @@ import com.guimaker.enums.InputGoal;
 import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.inputSelection.ListInputsSelectionManager;
 import com.guimaker.list.myList.MyList;
+import com.guimaker.model.CommonListElements;
 import com.guimaker.model.PanelConfiguration;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.ComplexRow;
 import com.guimaker.row.SimpleRowBuilder;
-import com.guimaker.model.CommonListElements;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listElements.WordParticlesData;
@@ -42,7 +42,7 @@ public class JapaneseWordPanel {
 
 	public MainPanel createElements(JapaneseWord japaneseWord,
 			PanelDisplayMode displayMode, InputGoal inputGoal,
-			CommonListElements commonListElements,
+			CommonListElements<JapaneseWord> commonListElements,
 			JapanesePanelCreatingService panelCreatingService) {
 
 		JLabel rowNumberLabel = commonListElements.getRowNumberLabel();
@@ -54,12 +54,12 @@ public class JapaneseWordPanel {
 		}
 		JLabel wordMeaningLabel = elementsCreator.createWordMeaningLabel(
 				defaultLabelsColor);
-		wordMeaningText = elementsCreator.createWordMeaningText(
-				japaneseWord, displayMode, inputGoal);
+		wordMeaningText = elementsCreator.createWordMeaningText(japaneseWord,
+				displayMode, inputGoal);
 		JLabel partOfSpeechLabel = elementsCreator.createPartOfSpeechLabel(
 				defaultLabelsColor);
 		MyList<WordParticlesData> particlesTakenList = elementsCreator.createParticlesDataList(
-				japaneseWord, displayMode);
+				japaneseWord, displayMode, commonListElements);
 		JLabel additionalInformationLabel = elementsCreator.createAdditionalInformationLabel(
 				japaneseWord, defaultLabelsColor);
 		JComboBox additionalInformationCombobox = elementsCreator.createComboboxForAdditionalInformation(
@@ -68,9 +68,9 @@ public class JapaneseWordPanel {
 				japaneseWord.getPartOfSpeech(), additionalInformationLabel,
 				additionalInformationCombobox, japaneseWord);
 		boolean inheritScrollbar = !commonListElements.isForSingleRowOnly();
-		MyList writingsList = createJapaneseWritingsList(
-				japaneseWord, displayMode, inheritScrollbar,
-				panelCreatingService, inputGoal);
+		MyList writingsList = createJapaneseWritingsList(japaneseWord,
+				displayMode, inheritScrollbar, panelCreatingService, inputGoal,
+				commonListElements);
 		JLabel writingsLabel = elementsCreator.createWritingsLabel(
 				defaultLabelsColor);
 		JLabel particlesTakenLabel = elementsCreator.createParticlesTakenLabel(
@@ -127,12 +127,13 @@ public class JapaneseWordPanel {
 			JapaneseWord japaneseWord, PanelDisplayMode displayMode,
 			boolean inheritScrollBar,
 			JapanesePanelCreatingService panelCreatingService,
-			InputGoal inputGoal) {
+			InputGoal inputGoal,
+			CommonListElements<JapaneseWord> commonListElements) {
 		return japaneseWordPanelCreator.addWritings(
 				elementsCreator.createJapaneseWritingsList(japaneseWord,
 						inheritScrollBar, parentDialog, displayMode,
-						listInputsSelectionManager, panelCreatingService),
-				japaneseWord, inputGoal);
+						listInputsSelectionManager, panelCreatingService,
+						commonListElements), japaneseWord, inputGoal);
 	}
 
 	public JTextComponent getWordMeaningText() {

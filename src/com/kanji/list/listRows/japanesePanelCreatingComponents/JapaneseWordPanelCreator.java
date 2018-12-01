@@ -20,6 +20,7 @@ import com.kanji.panelsAndControllers.controllers.ApplicationController;
 
 import javax.swing.text.JTextComponent;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -57,7 +58,7 @@ public class JapaneseWordPanelCreator
 
 	public ListRowData<JapaneseWord> createJapaneseWordPanel(
 			JapaneseWord japaneseWord, InputGoal inputGoal,
-			CommonListElements commonListElements) {
+			CommonListElements<JapaneseWord> commonListElements) {
 		determineDisplayMode(inputGoal);
 		japanesePanelComponentsStore.getActionCreator()
 									.clearMappingForWordIfExists(japaneseWord);
@@ -118,7 +119,7 @@ public class JapaneseWordPanelCreator
 
 	private ListRowData<JapaneseWord> createRowPanel(
 			JapaneseWord japaneseWord, InputGoal inputGoal,
-			CommonListElements commonListElements) {
+			CommonListElements<JapaneseWord> commonListElements) {
 		JapaneseWordPanel japaneseWordPanel = new JapaneseWordPanel(
 				japanesePanelComponentsStore.getElementsCreator(), parentDialog,
 				listInputsSelectionManager, this);
@@ -130,7 +131,7 @@ public class JapaneseWordPanelCreator
 
 	private ListRowDataCreator<JapaneseWord> createListRow(
 			JapaneseWord japaneseWord, InputGoal inputGoal,
-			CommonListElements commonListElements,
+			CommonListElements<JapaneseWord> commonListElements,
 			JapaneseWordPanel japaneseWordPanel) {
 		MainPanel rowPanel = japaneseWordPanel.createElements(japaneseWord,
 				displayMode, inputGoal, commonListElements,
@@ -180,7 +181,9 @@ public class JapaneseWordPanelCreator
 						.isEmpty()) {
 			japaneseWord.addWritingsForKana("", "");
 		}
-		japaneseWord.getWritings()
+		Set<JapaneseWriting> writings = japaneseWord.getWritings();
+		Set<JapaneseWriting> duplicatedWritings = new HashSet<>(writings);
+		duplicatedWritings
 					.forEach(word -> lastWritingsListCreated.addWord(word,
 							inputGoal));
 		lastWritingsListCreated.addSwitchBetweenInputsFailListener(this);
