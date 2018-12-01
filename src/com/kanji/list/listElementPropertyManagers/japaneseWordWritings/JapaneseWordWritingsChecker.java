@@ -64,7 +64,7 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 	}
 
 	@Override
-	public JapaneseWriting validateInputAndConvertToProperty(
+	public boolean validateInput(
 			JTextComponent valueToConvert, JapaneseWord propertyHolder) {
 
 		String newValue = valueToConvert.getText();
@@ -138,7 +138,7 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 							japaneseWritingToCheck.getKanaWriting(),
 							TypeOfJapaneseWriting.KANJI)) {
 						errorDetails = ExceptionsMessages.KANA_INPUT_EMPTY;
-						return null;
+						return true;
 					}
 					boolean isNewWriting = writingsInputManager.addKanjiInput(
 							valueToConvert);
@@ -158,7 +158,7 @@ public class JapaneseWordWritingsChecker extends WordSearchOptionsHolder
 		}
 
 		removeEmptyValues();
-		return writingToAdd;
+		return true;
 
 	}
 

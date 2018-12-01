@@ -38,19 +38,19 @@ public class KanaOrKanjiWritingChecker implements
 	}
 
 	@Override
-	public String validateInputAndConvertToProperty(JTextComponent textInput,
+	public boolean validateInput(JTextComponent textInput,
 			JapaneseWord writing) {
 		if (JapaneseWritingUtilities.isInputValid(textInput.getText(),
 				TypeOfJapaneseWriting.KANA) || JapaneseWritingUtilities
 				.isInputValid(textInput.getText(), TypeOfJapaneseWriting.KANJI)) {
-			return textInput.getText();
+			return true;
 		}
 		else {
 			errorDetails = String.format(
 					ExceptionsMessages.KANA_OR_KANJI_WRITING_INCORRECT,
 					textInput.getText());
+			return false;
 		}
-		return null;
 	}
 
 	@Override

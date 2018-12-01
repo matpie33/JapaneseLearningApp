@@ -31,7 +31,7 @@ public class KanjiWritingChecker
 	}
 
 	@Override
-	public String validateInputAndConvertToProperty(JTextComponent textInput,
+	public boolean validateInput(JTextComponent textInput,
 			JapaneseWriting writing) {
 		if (JapaneseWritingUtilities.isInputValid(textInput.getText(),
 				TypeOfJapaneseWriting.KANJI)) {
@@ -40,15 +40,15 @@ public class KanjiWritingChecker
 				errorMessage = String.format(
 						ExceptionsMessages.DUPLICATED_KANJI_WRITING_WITHIN_ROW,
 						textInput.getText());
-				return null;
+				return false;
 			}
-			return textInput.getText();
+			return true;
 		}
 		else {
 			errorMessage = String.format(
 					ExceptionsMessages.KANJI_WRITING_INCORRECT,
 					textInput.getText());
-			return null;
+			return false;
 		}
 
 	}

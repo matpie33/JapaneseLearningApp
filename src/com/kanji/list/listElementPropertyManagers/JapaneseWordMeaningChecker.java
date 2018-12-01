@@ -21,12 +21,10 @@ public class JapaneseWordMeaningChecker extends WordSearchOptionsHolder
 	}
 
 	@Override
-	public boolean isPropertyFound(String wordInKanji,
-			JapaneseWord wordToCheck, JapaneseWord propertyHolder) {
-		return wordToCheck != null
-				&& WordSearching.doesWordContainSearchedWord(
-				wordToCheck.getMeaning(), wordInKanji,
-				getWordSearchOptions());
+	public boolean isPropertyFound(String wordInKanji, JapaneseWord wordToCheck,
+			JapaneseWord propertyHolder) {
+		return wordToCheck != null && WordSearching.doesWordContainSearchedWord(
+				wordToCheck.getMeaning(), wordInKanji, getWordSearchOptions());
 	}
 
 	@Override
@@ -34,12 +32,6 @@ public class JapaneseWordMeaningChecker extends WordSearchOptionsHolder
 		return japaneseWord.getMeaning();
 	}
 
-	@Override
-	public String validateInputAndConvertToProperty(
-			JTextComponent valueToConvert, JapaneseWord propertyHolder) {
-
-		return valueToConvert.getText();
-	}
 
 	@Override
 	public void setProperty(JapaneseWord japaneseWord, String newValue,

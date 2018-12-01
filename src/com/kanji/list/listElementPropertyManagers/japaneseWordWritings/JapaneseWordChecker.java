@@ -93,28 +93,27 @@ public class JapaneseWordChecker implements
 	}
 
 	@Override
-	public Set<JapaneseWriting> validateInputAndConvertToProperty(
+	public boolean validateInput(
 			JTextComponent textInput, JapaneseWord propertyHolder) {
 		JapaneseWriting existingWritingForInput = inputToWritingMap.get(
 				textInput);
 		JapaneseWordWritingsChecker checkerForInput = writingToCheckerMap.get(
 				existingWritingForInput);
-		JapaneseWriting convertedProperty = checkerForInput.validateInputAndConvertToProperty(
-				textInput, propertyHolder);
+		JapaneseWriting convertedProperty = null;
 		if (convertedProperty == null) {
 			invalidPropertyReason = checkerForInput.getInvalidPropertyReason();
-			return null;
+			return false;
 		}
 		for (JapaneseWriting writing : writingToCheckerMap.keySet()) {
 			if (writing != convertedProperty && writing.equals(
 					convertedProperty)) {
 				invalidPropertyReason = ExceptionsMessages.DUPLICATED_WRITINGS_IN_WORD;
-				return null;
+				return false;
 			}
 		}
 
 		updateWritingsInMaps(existingWritingForInput, convertedProperty);
-		return filterNotEmptyWritings();
+		return false;
 	}
 
 	private Set<JapaneseWriting> filterNotEmptyWritings() {

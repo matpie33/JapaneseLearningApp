@@ -23,13 +23,6 @@ public class KanjiKeywordChecker extends WordSearchOptionsHolder
 	}
 
 	@Override
-	public String validateInputAndConvertToProperty(
-			JTextComponent valueToConvert, Kanji propertyHolder) {
-
-		return valueToConvert.getText();
-	}
-
-	@Override
 	public String getPropertyValue(Kanji kanji) {
 		return kanji.getKeyword();
 	}

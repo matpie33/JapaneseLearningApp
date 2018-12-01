@@ -30,18 +30,18 @@ public class KanaWritingChecker
 	}
 
 	@Override
-	public String validateInputAndConvertToProperty(JTextComponent textInput,
+	public boolean validateInput(JTextComponent textInput,
 			JapaneseWriting writing) {
 		if (JapaneseWritingUtilities.isInputValid(textInput.getText(),
 				TypeOfJapaneseWriting.KANA)) {
-			return textInput.getText();
+			return true;
 		}
 		else {
 			errorDetails = String.format(
 					ExceptionsMessages.KANA_WRITING_INCORRECT,
 					textInput.getText());
+			return false;
 		}
-		return null;
 	}
 
 	@Override
