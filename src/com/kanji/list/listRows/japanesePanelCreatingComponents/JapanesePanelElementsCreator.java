@@ -78,7 +78,7 @@ public class JapanesePanelElementsCreator {
 	public JTextComponent createKanaInputWithValidation(
 			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
 			boolean enabled, InputGoal inputGoal, boolean selectable,
-			CommonListElements commonListElements) {
+			CommonListElements<JapaneseWriting> commonListElements) {
 		return actionsCreator.withJapaneseWritingValidation(
 				createWritingsInput(japaneseWriting.getKanaWriting(),
 						TypeOfJapaneseWriting.KANA, enabled, selectable),
@@ -118,7 +118,7 @@ public class JapanesePanelElementsCreator {
 	public JTextComponent createKanjiInputWithValidation(String text,
 			JapaneseWriting japaneseWriting, JapaneseWord japaneseWord,
 			InputGoal inputGoal, boolean enabled, boolean selectable,
-			CommonListElements commonListElements) {
+			CommonListElements<JapaneseWriting> commonListElements) {
 		return actionsCreator.withJapaneseWritingValidation(
 				createWritingsInput(text, TypeOfJapaneseWriting.KANJI, enabled,
 						selectable), japaneseWriting, japaneseWord,

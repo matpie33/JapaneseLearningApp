@@ -5,6 +5,7 @@ import com.kanji.constants.enums.TypeOfJapaneseWriting;
 import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.utilities.JapaneseWritingUtilities;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.swing.text.JTextComponent;
 
@@ -26,7 +27,7 @@ public class KanjiWritingChecker
 
 	@Override
 	public String getPropertyValue(JapaneseWriting writing) {
-		return null; //TODO implement it again, for filter to work
+		throw new NotImplementedException();
 	}
 
 	@Override

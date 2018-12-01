@@ -11,7 +11,8 @@ import javax.swing.*;
 public interface JapanesePanelCreatingService {
 
 	public JComponent[] addWritingsRow(JapaneseWriting japaneseWriting,
-			CommonListElements commonListElements, JapaneseWord japaneseWord,
+			CommonListElements<JapaneseWriting> commonListElements, JapaneseWord
+			japaneseWord,
 			InputGoal inputGoal, MainPanel rowPanel);
 
 }

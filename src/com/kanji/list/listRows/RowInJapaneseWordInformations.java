@@ -29,17 +29,12 @@ public class RowInJapaneseWordInformations
 	@Override
 	public ListRowData<JapaneseWord> createListRow(JapaneseWord japaneseWord,
 			CommonListElements commonListElements, InputGoal inputGoal) {
-		PanelDisplayMode displayMode = getPanelDisplayMode(commonListElements,
-				inputGoal);
-
-		JLabel rowNumberLabel = commonListElements.getRowNumberLabel();
 
 		JapaneseWordPanelCreator panelCreatorToUse = getJapaneseWordPanelCreator(
 				commonListElements.isForSingleRowOnly());
-		ListRowData<JapaneseWord> rowData = panelCreatorToUse.createJapaneseWordPanel(
-				japaneseWord, inputGoal, commonListElements);
 
-		return rowData;
+		return panelCreatorToUse.createJapaneseWordPanel(
+				japaneseWord, inputGoal, commonListElements);
 	}
 
 

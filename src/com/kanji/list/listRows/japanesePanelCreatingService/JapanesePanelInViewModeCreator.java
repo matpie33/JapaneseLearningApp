@@ -27,7 +27,8 @@ public class JapanesePanelInViewModeCreator
 
 	@Override
 	public JComponent[] addWritingsRow(JapaneseWriting japaneseWriting,
-			CommonListElements commonListElements, JapaneseWord japaneseWord,
+			CommonListElements<JapaneseWriting> commonListElements, JapaneseWord
+			japaneseWord,
 			InputGoal inputGoal, MainPanel rowPanel) {
 		List<JComponent> rowElements = new ArrayList<>();
 		rowElements.add(actionsCreator.switchToHandCursorOnMouseEnter(
