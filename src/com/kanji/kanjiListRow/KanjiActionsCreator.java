@@ -6,6 +6,7 @@ import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.list.ListElementPropertyManager;
 import com.guimaker.list.myList.ListPropertyChangeHandler;
 import com.guimaker.listeners.InputValidationListener;
+import com.guimaker.model.CommonListElements;
 import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
 import com.kanji.list.listElementPropertyManagers.KanjiKeywordChecker;
 import com.kanji.list.listElements.Kanji;
@@ -34,14 +35,16 @@ public class KanjiActionsCreator {
 	}
 
 	public JTextComponent withKeywordValidation(JTextComponent keywordInput,
-			Kanji kanji, InputGoal inputGoal) {
+			Kanji kanji, InputGoal inputGoal,
+			CommonListElements<Kanji> commonListElements) {
 		if (displayMode.equals(PanelDisplayMode.VIEW) && !inputGoal.equals(
 				InputGoal.SEARCH)) {
 			return keywordInput;
 		}
 		keywordChecker = new KanjiKeywordChecker();
 		keywordInput.addFocusListener(
-				createPropertyChangeHandler(kanji, keywordChecker, inputGoal));
+				createPropertyChangeHandler(kanji, keywordChecker, inputGoal,
+						commonListElements));
 		//TODO keyword checker, kanji id checker are stateless - thats
 		//why we can create one instance and reuse instead of creating it
 		//everytime
@@ -49,23 +52,24 @@ public class KanjiActionsCreator {
 	}
 
 	public JTextComponent withKanjiIdValidation(JTextComponent kanjiIdInput,
-			Kanji kanji, InputGoal inputGoal) {
+			Kanji kanji, InputGoal inputGoal,
+			CommonListElements<Kanji> commonListElements) {
 		if (displayMode.equals(PanelDisplayMode.VIEW) && !inputGoal.equals(
 				InputGoal.SEARCH)) {
 			return kanjiIdInput;
 		}
 		idChecker = new KanjiIdChecker();
 		kanjiIdInput.addFocusListener(
-				createPropertyChangeHandler(kanji, idChecker, inputGoal));
+				createPropertyChangeHandler(kanji, idChecker, inputGoal, commonListElements));
 		return kanjiIdInput;
 	}
 
 	private ListPropertyChangeHandler<?, Kanji> createPropertyChangeHandler(
 			Kanji kanji, ListElementPropertyManager<?, Kanji> propertyManager,
-			InputGoal inputGoal) {
+			InputGoal inputGoal, CommonListElements<Kanji> commonListElements) {
 
 		ListPropertyChangeHandler listPropertyChangeHandler = new ListPropertyChangeHandler<>(
-				kanji, applicationController.getKanjiList(), parentDialog,
+				kanji, commonListElements.getList(), parentDialog,
 				propertyManager, inputGoal);
 		validationListeners.forEach(
 				listPropertyChangeHandler::addValidationListener);

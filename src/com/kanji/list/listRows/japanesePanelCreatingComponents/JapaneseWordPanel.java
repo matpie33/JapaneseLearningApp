@@ -55,7 +55,7 @@ public class JapaneseWordPanel {
 		JLabel wordMeaningLabel = elementsCreator.createWordMeaningLabel(
 				defaultLabelsColor);
 		wordMeaningText = elementsCreator.createWordMeaningText(japaneseWord,
-				displayMode, inputGoal);
+				displayMode, inputGoal, commonListElements);
 		JLabel partOfSpeechLabel = elementsCreator.createPartOfSpeechLabel(
 				defaultLabelsColor);
 		MyList<WordParticlesData> particlesTakenList = elementsCreator.createParticlesDataList(

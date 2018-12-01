@@ -89,10 +89,11 @@ public class JapanesePanelActionsCreator {
 			TypeOfJapaneseWriting typeOfJapaneseWriting, InputGoal inputGoal,
 			boolean enabled,
 			CommonListElements<JapaneseWriting> commonListElements) {
-		inputToWordMap.add(new Pair <> (textComponent, japaneseWord));
+		inputToWordMap.add(new Pair<>(textComponent, japaneseWord));
 
 		if (inputGoal.equals(InputGoal.SEARCH)) {
-			addValidationForFilteringInput(textComponent, japaneseWord);
+			addValidationForFilteringInput(textComponent, japaneseWord,
+					commonListElements);
 		}
 		else {
 			addValidationForRegularKanaOrKanjiInput(textComponent,
@@ -125,12 +126,15 @@ public class JapanesePanelActionsCreator {
 	}
 
 	private void addValidationForFilteringInput(JTextComponent textComponent,
-			JapaneseWord japaneseWord) {
+			JapaneseWord japaneseWord,
+			CommonListElements<JapaneseWriting> commonListElements) {
 		ListElementPropertyManager<String, JapaneseWord> propertyManager;
 		propertyManager = new KanaOrKanjiWritingChecker();
 		wordCheckerForKanaOrKanjiFilter = propertyManager;
 		ListPropertyChangeHandler<?, JapaneseWord> propertyChangeHandler = new ListPropertyChangeHandler<>(
-				japaneseWord, wordsList, parentDialog, propertyManager,
+				japaneseWord, commonListElements.getList().getRootList(),
+				parentDialog,
+				propertyManager,
 				JapaneseWritingUtilities.getDefaultValueForWriting(
 						TypeOfJapaneseWriting.KANA_OR_KANJI), true,
 				InputGoal.SEARCH);
@@ -139,12 +143,13 @@ public class JapanesePanelActionsCreator {
 
 	public JTextComponent withWordMeaningChangeListener(
 			JTextComponent wordMeaningTextField, JapaneseWord japaneseWord,
-			WordSearchOptions meaningSearchOptions, InputGoal inputGoal) {
+			WordSearchOptions meaningSearchOptions, InputGoal inputGoal,
+			CommonListElements<JapaneseWord> commonListElements) {
 		wordMeaningChecker = new JapaneseWordMeaningChecker(
 				meaningSearchOptions);
 		ListPropertyChangeHandler<?, JapaneseWord> propertyChangeHandler = new ListPropertyChangeHandler<>(
-				japaneseWord, wordsList, parentDialog, wordMeaningChecker, "",
-				true, inputGoal);
+				japaneseWord, commonListElements.getList(), parentDialog,
+				wordMeaningChecker, "", true, inputGoal);
 		wordMeaningTextField.addFocusListener(propertyChangeHandler);
 		return wordMeaningTextField;
 	}
@@ -206,7 +211,7 @@ public class JapanesePanelActionsCreator {
 
 	public JapaneseWord getWordContainingInput(JTextComponent input) {
 		for (Pair<JTextComponent, JapaneseWord> jTextComponentJapaneseWordPair : inputToWordMap) {
-			if (jTextComponentJapaneseWordPair.getLeft() == input){
+			if (jTextComponentJapaneseWordPair.getLeft() == input) {
 				return jTextComponentJapaneseWordPair.getRight();
 			}
 		}

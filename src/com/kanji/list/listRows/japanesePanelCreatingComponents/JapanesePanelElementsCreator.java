@@ -240,7 +240,8 @@ public class JapanesePanelElementsCreator {
 	}
 
 	public JTextComponent createWordMeaningText(JapaneseWord japaneseWord,
-			PanelDisplayMode displayMode, InputGoal inputGoal) {
+			PanelDisplayMode displayMode, InputGoal inputGoal,
+			CommonListElements<JapaneseWord> commonListElements) {
 
 		JTextComponent wordMeaningTextField = CommonGuiElementsCreator.createShortInput(
 				japaneseWord.getMeaning(), displayMode);
@@ -249,8 +250,8 @@ public class JapanesePanelElementsCreator {
 						wordMeaningTextField, japaneseWord,
 						inputGoal.equals(InputGoal.SEARCH) ?
 								WordSearchOptions.BY_WORD_FRAGMENT :
-								WordSearchOptions.BY_FULL_EXPRESSION,
-						inputGoal) :
+								WordSearchOptions.BY_FULL_EXPRESSION, inputGoal,
+						commonListElements) :
 				wordMeaningTextField;
 
 	}

@@ -6,11 +6,10 @@ import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.list.ListRowData;
 import com.guimaker.list.myList.ListRowCreator;
 import com.guimaker.list.myList.ListRowDataCreator;
-import com.guimaker.listeners.InputValidationListener;
+import com.guimaker.model.CommonListElements;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.ComplexRow;
 import com.guimaker.row.SimpleRowBuilder;
-import com.guimaker.model.CommonListElements;
 import com.kanji.constants.strings.Labels;
 import com.kanji.constants.strings.ListPropertiesNames;
 import com.kanji.kanjiListRow.KanjiActionsCreator;
@@ -47,7 +46,7 @@ public class RowInKanjiInformations implements ListRowCreator<Kanji> {
 
 	@Override
 	public ListRowData createListRow(Kanji kanji,
-			CommonListElements commonListElements, InputGoal inputGoal) {
+			CommonListElements<Kanji> commonListElements, InputGoal inputGoal) {
 		elementsCreator.setLabelsColor(commonListElements.getLabelsColor());
 		MainPanel panel = new MainPanel();
 		JLabel keywordLabel = elementsCreator.createLabel(
@@ -57,10 +56,10 @@ public class RowInKanjiInformations implements ListRowCreator<Kanji> {
 				|| commonListElements.isForSingleRowOnly();
 		JTextComponent keywordInput = actionsCreator.withKeywordValidation(
 				elementsCreator.createKanjiKeywordInput(kanji.getKeyword(),
-						enabled), kanji, inputGoal);
+						enabled), kanji, inputGoal, commonListElements);
 		JTextComponent idInput = actionsCreator.withKanjiIdValidation(
 				elementsCreator.createKanjiIdInput(kanji.getId(), enabled),
-				kanji, inputGoal);
+				kanji, inputGoal, commonListElements);
 		AbstractButton buttonDependingOnInputGoal = getButtonDependingOnInputGoal(
 				kanji, commonListElements);
 		ComplexRow panelRows = SimpleRowBuilder.createRowStartingFromColumn(0,
