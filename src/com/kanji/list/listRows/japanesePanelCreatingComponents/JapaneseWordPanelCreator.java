@@ -60,8 +60,6 @@ public class JapaneseWordPanelCreator
 			JapaneseWord japaneseWord, InputGoal inputGoal,
 			CommonListElements<JapaneseWord> commonListElements) {
 		determineDisplayMode(inputGoal);
-		japanesePanelComponentsStore.getActionCreator()
-									.clearMappingForWordIfExists(japaneseWord);
 		return createRowPanel(japaneseWord, inputGoal, commonListElements);
 
 	}
