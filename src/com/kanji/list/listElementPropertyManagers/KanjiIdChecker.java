@@ -21,15 +21,18 @@ public class KanjiIdChecker
 	}
 
 	@Override
-	public boolean validateInput(
-			JTextComponent textComponent, Kanji propertyHolder) {
+	public boolean validateInput(JTextComponent textComponent,
+			Kanji propertyHolder) {
 		String valueToConvert = textComponent.getText();
 		return isIdValidNumber(valueToConvert);
 	}
 
 	@Override
-	public Integer convertToProperty (JTextComponent textComponent){
-		return Integer.parseInt(textComponent.getText());
+	public Integer convertToProperty(JTextComponent textComponent) {
+		return textComponent.getText()
+							.isEmpty() ?
+				0 :
+				Integer.parseInt(textComponent.getText());
 	}
 
 	@Override
