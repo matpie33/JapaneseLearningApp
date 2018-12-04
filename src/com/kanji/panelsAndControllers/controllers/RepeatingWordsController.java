@@ -8,11 +8,11 @@ import com.kanji.constants.enums.RepeatingWordsPanelState;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.list.listElements.RepeatingData;
+import com.kanji.model.saving.RepeatingState;
+import com.kanji.model.saving.SavingInformation;
 import com.kanji.panelsAndControllers.panelUpdaters.RepeatingWordsPanelUpdater;
 import com.kanji.panelsAndControllers.panels.RepeatingWordsPanel;
 import com.kanji.saving.ApplicationStateManager;
-import com.kanji.model.saving.RepeatingState;
-import com.kanji.model.saving.SavingInformation;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -290,12 +290,21 @@ public class RepeatingWordsController<Word extends ListElement>
 														 .getTypeOfWordForRepeating();
 
 		reset();
+		addProblematicWordsFromLastRepeating(savingInformation);
 		resumeUnfinishedRepeating(savingInformation.getRepeatingState());
 		applicationController.getStartingController()
 							 .switchToList(savingInformation.getRepeatingState()
 															.getTypeOfWordForRepeating());
 		applicationController.displayMessageAboutUnfinishedRepeating();
 		applicationController.startRepeating();
+	}
+
+	private void addProblematicWordsFromLastRepeating(
+			SavingInformation savingInformation) {
+		getWordsSpecificController().setCurrentProblematcWords(
+				savingInformation.getRepeatingState()
+								 .getCurrentProblematicWords());
+
 	}
 
 	public void setTypeOfWordForRepeating(

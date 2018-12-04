@@ -73,6 +73,10 @@ public class WordSpecificRepeatingController<Word extends ListElement> {
 		}
 	}
 
+	public void setCurrentProblematcWords(Set<Word> words){
+		currentProblematicWords.addAll(words);
+	}
+
 	public void addWordsToRepeat(Set<Word> currentlyRepeatedWords) {
 		wordsLeftToRepeat.addAll(currentlyRepeatedWords);
 	}
