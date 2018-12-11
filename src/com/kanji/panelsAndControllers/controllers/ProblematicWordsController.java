@@ -53,10 +53,14 @@ public class ProblematicWordsController<Word extends ListElement>
 			wordsToReviewList.cleanWords();
 		}
 		else if (!wordsToReviewList.isEmpty()) {
-			for (int i = 0; i < nextWordToReview + 1; i++) {
-				wordsToReviewList.removeWordInRow(0);
+			List<Word> words = wordsToReviewList.getWords();
+			int i = 0;
+			while (i <= nextWordToReview) {
+				words.remove(0);
+				i++;
 			}
-
+			wordsToReviewList.cleanWords();
+			words.forEach(wordsToReviewList::addWord);
 		}
 		nextWordToReview = 0;
 
