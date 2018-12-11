@@ -3,9 +3,11 @@ package com.kanji.list.listRows.japanesePanelCreatingService;
 import com.guimaker.enums.InputGoal;
 import com.guimaker.model.CommonListElements;
 import com.guimaker.panels.MainPanel;
+import com.kanji.constants.enums.TypeOfJapaneseWriting;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapanesePanelElementsCreator;
+import com.kanji.utilities.JapaneseWritingUtilities;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -24,9 +26,9 @@ public class JapanesePanelInEditModeCreator
 
 	@Override
 	public JComponent[] addWritingsRow(JapaneseWriting japaneseWriting,
-			CommonListElements<JapaneseWriting> commonListElements, JapaneseWord
-			japaneseWord,
-			InputGoal inputGoal, MainPanel rowPanel) {
+			CommonListElements<JapaneseWriting> commonListElements,
+			JapaneseWord japaneseWord, InputGoal inputGoal,
+			MainPanel rowPanel) {
 		List<JComponent> rowElements = new ArrayList<>();
 		if (inputGoal.equals(InputGoal.SEARCH)) {
 			elementsMaker.createKanaOrKanjiInputForFiltering(japaneseWriting,
@@ -40,6 +42,10 @@ public class JapanesePanelInEditModeCreator
 			//TODO try to use the approach in whole application:
 			//GuiElement e = actionMaker.withAction(elementsMaker.createElement)
 			for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
+				if (JapaneseWritingUtilities.isInputEmpty(kanjiWriting,
+						TypeOfJapaneseWriting.KANJI)) {
+					continue;
+				}
 				rowElements.add(elementsMaker.createKanjiInputWithValidation(
 						kanjiWriting, japaneseWriting, japaneseWord, inputGoal,
 						true, false, commonListElements));

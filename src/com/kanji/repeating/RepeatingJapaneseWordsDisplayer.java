@@ -69,9 +69,9 @@ public class RepeatingJapaneseWordsDisplayer
 	}
 
 	@Override
-	public String getWordHint(JapaneseWord kanjiInformation) {
+	public String getWordHint(JapaneseWord japaneseWord) {
 		int possibilitiesAmount;
-		if (kanjiInformation.hasKanjiWriting()) {
+		if (japaneseWord.hasKanjiWriting()) {
 			possibilitiesAmount = 3;
 		}
 		else {
@@ -82,7 +82,7 @@ public class RepeatingJapaneseWordsDisplayer
 		Function<JapaneseWord, Set<String>> hintGetter = hintTypeIntValues.get(
 				randomNumber);
 		return StringUtilities.concatenateStrings(
-				new ArrayList<>((hintGetter.apply(kanjiInformation))));
+				new ArrayList<>((hintGetter.apply(japaneseWord))));
 	}
 
 }

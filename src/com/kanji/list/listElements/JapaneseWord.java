@@ -1,6 +1,5 @@
 package com.kanji.list.listElements;
 
-import com.guimaker.enums.InputGoal;
 import com.guimaker.enums.WordSearchOptions;
 import com.guimaker.list.ListElement;
 import com.guimaker.list.ListElementInitializer;
@@ -9,7 +8,6 @@ import com.guimaker.utilities.StringUtilities;
 import com.kanji.constants.enums.JapaneseParticle;
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.list.listElementPropertyManagers.JapaneseWordMeaningChecker;
-import com.kanji.list.listElementPropertyManagers.japaneseWordWritings.JapaneseWordWritingsChecker;
 import com.kanji.model.AdditionalInformation;
 
 import java.io.Serializable;
@@ -41,7 +39,6 @@ public class JapaneseWord implements ListElement, Serializable {
 		japaneseWritings = new HashSet<>();
 	}
 
-
 	public void addWritingsForKana(String kanaWriting,
 			String... kanjiWritingsForThisKana) {
 		addWriting(new JapaneseWriting(kanaWriting,
@@ -59,11 +56,21 @@ public class JapaneseWord implements ListElement, Serializable {
 	public boolean hasKanjiWriting() {
 		for (JapaneseWriting japaneseWriting : japaneseWritings) {
 			if (!japaneseWriting.getKanjiWritings()
-								.isEmpty()) {
+								.isEmpty() && !doesWritingHaveOnlyEmptyKanji(
+					japaneseWriting)) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	private boolean doesWritingHaveOnlyEmptyKanji(
+			JapaneseWriting japaneseWriting) {
+		return japaneseWriting.getKanjiWritings()
+							  .size() == 1 && japaneseWriting.getKanjiWritings()
+															 .iterator()
+															 .next()
+															 .isEmpty();
 	}
 
 	public void setMeaning(String meaning) {
@@ -122,7 +129,7 @@ public class JapaneseWord implements ListElement, Serializable {
 			JapaneseWord otherWord = (JapaneseWord) element;
 
 			for (JapaneseWriting japaneseWriting : otherWord.getWritings()) {
-				if (getWritings().contains(japaneseWriting)){
+				if (getWritings().contains(japaneseWriting)) {
 					return true;
 				}
 			}
