@@ -42,10 +42,6 @@ public class JapanesePanelInEditModeCreator
 			//TODO try to use the approach in whole application:
 			//GuiElement e = actionMaker.withAction(elementsMaker.createElement)
 			for (String kanjiWriting : japaneseWriting.getKanjiWritings()) {
-				if (JapaneseWritingUtilities.isInputEmpty(kanjiWriting,
-						TypeOfJapaneseWriting.KANJI)) {
-					continue;
-				}
 				rowElements.add(elementsMaker.createKanjiInputWithValidation(
 						kanjiWriting, japaneseWriting, japaneseWord, inputGoal,
 						true, false, commonListElements));
