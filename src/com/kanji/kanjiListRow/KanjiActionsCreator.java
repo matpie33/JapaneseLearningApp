@@ -7,11 +7,13 @@ import com.guimaker.list.ListElementPropertyManager;
 import com.guimaker.list.myList.ListPropertyChangeHandler;
 import com.guimaker.listeners.InputValidationListener;
 import com.guimaker.model.CommonListElements;
+import com.kanji.constants.enums.TypeOfJapaneseWriting;
 import com.kanji.list.listElementPropertyManagers.KanjiIdChecker;
 import com.kanji.list.listElementPropertyManagers.KanjiKeywordChecker;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
+import com.kanji.utilities.JapaneseWritingUtilities;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -60,7 +62,8 @@ public class KanjiActionsCreator {
 		}
 		idChecker = new KanjiIdChecker();
 		kanjiIdInput.addFocusListener(
-				createPropertyChangeHandler(kanji, idChecker, inputGoal, commonListElements));
+				createPropertyChangeHandler(kanji, idChecker, inputGoal,
+						commonListElements));
 		return kanjiIdInput;
 	}
 
@@ -70,7 +73,9 @@ public class KanjiActionsCreator {
 
 		ListPropertyChangeHandler listPropertyChangeHandler = new ListPropertyChangeHandler<>(
 				kanji, commonListElements.getList(), parentDialog,
-				propertyManager, inputGoal);
+				propertyManager, inputGoal,
+				JapaneseWritingUtilities.getDefaultValueForWriting(
+						TypeOfJapaneseWriting.KANJI));
 		validationListeners.forEach(
 				listPropertyChangeHandler::addValidationListener);
 		return listPropertyChangeHandler;

@@ -117,10 +117,9 @@ public class JapanesePanelActionsCreator {
 		if (enabled) {
 			ListPropertyChangeHandler<?, JapaneseWriting> propertyChangeHandler = new ListPropertyChangeHandler<>(
 					japaneseWriting, commonListElements.getList(), parentDialog,
-					propertyManager,
+					propertyManager, inputGoal,
 					JapaneseWritingUtilities.getDefaultValueForWriting(
-							typeOfJapaneseWriting),
-					!inputGoal.equals(InputGoal.SEARCH) && isKana, inputGoal);
+							typeOfJapaneseWriting), isKana);
 			textComponent.addFocusListener(propertyChangeHandler);
 		}
 	}
@@ -132,12 +131,11 @@ public class JapanesePanelActionsCreator {
 		propertyManager = new KanaOrKanjiWritingChecker();
 		wordCheckerForKanaOrKanjiFilter = propertyManager;
 		ListPropertyChangeHandler<?, JapaneseWord> propertyChangeHandler = new ListPropertyChangeHandler<>(
-				japaneseWord, commonListElements.getList().getRootList(),
-				parentDialog,
-				propertyManager,
+				japaneseWord, commonListElements.getList()
+												.getRootList(), parentDialog,
+				propertyManager, InputGoal.SEARCH,
 				JapaneseWritingUtilities.getDefaultValueForWriting(
-						TypeOfJapaneseWriting.KANA_OR_KANJI), true,
-				InputGoal.SEARCH);
+						TypeOfJapaneseWriting.KANA_OR_KANJI), true);
 		textComponent.addFocusListener(propertyChangeHandler);
 	}
 
@@ -149,7 +147,7 @@ public class JapanesePanelActionsCreator {
 				meaningSearchOptions);
 		ListPropertyChangeHandler<?, JapaneseWord> propertyChangeHandler = new ListPropertyChangeHandler<>(
 				japaneseWord, commonListElements.getList(), parentDialog,
-				wordMeaningChecker, "", true, inputGoal);
+				wordMeaningChecker, inputGoal, "", true);
 		wordMeaningTextField.addFocusListener(propertyChangeHandler);
 		return wordMeaningTextField;
 	}

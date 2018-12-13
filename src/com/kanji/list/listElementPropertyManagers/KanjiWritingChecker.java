@@ -64,7 +64,9 @@ public class KanjiWritingChecker
 			String previousValue) {
 		writing.getKanjiWritings()
 			   .remove(previousValue != null ? previousValue : "");
-		writing.getKanjiWritings()
-			   .add(newValue);
+		if (!newValue.isEmpty()) {
+			writing.getKanjiWritings()
+				   .add(newValue);
+		}
 	}
 }
