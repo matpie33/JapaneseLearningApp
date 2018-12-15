@@ -614,9 +614,8 @@ public class ApplicationController
 
 	@Override
 	public boolean isClosingSafe() {
-		return applicationStateManager != this ?
-				applicationStateManager.isClosingSafe() :
-				true;
+		return applicationStateManager == this
+				|| applicationStateManager.isClosingSafe();
 	}
 
 	@Override
