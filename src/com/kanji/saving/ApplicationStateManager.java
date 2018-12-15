@@ -6,4 +6,6 @@ public interface ApplicationStateManager {
 	public SavingInformation getApplicationState();
 
 	public void restoreState(SavingInformation savingInformation);
+
+	public boolean isClosingSafe();
 }

@@ -299,6 +299,11 @@ public class RepeatingWordsController<Word extends ListElement>
 		applicationController.startRepeating();
 	}
 
+	@Override
+	public boolean isClosingSafe() {
+		return false;
+	}
+
 	private void addProblematicWordsFromLastRepeating(
 			SavingInformation savingInformation) {
 		getWordsSpecificController().setCurrentProblematcWords(

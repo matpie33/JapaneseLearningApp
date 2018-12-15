@@ -31,6 +31,8 @@ import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.RepeatingData;
 import com.kanji.model.WordsAndRepeatingInfo;
+import com.kanji.model.saving.ProblematicWordsState;
+import com.kanji.model.saving.SavingInformation;
 import com.kanji.panelsAndControllers.panels.LearningStartPanel;
 import com.kanji.panelsAndControllers.panels.LoadingPanel;
 import com.kanji.panelsAndControllers.panels.RepeatingWordsPanel;
@@ -39,8 +41,6 @@ import com.kanji.problematicWords.ProblematicKanjiDisplayer;
 import com.kanji.problematicWords.ProblematicWordsDisplayer;
 import com.kanji.saving.ApplicationStateManager;
 import com.kanji.saving.FileSavingManager;
-import com.kanji.model.saving.ProblematicWordsState;
-import com.kanji.model.saving.SavingInformation;
 import com.kanji.swingWorkers.LoadingProjectWorker;
 import com.kanji.utilities.JapaneseWordsAdjuster;
 import com.kanji.utilities.OldToNewestVersionConverter;
@@ -60,7 +60,6 @@ public class ApplicationController
 		ApplicationChangesManager {
 
 	private ApplicationWindow applicationWindow;
-	private boolean isClosingSafe;
 	private ApplicationStateManager applicationStateManager;
 	private SavingInformation savingInformation;
 	private boolean loadingInProgress = false;
@@ -70,7 +69,6 @@ public class ApplicationController
 	private final static boolean SHOULD_CONVERT_OLD_TO_NEWEST_VERSION = false;
 
 	public ApplicationController() {
-		isClosingSafe = true;
 		applicationStateManager = this;
 		applicationStateController = new ApplicationStateController(this,
 				Kanji.MEANINGFUL_NAME);
@@ -559,7 +557,6 @@ public class ApplicationController
 
 	}
 
-
 	public Set<Kanji> getProblematicKanjis() {
 		return applicationStateController.getController(Kanji.MEANINGFUL_NAME)
 										 .getProblematicWords();
@@ -596,7 +593,6 @@ public class ApplicationController
 		RepeatingWordsController activeRepeatingWordsController = getActiveRepeatingWordsController();
 		applicationWindow.showPanel(activeRepeatingWordsController.getPanel()
 																  .getUniqueName());
-		isClosingSafe = false;
 		activeRepeatingWordsController.startRepeating();
 		applicationStateManager = activeRepeatingWordsController;
 	}
@@ -607,7 +603,6 @@ public class ApplicationController
 	}
 
 	public void finishedRepeating() {
-		isClosingSafe = true;
 		applicationStateManager = this;
 	}
 
@@ -619,7 +614,9 @@ public class ApplicationController
 
 	@Override
 	public boolean isClosingSafe() {
-		return isClosingSafe;
+		return applicationStateManager != this ?
+				applicationStateManager.isClosingSafe() :
+				true;
 	}
 
 	@Override
@@ -667,7 +664,6 @@ public class ApplicationController
 
 	private void switchStateManager(ApplicationStateManager stateManager) {
 		this.applicationStateManager = stateManager;
-		isClosingSafe = false;
 	}
 
 	private ProblematicWordsController getActiveProblematicWordsController() {

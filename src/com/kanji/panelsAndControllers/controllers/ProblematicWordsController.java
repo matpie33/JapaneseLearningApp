@@ -176,6 +176,11 @@ public class ProblematicWordsController<Word extends ListElement>
 				savingInformation.getProblematicWordsState());
 	}
 
+	@Override
+	public boolean isClosingSafe() {
+		return wordsReviewFinished;
+	}
+
 	public void addProblematicWordsHighlightReviewed(List<Word> reviewedWords,
 			List<Word> notReviewedWords) {
 		for (int i = 0; i < reviewedWords.size(); i++) {
