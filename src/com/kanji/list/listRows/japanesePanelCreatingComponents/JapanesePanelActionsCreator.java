@@ -135,7 +135,7 @@ public class JapanesePanelActionsCreator {
 												.getRootList(), parentDialog,
 				propertyManager, InputGoal.SEARCH,
 				JapaneseWritingUtilities.getDefaultValueForWriting(
-						TypeOfJapaneseWriting.KANA_OR_KANJI), true);
+						TypeOfJapaneseWriting.KANA_OR_KANJI), false);
 		textComponent.addFocusListener(propertyChangeHandler);
 	}
 
@@ -147,7 +147,8 @@ public class JapanesePanelActionsCreator {
 				meaningSearchOptions);
 		ListPropertyChangeHandler<?, JapaneseWord> propertyChangeHandler = new ListPropertyChangeHandler<>(
 				japaneseWord, commonListElements.getList(), parentDialog,
-				wordMeaningChecker, inputGoal, "", true);
+				wordMeaningChecker, inputGoal, "",
+				!inputGoal.equals(InputGoal.SEARCH));
 		wordMeaningTextField.addFocusListener(propertyChangeHandler);
 		return wordMeaningTextField;
 	}
