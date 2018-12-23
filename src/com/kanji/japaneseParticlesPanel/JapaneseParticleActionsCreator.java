@@ -1,16 +1,21 @@
 package com.kanji.japaneseParticlesPanel;
 
+import com.guimaker.enums.InputGoal;
 import com.guimaker.enums.ListElementModificationType;
+import com.guimaker.list.myList.ListPropertyChangeHandler;
+import com.guimaker.model.CommonListElements;
 import com.guimaker.utilities.ThreadUtilities;
 import com.kanji.constants.enums.JapaneseParticle;
+import com.kanji.constants.enums.TypeOfJapaneseWriting;
+import com.kanji.constants.strings.Labels;
+import com.kanji.list.listElementPropertyManagers.AdditionalInformationChecker;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.WordParticlesData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
+import com.kanji.utilities.JapaneseWritingUtilities;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -25,16 +30,14 @@ public class JapaneseParticleActionsCreator {
 
 	public JTextComponent saveAdditionalInformationOnFocusLost(
 			JTextComponent additionalInformationInput,
-			WordParticlesData wordParticlesData) {
-		additionalInformationInput.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				super.focusLost(e);
-				JTextComponent input = (JTextComponent) e.getSource();
-				wordParticlesData.setAdditionalInformation(input.getText());
-				applicationController.save();
-			}
-		});
+			WordParticlesData wordParticlesData,
+			CommonListElements<WordParticlesData> commonListElements) {
+		additionalInformationInput.addFocusListener(
+				new ListPropertyChangeHandler<>(wordParticlesData,
+						commonListElements.getList(),
+						applicationController.getApplicationWindow(),
+						new AdditionalInformationChecker(), InputGoal.EDIT,
+						Labels.ADDITIONAL_INFORMATION_GENERAL_TAG, false));
 		return additionalInformationInput;
 	}
 

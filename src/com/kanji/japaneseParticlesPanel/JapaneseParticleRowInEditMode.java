@@ -26,7 +26,8 @@ public class JapaneseParticleRowInEditMode
 
 	@Override
 	public JComponent[] createRowElements(WordParticlesData wordParticlesData,
-			JapaneseWord japaneseWord, CommonListElements commonListElements) {
+			JapaneseWord japaneseWord, CommonListElements<WordParticlesData>
+			commonListElements) {
 		actionsCreator.removeParticleWhenRowDeleted(wordParticlesData,
 				japaneseWord, commonListElements.getButtonDelete());
 		japaneseWord.addParticleData(wordParticlesData);
@@ -36,7 +37,7 @@ public class JapaneseParticleRowInEditMode
 				japaneseWord, wordParticlesData);
 		JTextComponent input = actionsCreator.saveAdditionalInformationOnFocusLost(
 				elementsCreator.createAdditionalInformationInput(
-						wordParticlesData), wordParticlesData);
+						wordParticlesData), wordParticlesData, commonListElements);
 		List<JComponent> components = new ArrayList<>();
 		components.add(particleCombobox);
 		components.add(input);

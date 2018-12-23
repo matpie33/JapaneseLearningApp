@@ -18,7 +18,8 @@ public class JapaneseParticleRowInViewMode
 
 	@Override
 	public JComponent[] createRowElements(WordParticlesData wordParticlesData,
-			JapaneseWord japaneseWord, CommonListElements commonListElements) {
+			JapaneseWord japaneseWord, CommonListElements<WordParticlesData>
+			commonListElements) {
 		JLabel particleLabel = elementsCreator.createLabel(
 				wordParticlesData.getJapaneseParticle()
 								 .getDisplayedValue());

@@ -46,7 +46,7 @@ public class RowInParticlesInformation
 	@Override
 	public ListRowData<WordParticlesData> createListRow(
 			WordParticlesData wordParticlesData,
-			CommonListElements commonListElements, InputGoal inputGoal) {
+			CommonListElements<WordParticlesData> commonListElements, InputGoal inputGoal) {
 
 		MainPanel panel = new MainPanel();
 		panel.addRow(SimpleRowBuilder.createRow(FillType.NONE,

@@ -8,5 +8,6 @@ import javax.swing.*;
 
 public interface JapaneseParticleRowCreatingService {
 	public JComponent[] createRowElements(WordParticlesData wordParticlesData,
-			JapaneseWord japaneseWord, CommonListElements commonListElements);
+			JapaneseWord japaneseWord, CommonListElements<WordParticlesData>
+			commonListElements);
 }
