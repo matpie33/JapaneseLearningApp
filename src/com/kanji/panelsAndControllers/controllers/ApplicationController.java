@@ -77,6 +77,7 @@ public class ApplicationController
 		applicationWindow = new ApplicationWindow(this,
 				startingController.getStartingPanel(),
 				createApplicationConfiguration());
+		applicationWindow.setIconName("icon.png");
 	}
 
 	private ApplicationConfiguration createApplicationConfiguration() {
