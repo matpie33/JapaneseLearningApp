@@ -103,7 +103,8 @@ public class JapaneseWordPanelCreator
 		if (wordContainingInput != null) {
 			for (Pair<JapaneseWord, MyList<JapaneseWriting>> wordWithWritings : writingsLists) {
 				if (wordWithWritings.getLeft()
-									.equals(wordContainingInput)) {
+									.equals(wordContainingInput) &&
+						wordWithWritings.getRight().getPanel().isShowing()) {
 					writingsListToAddWriting = wordWithWritings.getRight();
 					break;
 				}
