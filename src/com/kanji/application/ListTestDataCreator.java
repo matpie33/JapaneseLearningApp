@@ -3,10 +3,12 @@ package com.kanji.application;
 import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.list.myList.ListConfiguration;
 import com.guimaker.list.myList.MyList;
+import com.guimaker.model.WordDictionaryData;
 import com.kanji.constants.enums.JapaneseParticle;
 import com.kanji.constants.enums.PartOfSpeech;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Titles;
+import com.kanji.constants.strings.Urls;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listElements.RepeatingData;
@@ -17,6 +19,7 @@ import com.kanji.list.listRows.RowInRepeatingList;
 import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 
+import javax.swing.*;
 import java.time.LocalDateTime;
 
 public class ListTestDataCreator {
@@ -152,7 +155,11 @@ public class ListTestDataCreator {
 						JapaneseWord.getInitializer(),
 						Titles.JAPANESE_WORDS_LIST,
 						applicationController.getApplicationWindow(),
-						applicationController));
+						applicationController).dictionaryData(
+						new WordDictionaryData(applicationController
+								.getStartingPanel()
+								.getJapaneseWordsListsSplitPane(),
+								Urls.TANGORIN_SEARCH_PATTERN)));
 		japaneseWordPanelCreator.setWordsList(japaneseWords);
 		return japaneseWords;
 	}

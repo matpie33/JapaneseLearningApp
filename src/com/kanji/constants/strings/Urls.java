@@ -6,5 +6,7 @@ public class Urls {
 	public static final String KANJI_KOOHI_MAIN_PAGE = "https://kanji.koohii.com/study";
 	public static final String KANJI_KOOHI_REVIEW_BASE_PAGE = "https://kanji.koohii.com/study/kanji/";
 	public static final String TANGORIN_URL = "http://www.tangorin.com";
+	public static final String TANGORIN_SEARCH_PATTERN =
+			"http://www.tangorin.com/words?search=%s";
 
 }

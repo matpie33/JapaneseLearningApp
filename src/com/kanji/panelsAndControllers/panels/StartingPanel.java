@@ -4,6 +4,7 @@ import com.guimaker.application.DialogWindow;
 import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
+import com.guimaker.enums.KeyModifiers;
 import com.guimaker.list.myList.MyList;
 import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComponentOptions;
@@ -11,7 +12,6 @@ import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.guimaker.enums.KeyModifiers;
 import com.kanji.constants.enums.SplitPaneOrientation;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.HotkeysDescriptions;
@@ -53,13 +53,17 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		tabbedPane = new JTabbedPane();
 		this.startingController = startingController;
 		this.applicationController = applicationController;
+		japaneseWordsListsSplitPane = CommonGuiElementsCreator.createSplitPane(
+				SplitPaneOrientation.HORIZONTAL, null, null, 0.8);
+		kanjiListsSplitPane = CommonGuiElementsCreator.createSplitPane(
+				SplitPaneOrientation.HORIZONTAL, null, null, 0.8);
 	}
 
-	private JSplitPane createWordsAndRepeatingDataListSplitPane(
-			MyList wordsList, MyList<RepeatingData> repeatingList) {
-		return CommonGuiElementsCreator.createSplitPane(
-				SplitPaneOrientation.HORIZONTAL, wordsList.getPanel(),
-				repeatingList.getPanel(), 0.8);
+
+	private void createWordsAndRepeatingDataListSplitPane(MyList wordsList,
+			MyList<RepeatingData> repeatingList, JSplitPane splitPane) {
+		splitPane.setLeftComponent(wordsList.getPanel());
+		splitPane.setRightComponent(repeatingList.getPanel());
 	}
 
 	@Override
@@ -95,12 +99,15 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private void createTabPane() {
-		japaneseWordsListsSplitPane = createWordsAndRepeatingDataListSplitPane(
+
+		createWordsAndRepeatingDataListSplitPane(
 				applicationController.getJapaneseWords(),
-				applicationController.getJapaneseWordsRepeatingDates());
-		kanjiListsSplitPane = createWordsAndRepeatingDataListSplitPane(
+				applicationController.getJapaneseWordsRepeatingDates(),
+				japaneseWordsListsSplitPane);
+		createWordsAndRepeatingDataListSplitPane(
 				applicationController.getKanjiList(),
-				applicationController.getKanjiRepeatingDates());
+				applicationController.getKanjiRepeatingDates(),
+				kanjiListsSplitPane);
 		tabTitleToWordTypeMap.put(KANJI_TAB_TITLE,
 				TypeOfWordForRepeating.KANJIS);
 		tabTitleToWordTypeMap.put(JAPANESE_TAB_TITLE,

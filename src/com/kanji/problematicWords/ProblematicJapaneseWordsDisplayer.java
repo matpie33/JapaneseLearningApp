@@ -167,7 +167,8 @@ public class ProblematicJapaneseWordsDisplayer
 
 	private String createUrlForWordInJapaneseEnglishDictionary(
 			String currentlySelectedWord) {
-		return Urls.TANGORIN_URL + "/words?search=" + currentlySelectedWord;
+		return String.format(Urls.TANGORIN_SEARCH_PATTERN,
+				currentlySelectedWord);
 	}
 
 	@Override
