@@ -67,7 +67,7 @@ public class JapaneseWordPanel {
 		JComboBox<String> partOfSpeechCombobox = elementsCreator.createComboboxForPartOfSpeech(
 				japaneseWord.getPartOfSpeech(), additionalInformationLabel,
 				additionalInformationCombobox, japaneseWord);
-		boolean inheritScrollbar = !commonListElements.isForSingleRowOnly();
+		boolean inheritScrollbar = !inputGoal.equals(InputGoal.ADD);
 		MyList writingsList = createJapaneseWritingsList(japaneseWord,
 				displayMode, inheritScrollbar, panelCreatingService, inputGoal,
 				commonListElements);
