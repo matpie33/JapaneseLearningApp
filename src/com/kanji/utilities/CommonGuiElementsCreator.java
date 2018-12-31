@@ -2,12 +2,14 @@ package com.kanji.utilities;
 
 import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.options.ComponentOptions;
-import com.guimaker.options.TextAreaOptions;
 import com.guimaker.options.TextComponentOptions;
 import com.guimaker.panels.GuiElementsCreator;
 import com.kanji.constants.enums.SplitPaneOrientation;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 
@@ -40,7 +42,36 @@ public class CommonGuiElementsCreator {
 		splitPane.setRightComponent(rightOrDownComponent);
 		splitPane.setResizeWeight(splittingWeight);
 		splitPane.setBorder(null);
+		splitPane.setUI(createSplitPaneDivider(splitPaneOrientation));
+		splitPane.setBorder(null);
 		return splitPane;
+	}
+
+	private static BasicSplitPaneUI createSplitPaneDivider(
+			SplitPaneOrientation splitPaneOrientation) {
+		return new BasicSplitPaneUI() {
+			public BasicSplitPaneDivider createDefaultDivider() {
+				return new BasicSplitPaneDivider(this) {
+					public void setBorder(Border b) {
+						int hor = splitPaneOrientation.equals(
+								SplitPaneOrientation.HORIZONTAL) ? 1 : 0;
+						int ver = splitPaneOrientation.equals(
+								SplitPaneOrientation.VERTICAL) ? 1 : 0;
+						super.setBorder(
+								BorderFactory.createMatteBorder(ver, hor, ver,
+										hor,
+										Color.BLACK));
+					}
+
+					@Override
+					public void paint(Graphics g) {
+						g.setColor(Color.LIGHT_GRAY);
+						g.fillRect(0, 0, getSize().width, getSize().height);
+						super.paint(g);
+					}
+				};
+			}
+		};
 	}
 
 }
