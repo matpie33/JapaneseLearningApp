@@ -19,7 +19,6 @@ import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 import com.kanji.list.listElements.RepeatingData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.StartingController;
-import com.kanji.utilities.CommonGuiElementsCreator;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -50,7 +49,8 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 
 	public StartingPanel(StartingController startingController,
 			ApplicationController applicationController) {
-		tabbedPane = new JTabbedPane();
+		tabbedPane = GuiElementsCreator.createTabbedPane();
+
 		this.startingController = startingController;
 		this.applicationController = applicationController;
 		japaneseWordsListsSplitPane = GuiElementsCreator.createSplitPane(
@@ -58,7 +58,6 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiListsSplitPane = GuiElementsCreator.createSplitPane(
 				SplitPaneOrientation.HORIZONTAL, null, null, 0.8);
 	}
-
 
 	private void createWordsAndRepeatingDataListSplitPane(MyList wordsList,
 			MyList<RepeatingData> repeatingList, JSplitPane splitPane) {
