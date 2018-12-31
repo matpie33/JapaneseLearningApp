@@ -130,7 +130,8 @@ public class JapanesePanelElementsCreator {
 	public JTextComponent createWritingsInput(String initialValue,
 			TypeOfJapaneseWriting typeOfJapaneseWriting, boolean editable,
 			boolean selectable) {
-		return actionsCreator.repaintParentOnFocusLost(
+
+		JTextComponent input = actionsCreator.repaintParentOnFocusLost(
 				actionsCreator.withSwitchToJapaneseActionOnClick(
 						GuiElementsCreator.createTextField(
 								new TextComponentOptions().text(initialValue)
@@ -145,6 +146,14 @@ public class JapanesePanelElementsCreator {
 														  .promptWhenEmpty(
 																  JapaneseWritingUtilities.getDefaultValueForWriting(
 																		  typeOfJapaneseWriting)))));
+		if (!editable) {
+			int padding = 7;
+			input.setBorder(
+					BorderFactory.createEmptyBorder(padding, padding, padding,
+							padding));
+
+		}
+		return input;
 	}
 
 	private AbstractButton createButton(String buttonLabel,
