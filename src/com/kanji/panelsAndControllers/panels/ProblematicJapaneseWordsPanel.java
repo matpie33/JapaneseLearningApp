@@ -1,10 +1,7 @@
 package com.kanji.panelsAndControllers.panels;
 
 import com.guimaker.application.ApplicationWindow;
-import com.guimaker.enums.Anchor;
-import com.guimaker.enums.ButtonType;
-import com.guimaker.enums.FillType;
-import com.guimaker.enums.PanelDisplayMode;
+import com.guimaker.enums.*;
 import com.guimaker.list.myList.ListConfiguration;
 import com.guimaker.list.myList.MyList;
 import com.guimaker.model.PanelConfiguration;
@@ -18,10 +15,8 @@ import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.guimaker.enums.KeyModifiers;
 import com.guimaker.webPanel.ContextOwner;
 import com.guimaker.webPanel.WebPagePanel;
-import com.kanji.constants.enums.SplitPaneOrientation;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
 import com.kanji.constants.strings.Prompts;
@@ -33,7 +28,6 @@ import com.kanji.model.KanjiData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.problematicWords.ProblematicJapaneseWordsDisplayer;
-import com.kanji.utilities.CommonGuiElementsCreator;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -164,19 +158,19 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 				new ScrollPaneOptions().componentToWrap(
 						kanjiInformationPanel.getPanel()));
 
-		JSplitPane wordsListAndKanjiInformationSplitPane = CommonGuiElementsCreator.createSplitPane(
+		JSplitPane wordsListAndKanjiInformationSplitPane = GuiElementsCreator.createSplitPane(
 				SplitPaneOrientation.VERTICAL, scrollPaneForKanjiInformation,
 				problematicWordsList.getPanel(), 0.2);
-		JSplitPane dictionariesSplitPane = CommonGuiElementsCreator.createSplitPane(
+		JSplitPane dictionariesSplitPane = GuiElementsCreator.createSplitPane(
 				SplitPaneOrientation.VERTICAL,
 				japaneseEnglishDictionaryPanel.getSwitchingPanel(),
 				englishPolishDictionaryPanel.getSwitchingPanel(), 0.5);
 
-		JSplitPane dictionariesWithProblematicWordsSplitPane = CommonGuiElementsCreator.createSplitPane(
+		JSplitPane dictionariesWithProblematicWordsSplitPane = GuiElementsCreator.createSplitPane(
 				SplitPaneOrientation.HORIZONTAL, dictionariesSplitPane,
 				wordsListAndKanjiInformationSplitPane, 0.3);
 
-		JSplitPane splitPane = CommonGuiElementsCreator.createSplitPane(
+		JSplitPane splitPane = GuiElementsCreator.createSplitPane(
 				SplitPaneOrientation.HORIZONTAL,
 				dictionariesWithProblematicWordsSplitPane,
 				kanjiKoohiWebPanel.getSwitchingPanel(), 0.7);
@@ -199,8 +193,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 											  .showButtonsLoadNextPreviousWords(
 													  false)
 											  .withAdditionalNavigationButtons(
-													  createButtonSearchWord
-															  ()));
+													  createButtonSearchWord()));
 
 		japanesePanelCreator.setWordsList(problematicWordsList);
 		problematicWordsList.addListObserver(applicationController);

@@ -1,10 +1,7 @@
 package com.kanji.panelsAndControllers.panels;
 
 import com.guimaker.application.ApplicationWindow;
-import com.guimaker.enums.Anchor;
-import com.guimaker.enums.FillType;
-import com.guimaker.enums.PanelDisplayMode;
-import com.guimaker.enums.TextAlignment;
+import com.guimaker.enums.*;
 import com.guimaker.list.myList.ListConfiguration;
 import com.guimaker.list.myList.MyList;
 import com.guimaker.options.TextPaneOptions;
@@ -15,7 +12,6 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.webPanel.ContextOwner;
 import com.guimaker.webPanel.WebPagePanel;
-import com.kanji.constants.enums.SplitPaneOrientation;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Titles;
 import com.kanji.list.listElements.Kanji;
@@ -95,12 +91,12 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 				englishPolishDictionaryWebPanel.getWebPanel(),
 				kanjiKoohiWebPanel.getWebPanel());
 
-		JSplitPane wordsAndDictionaryPane = CommonGuiElementsCreator.createSplitPane(
+		JSplitPane wordsAndDictionaryPane = GuiElementsCreator.createSplitPane(
 				SplitPaneOrientation.VERTICAL,
 				englishPolishDictionaryWebPanel.getSwitchingPanel(),
 				wordsToReviewList.getPanel(), 0.7);
 
-		JSplitPane splitPane = CommonGuiElementsCreator.createSplitPane(
+		JSplitPane splitPane = GuiElementsCreator.createSplitPane(
 				SplitPaneOrientation.HORIZONTAL, wordsAndDictionaryPane,
 				kanjiKoohiWebPanel.getSwitchingPanel(), 0.2);
 

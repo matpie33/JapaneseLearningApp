@@ -5,6 +5,7 @@ import com.guimaker.colors.BasicColors;
 import com.guimaker.enums.ButtonType;
 import com.guimaker.enums.FillType;
 import com.guimaker.enums.KeyModifiers;
+import com.guimaker.enums.SplitPaneOrientation;
 import com.guimaker.list.myList.MyList;
 import com.guimaker.options.ButtonOptions;
 import com.guimaker.options.ComponentOptions;
@@ -12,7 +13,6 @@ import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
 import com.guimaker.panels.GuiElementsCreator;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
-import com.kanji.constants.enums.SplitPaneOrientation;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.HotkeysDescriptions;
 import com.kanji.constants.strings.JapaneseApplicationButtonsNames;
@@ -53,9 +53,9 @@ public class StartingPanel extends AbstractPanelWithHotkeysInfo {
 		tabbedPane = new JTabbedPane();
 		this.startingController = startingController;
 		this.applicationController = applicationController;
-		japaneseWordsListsSplitPane = CommonGuiElementsCreator.createSplitPane(
+		japaneseWordsListsSplitPane = GuiElementsCreator.createSplitPane(
 				SplitPaneOrientation.HORIZONTAL, null, null, 0.8);
-		kanjiListsSplitPane = CommonGuiElementsCreator.createSplitPane(
+		kanjiListsSplitPane = GuiElementsCreator.createSplitPane(
 				SplitPaneOrientation.HORIZONTAL, null, null, 0.8);
 	}
 
