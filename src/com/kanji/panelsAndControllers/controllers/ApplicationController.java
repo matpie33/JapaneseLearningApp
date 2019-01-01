@@ -12,6 +12,7 @@ import com.guimaker.enums.WordSearchOptions;
 import com.guimaker.list.ListElement;
 import com.guimaker.list.ListObserver;
 import com.guimaker.list.myList.MyList;
+import com.guimaker.model.ListColors;
 import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
 import com.guimaker.utilities.SetOfRanges;
 import com.kanji.application.ApplicationStateController;
@@ -86,10 +87,15 @@ public class ApplicationController
 		return new ApplicationConfiguration(
 				Titles.APPLICATION).setInsertWordPanelPositioner(
 				customPositioner)
-								   .setListRowEditTemporarilyColor(
-										   Colors.LIST_ROW_EDIT_TEMPORARILY_COLOR)
-								   .setListRowHighlightColor(
-										   Colors.LIST_ROW_HIGHLIGHT_COLOR)
+								   .setListColors(
+										   new ListColors().backgroundColor(
+												   Colors.LIST_BACKGROUND_COLOR)
+														   .editRowColor(
+																   Colors.EDIT_ROW_COLOR)
+														   .filterPanelColor(
+																   Colors.FILTER_PANEL_COLOR)
+														   .selectedRowColor(
+																   Colors.LIST_SELECTED_ROW_COLOR))
 								   .setContentPanelColor(
 										   Colors.CONTENT_PANEL_COLOR)
 								   .setPanelBackgroundColor(
