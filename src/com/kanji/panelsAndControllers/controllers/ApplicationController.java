@@ -564,6 +564,12 @@ public class ApplicationController
 
 	}
 
+	public String getKanjiKeywordById(int id) {
+		Kanji kanji = getKanjiList().findRowBasedOnPropertyStartingFromBeginningOfList(
+				new KanjiIdChecker(), id, MoveDirection.BELOW, false);
+		return kanji == null ? "" : kanji.getKeyword();
+	}
+
 	public Set<Kanji> getProblematicKanjis() {
 		return applicationStateController.getController(Kanji.MEANINGFUL_NAME)
 										 .getProblematicWords();

@@ -4,6 +4,7 @@ import com.guimaker.application.ApplicationWindow;
 import com.guimaker.enums.*;
 import com.guimaker.list.myList.ListConfiguration;
 import com.guimaker.list.myList.MyList;
+import com.guimaker.model.HotkeyWrapper;
 import com.guimaker.model.PanelConfiguration;
 import com.guimaker.model.WebContext;
 import com.guimaker.options.ButtonOptions;
@@ -28,6 +29,8 @@ import com.kanji.model.KanjiData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.problematicWords.ProblematicJapaneseWordsDisplayer;
+import com.kanji.utilities.KanjiCharactersReader;
+import com.kanji.webPageEnhancer.WebPageActions;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -48,6 +51,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	private FocusableComponentsManager focusableComponentsManager;
 	private ProblematicWordsController<JapaneseWord> problematicWordsController;
 	private ApplicationController applicationController;
+	private WebPageActions webPageActions;
 
 	public ProblematicJapaneseWordsPanel(
 			ApplicationController applicationController,
@@ -64,9 +68,19 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 				applicationController.getApplicationWindow());
 		japaneseEnglishDictionaryPanel = new WebPagePanel(this, null,
 				applicationController.getApplicationWindow());
+		createKanjiKoohiWebPanel(applicationController);
+		createProblematicWordsList();
+	}
+
+	private void createKanjiKoohiWebPanel(
+			ApplicationController applicationController) {
 		kanjiKoohiWebPanel = new WebPagePanel(this, null,
 				applicationController.getApplicationWindow());
-		createProblematicWordsList();
+		webPageActions = new WebPageActions(kanjiKoohiWebPanel,
+				applicationController);
+		kanjiKoohiWebPanel.addHotkey(
+				new HotkeyWrapper(KeyModifiers.ALT, KeyEvent.VK_Q),
+				webPageActions.createActionFindKanjiPolishKeyword());
 	}
 
 	public FocusableComponentsManager getFocusableComponentsManager() {

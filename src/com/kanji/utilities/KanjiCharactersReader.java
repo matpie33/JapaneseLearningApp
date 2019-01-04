@@ -14,7 +14,6 @@ public class KanjiCharactersReader {
 
 	private KanjiCharactersReader() {
 		words = new ArrayList<>();
-
 	}
 
 	public static KanjiCharactersReader getInstance() {
