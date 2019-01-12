@@ -129,7 +129,7 @@ public class ProblematicJapaneseWordsDisplayer
 	@Override
 	public void initializeWebPages() {
 		problematicJapaneseWordsPanel.getJapaneseEnglishDictionaryPanel()
-									 .showPage(Urls.TANGORIN_URL);
+									 .showPage(Urls.JISHO_URL);
 		problematicJapaneseWordsPanel.getEnglishPolishDictionaryPanel()
 									 .showPage(Urls.DICTIONARY_PL_EN_MAIN_PAGE);
 		problematicJapaneseWordsPanel.getKanjiKoohiWebPanel()
@@ -167,7 +167,7 @@ public class ProblematicJapaneseWordsDisplayer
 
 	private String createUrlForWordInJapaneseEnglishDictionary(
 			String currentlySelectedWord) {
-		return String.format(Urls.TANGORIN_SEARCH_PATTERN,
+		return String.format(Urls.JISHO_SEARCH_PATTERN,
 				currentlySelectedWord);
 	}
 

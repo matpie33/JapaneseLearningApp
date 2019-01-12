@@ -159,7 +159,7 @@ public class ListTestDataCreator {
 						new WordDictionaryData(applicationController
 								.getStartingPanel()
 								.getJapaneseWordsListsSplitPane(),
-								Urls.TANGORIN_SEARCH_PATTERN)));
+								Urls.JISHO_SEARCH_PATTERN)));
 		japaneseWordPanelCreator.setWordsList(japaneseWords);
 		return japaneseWords;
 	}
