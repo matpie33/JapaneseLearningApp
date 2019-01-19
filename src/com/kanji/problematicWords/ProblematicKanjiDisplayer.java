@@ -11,6 +11,7 @@ import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.panelsAndControllers.panels.ProblematicKanjiPanel;
 import com.kanji.utilities.KanjiCharactersReader;
+import com.kanji.webPageEnhancer.WebPageCallExecutor;
 import com.kanji.webPanel.KanjiKoohiWebPageHandler;
 
 import java.io.IOException;
@@ -24,6 +25,7 @@ public class ProblematicKanjiDisplayer
 	private MyList<Kanji> wordsToReviewList;
 	private KanjiKoohiWebPageHandler kanjiKoohiWebPageHandler;
 	private ProblematicWordsController<Kanji> problematicWordsController;
+	private WebPageCallExecutor webPageCallExecutor;
 
 	public ProblematicKanjiDisplayer(
 			ApplicationController applicationController) {
@@ -39,6 +41,8 @@ public class ProblematicKanjiDisplayer
 		kanjiCharactersReader.loadKanjisIfNeeded();
 		wordsToReviewList = problematicKanjiPanel.getWordsToReviewList();
 		kanjiKoohiWebPageHandler = KanjiKoohiWebPageHandler.getInstance();
+		webPageCallExecutor = new WebPageCallExecutor(problematicKanjiPanel
+				.getKanjiKoohiWebPanel());
 	}
 
 	public ProblematicWordsController<Kanji> getProblematicWordsController() {
@@ -54,8 +58,7 @@ public class ProblematicKanjiDisplayer
 	public void browseWord(Kanji kanji) {
 		String uriText = Urls.KANJI_KOOHI_REVIEW_BASE_PAGE;
 		uriText += kanji.getId();
-		problematicKanjiPanel.getKanjiKoohiWebPanel()
-							 .showPageWithoutGrabbingFocus(uriText);
+		webPageCallExecutor.openUrl(uriText);
 		kanjiContext = new KanjiContext(
 				kanjiCharactersReader.getKanjiById(kanji.getId()),
 				kanji.getId());
