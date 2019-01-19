@@ -51,7 +51,6 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	private FocusableComponentsManager focusableComponentsManager;
 	private ProblematicWordsController<JapaneseWord> problematicWordsController;
 	private ApplicationController applicationController;
-	private WebPageActions webPageActions;
 
 	public ProblematicJapaneseWordsPanel(
 			ApplicationController applicationController,
@@ -76,7 +75,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 			ApplicationController applicationController) {
 		kanjiKoohiWebPanel = new WebPagePanel(this, null,
 				applicationController.getApplicationWindow());
-		webPageActions = new WebPageActions(kanjiKoohiWebPanel,
+		WebPageActions webPageActions = new WebPageActions(kanjiKoohiWebPanel,
 				applicationController);
 		kanjiKoohiWebPanel.addHotkey(
 				new HotkeyWrapper(KeyModifiers.ALT, KeyEvent.VK_Q),

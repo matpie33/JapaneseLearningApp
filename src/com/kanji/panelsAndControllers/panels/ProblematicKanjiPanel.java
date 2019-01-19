@@ -4,6 +4,7 @@ import com.guimaker.application.ApplicationWindow;
 import com.guimaker.enums.*;
 import com.guimaker.list.myList.ListConfiguration;
 import com.guimaker.list.myList.MyList;
+import com.guimaker.model.HotkeyWrapper;
 import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panelSwitching.FocusableComponentsManager;
 import com.guimaker.panels.AbstractPanelWithHotkeysInfo;
@@ -18,12 +19,13 @@ import com.kanji.list.listElements.Kanji;
 import com.kanji.list.listRows.RowInKanjiInformations;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
-import com.kanji.utilities.CommonGuiElementsCreator;
+import com.kanji.webPageEnhancer.WebPageActions;
 import com.kanji.webPanel.ConnectionFailKanjiOfflinePage;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
@@ -33,6 +35,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	private MyList<Kanji> wordsToReviewList;
 	private FocusableComponentsManager focusableComponentsManager;
 	private ProblematicWordsController<Kanji> controller;
+	private WebPageActions webPageActions;
 
 	public ProblematicKanjiPanel(ApplicationController applicationController,
 			ProblematicWordsController<Kanji> controller,
@@ -42,10 +45,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		this.controller = controller;
 		englishPolishDictionaryWebPanel = new WebPagePanel(kanjiContextOwner,
 				null, applicationController.getApplicationWindow());
-		kanjiKoohiWebPanel = new WebPagePanel(kanjiContextOwner,
-				new ConnectionFailKanjiOfflinePage(
-						ApplicationWindow.getKanjiFont()),
-				applicationController.getApplicationWindow());
+		createKanjiKoohiPanel(applicationController, kanjiContextOwner);
 
 		RowInKanjiInformations rowInKanjiInformations = new RowInKanjiInformations(
 				applicationController, PanelDisplayMode.VIEW);
@@ -57,6 +57,20 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 						applicationController).showButtonsLoadNextPreviousWords(
 						false));
 
+	}
+
+	private void createKanjiKoohiPanel(
+			ApplicationController applicationController,
+			ContextOwner kanjiContextOwner) {
+		kanjiKoohiWebPanel = new WebPagePanel(kanjiContextOwner,
+				new ConnectionFailKanjiOfflinePage(
+						ApplicationWindow.getKanjiFont()),
+				applicationController.getApplicationWindow());
+		webPageActions = new WebPageActions(kanjiKoohiWebPanel,
+				applicationController);
+		kanjiKoohiWebPanel.addHotkey(
+				new HotkeyWrapper(KeyModifiers.ALT, KeyEvent.VK_Q),
+				webPageActions.createActionFindKanjiPolishKeyword());
 	}
 
 	public WebPagePanel getEnglishPolishDictionaryWebPanel() {
