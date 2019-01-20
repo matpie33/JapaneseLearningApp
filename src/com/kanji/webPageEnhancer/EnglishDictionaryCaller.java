@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.kanji.constants.enums.EnglishTranslationDirection;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,14 +23,15 @@ public class EnglishDictionaryCaller {
 	private static final String ROOT_NODE = "tuc";
 	private static final String MEANING_ROOT_NODE = "phrase";
 	private static final String MEANING_CHILD_NODE = "text";
+	private static final String POLISH_LANGUAGE = "pol";
+	private static final String ENGLISH_LANGUAGE = "eng";
 
-	public List<String> callEnglishDictionary(String wordToCheck,
-			EnglishTranslationDirection englishTranslationDirection)
+	//called from javascript
+	public String callDictionaryForEnglishWord(String wordToCheck)
 			throws IOException {
 		URLConnection request = makeApiCallToDictionary(wordToCheck,
-				englishTranslationDirection);
-		List<String> meanings = getWordMeaningsFromJSON(request);
-		return meanings;
+				ENGLISH_LANGUAGE, POLISH_LANGUAGE);
+		return getWordMeaningsFromJSON(request).toString();
 	}
 
 	private List<String> getWordMeaningsFromJSON(URLConnection request)
@@ -57,12 +57,9 @@ public class EnglishDictionaryCaller {
 	}
 
 	private URLConnection makeApiCallToDictionary(String wordToCheck,
-			EnglishTranslationDirection englishTranslationDirection)
-			throws IOException {
-		URL url = new URL(String.format(DICTIONARY_API_TEMPLATE,
-				englishTranslationDirection.getSourceLanguageAbbreviation(),
-				englishTranslationDirection.getDestionationLanguageAbbreviation(),
-				wordToCheck));
+			String sourceLanguage, String targetLanguage) throws IOException {
+		URL url = new URL(String.format(DICTIONARY_API_TEMPLATE, sourceLanguage,
+				targetLanguage, wordToCheck));
 		URLConnection request = url.openConnection();
 		request.connect();
 		return request;

@@ -1,5 +1,10 @@
 
-function createTooltipDiv (polishKeyword){
+function createTooltipDiv (text){
+
+    var selection = window.getSelection();
+    var range = selection.getRangeAt(0);
+    var rect = range.getBoundingClientRect();
+
     var div = document.createElement('div');
     div.style.border = '2px solid black';
     div.style.position = 'fixed';
@@ -8,14 +13,20 @@ function createTooltipDiv (polishKeyword){
     div.style.background = 'white';
     div.style.wordBreak='break-word';
     div.style.padding = '0px 4px';
-    if (!polishKeyword || 0 === polishKeyword.length){
+    if (!text || 0 === text.length){
         div.innerHTML = 'Brak informacji';
     }
     else{
-        div.innerHTML = polishKeyword;
+        div.innerHTML = text;
+    }
+    div.style.left = rect.left + 'px';
+
+    document.body.appendChild(div);
+    var body = document.getElementsByTagName("BODY")[0];
+    body.onmousemove = function () {
+        div.style.display = 'none';
     }
 
-    div.style.left = rect.left + 'px';
     return div;
 }
 

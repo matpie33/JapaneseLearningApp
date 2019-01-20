@@ -29,7 +29,6 @@ import com.kanji.model.KanjiData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.panelsAndControllers.controllers.ProblematicWordsController;
 import com.kanji.problematicWords.ProblematicJapaneseWordsDisplayer;
-import com.kanji.utilities.KanjiCharactersReader;
 import com.kanji.webPageEnhancer.WebPageActions;
 
 import javax.swing.*;
@@ -65,10 +64,20 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 				new PanelConfiguration().putRowsAsHighestAsPossible());
 		englishPolishDictionaryPanel = new WebPagePanel(this, null,
 				applicationController.getApplicationWindow());
-		japaneseEnglishDictionaryPanel = new WebPagePanel(this, null,
-				applicationController.getApplicationWindow());
+		createJapaneseEnglishDictionary(applicationController);
 		createKanjiKoohiWebPanel(applicationController);
 		createProblematicWordsList();
+	}
+
+	private void createJapaneseEnglishDictionary(
+			ApplicationController applicationController) {
+		japaneseEnglishDictionaryPanel = new WebPagePanel(this, null,
+				applicationController.getApplicationWindow());
+		WebPageActions webPageActions = new WebPageActions(japaneseEnglishDictionaryPanel,
+				applicationController);
+		japaneseEnglishDictionaryPanel.addHotkey(new HotkeyWrapper(KeyModifiers.ALT,
+						KeyEvent.VK_R),
+				webPageActions.createActionCallEnglishDictionary());
 	}
 
 	private void createKanjiKoohiWebPanel(
@@ -80,6 +89,9 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		kanjiKoohiWebPanel.addHotkey(
 				new HotkeyWrapper(KeyModifiers.ALT, KeyEvent.VK_Q),
 				webPageActions.createActionFindKanjiPolishKeyword());
+		kanjiKoohiWebPanel.addHotkey(
+				new HotkeyWrapper(KeyModifiers.ALT, KeyEvent.VK_T),
+				webPageActions.createActionCallEnglishDictionary());
 	}
 
 	public FocusableComponentsManager getFocusableComponentsManager() {

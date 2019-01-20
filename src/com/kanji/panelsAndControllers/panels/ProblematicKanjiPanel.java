@@ -71,6 +71,9 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 		kanjiKoohiWebPanel.addHotkey(
 				new HotkeyWrapper(KeyModifiers.ALT, KeyEvent.VK_Q),
 				webPageActions.createActionFindKanjiPolishKeyword());
+		kanjiKoohiWebPanel.addHotkey(new HotkeyWrapper(KeyModifiers.ALT,
+						KeyEvent.VK_R),
+				webPageActions.createActionCallEnglishDictionary());
 	}
 
 	public WebPagePanel getEnglishPolishDictionaryWebPanel() {
