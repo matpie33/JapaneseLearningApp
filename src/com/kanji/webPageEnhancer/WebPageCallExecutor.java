@@ -7,6 +7,8 @@ import java.util.TimerTask;
 
 public class WebPageCallExecutor {
 
+	//TODO move it to gui maker and use always in web page panels
+
 	private String lastUrlRequested = "";
 	private final int sleepTimeMilliseconds = 1000;
 	private boolean isSleeping;
