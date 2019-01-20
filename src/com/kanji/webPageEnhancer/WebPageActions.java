@@ -11,8 +11,10 @@ import java.util.Scanner;
 public class WebPageActions {
 
 	private WebPagePanel webPagePanel;
-	private final static String JAVASCRIPT_FILENAME =
-			"findKanjiPolishKeyword.js";
+	private final static String FIND_KANJI_KEYWORD_JS = "findKanjiPolishKeyword.js";
+	private final static String CREATE_TOOLTIP_JS = "createTooltip.js";
+	private final static String GET_KANJI_KEYWORDS = "kanjiKeywords.js";
+	private final static String JAVASCRIPT_ROOT_DIRECTORY = "js/";
 	private ApplicationController applicationController;
 
 	public WebPageActions(WebPagePanel webPagePanel,
@@ -25,13 +27,23 @@ public class WebPageActions {
 		return new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InputStream resourceAsStream = getClass().getClassLoader()
-														 .getResourceAsStream(
-																 JAVASCRIPT_FILENAME);
+				String getKanjiKeywords = getJavascriptFromFile(
+						GET_KANJI_KEYWORDS);
+				String findKanjiJavascript = getJavascriptFromFile(
+						FIND_KANJI_KEYWORD_JS);
+				String createTooltip = getJavascriptFromFile(CREATE_TOOLTIP_JS);
 				webPagePanel.addJavaObjectReferenceForJavascript(
 						applicationController);
 				webPagePanel.executeJavascript(
-						convertStreamToString(resourceAsStream));
+						getKanjiKeywords + findKanjiJavascript + createTooltip);
+			}
+
+			private String getJavascriptFromFile(String filename) {
+				InputStream resourceAsStream = getClass().getClassLoader()
+														 .getResourceAsStream(
+																 JAVASCRIPT_ROOT_DIRECTORY
+																		 + filename);
+				return convertStreamToString(resourceAsStream);
 			}
 		};
 	}
