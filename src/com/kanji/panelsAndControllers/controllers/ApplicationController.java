@@ -54,6 +54,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class ApplicationController
@@ -414,12 +415,15 @@ public class ApplicationController
 	}
 
 	private File getWorkingDirectory(JFileChooser fileChooser) {
-		String directory;
-		if (System.getProperty("user.dir")
-				  .contains("dist")) {
+		String directory = "";
+		String protocol = this.getClass()
+							  .getResource("")
+							  .getProtocol();
+
+		if (Objects.equals(protocol, "jar")) {
 			directory = "Powtórki kanji";
 		}
-		else {
+		else if (Objects.equals(protocol, "file")) {
 			directory = "Testy do kanji";
 		}
 		return new File(
