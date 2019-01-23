@@ -1,7 +1,6 @@
 package com.kanji.utilities;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -28,10 +27,11 @@ public class KanjiCharactersReader {
 			return;
 		}
 		words.add("placeholder");
+
 		try {
-			BufferedReader br = new BufferedReader(
-					new InputStreamReader(new FileInputStream("kanjis.txt"),
-							"Utf-8"));
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					getClass().getClassLoader()
+							  .getResourceAsStream("kanjis.txt"), "Utf-8"));
 			String line = "";
 			while ((line = br.readLine()) != null) {
 				words.add(line);
