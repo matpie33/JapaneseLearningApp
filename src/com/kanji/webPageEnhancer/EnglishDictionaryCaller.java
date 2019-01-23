@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +39,8 @@ public class EnglishDictionaryCaller {
 			throws IOException {
 		JsonParser parser = new JsonParser();
 		JsonElement root = parser.parse(
-				new InputStreamReader((InputStream) request.getContent()));
+				new InputStreamReader((InputStream) request.getContent(),
+						Charset.forName("Utf-8")));
 		JsonObject rootObject = root.getAsJsonObject();
 		JsonArray nodesList = rootObject.getAsJsonArray(ROOT_NODE);
 
