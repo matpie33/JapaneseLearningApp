@@ -62,7 +62,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		this.problematicJapaneseWordsDisplayer = problematicJapaneseWordsDisplayer;
 		kanjiInformationPanel = new MainPanel(
 				new PanelConfiguration().putRowsAsHighestAsPossible());
-		englishPolishDictionaryPanel = new WebPagePanel(this, null,
+		englishPolishDictionaryPanel = new WebPagePanel(this,this, null,
 				applicationController.getApplicationWindow());
 		createJapaneseEnglishDictionary(applicationController);
 		createKanjiKoohiWebPanel(applicationController);
@@ -71,16 +71,14 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 
 	private void createJapaneseEnglishDictionary(
 			ApplicationController applicationController) {
-		japaneseEnglishDictionaryPanel = new WebPagePanel(this, null,
+		japaneseEnglishDictionaryPanel = new WebPagePanel(this,this, null,
 				applicationController.getApplicationWindow());
-		WebPageActions webPageActions = new WebPageActions(japaneseEnglishDictionaryPanel,
-				applicationController);
 
 	}
 
 	private void createKanjiKoohiWebPanel(
 			ApplicationController applicationController) {
-		kanjiKoohiWebPanel = new WebPagePanel(this, null,
+		kanjiKoohiWebPanel = new WebPagePanel(this,this, null,
 				applicationController.getApplicationWindow());
 		WebPageActions webPageActions = new WebPageActions(kanjiKoohiWebPanel,
 				applicationController);

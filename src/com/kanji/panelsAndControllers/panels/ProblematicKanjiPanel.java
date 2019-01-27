@@ -43,8 +43,9 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 
 		focusableComponentsManager = new FocusableComponentsManager(getPanel());
 		this.controller = controller;
-		englishPolishDictionaryWebPanel = new WebPagePanel(kanjiContextOwner,
-				null, applicationController.getApplicationWindow());
+		englishPolishDictionaryWebPanel = new WebPagePanel(this,
+				kanjiContextOwner, null,
+				applicationController.getApplicationWindow());
 		createKanjiKoohiPanel(applicationController, kanjiContextOwner);
 
 		RowInKanjiInformations rowInKanjiInformations = new RowInKanjiInformations(
@@ -62,7 +63,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 	private void createKanjiKoohiPanel(
 			ApplicationController applicationController,
 			ContextOwner kanjiContextOwner) {
-		kanjiKoohiWebPanel = new WebPagePanel(kanjiContextOwner,
+		kanjiKoohiWebPanel = new WebPagePanel(this, kanjiContextOwner,
 				new ConnectionFailKanjiOfflinePage(
 						ApplicationWindow.getKanjiFont()),
 				applicationController.getApplicationWindow());
