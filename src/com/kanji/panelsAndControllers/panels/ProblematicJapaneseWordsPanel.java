@@ -75,9 +75,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 				applicationController.getApplicationWindow());
 		WebPageActions webPageActions = new WebPageActions(japaneseEnglishDictionaryPanel,
 				applicationController);
-		japaneseEnglishDictionaryPanel.addHotkey(new HotkeyWrapper(KeyModifiers.ALT,
-						KeyEvent.VK_R),
-				webPageActions.createActionCallEnglishDictionary());
+
 	}
 
 	private void createKanjiKoohiWebPanel(
@@ -89,9 +87,6 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		kanjiKoohiWebPanel.addHotkey(
 				new HotkeyWrapper(KeyModifiers.ALT, KeyEvent.VK_Q),
 				webPageActions.createActionFindKanjiPolishKeyword());
-		kanjiKoohiWebPanel.addHotkey(
-				new HotkeyWrapper(KeyModifiers.ALT, KeyEvent.VK_T),
-				webPageActions.createActionCallEnglishDictionary());
 	}
 
 	public FocusableComponentsManager getFocusableComponentsManager() {
