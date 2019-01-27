@@ -31,7 +31,8 @@ public class KanjiCharactersReader {
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					getClass().getClassLoader()
-							  .getResourceAsStream("kanjis.txt"), "Utf-8"));
+							  .getResourceAsStream("kanjis.txt"),
+					"Utf-8"));
 			String line = "";
 			while ((line = br.readLine()) != null) {
 				words.add(line);
