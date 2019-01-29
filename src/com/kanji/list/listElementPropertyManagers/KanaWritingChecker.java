@@ -32,16 +32,30 @@ public class KanaWritingChecker
 	@Override
 	public boolean validateInput(JTextComponent textInput,
 			JapaneseWriting writing) {
-		if (JapaneseWritingUtilities.isInputValid(textInput.getText(),
+		String text = textInput.getText();
+		text = convertPolishNLetterToJapanese(text);
+		if (JapaneseWritingUtilities.isInputValid(text,
 				TypeOfJapaneseWriting.KANA)) {
 			return true;
 		}
 		else {
 			errorDetails = String.format(
-					ExceptionsMessages.KANA_WRITING_INCORRECT,
-					textInput.getText());
+					ExceptionsMessages.KANA_WRITING_INCORRECT, text);
 			return false;
 		}
+	}
+
+	@Override
+	public String convertToProperty(JTextComponent input) {
+		String text = input.getText();
+		text = convertPolishNLetterToJapanese(text);
+		input.setText(text);
+		return text;
+	}
+
+	private String convertPolishNLetterToJapanese(String text) {
+		text = text.replace('ｎ', 'ん');
+		return text;
 	}
 
 	@Override

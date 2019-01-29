@@ -10,8 +10,8 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.swing.text.JTextComponent;
 
-public class KanaOrKanjiWritingChecker implements
-		ListElementPropertyManager<String, JapaneseWord> {
+public class KanaOrKanjiWritingChecker
+		implements ListElementPropertyManager<String, JapaneseWord> {
 
 	private String errorDetails = "";
 
@@ -30,19 +30,27 @@ public class KanaOrKanjiWritingChecker implements
 	public String getPropertyValue(JapaneseWord japaneseWord) {
 		StringBuilder writingsText = new StringBuilder();
 		for (JapaneseWriting japaneseWriting : japaneseWord.getWritings()) {
-			writingsText.append(japaneseWriting.getKanaWriting());
+			writingsText.append(convertPolishNLetterToJapanese(
+					japaneseWriting.getKanaWriting()));
 			japaneseWriting.getKanjiWritings()
 						   .forEach(kanji -> writingsText.append(" " + kanji));
 		}
 		return writingsText.toString();
 	}
 
+
+	private String convertPolishNLetterToJapanese(String text) {
+		text = text.replace('ｎ', 'ん');
+		return text;
+	}
+
 	@Override
 	public boolean validateInput(JTextComponent textInput,
 			JapaneseWord writing) {
 		if (JapaneseWritingUtilities.isInputValid(textInput.getText(),
-				TypeOfJapaneseWriting.KANA) || JapaneseWritingUtilities
-				.isInputValid(textInput.getText(), TypeOfJapaneseWriting.KANJI)) {
+				TypeOfJapaneseWriting.KANA)
+				|| JapaneseWritingUtilities.isInputValid(textInput.getText(),
+				TypeOfJapaneseWriting.KANJI)) {
 			return true;
 		}
 		else {
