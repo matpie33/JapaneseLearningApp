@@ -121,6 +121,8 @@ public class ProblematicWordsController<Word extends ListElement>
 					return;
 				}
 				moveToNextWord(direction);
+				SwingUtilities.invokeLater(
+						wordsToReviewList.getPanel()::requestFocusInWindow);
 			}
 		};
 
