@@ -89,7 +89,7 @@ public class ApplicationController
 				Titles.APPLICATION).setInsertWordPanelPositioner(
 				customPositioner)
 								   .setListColors(
-										   new ListColors().backgroundColor(
+										   new ListColors().rowColor(
 												   Colors.LIST_BACKGROUND_COLOR)
 														   .editRowColor(
 																   Colors.EDIT_ROW_COLOR)
