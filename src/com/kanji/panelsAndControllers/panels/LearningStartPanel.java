@@ -67,7 +67,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 									   .border(null)
 									   .preferredSize(new Dimension(350, 200)));
 		addRowToRangesPanel();
-		AbstractButton buttonAddRow = GuiElementsCreator.createButtonlikeComponent(
+		AbstractButton buttonAddRow = GuiElementsCreator.createButtonLikeComponent(
 				new ButtonOptions(ButtonType.BUTTON).text(ButtonsNames.ADD_ROW),
 				controller.createActionAddRow());
 		sumOfWordsLabel = GuiElementsCreator.createLabel(
@@ -110,7 +110,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 	}
 
 	private AbstractButton createProblematicKanjiCheckbox() {
-		problematicCheckbox = GuiElementsCreator.createButtonlikeComponent(
+		problematicCheckbox = GuiElementsCreator.createButtonLikeComponent(
 				new ButtonOptions(ButtonType.CHECKBOX).text(
 						Labels.PROBLEMATIC_WORDS_OPTION)
 													  .opaque(false), null);
@@ -155,7 +155,7 @@ public class LearningStartPanel extends AbstractPanelWithHotkeysInfo {
 		inputRangeTo.addKeyListener(keyAdapter);
 		firstTextFieldInRow = inputRangeFrom;
 
-		AbstractButton removeRow = GuiElementsCreator.createButtonlikeComponent(
+		AbstractButton removeRow = GuiElementsCreator.createButtonLikeComponent(
 				new ButtonOptions(ButtonType.BUTTON).text(
 						ButtonsNames.REMOVE_ROW),
 				controller.createActionDeleteRow(inputRangeFrom, inputRangeTo));

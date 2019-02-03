@@ -137,7 +137,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	}
 
 	private AbstractButton createGoToKanjiStoryButton(KanjiData kanjiData) {
-		return GuiElementsCreator.createButtonlikeComponent(
+		return GuiElementsCreator.createButtonLikeComponent(
 				new ButtonOptions(ButtonType.BUTTON).text(
 						JapaneseApplicationButtonsNames.SHOW_KANJI_STORIES),
 				problematicJapaneseWordsDisplayer.createActionShowKanjiDetailsInKoohiPage(

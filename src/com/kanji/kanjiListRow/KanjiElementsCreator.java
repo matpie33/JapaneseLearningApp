@@ -57,7 +57,7 @@ public class KanjiElementsCreator {
 	}
 
 	public AbstractButton createButtonShowKanjiStories() {
-		return GuiElementsCreator.createButtonlikeComponent(
+		return GuiElementsCreator.createButtonLikeComponent(
 				new ButtonOptions(ButtonType.BUTTON).text(
 						JapaneseApplicationButtonsNames.SHOW_KANJI_STORIES),
 				null);

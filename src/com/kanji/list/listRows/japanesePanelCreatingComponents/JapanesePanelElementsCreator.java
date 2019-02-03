@@ -158,7 +158,7 @@ public class JapanesePanelElementsCreator {
 
 	private AbstractButton createButton(String buttonLabel,
 			AbstractAction actionOnClick) {
-		return GuiElementsCreator.createButtonlikeComponent(
+		return GuiElementsCreator.createButtonLikeComponent(
 				new ButtonOptions(ButtonType.BUTTON).text(buttonLabel),
 				actionOnClick);
 
