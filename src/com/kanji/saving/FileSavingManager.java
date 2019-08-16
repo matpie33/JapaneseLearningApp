@@ -8,7 +8,7 @@ import java.io.IOException;
 public class FileSavingManager {
 
 	private static final String BACKUP_DIRECTORY_NAME = "backups";
-	private static final int NUMBER_OF_BACKUP_FILES = 3;
+	private static final int NUMBER_OF_BACKUP_FILES = 10;
 	private static final String BACKUP_FILENAME = "backup";
 	private final LoadingAndSaving loadingAndSaving;
 	private int lastBackupFileNumber;
@@ -76,4 +76,9 @@ public class FileSavingManager {
 		this.originalFile = fileToSave;
 		loadingAndSaving.setFileToSave(fileToSave);
 	}
+
+	public String getFileDirectory(){
+		return originalFile.getParent();
+	}
+
 }

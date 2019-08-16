@@ -61,7 +61,7 @@ public class LoadingProjectWorker {
 				catch (ExecutionException | InterruptedException exception) {
 					exception.printStackTrace();
 					applicationWindow.showMessageDialog(String.format(
-							ExceptionsMessages.EXCEPTION_WHILE_LOADING_KANJI_PROJECT,
+							ExceptionsMessages.EXCEPTION_WHILE_FILLING_WORDS_LISTS,
 							exception.getMessage()));
 				}
 				finally {

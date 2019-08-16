@@ -33,7 +33,12 @@ public class ExceptionsMessages {
 			"Niepoprawny zapis kany lub kanji. Powinien zawierać hiraganę lub katakanę "
 					+ "lub kanji.";
 	public static final String DUPLICATED_KANJI_WRITING_WITHIN_ROW = "Kanji %s już wystepuje w tym wierszu.";
-	public static final String EXCEPTION_WHILE_LOADING_KANJI_PROJECT = "Wystąpił błąd przy wczytywaniu: %s.";
+	public static final String EXCEPTION_WHILE_FILLING_WORDS_LISTS =
+			"Wystąpił błąd przy wypełnianiu list: %s.";
+	public static final String EXCEPTION_WHILE_LOADING_KANJI_PROJECT =
+			"Wystąpił błąd przy wczytywaniu projektu z pliku. Ale głowa do "
+					+ "góry! Zapisałem przyczynę błędu w pliku %s, a "
+					+ "aplikację zamykam aby się nie pogorszyło :)";
 	public static final String DUPLICATED_WRITINGS_IN_WORD = "Wpisano identyczne zapisy słowa w dwóch wierszach.";
 	public static final String KANA_INPUT_EMPTY = "Pole \"kana\" musi być wypełnione.";
 	public static final String ERROR_IN_ROW = "Błąd w wierszu %d: %s";

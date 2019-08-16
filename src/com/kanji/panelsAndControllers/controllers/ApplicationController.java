@@ -21,6 +21,7 @@ import com.kanji.constants.Colors;
 import com.kanji.constants.enums.ApplicationSaveableState;
 import com.kanji.constants.enums.SavingStatus;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
+import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.constants.strings.MenuTexts;
 import com.kanji.constants.strings.Prompts;
 import com.kanji.constants.strings.Titles;
@@ -44,6 +45,7 @@ import com.kanji.saving.ApplicationStateManager;
 import com.kanji.saving.FileSavingManager;
 import com.kanji.swingWorkers.LoadingProjectWorker;
 import com.kanji.utilities.JapaneseWordsAdjuster;
+import com.kanji.utilities.LogWriter;
 import com.kanji.utilities.OldToNewestVersionConverter;
 import com.kanji.utilities.WordsListReadWrite;
 
@@ -88,15 +90,14 @@ public class ApplicationController
 		return new ApplicationConfiguration(
 				Titles.APPLICATION).setInsertWordPanelPositioner(
 				customPositioner)
-								   .setListColors(
-										   new ListColors().rowColor(
-												   Colors.LIST_BACKGROUND_COLOR)
-														   .editRowColor(
-																   Colors.EDIT_ROW_COLOR)
-														   .filterPanelColor(
-																   Colors.FILTER_PANEL_COLOR)
-														   .selectedRowColor(
-																   Colors.LIST_SELECTED_ROW_COLOR))
+								   .setListColors(new ListColors().rowColor(
+										   Colors.LIST_BACKGROUND_COLOR)
+																  .editRowColor(
+																		  Colors.EDIT_ROW_COLOR)
+																  .filterPanelColor(
+																		  Colors.FILTER_PANEL_COLOR)
+																  .selectedRowColor(
+																		  Colors.LIST_SELECTED_ROW_COLOR))
 								   .setContentPanelColor(
 										   Colors.CONTENT_PANEL_COLOR)
 								   .setPanelBackgroundColor(
@@ -292,8 +293,13 @@ public class ApplicationController
 			savingInformation = fileSavingManager.load(fileToSave);
 		}
 		catch (Exception e1) {
-			applicationWindow.showMessageDialog("Exception loading from file.");
+			String path = new LogWriter().logFile(
+					fileSavingManager.getFileDirectory(), e1);
+			applicationWindow.showMessageDialog(String.format(
+					ExceptionsMessages.EXCEPTION_WHILE_LOADING_KANJI_PROJECT,
+					path));
 			e1.printStackTrace();
+			System.exit(1);
 			return;
 		}
 
