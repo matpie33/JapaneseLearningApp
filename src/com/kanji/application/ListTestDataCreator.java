@@ -162,6 +162,9 @@ public class ListTestDataCreator {
 	}
 
 	public void initializeTestData() {
+		if (applicationController.isOpenedFromJar()){
+			return;
+		}
 		createJapaneseWordsRepeatingDatesTestList();
 		createJapaneseWordsTestList();
 		createKanjiRepeatingDatesTestList();

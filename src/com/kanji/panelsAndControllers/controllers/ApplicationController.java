@@ -426,7 +426,7 @@ public class ApplicationController
 							  .getResource("")
 							  .getProtocol();
 
-		if (Objects.equals(protocol, "jar")) {
+		if (isOpenedFromJar()) {
 			directory = "Powtórki kanji";
 		}
 		else if (Objects.equals(protocol, "file")) {
@@ -434,6 +434,13 @@ public class ApplicationController
 		}
 		return new File(
 				fileChooser.getCurrentDirectory() + File.separator + directory);
+	}
+
+	public boolean isOpenedFromJar() {
+		String protocol = this.getClass()
+							  .getResource("")
+							  .getProtocol();
+		return Objects.equals(protocol, "jar");
 	}
 
 	public void showProblematicWordsDialogForCurrentList() {
