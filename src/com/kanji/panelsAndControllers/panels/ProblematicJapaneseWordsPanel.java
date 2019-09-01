@@ -62,7 +62,7 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 		this.problematicJapaneseWordsDisplayer = problematicJapaneseWordsDisplayer;
 		kanjiInformationPanel = new MainPanel(
 				new PanelConfiguration().putRowsAsHighestAsPossible());
-		englishPolishDictionaryPanel = new WebPagePanel(this,this, null,
+		englishPolishDictionaryPanel = new WebPagePanel(this, this, null,
 				applicationController.getApplicationWindow());
 		createJapaneseEnglishDictionary(applicationController);
 		createKanjiKoohiWebPanel(applicationController);
@@ -71,14 +71,14 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 
 	private void createJapaneseEnglishDictionary(
 			ApplicationController applicationController) {
-		japaneseEnglishDictionaryPanel = new WebPagePanel(this,this, null,
+		japaneseEnglishDictionaryPanel = new WebPagePanel(this, this, null,
 				applicationController.getApplicationWindow());
 
 	}
 
 	private void createKanjiKoohiWebPanel(
 			ApplicationController applicationController) {
-		kanjiKoohiWebPanel = new WebPagePanel(this,this, null,
+		kanjiKoohiWebPanel = new WebPagePanel(this, this, null,
 				applicationController.getApplicationWindow());
 		WebPageActions webPageActions = new WebPageActions(kanjiKoohiWebPanel,
 				applicationController);
@@ -144,12 +144,6 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 						kanjiData.getKanji(), kanjiData.getKanjiCharacter()));
 	}
 
-	private JapaneseWordPanelCreator createJapanesePanelCreator(
-			ApplicationWindow applicationWindow) {
-		return new JapaneseWordPanelCreator(applicationController,
-				applicationWindow, PanelDisplayMode.VIEW);
-	}
-
 	private AbstractButton createButtonSearchWord() {
 		return createButtonWithHotkey(KeyModifiers.ALT, KeyEvent.VK_C,
 				problematicJapaneseWordsDisplayer.createActionSearchCurrentWordInDictionary(),
@@ -200,11 +194,12 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 	}
 
 	private void createProblematicWordsList() {
-		japanesePanelCreator = createJapanesePanelCreator(
-				(ApplicationWindow) parentDialog);
+		RowInJapaneseWordInformations rowInJapaneseWordInformations = new RowInJapaneseWordInformations(
+				applicationController, getDialog(), PanelDisplayMode.VIEW);
+		japanesePanelCreator = rowInJapaneseWordInformations.getJapaneseWordsPanelCreator();
 		this.problematicWordsList = new MyList<>(
 				new ListConfiguration<>(Prompts.JAPANESE_WORD_DELETE,
-						new RowInJapaneseWordInformations(japanesePanelCreator),
+						rowInJapaneseWordInformations,
 						JapaneseWord.getInitializer(),
 						Titles.PROBLEMATIC_JAPANESE_WORDS, parentDialog,
 						applicationController).enableWordAdding(false)
@@ -213,7 +208,8 @@ public class ProblematicJapaneseWordsPanel extends AbstractPanelWithHotkeysInfo
 											  .withAdditionalNavigationButtons(
 													  createButtonSearchWord()));
 
-		japanesePanelCreator.setWordsList(problematicWordsList);
+		rowInJapaneseWordInformations.getJapaneseWordPanel()
+									 .setWordsList(problematicWordsList);
 		problematicWordsList.addListObserver(applicationController);
 	}
 

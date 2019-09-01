@@ -16,10 +16,8 @@ import com.kanji.list.listElements.WordParticlesData;
 import com.kanji.list.listRows.RowInJapaneseWordInformations;
 import com.kanji.list.listRows.RowInKanjiInformations;
 import com.kanji.list.listRows.RowInRepeatingList;
-import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 
-import javax.swing.*;
 import java.time.LocalDateTime;
 
 public class ListTestDataCreator {
@@ -143,12 +141,10 @@ public class ListTestDataCreator {
 	}
 
 	public MyList<JapaneseWord> initializeJapaneseWordsList() {
-		JapaneseWordPanelCreator japaneseWordPanelCreator = new JapaneseWordPanelCreator(
+		RowInJapaneseWordInformations rowInJapaneseWordInformations = new RowInJapaneseWordInformations(
 				applicationController,
 				applicationController.getApplicationWindow(),
 				PanelDisplayMode.EDIT);
-		RowInJapaneseWordInformations rowInJapaneseWordInformations = new RowInJapaneseWordInformations(
-				japaneseWordPanelCreator);
 		MyList<JapaneseWord> japaneseWords = new MyList<>(
 				new ListConfiguration<>(Prompts.JAPANESE_WORD_DELETE,
 						rowInJapaneseWordInformations,
@@ -156,11 +152,12 @@ public class ListTestDataCreator {
 						Titles.JAPANESE_WORDS_LIST,
 						applicationController.getApplicationWindow(),
 						applicationController).dictionaryData(
-						new WordDictionaryData(applicationController
-								.getStartingPanel()
-								.getJapaneseWordsListsSplitPane(),
+						new WordDictionaryData(
+								applicationController.getStartingPanel()
+													 .getJapaneseWordsListsSplitPane(),
 								Urls.JISHO_SEARCH_PATTERN)));
-		japaneseWordPanelCreator.setWordsList(japaneseWords);
+		rowInJapaneseWordInformations.getJapaneseWordPanel()
+									 .setWordsList(japaneseWords);
 		return japaneseWords;
 	}
 

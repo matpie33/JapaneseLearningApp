@@ -5,18 +5,11 @@ import com.guimaker.enums.InputGoal;
 import com.guimaker.enums.MoveDirection;
 import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.inputSelection.ListInputsSelectionManager;
-import com.guimaker.list.ListRowData;
-import com.guimaker.list.myList.ListRowDataCreator;
 import com.guimaker.list.myList.MyList;
-import com.guimaker.listeners.InputValidationListener;
 import com.guimaker.listeners.SwitchBetweenInputsFailListener;
-import com.guimaker.panels.MainPanel;
-import com.guimaker.model.CommonListElements;
 import com.guimaker.utilities.Pair;
-import com.kanji.constants.strings.ListPropertiesNames;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
-import com.kanji.panelsAndControllers.controllers.ApplicationController;
 
 import javax.swing.text.JTextComponent;
 import java.util.ArrayList;
@@ -27,50 +20,30 @@ import java.util.Set;
 public class JapaneseWordPanelCreator
 		implements SwitchBetweenInputsFailListener {
 
+	private final JapanesePanelActionsCreator actionsCreator;
 	private MyList<JapaneseWriting> lastWritingsListCreated;
-	private ApplicationController applicationController;
 	private DialogWindow parentDialog;
-	private JapanesePanelComponentsStore japanesePanelComponentsStore;
+
 	private ListInputsSelectionManager listInputsSelectionManager;
 	private PanelDisplayMode displayMode;
 	private List<Pair<JapaneseWord, MyList<JapaneseWriting>>> writingsLists = new ArrayList<>();
 	//TODO it's the second place where map did not fit due to mutable keys,
 	//can we do better than list of pairs?
 
-	public JapaneseWordPanelCreator(ApplicationController applicationController,
-			DialogWindow parentDialog, PanelDisplayMode displayMode) {
+	public JapaneseWordPanelCreator(DialogWindow parentDialog,
+			PanelDisplayMode displayMode,
+			JapanesePanelActionsCreator actionsCreator,
+			ListInputsSelectionManager listInputsSelectionManager) {
 		//TODO parent dialog is not needed without validation i.e. in view mode
 		this.displayMode = displayMode;
-		japanesePanelComponentsStore = new JapanesePanelComponentsStore(
-				applicationController, parentDialog);
-		this.applicationController = applicationController;
 		this.parentDialog = parentDialog;
-		listInputsSelectionManager = new ListInputsSelectionManager();
-	}
+		this.listInputsSelectionManager = listInputsSelectionManager;
+		this.actionsCreator = actionsCreator;
 
-	public PanelDisplayMode getDisplayMode() {
-		return displayMode;
 	}
 
 	public ListInputsSelectionManager getListInputsSelectionManager() {
 		return listInputsSelectionManager;
-	}
-
-	public ListRowData<JapaneseWord> createJapaneseWordPanel(
-			JapaneseWord japaneseWord, InputGoal inputGoal,
-			CommonListElements<JapaneseWord> commonListElements) {
-		determineDisplayMode(inputGoal);
-		return createRowPanel(japaneseWord, inputGoal, commonListElements);
-
-	}
-
-	private void determineDisplayMode(InputGoal inputGoal) {
-		if (inputGoal.equals(InputGoal.NO_INPUT)) {
-			displayMode = PanelDisplayMode.VIEW;
-		}
-		else {
-			displayMode = PanelDisplayMode.EDIT;
-		}
 	}
 
 	@Override
@@ -96,15 +69,16 @@ public class JapaneseWordPanelCreator
 
 	private MyList<JapaneseWriting> findListThatFailedInSwitchingBetweenInputs(
 			JTextComponent input) {
-		JapaneseWord wordContainingInput = japanesePanelComponentsStore.getActionCreator()
-																	   .getWordContainingInput(
-																			   input);
+		JapaneseWord wordContainingInput = actionsCreator.getWordContainingInput(
+				input);
 		MyList<JapaneseWriting> writingsListToAddWriting = null;
 		if (wordContainingInput != null) {
 			for (Pair<JapaneseWord, MyList<JapaneseWriting>> wordWithWritings : writingsLists) {
 				if (wordWithWritings.getLeft()
-									.equals(wordContainingInput) &&
-						wordWithWritings.getRight().getPanel().isShowing()) {
+									.equals(wordContainingInput)
+						&& wordWithWritings.getRight()
+										   .getPanel()
+										   .isShowing()) {
 					writingsListToAddWriting = wordWithWritings.getRight();
 					break;
 				}
@@ -114,55 +88,6 @@ public class JapaneseWordPanelCreator
 			writingsListToAddWriting = lastWritingsListCreated;
 		}
 		return writingsListToAddWriting;
-	}
-
-	private ListRowData<JapaneseWord> createRowPanel(
-			JapaneseWord japaneseWord, InputGoal inputGoal,
-			CommonListElements<JapaneseWord> commonListElements) {
-		JapaneseWordPanel japaneseWordPanel = new JapaneseWordPanel(
-				japanesePanelComponentsStore.getElementsCreator(), parentDialog,
-				listInputsSelectionManager, this);
-		ListRowDataCreator<JapaneseWord> rowDataCreator = createListRow(
-				japaneseWord, inputGoal, commonListElements, japaneseWordPanel);
-
-		return rowDataCreator.getListRowData();
-	}
-
-	private ListRowDataCreator<JapaneseWord> createListRow(
-			JapaneseWord japaneseWord, InputGoal inputGoal,
-			CommonListElements<JapaneseWord> commonListElements,
-			JapaneseWordPanel japaneseWordPanel) {
-		MainPanel rowPanel = japaneseWordPanel.createElements(japaneseWord,
-				displayMode, inputGoal, commonListElements,
-				japanesePanelComponentsStore.getPanelCreatingService(
-						displayMode));
-		ListRowDataCreator<JapaneseWord> rowDataCreator = new ListRowDataCreator<>(
-				rowPanel);
-		rowDataCreator.addPropertyData(
-				ListPropertiesNames.JAPANESE_WORD_MEANING,
-				japaneseWordPanel.getWordMeaningText(),
-				japanesePanelComponentsStore.getActionCreator()
-											.getWordMeaningChecker());
-
-		rowDataCreator.addPropertyData(
-				ListPropertiesNames.JAPANESE_WORD_WRITINGS,
-				japanesePanelComponentsStore.getElementsCreator()
-											.getKanaOrKanjiInputForFiltering(),
-				japanesePanelComponentsStore.getActionCreator()
-											.getWordCheckerForKanaOrKanjiFilter());
-		return rowDataCreator;
-	}
-
-	public JapaneseWordPanelCreator copy() {
-		JapaneseWordPanelCreator wordPanelCreator = new JapaneseWordPanelCreator(
-				applicationController, parentDialog, PanelDisplayMode.EDIT);
-		wordPanelCreator.setWordsList(
-				japanesePanelComponentsStore.getWordsList());
-		return wordPanelCreator;
-	}
-
-	public void setWordsList(MyList<JapaneseWord> list) {
-		japanesePanelComponentsStore.setWordsList(list);
 	}
 
 	public MyList<JapaneseWriting> addWritings(
@@ -182,9 +107,8 @@ public class JapaneseWordPanelCreator
 		}
 		Set<JapaneseWriting> writings = japaneseWord.getWritings();
 		Set<JapaneseWriting> duplicatedWritings = new HashSet<>(writings);
-		duplicatedWritings
-					.forEach(word -> lastWritingsListCreated.addWord(word,
-							inputGoal));
+		duplicatedWritings.forEach(
+				word -> lastWritingsListCreated.addWord(word, inputGoal));
 		lastWritingsListCreated.addSwitchBetweenInputsFailListener(this);
 		return lastWritingsListCreated;
 	}

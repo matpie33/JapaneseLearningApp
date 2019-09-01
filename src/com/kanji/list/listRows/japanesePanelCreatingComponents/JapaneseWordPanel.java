@@ -6,16 +6,20 @@ import com.guimaker.enums.FillType;
 import com.guimaker.enums.InputGoal;
 import com.guimaker.enums.PanelDisplayMode;
 import com.guimaker.inputSelection.ListInputsSelectionManager;
+import com.guimaker.list.ListRowData;
+import com.guimaker.list.myList.ListRowDataCreator;
 import com.guimaker.list.myList.MyList;
 import com.guimaker.model.CommonListElements;
 import com.guimaker.model.PanelConfiguration;
 import com.guimaker.panels.MainPanel;
 import com.guimaker.row.ComplexRow;
 import com.guimaker.row.SimpleRowBuilder;
+import com.kanji.constants.strings.ListPropertiesNames;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listElements.WordParticlesData;
 import com.kanji.list.listRows.japanesePanelCreatingService.JapanesePanelCreatingService;
+import com.kanji.panelsAndControllers.controllers.ApplicationController;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -24,26 +28,31 @@ import java.awt.*;
 public class JapaneseWordPanel {
 
 	private Color defaultLabelsColor = Color.WHITE;
-	private JapanesePanelElementsCreator elementsCreator;
 	private DialogWindow parentDialog;
 	private ListInputsSelectionManager listInputsSelectionManager;
 	private JapaneseWordPanelCreator japaneseWordPanelCreator;
 	private JTextComponent wordMeaningText;
+	private JapanesePanelComponentsStore componentsStore;
 
-	public JapaneseWordPanel(JapanesePanelElementsCreator elementsCreator,
-			DialogWindow parentDialog,
-			ListInputsSelectionManager listInputsSelectionManager,
-			JapaneseWordPanelCreator japaneseWordPanelCreator) {
-		this.elementsCreator = elementsCreator;
+	public JapaneseWordPanel(DialogWindow parentDialog,
+			PanelDisplayMode panelDisplayMode,
+			ApplicationController applicationController) {
 		this.parentDialog = parentDialog;
-		this.listInputsSelectionManager = listInputsSelectionManager;
-		this.japaneseWordPanelCreator = japaneseWordPanelCreator;
+		this.listInputsSelectionManager = new ListInputsSelectionManager();
+		componentsStore = new JapanesePanelComponentsStore(
+				applicationController, parentDialog);
+		this.japaneseWordPanelCreator = new JapaneseWordPanelCreator(
+				applicationController.getApplicationWindow(), panelDisplayMode,
+				getActionsCreator(), listInputsSelectionManager);
 	}
 
-	public MainPanel createElements(JapaneseWord japaneseWord,
-			PanelDisplayMode displayMode, InputGoal inputGoal,
-			CommonListElements<JapaneseWord> commonListElements,
-			JapanesePanelCreatingService panelCreatingService) {
+	public JapanesePanelActionsCreator getActionsCreator() {
+		return componentsStore.getActionCreator();
+	}
+
+	public ListRowData<JapaneseWord> createElements(JapaneseWord japaneseWord,
+			InputGoal inputGoal,
+			CommonListElements<JapaneseWord> commonListElements) {
 
 		JLabel rowNumberLabel = commonListElements.getRowNumberLabel();
 		if (rowNumberLabel != null) {
@@ -52,6 +61,8 @@ public class JapaneseWordPanel {
 							commonListElements.getLabelsColor() :
 							defaultLabelsColor);
 		}
+		PanelDisplayMode displayMode = determineDisplayMode(inputGoal);
+		JapanesePanelElementsCreator elementsCreator = componentsStore.getElementsCreator();
 		JLabel wordMeaningLabel = elementsCreator.createWordMeaningLabel(
 				defaultLabelsColor);
 		wordMeaningText = elementsCreator.createWordMeaningText(japaneseWord,
@@ -69,7 +80,8 @@ public class JapaneseWordPanel {
 				additionalInformationCombobox, japaneseWord);
 		boolean inheritScrollbar = !inputGoal.equals(InputGoal.ADD);
 		MyList writingsList = createJapaneseWritingsList(japaneseWord,
-				displayMode, inheritScrollbar, panelCreatingService, inputGoal,
+				displayMode, inheritScrollbar,
+				componentsStore.getPanelCreatingService(displayMode), inputGoal,
 				commonListElements);
 		JLabel writingsLabel = elementsCreator.createWritingsLabel(
 				defaultLabelsColor);
@@ -119,8 +131,26 @@ public class JapaneseWordPanel {
 																   inputGoal.equals(
 																		   InputGoal.EDIT_TEMPORARILY));
 		panel.addRowsOfElementsInColumn(lastJapanesePanelMade);
-		return panel;
+		return createListRow(panel);
 
+	}
+
+	private ListRowData<JapaneseWord> createListRow(MainPanel rowPanel) {
+
+		ListRowDataCreator<JapaneseWord> rowDataCreator = new ListRowDataCreator<>(
+				rowPanel);
+		rowDataCreator.addPropertyData(
+				ListPropertiesNames.JAPANESE_WORD_MEANING, wordMeaningText,
+				componentsStore.getActionCreator()
+							   .getWordMeaningChecker());
+
+		rowDataCreator.addPropertyData(
+				ListPropertiesNames.JAPANESE_WORD_WRITINGS,
+				componentsStore.getElementsCreator()
+							   .getKanaOrKanjiInputForFiltering(),
+				componentsStore.getActionCreator()
+							   .getWordCheckerForKanaOrKanjiFilter());
+		return rowDataCreator.getListRowData();
 	}
 
 	private MyList<JapaneseWriting> createJapaneseWritingsList(
@@ -130,13 +160,36 @@ public class JapaneseWordPanel {
 			InputGoal inputGoal,
 			CommonListElements<JapaneseWord> commonListElements) {
 		return japaneseWordPanelCreator.addWritings(
-				elementsCreator.createJapaneseWritingsList(japaneseWord,
-						inheritScrollBar, parentDialog, displayMode,
-						listInputsSelectionManager, panelCreatingService,
-						commonListElements), japaneseWord, inputGoal);
+				componentsStore.getElementsCreator()
+							   .createJapaneseWritingsList(japaneseWord,
+									   inheritScrollBar, parentDialog,
+									   displayMode, listInputsSelectionManager,
+									   panelCreatingService,
+									   commonListElements), japaneseWord,
+				inputGoal);
 	}
 
 	public JTextComponent getWordMeaningText() {
 		return wordMeaningText;
 	}
+
+	public PanelDisplayMode determineDisplayMode(InputGoal inputGoal) {
+		PanelDisplayMode displayMode;
+		if (inputGoal.equals(InputGoal.NO_INPUT)) {
+			displayMode = PanelDisplayMode.VIEW;
+		}
+		else {
+			displayMode = PanelDisplayMode.EDIT;
+		}
+		return displayMode;
+	}
+
+	public JapaneseWordPanelCreator getJapaneseWordPanelCreator() {
+		return japaneseWordPanelCreator;
+	}
+
+	public void setWordsList(MyList<JapaneseWord> wordsList){
+		componentsStore.getActionCreator().setWordsList(wordsList);
+	}
+
 }

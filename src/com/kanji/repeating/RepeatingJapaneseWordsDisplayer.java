@@ -9,7 +9,7 @@ import com.guimaker.panels.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.utilities.StringUtilities;
 import com.kanji.list.listElements.JapaneseWord;
-import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanelCreator;
+import com.kanji.list.listRows.japanesePanelCreatingComponents.JapaneseWordPanel;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.kanji.utilities.KanjiCharactersReader;
 
@@ -20,18 +20,17 @@ import java.util.function.Function;
 public class RepeatingJapaneseWordsDisplayer
 		implements RepeatingWordsDisplayer<JapaneseWord> {
 
+	private final JapaneseWordPanel japaneseWordPanel;
 	private KanjiCharactersReader kanjiCharactersReader;
 	private Map<Integer, Function<JapaneseWord, Set<String>>> hintTypeIntValues;
-	private JapaneseWordPanelCreator japaneseWordPanelCreator;
 	private String UNIQUE_NAME = "Repeating japanese words";
 	private ApplicationController applicationController;
 
 	public RepeatingJapaneseWordsDisplayer(
 			ApplicationController applicationController) {
-		japaneseWordPanelCreator = new JapaneseWordPanelCreator(
-				applicationController,
+		japaneseWordPanel = new JapaneseWordPanel(
 				applicationController.getApplicationWindow(),
-				PanelDisplayMode.VIEW);
+				PanelDisplayMode.VIEW, applicationController);
 		kanjiCharactersReader = KanjiCharactersReader.getInstance();
 		kanjiCharactersReader.loadKanjisIfNeeded();
 		//TODO kanjis can be loaded just once in the "get instance" method
@@ -53,11 +52,11 @@ public class RepeatingJapaneseWordsDisplayer
 	public void showFullWordDetailsPanel(JapaneseWord japaneseWord,
 			MainPanel wordAssessmentPanel) {
 		wordAssessmentPanel.clear();
-		MainPanel rowPanel = japaneseWordPanelCreator.createJapaneseWordPanel(
-				japaneseWord, InputGoal.NO_INPUT,
+		MainPanel rowPanel = japaneseWordPanel.createElements(japaneseWord,
+				InputGoal.NO_INPUT,
 				CommonListElements.forSingleRowOnly(Color.WHITE,
 						applicationController.getJapaneseWords()))
-													 .getRowPanel();
+											  .getRowPanel();
 		wordAssessmentPanel.addRow(
 				SimpleRowBuilder.createRow(FillType.NONE, Anchor.NORTH,
 						rowPanel.getPanel()));
