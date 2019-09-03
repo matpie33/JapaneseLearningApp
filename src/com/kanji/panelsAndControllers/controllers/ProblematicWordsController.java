@@ -172,6 +172,11 @@ public class ProblematicWordsController<Word extends ListElement>
 							savingInformation.getApplicationSaveableState()
 											 .getMeaningfulName()));
 		}
+		if (savingInformation.getProblematicWordsState().getNotReviewedWords
+				().isEmpty()){
+			//TODO why can this state even happen?
+			return;
+		}
 		applicationController.showProblematicWordsDialog(
 				savingInformation.getApplicationSaveableState()
 								 .getMeaningfulName(),
