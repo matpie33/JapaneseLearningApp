@@ -34,8 +34,7 @@ public class RowInKanjiInformations implements ListRowCreator<Kanji> {
 			PanelDisplayMode displayMode) {
 		this.displayMode = displayMode;
 		elementsCreator = new KanjiElementsCreator();
-		actionsCreator = new KanjiActionsCreator(applicationController,
-				applicationController.getApplicationWindow(), displayMode);
+		actionsCreator = new KanjiActionsCreator(applicationController.getApplicationWindow());
 	}
 
 	public void setProblematicWordsController(
@@ -52,7 +51,9 @@ public class RowInKanjiInformations implements ListRowCreator<Kanji> {
 		JLabel keywordLabel = elementsCreator.createLabel(
 				Labels.KANJI_KEYWORD_LABEL);
 		JLabel idLabel = elementsCreator.createLabel(Labels.KANJI_ID_LABEL);
-		boolean enabled = inputGoal.equals(InputGoal.EDIT)
+		boolean enabled = inputGoal.equals(InputGoal.EDIT) || inputGoal.equals(
+				InputGoal.EDIT_TEMPORARILY)
+				//TODO this should be handled automagically
 				|| commonListElements.isForSingleRowOnly();
 		JTextComponent keywordInput = actionsCreator.withKeywordValidation(
 				elementsCreator.createKanjiKeywordInput(kanji.getKeyword(),
@@ -69,6 +70,14 @@ public class RowInKanjiInformations implements ListRowCreator<Kanji> {
 													   keywordInput)
 											   .nextRow(idLabel, idInput)
 											   .setColumnToPutRowInto(1)
+											   .nextRow(
+													   commonListElements.getButtonEdit())
+											   .onlyAddIf(inputGoal.equals(
+													   InputGoal.NO_INPUT))
+											   .nextRow(
+													   commonListElements.getFinishEditing())
+											   .onlyAddIf(inputGoal.equals(
+													   InputGoal.EDIT_TEMPORARILY))
 											   .nextRow(
 													   buttonDependingOnInputGoal);
 		panel.addRowsOfElementsInColumn(panelRows);

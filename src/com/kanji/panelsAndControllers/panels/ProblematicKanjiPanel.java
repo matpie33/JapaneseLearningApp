@@ -57,6 +57,7 @@ public class ProblematicKanjiPanel extends AbstractPanelWithHotkeysInfo {
 						applicationController.getApplicationWindow(),
 						applicationController).showButtonsLoadNextPreviousWords(
 						false));
+		addNavigableByKeyboardList(wordsToReviewList);
 
 	}
 

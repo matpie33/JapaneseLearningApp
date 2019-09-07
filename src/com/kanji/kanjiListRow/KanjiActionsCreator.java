@@ -22,25 +22,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class KanjiActionsCreator {
-	private ApplicationController applicationController;
 	private DialogWindow parentDialog;
 	private Set<InputValidationListener<Kanji>> validationListeners = new HashSet<>();
 	private KanjiKeywordChecker keywordChecker;
 	private KanjiIdChecker idChecker;
-	private PanelDisplayMode displayMode;
 
-	public KanjiActionsCreator(ApplicationController applicationController,
-			DialogWindow parentDialog, PanelDisplayMode panelDisplayMode) {
-		this.applicationController = applicationController;
+	public KanjiActionsCreator(DialogWindow parentDialog) {
 		this.parentDialog = parentDialog;
-		this.displayMode = panelDisplayMode;
 	}
 
 	public JTextComponent withKeywordValidation(JTextComponent keywordInput,
 			Kanji kanji, InputGoal inputGoal,
 			CommonListElements<Kanji> commonListElements) {
-		if (displayMode.equals(PanelDisplayMode.VIEW) && !inputGoal.equals(
-				InputGoal.SEARCH)) {
+		if (inputGoal.equals(InputGoal.NO_INPUT)) {
 			return keywordInput;
 		}
 		keywordChecker = new KanjiKeywordChecker();
@@ -56,8 +50,7 @@ public class KanjiActionsCreator {
 	public JTextComponent withKanjiIdValidation(JTextComponent kanjiIdInput,
 			Kanji kanji, InputGoal inputGoal,
 			CommonListElements<Kanji> commonListElements) {
-		if (displayMode.equals(PanelDisplayMode.VIEW) && !inputGoal.equals(
-				InputGoal.SEARCH)) {
+		if (inputGoal.equals(InputGoal.NO_INPUT)) {
 			return kanjiIdInput;
 		}
 		idChecker = new KanjiIdChecker();
