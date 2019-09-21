@@ -16,6 +16,8 @@ import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.WordParticlesData;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 
+import java.awt.*;
+
 public class RowInParticlesInformation
 		implements ListRowCreator<WordParticlesData> {
 

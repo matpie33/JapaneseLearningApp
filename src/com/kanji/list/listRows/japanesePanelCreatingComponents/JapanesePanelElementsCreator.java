@@ -100,6 +100,7 @@ public class JapanesePanelElementsCreator {
 						applicationController).showButtonsLoadNextPreviousWords(
 						false)
 											  .enableWordAdding(false)
+											  .skipTitle(true)
 											  .enableWordSearching(false)
 											  .scrollBarFitsContent(true)
 											  .inheritScrollbar(true)
