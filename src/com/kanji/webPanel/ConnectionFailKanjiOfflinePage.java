@@ -6,7 +6,7 @@ import com.guimaker.enums.TextAlignment;
 import com.guimaker.model.WebContext;
 import com.guimaker.options.TextPaneOptions;
 import com.guimaker.panels.GuiElementsCreator;
-import com.guimaker.panels.MainPanel;
+import com.guimaker.panels.mainPanel.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.guimaker.webPanel.ConnectionFailPageHandler;
 

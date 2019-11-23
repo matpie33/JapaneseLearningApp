@@ -1,7 +1,7 @@
 package com.kanji.repeating;
 
 import com.guimaker.list.ListElement;
-import com.guimaker.panels.MainPanel;
+import com.guimaker.panels.mainPanel.MainPanel;
 
 public interface RepeatingWordsDisplayer<Word extends ListElement> {
 

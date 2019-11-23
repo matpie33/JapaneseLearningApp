@@ -2,7 +2,7 @@ package com.kanji.panelsAndControllers.controllers;
 
 import com.guimaker.list.ListElement;
 import com.guimaker.list.myList.MyList;
-import com.guimaker.panels.MainPanel;
+import com.guimaker.panels.mainPanel.MainPanel;
 import com.guimaker.timer.TimeSpent;
 import com.guimaker.utilities.Range;
 import com.guimaker.utilities.SetOfRanges;

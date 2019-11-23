@@ -1,6 +1,6 @@
 package com.kanji.main;
 
-import com.guimaker.panels.MainPanel;
+import com.guimaker.panels.mainPanel.MainPanel;
 import com.kanji.constants.Colors;
 import com.kanji.panelsAndControllers.controllers.ApplicationController;
 import com.sun.javafx.application.PlatformImpl;

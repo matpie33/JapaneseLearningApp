@@ -11,7 +11,7 @@ import com.guimaker.list.myList.ListRowDataCreator;
 import com.guimaker.list.myList.MyList;
 import com.guimaker.model.CommonListElements;
 import com.guimaker.model.PanelConfiguration;
-import com.guimaker.panels.MainPanel;
+import com.guimaker.panels.mainPanel.MainPanel;
 import com.guimaker.row.ComplexRow;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.constants.strings.ListPropertiesNames;

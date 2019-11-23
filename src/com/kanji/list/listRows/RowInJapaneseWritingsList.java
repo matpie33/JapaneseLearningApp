@@ -8,14 +8,13 @@ import com.guimaker.list.myList.ListRowCreator;
 import com.guimaker.list.myList.ListRowDataCreator;
 import com.guimaker.model.CommonListElements;
 import com.guimaker.model.PanelConfiguration;
-import com.guimaker.panels.MainPanel;
+import com.guimaker.panels.mainPanel.MainPanel;
 import com.guimaker.row.SimpleRowBuilder;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.list.listRows.japanesePanelCreatingService.JapanesePanelCreatingService;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class RowInJapaneseWritingsList
 		implements ListRowCreator<JapaneseWriting> {

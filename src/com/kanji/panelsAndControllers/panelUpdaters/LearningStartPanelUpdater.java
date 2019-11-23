@@ -1,6 +1,6 @@
 package com.kanji.panelsAndControllers.panelUpdaters;
 
-import com.guimaker.panels.MainPanel;
+import com.guimaker.panels.mainPanel.MainPanel;
 import com.guimaker.row.AbstractSimpleRow;
 import com.kanji.constants.enums.TypeOfWordForRepeating;
 import com.kanji.constants.strings.Prompts;

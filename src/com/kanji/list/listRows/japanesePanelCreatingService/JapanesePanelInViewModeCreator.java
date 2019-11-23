@@ -2,7 +2,7 @@ package com.kanji.list.listRows.japanesePanelCreatingService;
 
 import com.guimaker.enums.InputGoal;
 import com.guimaker.model.CommonListElements;
-import com.guimaker.panels.MainPanel;
+import com.guimaker.panels.mainPanel.MainPanel;
 import com.kanji.constants.enums.TypeOfJapaneseWriting;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
