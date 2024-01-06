@@ -8,7 +8,6 @@ import com.kanji.list.listElementPropertyManagers.WordSearchOptionsHolder;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.utilities.JapaneseWritingUtilities;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.swing.text.JTextComponent;
 import java.util.HashSet;

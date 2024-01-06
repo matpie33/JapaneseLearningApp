@@ -6,7 +6,6 @@ import com.kanji.constants.strings.ExceptionsMessages;
 import com.kanji.list.listElements.JapaneseWord;
 import com.kanji.list.listElements.JapaneseWriting;
 import com.kanji.utilities.JapaneseWritingUtilities;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.swing.text.JTextComponent;
 
@@ -70,7 +69,7 @@ public class KanaOrKanjiWritingChecker
 	@Override
 	public void setProperty(JapaneseWord writing, String newValue,
 			String previousValue) {
-		throw new NotImplementedException();
+		throw new RuntimeException("not implemented");
 	}
 
 }

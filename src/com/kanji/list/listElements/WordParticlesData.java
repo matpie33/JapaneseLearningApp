@@ -2,7 +2,6 @@ package com.kanji.list.listElements;
 
 import com.guimaker.list.ListElement;
 import com.kanji.constants.enums.JapaneseParticle;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -67,7 +66,7 @@ public class WordParticlesData implements ListElement, Serializable {
 
 	@Override
 	public String getDisplayedText() {
-		throw new NotImplementedException();
+		throw new RuntimeException("Not implemented");
 	}
 
 	@Override
